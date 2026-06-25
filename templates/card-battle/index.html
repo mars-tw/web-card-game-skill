@@ -12,21 +12,25 @@
     --ink: #e6edf3; --muted: #8b98a8;
     --mana: #3b82f6; --hp: #ef4444; --accent: #f59e0b;
     --card-w: 112px; --card-h: 158px;
+    --bg-img: url("../../assets/backgrounds/dark.png");
   }
   :root[data-theme="fantasy"] {
     --bg1: #2a1d10; --bg2: #160d05;
     --panel: #251a0f; --panel-border: #4a361c;
     --accent: #f0a830; --mana: #2f80ed;
+    --bg-img: url("../../assets/backgrounds/fantasy.png");
   }
   :root[data-theme="cyber"] {
     --bg1: #0a1626; --bg2: #04070f;
     --panel: #0d1b2e; --panel-border: #1b3a5c;
     --accent: #2dd4bf; --mana: #38bdf8; --hp: #f43f5e;
+    --bg-img: url("../../assets/backgrounds/cyber.png");
   }
   :root[data-theme="forest"] {
     --bg1: #14241a; --bg2: #07120c;
     --panel: #122019; --panel-border: #234a32;
     --accent: #84cc16; --mana: #22c55e;
+    --bg-img: url("../../assets/backgrounds/forest.png");
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,7 +39,27 @@
     background: radial-gradient(ellipse at top, var(--bg1), var(--bg2));
     color: var(--ink); min-height: 100vh;
     display: flex; flex-direction: column; align-items: center;
-    user-select: none; overflow-x: hidden;
+    user-select: none; overflow-x: hidden; position: relative;
+  }
+  /* 背景圖層（依主題切換，--bg-img 由各主題設定）*/
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -2;
+    background-image: var(--bg-img, none);
+    background-size: cover; background-position: center;
+    opacity: .55; filter: saturate(1.1);
+  }
+  /* 動態氛圍層：兩團緩慢飄移的光暈 + 暗角 */
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(40% 50% at 20% 30%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%),
+      radial-gradient(45% 55% at 80% 70%, color-mix(in srgb, var(--mana) 14%, transparent), transparent 70%),
+      radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.6));
+    animation: ambientDrift 18s ease-in-out infinite alternate;
+  }
+  @keyframes ambientDrift {
+    0%   { transform: translate(0, 0) scale(1); opacity: .9; }
+    100% { transform: translate(-2%, 2%) scale(1.06); opacity: 1; }
   }
   header {
     width: 100%; text-align: center; padding: 8px; font-weight: 700;
@@ -48,8 +72,11 @@
 
   .hero-row {
     display: flex; justify-content: space-between; align-items: center;
-    background: var(--panel); border-radius: 12px; padding: 8px 16px;
+    background: color-mix(in srgb, var(--panel) 82%, transparent);
+    border-radius: 12px; padding: 8px 16px;
     border: 1px solid var(--panel-border);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 12px rgba(0,0,0,.35);
   }
   .hero { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: transform .15s; }
   .hero.targetable { animation: pulseTarget 1s infinite; cursor: crosshair; }
@@ -64,10 +91,20 @@
   .battlefield {
     min-height: var(--card-h); display: flex; gap: 8px; justify-content: center;
     align-items: center; padding: 6px; border-radius: 12px;
-    background: rgba(255,255,255,.02); border: 1px dashed var(--panel-border); transition: background .2s;
+    /* 戰場棋盤質感：深色半透明 + 細格線紋理 + 內陰影，像放在真實戰場上 */
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 38px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 38px),
+      linear-gradient(180deg, rgba(10,14,20,.55), rgba(10,14,20,.35));
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--panel-border));
+    box-shadow: inset 0 2px 16px rgba(0,0,0,.5), inset 0 0 30px color-mix(in srgb, var(--accent) 8%, transparent);
+    backdrop-filter: blur(1px); transition: background .2s, box-shadow .2s;
   }
-  .battlefield.enemy { border-color: #4a2a2a; }
-  .battlefield .empty-hint { color: var(--muted); font-size: 13px; }
+  .battlefield.enemy {
+    border-color: color-mix(in srgb, var(--hp) 30%, var(--panel-border));
+    box-shadow: inset 0 2px 16px rgba(0,0,0,.5), inset 0 0 30px rgba(239,68,68,.06);
+  }
+  .battlefield .empty-hint { color: var(--muted); font-size: 13px; opacity: .7; }
 
   /* ===== 卡片 ===== */
   .card {

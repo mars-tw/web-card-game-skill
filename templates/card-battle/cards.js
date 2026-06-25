@@ -49,33 +49,33 @@ const CARD_POOL = [
   // 普通
   { id: "footman",   name: "見習士兵", type: CARD_TYPE.MINION, rarity: "common", cost: 1, attack: 1, health: 2, emoji: "🗡️", image: "../../assets/cards/footman.png", keywords: ["taunt"], text: "前排肉盾。", foil: false },
   { id: "archer",    name: "弓箭手",   type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 2, health: 1, emoji: "🏹", image: "../../assets/cards/archer.png", keywords: [], text: "脆皮但輸出穩定。", foil: false },
-  { id: "wolf",      name: "迅捷狼",   type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 2, health: 2, emoji: "🐺", image: null, keywords: ["charge"], text: "登場即可撲咬。", foil: false },
-  { id: "cleric",    name: "見習牧師", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 1, health: 3, emoji: "🙏", image: null, keywords: ["battlecry"], trigger: "healHero2", text: "戰吼：為英雄恢復 2 點。", foil: false },
+  { id: "wolf",      name: "迅捷狼",   type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 2, health: 2, emoji: "🐺", image: "../../assets/cards/wolf.png", keywords: ["charge"], text: "登場即可撲咬。", foil: false },
+  { id: "cleric",    name: "見習牧師", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 1, health: 3, emoji: "🙏", image: "../../assets/cards/cleric.png", keywords: ["battlecry"], trigger: "healHero2", text: "戰吼：為英雄恢復 2 點。", foil: false },
   // 稀有
   { id: "knight",    name: "鋼鐵騎士", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 3, health: 4, emoji: "🛡️", image: "../../assets/cards/knight.png", keywords: ["taunt"], text: "攻守兼備的中堅。", foil: false },
   { id: "mage",      name: "秘法師",   type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 4, health: 3, emoji: "🔮", image: "../../assets/cards/mage.png", keywords: ["battlecry"], trigger: "damageAny1", text: "戰吼：對一個目標造成 1 點傷害。", foil: false },
-  { id: "raptor",    name: "迅猛龍",   type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 3, health: 2, emoji: "🦖", image: null, keywords: ["charge"], text: "登場即可衝鋒。", foil: false },
-  { id: "guardian",  name: "符文守衛", type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 2, health: 5, emoji: "🗿", image: null, keywords: ["taunt", "divineshield"], text: "嘲諷 + 聖盾的銅牆。", foil: false },
+  { id: "raptor",    name: "迅猛龍",   type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 3, health: 2, emoji: "🦖", image: "../../assets/cards/raptor.png", keywords: ["charge"], text: "登場即可衝鋒。", foil: false },
+  { id: "guardian",  name: "符文守衛", type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 2, health: 5, emoji: "🗿", image: "../../assets/cards/guardian.png", keywords: ["taunt", "divineshield"], text: "嘲諷 + 聖盾的銅牆。", foil: false },
   // 史詩
   { id: "golem",     name: "石巨人",   type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 4, health: 7, emoji: "🗿", image: "../../assets/cards/golem.png", keywords: ["taunt"], text: "難以撼動的肉盾。", foil: false },
   { id: "griffin",   name: "獅鷲",     type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 6, health: 4, emoji: "🦅", image: "../../assets/cards/griffin.png", keywords: ["charge"], text: "強力的空中突襲手。", foil: false },
-  { id: "lich",      name: "巫妖",     type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 3, health: 5, emoji: "💀", image: null, keywords: ["deathrattle"], trigger: "summonSkeleton", text: "亡語：召喚一個骷髏(2/2)。", foil: false },
-  { id: "paladin",   name: "聖光騎士", type: CARD_TYPE.MINION, rarity: "epic", cost: 4, attack: 3, health: 4, emoji: "⚔️", image: null, keywords: ["divineshield", "taunt"], text: "聖盾嘲諷的前線壁壘。", foil: false },
+  { id: "lich",      name: "巫妖",     type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 3, health: 5, emoji: "💀", image: "../../assets/cards/lich.png", keywords: ["deathrattle"], trigger: "summonSkeleton", text: "亡語：召喚一個骷髏(2/2)。", foil: false },
+  { id: "paladin",   name: "聖光騎士", type: CARD_TYPE.MINION, rarity: "epic", cost: 4, attack: 3, health: 4, emoji: "⚔️", image: "../../assets/cards/paladin.png", keywords: ["divineshield", "taunt"], text: "聖盾嘲諷的前線壁壘。", foil: false },
   // 傳說
   { id: "dragon",    name: "烈焰巨龍", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 8, health: 8, emoji: "🐉", image: "../../assets/cards/dragon.png", keywords: ["charge"], text: "傳說中的毀滅之力，登場即焚敵。", foil: false },
   { id: "phoenix",   name: "不死鳳凰", type: CARD_TYPE.MINION, rarity: "legendary", cost: 6, attack: 5, health: 5, emoji: "🔥", image: "../../assets/cards/phoenix.png", keywords: ["deathrattle"], trigger: "rebirth", text: "亡語：以 1 點生命浴火重生。", foil: false },
-  { id: "titan",     name: "遠古泰坦", type: CARD_TYPE.MINION, rarity: "legendary", cost: 8, attack: 8, health: 8, emoji: "🏛️", image: null, keywords: ["taunt", "divineshield"], text: "嘲諷 + 聖盾的不朽巨神。", foil: false },
-  { id: "archmage",  name: "大法師",   type: CARD_TYPE.MINION, rarity: "legendary", cost: 6, attack: 4, health: 6, emoji: "🧙", image: null, keywords: ["battlecry"], trigger: "aoeEnemy2", text: "戰吼：對所有敵方隨從造成 2 點傷害。", foil: false },
+  { id: "titan",     name: "遠古泰坦", type: CARD_TYPE.MINION, rarity: "legendary", cost: 8, attack: 8, health: 8, emoji: "🏛️", image: "../../assets/cards/titan.png", keywords: ["taunt", "divineshield"], text: "嘲諷 + 聖盾的不朽巨神。", foil: false },
+  { id: "archmage",  name: "大法師",   type: CARD_TYPE.MINION, rarity: "legendary", cost: 6, attack: 4, health: 6, emoji: "🧙", image: "../../assets/cards/archmage.png", keywords: ["battlecry"], trigger: "aoeEnemy2", text: "戰吼：對所有敵方隨從造成 2 點傷害。", foil: false },
 
   // ===== 法術 spell（8）=====
   { id: "firebolt",  name: "火焰箭",   type: CARD_TYPE.SPELL, rarity: "common", cost: 2, emoji: "☄️", image: "../../assets/cards/firebolt.png", text: "對一個敵方隨從造成 3 點傷害。", effect: "damage3", foil: false },
   { id: "heal",      name: "治療術",   type: CARD_TYPE.SPELL, rarity: "common", cost: 2, emoji: "💚", image: "../../assets/cards/heal.png", text: "為你的英雄恢復 5 點生命。", effect: "heal5", foil: false },
-  { id: "shieldUp",  name: "聖盾術",   type: CARD_TYPE.SPELL, rarity: "common", cost: 1, emoji: "🛡️", image: null, text: "給一個友方隨從一層聖盾。", effect: "giveShield", foil: false },
+  { id: "shieldUp",  name: "聖盾術",   type: CARD_TYPE.SPELL, rarity: "common", cost: 1, emoji: "🛡️", image: "../../assets/cards/shieldUp.png", text: "給一個友方隨從一層聖盾。", effect: "giveShield", foil: false },
   { id: "manaSurge", name: "法力湧動", type: CARD_TYPE.SPELL, rarity: "rare", cost: 0, emoji: "💎", image: "../../assets/cards/manaSurge.png", text: "本回合獲得 2 點額外法力。", effect: "mana2", foil: false },
-  { id: "frost",     name: "冰霜新星", type: CARD_TYPE.SPELL, rarity: "rare", cost: 3, emoji: "❄️", image: null, text: "對所有敵方隨從造成 1 點傷害。", effect: "aoe1", foil: false },
+  { id: "frost",     name: "冰霜新星", type: CARD_TYPE.SPELL, rarity: "rare", cost: 3, emoji: "❄️", image: "../../assets/cards/frost.png", text: "對所有敵方隨從造成 1 點傷害。", effect: "aoe1", foil: false },
   { id: "lightning", name: "閃電風暴", type: CARD_TYPE.SPELL, rarity: "epic", cost: 4, emoji: "⚡", image: "../../assets/cards/lightning.png", text: "對所有敵方隨從造成 2 點傷害。", effect: "aoe2", foil: false },
-  { id: "polymorph", name: "變形術",   type: CARD_TYPE.SPELL, rarity: "epic", cost: 4, emoji: "🐑", image: null, text: "把一個敵方隨從變成 1/1 綿羊。", effect: "polymorph", foil: false },
-  { id: "meteor",    name: "隕石術",   type: CARD_TYPE.SPELL, rarity: "legendary", cost: 6, emoji: "🌠", image: null, text: "對一個敵方隨從造成 8 點傷害。", effect: "damage8", foil: false },
+  { id: "polymorph", name: "變形術",   type: CARD_TYPE.SPELL, rarity: "epic", cost: 4, emoji: "🐑", image: "../../assets/cards/polymorph.png", text: "把一個敵方隨從變成 1/1 綿羊。", effect: "polymorph", foil: false },
+  { id: "meteor",    name: "隕石術",   type: CARD_TYPE.SPELL, rarity: "legendary", cost: 6, emoji: "🌠", image: "../../assets/cards/meteor.png", text: "對一個敵方隨從造成 8 點傷害。", effect: "damage8", foil: false },
 ];
 
 // 依 id 取卡（淺拷貝，避免改到母表）。

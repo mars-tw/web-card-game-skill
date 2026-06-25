@@ -10,6 +10,14 @@
     "forest":  "Mystical nature trading-card art, lush, bioluminescent, earthy palette, single subject centered, dark forest background, no text, no frame, square composition.",
     "ink":     "Traditional ink-wash painting style, monochrome with one accent color, single subject centered, minimal background, no text, no frame, square composition."
   },
+  "backgroundDir": "assets/backgrounds",
+  "backgroundStyle": "Wide atmospheric game background, dark moody, low contrast, empty center for UI overlay, no characters, no text, cinematic depth, 16:9 landscape.",
+  "backgrounds": [
+    { "id": "dark",    "prompt": "a dark fantasy battle arena at night, torches, stone pillars, ominous purple sky" },
+    { "id": "fantasy", "prompt": "an ancient golden fantasy hall, warm torchlight, ornate pillars, magical dust" },
+    { "id": "cyber",   "prompt": "a futuristic cyberpunk arena, neon teal and blue lights, holographic grid, dark tech" },
+    { "id": "forest",  "prompt": "a mystical enchanted forest clearing, bioluminescent plants, green glow, misty" }
+  ],
   "cards": [
     { "id": "footman",   "prompt": "a young human footman soldier holding a short sword, leather armor, shield raised" },
     { "id": "archer",    "prompt": "a nimble elven archer drawing a longbow, green cloak" },

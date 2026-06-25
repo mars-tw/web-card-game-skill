@@ -8,18 +8,33 @@
   :root {
     --bg1: #1a1430; --bg2: #0d1117; --ink: #e6edf3; --muted: #8b98a8; --accent: #f59e0b;
     --card-w: 132px; --card-h: 186px;
+    --bg-img: url("../../assets/backgrounds/dark.png");
   }
-  :root[data-theme="fantasy"] { --bg1:#2a1d10; --bg2:#160d05; --accent:#f0a830; }
-  :root[data-theme="cyber"]   { --bg1:#0a1626; --bg2:#04070f; --accent:#2dd4bf; }
-  :root[data-theme="forest"]  { --bg1:#14241a; --bg2:#07120c; --accent:#84cc16; }
+  :root[data-theme="fantasy"] { --bg1:#2a1d10; --bg2:#160d05; --accent:#f0a830; --bg-img:url("../../assets/backgrounds/fantasy.png"); }
+  :root[data-theme="cyber"]   { --bg1:#0a1626; --bg2:#04070f; --accent:#2dd4bf; --bg-img:url("../../assets/backgrounds/cyber.png"); }
+  :root[data-theme="forest"]  { --bg1:#14241a; --bg2:#07120c; --accent:#84cc16; --bg-img:url("../../assets/backgrounds/forest.png"); }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: "Segoe UI","Microsoft JhengHei",system-ui,sans-serif;
     background: radial-gradient(ellipse at top,var(--bg1),var(--bg2));
     color: var(--ink); min-height: 100vh; overflow-x: hidden;
-    display: flex; flex-direction: column; align-items: center;
+    display: flex; flex-direction: column; align-items: center; position: relative;
   }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -2;
+    background-image: var(--bg-img, none); background-size: cover; background-position: center;
+    opacity: .5; filter: saturate(1.1);
+  }
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(40% 50% at 25% 25%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+      radial-gradient(45% 55% at 75% 75%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%),
+      radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.6));
+    animation: ambientDrift 20s ease-in-out infinite alternate;
+  }
+  @keyframes ambientDrift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(2%,-2%) scale(1.06)} }
   header { padding: 14px; font-size: 22px; font-weight: 800; letter-spacing: 2px;
     color: var(--accent); text-shadow: 0 0 16px color-mix(in srgb, var(--accent) 50%, transparent); }
 
