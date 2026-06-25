@@ -1,0 +1,11 @@
+# 文字檔統一用 LF 入庫，避免跨平台 CRLF 噪音
+* text=auto eol=lf
+
+# 二進位檔不做換行轉換
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+
+# PowerShell 腳本在 Windows 上用 CRLF（避免某些環境執行問題）
+*.ps1 text eol=crlf

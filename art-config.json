@@ -1,0 +1,39 @@
+{
+  "_comment": "卡牌美術生成統一設定檔。改這裡即可調整提示詞、加卡、換風格，不需動程式碼。gen-art.ps1(Grok) 與 gen-art-openai.ps1(GPT) 都讀這份。",
+  "outputDir": "assets/cards",
+  "size": "1024x1024",
+  "styleSuffix": "Fantasy trading-card art, painterly digital illustration, dramatic lighting, single subject centered, dark atmospheric background, no text, no card frame, no border, square composition.",
+  "themePresets": {
+    "_comment": "可選風格樣板，把 styleSuffix 換成其中之一即可整套換風格。",
+    "fantasy": "Fantasy trading-card art, painterly digital illustration, dramatic lighting, single subject centered, dark atmospheric background, no text, no frame, square composition.",
+    "cyber":   "Cyberpunk sci-fi trading-card art, neon-lit, holographic, futuristic, single subject centered, dark tech background, no text, no frame, square composition.",
+    "forest":  "Mystical nature trading-card art, lush, bioluminescent, earthy palette, single subject centered, dark forest background, no text, no frame, square composition.",
+    "ink":     "Traditional ink-wash painting style, monochrome with one accent color, single subject centered, minimal background, no text, no frame, square composition."
+  },
+  "cards": [
+    { "id": "footman",   "prompt": "a young human footman soldier holding a short sword, leather armor, shield raised" },
+    { "id": "archer",    "prompt": "a nimble elven archer drawing a longbow, green cloak" },
+    { "id": "wolf",      "prompt": "a swift grey wolf mid-leap, fierce eyes, fur bristling" },
+    { "id": "cleric",    "prompt": "a young cleric in white robes holding a glowing holy symbol" },
+    { "id": "knight",    "prompt": "a heavily armored steel knight with a tower shield, heroic pose" },
+    { "id": "mage",      "prompt": "an arcane mage channeling glowing blue magic, mystical robes" },
+    { "id": "raptor",    "prompt": "a feathered velociraptor charging forward, predatory" },
+    { "id": "guardian",  "prompt": "a stone rune guardian with a glowing protective barrier" },
+    { "id": "golem",     "prompt": "a massive stone golem made of carved rock, glowing runes" },
+    { "id": "griffin",   "prompt": "a fierce griffin with eagle head and lion body, wings spread" },
+    { "id": "lich",      "prompt": "an undead lich sorcerer wreathed in dark necrotic energy" },
+    { "id": "paladin",   "prompt": "a holy paladin in golden armor with a radiant shield aura" },
+    { "id": "dragon",    "prompt": "a colossal fire dragon breathing flames, menacing" },
+    { "id": "phoenix",   "prompt": "a radiant phoenix rising from flames, immortal firebird" },
+    { "id": "titan",     "prompt": "an ancient colossal titan of stone and divine light, towering" },
+    { "id": "archmage",  "prompt": "a powerful archmage casting an arcane explosion, swirling energy" },
+    { "id": "firebolt",  "prompt": "a blazing firebolt projectile streaking through air, no creature" },
+    { "id": "heal",      "prompt": "a glowing green healing aura with sparkles, no creature" },
+    { "id": "shieldUp",  "prompt": "a radiant golden divine shield barrier, holy glow, no creature" },
+    { "id": "manaSurge", "prompt": "a brilliant blue mana crystal radiating energy, no creature" },
+    { "id": "frost",     "prompt": "an icy frost nova explosion radiating cold, blue shards, no creature" },
+    { "id": "lightning", "prompt": "a violent lightning storm with bolts striking down, no creature" },
+    { "id": "polymorph", "prompt": "a swirl of transformation magic turning into a fluffy sheep, whimsical, no creature" },
+    { "id": "meteor",    "prompt": "a massive flaming meteor crashing down from the sky, no creature" }
+  ]
+}
