@@ -17,6 +17,20 @@
 
   const MAX_MANA = 10;
   const START_HP = 30;
+
+  // ===== 難度設定 =====
+  // playerHp/enemyHp：雙方起始血量；playerDraw/enemyDraw：起手抽牌數
+  // aiSmart：AI 聰明度（0=隨便打臉, 1=會換威脅, 2=會算殺/留嘲諷/用劇毒換大物）
+  const DIFFICULTY = {
+    easy:   { label: "簡單", playerHp: 35, enemyHp: 25, playerDraw: 4, enemyDraw: 3, aiSmart: 0 },
+    normal: { label: "普通", playerHp: 30, enemyHp: 30, playerDraw: 3, enemyDraw: 4, aiSmart: 1 },
+    hard:   { label: "困難", playerHp: 26, enemyHp: 34, playerDraw: 3, enemyDraw: 5, aiSmart: 2 },
+  };
+  function currentDifficulty() {
+    let d = "normal";
+    try { d = localStorage.getItem("cardgame_difficulty") || "normal"; } catch {}
+    return DIFFICULTY[d] ? d : "normal";
+  }
   const HAND_LIMIT = 8;
 
   // ---- 法術效果（spell.effect）----
@@ -44,20 +58,23 @@
 
   // ===== 初始化 =====
   function newGame() {
+    const diffKey = currentDifficulty();
+    const D = DIFFICULTY[diffKey];
     game = {
+      difficulty: diffKey, aiSmart: D.aiSmart,
       turn: "player",
-      player: { side: "player", hp: START_HP, mana: 1, manaMax: 1, deck: buildDeck(), hand: [], field: [] },
-      enemy:  { side: "enemy",  hp: START_HP, mana: 0, manaMax: 0, deck: buildDeck(), hand: [], field: [] },
+      player: { side: "player", hp: D.playerHp, mana: 1, manaMax: 1, deck: buildDeck(), hand: [], field: [] },
+      enemy:  { side: "enemy",  hp: D.enemyHp, mana: 0, manaMax: 0, deck: buildDeck(), hand: [], field: [] },
       selected: null,
       pendingSpell: null,
       over: false,
     };
     game.player.opp = game.enemy; game.enemy.opp = game.player;
-    for (let i = 0; i < 3; i++) drawCard(game.player);
-    for (let i = 0; i < 4; i++) drawCard(game.enemy);
+    for (let i = 0; i < D.playerDraw; i++) drawCard(game.player);
+    for (let i = 0; i < D.enemyDraw; i++) drawCard(game.enemy);
     document.getElementById("overlay").classList.remove("show");
     document.getElementById("log").innerHTML = "";
-    log("⚔️ 對戰開始！善用嘲諷、衝鋒、戰吼來取勝。", "me");
+    log(`⚔️ 對戰開始！（難度：${D.label}）善用技能取勝。`, "me");
     render();
   }
 
@@ -185,7 +202,9 @@
         animateAttackToward(attacker.uid, "enemyHero");
         game.enemy.hp -= attacker.attack;
         floatDamage("enemyHero", attacker.attack);
-        attacker.canAttack = false;
+        // 連擊：第一次打臉保留攻擊權，再打一次才收回
+        if ((attacker.keywords || []).includes("windfury") && !attacker._windUsed) attacker._windUsed = true;
+        else { attacker.canAttack = false; attacker._windUsed = false; }
         log(`${attacker.name} 攻擊敵方英雄，造成 ${attacker.attack} 點傷害！`, "me");
       }
       game.selected = null;
@@ -203,21 +222,28 @@
     render();
   }
 
-  // ===== 戰鬥結算（含聖盾）=====
+  // ===== 戰鬥結算（含聖盾、劇毒、連擊）=====
   function resolveAttack(attackerSide, attacker, defender) {
     animateAttackToward(attacker.uid, defender.uid);
-    const defenderSide = attackerSide.opp;
-    // 攻擊者打防禦者
-    applyDamage(game, defender, attacker.attack);
-    // 反擊
-    if (defender.attack > 0) applyDamage(game, attacker, defender.attack);
-    attacker.canAttack = false;
+    // 攻擊者打防禦者（帶 attacker 以判斷劇毒）
+    applyDamage(game, defender, attacker.attack, attacker);
+    // 反擊（防禦者的劇毒對攻擊者也生效）
+    if (defender.attack > 0) applyDamage(game, attacker, defender.attack, defender);
+    // 連擊：第一次攻擊後不收回攻擊權，改為標記已用一次；用滿兩次才結束
+    const hasWindfury = (attacker.keywords || []).includes("windfury");
+    if (hasWindfury && !attacker._windUsed) {
+      attacker._windUsed = true;   // 還能再攻擊一次
+    } else {
+      attacker.canAttack = false;
+      attacker._windUsed = false;
+    }
     log(`${attacker.name} 與 ${defender.name} 交戰！`, attackerSide.side === "player" ? "me" : "ai");
     cleanupField(game.player); cleanupField(game.enemy);
   }
 
-  // 對隨從造成傷害（含聖盾與跳字、亡語在 cleanup 觸發）
-  function applyDamage(g, minion, amount) {
+  // 對隨從造成傷害（含聖盾、劇毒、跳字；亡語在 cleanup 觸發）
+  // source：造成傷害的隨從（用來判斷劇毒），可省略（法術傷害）
+  function applyDamage(g, minion, amount, source) {
     if (minion.shield) {
       minion.shield = false;
       flashCard(minion.uid, "shield-break");
@@ -227,6 +253,12 @@
     minion.health -= amount;
     flashCard(minion.uid, "damaged");
     floatDamage(minion.uid, amount);
+    // 劇毒：傷害來源帶劇毒且確實造成傷害 → 目標直接致命
+    if (source && (source.keywords || []).includes("poison") && amount > 0 && minion.health > 0) {
+      minion.health = 0;
+      flashKeyword2(minion.uid, "劇毒！");
+      flashCard(minion.uid, "poisoned");
+    }
   }
   function dealDamageToMinion(g, minion, amount) { applyDamage(g, minion, amount); cleanupField(g.player); cleanupField(g.enemy); }
   function aoe(g, side, amount) { [...side.field].forEach((m) => applyDamage(g, m, amount)); cleanupField(g.player); cleanupField(g.enemy); }
@@ -261,10 +293,22 @@
     side.field = survivors;
   }
 
+  // 回復：回合結束時，帶 regenerate 的隨從補滿生命
+  function regenerateField(side) {
+    side.field.forEach((m) => {
+      if ((m.keywords || []).includes("regenerate") && m.health < m.maxHealth) {
+        m.health = m.maxHealth;
+        flashKeyword2(m.uid, "回復");
+        flashCard(m.uid, "regen");
+      }
+    });
+  }
+
   // ===== AI 回合 =====
   function endTurn() {
     if (game.turn !== "player" || game.over) return;
     game.selected = null; game.pendingSpell = null;
+    regenerateField(game.player);     // 玩家回合結束：玩家隨從回復
     game.turn = "enemy";
     render();
     setTimeout(aiTurn, 700);
@@ -326,9 +370,28 @@
           animateAttackToward(atk.uid, t.uid);
           resolveAttack(ai, atk, t);
         } else {
-          const threat = game.player.field.find((m) => m.attack >= 4);
+          // AI 聰明度：簡單只打臉；普通威脅≥4 換；困難威脅≥3 換且優先用劇毒換大物
+          const smart = game.aiSmart || 0;
+          let threat = null;
+          if (smart >= 1) {
+            const thr = smart >= 2 ? 3 : 4;
+            const candidates = game.player.field.filter((m) => m.attack >= thr);
+            if (smart >= 2 && (atk.keywords || []).includes("poison")) {
+              // 困難：劇毒隨從優先去換掉血最厚的大物
+              threat = [...game.player.field].sort((a, b) => b.health - a.health)[0] || null;
+            } else {
+              threat = candidates.sort((a, b) => b.attack - a.attack)[0] || null;
+            }
+          }
           if (threat) { animateAttackToward(atk.uid, threat.uid); resolveAttack(ai, atk, threat); }
-          else { animateAttackToward(atk.uid, "playerHero"); game.player.hp -= atk.attack; floatDamage("playerHero", atk.attack); atk.canAttack = false; log(`對手的 ${atk.name} 攻擊你的英雄，造成 ${atk.attack} 點傷害！`, "ai"); }
+          else {
+            animateAttackToward(atk.uid, "playerHero");
+            game.player.hp -= atk.attack; floatDamage("playerHero", atk.attack);
+            // 連擊：第一次打臉後保留攻擊權，再打一次才收回
+            if ((atk.keywords || []).includes("windfury") && !atk._windUsed) atk._windUsed = true;
+            else { atk.canAttack = false; atk._windUsed = false; }
+            log(`對手的 ${atk.name} 攻擊你的英雄，造成 ${atk.attack} 點傷害！`, "ai");
+          }
         }
         render(); checkWin();
         setTimeout(step, 620);
@@ -339,11 +402,12 @@
 
   function endAiTurn() {
     if (game.over) return;
+    regenerateField(game.enemy);     // AI 回合結束：AI 隨從回復
     game.turn = "player";
     game.player.manaMax = Math.min(MAX_MANA, game.player.manaMax + 1);
     game.player.mana = game.player.manaMax;
     drawCard(game.player);
-    game.player.field.forEach((m) => (m.canAttack = true));
+    game.player.field.forEach((m) => { m.canAttack = true; m._windUsed = false; }); // 重置連擊
     log("輪到你了。", "me");
     render();
   }
@@ -540,6 +604,9 @@
 
   // 提供給入口頁主題切換用（重繪卡面）
   window.__rerenderBattle = render;
+  // 提供給難度選擇器：換難度後重開一局
+  window.__newGame = newGame;
+  window.__difficulties = DIFFICULTY;
 
   // 測試掛鉤：讓自動化測試能建立確定性場景並驗證技能（不影響正常遊玩）
   window.__test = {
@@ -558,6 +625,16 @@
     },
     triggerBattlecry(card) { const ab = ABILITY_EFFECTS[card.trigger]; if (ab) ab(game, game.player, game.enemy.field[0]); cleanupField(game.enemy); render(); },
     killMinion(uid, side) { const s = side === "enemy" ? game.enemy : game.player; const m = s.field.find((x) => x.uid === uid); if (m) { m.health = 0; cleanupField(s); render(); } },
+    // 我方某隨從攻擊敵方某隨從（測劇毒/連擊互毆）
+    attackMinion(attackerUid, defenderUid) {
+      const a = game.player.field.find((m) => m.uid === attackerUid);
+      const d = game.enemy.field.find((m) => m.uid === defenderUid);
+      if (a && d) resolveAttack(game.player, a, d);
+      render();
+    },
+    // 觸發玩家回合結束的回復（不進 AI 回合）
+    regenTest() { regenerateField(game.player); render(); },
+    difficulty: () => ({ key: game.difficulty, aiSmart: game.aiSmart, playerHp: game.player.hp, enemyHp: game.enemy.hp }),
   };
   function prepMinion(c) { c.uid = "t" + Math.random().toString(36).slice(2, 8); c.maxHealth = c.health; if ((c.keywords || []).includes("divineshield")) c.shield = true; c.canAttack = true; return c; }
 })();

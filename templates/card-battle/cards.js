@@ -29,6 +29,9 @@ const CARD_TYPE = { MINION: "minion", SPELL: "spell" };
  *   battlecry    戰吼  — 出場時觸發一次效果
  *   deathrattle  亡語  — 死亡時觸發一次效果
  *   divineshield 聖盾  — 免疫第一次受到的傷害
+ *   windfury     連擊  — 每回合可攻擊兩次
+ *   poison       劇毒  — 對隨從造成傷害時，無視血量直接消滅
+ *   regenerate   回復  — 每回合結束時補滿生命
  */
 const KEYWORDS = {
   taunt:        { label: "嘲諷", icon: "🛡", desc: "敵方必須優先攻擊它。" },
@@ -36,6 +39,9 @@ const KEYWORDS = {
   battlecry:    { label: "戰吼", icon: "📣", desc: "登場時觸發效果。" },
   deathrattle:  { label: "亡語", icon: "💀", desc: "死亡時觸發效果。" },
   divineshield: { label: "聖盾", icon: "✨", desc: "免疫第一次受到的傷害。" },
+  windfury:     { label: "連擊", icon: "🌀", desc: "每回合可攻擊兩次。" },
+  poison:       { label: "劇毒", icon: "🐍", desc: "傷害到隨從即將其消滅。" },
+  regenerate:   { label: "回復", icon: "💗", desc: "每回合結束補滿生命。" },
 };
 
 /**
@@ -54,17 +60,17 @@ const CARD_POOL = [
   // 稀有
   { id: "knight",    name: "鋼鐵騎士", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 3, health: 4, emoji: "🛡️", image: "../../assets/cards/knight.png", keywords: ["taunt"], text: "攻守兼備的中堅。", foil: false },
   { id: "mage",      name: "秘法師",   type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 4, health: 3, emoji: "🔮", image: "../../assets/cards/mage.png", keywords: ["battlecry"], trigger: "damageAny1", text: "戰吼：對一個目標造成 1 點傷害。", foil: false },
-  { id: "raptor",    name: "迅猛龍",   type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 3, health: 2, emoji: "🦖", image: "../../assets/cards/raptor.png", keywords: ["charge"], text: "登場即可衝鋒。", foil: false },
+  { id: "raptor",    name: "迅猛龍",   type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 2, health: 2, emoji: "🦖", image: "../../assets/cards/raptor.png", keywords: ["charge", "poison"], text: "衝鋒 + 劇毒：撲咬即殺。", foil: false },
   { id: "guardian",  name: "符文守衛", type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 2, health: 5, emoji: "🗿", image: "../../assets/cards/guardian.png", keywords: ["taunt", "divineshield"], text: "嘲諷 + 聖盾的銅牆。", foil: false },
   // 史詩
   { id: "golem",     name: "石巨人",   type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 4, health: 7, emoji: "🗿", image: "../../assets/cards/golem.png", keywords: ["taunt"], text: "難以撼動的肉盾。", foil: false },
-  { id: "griffin",   name: "獅鷲",     type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 6, health: 4, emoji: "🦅", image: "../../assets/cards/griffin.png", keywords: ["charge"], text: "強力的空中突襲手。", foil: false },
+  { id: "griffin",   name: "獅鷲",     type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 3, health: 4, emoji: "🦅", image: "../../assets/cards/griffin.png", keywords: ["windfury"], text: "連擊：每回合可攻擊兩次。", foil: false },
   { id: "lich",      name: "巫妖",     type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 3, health: 5, emoji: "💀", image: "../../assets/cards/lich.png", keywords: ["deathrattle"], trigger: "summonSkeleton", text: "亡語：召喚一個骷髏(2/2)。", foil: false },
   { id: "paladin",   name: "聖光騎士", type: CARD_TYPE.MINION, rarity: "epic", cost: 4, attack: 3, health: 4, emoji: "⚔️", image: "../../assets/cards/paladin.png", keywords: ["divineshield", "taunt"], text: "聖盾嘲諷的前線壁壘。", foil: false },
   // 傳說
   { id: "dragon",    name: "烈焰巨龍", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 8, health: 8, emoji: "🐉", image: "../../assets/cards/dragon.png", keywords: ["charge"], text: "傳說中的毀滅之力，登場即焚敵。", foil: false },
   { id: "phoenix",   name: "不死鳳凰", type: CARD_TYPE.MINION, rarity: "legendary", cost: 6, attack: 5, health: 5, emoji: "🔥", image: "../../assets/cards/phoenix.png", keywords: ["deathrattle"], trigger: "rebirth", text: "亡語：以 1 點生命浴火重生。", foil: false },
-  { id: "titan",     name: "遠古泰坦", type: CARD_TYPE.MINION, rarity: "legendary", cost: 8, attack: 8, health: 8, emoji: "🏛️", image: "../../assets/cards/titan.png", keywords: ["taunt", "divineshield"], text: "嘲諷 + 聖盾的不朽巨神。", foil: false },
+  { id: "titan",     name: "遠古泰坦", type: CARD_TYPE.MINION, rarity: "legendary", cost: 8, attack: 8, health: 8, emoji: "🏛️", image: "../../assets/cards/titan.png", keywords: ["taunt", "regenerate"], text: "嘲諷 + 回復：永不倒下的巨神。", foil: false },
   { id: "archmage",  name: "大法師",   type: CARD_TYPE.MINION, rarity: "legendary", cost: 6, attack: 4, health: 6, emoji: "🧙", image: "../../assets/cards/archmage.png", keywords: ["battlecry"], trigger: "aoeEnemy2", text: "戰吼：對所有敵方隨從造成 2 點傷害。", foil: false },
 
   // ===== 法術 spell（8）=====

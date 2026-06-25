@@ -35,6 +35,16 @@
 | `battlecry` | 戰吼 | 出場時觸發 `trigger` 效果一次 |
 | `deathrattle` | 亡語 | 死亡時觸發 `trigger` 效果一次 |
 | `divineshield` | 聖盾 | 免疫第一次受到的傷害（破盾後才正常扣血） |
+| `windfury` | 連擊 | 每回合可攻擊兩次 |
+| `poison` | 劇毒 | 對隨從造成傷害時無視血量直接消滅（聖盾可擋） |
+| `regenerate` | 回復 | 每回合結束時補滿生命 |
+
+## 難度系統
+
+`battle.js` 頂部的 `DIFFICULTY` 定義三檔（簡單/普通/困難），存在 `localStorage`
+的 `cardgame_difficulty`，對戰頁控制列有下拉可切換（換難度即重開一局）。
+每檔影響：雙方起始血量、起手抽牌數、AI 聰明度 `aiSmart`（0=只打臉、1=會換威脅、
+2=會算殺並用劇毒換大物）。要調整數值改 `DIFFICULTY` 物件即可。
 
 `battlecry` / `deathrattle` 要搭配 `trigger`，對應 `battle.js` 的 `ABILITY_EFFECTS`（如
 `healHero2`、`damageAny1`、`summonSkeleton`、`rebirth`、`aoeEnemy2`）。要加新觸發效果就在

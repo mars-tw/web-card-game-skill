@@ -130,6 +130,8 @@
   .card.damaged { animation: flashRed .4s; }
   .card.shield-break { animation: shieldBreak .4s; }
   .card.shield-gain { animation: shieldGain .5s; }
+  .card.poisoned { animation: poisonHit .5s; }
+  .card.regen { animation: regenPulse .6s; }
 
   /* 閃卡 foil */
   .card.foil { border-width: 3px; }
@@ -172,6 +174,11 @@
     min-height: calc(var(--card-h) + 12px); padding: 5px; flex-wrap: wrap; }
 
   .controls { display: flex; gap: 12px; align-items: center; justify-content: center; padding: 6px; }
+  .diff-pick { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted);
+    background: color-mix(in srgb, var(--panel) 82%, transparent); padding: 6px 12px; border-radius: 20px;
+    border: 1px solid var(--panel-border); backdrop-filter: blur(4px); }
+  .diff-pick select { background: var(--panel); color: var(--ink); border: 1px solid var(--panel-border);
+    border-radius: 12px; padding: 4px 8px; font-family: inherit; font-weight: 700; cursor: pointer; }
   button.end-turn {
     background: linear-gradient(180deg, var(--accent), #d97706); color: #1a1206; font-weight: 800; font-size: 15px;
     border: none; padding: 11px 26px; border-radius: 24px; cursor: pointer;
@@ -210,6 +217,8 @@
   @keyframes flashRed { 0%,100%{filter:none} 40%{filter:brightness(1.8) saturate(2) drop-shadow(0 0 8px #ef4444)} }
   @keyframes shieldBreak { 0%{filter:none} 30%{filter:brightness(2.5) drop-shadow(0 0 14px #fde047)} 100%{filter:none} }
   @keyframes shieldGain { 0%,100%{filter:none} 50%{filter:brightness(1.6) drop-shadow(0 0 12px #fde047)} }
+  @keyframes poisonHit { 0%{filter:none} 40%{filter:hue-rotate(80deg) brightness(1.4) drop-shadow(0 0 14px #22c55e)} 100%{filter:saturate(.3) brightness(.7)} }
+  @keyframes regenPulse { 0%,100%{filter:none} 50%{filter:brightness(1.4) drop-shadow(0 0 14px #f472b6)} }
   @keyframes shieldPulse { 0%,100%{opacity:.7} 50%{opacity:1} }
   @keyframes foilShine { 0%{background-position:0% 0%} 100%{background-position:250% 250%} }
   @keyframes screenShake { 0%,100%{transform:translate(0,0)} 25%{transform:translate(-4px,2px)} 50%{transform:translate(4px,-2px)} 75%{transform:translate(-2px,3px)} }
@@ -244,7 +253,16 @@
     </div>
 
     <div class="hand" id="playerHand"></div>
-    <div class="controls"><button class="end-turn" id="endTurnBtn">結束回合 ▶</button></div>
+    <div class="controls">
+      <label class="diff-pick">難度
+        <select id="difficultySel">
+          <option value="easy">簡單</option>
+          <option value="normal" selected>普通</option>
+          <option value="hard">困難</option>
+        </select>
+      </label>
+      <button class="end-turn" id="endTurnBtn">結束回合 ▶</button>
+    </div>
   </div>
 
   <div id="log"></div>
@@ -265,6 +283,19 @@
     });
     // 初次載入沿用 localStorage 主題
     try { const t = localStorage.getItem("cardgame_theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch {}
+
+    // 難度選擇器：讀取既有設定，換難度時存檔並重開一局
+    (function setupDifficulty() {
+      const sel = document.getElementById("difficultySel");
+      let cur = "normal";
+      try { cur = localStorage.getItem("cardgame_difficulty") || "normal"; } catch {}
+      sel.value = cur;
+      sel.addEventListener("change", () => {
+        try { localStorage.setItem("cardgame_difficulty", sel.value); } catch {}
+        // 立即以新難度重開一局
+        if (window.__newGame) window.__newGame();
+      });
+    })();
   </script>
 </body>
 </html>
