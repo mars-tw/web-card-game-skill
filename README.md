@@ -1,11 +1,21 @@
 # 🎴 web-card-game — 快速製作網頁卡牌遊戲的 Claude Code Skill
 
+[![CI & Deploy Pages](https://github.com/mars-tw/web-card-game-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/mars-tw/web-card-game-skill/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Play Online](https://img.shields.io/badge/🎮_線上試玩-Pages-brightgreen)](https://mars-tw.github.io/web-card-game-skill/)
+
 一個 [Claude Code](https://claude.com/claude-code) **Skill**，幾分鐘內生出**純原生（零依賴）**的網頁卡牌遊戲。
 只用 HTML + CSS + 原生 JavaScript——零框架、零 npm、零建置，起一個本機 server 即可玩。
 
 內含完整可玩的**戰鬥卡牌對戰**與**開卡包**模組，並用統一設定檔串接 **Grok CLI** 或 **OpenAI GPT API** 生成卡牌美術。
 
 > 作者：**阿軒** ([@mars-tw](https://github.com/mars-tw)) · 授權：MIT
+
+### 🎮 線上直接玩（不用安裝）
+
+**👉 https://mars-tw.github.io/web-card-game-skill/**
+
+（部署後生效；推送 main 後約 1-2 分鐘 GitHub Actions 會自動更新）
 
 ---
 

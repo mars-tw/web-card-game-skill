@@ -1,0 +1,51 @@
+name: CI & Deploy Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時間只跑一個部署，新的取代舊的
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: 卡牌邏輯健全性測試
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: 執行 cards.js 測試
+        run: node scripts/test-cards.js
+
+  deploy:
+    name: 部署 GitHub Pages
+    needs: test
+    runs-on: ubuntu-latest
+    # 只在 push 到 main 時部署（PR 不部署）
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: 設定 Pages
+        uses: actions/configure-pages@v5
+      - name: 上傳整個專案作為 Pages 內容
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: 部署
+        id: deployment
+        uses: actions/deploy-pages@v4
