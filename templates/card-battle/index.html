@@ -212,6 +212,28 @@
   .result-stats .coin { color: #facc15; font-weight: 800; font-size: 17px; }
   .result-stats .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
+  /* 新手引導 + 關鍵字圖鑑（CP0-15）*/
+  .cb-tutorial, .kw-codex { position: fixed; inset: 0; background: rgba(6,10,14,.92); display: none;
+    align-items: center; justify-content: center; z-index: 110; padding: 16px; }
+  .cb-tutorial.show, .kw-codex.show { display: flex; }
+  .cb-tut-card, .kw-codex-card { background: linear-gradient(180deg, #1a2230, #0f1620);
+    border: 1px solid rgba(255,255,255,.12); border-radius: 18px; padding: 24px 26px; max-width: 440px; width: 100%;
+    box-shadow: 0 12px 40px rgba(0,0,0,.5); max-height: 90vh; overflow-y: auto; }
+  .cb-tut-card h2, .kw-codex-card h2 { color: var(--accent, #f59e0b); font-size: 23px; margin-bottom: 14px; text-align: center; }
+  .cb-tut-card ol { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .cb-tut-card li { font-size: 14px; line-height: 1.5; }
+  .cb-tut-card li b { color: #facc15; }
+  .cb-tut-tip { font-size: 12px; color: #9fb0a4; background: rgba(245,158,11,.1); padding: 10px 12px; border-radius: 10px; margin-bottom: 16px; line-height: 1.5; }
+  .cb-tut-card button, .kw-codex-card button { width: 100%; background: linear-gradient(180deg,#f59e0b,#d97706);
+    color: #1a1206; border: none; padding: 13px; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; }
+  .kw-codex-btn { position: fixed; bottom: 12px; right: 12px; z-index: 60; background: #1a2230;
+    color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
+    font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
+  #kwCodexList { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .kw-codex-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.04); }
+  .kw-codex-item .kwi { font-size: 22px; } .kw-codex-item .kwn { font-weight: 800; color: #facc15; }
+  .kw-codex-item .kwd { font-size: 12px; color: #9fb0a4; }
+
   /* ===== 動畫 ===== */
   @keyframes spawnIn { 0% { transform: translateY(40px) scale(.4) rotate(-8deg); opacity: 0; } 60% { transform: translateY(-6px) scale(1.08); } 100% { transform: translateY(0) scale(1); opacity: 1; } }
   @keyframes dieOut { 0% { transform: scale(1) rotate(0); filter: brightness(1); } 100% { transform: scale(.2) rotate(20deg); opacity: 0; filter: brightness(3) blur(3px); } }
@@ -277,6 +299,31 @@
     <button id="restartBtn">再來一局</button>
   </div>
 
+  <!-- 首次遊玩引導（CP0-15）-->
+  <div class="cb-tutorial" id="cbTutorial">
+    <div class="cb-tut-card">
+      <h2>⚔️ 對戰教學</h2>
+      <ol>
+        <li><b>① 出牌</b>：點手牌中費用足夠的卡（隨從上場、法術立即生效）</li>
+        <li><b>② 攻擊</b>：點你的隨從選為攻擊者，再點敵方隨從或英雄</li>
+        <li><b>③ 打臉獲勝</b>：把敵方英雄血量打到 0 就贏！</li>
+        <li><b>④ 善用技能</b>：嘲諷🛡擋路、衝鋒⚡即攻、聖盾✨擋傷、戰吼📣亡語💀觸發效果</li>
+      </ol>
+      <p class="cb-tut-tip">💡 法力每回合 +1。點下方「關鍵字」隨時查技能說明。開卡包抽強卡組牌組！</p>
+      <button id="cbTutOk">開始對戰 ▶</button>
+    </div>
+  </div>
+
+  <!-- 關鍵字圖鑑（CP0-15 觸控友善）-->
+  <button class="kw-codex-btn" id="kwCodexBtn">📖 關鍵字</button>
+  <div class="kw-codex" id="kwCodex">
+    <div class="kw-codex-card">
+      <h2>📖 關鍵字圖鑑</h2>
+      <div id="kwCodexList"></div>
+      <button id="kwCodexClose">關閉</button>
+    </div>
+  </div>
+
   <script src="cards.js"></script>
   <script src="battle.js"></script>
   <script>
@@ -292,14 +339,37 @@
     // 難度選擇器：讀取既有設定，換難度時存檔並重開一局
     (function setupDifficulty() {
       const sel = document.getElementById("difficultySel");
-      let cur = "normal";
-      try { cur = localStorage.getItem("cardgame_difficulty") || "normal"; } catch {}
+      let cur = "easy";
+      try { cur = localStorage.getItem("cardgame_difficulty") || "easy"; } catch {}
       sel.value = cur;
       sel.addEventListener("change", () => {
         try { localStorage.setItem("cardgame_difficulty", sel.value); } catch {}
         // 立即以新難度重開一局
         if (window.__newGame) window.__newGame();
       });
+    })();
+
+    // 新手引導（CP0-15）：首次顯示，存 localStorage
+    (function setupTutorial() {
+      let seen = false;
+      try { seen = localStorage.getItem("cb_tutorial_seen") === "1"; } catch {}
+      if (!seen) document.getElementById("cbTutorial").classList.add("show");
+      document.getElementById("cbTutOk").onclick = () => {
+        document.getElementById("cbTutorial").classList.remove("show");
+        try { localStorage.setItem("cb_tutorial_seen", "1"); } catch {}
+      };
+    })();
+
+    // 關鍵字圖鑑（CP0-15 觸控友善：手機看不到 title tooltip）
+    (function setupCodex() {
+      const list = document.getElementById("kwCodexList");
+      if (window.KEYWORDS) {
+        list.innerHTML = Object.values(window.KEYWORDS).map(kw =>
+          `<div class="kw-codex-item"><span class="kwi">${kw.icon}</span><span><span class="kwn">${kw.label}</span><br><span class="kwd">${kw.desc}</span></span></div>`
+        ).join("");
+      }
+      document.getElementById("kwCodexBtn").onclick = () => document.getElementById("kwCodex").classList.add("show");
+      document.getElementById("kwCodexClose").onclick = () => document.getElementById("kwCodex").classList.remove("show");
     })();
   </script>
 </body>

@@ -27,9 +27,10 @@
     hard:   { label: "困難", playerHp: 26, enemyHp: 34, playerDraw: 3, enemyDraw: 5, aiSmart: 2 },
   };
   function currentDifficulty() {
-    let d = "normal";
-    try { d = localStorage.getItem("cardgame_difficulty") || "normal"; } catch {}
-    return DIFFICULTY[d] ? d : "normal";
+    // CP0-16：首次玩（無設定）預設「簡單」對新手友善；老玩家沿用已選難度
+    let d = "easy";
+    try { d = localStorage.getItem("cardgame_difficulty") || "easy"; } catch {}
+    return DIFFICULTY[d] ? d : "easy";
   }
   const HAND_LIMIT = 8;
 
