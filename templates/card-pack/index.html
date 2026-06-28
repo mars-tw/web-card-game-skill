@@ -37,6 +37,9 @@
   @keyframes ambientDrift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(2%,-2%) scale(1.06)} }
   header { padding: 14px; font-size: 22px; font-weight: 800; letter-spacing: 2px;
     color: var(--accent); text-shadow: 0 0 16px color-mix(in srgb, var(--accent) 50%, transparent); }
+  .coin-bar { font-size: 14px; font-weight: 700; color: #facc15; padding: 4px 14px; border-radius: 20px;
+    background: rgba(250,204,21,.1); border: 1px solid rgba(250,204,21,.25); margin-bottom: 4px; }
+  .coin-bar span { font-size: 16px; font-weight: 900; }
 
   /* 卡包 */
   .pack-stage { min-height: 340px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
@@ -133,6 +136,7 @@
 </head>
 <body>
   <header>🎴 開卡包 · CARD PACK 🎴</header>
+  <div class="coin-bar">💰 金幣 <span id="coinBalance">0</span> · 一包 100 金（首包免費）</div>
 
   <div class="pack-stage" id="packStage">
     <div class="pack" id="pack">

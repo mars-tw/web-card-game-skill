@@ -23,7 +23,28 @@
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(collection)); } catch {}
   }
 
+  const PACK_COST = 100; // 開包成本（用對戰賺的金幣，CP0-2 經濟閉環）
+  function loadStats() {
+    try { return JSON.parse(localStorage.getItem("card_stats_v1")) || { wins: 0, losses: 0, coins: 0 }; }
+    catch { return { wins: 0, losses: 0, coins: 0 }; }
+  }
+  function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(s)); } catch {} }
+
   function openPack() {
+    const stats = loadStats();
+    // 第一包免費（新玩家體驗）；之後花金幣
+    const isFree = (stats.packsOpened || 0) === 0;
+    if (!isFree && stats.coins < PACK_COST) {
+      updateCoinDisplay();
+      const hint = document.querySelector(".pack-hint");
+      if (hint) { hint.textContent = `金幣不足！(需 ${PACK_COST}，去對戰賺金幣)`; hint.style.color = "#f87171"; }
+      return;
+    }
+    if (!isFree) stats.coins -= PACK_COST;
+    stats.packsOpened = (stats.packsOpened || 0) + 1;
+    saveStats(stats);
+    updateCoinDisplay();
+
     const pack = document.getElementById("pack");
     pack.classList.add("opening");
     pack.style.pointerEvents = "none";
@@ -177,5 +198,12 @@
     }
   };
 
+  // 更新金幣顯示（CP0-2）
+  function updateCoinDisplay() {
+    const el = document.getElementById("coinBalance");
+    if (el) el.textContent = loadStats().coins;
+  }
+
   renderCollection();
+  updateCoinDisplay();
 })();

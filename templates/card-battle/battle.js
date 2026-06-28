@@ -63,8 +63,8 @@
     game = {
       difficulty: diffKey, aiSmart: D.aiSmart,
       turn: "player",
-      player: { side: "player", hp: D.playerHp, mana: 1, manaMax: 1, deck: buildDeck(), hand: [], field: [] },
-      enemy:  { side: "enemy",  hp: D.enemyHp, mana: 0, manaMax: 0, deck: buildDeck(), hand: [], field: [] },
+      player: { side: "player", hp: D.playerHp, maxHp: D.playerHp, mana: 1, manaMax: 1, deck: buildDeck(true), hand: [], field: [] },
+      enemy:  { side: "enemy",  hp: D.enemyHp, maxHp: D.enemyHp, mana: 0, manaMax: 0, deck: buildDeck(false), hand: [], field: [] },
       selected: null,
       pendingSpell: null,
       over: false,
@@ -78,9 +78,31 @@
     render();
   }
 
-  function buildDeck() {
+  // 玩家牌庫：優先用「開卡包收藏」的卡（接通收藏→對戰，CP0-1）。
+  // 讀 localStorage 的 cardpack_collection_v2（{collectKey: count}），
+  // 把擁有的卡（含重複份數、閃卡）組進牌庫；不足 24 張才用 rollCardByRarity 保底補。
+  function loadOwnedCards() {
+    let coll = {};
+    try { coll = JSON.parse(localStorage.getItem("cardpack_collection_v2")) || {}; } catch {}
+    const owned = [];
+    for (const [key, count] of Object.entries(coll)) {
+      const foil = key.endsWith("#foil");
+      const id = foil ? key.slice(0, -5) : key;
+      const base = getCardById(id);
+      if (!base) continue;
+      for (let i = 0; i < count; i++) { const c = cloneCard(base); c.foil = foil; owned.push(c); }
+    }
+    return owned;
+  }
+  // useCollection=true：玩家用開包收藏；false：AI 用隨機卡池
+  function buildDeck(useCollection) {
     const deck = [];
-    for (let i = 0; i < 24; i++) deck.push(rollCardByRarity());
+    if (useCollection) {
+      const owned = loadOwnedCards();
+      for (let i = owned.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [owned[i], owned[j]] = [owned[j], owned[i]]; }
+      for (const c of owned) { if (deck.length >= 24) break; deck.push(c); }
+    }
+    while (deck.length < 24) deck.push(rollCardByRarity()); // 不足或 AI：隨機補
     return deck;
   }
 
@@ -262,7 +284,7 @@
   }
   function dealDamageToMinion(g, minion, amount) { applyDamage(g, minion, amount); cleanupField(g.player); cleanupField(g.enemy); }
   function aoe(g, side, amount) { [...side.field].forEach((m) => applyDamage(g, m, amount)); cleanupField(g.player); cleanupField(g.enemy); }
-  function healHero(side, amount) { side.hp = Math.min(START_HP, side.hp + amount); }
+  function healHero(side, amount) { side.hp = Math.min(side.maxHp || START_HP, side.hp + amount); }
   function addShield(m) { m.shield = true; flashCard(m.uid, "shield-gain"); }
 
   function polymorph(g, minion) {
@@ -574,10 +596,40 @@
     board.classList.add("shake-screen"); setTimeout(() => board.classList.remove("shake-screen"), 260);
   }
 
+  // 戰績 + 金幣經濟（CP0-2）：閉合「打贏→賺金→開包→變強」迴圈
+  function loadStats() {
+    try { return JSON.parse(localStorage.getItem("card_stats_v1")) || { wins: 0, losses: 0, streak: 0, bestStreak: 0, coins: 0 }; }
+    catch { return { wins: 0, losses: 0, streak: 0, bestStreak: 0, coins: 0 }; }
+  }
+  function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(s)); } catch {} }
+
   function showOverlay(title, win) {
     const ov = document.getElementById("overlay");
     document.getElementById("overlayTitle").textContent = title;
     ov.classList.toggle("win", win); ov.classList.toggle("lose", !win);
+
+    // 更新戰績與金幣
+    const s = loadStats();
+    if (win) {
+      s.wins++; s.streak++; if (s.streak > s.bestStreak) s.bestStreak = s.streak;
+      const coinReward = 50 + s.streak * 10; // 連勝越多賺越多
+      s.coins += coinReward;
+      var rewardLine = `💰 +${coinReward} 金幣（共 ${s.coins}）`;
+    } else {
+      s.losses++; s.streak = 0;
+      s.coins += 20; // 落敗安慰金
+      var rewardLine = `💰 +20 金幣（共 ${s.coins}）`;
+    }
+    saveStats(s);
+    // 顯示戰績
+    const stats = document.getElementById("resultStats");
+    if (stats) {
+      stats.innerHTML = `
+        <div class="streak">${win && s.streak >= 2 ? `🔥 ${s.streak} 連勝！` : ""}</div>
+        <div>戰績：${s.wins} 勝 ${s.losses} 敗 · 最高連勝 ${s.bestStreak}</div>
+        <div class="coin">${rewardLine}</div>
+        <div class="hint">💡 用金幣去「開卡包」抽更強的卡，組成你的牌組！</div>`;
+    }
     if (win) burstStars();
     setTimeout(() => ov.classList.add("show"), 500);
   }

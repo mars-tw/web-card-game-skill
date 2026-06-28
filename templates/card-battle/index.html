@@ -207,6 +207,10 @@
   .overlay.lose h1 { color: #f87171; text-shadow: 0 0 24px #b91c1c; }
   .overlay button { background: var(--accent); color: #1a1206; border: none; padding: 12px 32px;
     border-radius: 24px; font-size: 16px; font-weight: 800; cursor: pointer; }
+  .result-stats { display: flex; flex-direction: column; gap: 8px; align-items: center; font-size: 15px; color: var(--ink); }
+  .result-stats .streak { font-size: 22px; font-weight: 900; color: #fb923c; text-shadow: 0 0 16px #f97316; }
+  .result-stats .coin { color: #facc15; font-weight: 800; font-size: 17px; }
+  .result-stats .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
   /* ===== 動畫 ===== */
   @keyframes spawnIn { 0% { transform: translateY(40px) scale(.4) rotate(-8deg); opacity: 0; } 60% { transform: translateY(-6px) scale(1.08); } 100% { transform: translateY(0) scale(1); opacity: 1; } }
@@ -269,6 +273,7 @@
 
   <div class="overlay" id="overlay">
     <h1 id="overlayTitle">勝利！</h1>
+    <div class="result-stats" id="resultStats"></div>
     <button id="restartBtn">再來一局</button>
   </div>
 
