@@ -205,6 +205,11 @@
     box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 40%, transparent); transition: transform .1s;
   }
   button.end-turn:hover { transform: scale(1.05); }
+  /* 起手重抽（CP2-6）*/
+  button.mulligan-btn { background: linear-gradient(180deg, #38bdf8, #0ea5e9); color: #04263a; font-weight: 800;
+    font-size: 14px; border: none; padding: 11px 20px; border-radius: 24px; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(56,189,248,.4); transition: transform .1s; margin-right: 8px; }
+  button.mulligan-btn:hover { transform: scale(1.05); }
   button.end-turn:disabled { filter: grayscale(1) brightness(.6); cursor: not-allowed; }
 
   #log { height: 52px; overflow-y: auto; width: min(980px, 97vw); font-size: 12px; color: var(--muted);
@@ -321,6 +326,7 @@
           <option value="hard">困難</option>
         </select>
       </label>
+      <button class="mulligan-btn" id="mulliganBtn" style="display:none">🔄 重抽起手牌</button>
       <button class="end-turn" id="endTurnBtn">結束回合 ▶</button>
     </div>
   </div>

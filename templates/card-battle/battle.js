@@ -71,12 +71,35 @@
       over: false,
     };
     game.player.opp = game.enemy; game.enemy.opp = game.player;
+    game.comboCount = 0;
+    game.mulliganUsed = false; // CP2-6 起手可重抽一次
     for (let i = 0; i < D.playerDraw; i++) drawCard(game.player);
     for (let i = 0; i < D.enemyDraw; i++) drawCard(game.enemy);
     document.getElementById("overlay").classList.remove("show");
     document.getElementById("log").innerHTML = "";
     log(`⚔️ 對戰開始！（難度：${D.label}）善用技能取勝。`, "me");
     render();
+    offerMulligan(D.playerDraw); // 提供起手重抽
+  }
+
+  // CP2-6 起手 Mulligan：開局可把起手牌洗回牌庫重抽一次，降低運氣權重
+  function offerMulligan(drawCount) {
+    const btn = document.getElementById("mulliganBtn");
+    if (!btn) return;
+    btn.style.display = "inline-block";
+    btn.textContent = "🔄 重抽起手牌";
+    btn.onclick = () => {
+      if (game.mulliganUsed || game.turn !== "player") return;
+      game.mulliganUsed = true;
+      // 起手牌洗回牌庫再重抽
+      game.player.deck.push(...game.player.hand);
+      game.player.hand = [];
+      for (let i = game.player.deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [game.player.deck[i], game.player.deck[j]] = [game.player.deck[j], game.player.deck[i]]; }
+      for (let i = 0; i < drawCount; i++) drawCard(game.player);
+      btn.style.display = "none";
+      log("🔄 重抽起手牌！", "me");
+      render();
+    };
   }
 
   // 玩家牌庫：優先用「開卡包收藏」的卡（接通收藏→對戰，CP0-1）。
@@ -124,6 +147,8 @@
   // ===== 玩家出牌 =====
   function playFromHand(uid) {
     if (game.turn !== "player" || game.over) return;
+    game.mulliganUsed = true; // 一旦出牌就不能再重抽
+    const mb = document.getElementById("mulliganBtn"); if (mb) mb.style.display = "none";
     const idx = game.player.hand.findIndex((c) => c.uid === uid);
     if (idx === -1) return;
     const card = game.player.hand[idx];
