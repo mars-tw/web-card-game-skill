@@ -164,17 +164,36 @@
         const icon = count > 0
           ? (card.image ? `<img src="${card.image}" alt="">` : card.emoji)
           : "❓";
+        // CP2-7 重複卡可分解成金幣（dup 出口）：保留 1 張，多的可分解
+        const dupes = Math.max(0, count - 1);
+        const dustValue = DISMANTLE_VALUE[card.rarity] || 10;
         slot.innerHTML = `
           ${isFoil ? '<div class="fstar">✦</div>' : ''}
           <div>${icon}</div>
           <div class="nm">${count > 0 ? card.name : "???"}</div>
-          ${count > 1 ? `<div class="count">×${count}</div>` : ""}`;
+          ${count > 1 ? `<div class="count">×${count}</div>` : ""}
+          ${dupes > 0 ? `<button class="dismantle-btn" data-key="${key}" data-val="${dustValue}" data-dupes="${dupes}">分解 +${dupes * dustValue}💰</button>` : ""}`;
         grid.appendChild(slot);
       });
     });
 
+    // 綁分解按鈕
+    grid.querySelectorAll(".dismantle-btn").forEach((btn) => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        const key = btn.dataset.key, val = +btn.dataset.val, dupes = +btn.dataset.dupes;
+        collection[key] = 1; // 保留 1 張
+        saveCollection();
+        const s = loadStats(); s.coins = (s.coins || 0) + dupes * val; saveStats(s);
+        updateCoinDisplay();
+        renderCollection();
+      };
+    });
+
     document.getElementById("progress").textContent = `${owned} / ${totalSlots} 已收集（含閃卡）`;
   }
+  // 分解金幣值（依稀有度）
+  const DISMANTLE_VALUE = { common: 10, rare: 30, epic: 80, legendary: 200 };
 
   function burstConfetti() {
     for (let i = 0; i < 28; i++) {

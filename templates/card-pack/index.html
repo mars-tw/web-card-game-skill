@@ -132,6 +132,12 @@
   .slot img { width:34px; height:34px; object-fit:cover; border-radius:4px; }
   .slot .count { position:absolute; bottom:2px; right:4px; font-size:10px; color:var(--accent); font-weight:800; }
   .slot .nm { font-size:8px; color:var(--muted); }
+  /* 重複卡分解按鈕（CP2-7）*/
+  .slot .dismantle-btn { position:absolute; bottom:-7px; left:50%; transform:translateX(-50%);
+    font-size:8px; font-weight:700; padding:2px 5px; border-radius:8px; white-space:nowrap;
+    background:#facc15; color:#3a2a06; border:none; cursor:pointer; opacity:0; transition:opacity .15s; z-index:4; }
+  .slot:hover .dismantle-btn { opacity:1; }
+  @media (hover:none) { .slot .dismantle-btn { opacity:1; } } /* 觸控裝置常駐顯示 */
   .slot .fstar { position:absolute; top:2px; right:3px; font-size:9px; color:gold; }
 
   @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
