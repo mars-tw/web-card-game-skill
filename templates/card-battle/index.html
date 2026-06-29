@@ -225,6 +225,10 @@
     background: radial-gradient(circle, #fff, #fde047); box-shadow: 0 0 6px #fbbf24;
     transform: translate(-50%, -50%); animation: sparkFly .42s ease-out forwards; }
   @keyframes sparkFly { 0%{opacity:1; transform:translate(-50%,-50%)} 100%{opacity:0; transform:translate(calc(-50% + var(--sx)), calc(-50% + var(--sy)))} }
+  /* 連擊回饋（CP2-8）*/
+  .combo-float { position: fixed; transform: translate(-50%, 0); color: #fb923c; font-weight: 900;
+    font-size: 20px; text-shadow: 0 0 8px #f97316, 0 2px 3px #000; pointer-events: none; z-index: 151;
+    animation: dmgFloat .9s ease-out forwards; }
   .kw-pop { position: fixed; transform: translate(-50%, 0); color: #fff; font-weight: 800; font-size: 13px;
     background: rgba(168,85,247,.9); padding: 2px 8px; border-radius: 10px; pointer-events: none; z-index: 150;
     animation: kwPop .9s ease-out forwards; white-space: nowrap; }

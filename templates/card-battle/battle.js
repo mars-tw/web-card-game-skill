@@ -129,6 +129,14 @@
     const card = game.player.hand[idx];
     if (card.cost > game.player.mana) { flash("法力不足！"); return; }
 
+    // CP2-8 連擊：本回合出牌數累積，第 3 張起跳 combo 回饋
+    game.comboCount = (game.comboCount || 0) + 1;
+    if (game.comboCount >= 3) {
+      const el = elFor(uid);
+      const r = el ? el.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0 };
+      flashCombo(r.left + r.width / 2, r.top, game.comboCount);
+    }
+
     if (card.type === CARD_TYPE.SPELL) {
       const eff = SPELL_EFFECTS[card.effect];
       if (eff && eff.needsTarget) {
@@ -330,7 +338,7 @@
   // ===== AI 回合 =====
   function endTurn() {
     if (game.turn !== "player" || game.over) return;
-    game.selected = null; game.pendingSpell = null;
+    game.selected = null; game.pendingSpell = null; game.comboCount = 0; // CP2-8 combo 換回合清零
     regenerateField(game.player);     // 玩家回合結束：玩家隨從回復
     game.turn = "enemy";
     render();
@@ -382,6 +390,10 @@
       const attackers = ai.field.filter((m) => m.canAttack !== false);
       ai.field.forEach((m) => { if (m.canAttack === undefined) m.canAttack = true; });
       const queue = ai.field.filter((m) => m.canAttack);
+      // CP2-5 致命斬殺檢查：玩家無嘲諷且 AI 總攻擊 ≥ 玩家血量 → 全壓臉直接結束遊戲
+      const playerHasTaunt = game.player.field.some((m) => (m.keywords || []).includes("taunt"));
+      const totalAtk = queue.reduce((s, m) => s + m.attack, 0);
+      const lethal = !playerHasTaunt && totalAtk >= game.player.hp && game.player.hp > 0 && (game.aiSmart || 0) >= 1;
       let i = 0;
       const step = () => {
         if (game.over || i >= queue.length) { endAiTurn(); return; }
@@ -396,7 +408,7 @@
           // AI 聰明度：簡單只打臉；普通威脅≥4 換；困難威脅≥3 換且優先用劇毒換大物
           const smart = game.aiSmart || 0;
           let threat = null;
-          if (smart >= 1) {
+          if (smart >= 1 && !lethal) { // 斬殺局面跳過換牌，全壓臉
             const thr = smart >= 2 ? 3 : 4;
             const candidates = game.player.field.filter((m) => m.attack >= thr);
             if (smart >= 2 && (atk.keywords || []).includes("poison")) {
@@ -584,6 +596,14 @@
     d.style.top = (r.top + 8) + "px";
     document.body.appendChild(d);
     setTimeout(() => d.remove(), 850);
+  }
+  // CP2-8 連擊回饋文字
+  function flashCombo(x, y, n) {
+    const d = document.createElement("div");
+    d.className = "combo-float"; d.textContent = `🔥 ${n} 連擊!`;
+    d.style.left = x + "px"; d.style.top = (y - 10) + "px";
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 900);
   }
   // 命中火花粒子（CP1-12）
   function spawnSparks(x, y) {
