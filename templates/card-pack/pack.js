@@ -72,6 +72,8 @@
     document.getElementById("packStage").style.display = "none";
 
     let newCount = 0, dupCount = 0;
+    const last = cards.length - 1;
+    let revealTime = 0;
     cards.forEach((card, i) => {
       const key = collectKey(card);
       const had = (collection[key] || 0) > 0;
@@ -81,12 +83,18 @@
 
       const el = renderRevealCard(card);
       row.appendChild(el);
+      // 最後一張延遲加大製造壓軸懸念（CP1-13）
+      const gap = i === last ? 520 : 340;
+      revealTime += gap;
+      const t = revealTime;
       setTimeout(() => {
-        const cls = card.foil || card.rarity === "legendary" ? "legend-pull"
+        const isHigh = card.foil || card.rarity === "legendary";
+        const cls = isHigh ? "legend-pull"
                   : (card.rarity === "epic" || card.rarity === "rare") ? "rare-pull" : "flip-in";
         el.classList.add(cls);
-        if (card.foil || card.rarity === "legendary") burstConfetti();
-      }, i * 300);
+        if (i === last) el.classList.add("finale"); // 壓軸卡額外光效
+        if (isHigh) { burstConfetti(); legendFlash(); } // 開傳說/閃卡 → 全螢幕金光
+      }, t);
     });
 
     saveCollection();
@@ -95,7 +103,15 @@
       const sum = document.getElementById("summary");
       sum.innerHTML = `本包：<span class="new">新收集 ${newCount}</span> · <span class="dup">重複 ${dupCount}</span>`;
       renderCollection();
-    }, cards.length * 300 + 400);
+    }, revealTime + 500);
+  }
+
+  // 開傳說/閃卡：全螢幕金色 vignette flash（CP1-13）
+  function legendFlash() {
+    const f = document.createElement("div");
+    f.className = "legend-flash";
+    document.body.appendChild(f);
+    setTimeout(() => f.remove(), 900);
   }
 
   function renderRevealCard(card) {

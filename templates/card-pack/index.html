@@ -58,7 +58,16 @@
   .pack .pack-label { font-weight: 800; font-size: 18px; z-index:1; }
   .pack .pack-hint { font-size: 12px; color: rgba(255,255,255,.75); z-index:1; }
 
-  .reveal-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; padding: 18px; min-height: var(--card-h); }
+  .reveal-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; padding: 18px; min-height: var(--card-h);
+    perspective: 1200px; } /* 3D 透視讓翻牌立體（CP1-13）*/
+  /* 壓軸卡額外光效（CP1-13）*/
+  .card.finale { animation: flipIn .6s ease forwards, finalePulse 1.6s ease .6s 1 !important; z-index: 5; }
+  @keyframes finalePulse { 0%,100%{transform:scale(1)} 30%{transform:scale(1.14); box-shadow:0 0 40px var(--glow,gold),0 0 80px var(--glow,gold)} }
+  /* 開傳說/閃卡：全螢幕金色 vignette flash（CP1-13）*/
+  .legend-flash { position: fixed; inset: 0; pointer-events: none; z-index: 200;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(245,158,11,.55) 100%);
+    animation: legendFlashAnim .9s ease-out forwards; }
+  @keyframes legendFlashAnim { 0%{opacity:0} 25%{opacity:1} 100%{opacity:0} }
 
   .card {
     width: var(--card-w); height: var(--card-h); border-radius: 12px;
