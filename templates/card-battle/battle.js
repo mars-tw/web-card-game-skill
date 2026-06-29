@@ -501,10 +501,11 @@
   function renderCard(card) {
     const r = RARITY[card.rarity] || RARITY.common;
     const el = document.createElement("div");
-    el.className = "card spawn" + (card.type === CARD_TYPE.SPELL ? " spell-card" : "") + (card.foil ? " foil" : "");
+    el.className = "card spawn rarity-" + card.rarity + (card.type === CARD_TYPE.SPELL ? " spell-card" : "") + (card.foil ? " foil" : "") + (r.idle ? " legend-idle" : "");
     el.dataset.uid = card.uid;
     el.style.setProperty("--rarity", r.color);
     el.style.setProperty("--glow", r.glow);
+    el.style.setProperty("--glow-size", (r.glowSize || 0) + "px");
 
     const art = card.image
       ? `<img src="${card.image}" alt="${card.name}" onerror="this.replaceWith(document.createTextNode('${card.emoji}'))">`
@@ -556,25 +557,46 @@
       const ar = a.getBoundingClientRect(), tr = t.getBoundingClientRect();
       const dx = (tr.left + tr.width / 2) - (ar.left + ar.width / 2);
       const dy = (tr.top + tr.height / 2) - (ar.top + ar.height / 2);
-      a.style.setProperty("--lx", dx * 0.5 + "px");
-      a.style.setProperty("--ly", dy * 0.5 + "px");
+      // 位移走全程（CP1-12，原 0.5 只走一半沒撞擊感）
+      a.style.setProperty("--lx", dx * 0.85 + "px");
+      a.style.setProperty("--ly", dy * 0.85 + "px");
       a.classList.add("lunge-to");
       setTimeout(() => { a.classList.remove("lunge-to"); a.style.removeProperty("--lx"); a.style.removeProperty("--ly"); }, 360);
-      setTimeout(() => { t.classList.add("hit-shake"); screenShake(); setTimeout(() => t.classList.remove("hit-shake"), 320); }, 150);
+      // 命中：受擊震動 + 閃白 + 火花粒子 + 螢幕震
+      setTimeout(() => {
+        t.classList.add("hit-shake", "hit-flash"); screenShake();
+        spawnSparks(tr.left + tr.width / 2, tr.top + tr.height / 2);
+        setTimeout(() => t.classList.remove("hit-shake", "hit-flash"), 320);
+      }, 150);
     } else {
       a.classList.add("attacking"); setTimeout(() => a.classList.remove("attacking"), 300);
     }
   }
 
+  // 傷害數字分級（CP1-12）：≤2 小白、3~5 中金、≥6 大紅金
   function floatDamage(uidOrId, amount) {
     const el = elFor(uidOrId); if (!el) return;
     const r = el.getBoundingClientRect();
     const d = document.createElement("div");
-    d.className = "dmg-float"; d.textContent = "-" + amount;
+    const tier = amount >= 6 ? "dmg-big" : amount >= 3 ? "dmg-mid" : "dmg-sm";
+    d.className = "dmg-float " + tier; d.textContent = "-" + amount;
     d.style.left = (r.left + r.width / 2) + "px";
     d.style.top = (r.top + 8) + "px";
     document.body.appendChild(d);
-    setTimeout(() => d.remove(), 800);
+    setTimeout(() => d.remove(), 850);
+  }
+  // 命中火花粒子（CP1-12）
+  function spawnSparks(x, y) {
+    for (let i = 0; i < 6; i++) {
+      const s = document.createElement("div");
+      s.className = "hit-spark";
+      const a = (Math.PI * 2 * i) / 6 + Math.random() * 0.5, dist = 20 + Math.random() * 25;
+      s.style.left = x + "px"; s.style.top = y + "px";
+      s.style.setProperty("--sx", Math.cos(a) * dist + "px");
+      s.style.setProperty("--sy", Math.sin(a) * dist + "px");
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 450);
+    }
   }
 
   function flashCard(uid, cls) {

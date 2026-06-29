@@ -11,11 +11,12 @@
  * ========================================================================= */
 
 // 稀有度：權重越大越常抽到；高稀有權重已調降以提高難度。
+// glowSize：稀有度發光強度（普通不發光，越稀有越亮）。idle：是否常駐呼吸光。
 const RARITY = {
-  common:    { label: "普通", stars: 1, weight: 62,  color: "#9aa5b1", glow: "rgba(154,165,177,.5)" },
-  rare:      { label: "稀有", stars: 2, weight: 26,  color: "#3b82f6", glow: "rgba(59,130,246,.6)" },
-  epic:      { label: "史詩", stars: 3, weight: 10,  color: "#a855f7", glow: "rgba(168,85,247,.75)" },
-  legendary: { label: "傳說", stars: 4, weight: 2,   color: "#f59e0b", glow: "rgba(245,158,11,.9)" },
+  common:    { label: "普通", stars: 1, weight: 62,  color: "#9aa5b1", glow: "rgba(154,165,177,.5)", glowSize: 0,  idle: false },
+  rare:      { label: "稀有", stars: 2, weight: 26,  color: "#3b82f6", glow: "rgba(59,130,246,.6)",  glowSize: 14, idle: false },
+  epic:      { label: "史詩", stars: 3, weight: 10,  color: "#a855f7", glow: "rgba(168,85,247,.75)", glowSize: 20, idle: false },
+  legendary: { label: "傳說", stars: 4, weight: 2,   color: "#f59e0b", glow: "rgba(245,158,11,.9)",  glowSize: 28, idle: true },
 };
 
 // 抽卡變成閃卡(foil)的機率（疊在稀有度之上，更稀有）。
