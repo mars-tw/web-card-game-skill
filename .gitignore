@@ -27,3 +27,7 @@ desktop.ini
 # 環境機密（萬一誤放）
 .env
 *.key
+
+# npm（playwright devDependency 用）
+node_modules/
+package-lock.json

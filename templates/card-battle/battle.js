@@ -17,6 +17,7 @@
 
   const MAX_MANA = 10;
   const START_HP = 30;
+  const MAX_FIELD = 7; // 場上隨從上限（雙方皆同；手機版戰場列一行放得下的上限）
 
   // ===== 難度設定 =====
   // playerHp/enemyHp：雙方起始血量；playerDraw/enemyDraw：起手抽牌數
@@ -144,23 +145,35 @@
     side.hand.push(card);
   }
 
-  // ===== 玩家出牌 =====
-  function playFromHand(uid) {
-    if (game.turn !== "player" || game.over) return;
-    game.mulliganUsed = true; // 一旦出牌就不能再重抽
-    const mb = document.getElementById("mulliganBtn"); if (mb) mb.style.display = "none";
-    const idx = game.player.hand.findIndex((c) => c.uid === uid);
-    if (idx === -1) return;
-    const card = game.player.hand[idx];
-    if (card.cost > game.player.mana) { flash("法力不足！"); return; }
-
-    // CP2-8 連擊：本回合出牌數累積，第 3 張起跳 combo 回饋
+  // CP2-8 連擊：只在「真的出了一張牌」時累積，指定失敗/法力不足的無效點擊不算
+  function registerCombo(uid) {
     game.comboCount = (game.comboCount || 0) + 1;
     if (game.comboCount >= 3) {
       const el = elFor(uid);
       const r = el ? el.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0 };
       flashCombo(r.left + r.width / 2, r.top, game.comboCount);
     }
+  }
+  // 一旦真的出牌，就沒收起手重抽權（放在各出牌路徑真正扣費之後，無效點擊不觸發）
+  function burnMulligan() {
+    game.mulliganUsed = true;
+    const mb = document.getElementById("mulliganBtn"); if (mb) mb.style.display = "none";
+  }
+
+  // ===== 玩家出牌 =====
+  function playFromHand(uid) {
+    if (game.turn !== "player" || game.over) return;
+    // 等待指定目標時再點手牌 → 取消指定（點同一張=純取消；點別張=取消後繼續出那張）
+    if (game.pendingSpell) {
+      const wasSame = game.pendingSpell.uid === uid;
+      game.pendingSpell = null;
+      flash("已取消指定。"); render();
+      if (wasSame) return;
+    }
+    const idx = game.player.hand.findIndex((c) => c.uid === uid);
+    if (idx === -1) return;
+    const card = game.player.hand[idx];
+    if (card.cost > game.player.mana) { flash("法力不足！"); return; }
 
     if (card.type === CARD_TYPE.SPELL) {
       const eff = SPELL_EFFECTS[card.effect];
@@ -168,20 +181,23 @@
         const pool = eff.needsTarget === "enemyMinion" ? game.enemy.field
                    : eff.needsTarget === "friendlyMinion" ? game.player.field : [];
         if (pool.length === 0) { flash("沒有可指定的目標。"); return; }
-        game.pendingSpell = { uid, idx, need: eff.needsTarget };
+        game.pendingSpell = { uid, need: eff.needsTarget };
         render();
         flash(eff.needsTarget === "friendlyMinion" ? "選擇一個友方隨從" : "選擇一個敵方隨從");
         return;
       }
       game.player.mana -= card.cost;
       game.player.hand.splice(idx, 1);
+      burnMulligan(); registerCombo(uid);
       if (eff) eff.apply(game);
       render(); checkWin(); return;
     }
 
-    // 隨從上場
+    // 隨從上場（場上有上限，滿了不能出——檢查要在扣費之前）
+    if (game.player.field.length >= MAX_FIELD) { flash("場上隨從已滿（最多 " + MAX_FIELD + " 隻）。"); return; }
     game.player.mana -= card.cost;
     game.player.hand.splice(idx, 1);
+    burnMulligan(); registerCombo(uid);
     const hasCharge = (card.keywords || []).includes("charge");
     card.canAttack = hasCharge;       // 衝鋒：當回合可攻擊
     card.justPlayed = true;
@@ -238,10 +254,15 @@
   }
 
   function resolvePendingSpell(target) {
-    const { idx } = game.pendingSpell;
+    // 用 uid 找卡，不能用暫存的 index——等待指定期間手牌若有變動，index 會指到錯的卡
+    const { uid } = game.pendingSpell;
+    const idx = game.player.hand.findIndex((c) => c.uid === uid);
+    if (idx === -1) { game.pendingSpell = null; render(); return; }
     const card = game.player.hand[idx];
+    if (card.cost > game.player.mana) { game.pendingSpell = null; flash("法力不足！"); render(); return; }
     game.player.mana -= card.cost;
     game.player.hand.splice(idx, 1);
+    registerCombo(card.uid); // 連擊數在真的出牌時才累積
     flashCard(card.uid, "");
     SPELL_EFFECTS[card.effect].apply(game, target);
     game.pendingSpell = null;
@@ -328,25 +349,27 @@
   }
 
   function summon(side, card, animate) {
+    if (side.field.length >= MAX_FIELD) return false; // 場滿：亡語/token 召喚直接失效（同爐石規則）
     if (card.maxHealth == null) card.maxHealth = card.health;
     if (!card.uid) card.uid = "c" + Math.random().toString(36).slice(2, 9);
     side.field.push(card);
+    return true;
   }
 
-  // 清掉死亡隨從，並觸發亡語
+  // 清掉死亡隨從，並觸發亡語。
+  // 順序刻意是「先移除全部死者、再觸發亡語」：亡語召喚的 token 才不會被垂死隨從
+  // 佔住的場位擋掉（summon 有 MAX_FIELD 上限），也不依賴迭代中改動陣列的隱性行為。
   function cleanupField(side) {
-    const survivors = [];
-    for (const m of side.field) {
-      if (m.health <= 0) {
-        markDying(m.uid);
-        if ((m.keywords || []).includes("deathrattle") && m.trigger && ABILITY_EFFECTS[m.trigger]) {
-          // 鳳凰重生：先移除自己再重生 token
-          flashKeyword2(m.uid, "亡語");
-          ABILITY_EFFECTS[m.trigger](game, side, null, m);
-        }
-      } else survivors.push(m);
+    const dying = side.field.filter((m) => m.health <= 0);
+    if (dying.length === 0) return;
+    side.field = side.field.filter((m) => m.health > 0);
+    for (const m of dying) {
+      markDying(m.uid);
+      if ((m.keywords || []).includes("deathrattle") && m.trigger && ABILITY_EFFECTS[m.trigger]) {
+        flashKeyword2(m.uid, "亡語");
+        ABILITY_EFFECTS[m.trigger](game, side, null, m);
+      }
     }
-    side.field = survivors;
   }
 
   // 回復：回合結束時，帶 regenerate 的隨從補滿生命
@@ -363,11 +386,13 @@
   // ===== AI 回合 =====
   function endTurn() {
     if (game.turn !== "player" || game.over) return;
+    burnMulligan(); // 起手重抽只限第一回合，結束回合即失效
     game.selected = null; game.pendingSpell = null; game.comboCount = 0; // CP2-8 combo 換回合清零
     regenerateField(game.player);     // 玩家回合結束：玩家隨從回復
     game.turn = "enemy";
     render();
-    setTimeout(aiTurn, 700);
+    const gRef = game;
+    setTimeout(() => { if (game === gRef) aiTurn(); }, 700); // 幽靈計時器防護
   }
 
   function aiTurn() {
@@ -376,6 +401,9 @@
     ai.manaMax = Math.min(MAX_MANA, ai.manaMax + 1);
     ai.mana = ai.manaMax;
     drawCard(ai);
+    // 回合開始：重置 AI 場上隨從攻擊權（跟 endAiTurn 重置玩家場面對稱）。
+    // 這行一定要在出牌之前——本回合新召喚的非衝鋒隨從會在下面被設回 false（召喚失調）。
+    ai.field.forEach((m) => { m.canAttack = true; m._windUsed = false; });
 
     // 出牌（貪心：先出貴的隨從；法術看場面）
     let acted = true;
@@ -385,6 +413,7 @@
       for (const card of affordable) {
         const idx = ai.hand.indexOf(card);
         if (card.type === CARD_TYPE.MINION) {
+          if (ai.field.length >= MAX_FIELD) continue; // 場滿：跳過隨從，讓 AI 還有機會出法術
           ai.mana -= card.cost; ai.hand.splice(idx, 1);
           card.canAttack = (card.keywords || []).includes("charge");
           if ((card.keywords || []).includes("divineshield")) card.shield = true;
@@ -411,9 +440,9 @@
     render();
 
     // 攻擊（考慮玩家嘲諷）
+    const gRef = game; // 幽靈計時器防護：newGame() 後舊局的排程回呼直接失效
     setTimeout(() => {
-      const attackers = ai.field.filter((m) => m.canAttack !== false);
-      ai.field.forEach((m) => { if (m.canAttack === undefined) m.canAttack = true; });
+      if (game !== gRef || game.over) return;
       const queue = ai.field.filter((m) => m.canAttack);
       // CP2-5 致命斬殺檢查：玩家無嘲諷且 AI 總攻擊 ≥ 玩家血量 → 全壓臉直接結束遊戲
       const playerHasTaunt = game.player.field.some((m) => (m.keywords || []).includes("taunt"));
@@ -421,6 +450,7 @@
       const lethal = !playerHasTaunt && totalAtk >= game.player.hp && game.player.hp > 0 && (game.aiSmart || 0) >= 1;
       let i = 0;
       const step = () => {
+        if (game !== gRef) return; // 舊局的攻擊鏈在 newGame() 後直接中止
         if (game.over || i >= queue.length) { endAiTurn(); return; }
         const atk = queue[i++];
         if (!ai.field.includes(atk) || !atk.canAttack) { step(); return; }
@@ -453,6 +483,9 @@
             log(`對手的 ${atk.name} 攻擊你的英雄，造成 ${atk.attack} 點傷害！`, "ai");
           }
         }
+        // 連擊（windfury）：第一擊後 canAttack 仍為 true，把它排回佇列吃第二擊
+        // （第二擊結束後 resolveAttack/打臉分支會把 canAttack 設回 false，不會無限迴圈）
+        if (ai.field.includes(atk) && atk.canAttack && atk._windUsed) queue.push(atk);
         render(); checkWin();
         setTimeout(step, 620);
       };
@@ -664,10 +697,16 @@
     board.classList.add("shake-screen"); setTimeout(() => board.classList.remove("shake-screen"), 260);
   }
 
-  // 戰績 + 金幣經濟（CP0-2）：閉合「打贏→賺金→開包→變強」迴圈
+  // 戰績 + 金幣經濟（CP0-2）：閉合「打贏→賺金→開包→變強」迴圈。
+  // 讀檔一律用預設 shape 補齊欄位——battle.js 與 pack.js 都會寫同一個 key，
+  // 缺欄位直接運算會把金幣打成 NaN、bestStreak 變 undefined（存檔遷移的最小版）。
+  const STATS_DEFAULT = { wins: 0, losses: 0, streak: 0, bestStreak: 0, coins: 0, packsOpened: 0 };
   function loadStats() {
-    try { return JSON.parse(localStorage.getItem("card_stats_v1")) || { wins: 0, losses: 0, streak: 0, bestStreak: 0, coins: 0 }; }
-    catch { return { wins: 0, losses: 0, streak: 0, bestStreak: 0, coins: 0 }; }
+    let raw = null;
+    try { raw = JSON.parse(localStorage.getItem("card_stats_v1")); } catch {}
+    const s = Object.assign({}, STATS_DEFAULT, raw || {});
+    for (const k of Object.keys(STATS_DEFAULT)) if (typeof s[k] !== "number" || isNaN(s[k])) s[k] = STATS_DEFAULT[k];
+    return s;
   }
   function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(s)); } catch {} }
 
@@ -678,15 +717,16 @@
 
     // 更新戰績與金幣
     const s = loadStats();
+    let rewardLine;
     if (win) {
       s.wins++; s.streak++; if (s.streak > s.bestStreak) s.bestStreak = s.streak;
       const coinReward = 50 + s.streak * 10; // 連勝越多賺越多
       s.coins += coinReward;
-      var rewardLine = `💰 +${coinReward} 金幣（共 ${s.coins}）`;
+      rewardLine = `💰 +${coinReward} 金幣（共 ${s.coins}）`;
     } else {
       s.losses++; s.streak = 0;
       s.coins += 20; // 落敗安慰金
-      var rewardLine = `💰 +20 金幣（共 ${s.coins}）`;
+      rewardLine = `💰 +20 金幣（共 ${s.coins}）`;
     }
     saveStats(s);
     // 顯示戰績
@@ -720,6 +760,9 @@
   // ===== 綁定 & 啟動 =====
   document.getElementById("endTurnBtn").onclick = endTurn;
   document.getElementById("restartBtn").onclick = newGame;
+  // 對戰中重開（牌庫會重新讀最新收藏——開完新卡包回來按這顆就能用到新卡）
+  const ngBtn = document.getElementById("newGameBtn");
+  if (ngBtn) ngBtn.onclick = newGame;
   newGame();
 
   // 提供給入口頁主題切換用（重繪卡面）
@@ -755,6 +798,19 @@
     // 觸發玩家回合結束的回復（不進 AI 回合）
     regenTest() { regenerateField(game.player); render(); },
     difficulty: () => ({ key: game.difficulty, aiSmart: game.aiSmart, playerHp: game.player.hp, enemyHp: game.enemy.hp }),
+    // ===== E2E 掛鉤（scripts/test-battle-e2e.js 用）=====
+    endTurn: () => endTurn(),
+    playFromHand: (uid) => playFromHand(uid),
+    stats: () => loadStats(),
+    // 直接塞一張指定卡進手牌（回傳 uid），測「法力不足點擊」「場滿」等指定劇本
+    giveCard(cardId) {
+      const c = Object.assign({}, getCardById(cardId));
+      c.uid = "e2e" + Math.random().toString(36).slice(2, 8);
+      c.maxHealth = c.health;
+      game.player.hand.push(c); render();
+      return c.uid;
+    },
+    maxField: MAX_FIELD,
   };
   function prepMinion(c) { c.uid = "t" + Math.random().toString(36).slice(2, 8); c.maxHealth = c.health; if ((c.keywords || []).includes("divineshield")) c.shield = true; c.canAttack = true; return c; }
 })();

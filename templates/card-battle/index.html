@@ -89,7 +89,8 @@
   .hp-badge { background: var(--hp); } .mana-badge { background: var(--mana); }
 
   .battlefield {
-    min-height: var(--card-h); display: flex; gap: 8px; justify-content: center;
+    /* flex-wrap：手機窄版面隨從多時換行，不然固定寬卡片會同時被左右裁切、點不到 */
+    min-height: var(--card-h); display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
     align-items: center; padding: 6px; border-radius: 12px;
     /* 戰場棋盤質感：深色半透明 + 細格線紋理 + 內陰影，像放在真實戰場上 */
     background:
@@ -321,12 +322,13 @@
     <div class="controls">
       <label class="diff-pick">難度
         <select id="difficultySel">
-          <option value="easy">簡單</option>
-          <option value="normal" selected>普通</option>
+          <option value="easy" selected>簡單</option>
+          <option value="normal">普通</option>
           <option value="hard">困難</option>
         </select>
       </label>
       <button class="mulligan-btn" id="mulliganBtn" style="display:none">🔄 重抽起手牌</button>
+      <button class="mulligan-btn" id="newGameBtn" title="重開一局（會帶入最新收藏的牌組）">🔁 重新開始</button>
       <button class="end-turn" id="endTurnBtn">結束回合 ▶</button>
     </div>
   </div>

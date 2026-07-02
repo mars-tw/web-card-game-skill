@@ -24,9 +24,15 @@
   }
 
   const PACK_COST = 100; // 開包成本（用對戰賺的金幣，CP0-2 經濟閉環）
+  // 讀檔預設 shape 必須跟 battle.js 的 STATS_DEFAULT 一致並補齊欄位——
+  // 兩邊寫同一個 localStorage key，shape 不一致會把金幣打成 NaN、連勝紀錄變 undefined
+  const STATS_DEFAULT = { wins: 0, losses: 0, streak: 0, bestStreak: 0, coins: 0, packsOpened: 0 };
   function loadStats() {
-    try { return JSON.parse(localStorage.getItem("card_stats_v1")) || { wins: 0, losses: 0, coins: 0 }; }
-    catch { return { wins: 0, losses: 0, coins: 0 }; }
+    let raw = null;
+    try { raw = JSON.parse(localStorage.getItem("card_stats_v1")); } catch {}
+    const s = Object.assign({}, STATS_DEFAULT, raw || {});
+    for (const k of Object.keys(STATS_DEFAULT)) if (typeof s[k] !== "number" || isNaN(s[k])) s[k] = STATS_DEFAULT[k];
+    return s;
   }
   function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(s)); } catch {} }
 
@@ -177,14 +183,20 @@
       });
     });
 
-    // 綁分解按鈕
+    // 綁分解按鈕（兩段式確認：第一下變「確定？」，再點才真的分解，避免誤觸一次拆光）
     grid.querySelectorAll(".dismantle-btn").forEach((btn) => {
       btn.onclick = (e) => {
         e.stopPropagation();
+        if (!btn.dataset.confirm) {
+          btn.dataset.confirm = "1";
+          btn.textContent = "確定分解？";
+          setTimeout(() => { if (btn.isConnected) { delete btn.dataset.confirm; btn.textContent = `分解 +${+btn.dataset.dupes * +btn.dataset.val}💰`; } }, 2500);
+          return;
+        }
         const key = btn.dataset.key, val = +btn.dataset.val, dupes = +btn.dataset.dupes;
         collection[key] = 1; // 保留 1 張
         saveCollection();
-        const s = loadStats(); s.coins = (s.coins || 0) + dupes * val; saveStats(s);
+        const s = loadStats(); s.coins = s.coins + dupes * val; saveStats(s);
         updateCoinDisplay();
         renderCollection();
       };
@@ -241,4 +253,10 @@
 
   renderCollection();
   updateCoinDisplay();
+
+  // 對戰 iframe 打完仗寫入金幣時，這頁（另一個 window）會收到 storage 事件——即時刷新餘額，
+  // 不然兩個 iframe 常駐不重載，切回來看到的是舊值
+  window.addEventListener("storage", (e) => {
+    if (e.key === "card_stats_v1") updateCoinDisplay();
+  });
 })();

@@ -1,0 +1,27 @@
+{
+  "name": "web-card-game-skill",
+  "version": "0.2.0",
+  "description": "純原生網頁卡牌遊戲 — Claude Code Skill。零依賴 HTML/CSS/JS，收藏/牌組/對戰 AI/開卡包，localStorage 存檔。",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node scripts/test-cards.js",
+    "test:e2e": "node scripts/test-battle-e2e.js",
+    "start": "python -m http.server 8000"
+  },
+  "keywords": [
+    "card-game",
+    "tcg",
+    "claude-code-skill",
+    "vanilla-js",
+    "zero-dependency"
+  ],
+  "author": "阿軒 (@mars-tw)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mars-tw/web-card-game-skill"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.1"
+  }
+}

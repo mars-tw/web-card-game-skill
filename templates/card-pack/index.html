@@ -132,9 +132,10 @@
   .slot img { width:34px; height:34px; object-fit:cover; border-radius:4px; }
   .slot .count { position:absolute; bottom:2px; right:4px; font-size:10px; color:var(--accent); font-weight:800; }
   .slot .nm { font-size:8px; color:var(--muted); }
-  /* 重複卡分解按鈕（CP2-7）*/
-  .slot .dismantle-btn { position:absolute; bottom:-7px; left:50%; transform:translateX(-50%);
-    font-size:8px; font-weight:700; padding:2px 5px; border-radius:8px; white-space:nowrap;
+  /* 重複卡分解按鈕（CP2-7）——bottom:0 必須留在格子內，slot 有 overflow:hidden，
+     負值會被裁掉一半，觸控裝置上只剩不到 10px 可點 */
+  .slot .dismantle-btn { position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    font-size:9px; font-weight:700; padding:4px 6px; min-height:20px; border-radius:8px 8px 0 0; white-space:nowrap;
     background:#facc15; color:#3a2a06; border:none; cursor:pointer; opacity:0; transition:opacity .15s; z-index:4; }
   .slot:hover .dismantle-btn { opacity:1; }
   @media (hover:none) { .slot .dismantle-btn { opacity:1; } } /* 觸控裝置常駐顯示 */
