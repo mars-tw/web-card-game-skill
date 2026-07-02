@@ -9,6 +9,7 @@
  *   5. 場上隨從上限 MAX_FIELD；亡語 token 在死者移除後才召喚（滿場邊界正確）
  *   6. 桌機 1280×900 + 手機 390×844 都跑；390px 無水平溢出；全程無 console error
  *   7. Stage 3 牌組：合法存檔牌組進對戰、非法牌組 fallback、卡包頁可編輯並保存牌組
+ *   8. Stage 4 每日任務：完成任務、領取、金幣增加
  * 執行：node scripts/test-battle-e2e.js   （需 devDependency: playwright）
  * ========================================================================= */
 const http = require("http");
@@ -220,6 +221,23 @@ async function run() {
     assert(statsSafe.allNumbers === true, "壞存檔欄位自動補齊，全部是數字");
     assert(statsSafe.wins === 3 && statsSafe.coins === 0, `保留舊值、補新欄位（wins=${statsSafe.wins} coins=${statsSafe.coins}）`);
 
+    // Stage 4：每日任務可完成、領取，且金幣只透過領取增加
+    const questClaim = await page.evaluate(() => {
+      localStorage.setItem("card_stats_v1", JSON.stringify({ version: 2, wins: 0, losses: 0, streak: 0, bestStreak: 0, coins: 0, packsOpened: 0 }));
+      const T = window.__test;
+      const q = T.quests().quests[0];
+      T.progressQuest({ type: q.type, amount: q.target });
+      const btn = document.querySelector(`.quest-claim[data-quest-id="${q.id}"]`);
+      const enabled = !!btn && !btn.disabled;
+      const before = T.stats().coins;
+      if (btn) btn.click();
+      const after = T.stats().coins;
+      const claimed = T.quests().quests.find((item) => item.id === q.id);
+      return { enabled, before, after, reward: q.reward, claimed: claimed && claimed.claimed };
+    });
+    assert(questClaim.enabled === true, "每日任務完成後領取按鈕可用");
+    assert(questClaim.before === 0 && questClaim.after === questClaim.reward && questClaim.claimed === true, `領取每日任務會增加金幣並標記已領（+${questClaim.reward}）`);
+
     // 6. 場上上限：7 隻滿場時出隨從被擋（不扣費）；亡語在死者移除後召喚
     const cap = await page.evaluate(() => {
       const T = window.__test; const g = T.game();
@@ -283,7 +301,7 @@ async function run() {
     server.close();
   }
   if (failed > 0) { console.error("\n❌ " + failed + " 項失敗"); process.exit(1); }
-  console.log("\n✅ 卡牌對戰 Stage 3 E2E 全部通過");
+  console.log("\n✅ 卡牌對戰 Stage 4 E2E 全部通過");
 }
 
 run().catch((err) => { console.error(err); process.exit(1); });

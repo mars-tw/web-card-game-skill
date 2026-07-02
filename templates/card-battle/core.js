@@ -20,6 +20,7 @@
   const STATS_VERSION = 2;
   const DECK_VERSION = 1;
   const DECK_SIZE = 20;
+  const QUEST_VERSION = 1;
   const CARD_TYPE = { MINION: "minion", SPELL: "spell" };
   const STATS_DEFAULT = Object.freeze({
     version: STATS_VERSION,
@@ -34,6 +35,16 @@
     version: DECK_VERSION,
     cards: Object.freeze([]),
   });
+  const QUEST_POOL = Object.freeze([
+    Object.freeze({ id: "win_1", type: "win", title: "贏得 1 場對戰", target: 1, reward: 30 }),
+    Object.freeze({ id: "play_spell_5", type: "playSpell", title: "打出 5 張法術", target: 5, reward: 25 }),
+    Object.freeze({ id: "summon_minion_8", type: "summonMinion", title: "召喚 8 隻隨從", target: 8, reward: 25 }),
+    Object.freeze({ id: "hero_damage_20", type: "heroDamage", title: "對敵方英雄造成 20 點傷害", target: 20, reward: 30 }),
+    Object.freeze({ id: "open_pack_1", type: "openPack", title: "開啟 1 包卡包", target: 1, reward: 20 }),
+    Object.freeze({ id: "deck_win_1", type: "deckWin", title: "使用自訂牌組贏得 1 場", target: 1, reward: 40 }),
+    Object.freeze({ id: "win_2", type: "win", title: "贏得 2 場對戰", target: 2, reward: 40 }),
+    Object.freeze({ id: "summon_minion_12", type: "summonMinion", title: "召喚 12 隻隨從", target: 12, reward: 35 }),
+  ]);
 
   const SPELL_EFFECTS = Object.freeze({
     damage3: Object.freeze({ needsTarget: "enemyMinion" }),
@@ -76,6 +87,106 @@
       : [];
     next.version = DECK_VERSION;
     return next;
+  }
+
+  function questDateKey(dateSeed) {
+    return String(dateSeed || "");
+  }
+
+  function hashSeed(seed) {
+    const text = questDateKey(seed);
+    let hash = 2166136261;
+    for (let i = 0; i < text.length; i++) {
+      hash ^= text.charCodeAt(i);
+      hash = Math.imul(hash, 16777619) >>> 0;
+    }
+    return hash >>> 0;
+  }
+
+  function cloneQuest(def, existing) {
+    const progress = existing && typeof existing.progress === "number" && Number.isFinite(existing.progress)
+      ? Math.max(0, Math.min(def.target, existing.progress))
+      : 0;
+    return Object.assign({}, def, {
+      progress,
+      claimed: !!(existing && existing.claimed === true),
+    });
+  }
+
+  function getDailyQuests(dateSeed) {
+    const pool = QUEST_POOL.map((quest) => cloneQuest(quest));
+    let hash = hashSeed(dateSeed);
+    for (let i = pool.length - 1; i > 0; i--) {
+      hash = (Math.imul(hash, 1664525) + 1013904223) >>> 0;
+      const j = hash % (i + 1);
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    return pool.slice(0, 3);
+  }
+
+  function cloneQuestState(questState, dateSeed) {
+    const seed = questDateKey(dateSeed == null ? questState && questState.dateSeed : dateSeed);
+    const quests = Array.isArray(questState && questState.quests)
+      ? questState.quests.map((quest) => {
+          const def = QUEST_POOL.find((item) => item.id === quest.id) || quest;
+          return cloneQuest(Object.assign({}, def, {
+            id: String(def.id || quest.id || ""),
+            type: String(def.type || quest.type || ""),
+            title: String(def.title || quest.title || ""),
+            target: Math.max(1, Number(def.target || quest.target || 1)),
+            reward: Math.max(0, Number(def.reward || quest.reward || 0)),
+          }), quest);
+        }).filter((quest) => quest.id && quest.type)
+      : [];
+    return { version: QUEST_VERSION, dateSeed: seed, quests };
+  }
+
+  function migrateQuests(raw, dateSeed) {
+    let source = raw;
+    if (typeof source === "string") {
+      try { source = JSON.parse(source); }
+      catch { source = null; }
+    }
+    if (!source || typeof source !== "object" || Array.isArray(source)) source = {};
+    const seed = questDateKey(dateSeed);
+    const oldSeed = questDateKey(source.dateSeed);
+    const existingById = Object.create(null);
+    if (oldSeed === seed && Array.isArray(source.quests)) {
+      for (const quest of source.quests) {
+        if (quest && typeof quest.id === "string") existingById[quest.id] = quest;
+      }
+    }
+    const quests = getDailyQuests(seed).map((quest) => cloneQuest(quest, existingById[quest.id]));
+    return { version: QUEST_VERSION, dateSeed: seed, quests };
+  }
+
+  function questEventMatches(questType, eventType) {
+    if (questType === eventType) return true;
+    if (questType === "playSpell" && eventType === "spellCast") return true;
+    if (questType === "summonMinion" && eventType === "minionSummoned") return true;
+    return false;
+  }
+
+  function applyQuestProgress(questState, event) {
+    const next = cloneQuestState(questState);
+    const eventType = event && (event.questType || event.type);
+    const amountRaw = event && event.amount == null ? 1 : Number(event && event.amount);
+    const amount = Number.isFinite(amountRaw) && amountRaw > 0 ? amountRaw : 1;
+    for (const quest of next.quests) {
+      if (quest.claimed || !questEventMatches(quest.type, eventType)) continue;
+      quest.progress = Math.min(quest.target, quest.progress + amount);
+    }
+    return next;
+  }
+
+  function claimQuest(questState, questId) {
+    const next = cloneQuestState(questState);
+    const quest = next.quests.find((item) => item.id === questId);
+    if (!quest) return { ok: false, reason: "notFound", reward: 0, state: next };
+    if (quest.claimed) return { ok: false, reason: "alreadyClaimed", reward: 0, state: next, quest };
+    if (quest.progress < quest.target) return { ok: false, reason: "incomplete", reward: 0, state: next, quest };
+    quest.claimed = true;
+    return { ok: true, reason: null, reward: quest.reward, state: next, quest };
   }
 
   function cloneCard(card) {
@@ -264,11 +375,11 @@
   }
 
   function applyDamageToMinion(minion, amount, source, events) {
-    if (!minion || amount <= 0) return;
+    if (!minion || amount <= 0) return 0;
     if (minion.shield) {
       minion.shield = false;
       if (events) events.push({ type: "shieldBreak", uid: minion.uid });
-      return;
+      return 0;
     }
     minion.health -= amount;
     if (events) events.push({ type: "damage", uid: minion.uid, amount });
@@ -276,6 +387,13 @@
       minion.health = 0;
       if (events) events.push({ type: "poison", uid: minion.uid });
     }
+    return amount;
+  }
+
+  function applyLifesteal(source, sourceSide, amount, events) {
+    if (!source || !sourceSide || amount <= 0 || !hasKeyword(source, "lifesteal")) return;
+    healHero(sourceSide, amount, events);
+    if (events) events.push({ type: "lifesteal", side: sourceSide.side, uid: source.uid, amount });
   }
 
   function applyAbility(state, side, trigger, target, dyingCard, rng, events) {
@@ -285,7 +403,8 @@
       healHero(side, 2, events);
     } else if (trigger === "damageAny1") {
       if (target) {
-        applyDamageToMinion(target, 1, null, events);
+        const dealt = applyDamageToMinion(target, 1, null, events);
+        applyLifesteal(dyingCard, side, dealt, events);
         cleanupBoth(state, rng, events);
       }
     } else if (trigger === "aoeEnemy2") {
@@ -430,10 +549,13 @@
     commitCardFromHand(side, index);
     if (action.burnMulligan !== false) burnMulligan(state, events);
     if (action.trackCombo !== false) registerCombo(state, card.uid, events);
-    card.canAttack = hasKeyword(card, "charge");
+    card.canAttack = hasKeyword(card, "charge") || hasKeyword(card, "rush");
     card.justPlayed = true;
     if (hasKeyword(card, "divineshield")) card.shield = true;
     summonCard(side, card, rng, events, "play");
+    if (hasKeyword(card, "rush") && !hasKeyword(card, "charge")) {
+      events.push({ type: "rushReady", side: side.side, uid: card.uid });
+    }
 
     if (hasKeyword(card, "battlecry") && card.trigger) {
       const target = pickBattlecryTarget(state, sideKey, card.trigger);
@@ -508,8 +630,12 @@
     if (!action.ignoreTaunt && !isLegalTarget(defenderSide, defender)) return fail("illegalTarget", events, { attacker, defender });
 
     events.push({ type: "attack", attackerSide: attackerSide.side, attackerUid: attacker.uid, defenderUid: defender.uid });
-    applyDamageToMinion(defender, attacker.attack, attacker, events);
-    if (defender.attack > 0) applyDamageToMinion(attacker, defender.attack, defender, events);
+    const attackDamage = applyDamageToMinion(defender, attacker.attack, attacker, events);
+    applyLifesteal(attacker, attackerSide, attackDamage, events);
+    if (defender.attack > 0) {
+      const counterDamage = applyDamageToMinion(attacker, defender.attack, defender, events);
+      applyLifesteal(defender, defenderSide, counterDamage, events);
+    }
     spendAttack(attacker, events);
     cleanupBoth(state, rng, events);
     return ok(events, { attacker, defender });
@@ -524,9 +650,13 @@
     const attacker = attackerSide.field.find((m) => m.uid === action.attackerUid) || null;
     if (!attacker) return fail("targetNotFound", events, { attacker });
     if (!action.ignoreCanAttack && !attacker.canAttack) return fail("cannotAttack", events, { attacker });
+    if (!action.ignoreRush && attacker.justPlayed && hasKeyword(attacker, "rush") && !hasKeyword(attacker, "charge")) {
+      return fail("rushBlocksHero", events, { attacker });
+    }
     if (!action.ignoreTaunt && hasTaunt(defenderSide.field)) return fail("tauntBlocksHero", events, { attacker });
     defenderSide.hp -= attacker.attack;
     events.push({ type: "heroDamage", attackerSide: attackerSide.side, defenderSide: defenderSide.side, attackerUid: attacker.uid, amount: attacker.attack });
+    applyLifesteal(attacker, attackerSide, attacker.attack, events);
     spendAttack(attacker, events);
     return ok(events, { attacker });
   }
@@ -555,6 +685,7 @@
   function resetAttack(side, events) {
     for (const minion of side.field) {
       minion.canAttack = true;
+      minion.justPlayed = false;
       minion._windUsed = false;
       if (events) events.push({ type: "attackReady", side: side.side, uid: minion.uid });
     }
@@ -665,10 +796,16 @@
     DECK_VERSION,
     DECK_SIZE,
     DECK_DEFAULT,
+    QUEST_VERSION,
+    QUEST_POOL,
     CARD_TYPE,
     SPELL_EFFECTS,
     migrateStats,
     migrateDeck,
+    migrateQuests,
+    getDailyQuests,
+    applyQuestProgress,
+    claimQuest,
     validateDeck,
     buildBattleDeck,
     hasTaunt,

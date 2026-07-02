@@ -7,7 +7,7 @@
 一個 [Claude Code](https://claude.com/claude-code) **Skill**，幾分鐘內生出**純原生（零依賴）**的網頁卡牌遊戲。
 只用 HTML + CSS + 原生 JavaScript——零框架、零 npm、零建置，起一個本機 server 即可玩。
 
-內含完整可玩的**戰鬥卡牌對戰**、**開卡包**與**正式牌組編輯器**模組，並用統一設定檔串接 **Grok CLI** 或 **OpenAI GPT API** 生成卡牌美術。
+內含完整可玩的**戰鬥卡牌對戰**、**開卡包**、**正式牌組編輯器**與**每日任務**模組，並用統一設定檔串接 **Grok CLI** 或 **OpenAI GPT API** 生成卡牌美術。
 
 > 作者：**阿軒** ([@mars-tw](https://github.com/mars-tw)) · 授權：MIT
 
@@ -21,10 +21,11 @@
 
 ## ✨ 功能特色
 
-- **關鍵字技能系統**（益智、需思考）：嘲諷、衝鋒、戰吼、亡語、聖盾，出牌順序與搭配是關鍵
+- **關鍵字技能系統**（益智、需思考）：嘲諷、衝鋒、突襲、吸血、戰吼、亡語、聖盾，出牌順序與搭配是關鍵
 - **戰鬥卡牌對戰**：手牌、法力曲線、隨從上場、攻擊/血量、簡易 AI 對手、勝負判定
-- **開卡包**：24 張卡池、稀有度權重、**星級閃卡(foil)**、重複機制、localStorage 收藏冊
+- **開卡包**：40 張卡池、稀有度權重、**星級閃卡(foil)**、重複機制、localStorage 收藏冊
 - **牌組編輯器**：收藏清單組成 20 張正式牌組，同卡最多 2 張、傳說最多 1 張，合法牌組可帶入對戰
+- **每日任務**：每日輪替 3 個任務，完成後領取 20-40 金幣，跨日自動重置
 - **強化動畫**：攻擊撞擊+螢幕震動、傷害跳字、召喚飛入、死亡碎裂、勝負彩帶
 - **主題切換**：暗黑 / 奇幻 / 科幻 / 森林 四套主題，即時切換、跨頁同步
 - **可擴充美術**：統一設定檔 `art-config.json` + 雙後端（Grok CLI / GPT API）+ 可手動
@@ -49,8 +50,8 @@ python -m http.server 8000
 | `SKILL.md` | Skill 主檔（Claude 載入此檔決定如何使用） |
 | `art-config.json` | ★ 美術生成統一設定（卡片清單、提示詞、風格樣板） |
 | `templates/index.html` | 單一入口：分頁 + 主題選擇器 |
-| `templates/card-battle/cards.js` | ★ 卡牌資料層（兩模組共用，24 張，含技能） |
-| `templates/card-battle/core.js` | 純規則層：出牌、攻擊、回合推進、亡語清場、stats/牌組遷移、牌組驗證與洗牌 |
+| `templates/card-battle/cards.js` | ★ 卡牌資料層（兩模組共用，40 張，含技能） |
+| `templates/card-battle/core.js` | 純規則層：出牌、攻擊、回合推進、亡語清場、stats/牌組/每日任務遷移、牌組驗證與洗牌 |
 | `templates/card-battle/battle.js` | 對戰 UI/動畫/AI 殼層，規則委派給 `core.js` |
 | `templates/card-pack/pack.js` | 抽卡機率、重複機制、開包動畫、牌組編輯器 |
 | `references/data-model.md` | 卡牌資料結構、加卡、加技能、調平衡 |
@@ -85,20 +86,22 @@ cd skill
 
 ## ✅ 已驗證（Playwright + Node 實測）
 
-- 關鍵字技能：嘲諷強制、衝鋒即攻、聖盾免疫一次、亡語召喚、戰吼觸發 ✅
+- 關鍵字技能：嘲諷強制、衝鋒即攻、突襲限打隨從、吸血實際回血、聖盾免疫一次、亡語召喚、戰吼觸發 ✅
 - 戰鬥流程：出牌、AI 回合、攻擊結算、勝負判定 ✅
 - 開卡包：抽 5 張、保底、重複機制、星級閃卡收藏 ✅
 - 牌組編輯器：20 張規則、收藏擁有數、閃卡與普通合計、合法牌組帶入對戰 ✅
+- 每日任務：同日確定輪替、跨日重置、進度累積、一次性領獎 ✅
 - 主題切換：4 套主題跨 iframe 同步 ✅
-- 抽卡機率分布符合權重（Node 測 20000 抽）✅
+- 抽卡機率分布符合權重（Node 測 30000 抽）✅
 - 美術腳本：雙後端、`-Only`/`-Theme`/`-DryRun` 旗標 ✅
 
 ## 🛠️ 技術說明
 
 - **零依賴**：不引入任何 CDN / npm 套件，維持單檔可分享。
 - **單一事實來源**：`cards.js` 的 `CARD_POOL` 同時驅動對戰與開卡包。
-- **純規則層**：`core.js` 集中處理出牌合法性、攻擊/指定目標、回合推進、清場亡語、stats/牌組遷移、牌組驗證與對戰牌庫洗牌；函式採 `(state, action, rng)` 風格，不碰 DOM 或全域亂數，瀏覽器 UI 與 Node 單元測試共用同一套規則。
+- **純規則層**：`core.js` 集中處理出牌合法性、攻擊/指定目標、回合推進、清場亡語、stats/牌組/任務遷移、牌組驗證、每日任務與對戰牌庫洗牌；函式採 `(state, action, rng)` 風格，不碰 DOM 或全域亂數，瀏覽器 UI 與 Node 單元測試共用同一套規則。
 - **牌組規則**：牌組固定 20 張；同一卡 id 最多 2 張、傳說最多 1 張；普通與閃卡收藏數合計，但對戰牌組不區分閃卡版本。合法 `card_deck_v1` 會用 `buildBattleDeck()` 帶入對戰，壞存檔或不合法牌組會自動 fallback。
+- **每日任務**：存檔 key 為 `card_quests_v1`，每日由 `dateSeed` 輪替 3 個任務；任務池 8 種，獎勵 20-40 金幣，跨日透過 `migrateQuests(raw, dateSeed)` 重置。核心 API：`getDailyQuests(dateSeed)`、`applyQuestProgress(questState, event)`、`claimQuest(questState, questId)`、`migrateQuests(raw, dateSeed)`。
 - **美術接點零侵入**：卡片 `image` 欄位填路徑即換圖，圖壞自動退回 emoji。
 
 ## 🤝 貢獻

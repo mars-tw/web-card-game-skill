@@ -15,9 +15,10 @@ function assert(cond, msg) {
 }
 
 console.log("== 結構檢查 ==");
-assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 20, `卡池至少 20 張（實際 ${CARD_POOL.length}）`);
+assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 40, `卡池至少 40 張（實際 ${CARD_POOL.length}）`);
 assert(Object.keys(RARITY).length === 4, "稀有度有 4 級");
 assert(Object.keys(KEYWORDS).length >= 5, "關鍵字技能至少 5 種");
+assert(KEYWORDS.lifesteal?.label === "吸血" && KEYWORDS.rush?.label === "突襲", "新關鍵字吸血與突襲有繁中 label");
 
 console.log("== 欄位完整性 ==");
 let badFields = 0;
@@ -41,6 +42,14 @@ for (const c of CARD_POOL) {
   if ((kw.includes("battlecry") || kw.includes("deathrattle")) && !c.trigger) missingTrigger++;
 }
 assert(missingTrigger === 0, `戰吼/亡語卡都有 trigger（缺 ${missingTrigger}）`);
+
+let unknownKeyword = 0;
+for (const c of CARD_POOL) {
+  for (const keyword of c.keywords || []) {
+    if (!KEYWORDS[keyword] || !KEYWORDS[keyword].label) unknownKeyword++;
+  }
+}
+assert(unknownKeyword === 0, `所有卡牌關鍵字都有定義（缺 ${unknownKeyword}）`);
 
 console.log("== 抽卡機率分布（30000 抽）==");
 const N = 30000, dist = {};

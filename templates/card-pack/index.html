@@ -166,6 +166,10 @@
   .deck-errors.ok { color:#86efac; }
   .deck-save-msg { color:#86efac; font-size:12px; min-height:16px; }
   .deck-empty { color:var(--muted); font-size:13px; padding:12px; text-align:center; }
+  .series-footer { width:min(960px,94vw); margin:8px auto 16px; padding:10px 12px;
+    color:var(--muted); font-size:12px; text-align:center; border-top:1px solid rgba(255,255,255,.08); }
+  .series-footer a { color:var(--accent); text-decoration:none; font-weight:800; margin:0 6px; }
+  .series-footer a:hover { text-decoration:underline; }
 
   @media (max-width:700px) {
     .deck-layout { grid-template-columns:1fr; }
@@ -174,6 +178,7 @@
     .deck-head { align-items:flex-start; }
     .deck-actions { width:100%; }
     .deck-actions button { flex:1 1 auto; padding-inline:12px; }
+    .series-footer { margin-bottom:20px; }
   }
 
   @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
@@ -235,6 +240,12 @@
     <h2>📖 收藏冊 <span id="progress"></span></h2>
     <div class="grid" id="collectionGrid"></div>
   </div>
+
+  <footer class="series-footer">
+    🎮 阿軒的小遊戲系列
+    <a href="https://mars-tw.github.io/tower-defense-skill/" target="_blank" rel="noopener">塔防</a>
+    <a href="https://mars-tw.github.io/pixel-idle-farm-skill/" target="_blank" rel="noopener">像素農場</a>
+  </footer>
 
   <script src="../card-battle/cards.js"></script>
   <script src="../card-battle/core.js"></script>

@@ -38,6 +38,8 @@
 | `windfury` | 連擊 | 每回合可攻擊兩次 |
 | `poison` | 劇毒 | 對隨從造成傷害時無視血量直接消滅（聖盾可擋） |
 | `regenerate` | 回復 | 每回合結束時補滿生命 |
+| `lifesteal` | 吸血 | 隨從造成實際傷害時，為己方英雄恢復等量生命（不超過 maxHp） |
+| `rush` | 突襲 | 召喚當回合可攻擊隨從，但不能攻擊英雄；下回合起可正常打臉 |
 
 ## 難度系統
 
@@ -49,6 +51,61 @@
 `battlecry` / `deathrattle` 要搭配 `trigger`，對應 `battle.js` 的 `ABILITY_EFFECTS`（如
 `healHero2`、`damageAny1`、`summonSkeleton`、`rebirth`、`aoeEnemy2`）。要加新觸發效果就在
 `ABILITY_EFFECTS` 註冊一個代號。
+
+## 每日任務資料模型
+
+每日任務存於 `localStorage` 的 `card_quests_v1`，由 `core.js` 純函式遷移與更新。
+日期由 UI 層注入 `dateSeed`（格式建議 `YYYY-MM-DD`），core 不讀系統時間。
+
+```js
+{
+  version: 1,
+  dateSeed: "2026-07-02",
+  quests: [
+    {
+      id: "play_spell_5",
+      type: "playSpell",
+      title: "打出 5 張法術",
+      target: 5,
+      progress: 2,
+      reward: 25,
+      claimed: false
+    }
+  ]
+}
+```
+
+任務物件欄位：
+
+| 欄位 | 說明 |
+|------|------|
+| `id` | 任務唯一識別字 |
+| `type` | 進度事件類型，如 `win`、`playSpell`、`summonMinion` |
+| `title` | 使用者可見任務文字 |
+| `target` | 完成門檻 |
+| `progress` | 目前進度，遷移時會限制在 `0..target` |
+| `reward` | 金幣獎勵，介於 20-40 |
+| `claimed` | 是否已領取；只能領一次 |
+
+任務池目前 8 種：
+
+| id | 目標 | 獎勵 |
+|----|------|------|
+| `win_1` | 贏得 1 場對戰 | 30 |
+| `play_spell_5` | 打出 5 張法術 | 25 |
+| `summon_minion_8` | 召喚 8 隻隨從 | 25 |
+| `hero_damage_20` | 對敵方英雄造成 20 點傷害 | 30 |
+| `open_pack_1` | 開啟 1 包卡包 | 20 |
+| `deck_win_1` | 使用自訂牌組贏得 1 場 | 40 |
+| `win_2` | 贏得 2 場對戰 | 40 |
+| `summon_minion_12` | 召喚 12 隻隨從 | 35 |
+
+核心 API：
+
+- `getDailyQuests(dateSeed)`：依日期種子穩定輪出 3 個任務。
+- `applyQuestProgress(questState, event)`：依事件累積進度並回傳新狀態。
+- `claimQuest(questState, questId)`：完成後領取金幣，回傳 `{ ok, reward, state }`，已領不可重領。
+- `migrateQuests(raw, dateSeed)`：補齊版本與欄位；`dateSeed` 不同時重置為當日 3 個任務。
 
 ## 新增一張隨從
 

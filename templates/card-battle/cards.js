@@ -33,6 +33,8 @@ const CARD_TYPE = { MINION: "minion", SPELL: "spell" };
  *   windfury     連擊  — 每回合可攻擊兩次
  *   poison       劇毒  — 對隨從造成傷害時，無視血量直接消滅
  *   regenerate   回復  — 每回合結束時補滿生命
+ *   lifesteal    吸血  — 造成傷害時為己方英雄恢復等量生命
+ *   rush         突襲  — 登場當回合可攻擊隨從，但不能攻擊英雄
  */
 const KEYWORDS = {
   taunt:        { label: "嘲諷", icon: "🛡", desc: "敵方必須優先攻擊它。" },
@@ -43,6 +45,8 @@ const KEYWORDS = {
   windfury:     { label: "連擊", icon: "🌀", desc: "每回合可攻擊兩次。" },
   poison:       { label: "劇毒", icon: "🐍", desc: "傷害到隨從即將其消滅。" },
   regenerate:   { label: "回復", icon: "💗", desc: "每回合結束補滿生命。" },
+  lifesteal:    { label: "吸血", icon: "🩸", desc: "造成傷害時，為己方英雄恢復等量生命。" },
+  rush:         { label: "突襲", icon: "💨", desc: "登場當回合可攻擊隨從，但不能攻擊英雄。" },
 };
 
 /**
@@ -83,6 +87,31 @@ const CARD_POOL = [
   { id: "lightning", name: "閃電風暴", type: CARD_TYPE.SPELL, rarity: "epic", cost: 4, emoji: "⚡", image: "../../assets/cards/lightning.png", text: "對所有敵方隨從造成 2 點傷害。", effect: "aoe2", foil: false },
   { id: "polymorph", name: "變形術",   type: CARD_TYPE.SPELL, rarity: "epic", cost: 4, emoji: "🐑", image: "../../assets/cards/polymorph.png", text: "把一個敵方隨從變成 1/1 綿羊。", effect: "polymorph", foil: false },
   { id: "meteor",    name: "隕石術",   type: CARD_TYPE.SPELL, rarity: "legendary", cost: 6, emoji: "🌠", image: "../../assets/cards/meteor.png", text: "對一個敵方隨從造成 8 點傷害。", effect: "damage8", foil: false },
+
+  // ===== Stage 4 擴充（16 張，追加不改舊卡 id）=====
+  // 普通
+  { id: "mooncat",       name: "月光貓",   type: CARD_TYPE.MINION, rarity: "common", cost: 1, attack: 1, health: 2, emoji: "🐈", image: null, keywords: ["lifesteal"], text: "吸血：小巧但能拖住血線。", foil: false },
+  { id: "frontScout",    name: "前線斥候", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 2, health: 1, emoji: "🪶", image: null, keywords: ["rush"], text: "突襲：登場可攻擊隨從。", foil: false },
+  { id: "groveHerbalist", name: "林地藥師", type: CARD_TYPE.MINION, rarity: "common", cost: 3, attack: 2, health: 3, emoji: "🌿", image: null, keywords: ["battlecry"], trigger: "healHero2", text: "戰吼：為英雄恢復 2 點。", foil: false },
+  { id: "holyGlimmer",   name: "聖光閃耀", type: CARD_TYPE.SPELL,  rarity: "common", cost: 2, emoji: "🌤️", image: null, text: "為你的英雄恢復 5 點生命。", effect: "heal5", foil: false },
+
+  // 稀有
+  { id: "duskwrightBat", name: "暮影蝠",   type: CARD_TYPE.MINION, rarity: "rare", cost: 2, attack: 2, health: 2, emoji: "🦇", image: null, keywords: ["lifesteal"], text: "吸血：穩定回補生命。", foil: false },
+  { id: "linebreaker",   name: "破陣槍兵", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 3, health: 2, emoji: "🪓", image: null, keywords: ["rush"], text: "突襲：清掉前排威脅。", foil: false },
+  { id: "bannerGuard",   name: "戰旗守衛", type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 2, health: 6, emoji: "🚩", image: null, keywords: ["taunt", "battlecry"], trigger: "healHero2", text: "嘲諷。戰吼：恢復 2 點生命。", foil: false },
+  { id: "thunderClap",   name: "雷霆震擊", type: CARD_TYPE.SPELL,  rarity: "rare", cost: 3, emoji: "🌩️", image: null, text: "對所有敵方隨從造成 1 點傷害。", effect: "aoe1", foil: false },
+  { id: "arcaneVeil",    name: "秘能護幕", type: CARD_TYPE.SPELL,  rarity: "rare", cost: 2, emoji: "🔷", image: null, text: "給一個友方隨從一層聖盾。", effect: "giveShield", foil: false },
+
+  // 史詩
+  { id: "abyssWalker",   name: "深淵行者", type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 4, health: 6, emoji: "🕳️", image: null, keywords: ["taunt", "lifesteal"], text: "嘲諷 + 吸血的續戰核心。", foil: false },
+  { id: "stormGriffin",  name: "暴風獅鷲", type: CARD_TYPE.MINION, rarity: "epic", cost: 6, attack: 4, health: 4, emoji: "🦅", image: null, keywords: ["rush", "windfury"], text: "突襲 + 連擊：一回合處理兩個威脅。", foil: false },
+  { id: "duskWitch",     name: "暮光女巫", type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 3, health: 5, emoji: "🧹", image: null, keywords: ["battlecry", "lifesteal"], trigger: "damageAny1", text: "戰吼：造成 1 點傷害。吸血。", foil: false },
+  { id: "starfall",      name: "星界崩落", type: CARD_TYPE.SPELL,  rarity: "epic", cost: 5, emoji: "☄️", image: null, text: "對所有敵方隨從造成 2 點傷害。", effect: "aoe2", foil: false },
+  { id: "forbiddenHex",  name: "禁咒變形", type: CARD_TYPE.SPELL,  rarity: "epic", cost: 5, emoji: "🐸", image: null, text: "把一個敵方隨從變成 1/1 綿羊。", effect: "polymorph", foil: false },
+
+  // 傳說
+  { id: "bloodmoonQueen", name: "血月女王", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 6, health: 6, emoji: "👑", image: null, keywords: ["charge", "lifesteal"], text: "衝鋒 + 吸血：逆轉血線的傳說威脅。", foil: false },
+  { id: "skyJudicator",  name: "天穹裁決者", type: CARD_TYPE.MINION, rarity: "legendary", cost: 9, attack: 9, health: 9, emoji: "⚖️", image: null, keywords: ["rush", "taunt", "divineshield"], text: "突襲 + 嘲諷 + 聖盾：終局裁決。", foil: false },
 ];
 
 // 依 id 取卡（淺拷貝，避免改到母表）。

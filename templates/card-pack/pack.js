@@ -12,6 +12,7 @@
   const PACK_SIZE = 5;
   const SAVE_KEY = "cardpack_collection_v2";
   const DECK_KEY = "card_deck_v1";
+  const QUEST_KEY = "card_quests_v1";
   const Core = window.CardCore;
   if (!Core) throw new Error("CardCore 未載入");
 
@@ -35,6 +36,25 @@
     return Core.migrateStats(raw);
   }
   function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(Core.migrateStats(s))); } catch {} }
+
+  function todaySeed() {
+    const d = new Date();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    return `${d.getFullYear()}-${mm}-${dd}`;
+  }
+
+  function loadQuests() {
+    let raw = null;
+    try { raw = JSON.parse(localStorage.getItem(QUEST_KEY)); } catch {}
+    return Core.migrateQuests(raw, todaySeed());
+  }
+  function saveQuests(questState) {
+    try { localStorage.setItem(QUEST_KEY, JSON.stringify(Core.migrateQuests(questState, todaySeed()))); } catch {}
+  }
+  function progressQuest(event) {
+    saveQuests(Core.applyQuestProgress(loadQuests(), event));
+  }
 
   function loadDeck() {
     let raw = null;
@@ -60,6 +80,7 @@
     if (!isFree) stats.coins -= PACK_COST;
     stats.packsOpened = (stats.packsOpened || 0) + 1;
     saveStats(stats);
+    progressQuest({ type: "openPack", amount: 1 });
     updateCoinDisplay();
 
     const pack = document.getElementById("pack");

@@ -168,6 +168,70 @@ function testWindfuryLimit() {
   assert(!third.ok && third.reason === "cannotAttack", "風怒一回合第三次攻擊被拒絕");
 }
 
+function testLifestealAndRush() {
+  const leech = minion("leech", { attack: 3, health: 5, keywords: ["lifesteal"], canAttack: true });
+  const g = state({
+    player: { hp: 20, field: [leech] },
+    enemy: { field: [minion("target", { attack: 0, health: 6 })] },
+  });
+  const attack = Core.resolveAttack(g, { attackerSide: "player", attackerUid: "leech", defenderUid: "target" }, rngFactory());
+  assert(attack.ok && g.player.hp === 23 && attack.events.some((e) => e.type === "lifesteal" && e.amount === 3), "吸血隨從攻擊造成傷害會治療己方英雄");
+
+  const counter = minion("counter", { attack: 2, health: 6, keywords: ["lifesteal"] });
+  const g2 = state({
+    player: { field: [minion("plain", { attack: 1, health: 5, canAttack: true })] },
+    enemy: { hp: 20, field: [counter] },
+  });
+  const counterAttack = Core.resolveAttack(g2, { attackerSide: "player", attackerUid: "plain", defenderUid: "counter" }, rngFactory());
+  assert(counterAttack.ok && g2.enemy.hp === 22, "吸血隨從反擊造成傷害也會治療己方英雄");
+
+  const capped = minion("capped", { attack: 4, health: 5, keywords: ["lifesteal"], canAttack: true });
+  const g3 = state({
+    player: { hp: 29, maxHp: 30, field: [capped] },
+    enemy: { field: [minion("dummy", { attack: 0, health: 8 })] },
+  });
+  Core.resolveAttack(g3, { attackerSide: "player", attackerUid: "capped", defenderUid: "dummy" }, rngFactory());
+  assert(g3.player.hp === 30, "吸血治療不會超過英雄 maxHp");
+
+  const witch = minion("witch", { attack: 3, health: 5, cost: 1, keywords: ["battlecry", "lifesteal"], trigger: "damageAny1" });
+  const gBattlecry = state({
+    player: { hp: 20, hand: [witch], mana: 10 },
+    enemy: { field: [minion("witchTarget", { health: 3 })] },
+  });
+  const battlecry = Core.playCard(gBattlecry, { side: "player", cardUid: "witch" }, rngFactory());
+  assert(battlecry.ok && gBattlecry.player.hp === 21 && battlecry.events.some((e) => e.type === "lifesteal" && e.uid === "witch"), "吸血戰吼造成傷害會治療己方英雄");
+
+  const cappedWitch = minion("cappedWitch", { attack: 3, health: 5, cost: 1, keywords: ["battlecry", "lifesteal"], trigger: "damageAny1" });
+  const gCappedBattlecry = state({
+    player: { hp: 30, maxHp: 30, hand: [cappedWitch], mana: 10 },
+    enemy: { field: [minion("cappedTarget", { health: 3 })] },
+  });
+  const cappedBattlecry = Core.playCard(gCappedBattlecry, { side: "player", cardUid: "cappedWitch" }, rngFactory());
+  assert(cappedBattlecry.ok && cappedBattlecry.events.some((e) => e.type === "heroHeal" && e.amount === 0), "吸血戰吼滿血時 heroHeal 事件回報實際回血 0");
+
+  const rushCard = minion("rushCard", { attack: 2, health: 2, cost: 1, keywords: ["rush"] });
+  const g4 = state({
+    player: { hand: [rushCard], mana: 10 },
+    enemy: { field: [minion("rushTarget", { attack: 0, health: 4 })] },
+  });
+  const playedRush = Core.playCard(g4, { side: "player", cardUid: "rushCard" }, rngFactory());
+  const summonedRush = g4.player.field[0];
+  const rushReady = playedRush.ok && summonedRush.canAttack === true && summonedRush.justPlayed === true && playedRush.events.some((e) => e.type === "rushReady");
+  const rushAttack = Core.resolveAttack(g4, { attackerSide: "player", attackerUid: summonedRush.uid, defenderUid: "rushTarget" }, rngFactory());
+  assert(rushReady, "突襲隨從登場當回合可攻擊隨從");
+  assert(rushAttack.ok, "突襲隨從登場當回合攻擊隨從合法");
+
+  const rushHero = minion("rushHero", { attack: 3, health: 3, keywords: ["rush"], canAttack: true, justPlayed: true });
+  const g5 = state({ player: { field: [rushHero] } });
+  const blockedHero = Core.resolveHeroAttack(g5, { attackerSide: "player", attackerUid: "rushHero", defenderSide: "enemy" }, rngFactory());
+  Core.advanceTurn(g5, { phase: "endPlayer" }, rngFactory());
+  Core.advanceTurn(g5, { phase: "startEnemy" }, rngFactory());
+  Core.advanceTurn(g5, { phase: "endEnemy" }, rngFactory());
+  const nextTurnHero = Core.resolveHeroAttack(g5, { attackerSide: "player", attackerUid: "rushHero", defenderSide: "enemy" }, rngFactory());
+  assert(!blockedHero.ok && blockedHero.reason === "rushBlocksHero", "突襲隨從登場當回合不能攻擊英雄");
+  assert(nextTurnHero.ok && g5.enemy.hp === 27, "突襲隨從下回合可攻擊英雄");
+}
+
 function testDeathrattleOrder() {
   const lich = minion("lich", { name: "巫妖", health: 0, maxHealth: 5, keywords: ["deathrattle"], trigger: "summonSkeleton" });
   const fillers = Array.from({ length: Core.MAX_FIELD - 1 }, (_, i) => minion("f" + i));
@@ -282,10 +346,46 @@ function testDeckMigration() {
   assert(polluted.version === Core.DECK_VERSION && polluted.cards.join(",") === "c1,c2", "牌組污染值會移除非字串 id 並重設 version");
 }
 
+function testDailyQuests() {
+  const a = Core.getDailyQuests("2026-07-02");
+  const b = Core.getDailyQuests("2026-07-02");
+  assert(a.length === 3 && new Set(a.map((q) => q.id)).size === 3, "每日任務固定輪出 3 個不重複任務");
+  assert(a.map((q) => q.id).join(",") === b.map((q) => q.id).join(","), "同一日期種子會產生同一組每日任務");
+
+  const progressed = Core.migrateQuests({
+    dateSeed: "2026-07-02",
+    quests: a.map((q, i) => Object.assign({}, q, { progress: i + 1, claimed: i === 0 })),
+  }, "2026-07-02");
+  assert(progressed.quests[0].progress > 0 && progressed.quests[0].claimed === true, "任務舊檔同日會保留進度與已領狀態");
+
+  const reset = Core.migrateQuests(progressed, "2026-07-03");
+  assert(reset.dateSeed === "2026-07-03" && reset.quests.every((q) => q.progress === 0 && q.claimed === false), "跨日遷移會重置每日任務");
+
+  const spellQuest = Object.assign({}, Core.QUEST_POOL.find((q) => q.type === "playSpell"), { progress: 0, claimed: false });
+  const questState = { version: Core.QUEST_VERSION, dateSeed: "test-day", quests: [spellQuest] };
+  const step = Core.applyQuestProgress(questState, { type: "playSpell", amount: 3 });
+  const complete = Core.applyQuestProgress(step, { type: "spellCast", amount: 9 });
+  const claimed = Core.claimQuest(complete, spellQuest.id);
+  const claimedAgain = Core.claimQuest(claimed.state, spellQuest.id);
+  assert(step.quests[0].progress === 3 && complete.quests[0].progress === spellQuest.target, "任務進度會累積並封頂");
+  assert(claimed.ok && claimed.reward === spellQuest.reward && claimed.state.quests[0].claimed === true, "完成任務可領取一次金幣獎勵");
+  assert(!claimedAgain.ok && claimedAgain.reason === "alreadyClaimed" && claimedAgain.reward === 0, "任務獎勵不可重複領取");
+
+  const missing = Core.migrateQuests({}, "2026-07-04");
+  assert(missing.version === Core.QUEST_VERSION && missing.quests.length === 3, "任務缺欄位會補今日預設任務");
+
+  const polluted = Core.migrateQuests({
+    dateSeed: "2026-07-05",
+    quests: [{ id: Core.getDailyQuests("2026-07-05")[0].id, progress: NaN, claimed: "yes" }],
+  }, "2026-07-05");
+  assert(polluted.quests[0].progress === 0 && polluted.quests[0].claimed === false, "任務污染值會回到安全預設");
+}
+
 console.log("== core.js 單元測試 ==");
 testInsufficientMana();
 testMaxField();
 testWindfuryLimit();
+testLifestealAndRush();
 testDeathrattleOrder();
 testComboCount();
 testMulliganBurn();
@@ -293,6 +393,7 @@ testStatsMigration();
 testDeckValidation();
 testBuildBattleDeck();
 testDeckMigration();
+testDailyQuests();
 
 console.log("");
 console.log(`PASS ${passed} / FAIL ${failed}`);

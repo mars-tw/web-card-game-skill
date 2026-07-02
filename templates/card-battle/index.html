@@ -213,6 +213,23 @@
   button.mulligan-btn:hover { transform: scale(1.05); }
   button.end-turn:disabled { filter: grayscale(1) brightness(.6); cursor: not-allowed; }
 
+  .quest-panel {
+    background: color-mix(in srgb, var(--panel) 80%, transparent);
+    border: 1px solid var(--panel-border); border-radius: 10px; padding: 8px 10px;
+    display: flex; flex-direction: column; gap: 6px; backdrop-filter: blur(4px);
+  }
+  .quest-panel h2 { font-size: 13px; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
+  .quest-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .quest-item { min-width: 0; border: 1px solid rgba(255,255,255,.08); border-radius: 8px; padding: 7px;
+    background: rgba(255,255,255,.04); display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 6px; align-items: center; }
+  .quest-title { font-size: 12px; font-weight: 800; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .quest-progress { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .quest-claim { border: none; border-radius: 8px; padding: 6px 8px; font-size: 12px; font-weight: 900;
+    background: linear-gradient(180deg,#facc15,#eab308); color: #271a02; cursor: pointer; }
+  .quest-claim:disabled { background: #2a3645; color: var(--muted); cursor: default; filter: none; }
+  .quest-item.done { border-color: rgba(250,204,21,.45); }
+  .quest-item.claimed { opacity: .62; }
+
   #log { height: 52px; overflow-y: auto; width: min(980px, 97vw); font-size: 12px; color: var(--muted);
     padding: 4px 12px; text-align: center; line-height: 1.5; }
   #log .me { color: #60a5fa; } #log .ai { color: #f87171; }
@@ -273,6 +290,10 @@
   .kw-codex-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.04); }
   .kw-codex-item .kwi { font-size: 22px; } .kw-codex-item .kwn { font-weight: 800; color: #facc15; }
   .kw-codex-item .kwd { font-size: 12px; color: #9fb0a4; }
+  .series-footer { width: min(980px, 97vw); margin: 8px auto 14px; padding: 10px 12px;
+    color: var(--muted); font-size: 12px; text-align: center; border-top: 1px solid rgba(255,255,255,.08); }
+  .series-footer a { color: var(--accent); text-decoration: none; font-weight: 800; margin: 0 6px; }
+  .series-footer a:hover { text-decoration: underline; }
 
   /* ===== 動畫 ===== */
   @keyframes spawnIn { 0% { transform: translateY(40px) scale(.4) rotate(-8deg); opacity: 0; } 60% { transform: translateY(-6px) scale(1.08); } 100% { transform: translateY(0) scale(1); opacity: 1; } }
@@ -292,6 +313,11 @@
   @keyframes kwPop { 0%{transform:translate(-50%,0) scale(.6);opacity:0} 25%{transform:translate(-50%,-10px) scale(1.1);opacity:1} 100%{transform:translate(-50%,-30px) scale(1);opacity:0} }
   @keyframes overlayPop { 0%{transform:scale(.3);opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
   @keyframes pulseTarget { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.6)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
+  @media (max-width: 700px) {
+    .quest-list { grid-template-columns: 1fr; }
+    .quest-item { grid-template-columns: minmax(0,1fr) auto; }
+    .series-footer { padding-bottom: 54px; }
+  }
 </style>
 </head>
 <body>
@@ -332,6 +358,11 @@
       <button class="mulligan-btn" id="toPackBtn" title="前往卡包與牌組編輯器">🃏 卡包／牌組</button>
       <button class="end-turn" id="endTurnBtn">結束回合 ▶</button>
     </div>
+
+    <section class="quest-panel" id="questPanel">
+      <h2><span>每日任務</span><span id="questDateLabel"></span></h2>
+      <div class="quest-list" id="questList"></div>
+    </section>
   </div>
 
   <div id="log"></div>
@@ -350,7 +381,7 @@
         <li><b>① 出牌</b>：點手牌中費用足夠的卡（隨從上場、法術立即生效）</li>
         <li><b>② 攻擊</b>：點你的隨從選為攻擊者，再點敵方隨從或英雄</li>
         <li><b>③ 打臉獲勝</b>：把敵方英雄血量打到 0 就贏！</li>
-        <li><b>④ 善用技能</b>：嘲諷🛡擋路、衝鋒⚡即攻、聖盾✨擋傷、戰吼📣亡語💀觸發效果</li>
+        <li><b>④ 善用技能</b>：嘲諷🛡擋路、衝鋒⚡即攻、突襲💨解場、吸血🩸續戰</li>
       </ol>
       <p class="cb-tut-tip">💡 法力每回合 +1。點下方「關鍵字」隨時查技能說明。開卡包抽強卡組牌組！</p>
       <button id="cbTutOk">開始對戰 ▶</button>
@@ -366,6 +397,12 @@
       <button id="kwCodexClose">關閉</button>
     </div>
   </div>
+
+  <footer class="series-footer">
+    🎮 阿軒的小遊戲系列
+    <a href="https://mars-tw.github.io/tower-defense-skill/" target="_blank" rel="noopener">塔防</a>
+    <a href="https://mars-tw.github.io/pixel-idle-farm-skill/" target="_blank" rel="noopener">像素農場</a>
+  </footer>
 
   <script src="cards.js"></script>
   <script src="core.js"></script>
