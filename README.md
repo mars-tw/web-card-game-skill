@@ -49,7 +49,8 @@ python -m http.server 8000
 | `art-config.json` | ★ 美術生成統一設定（卡片清單、提示詞、風格樣板） |
 | `templates/index.html` | 單一入口：分頁 + 主題選擇器 |
 | `templates/card-battle/cards.js` | ★ 卡牌資料層（兩模組共用，24 張，含技能） |
-| `templates/card-battle/battle.js` | 回合制引擎 + 關鍵字技能 + AI |
+| `templates/card-battle/core.js` | 純規則層：出牌、攻擊、回合推進、亡語清場、stats 遷移 |
+| `templates/card-battle/battle.js` | 對戰 UI/動畫/AI 殼層，規則委派給 `core.js` |
 | `templates/card-pack/pack.js` | 抽卡機率、重複機制、開包動畫 |
 | `references/data-model.md` | 卡牌資料結構、加卡、加技能、調平衡 |
 | `references/art-generation.md` | 美術生成指南（雙後端 + 手動 + 提示詞） |
@@ -94,6 +95,7 @@ cd skill
 
 - **零依賴**：不引入任何 CDN / npm 套件，維持單檔可分享。
 - **單一事實來源**：`cards.js` 的 `CARD_POOL` 同時驅動對戰與開卡包。
+- **純規則層**：`core.js` 集中處理出牌合法性、攻擊/指定目標、回合推進、清場亡語與 stats 遷移；函式採 `(state, action, rng)` 風格，不碰 DOM 或全域亂數，瀏覽器 UI 與 Node 單元測試共用同一套規則。
 - **美術接點零侵入**：卡片 `image` 欄位填路徑即換圖，圖壞自動退回 emoji。
 
 ## 🤝 貢獻

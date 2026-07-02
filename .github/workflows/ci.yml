@@ -28,6 +28,8 @@ jobs:
           node-version: 20
       - name: 執行 cards.js 測試
         run: node scripts/test-cards.js
+      - name: 執行 core.js 規則層測試
+        run: node scripts/test-core.js
       - name: 語法檢查所有 JS
         run: |
           for f in templates/card-battle/*.js templates/card-pack/*.js scripts/*.js; do node -c "$f" && echo "✓ $f"; done

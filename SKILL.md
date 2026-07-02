@@ -37,7 +37,8 @@ skill/
 │   ├── card-battle/
 │   │   ├── index.html        #   對戰頁面 + 全部 CSS（含主題變數、動畫）
 │   │   ├── cards.js          #   ★ 卡牌資料層（兩模板共用，單一事實來源，24 張）
-│   │   └── battle.js         #   回合制引擎 + 關鍵字技能 + AI
+│   │   ├── core.js           #   純規則層（出牌、攻擊、回合、清場亡語、stats 遷移）
+│   │   └── battle.js         #   對戰 UI/動畫/AI 殼層，規則委派給 core.js
 │   └── card-pack/
 │       ├── index.html        #   開卡包頁面 + 收藏冊
 │       └── pack.js           #   抽卡機率、重複機制、開包動畫
@@ -64,7 +65,7 @@ skill/
 
 1. 改 `templates/card-battle/cards.js` 的 `CARD_POOL`（加卡、調數值、設 `keywords` 技能）
    —— 細節見 [references/data-model.md](references/data-model.md)
-2. 加新法術效果 → 改 `battle.js` 的 `SPELL_EFFECTS`；加新戰吼/亡語 → 改 `ABILITY_EFFECTS`
+2. 加新法術效果、戰吼或亡語 → 先改 `core.js` 的純規則，再視需要在 `battle.js` 補 UI log/動畫文案
 3. 加新主題 → 在 `index.html` 與兩個子頁的 `:root[data-theme="..."]` 加一組變數
 4. 生美術 → 編輯 `art-config.json` 再跑生成腳本（見下節）
 
@@ -72,9 +73,10 @@ skill/
 
 1. **`cards.js` 是單一事實來源**：對戰與卡包共用同一卡池與技能定義。
 2. **每張卡有 `image` 欄位**：`null` 用 emoji 佔位；填路徑自動換圖，圖壞 `onerror` 退回 emoji。**接美術不需改邏輯。**
-3. **關鍵字技能**：隨從的 `keywords` 陣列 + `trigger`（戰吼/亡語效果代號）驅動 `battle.js` 規則。
-4. **稀有度與星級**：`RARITY[x].weight` 控機率、`.color` 控卡框、`.stars` 控星級；`foil` 控閃卡。
-5. **零依賴**：不引入任何 CDN / npm，維持可分享特性。
+3. **純規則層**：`core.js` 集中處理出牌合法性、攻擊/指定目標、回合推進、清場亡語與 stats 遷移；函式採 `(state, action, rng)` 風格，不碰 DOM、時間或全域亂數。
+4. **關鍵字技能**：隨從的 `keywords` 陣列 + `trigger`（戰吼/亡語效果代號）驅動 `core.js` 規則。
+5. **稀有度與星級**：`RARITY[x].weight` 控機率、`.color` 控卡框、`.stars` 控星級；`foil` 控閃卡。
+6. **零依賴**：不引入任何 CDN / npm，維持可分享特性。
 
 ## ⭐ 必備核心循環（生成卡牌遊戲時必接，否則只是玩具）
 

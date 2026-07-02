@@ -15,9 +15,9 @@
 (() => {
   "use strict";
 
-  const MAX_MANA = 10;
-  const START_HP = 30;
-  const MAX_FIELD = 7; // 場上隨從上限（雙方皆同；手機版戰場列一行放得下的上限）
+  const Core = window.CardCore;
+  if (!Core) throw new Error("CardCore 未載入");
+  const MAX_FIELD = Core.MAX_FIELD; // 場上隨從上限（雙方皆同；手機版戰場列一行放得下的上限）
 
   // ===== 難度設定 =====
   // playerHp/enemyHp：雙方起始血量；playerDraw/enemyDraw：起手抽牌數
@@ -33,27 +33,28 @@
     try { d = localStorage.getItem("cardgame_difficulty") || "easy"; } catch {}
     return DIFFICULTY[d] ? d : "easy";
   }
-  const HAND_LIMIT = 8;
-
   // ---- 法術效果（spell.effect）----
-  const SPELL_EFFECTS = {
-    damage3:    { needsTarget: "enemyMinion", apply: (g, t) => dealDamageToMinion(g, t, 3) },
-    damage8:    { needsTarget: "enemyMinion", apply: (g, t) => dealDamageToMinion(g, t, 8) },
-    heal5:      { needsTarget: null, apply: (g) => { healHero(g.player, 5); log("你施放治療術，恢復 5 點生命。", "me"); } },
-    aoe1:       { needsTarget: null, apply: (g) => { aoe(g, g.enemy, 1); log("冰霜新星橫掃敵方！", "me"); } },
-    aoe2:       { needsTarget: null, apply: (g) => { aoe(g, g.enemy, 2); log("閃電風暴橫掃敵方！", "me"); } },
-    mana2:      { needsTarget: null, apply: (g) => { g.player.mana += 2; log("法力湧動：本回合 +2 法力。", "me"); } },
-    giveShield: { needsTarget: "friendlyMinion", apply: (g, t) => { addShield(t); log(`${t.name} 獲得聖盾。`, "me"); } },
-    polymorph:  { needsTarget: "enemyMinion", apply: (g, t) => polymorph(g, t) },
-  };
+  // 保留舊名稱給測試掛鉤；實際規則委派給 core.js。
+  const SPELL_EFFECTS = Object.fromEntries(Object.entries(Core.SPELL_EFFECTS).map(([effect, spec]) => [
+    effect,
+    {
+      needsTarget: spec.needsTarget,
+      apply: (g, target) => {
+        const result = Core.castSpellEffect(g, { side: "player", effect, targetUid: target && target.uid }, rng);
+        handleCoreResult(result);
+        logSpellEffect(effect, target, "player");
+      },
+    },
+  ]));
 
   // ---- 技能效果（戰吼/亡語 trigger）----
+  // 保留舊名稱給測試掛鉤；實際規則委派給 core.js。
   const ABILITY_EFFECTS = {
-    healHero2:      (g, side) => { healHero(side, 2); flashKeyword(side === g.player ? "playerHero" : "enemyHero", "戰吼：+2 生命"); },
-    damageAny1:     (g, side, target) => { if (target) dealDamageToMinion(g, target, 1); },
-    aoeEnemy2:      (g, side) => { const foe = side === g.player ? g.enemy : g.player; aoe(g, foe, 2); },
-    summonSkeleton: (g, side) => { const sk = makeToken("骷髏", 2, 2, "☠️"); summon(side, sk); log("亡語：召喚了骷髏(2/2)。", side === g.player ? "me" : "ai"); },
-    rebirth:        (g, side, _t, dyingCard) => { const ph = makeToken("浴火鳳凰", 5, 1, "🔥"); summon(side, ph); log("亡語：鳳凰浴火重生！", side === g.player ? "me" : "ai"); },
+    healHero2:      (g, side, target, source) => triggerAbilityUi(g, side, "healHero2", target, source),
+    damageAny1:     (g, side, target, source) => triggerAbilityUi(g, side, "damageAny1", target, source),
+    aoeEnemy2:      (g, side, target, source) => triggerAbilityUi(g, side, "aoeEnemy2", target, source),
+    summonSkeleton: (g, side, target, source) => triggerAbilityUi(g, side, "summonSkeleton", target, source),
+    rebirth:        (g, side, target, source) => triggerAbilityUi(g, side, "rebirth", target, source),
   };
 
   let game;
@@ -131,103 +132,41 @@
     return deck;
   }
 
-  function makeToken(name, atk, hp, emoji) {
-    return { id: "token", name, type: CARD_TYPE.MINION, rarity: "common",
-      cost: 0, attack: atk, health: hp, maxHealth: hp, emoji, image: null, keywords: [], foil: false };
-  }
-
   function drawCard(side) {
-    if (side.deck.length === 0) return;
-    if (side.hand.length >= HAND_LIMIT) { side.deck.pop(); return; }
-    const card = side.deck.pop();
-    card.uid = "c" + Math.random().toString(36).slice(2, 9);
-    card.maxHealth = card.health;
-    side.hand.push(card);
-  }
-
-  // CP2-8 連擊：只在「真的出了一張牌」時累積，指定失敗/法力不足的無效點擊不算
-  function registerCombo(uid) {
-    game.comboCount = (game.comboCount || 0) + 1;
-    if (game.comboCount >= 3) {
-      const el = elFor(uid);
-      const r = el ? el.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0 };
-      flashCombo(r.left + r.width / 2, r.top, game.comboCount);
-    }
-  }
-  // 一旦真的出牌，就沒收起手重抽權（放在各出牌路徑真正扣費之後，無效點擊不觸發）
-  function burnMulligan() {
-    game.mulliganUsed = true;
-    const mb = document.getElementById("mulliganBtn"); if (mb) mb.style.display = "none";
+    const result = Core.drawCard(game, { side: side.side }, rng);
+    handleCoreResult(result);
+    return result.card;
   }
 
   // ===== 玩家出牌 =====
   function playFromHand(uid) {
     if (game.turn !== "player" || game.over) return;
-    // 等待指定目標時再點手牌 → 取消指定（點同一張=純取消；點別張=取消後繼續出那張）
-    if (game.pendingSpell) {
-      const wasSame = game.pendingSpell.uid === uid;
-      game.pendingSpell = null;
-      flash("已取消指定。"); render();
-      if (wasSame) return;
+    const result = Core.playCard(game, { side: "player", cardUid: uid }, rng);
+    handleCoreResult(result);
+    if (!result.ok) {
+      if (result.reason === "pendingCancelledSame") { render(); return; }
+      showCoreFailure(result);
+      render();
+      return;
     }
-    const idx = game.player.hand.findIndex((c) => c.uid === uid);
-    if (idx === -1) return;
-    const card = game.player.hand[idx];
-    if (card.cost > game.player.mana) { flash("法力不足！"); return; }
-
-    if (card.type === CARD_TYPE.SPELL) {
-      const eff = SPELL_EFFECTS[card.effect];
-      if (eff && eff.needsTarget) {
-        const pool = eff.needsTarget === "enemyMinion" ? game.enemy.field
-                   : eff.needsTarget === "friendlyMinion" ? game.player.field : [];
-        if (pool.length === 0) { flash("沒有可指定的目標。"); return; }
-        game.pendingSpell = { uid, need: eff.needsTarget };
-        render();
-        flash(eff.needsTarget === "friendlyMinion" ? "選擇一個友方隨從" : "選擇一個敵方隨從");
-        return;
-      }
-      game.player.mana -= card.cost;
-      game.player.hand.splice(idx, 1);
-      burnMulligan(); registerCombo(uid);
-      if (eff) eff.apply(game);
-      render(); checkWin(); return;
+    const pending = result.events.find((e) => e.type === "spellPending");
+    if (pending) {
+      flash(pending.need === "friendlyMinion" ? "選擇一個友方隨從" : "選擇一個敵方隨從");
+      render();
+      return;
     }
-
-    // 隨從上場（場上有上限，滿了不能出——檢查要在扣費之前）
-    if (game.player.field.length >= MAX_FIELD) { flash("場上隨從已滿（最多 " + MAX_FIELD + " 隻）。"); return; }
-    game.player.mana -= card.cost;
-    game.player.hand.splice(idx, 1);
-    burnMulligan(); registerCombo(uid);
-    const hasCharge = (card.keywords || []).includes("charge");
-    card.canAttack = hasCharge;       // 衝鋒：當回合可攻擊
-    card.justPlayed = true;
-    if ((card.keywords || []).includes("divineshield")) card.shield = true;
-    summon(game.player, card, true);
-    log(`你召喚了 ${card.name}。`, "me");
-
-    // 戰吼
-    if ((card.keywords || []).includes("battlecry") && card.trigger) {
-      const ab = ABILITY_EFFECTS[card.trigger];
-      if (ab) {
-        if (card.trigger === "damageAny1" && game.enemy.field.length > 0) {
-          // 需要目標的戰吼：自動打敵方血量最低的隨從（簡化指定）
-          const t = [...game.enemy.field].sort((a, b) => a.health - b.health)[0];
-          flashKeyword2(card.uid, "戰吼");
-          ab(game, game.player, t);
-        } else {
-          flashKeyword2(card.uid, "戰吼");
-          ab(game, game.player);
-        }
-      }
+    if (result.card && result.card.type === CARD_TYPE.MINION) {
+      log(`你召喚了 ${result.card.name}。`, "me");
+    } else if (result.card && result.card.type === CARD_TYPE.SPELL) {
+      logSpellEffect(result.card.effect, result.target, "player");
     }
     render(); checkWin();
   }
 
   // ===== 攻擊：嘲諷限制 =====
-  function hasTaunt(field) { return field.some((m) => (m.keywords || []).includes("taunt")); }
+  function hasTaunt(field) { return Core.hasTaunt(field); }
   function isLegalTarget(defenderSide, target) {
-    if (!hasTaunt(defenderSide.field)) return true;
-    return (target.keywords || []).includes("taunt");
+    return Core.isLegalTarget(defenderSide, target);
   }
 
   function clickEnemyMinion(uid) {
@@ -254,18 +193,10 @@
   }
 
   function resolvePendingSpell(target) {
-    // 用 uid 找卡，不能用暫存的 index——等待指定期間手牌若有變動，index 會指到錯的卡
-    const { uid } = game.pendingSpell;
-    const idx = game.player.hand.findIndex((c) => c.uid === uid);
-    if (idx === -1) { game.pendingSpell = null; render(); return; }
-    const card = game.player.hand[idx];
-    if (card.cost > game.player.mana) { game.pendingSpell = null; flash("法力不足！"); render(); return; }
-    game.player.mana -= card.cost;
-    game.player.hand.splice(idx, 1);
-    burnMulligan(); registerCombo(card.uid); // 指定法術結算=真的出牌：沒收重抽權、累積連擊
-    flashCard(card.uid, "");
-    SPELL_EFFECTS[card.effect].apply(game, target);
-    game.pendingSpell = null;
+    const result = Core.resolveTarget(game, { side: "player", targetUid: target && target.uid }, rng);
+    handleCoreResult(result);
+    if (!result.ok) showCoreFailure(result);
+    else if (result.card) logSpellEffect(result.card.effect, result.target, "player");
     render(); checkWin();
   }
 
@@ -277,12 +208,10 @@
       const attacker = game.player.field.find((m) => m.uid === game.selected);
       if (attacker) {
         animateAttackToward(attacker.uid, "enemyHero");
-        game.enemy.hp -= attacker.attack;
-        floatDamage("enemyHero", attacker.attack);
-        // 連擊：第一次打臉保留攻擊權，再打一次才收回
-        if ((attacker.keywords || []).includes("windfury") && !attacker._windUsed) attacker._windUsed = true;
-        else { attacker.canAttack = false; attacker._windUsed = false; }
-        log(`${attacker.name} 攻擊敵方英雄，造成 ${attacker.attack} 點傷害！`, "me");
+        const result = Core.resolveHeroAttack(game, { attackerSide: "player", attackerUid: attacker.uid, defenderSide: "enemy" }, rng);
+        handleCoreResult(result);
+        if (result.ok) log(`${attacker.name} 攻擊敵方英雄，造成 ${attacker.attack} 點傷害！`, "me");
+        else showCoreFailure(result);
       }
       game.selected = null;
       render(); checkWin();
@@ -302,94 +231,68 @@
   // ===== 戰鬥結算（含聖盾、劇毒、連擊）=====
   function resolveAttack(attackerSide, attacker, defender) {
     animateAttackToward(attacker.uid, defender.uid);
-    // 攻擊者打防禦者（帶 attacker 以判斷劇毒）
-    applyDamage(game, defender, attacker.attack, attacker);
-    // 反擊（防禦者的劇毒對攻擊者也生效）
-    if (defender.attack > 0) applyDamage(game, attacker, defender.attack, defender);
-    // 連擊：第一次攻擊後不收回攻擊權，改為標記已用一次；用滿兩次才結束
-    const hasWindfury = (attacker.keywords || []).includes("windfury");
-    if (hasWindfury && !attacker._windUsed) {
-      attacker._windUsed = true;   // 還能再攻擊一次
-    } else {
-      attacker.canAttack = false;
-      attacker._windUsed = false;
-    }
-    log(`${attacker.name} 與 ${defender.name} 交戰！`, attackerSide.side === "player" ? "me" : "ai");
-    cleanupField(game.player); cleanupField(game.enemy);
+    const result = Core.resolveAttack(game, {
+      attackerSide: attackerSide.side,
+      attackerUid: attacker.uid,
+      defenderUid: defender.uid,
+    }, rng);
+    handleCoreResult(result);
+    if (result.ok) log(`${attacker.name} 與 ${defender.name} 交戰！`, attackerSide.side === "player" ? "me" : "ai");
+    else showCoreFailure(result);
   }
 
   // 對隨從造成傷害（含聖盾、劇毒、跳字；亡語在 cleanup 觸發）
   // source：造成傷害的隨從（用來判斷劇毒），可省略（法術傷害）
   function applyDamage(g, minion, amount, source) {
-    if (minion.shield) {
-      minion.shield = false;
-      flashCard(minion.uid, "shield-break");
-      flashKeyword2(minion.uid, "聖盾破裂");
-      return;
-    }
-    minion.health -= amount;
-    flashCard(minion.uid, "damaged");
-    floatDamage(minion.uid, amount);
-    // 劇毒：傷害來源帶劇毒且確實造成傷害 → 目標直接致命
-    if (source && (source.keywords || []).includes("poison") && amount > 0 && minion.health > 0) {
-      minion.health = 0;
-      flashKeyword2(minion.uid, "劇毒！");
-      flashCard(minion.uid, "poisoned");
-    }
+    const result = Core.applyDamage(g, { targetUid: minion && minion.uid, sourceUid: source && source.uid, amount }, rng);
+    handleCoreResult(result);
   }
-  function dealDamageToMinion(g, minion, amount) { applyDamage(g, minion, amount); cleanupField(g.player); cleanupField(g.enemy); }
-  function aoe(g, side, amount) { [...side.field].forEach((m) => applyDamage(g, m, amount)); cleanupField(g.player); cleanupField(g.enemy); }
-  function healHero(side, amount) { side.hp = Math.min(side.maxHp || START_HP, side.hp + amount); }
-  function addShield(m) { m.shield = true; flashCard(m.uid, "shield-gain"); }
+  function dealDamageToMinion(g, minion, amount) {
+    const result = Core.dealDamageToMinion(g, { targetUid: minion && minion.uid, amount }, rng);
+    handleCoreResult(result);
+  }
+  function aoe(g, side, amount) {
+    const result = Core.aoe(g, { side: side.side, amount }, rng);
+    handleCoreResult(result);
+  }
+  function healHero(side, amount) {
+    Core.healHero(side, amount, []);
+  }
+  function addShield(m) {
+    Core.addShield(m, []);
+    flashCard(m.uid, "shield-gain");
+  }
 
   function polymorph(g, minion) {
-    minion.name = "綿羊"; minion.attack = 1; minion.health = 1; minion.maxHealth = 1;
-    minion.emoji = "🐑"; minion.image = null; minion.keywords = []; minion.shield = false;
+    Core.polymorph(minion, []);
     flashKeyword2(minion.uid, "變形！");
   }
 
   function summon(side, card, animate) {
-    if (side.field.length >= MAX_FIELD) return false; // 場滿：亡語/token 召喚直接失效（同爐石規則）
-    if (card.maxHealth == null) card.maxHealth = card.health;
-    if (!card.uid) card.uid = "c" + Math.random().toString(36).slice(2, 9);
-    side.field.push(card);
-    return true;
+    const result = Core.summon(game, { side: side.side, card, reason: animate ? "play" : "effect" }, rng);
+    handleCoreResult(result);
+    return result.ok;
   }
 
   // 清掉死亡隨從，並觸發亡語。
   // 順序刻意是「先移除全部死者、再觸發亡語」：亡語召喚的 token 才不會被垂死隨從
   // 佔住的場位擋掉（summon 有 MAX_FIELD 上限），也不依賴迭代中改動陣列的隱性行為。
   function cleanupField(side) {
-    const dying = side.field.filter((m) => m.health <= 0);
-    if (dying.length === 0) return;
-    side.field = side.field.filter((m) => m.health > 0);
-    for (const m of dying) {
-      markDying(m.uid);
-      if ((m.keywords || []).includes("deathrattle") && m.trigger && ABILITY_EFFECTS[m.trigger]) {
-        flashKeyword2(m.uid, "亡語");
-        ABILITY_EFFECTS[m.trigger](game, side, null, m);
-      }
-    }
+    const result = Core.cleanupField(game, { side: side.side }, rng);
+    handleCoreResult(result);
   }
 
   // 回復：回合結束時，帶 regenerate 的隨從補滿生命
   function regenerateField(side) {
-    side.field.forEach((m) => {
-      if ((m.keywords || []).includes("regenerate") && m.health < m.maxHealth) {
-        m.health = m.maxHealth;
-        flashKeyword2(m.uid, "回復");
-        flashCard(m.uid, "regen");
-      }
-    });
+    const result = Core.regenerateField(game, { side: side.side });
+    handleCoreResult(result);
   }
 
   // ===== AI 回合 =====
   function endTurn() {
     if (game.turn !== "player" || game.over) return;
-    burnMulligan(); // 起手重抽只限第一回合，結束回合即失效
-    game.selected = null; game.pendingSpell = null; game.comboCount = 0; // CP2-8 combo 換回合清零
-    regenerateField(game.player);     // 玩家回合結束：玩家隨從回復
-    game.turn = "enemy";
+    const result = Core.advanceTurn(game, { phase: "endPlayer" }, rng);
+    handleCoreResult(result);
     render();
     const gRef = game;
     setTimeout(() => { if (game === gRef) aiTurn(); }, 700); // 幽靈計時器防護
@@ -398,12 +301,7 @@
   function aiTurn() {
     if (game.over) return;
     const ai = game.enemy;
-    ai.manaMax = Math.min(MAX_MANA, ai.manaMax + 1);
-    ai.mana = ai.manaMax;
-    drawCard(ai);
-    // 回合開始：重置 AI 場上隨從攻擊權（跟 endAiTurn 重置玩家場面對稱）。
-    // 這行一定要在出牌之前——本回合新召喚的非衝鋒隨從會在下面被設回 false（召喚失調）。
-    ai.field.forEach((m) => { m.canAttack = true; m._windUsed = false; });
+    handleCoreResult(Core.advanceTurn(game, { phase: "startEnemy" }, rng));
 
     // 出牌（貪心：先出貴的隨從；法術看場面）
     let acted = true;
@@ -411,29 +309,31 @@
       acted = false;
       const affordable = ai.hand.filter((c) => c.cost <= ai.mana).sort((a, b) => b.cost - a.cost);
       for (const card of affordable) {
-        const idx = ai.hand.indexOf(card);
         if (card.type === CARD_TYPE.MINION) {
           if (ai.field.length >= MAX_FIELD) continue; // 場滿：跳過隨從，讓 AI 還有機會出法術
-          ai.mana -= card.cost; ai.hand.splice(idx, 1);
-          card.canAttack = (card.keywords || []).includes("charge");
-          if ((card.keywords || []).includes("divineshield")) card.shield = true;
-          summon(ai, card, true);
+          const result = Core.playCard(game, { side: "enemy", cardUid: card.uid, burnMulligan: false, trackCombo: false }, rng);
+          if (!result.ok) continue;
+          handleCoreResult(result);
           log(`對手召喚了 ${card.name}。`, "ai");
-          if ((card.keywords || []).includes("battlecry") && card.trigger && ABILITY_EFFECTS[card.trigger]) {
-            flashKeyword2(card.uid, "戰吼");
-            const t = card.trigger === "damageAny1" && game.player.field.length
-                    ? [...game.player.field].sort((a, b) => a.health - b.health)[0] : null;
-            ABILITY_EFFECTS[card.trigger](game, ai, t);
-          }
           acted = true; break;
         } else {
-          const eff = SPELL_EFFECTS[card.effect];
           let used = false;
-          if (card.effect === "heal5" && ai.hp <= 22) { ai.mana -= card.cost; ai.hand.splice(idx, 1); healHero(ai, 5); log("對手施放治療術。", "ai"); used = true; }
-          else if ((card.effect === "aoe1" || card.effect === "aoe2") && game.player.field.length >= 2) { ai.mana -= card.cost; ai.hand.splice(idx, 1); aoe(game, game.player, card.effect === "aoe2" ? 2 : 1); log("對手施放範圍法術！", "ai"); used = true; }
-          else if ((card.effect === "damage3" || card.effect === "damage8") && game.player.field.length) { ai.mana -= card.cost; ai.hand.splice(idx, 1); const t = [...game.player.field].sort((a,b)=>b.attack-a.attack)[0]; dealDamageToMinion(game, t, card.effect === "damage8" ? 8 : 3); log("對手對你的隨從施放傷害法術。", "ai"); used = true; }
-          else if (card.effect === "mana2") { ai.mana -= card.cost; ai.hand.splice(idx, 1); ai.mana += 2; used = true; }
-          if (used) { cleanupField(game.player); cleanupField(game.enemy); acted = true; break; }
+          let targetUid = null;
+          if (card.effect === "heal5" && ai.hp <= 22) { used = true; }
+          else if ((card.effect === "aoe1" || card.effect === "aoe2") && game.player.field.length >= 2) { used = true; }
+          else if ((card.effect === "damage3" || card.effect === "damage8") && game.player.field.length) {
+            const t = [...game.player.field].sort((a,b)=>b.attack-a.attack)[0];
+            targetUid = t && t.uid;
+            used = true;
+          }
+          else if (card.effect === "mana2") { used = true; }
+          if (used) {
+            const result = Core.playCard(game, { side: "enemy", cardUid: card.uid, targetUid, burnMulligan: false, trackCombo: false }, rng);
+            if (!result.ok) continue;
+            handleCoreResult(result);
+            logAiSpell(card.effect);
+            acted = true; break;
+          }
         }
       }
     }
@@ -476,11 +376,10 @@
           if (threat) { animateAttackToward(atk.uid, threat.uid); resolveAttack(ai, atk, threat); }
           else {
             animateAttackToward(atk.uid, "playerHero");
-            game.player.hp -= atk.attack; floatDamage("playerHero", atk.attack);
-            // 連擊：第一次打臉後保留攻擊權，再打一次才收回
-            if ((atk.keywords || []).includes("windfury") && !atk._windUsed) atk._windUsed = true;
-            else { atk.canAttack = false; atk._windUsed = false; }
-            log(`對手的 ${atk.name} 攻擊你的英雄，造成 ${atk.attack} 點傷害！`, "ai");
+            const result = Core.resolveHeroAttack(game, { attackerSide: "enemy", attackerUid: atk.uid, defenderSide: "player" }, rng);
+            handleCoreResult(result);
+            if (result.ok) log(`對手的 ${atk.name} 攻擊你的英雄，造成 ${atk.attack} 點傷害！`, "ai");
+            else showCoreFailure(result);
           }
         }
         // 連擊（windfury）：第一擊後 canAttack 仍為 true，把它排回佇列吃第二擊
@@ -495,12 +394,7 @@
 
   function endAiTurn() {
     if (game.over) return;
-    regenerateField(game.enemy);     // AI 回合結束：AI 隨從回復
-    game.turn = "player";
-    game.player.manaMax = Math.min(MAX_MANA, game.player.manaMax + 1);
-    game.player.mana = game.player.manaMax;
-    drawCard(game.player);
-    game.player.field.forEach((m) => { m.canAttack = true; m._windUsed = false; }); // 重置連擊
+    handleCoreResult(Core.advanceTurn(game, { phase: "endEnemy" }, rng));
     log("輪到你了。", "me");
     render();
   }
@@ -614,6 +508,100 @@
     while (box.children.length > 8) box.removeChild(box.firstChild);
   }
   function flash(msg) { log("⚠️ " + msg, "me"); }
+  function rng() { return Math.random(); }
+
+  function hideMulliganButton() {
+    const mb = document.getElementById("mulliganBtn");
+    if (mb) mb.style.display = "none";
+  }
+
+  function handleCoreResult(result) {
+    if (!result || !Array.isArray(result.events)) return;
+    for (const event of result.events) {
+      if (event.type === "pendingCancelled") {
+        flash("已取消指定。");
+      } else if (event.type === "mulliganBurned") {
+        hideMulliganButton();
+      } else if (event.type === "combo") {
+        showCombo(event.uid, event.count);
+      } else if (event.type === "shieldBreak") {
+        flashCard(event.uid, "shield-break");
+        flashKeyword2(event.uid, "聖盾破裂");
+      } else if (event.type === "damage") {
+        flashCard(event.uid, "damaged");
+        floatDamage(event.uid, event.amount);
+      } else if (event.type === "poison") {
+        flashKeyword2(event.uid, "劇毒！");
+        flashCard(event.uid, "poisoned");
+      } else if (event.type === "shieldGain") {
+        flashCard(event.uid, "shield-gain");
+      } else if (event.type === "polymorph") {
+        flashKeyword2(event.uid, "變形！");
+      } else if (event.type === "dying") {
+        markDying(event.uid);
+      } else if (event.type === "deathrattle") {
+        flashKeyword2(event.uid, "亡語");
+      } else if (event.type === "battlecry") {
+        flashKeyword2(event.uid, "戰吼");
+      } else if (event.type === "ability" && event.trigger === "healHero2") {
+        flashKeyword(event.side === "player" ? "playerHero" : "enemyHero", "戰吼：+2 生命");
+      } else if (event.type === "heroDamage") {
+        floatDamage(event.defenderSide === "enemy" ? "enemyHero" : "playerHero", event.amount);
+      } else if (event.type === "regen") {
+        flashKeyword2(event.uid, "回復");
+        flashCard(event.uid, "regen");
+      } else if (event.type === "minionSummoned" && event.reason === "deathrattle") {
+        logDeathrattleSummon(event);
+      }
+    }
+  }
+
+  function showCombo(uid, count) {
+    if (count < 3) return;
+    const el = elFor(uid);
+    const r = el ? el.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0 };
+    flashCombo(r.left + r.width / 2, r.top, count);
+  }
+
+  function showCoreFailure(result) {
+    if (!result || !result.reason || result.reason === "cardNotFound") return;
+    if (result.reason === "insufficientMana") flash("法力不足！");
+    else if (result.reason === "fieldFull") flash("場上隨從已滿（最多 " + MAX_FIELD + " 隻）。");
+    else if (result.reason === "noTarget" || result.reason === "targetNotFound") flash("沒有可指定的目標。");
+    else if (result.reason === "illegalTarget") flash("必須先攻擊嘲諷隨從！");
+    else if (result.reason === "tauntBlocksHero") flash("敵方有嘲諷，不能直接攻擊英雄！");
+    else if (result.reason === "cannotAttack") flash("這個隨從本回合不能攻擊。");
+  }
+
+  function logSpellEffect(effect, target, sideKey) {
+    if (sideKey !== "player") return;
+    if (effect === "heal5") log("你施放治療術，恢復 5 點生命。", "me");
+    else if (effect === "aoe1") log("冰霜新星橫掃敵方！", "me");
+    else if (effect === "aoe2") log("閃電風暴橫掃敵方！", "me");
+    else if (effect === "mana2") log("法力湧動：本回合 +2 法力。", "me");
+    else if (effect === "giveShield" && target) log(`${target.name} 獲得聖盾。`, "me");
+  }
+
+  function logAiSpell(effect) {
+    if (effect === "heal5") log("對手施放治療術。", "ai");
+    else if (effect === "aoe1" || effect === "aoe2") log("對手施放範圍法術！", "ai");
+    else if (effect === "damage3" || effect === "damage8") log("對手對你的隨從施放傷害法術。", "ai");
+  }
+
+  function logDeathrattleSummon(event) {
+    if (event.name === "骷髏") log("亡語：召喚了骷髏(2/2)。", event.side === "player" ? "me" : "ai");
+    else if (event.name === "浴火鳳凰") log("亡語：鳳凰浴火重生！", event.side === "player" ? "me" : "ai");
+  }
+
+  function triggerAbilityUi(g, side, trigger, target, source) {
+    const result = Core.triggerAbility(g, {
+      side: side.side,
+      trigger,
+      targetUid: target && target.uid,
+      sourceUid: source && source.uid,
+    }, rng);
+    handleCoreResult(result);
+  }
 
   function elFor(uidOrId) {
     return document.querySelector(`.card[data-uid="${uidOrId}"]`) || document.getElementById(uidOrId);
@@ -698,17 +686,13 @@
   }
 
   // 戰績 + 金幣經濟（CP0-2）：閉合「打贏→賺金→開包→變強」迴圈。
-  // 讀檔一律用預設 shape 補齊欄位——battle.js 與 pack.js 都會寫同一個 key，
-  // 缺欄位直接運算會把金幣打成 NaN、bestStreak 變 undefined（存檔遷移的最小版）。
-  const STATS_DEFAULT = { wins: 0, losses: 0, streak: 0, bestStreak: 0, coins: 0, packsOpened: 0 };
+  // 存檔遷移集中在 core.js，battle.js 與 pack.js 共用同一個 versioned shape。
   function loadStats() {
     let raw = null;
     try { raw = JSON.parse(localStorage.getItem("card_stats_v1")); } catch {}
-    const s = Object.assign({}, STATS_DEFAULT, raw || {});
-    for (const k of Object.keys(STATS_DEFAULT)) if (typeof s[k] !== "number" || isNaN(s[k])) s[k] = STATS_DEFAULT[k];
-    return s;
+    return Core.migrateStats(raw);
   }
-  function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(s)); } catch {} }
+  function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(Core.migrateStats(s))); } catch {} }
 
   function showOverlay(title, win) {
     const ov = document.getElementById("overlay");

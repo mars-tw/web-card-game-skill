@@ -1,0 +1,601 @@
+/* =========================================================================
+ * core.js - 卡牌對戰核心規則層
+ *
+ * 這裡只處理狀態轉換與規則判定；不碰 DOM、時間或全域亂數。
+ * 需要亂數時一律由呼叫端注入 rng，方便瀏覽器 UI 與 Node 測試共用。
+ * ========================================================================= */
+
+(function exposeCardCore(root, factory) {
+  "use strict";
+  const api = factory();
+  if (root) root.CardCore = api;
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+})(typeof globalThis !== "undefined" ? globalThis : this, function buildCardCore() {
+  "use strict";
+
+  const MAX_MANA = 10;
+  const START_HP = 30;
+  const MAX_FIELD = 7;
+  const HAND_LIMIT = 8;
+  const STATS_VERSION = 2;
+  const CARD_TYPE = { MINION: "minion", SPELL: "spell" };
+  const STATS_DEFAULT = Object.freeze({
+    version: STATS_VERSION,
+    wins: 0,
+    losses: 0,
+    streak: 0,
+    bestStreak: 0,
+    coins: 0,
+    packsOpened: 0,
+  });
+
+  const SPELL_EFFECTS = Object.freeze({
+    damage3: Object.freeze({ needsTarget: "enemyMinion" }),
+    damage8: Object.freeze({ needsTarget: "enemyMinion" }),
+    heal5: Object.freeze({ needsTarget: null }),
+    aoe1: Object.freeze({ needsTarget: null }),
+    aoe2: Object.freeze({ needsTarget: null }),
+    mana2: Object.freeze({ needsTarget: null }),
+    giveShield: Object.freeze({ needsTarget: "friendlyMinion" }),
+    polymorph: Object.freeze({ needsTarget: "enemyMinion" }),
+  });
+
+  function migrateStats(raw) {
+    let source = raw;
+    if (typeof source === "string") {
+      try { source = JSON.parse(source); }
+      catch { source = null; }
+    }
+    if (!source || typeof source !== "object" || Array.isArray(source)) source = {};
+    const next = Object.assign({}, STATS_DEFAULT, source);
+    for (const key of Object.keys(STATS_DEFAULT)) {
+      if (typeof next[key] !== "number" || !Number.isFinite(next[key])) {
+        next[key] = STATS_DEFAULT[key];
+      }
+    }
+    next.version = STATS_VERSION;
+    return next;
+  }
+
+  function ok(events, extra) {
+    return Object.assign({ ok: true, reason: null, events: events || [] }, extra || {});
+  }
+
+  function fail(reason, events, extra) {
+    return Object.assign({ ok: false, reason, events: events || [] }, extra || {});
+  }
+
+  function nextRandom(rng) {
+    const value = typeof rng === "function" ? Number(rng()) : 0;
+    if (!Number.isFinite(value)) return 0;
+    return Math.abs(value % 1);
+  }
+
+  function makeUid(rng, prefix) {
+    return (prefix || "c") + nextRandom(rng).toString(36).slice(2, 9).padEnd(7, "0");
+  }
+
+  function keywords(card) {
+    return Array.isArray(card && card.keywords) ? card.keywords : [];
+  }
+
+  function hasKeyword(card, keyword) {
+    return keywords(card).includes(keyword);
+  }
+
+  function sideKeyOf(state, sideOrKey) {
+    if (sideOrKey === "enemy" || sideOrKey === "player") return sideOrKey;
+    if (sideOrKey && sideOrKey.side) return sideOrKey.side;
+    if (state && sideOrKey === state.enemy) return "enemy";
+    return "player";
+  }
+
+  function getSide(state, sideOrKey) {
+    return sideKeyOf(state, sideOrKey) === "enemy" ? state.enemy : state.player;
+  }
+
+  function opponentKey(sideKey) {
+    return sideKey === "enemy" ? "player" : "enemy";
+  }
+
+  function getOpponent(state, sideOrKey) {
+    return getSide(state, opponentKey(sideKeyOf(state, sideOrKey)));
+  }
+
+  function allMinions(state) {
+    return [
+      ...(state.player && state.player.field ? state.player.field : []),
+      ...(state.enemy && state.enemy.field ? state.enemy.field : []),
+    ];
+  }
+
+  function findMinion(state, uid) {
+    return allMinions(state).find((m) => m.uid === uid) || null;
+  }
+
+  function hasTaunt(field) {
+    return (field || []).some((m) => hasKeyword(m, "taunt"));
+  }
+
+  function isLegalTarget(defenderSide, target) {
+    if (!target) return false;
+    if (!hasTaunt(defenderSide.field)) return true;
+    return hasKeyword(target, "taunt");
+  }
+
+  function healHero(side, amount, events) {
+    const before = side.hp;
+    side.hp = Math.min(side.maxHp || START_HP, side.hp + amount);
+    if (events) events.push({ type: "heroHeal", side: side.side, amount: side.hp - before });
+  }
+
+  function addShield(minion, events) {
+    minion.shield = true;
+    if (events) events.push({ type: "shieldGain", uid: minion.uid });
+  }
+
+  function polymorph(minion, events) {
+    minion.name = "綿羊";
+    minion.attack = 1;
+    minion.health = 1;
+    minion.maxHealth = 1;
+    minion.emoji = "🐑";
+    minion.image = null;
+    minion.keywords = [];
+    minion.shield = false;
+    if (events) events.push({ type: "polymorph", uid: minion.uid });
+  }
+
+  function summonCard(side, card, rng, events, reason) {
+    if (!side || !card) return false;
+    if (side.field.length >= MAX_FIELD) {
+      if (events) events.push({ type: "summonBlocked", side: side.side, name: card.name, reason: "fieldFull" });
+      return false;
+    }
+    if (card.maxHealth == null) card.maxHealth = card.health;
+    if (!card.uid) card.uid = makeUid(rng, "c");
+    side.field.push(card);
+    if (events) events.push({ type: "minionSummoned", side: side.side, uid: card.uid, name: card.name, reason: reason || "play" });
+    return true;
+  }
+
+  function makeToken(name, attack, health, emoji) {
+    return {
+      id: "token",
+      name,
+      type: CARD_TYPE.MINION,
+      rarity: "common",
+      cost: 0,
+      attack,
+      health,
+      maxHealth: health,
+      emoji,
+      image: null,
+      keywords: [],
+      foil: false,
+    };
+  }
+
+  function applyDamageToMinion(minion, amount, source, events) {
+    if (!minion || amount <= 0) return;
+    if (minion.shield) {
+      minion.shield = false;
+      if (events) events.push({ type: "shieldBreak", uid: minion.uid });
+      return;
+    }
+    minion.health -= amount;
+    if (events) events.push({ type: "damage", uid: minion.uid, amount });
+    if (source && hasKeyword(source, "poison") && amount > 0 && minion.health > 0) {
+      minion.health = 0;
+      if (events) events.push({ type: "poison", uid: minion.uid });
+    }
+  }
+
+  function applyAbility(state, side, trigger, target, dyingCard, rng, events) {
+    if (!trigger) return;
+    if (events) events.push({ type: "ability", side: side.side, trigger, uid: dyingCard && dyingCard.uid, targetUid: target && target.uid });
+    if (trigger === "healHero2") {
+      healHero(side, 2, events);
+    } else if (trigger === "damageAny1") {
+      if (target) {
+        applyDamageToMinion(target, 1, null, events);
+        cleanupBoth(state, rng, events);
+      }
+    } else if (trigger === "aoeEnemy2") {
+      const foe = getOpponent(state, side);
+      for (const minion of [...foe.field]) applyDamageToMinion(minion, 2, null, events);
+      cleanupBoth(state, rng, events);
+    } else if (trigger === "summonSkeleton") {
+      summonCard(side, makeToken("骷髏", 2, 2, "☠️"), rng, events, "deathrattle");
+    } else if (trigger === "rebirth") {
+      summonCard(side, makeToken("浴火鳳凰", 5, 1, "🔥"), rng, events, "deathrattle");
+    }
+  }
+
+  function cleanupSide(state, side, rng, events) {
+    if (!side || !Array.isArray(side.field)) return;
+    const dying = side.field.filter((m) => m.health <= 0);
+    if (dying.length === 0) return;
+    side.field = side.field.filter((m) => m.health > 0);
+    for (const minion of dying) {
+      if (events) events.push({ type: "dying", side: side.side, uid: minion.uid, name: minion.name });
+      if (hasKeyword(minion, "deathrattle") && minion.trigger) {
+        if (events) events.push({ type: "deathrattle", side: side.side, uid: minion.uid, trigger: minion.trigger });
+        applyAbility(state, side, minion.trigger, null, minion, rng, events);
+      }
+    }
+  }
+
+  function cleanupBoth(state, rng, events) {
+    cleanupSide(state, state.player, rng, events);
+    cleanupSide(state, state.enemy, rng, events);
+  }
+
+  function cleanupField(state, action, rng) {
+    const events = [];
+    if (action && action.side) cleanupSide(state, getSide(state, action.side), rng, events);
+    else cleanupBoth(state, rng, events);
+    return ok(events);
+  }
+
+  function targetPoolForNeed(state, sideKey, need) {
+    if (need === "enemyMinion") return getOpponent(state, sideKey).field;
+    if (need === "friendlyMinion") return getSide(state, sideKey).field;
+    return [];
+  }
+
+  function findSpellTarget(state, sideKey, need, targetUid) {
+    return targetPoolForNeed(state, sideKey, need).find((m) => m.uid === targetUid) || null;
+  }
+
+  function applySpellEffect(state, sideKey, effect, target, rng, events) {
+    const side = getSide(state, sideKey);
+    const foe = getOpponent(state, sideKey);
+    if (effect === "damage3") {
+      applyDamageToMinion(target, 3, null, events);
+      cleanupBoth(state, rng, events);
+    } else if (effect === "damage8") {
+      applyDamageToMinion(target, 8, null, events);
+      cleanupBoth(state, rng, events);
+    } else if (effect === "heal5") {
+      healHero(side, 5, events);
+    } else if (effect === "aoe1") {
+      for (const minion of [...foe.field]) applyDamageToMinion(minion, 1, null, events);
+      cleanupBoth(state, rng, events);
+    } else if (effect === "aoe2") {
+      for (const minion of [...foe.field]) applyDamageToMinion(minion, 2, null, events);
+      cleanupBoth(state, rng, events);
+    } else if (effect === "mana2") {
+      side.mana += 2;
+      events.push({ type: "manaGain", side: side.side, amount: 2 });
+    } else if (effect === "giveShield") {
+      addShield(target, events);
+    } else if (effect === "polymorph") {
+      polymorph(target, events);
+    }
+  }
+
+  function burnMulligan(state, events) {
+    const wasAvailable = !state.mulliganUsed;
+    state.mulliganUsed = true;
+    if (wasAvailable && events) events.push({ type: "mulliganBurned" });
+  }
+
+  function registerCombo(state, uid, events) {
+    state.comboCount = (state.comboCount || 0) + 1;
+    if (events) events.push({ type: "combo", uid, count: state.comboCount });
+  }
+
+  function commitCardFromHand(side, index) {
+    return side.hand.splice(index, 1)[0];
+  }
+
+  function pickBattlecryTarget(state, sideKey, trigger) {
+    if (trigger === "damageAny1") {
+      const foe = getOpponent(state, sideKey);
+      return [...foe.field].sort((a, b) => a.health - b.health)[0] || null;
+    }
+    return null;
+  }
+
+  function playCard(state, action, rng) {
+    const events = [];
+    const sideKey = action && action.side ? action.side : "player";
+    const side = getSide(state, sideKey);
+    if (!action || !action.cardUid) return fail("missingCardUid", events);
+    if (state.over && !action.ignoreOver) return fail("gameOver", events);
+    if (state.turn && state.turn !== sideKey && !action.ignoreTurn) return fail("notYourTurn", events);
+
+    if (state.pendingSpell && action.handlePending !== false) {
+      const wasSame = state.pendingSpell.uid === action.cardUid;
+      state.pendingSpell = null;
+      events.push({ type: "pendingCancelled", uid: action.cardUid, wasSame });
+      if (wasSame) return fail("pendingCancelledSame", events);
+    }
+
+    const index = side.hand.findIndex((c) => c.uid === action.cardUid);
+    if (index === -1) return fail("cardNotFound", events);
+    const card = side.hand[index];
+    if (card.cost > side.mana) return fail("insufficientMana", events, { card });
+
+    if (card.type === CARD_TYPE.SPELL) {
+      const spec = SPELL_EFFECTS[card.effect] || { needsTarget: null };
+      if (spec.needsTarget && !action.targetUid) {
+        const pool = targetPoolForNeed(state, sideKey, spec.needsTarget);
+        if (pool.length === 0) return fail("noTarget", events, { card, need: spec.needsTarget });
+        state.pendingSpell = { uid: card.uid, need: spec.needsTarget, side: sideKey };
+        events.push({ type: "spellPending", uid: card.uid, need: spec.needsTarget, effect: card.effect });
+        return ok(events, { card });
+      }
+      const target = spec.needsTarget ? findSpellTarget(state, sideKey, spec.needsTarget, action.targetUid) : null;
+      if (spec.needsTarget && !target) return fail("targetNotFound", events, { card, need: spec.needsTarget });
+      side.mana -= card.cost;
+      commitCardFromHand(side, index);
+      if (action.burnMulligan !== false) burnMulligan(state, events);
+      if (action.trackCombo !== false) registerCombo(state, card.uid, events);
+      events.push({ type: "spellCast", side: side.side, uid: card.uid, effect: card.effect, targetUid: target && target.uid });
+      applySpellEffect(state, sideKey, card.effect, target, rng, events);
+      return ok(events, { card, target });
+    }
+
+    if (side.field.length >= MAX_FIELD) return fail("fieldFull", events, { card });
+    side.mana -= card.cost;
+    commitCardFromHand(side, index);
+    if (action.burnMulligan !== false) burnMulligan(state, events);
+    if (action.trackCombo !== false) registerCombo(state, card.uid, events);
+    card.canAttack = hasKeyword(card, "charge");
+    card.justPlayed = true;
+    if (hasKeyword(card, "divineshield")) card.shield = true;
+    summonCard(side, card, rng, events, "play");
+
+    if (hasKeyword(card, "battlecry") && card.trigger) {
+      const target = pickBattlecryTarget(state, sideKey, card.trigger);
+      events.push({ type: "battlecry", side: side.side, uid: card.uid, trigger: card.trigger, targetUid: target && target.uid });
+      applyAbility(state, side, card.trigger, target, card, rng, events);
+    }
+    return ok(events, { card });
+  }
+
+  function resolveTarget(state, action, rng) {
+    const events = [];
+    if (action && action.mode === "attack") {
+      const defender = getSide(state, action.defenderSide || opponentKey(action.attackerSide || "player"));
+      const target = defender.field.find((m) => m.uid === action.targetUid) || null;
+      return isLegalTarget(defender, target) ? ok(events, { target }) : fail("illegalTarget", events, { target });
+    }
+
+    const pending = state.pendingSpell;
+    if (!pending) return fail("noPendingSpell", events);
+    const sideKey = pending.side || (action && action.side) || "player";
+    const side = getSide(state, sideKey);
+    const index = side.hand.findIndex((c) => c.uid === pending.uid);
+    if (index === -1) {
+      state.pendingSpell = null;
+      events.push({ type: "pendingMissing", uid: pending.uid });
+      return fail("cardNotFound", events);
+    }
+    const card = side.hand[index];
+    const spec = SPELL_EFFECTS[card.effect] || { needsTarget: null };
+    if (spec.needsTarget !== pending.need) {
+      state.pendingSpell = null;
+      events.push({ type: "pendingInvalid", uid: pending.uid });
+      return fail("pendingInvalid", events, { card });
+    }
+    const target = findSpellTarget(state, sideKey, pending.need, action && action.targetUid);
+    if (!target) return fail("targetNotFound", events, { card, need: pending.need });
+    if (card.cost > side.mana) {
+      state.pendingSpell = null;
+      events.push({ type: "pendingCancelled", uid: pending.uid, wasSame: false });
+      return fail("insufficientMana", events, { card });
+    }
+    side.mana -= card.cost;
+    commitCardFromHand(side, index);
+    burnMulligan(state, events);
+    registerCombo(state, card.uid, events);
+    state.pendingSpell = null;
+    events.push({ type: "spellCast", side: side.side, uid: card.uid, effect: card.effect, targetUid: target.uid });
+    applySpellEffect(state, sideKey, card.effect, target, rng, events);
+    return ok(events, { card, target });
+  }
+
+  function spendAttack(attacker, events) {
+    if (hasKeyword(attacker, "windfury") && !attacker._windUsed) {
+      attacker._windUsed = true;
+      if (events) events.push({ type: "windfuryReady", uid: attacker.uid });
+    } else {
+      attacker.canAttack = false;
+      attacker._windUsed = false;
+      if (events) events.push({ type: "attackSpent", uid: attacker.uid });
+    }
+  }
+
+  function resolveAttack(state, action, rng) {
+    const events = [];
+    const attackerSideKey = action && action.attackerSide ? action.attackerSide : "player";
+    const attackerSide = getSide(state, attackerSideKey);
+    const defenderSide = getSide(state, action && action.defenderSide ? action.defenderSide : opponentKey(attackerSideKey));
+    const attacker = attackerSide.field.find((m) => m.uid === action.attackerUid) || null;
+    const defender = defenderSide.field.find((m) => m.uid === action.defenderUid) || null;
+    if (!attacker || !defender) return fail("targetNotFound", events, { attacker, defender });
+    if (!action.ignoreCanAttack && !attacker.canAttack) return fail("cannotAttack", events, { attacker, defender });
+    if (!action.ignoreTaunt && !isLegalTarget(defenderSide, defender)) return fail("illegalTarget", events, { attacker, defender });
+
+    events.push({ type: "attack", attackerSide: attackerSide.side, attackerUid: attacker.uid, defenderUid: defender.uid });
+    applyDamageToMinion(defender, attacker.attack, attacker, events);
+    if (defender.attack > 0) applyDamageToMinion(attacker, defender.attack, defender, events);
+    spendAttack(attacker, events);
+    cleanupBoth(state, rng, events);
+    return ok(events, { attacker, defender });
+  }
+
+  function resolveHeroAttack(state, action, rng) {
+    const events = [];
+    const attackerSideKey = action && action.attackerSide ? action.attackerSide : "player";
+    const defenderSideKey = action && action.defenderSide ? action.defenderSide : opponentKey(attackerSideKey);
+    const attackerSide = getSide(state, attackerSideKey);
+    const defenderSide = getSide(state, defenderSideKey);
+    const attacker = attackerSide.field.find((m) => m.uid === action.attackerUid) || null;
+    if (!attacker) return fail("targetNotFound", events, { attacker });
+    if (!action.ignoreCanAttack && !attacker.canAttack) return fail("cannotAttack", events, { attacker });
+    if (!action.ignoreTaunt && hasTaunt(defenderSide.field)) return fail("tauntBlocksHero", events, { attacker });
+    defenderSide.hp -= attacker.attack;
+    events.push({ type: "heroDamage", attackerSide: attackerSide.side, defenderSide: defenderSide.side, attackerUid: attacker.uid, amount: attacker.attack });
+    spendAttack(attacker, events);
+    return ok(events, { attacker });
+  }
+
+  function drawCardInternal(side, rng, events) {
+    if (!side || side.deck.length === 0) return null;
+    if (side.hand.length >= HAND_LIMIT) {
+      const burned = side.deck.pop();
+      if (events) events.push({ type: "handBurn", side: side.side, cardId: burned && burned.id });
+      return null;
+    }
+    const card = side.deck.pop();
+    if (!card.uid) card.uid = makeUid(rng, "c");
+    card.maxHealth = card.health;
+    side.hand.push(card);
+    if (events) events.push({ type: "draw", side: side.side, uid: card.uid, cardId: card.id });
+    return card;
+  }
+
+  function drawCard(state, action, rng) {
+    const events = [];
+    const card = drawCardInternal(getSide(state, action && action.side), rng, events);
+    return ok(events, { card });
+  }
+
+  function resetAttack(side, events) {
+    for (const minion of side.field) {
+      minion.canAttack = true;
+      minion._windUsed = false;
+      if (events) events.push({ type: "attackReady", side: side.side, uid: minion.uid });
+    }
+  }
+
+  function regenerateSide(side, events) {
+    for (const minion of side.field) {
+      if (hasKeyword(minion, "regenerate") && minion.health < minion.maxHealth) {
+        minion.health = minion.maxHealth;
+        if (events) events.push({ type: "regen", side: side.side, uid: minion.uid });
+      }
+    }
+  }
+
+  function regenerateField(state, action) {
+    const events = [];
+    regenerateSide(getSide(state, action && action.side), events);
+    return ok(events);
+  }
+
+  function advanceTurn(state, action, rng) {
+    const events = [];
+    const phase = action && action.phase;
+    if (phase === "endPlayer") {
+      burnMulligan(state, events);
+      state.selected = null;
+      state.pendingSpell = null;
+      state.comboCount = 0;
+      regenerateSide(state.player, events);
+      state.turn = "enemy";
+      events.push({ type: "turnChanged", turn: "enemy" });
+    } else if (phase === "startEnemy") {
+      const enemy = state.enemy;
+      enemy.manaMax = Math.min(MAX_MANA, enemy.manaMax + 1);
+      enemy.mana = enemy.manaMax;
+      drawCardInternal(enemy, rng, events);
+      resetAttack(enemy, events);
+    } else if (phase === "endEnemy") {
+      regenerateSide(state.enemy, events);
+      state.turn = "player";
+      state.player.manaMax = Math.min(MAX_MANA, state.player.manaMax + 1);
+      state.player.mana = state.player.manaMax;
+      drawCardInternal(state.player, rng, events);
+      resetAttack(state.player, events);
+      events.push({ type: "turnChanged", turn: "player" });
+    } else {
+      return fail("unknownTurnPhase", events);
+    }
+    return ok(events);
+  }
+
+  function castSpellEffect(state, action, rng) {
+    const events = [];
+    const sideKey = action && action.side ? action.side : "player";
+    const spec = SPELL_EFFECTS[action.effect] || { needsTarget: null };
+    const target = spec.needsTarget ? findSpellTarget(state, sideKey, spec.needsTarget, action.targetUid) : null;
+    if (spec.needsTarget && !target) return fail("targetNotFound", events);
+    applySpellEffect(state, sideKey, action.effect, target, rng, events);
+    return ok(events, { target });
+  }
+
+  function triggerAbility(state, action, rng) {
+    const events = [];
+    const sideKey = action && action.side ? action.side : "player";
+    const side = getSide(state, sideKey);
+    const target = action && action.targetUid ? findMinion(state, action.targetUid) : null;
+    const source = action && action.sourceUid ? findMinion(state, action.sourceUid) : null;
+    applyAbility(state, side, action && action.trigger, target, source, rng, events);
+    return ok(events, { target, source });
+  }
+
+  function applyDamage(state, action, rng) {
+    const events = [];
+    const target = findMinion(state, action && action.targetUid);
+    const source = action && action.sourceUid ? findMinion(state, action.sourceUid) : null;
+    if (!target) return fail("targetNotFound", events);
+    applyDamageToMinion(target, action.amount || 0, source, events);
+    if (action && action.cleanup) cleanupBoth(state, rng, events);
+    return ok(events, { target, source });
+  }
+
+  function dealDamageToMinion(state, action, rng) {
+    const res = applyDamage(state, Object.assign({}, action, { cleanup: true }), rng);
+    return res;
+  }
+
+  function aoe(state, action, rng) {
+    const events = [];
+    const side = getSide(state, action && action.side);
+    for (const minion of [...side.field]) applyDamageToMinion(minion, action.amount || 0, null, events);
+    cleanupBoth(state, rng, events);
+    return ok(events);
+  }
+
+  function summon(state, action, rng) {
+    const events = [];
+    const summoned = summonCard(getSide(state, action && action.side), action && action.card, rng, events, action && action.reason);
+    return summoned ? ok(events, { card: action.card }) : fail("fieldFull", events, { card: action && action.card });
+  }
+
+  return {
+    MAX_MANA,
+    START_HP,
+    MAX_FIELD,
+    HAND_LIMIT,
+    STATS_VERSION,
+    STATS_DEFAULT,
+    CARD_TYPE,
+    SPELL_EFFECTS,
+    migrateStats,
+    hasTaunt,
+    isLegalTarget,
+    playCard,
+    resolveTarget,
+    resolveAttack,
+    resolveHeroAttack,
+    advanceTurn,
+    cleanupField,
+    drawCard,
+    regenerateField,
+    castSpellEffect,
+    triggerAbility,
+    applyDamage,
+    dealDamageToMinion,
+    aoe,
+    summon,
+    healHero,
+    addShield,
+    polymorph,
+  };
+});

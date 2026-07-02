@@ -11,6 +11,8 @@
 
   const PACK_SIZE = 5;
   const SAVE_KEY = "cardpack_collection_v2";
+  const Core = window.CardCore;
+  if (!Core) throw new Error("CardCore 未載入");
 
   // collection: { collectKey: count }，collectKey 由 cards.js 提供（含 #foil）
   let collection = loadCollection();
@@ -24,17 +26,13 @@
   }
 
   const PACK_COST = 100; // 開包成本（用對戰賺的金幣，CP0-2 經濟閉環）
-  // 讀檔預設 shape 必須跟 battle.js 的 STATS_DEFAULT 一致並補齊欄位——
-  // 兩邊寫同一個 localStorage key，shape 不一致會把金幣打成 NaN、連勝紀錄變 undefined
-  const STATS_DEFAULT = { wins: 0, losses: 0, streak: 0, bestStreak: 0, coins: 0, packsOpened: 0 };
+  // stats 存檔由 core.js 統一版本化與遷移，battle.js / pack.js 共用同一個 shape。
   function loadStats() {
     let raw = null;
     try { raw = JSON.parse(localStorage.getItem("card_stats_v1")); } catch {}
-    const s = Object.assign({}, STATS_DEFAULT, raw || {});
-    for (const k of Object.keys(STATS_DEFAULT)) if (typeof s[k] !== "number" || isNaN(s[k])) s[k] = STATS_DEFAULT[k];
-    return s;
+    return Core.migrateStats(raw);
   }
-  function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(s)); } catch {} }
+  function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(Core.migrateStats(s))); } catch {} }
 
   function openPack() {
     const stats = loadStats();
