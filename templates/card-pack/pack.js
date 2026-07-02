@@ -11,11 +11,13 @@
 
   const PACK_SIZE = 5;
   const SAVE_KEY = "cardpack_collection_v2";
+  const DECK_KEY = "card_deck_v1";
   const Core = window.CardCore;
   if (!Core) throw new Error("CardCore 未載入");
 
   // collection: { collectKey: count }，collectKey 由 cards.js 提供（含 #foil）
   let collection = loadCollection();
+  let deckState = loadDeck();
 
   function loadCollection() {
     try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || {}; }
@@ -33,6 +35,17 @@
     return Core.migrateStats(raw);
   }
   function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(Core.migrateStats(s))); } catch {} }
+
+  function loadDeck() {
+    let raw = null;
+    try { raw = JSON.parse(localStorage.getItem(DECK_KEY)); } catch {}
+    return Core.migrateDeck(raw);
+  }
+  function saveDeckState() {
+    const migrated = Core.migrateDeck(deckState);
+    deckState = migrated;
+    try { localStorage.setItem(DECK_KEY, JSON.stringify(migrated)); } catch {}
+  }
 
   function openPack() {
     const stats = loadStats();
@@ -201,6 +214,141 @@
     });
 
     document.getElementById("progress").textContent = `${owned} / ${totalSlots} 已收集（含閃卡）`;
+    renderDeckEditor();
+  }
+
+  function totalOwned(cardId) {
+    const normal = Number(collection[cardId] || 0);
+    const foil = Number(collection[cardId + "#foil"] || 0);
+    return (Number.isFinite(normal) ? normal : 0) + (Number.isFinite(foil) ? foil : 0);
+  }
+
+  function deckCounts() {
+    return deckState.cards.reduce((acc, id) => {
+      acc[id] = (acc[id] || 0) + 1;
+      return acc;
+    }, Object.create(null));
+  }
+
+  function cardSort(a, b) {
+    return (a.cost - b.cost) || a.name.localeCompare(b.name, "zh-Hant") || a.id.localeCompare(b.id);
+  }
+
+  function cardArt(card) {
+    return card.image ? `<img src="${card.image}" alt="">` : card.emoji;
+  }
+
+  function renderDeckEditor() {
+    const collectionList = document.getElementById("deckCollectionList");
+    const deckList = document.getElementById("deckList");
+    const deckCount = document.getElementById("deckCount");
+    const errorsBox = document.getElementById("deckErrors");
+    const saveBtn = document.getElementById("saveDeckBtn");
+    if (!collectionList || !deckList || !deckCount || !errorsBox || !saveBtn) return;
+
+    deckState = Core.migrateDeck(deckState);
+    const counts = deckCounts();
+    const validation = Core.validateDeck(deckState.cards, collection, CARD_POOL);
+    deckCount.textContent = `${deckState.cards.length}/${Core.DECK_SIZE}`;
+    saveBtn.disabled = !validation.ok;
+
+    collectionList.innerHTML = "";
+    [...CARD_POOL].sort(cardSort).forEach((card) => {
+      const owned = totalOwned(card.id);
+      const inDeck = counts[card.id] || 0;
+      const maxCopies = card.rarity === "legendary" ? 1 : 2;
+      const row = document.createElement("div");
+      row.className = "deck-card-row" + (owned <= 0 ? " locked" : "") + (inDeck > Math.min(owned, maxCopies) ? " over" : "");
+      row.dataset.cardId = card.id;
+      row.innerHTML = `
+        <div class="deck-art">${cardArt(card)}</div>
+        <div>
+          <div class="deck-name">${card.name}</div>
+          <div class="deck-meta">${card.cost} 費 · ${RARITY[card.rarity]?.label || card.rarity} · 擁有 ${owned} · 牌組 ${inDeck}</div>
+        </div>
+        <button class="deck-add-btn" data-card-id="${card.id}">加入</button>`;
+      const btn = row.querySelector("button");
+      btn.disabled = owned <= 0 || deckState.cards.length >= Core.DECK_SIZE;
+      btn.onclick = () => addDeckCard(card.id);
+      collectionList.appendChild(row);
+    });
+
+    deckList.innerHTML = "";
+    const grouped = Object.keys(counts)
+      .map((id) => ({ card: getCardById(id), count: counts[id] }))
+      .filter((item) => item.card)
+      .sort((a, b) => cardSort(a.card, b.card));
+    if (grouped.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "deck-empty";
+      empty.textContent = "尚未加入卡牌。";
+      deckList.appendChild(empty);
+    } else {
+      grouped.forEach(({ card, count }) => {
+        const owned = totalOwned(card.id);
+        const maxCopies = card.rarity === "legendary" ? 1 : 2;
+        const row = document.createElement("div");
+        row.className = "deck-card-row" + (count > maxCopies || count > owned ? " over" : "");
+        row.dataset.cardId = card.id;
+        row.innerHTML = `
+          <div class="deck-art">${cardArt(card)}</div>
+          <div>
+            <div class="deck-name">${card.name} ×${count}</div>
+            <div class="deck-meta">${card.cost} 費 · 擁有 ${owned} · 上限 ${maxCopies}</div>
+          </div>
+          <button class="deck-remove-btn" data-card-id="${card.id}">移除</button>`;
+        row.querySelector("button").onclick = () => removeDeckCard(card.id);
+        deckList.appendChild(row);
+      });
+    }
+
+    errorsBox.classList.toggle("ok", validation.ok);
+    errorsBox.innerHTML = validation.ok
+      ? "<div>牌組合法，可以儲存並帶進對戰。</div>"
+      : validation.errors.map((msg) => `<div>${msg}</div>`).join("");
+  }
+
+  function addDeckCard(cardId) {
+    if (deckState.cards.length >= Core.DECK_SIZE || totalOwned(cardId) <= 0) return;
+    deckState.cards.push(cardId);
+    setDeckMessage("");
+    renderDeckEditor();
+  }
+
+  function removeDeckCard(cardId) {
+    const idx = deckState.cards.indexOf(cardId);
+    if (idx === -1) return;
+    deckState.cards.splice(idx, 1);
+    setDeckMessage("");
+    renderDeckEditor();
+  }
+
+  function clearDeck() {
+    deckState.cards = [];
+    setDeckMessage("");
+    renderDeckEditor();
+  }
+
+  function saveDeck() {
+    const validation = Core.validateDeck(deckState.cards, collection, CARD_POOL);
+    if (!validation.ok) { renderDeckEditor(); return false; }
+    saveDeckState();
+    setDeckMessage("牌組已儲存。");
+    renderDeckEditor();
+    return true;
+  }
+
+  function setDeckMessage(message) {
+    const el = document.getElementById("deckSaveMsg");
+    if (el) el.textContent = message || "";
+  }
+
+  function goBattle() {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: "switchTab", target: "battle" }, "*");
+    } else {
+      window.location.href = "../card-battle/index.html";
+    }
   }
   // 分解金幣值（依稀有度）
   const DISMANTLE_VALUE = { common: 10, rare: 30, epic: 80, legendary: 200 };
@@ -235,13 +383,10 @@
   // ===== 綁定 =====
   document.getElementById("pack").onclick = openPack;
   document.getElementById("againBtn").onclick = resetForNextPack;
-  document.getElementById("toBattleBtn").onclick = () => {
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage({ type: "switchTab", target: "battle" }, "*");
-    } else {
-      window.location.href = "../card-battle/index.html";
-    }
-  };
+  document.getElementById("toBattleBtn").onclick = goBattle;
+  document.getElementById("goBattleTop").onclick = goBattle;
+  document.getElementById("saveDeckBtn").onclick = saveDeck;
+  document.getElementById("clearDeckBtn").onclick = clearDeck;
 
   // 更新金幣顯示（CP0-2）
   function updateCoinDisplay() {
@@ -251,6 +396,16 @@
 
   renderCollection();
   updateCoinDisplay();
+
+  window.__deckTest = {
+    deck: () => Core.migrateDeck(deckState),
+    validation: () => Core.validateDeck(deckState.cards, collection, CARD_POOL),
+    add: addDeckCard,
+    save: saveDeck,
+    clear: clearDeck,
+    render: renderDeckEditor,
+    owned: totalOwned,
+  };
 
   // 對戰 iframe 打完仗寫入金幣時，這頁（另一個 window）會收到 storage 事件——即時刷新餘額，
   // 不然兩個 iframe 常駐不重載，切回來看到的是舊值

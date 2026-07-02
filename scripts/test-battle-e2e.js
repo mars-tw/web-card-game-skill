@@ -8,6 +8,7 @@
  *   4. 壞掉的 card_stats_v1 存檔讀回來欄位補齊，金幣不會 NaN
  *   5. 場上隨從上限 MAX_FIELD；亡語 token 在死者移除後才召喚（滿場邊界正確）
  *   6. 桌機 1280×900 + 手機 390×844 都跑；390px 無水平溢出；全程無 console error
+ *   7. Stage 3 牌組：合法存檔牌組進對戰、非法牌組 fallback、卡包頁可編輯並保存牌組
  * 執行：node scripts/test-battle-e2e.js   （需 devDependency: playwright）
  * ========================================================================= */
 const http = require("http");
@@ -20,6 +21,28 @@ const MIME = { ".html": "text/html", ".js": "application/javascript", ".json": "
 let failed = 0;
 function assert(cond, msg) { if (cond) console.log("  ✓ " + msg); else { console.error("  ✗ " + msg); failed++; } }
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const LEGAL_DECK_IDS = [
+  "footman", "footman", "archer", "archer", "wolf", "wolf", "cleric", "cleric", "knight", "knight",
+  "mage", "mage", "raptor", "raptor", "guardian", "guardian", "golem", "golem", "griffin", "griffin",
+];
+
+function countIds(ids) {
+  return ids.reduce((acc, id) => {
+    acc[id] = (acc[id] || 0) + 1;
+    return acc;
+  }, {});
+}
+
+function sameMultiset(a, b) {
+  const ca = countIds(a || []);
+  const cb = countIds(b || []);
+  const keys = new Set([...Object.keys(ca), ...Object.keys(cb)]);
+  return [...keys].every((key) => ca[key] === cb[key]);
+}
+
+function collectionForDeck(ids) {
+  return countIds(ids);
+}
 
 function startServer() {
   return new Promise((resolve) => {
@@ -55,6 +78,7 @@ async function run() {
   const server = await startServer();
   const port = server.address().port;
   const base = "http://127.0.0.1:" + port + "/templates/card-battle/index.html";
+  const basePack = "http://127.0.0.1:" + port + "/templates/card-pack/index.html";
   const browser = await chromium.launch();
 
   try {
@@ -80,6 +104,31 @@ async function run() {
     });
     assert(boot.turn === "player", "開局輪到玩家");
     assert(boot.playerHand >= 3, `玩家起手 ≥3 張（${boot.playerHand}）`);
+
+    // Stage 3：合法存檔牌組進對戰；非法存檔不擋新局，改走既有 fallback 牌庫
+    const legalDeckCheck = await page.evaluate(({ deckIds, collection }) => {
+      localStorage.setItem("cardpack_collection_v2", JSON.stringify(collection));
+      localStorage.setItem("card_deck_v1", JSON.stringify({ version: 1, cards: deckIds }));
+      window.__newGame();
+      return window.__test.deckInfo();
+    }, { deckIds: LEGAL_DECK_IDS, collection: collectionForDeck(LEGAL_DECK_IDS) });
+    assert(legalDeckCheck.source === "saved", "合法 card_deck_v1 會作為玩家對戰牌庫");
+    assert(legalDeckCheck.ids.length === 20 && sameMultiset(legalDeckCheck.ids, LEGAL_DECK_IDS), "玩家牌庫 20 張皆來自儲存牌組");
+    assert(legalDeckCheck.liveIds.length === 20 && sameMultiset(legalDeckCheck.liveIds, LEGAL_DECK_IDS), "開局抽牌後手牌加牌庫仍完整對應儲存牌組");
+
+    const invalidDeckCheck = await page.evaluate(({ deckIds, collection }) => {
+      localStorage.setItem("cardpack_collection_v2", JSON.stringify(collection));
+      localStorage.setItem("card_deck_v1", JSON.stringify({ version: 1, cards: deckIds.slice(0, 19) }));
+      window.__newGame();
+      return window.__test.deckInfo();
+    }, { deckIds: LEGAL_DECK_IDS, collection: collectionForDeck(LEGAL_DECK_IDS) });
+    assert(invalidDeckCheck.source === "fallback", "非法 card_deck_v1 會 fallback，不阻擋開局");
+
+    await page.evaluate(() => localStorage.clear());
+    await page.reload();
+    await page.waitForFunction(() => window.__test && window.__test.game);
+    await sleep(300);
+    await page.evaluate(() => document.querySelectorAll(".overlay.show, .tutorial-overlay, #tutorialOverlay").forEach((el) => el.classList.remove("show")));
 
     // 2. Stage 1 核心修復：AI 隨從攻擊權每回合重置
     //    模擬「AI 上回合召喚的非衝鋒隨從」（canAttack=false 掛在場上），
@@ -194,6 +243,36 @@ async function run() {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     assert(overflow <= 2, `無水平溢出（${overflow}）`);
 
+    // Stage 3：卡包頁牌組編輯器可用真實點擊加入、儲存，重載後仍存在
+    await page.evaluate(({ collection }) => {
+      localStorage.clear();
+      localStorage.setItem("cardpack_collection_v2", JSON.stringify(collection));
+    }, { collection: collectionForDeck(LEGAL_DECK_IDS) });
+    await page.goto(basePack);
+    await page.waitForFunction(() => window.__deckTest && document.getElementById("deckCollectionList"));
+    for (const id of LEGAL_DECK_IDS) {
+      await page.locator(`button.deck-add-btn[data-card-id="${id}"]`).click();
+    }
+    await page.locator("#saveDeckBtn").click();
+    const deckSaved = await page.evaluate(() => {
+      const saved = JSON.parse(localStorage.getItem("card_deck_v1") || "{}");
+      return {
+        saved,
+        validation: window.__deckTest.validation(),
+        message: document.getElementById("deckSaveMsg").textContent,
+      };
+    });
+    assert(deckSaved.validation.ok === true && sameMultiset(deckSaved.saved.cards, LEGAL_DECK_IDS), "牌組編輯器可加入 20 張合法牌並儲存");
+    assert(deckSaved.message === "牌組已儲存。", "儲存成功訊息顯示正確");
+    await page.reload();
+    await page.waitForFunction(() => window.__deckTest && document.getElementById("deckList"));
+    const deckReloaded = await page.evaluate(() => ({
+      deck: window.__deckTest.deck(),
+      validation: window.__deckTest.validation(),
+      countText: document.getElementById("deckCount").textContent,
+    }));
+    assert(deckReloaded.validation.ok === true && deckReloaded.countText === "20/20" && sameMultiset(deckReloaded.deck.cards, LEGAL_DECK_IDS), "重載後牌組仍保留並維持合法");
+
     // 8. 全程無 console error / pageerror
     assert(errors.length === 0, "無 console 錯誤 / pageerror" + (errors.length ? "：" + errors.slice(0, 3).join(" | ") : ""));
 
@@ -204,7 +283,7 @@ async function run() {
     server.close();
   }
   if (failed > 0) { console.error("\n❌ " + failed + " 項失敗"); process.exit(1); }
-  console.log("\n✅ 卡牌對戰 Stage 1 E2E 全部通過");
+  console.log("\n✅ 卡牌對戰 Stage 3 E2E 全部通過");
 }
 
 run().catch((err) => { console.error(err); process.exit(1); });

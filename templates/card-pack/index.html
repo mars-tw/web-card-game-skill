@@ -116,6 +116,8 @@
     box-shadow:0 4px 12px color-mix(in srgb, var(--accent) 40%, transparent); transition:transform .1s; }
   button:hover { transform:scale(1.05); }
   button.ghost { background:#2a3645; color:var(--ink); box-shadow:none; }
+  button:disabled { filter:grayscale(1) brightness(.65); cursor:not-allowed; transform:none; }
+  .top-actions { display:flex; justify-content:center; gap:10px; padding:8px 12px 2px; }
 
   .summary { font-size:13px; color:var(--muted); text-align:center; min-height:20px; }
   .summary .new { color:#4ade80; font-weight:700; } .summary .dup { color:#f59e0b; }
@@ -141,6 +143,39 @@
   @media (hover:none) { .slot .dismantle-btn { opacity:1; } } /* 觸控裝置常駐顯示 */
   .slot .fstar { position:absolute; top:2px; right:3px; font-size:9px; color:gold; }
 
+  .deck-builder { width:min(1100px,94vw); padding:16px; }
+  .deck-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; flex-wrap:wrap; }
+  .deck-head h2 { font-size:18px; color:var(--ink); }
+  .deck-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .deck-count { color:#facc15; font-weight:900; min-width:54px; text-align:right; }
+  .deck-layout { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr); gap:12px; align-items:start; }
+  .deck-panel { background:rgba(13,17,23,.72); border:1px solid rgba(255,255,255,.12); border-radius:8px; padding:12px; min-width:0; }
+  .deck-panel h3 { font-size:14px; color:var(--muted); margin-bottom:8px; display:flex; justify-content:space-between; gap:8px; }
+  .deck-card-list { display:flex; flex-direction:column; gap:7px; max-height:460px; overflow:auto; padding-right:2px; }
+  .deck-card-row { display:grid; grid-template-columns:34px minmax(0,1fr) auto; gap:8px; align-items:center;
+    min-height:46px; padding:7px; border-radius:8px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); }
+  .deck-card-row.locked { opacity:.48; }
+  .deck-card-row.over { border-color:#f87171; }
+  .deck-art { width:34px; height:34px; border-radius:6px; display:flex; align-items:center; justify-content:center;
+    overflow:hidden; background:rgba(255,255,255,.08); font-size:22px; }
+  .deck-art img { width:100%; height:100%; object-fit:cover; }
+  .deck-name { font-size:13px; font-weight:800; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+  .deck-meta { font-size:11px; color:var(--muted); margin-top:2px; }
+  .deck-add-btn, .deck-remove-btn { min-width:42px; padding:7px 10px; border-radius:8px; font-size:13px; }
+  .deck-errors { margin-top:10px; display:flex; flex-direction:column; gap:4px; color:#fca5a5; font-size:12px; line-height:1.35; }
+  .deck-errors.ok { color:#86efac; }
+  .deck-save-msg { color:#86efac; font-size:12px; min-height:16px; }
+  .deck-empty { color:var(--muted); font-size:13px; padding:12px; text-align:center; }
+
+  @media (max-width:700px) {
+    .deck-layout { grid-template-columns:1fr; }
+    .deck-card-list { max-height:360px; }
+    .deck-card-row { grid-template-columns:32px minmax(0,1fr) auto; }
+    .deck-head { align-items:flex-start; }
+    .deck-actions { width:100%; }
+    .deck-actions button { flex:1 1 auto; padding-inline:12px; }
+  }
+
   @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
   @keyframes foilShine { 0%{background-position:0% 0%} 100%{background-position:250% 250%} }
   @keyframes packBurst { to { transform:scale(1.4); opacity:0; } }
@@ -153,6 +188,9 @@
 <body>
   <header>🎴 開卡包 · CARD PACK 🎴</header>
   <div class="coin-bar">💰 金幣 <span id="coinBalance">0</span> · 一包 100 金（首包免費）</div>
+  <div class="top-actions">
+    <button class="ghost" id="goBattleTop">前往對戰</button>
+  </div>
 
   <div class="pack-stage" id="packStage">
     <div class="pack" id="pack">
@@ -169,6 +207,29 @@
     <button id="againBtn">再開一包 🎁</button>
     <button class="ghost" id="toBattleBtn">前往對戰 →</button>
   </div>
+
+  <section class="deck-builder" id="deckBuilder">
+    <div class="deck-head">
+      <h2>牌組編輯器</h2>
+      <div class="deck-actions">
+        <span class="deck-count" id="deckCount">0/20</span>
+        <button id="saveDeckBtn">儲存牌組</button>
+        <button class="ghost" id="clearDeckBtn">清空</button>
+      </div>
+    </div>
+    <div class="deck-layout">
+      <div class="deck-panel">
+        <h3><span>收藏清單</span><span>點擊加入</span></h3>
+        <div class="deck-card-list" id="deckCollectionList"></div>
+      </div>
+      <div class="deck-panel">
+        <h3><span>目前牌組</span><span>依費用排序</span></h3>
+        <div class="deck-card-list" id="deckList"></div>
+        <div class="deck-errors" id="deckErrors"></div>
+        <div class="deck-save-msg" id="deckSaveMsg"></div>
+      </div>
+    </div>
+  </section>
 
   <div class="collection">
     <h2>📖 收藏冊 <span id="progress"></span></h2>

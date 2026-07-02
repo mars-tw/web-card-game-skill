@@ -18,6 +18,8 @@
   const MAX_FIELD = 7;
   const HAND_LIMIT = 8;
   const STATS_VERSION = 2;
+  const DECK_VERSION = 1;
+  const DECK_SIZE = 20;
   const CARD_TYPE = { MINION: "minion", SPELL: "spell" };
   const STATS_DEFAULT = Object.freeze({
     version: STATS_VERSION,
@@ -27,6 +29,10 @@
     bestStreak: 0,
     coins: 0,
     packsOpened: 0,
+  });
+  const DECK_DEFAULT = Object.freeze({
+    version: DECK_VERSION,
+    cards: Object.freeze([]),
   });
 
   const SPELL_EFFECTS = Object.freeze({
@@ -55,6 +61,87 @@
     }
     next.version = STATS_VERSION;
     return next;
+  }
+
+  function migrateDeck(raw) {
+    let source = raw;
+    if (typeof source === "string") {
+      try { source = JSON.parse(source); }
+      catch { source = null; }
+    }
+    if (!source || typeof source !== "object" || Array.isArray(source)) source = {};
+    const next = Object.assign({}, DECK_DEFAULT, source);
+    next.cards = Array.isArray(next.cards)
+      ? next.cards.filter((id) => typeof id === "string")
+      : [];
+    next.version = DECK_VERSION;
+    return next;
+  }
+
+  function cloneCard(card) {
+    return Object.assign({}, card, { keywords: Array.isArray(card.keywords) ? [...card.keywords] : [] });
+  }
+
+  function cardById(cardPool, id) {
+    return (cardPool || []).find((card) => card && card.id === id) || null;
+  }
+
+  function collectionCount(collection, id) {
+    if (!collection || typeof collection !== "object") return 0;
+    const normal = Number(collection[id] || 0);
+    const foil = Number(collection[id + "#foil"] || 0);
+    return Math.max(0, Number.isFinite(normal) ? normal : 0) + Math.max(0, Number.isFinite(foil) ? foil : 0);
+  }
+
+  function countIds(ids) {
+    const counts = Object.create(null);
+    for (const id of ids || []) counts[id] = (counts[id] || 0) + 1;
+    return counts;
+  }
+
+  function validateDeck(deckCardIds, collection, cardPool) {
+    const ids = Array.isArray(deckCardIds) ? deckCardIds.filter((id) => typeof id === "string") : [];
+    const errors = [];
+    if (ids.length !== DECK_SIZE) errors.push(`牌組必須剛好 ${DECK_SIZE} 張（目前 ${ids.length} 張）。`);
+
+    const counts = countIds(ids);
+    for (const [id, count] of Object.entries(counts)) {
+      const card = cardById(cardPool, id);
+      if (!card) {
+        errors.push(`未知卡牌「${id}」不能放入牌組。`);
+        continue;
+      }
+      const owned = collectionCount(collection, id);
+      if (owned <= 0) errors.push(`未擁有「${card.name}」，不能放入牌組。`);
+      else if (count > owned) errors.push(`「${card.name}」只有 ${owned} 張，牌組放了 ${count} 張。`);
+      if (card.rarity === "legendary" && count > 1) errors.push(`傳說卡「${card.name}」最多只能放 1 張。`);
+      else if (count > 2) errors.push(`「${card.name}」最多只能放 2 張。`);
+    }
+    return { ok: errors.length === 0, errors };
+  }
+
+  function buildBattleDeck(deckCardIds, cardPool, rng, collection) {
+    const deck = [];
+    const usedById = Object.create(null);
+    for (const id of Array.isArray(deckCardIds) ? deckCardIds : []) {
+      const card = cardById(cardPool, id);
+      if (card) {
+        const copy = cloneCard(card);
+        if (collection && typeof collection === "object") {
+          const used = usedById[id] || 0;
+          const normal = Math.max(0, Number.isFinite(Number(collection[id] || 0)) ? Number(collection[id] || 0) : 0);
+          const foil = Math.max(0, Number.isFinite(Number(collection[id + "#foil"] || 0)) ? Number(collection[id + "#foil"] || 0) : 0);
+          copy.foil = used >= normal && used < normal + foil;
+          usedById[id] = used + 1;
+        }
+        deck.push(copy);
+      }
+    }
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(nextRandom(rng) * (i + 1));
+      [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+    return deck;
   }
 
   function ok(events, extra) {
@@ -575,9 +662,15 @@
     HAND_LIMIT,
     STATS_VERSION,
     STATS_DEFAULT,
+    DECK_VERSION,
+    DECK_SIZE,
+    DECK_DEFAULT,
     CARD_TYPE,
     SPELL_EFFECTS,
     migrateStats,
+    migrateDeck,
+    validateDeck,
+    buildBattleDeck,
     hasTaunt,
     isLegalTarget,
     playCard,

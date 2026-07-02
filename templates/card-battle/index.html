@@ -329,6 +329,7 @@
       </label>
       <button class="mulligan-btn" id="mulliganBtn" style="display:none">🔄 重抽起手牌</button>
       <button class="mulligan-btn" id="newGameBtn" title="重開一局（會帶入最新收藏的牌組）">🔁 重新開始</button>
+      <button class="mulligan-btn" id="toPackBtn" title="前往卡包與牌組編輯器">🃏 卡包／牌組</button>
       <button class="end-turn" id="endTurnBtn">結束回合 ▶</button>
     </div>
   </div>
@@ -378,6 +379,19 @@
     });
     // 初次載入沿用 localStorage 主題
     try { const t = localStorage.getItem("cardgame_theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch {}
+
+    // 導覽到卡包與牌組編輯器；在入口 iframe 內用分頁切換，單頁開啟時改跳頁
+    (function setupPackNav() {
+      const btn = document.getElementById("toPackBtn");
+      if (!btn) return;
+      btn.onclick = () => {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: "switchTab", target: "pack" }, "*");
+        } else {
+          window.location.href = "../card-pack/index.html";
+        }
+      };
+    })();
 
     // 難度選擇器：讀取既有設定，換難度時存檔並重開一局
     (function setupDifficulty() {

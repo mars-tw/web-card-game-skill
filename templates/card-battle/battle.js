@@ -63,11 +63,18 @@
   function newGame() {
     const diffKey = currentDifficulty();
     const D = DIFFICULTY[diffKey];
+    const playerDeck = buildDeck(true);
+    const enemyDeck = buildDeck(false);
+    const playerDeckSource = playerDeck._deckSource || "fallback";
+    const playerDeckIds = playerDeck.map((card) => card.id);
+    delete playerDeck._deckSource;
     game = {
       difficulty: diffKey, aiSmart: D.aiSmart,
+      playerDeckSource,
+      playerDeckIds,
       turn: "player",
-      player: { side: "player", hp: D.playerHp, maxHp: D.playerHp, mana: 1, manaMax: 1, deck: buildDeck(true), hand: [], field: [] },
-      enemy:  { side: "enemy",  hp: D.enemyHp, maxHp: D.enemyHp, mana: 0, manaMax: 0, deck: buildDeck(false), hand: [], field: [] },
+      player: { side: "player", hp: D.playerHp, maxHp: D.playerHp, mana: 1, manaMax: 1, deck: playerDeck, hand: [], field: [] },
+      enemy:  { side: "enemy",  hp: D.enemyHp, maxHp: D.enemyHp, mana: 0, manaMax: 0, deck: enemyDeck, hand: [], field: [] },
       selected: null,
       pendingSpell: null,
       over: false,
@@ -107,9 +114,12 @@
   // 玩家牌庫：優先用「開卡包收藏」的卡（接通收藏→對戰，CP0-1）。
   // 讀 localStorage 的 cardpack_collection_v2（{collectKey: count}），
   // 把擁有的卡（含重複份數、閃卡）組進牌庫；不足 24 張才用 rollCardByRarity 保底補。
+  function loadCollection() {
+    try { return JSON.parse(localStorage.getItem("cardpack_collection_v2")) || {}; }
+    catch { return {}; }
+  }
   function loadOwnedCards() {
-    let coll = {};
-    try { coll = JSON.parse(localStorage.getItem("cardpack_collection_v2")) || {}; } catch {}
+    const coll = loadCollection();
     const owned = [];
     for (const [key, count] of Object.entries(coll)) {
       const foil = key.endsWith("#foil");
@@ -120,8 +130,24 @@
     }
     return owned;
   }
+  function loadSavedBattleDeck() {
+    let raw = null;
+    try { raw = JSON.parse(localStorage.getItem("card_deck_v1")); } catch {}
+    const saved = Core.migrateDeck(raw);
+    const collection = loadCollection();
+    const validation = Core.validateDeck(saved.cards, collection, CARD_POOL);
+    if (!validation.ok) return null;
+    const deck = Core.buildBattleDeck(saved.cards, CARD_POOL, rng, collection);
+    if (deck.length !== Core.DECK_SIZE) return null;
+    deck._deckSource = "saved";
+    return deck;
+  }
   // useCollection=true：玩家用開包收藏；false：AI 用隨機卡池
   function buildDeck(useCollection) {
+    if (useCollection) {
+      const savedDeck = loadSavedBattleDeck();
+      if (savedDeck && savedDeck.length === Core.DECK_SIZE) return savedDeck;
+    }
     const deck = [];
     if (useCollection) {
       const owned = loadOwnedCards();
@@ -129,6 +155,7 @@
       for (const c of owned) { if (deck.length >= 24) break; deck.push(c); }
     }
     while (deck.length < 24) deck.push(rollCardByRarity()); // 不足或 AI：隨機補
+    if (useCollection) deck._deckSource = "fallback";
     return deck;
   }
 
@@ -786,6 +813,7 @@
     endTurn: () => endTurn(),
     playFromHand: (uid) => playFromHand(uid),
     stats: () => loadStats(),
+    deckInfo: () => ({ source: game.playerDeckSource, ids: [...(game.playerDeckIds || [])], liveIds: [...game.player.hand, ...game.player.deck].map((c) => c.id) }),
     // 直接塞一張指定卡進手牌（回傳 uid），測「法力不足點擊」「場滿」等指定劇本
     giveCard(cardId) {
       const c = Object.assign({}, getCardById(cardId));
