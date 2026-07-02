@@ -262,7 +262,7 @@
     if (card.cost > game.player.mana) { game.pendingSpell = null; flash("法力不足！"); render(); return; }
     game.player.mana -= card.cost;
     game.player.hand.splice(idx, 1);
-    registerCombo(card.uid); // 連擊數在真的出牌時才累積
+    burnMulligan(); registerCombo(card.uid); // 指定法術結算=真的出牌：沒收重抽權、累積連擊
     flashCard(card.uid, "");
     SPELL_EFFECTS[card.effect].apply(game, target);
     game.pendingSpell = null;

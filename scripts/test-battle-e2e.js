@@ -138,6 +138,29 @@ async function run() {
     assert(mull.burnedAfterEndTurn === true, "結束回合後重抽權失效（只限第一回合）");
     await waitPlayerTurn(page); // 讓 AI 回合跑完，避免幽靈計時器干擾後續
 
+    // 4b. 指定型法術結算也要沒收重抽權（Codex 複審抓到的缺口：只有 playFromHand
+    //     直接出牌路徑有燒，經 resolvePendingSpell 結算的第一張牌沒燒）
+    await page.evaluate(() => localStorage.clear());
+    await page.reload();
+    await page.waitForFunction(() => window.__test && window.__test.game);
+    await sleep(300);
+    const mullSpell = await page.evaluate(() => {
+      const T = window.__test; const g = T.game();
+      T.setup([], ["knight"]);              // 敵方一隻目標
+      g.player.mana = g.player.manaMax = 10;
+      g.mulliganUsed = false;                // 明確歸位，只驗證這條路徑
+      const boltUid = T.giveCard("firebolt");
+      T.playFromHand(boltUid);               // 進入待指定（此時還不算出牌）
+      const beforeResolve = g.mulliganUsed;
+      // 走正式 UI 路徑：點擊敵方隨從卡（.card[data-uid=...] 的 onclick → clickEnemyMinion → resolvePendingSpell）
+      const targetEl = document.querySelector(`.card[data-uid="${g.enemy.field[0].uid}"]`);
+      if (targetEl) targetEl.click();
+      return { beforeResolve, resolved: !g.pendingSpell, afterResolve: g.mulliganUsed, targetFound: !!targetEl };
+    });
+    assert(mullSpell.targetFound === true, "敵方隨從卡可被點擊（UI 目標路徑存在）");
+    assert(mullSpell.beforeResolve === false && mullSpell.resolved === true, "進入待指定時未沒收、點目標後法術結算");
+    assert(mullSpell.afterResolve === true, "指定法術結算後沒收重抽權（resolvePendingSpell 也燒）");
+
     // 5. 壞存檔安全：缺欄位的 card_stats_v1 讀回來自動補齊，不會 NaN
     const statsSafe = await page.evaluate(() => {
       localStorage.setItem("card_stats_v1", JSON.stringify({ wins: 3 })); // 缺 coins/streak/bestStreak
