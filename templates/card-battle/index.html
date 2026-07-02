@@ -193,8 +193,16 @@
 
   .hand { display: flex; gap: 5px; justify-content: center; align-items: flex-end;
     min-height: calc(var(--card-h) + 12px); padding: 5px; flex-wrap: wrap; }
+  .target-status {
+    min-height: 26px; display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 13px; font-weight: 800;
+    background: rgba(0,0,0,.18); border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px; padding: 4px 10px;
+  }
+  .target-status.active { color: #facc15; border-color: rgba(250,204,21,.35); background: rgba(250,204,21,.08); }
 
   .controls { display: flex; gap: 12px; align-items: center; justify-content: center; padding: 6px; }
+  .controls-scroll { display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap; }
   .diff-pick { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted);
     background: color-mix(in srgb, var(--panel) 82%, transparent); padding: 6px 12px; border-radius: 20px;
     border: 1px solid var(--panel-border); backdrop-filter: blur(4px); }
@@ -219,6 +227,10 @@
     display: flex; flex-direction: column; gap: 6px; backdrop-filter: blur(4px);
   }
   .quest-panel h2 { font-size: 13px; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
+  .quest-head-actions { display: flex; align-items: center; gap: 8px; }
+  .quest-claim-all { border: none; border-radius: 8px; padding: 5px 8px; font-size: 12px; font-weight: 900;
+    background: linear-gradient(180deg,#facc15,#eab308); color: #271a02; cursor: pointer; }
+  .quest-claim-all:disabled { background: #2a3645; color: var(--muted); cursor: default; filter: none; }
   .quest-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
   .quest-item { min-width: 0; border: 1px solid rgba(255,255,255,.08); border-radius: 8px; padding: 7px;
     background: rgba(255,255,255,.04); display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 6px; align-items: center; }
@@ -255,6 +267,17 @@
   .kw-pop { position: fixed; transform: translate(-50%, 0); color: #fff; font-weight: 800; font-size: 13px;
     background: rgba(168,85,247,.9); padding: 2px 8px; border-radius: 10px; pointer-events: none; z-index: 150;
     animation: kwPop .9s ease-out forwards; white-space: nowrap; }
+  .toast-stack {
+    position: fixed; left: 50%; top: 16px; transform: translateX(-50%);
+    z-index: 180; width: min(520px, 92vw); display: flex; flex-direction: column; gap: 8px;
+    pointer-events: none;
+  }
+  .toast-float {
+    padding: 10px 14px; border-radius: 12px;
+    color: #fff; font-size: 13px; font-weight: 900; text-align: center;
+    background: rgba(15,23,42,.94); border: 1px solid rgba(250,204,21,.35);
+    box-shadow: 0 8px 24px rgba(0,0,0,.35); animation: toastFloat 1.4s ease forwards;
+  }
 
   .overlay { position: fixed; inset: 0; background: rgba(8,10,14,.9); display: none; align-items: center;
     justify-content: center; flex-direction: column; gap: 18px; z-index: 100; }
@@ -264,6 +287,11 @@
   .overlay.lose h1 { color: #f87171; text-shadow: 0 0 24px #b91c1c; }
   .overlay button { background: var(--accent); color: #1a1206; border: none; padding: 12px 32px;
     border-radius: 24px; font-size: 16px; font-weight: 800; cursor: pointer; }
+  .overlay-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .overlay button.secondary { background: #2a3645; color: var(--ink); }
+  .overlay button.quest-cta { background: #2a3645; color: var(--muted); }
+  .overlay button.quest-cta.ready { background: linear-gradient(180deg,#facc15,#eab308); color: #271a02; box-shadow: 0 0 18px rgba(250,204,21,.35); }
+  .overlay button:disabled { filter: grayscale(1) brightness(.7); cursor: not-allowed; }
   .result-stats { display: flex; flex-direction: column; gap: 8px; align-items: center; font-size: 15px; color: var(--ink); }
   .result-stats .streak { font-size: 22px; font-weight: 900; color: #fb923c; text-shadow: 0 0 16px #f97316; }
   .result-stats .coin { color: #facc15; font-weight: 800; font-size: 17px; }
@@ -311,12 +339,40 @@
   @keyframes screenShake { 0%,100%{transform:translate(0,0)} 25%{transform:translate(-4px,2px)} 50%{transform:translate(4px,-2px)} 75%{transform:translate(-2px,3px)} }
   @keyframes dmgFloat { 0%{transform:translate(-50%,0) scale(.6);opacity:0} 20%{transform:translate(-50%,-6px) scale(1.3);opacity:1} 100%{transform:translate(-50%,-40px) scale(1);opacity:0} }
   @keyframes kwPop { 0%{transform:translate(-50%,0) scale(.6);opacity:0} 25%{transform:translate(-50%,-10px) scale(1.1);opacity:1} 100%{transform:translate(-50%,-30px) scale(1);opacity:0} }
+  @keyframes toastFloat { 0%{opacity:0;transform:translateY(-8px)} 15%,80%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-14px)} }
   @keyframes overlayPop { 0%{transform:scale(.3);opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
   @keyframes pulseTarget { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.6)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
   @media (max-width: 700px) {
     .quest-list { grid-template-columns: 1fr; }
     .quest-item { grid-template-columns: minmax(0,1fr) auto; }
     .series-footer { padding-bottom: 54px; }
+    .board { padding-bottom: calc(var(--card-h) + 122px); }
+    .hand {
+      position: fixed; left: 0; bottom: 64px; z-index: 70; width: 100vw; max-width: 100vw;
+      justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden;
+      background: rgba(8,10,14,.92); border-top: 1px solid rgba(255,255,255,.08);
+      border-bottom: 1px solid rgba(255,255,255,.08); padding: 8px 10px;
+      scroll-snap-type: x proximity;
+    }
+    .hand .card { scroll-snap-align: start; }
+    .controls {
+      position: fixed; left: 0; bottom: 0; z-index: 75; width: 100vw; max-width: 100vw;
+      overflow: hidden; justify-content: space-between; flex-wrap: nowrap; gap: 8px;
+      background: rgba(8,10,14,.96); border-top: 1px solid rgba(255,255,255,.1);
+      padding: 8px 10px;
+    }
+    .controls-scroll {
+      min-width: 0; flex: 1 1 auto; display: flex; align-items: center; gap: 8px;
+      flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; padding-right: 2px;
+      scrollbar-width: thin;
+    }
+    .controls .diff-pick { flex: 0 0 auto; order: 2; }
+    .controls button { flex: 0 0 auto; white-space: nowrap; }
+    #mulliganBtn { order: 1; }
+    #newGameBtn { order: 3; }
+    #toPackBtn { order: 4; }
+    #endTurnBtn { flex: 0 0 auto; min-width: 112px; position: relative; z-index: 2; padding-inline: 16px; }
+    .kw-codex-btn { bottom: calc(var(--card-h) + 86px); z-index: 90; }
   }
 </style>
 </head>
@@ -344,33 +400,39 @@
       </div>
     </div>
 
+    <div class="target-status" id="targetStatus">輪到你行動。</div>
+    <div id="log"></div>
     <div class="hand" id="playerHand"></div>
     <div class="controls">
-      <label class="diff-pick">難度
-        <select id="difficultySel">
-          <option value="easy" selected>簡單</option>
-          <option value="normal">普通</option>
-          <option value="hard">困難</option>
-        </select>
-      </label>
-      <button class="mulligan-btn" id="mulliganBtn" style="display:none">🔄 重抽起手牌</button>
-      <button class="mulligan-btn" id="newGameBtn" title="重開一局（會帶入最新收藏的牌組）">🔁 重新開始</button>
-      <button class="mulligan-btn" id="toPackBtn" title="前往卡包與牌組編輯器">🃏 卡包／牌組</button>
+      <div class="controls-scroll">
+        <label class="diff-pick">難度
+          <select id="difficultySel">
+            <option value="easy" selected>簡單</option>
+            <option value="normal">普通</option>
+            <option value="hard">困難</option>
+          </select>
+        </label>
+        <button class="mulligan-btn" id="mulliganBtn" style="display:none">🔄 重抽起手牌</button>
+        <button class="mulligan-btn" id="newGameBtn" title="重開一局（會帶入最新收藏的牌組）">🔁 重新開始</button>
+        <button class="mulligan-btn" id="toPackBtn" title="前往卡包與牌組編輯器">🃏 卡包／牌組</button>
+      </div>
       <button class="end-turn" id="endTurnBtn">結束回合 ▶</button>
     </div>
 
     <section class="quest-panel" id="questPanel">
-      <h2><span>每日任務</span><span id="questDateLabel"></span></h2>
+      <h2><span>每日任務</span><span class="quest-head-actions"><button class="quest-claim-all" id="questClaimAllBtn">全部領取</button><span id="questDateLabel"></span></span></h2>
       <div class="quest-list" id="questList"></div>
     </section>
   </div>
 
-  <div id="log"></div>
-
   <div class="overlay" id="overlay">
     <h1 id="overlayTitle">勝利！</h1>
     <div class="result-stats" id="resultStats"></div>
-    <button id="restartBtn">再來一局</button>
+    <div class="overlay-actions">
+      <button id="restartBtn">再戰一場</button>
+      <button class="secondary" id="overlayPackBtn">去開卡包</button>
+      <button class="quest-cta" id="overlayQuestBtn">領取任務</button>
+    </div>
   </div>
 
   <!-- 首次遊玩引導（CP0-15）-->

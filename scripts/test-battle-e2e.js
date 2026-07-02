@@ -96,7 +96,7 @@ async function run() {
     await page.waitForFunction(() => window.__test && window.__test.game);
     await sleep(300);
     // 關掉首次教學浮層（若有）
-    await page.evaluate(() => document.querySelectorAll(".overlay.show, .tutorial-overlay, #tutorialOverlay").forEach((el) => el.classList.remove("show")));
+    await page.evaluate(() => document.querySelectorAll(".overlay.show, .tutorial-overlay, #tutorialOverlay, #cbTutorial").forEach((el) => el.classList.remove("show")));
 
     // 1. 開局健全
     const boot = await page.evaluate(() => {
@@ -129,7 +129,7 @@ async function run() {
     await page.reload();
     await page.waitForFunction(() => window.__test && window.__test.game);
     await sleep(300);
-    await page.evaluate(() => document.querySelectorAll(".overlay.show, .tutorial-overlay, #tutorialOverlay").forEach((el) => el.classList.remove("show")));
+    await page.evaluate(() => document.querySelectorAll(".overlay.show, .tutorial-overlay, #tutorialOverlay, #cbTutorial").forEach((el) => el.classList.remove("show")));
 
     // 2. Stage 1 核心修復：AI 隨從攻擊權每回合重置
     //    模擬「AI 上回合召喚的非衝鋒隨從」（canAttack=false 掛在場上），
@@ -238,6 +238,80 @@ async function run() {
     assert(questClaim.enabled === true, "每日任務完成後領取按鈕可用");
     assert(questClaim.before === 0 && questClaim.after === questClaim.reward && questClaim.claimed === true, `領取每日任務會增加金幣並標記已領（+${questClaim.reward}）`);
 
+    const rewardTable = await page.evaluate(() => window.__test.rewardTable());
+    assert(rewardTable.easy.win === 50 && rewardTable.easy.loss === 15
+      && rewardTable.normal.win === 65 && rewardTable.normal.loss === 20
+      && rewardTable.hard.win === 85 && rewardTable.hard.loss === 30,
+      "難度獎勵分層符合 easy 50/15、normal 65/20、hard 85/30");
+
+    const naturalDefeat = await page.evaluate(() => new Promise((resolve) => {
+      const T = window.__test;
+      const overlay = document.getElementById("overlay");
+      overlay.classList.remove("show");
+      T.setup([], ["dragon"]);
+      const g = T.game();
+      g.player.hp = 1;
+      g.turn = "player";
+      g.over = false;
+      g.enemy.hand = [];
+      g.enemy.mana = 0;
+      g.enemy.manaMax = 0;
+      if (g.enemy.field[0]) g.enemy.field[0].canAttack = true;
+      let hpZeroAt = null;
+      const start = performance.now();
+      const timer = setInterval(() => {
+        const live = T.game();
+        if (!hpZeroAt && live.player.hp <= 0) hpZeroAt = performance.now();
+        if (hpZeroAt && overlay.classList.contains("show")) {
+          clearInterval(timer);
+          resolve({ overlay: true, delay: performance.now() - hpZeroAt, hp: live.player.hp, over: live.over });
+        } else if (performance.now() - start > 6000) {
+          clearInterval(timer);
+          resolve({ overlay: false, delay: null, hp: live.player.hp, over: live.over });
+        }
+      }, 25);
+      T.endTurn();
+    }));
+    assert(naturalDefeat.overlay === true && naturalDefeat.delay <= 800,
+      `玩家自然戰敗後 0.8 秒內顯示結算（delay=${naturalDefeat.delay && naturalDefeat.delay.toFixed(0)}ms, hp=${naturalDefeat.hp}, over=${naturalDefeat.over}）`);
+    await page.evaluate(() => window.__newGame());
+    await sleep(300);
+
+    const overlayTimerSafe = await page.evaluate(() => new Promise((resolve) => {
+      const T = window.__test;
+      const overlay = document.getElementById("overlay");
+      overlay.classList.remove("show");
+      T.setup([], ["dragon"]);
+      const g = T.game();
+      g.player.hp = 1;
+      g.turn = "player";
+      g.over = false;
+      g.enemy.hand = [];
+      g.enemy.mana = 0;
+      g.enemy.manaMax = 0;
+      if (g.enemy.field[0]) g.enemy.field[0].canAttack = true;
+      const start = performance.now();
+      const timer = setInterval(() => {
+        if (T.game().over && !overlay.classList.contains("show")) {
+          document.getElementById("newGameBtn").click();
+          clearInterval(timer);
+          setTimeout(() => {
+            resolve({
+              hidden: !overlay.classList.contains("show"),
+              turn: T.game().turn,
+              elapsed: performance.now() - start,
+            });
+          }, 800);
+        } else if (performance.now() - start > 6000) {
+          clearInterval(timer);
+          resolve({ hidden: false, turn: T.game().turn, elapsed: performance.now() - start });
+        }
+      }, 25);
+      T.endTurn();
+    }));
+    assert(overlayTimerSafe.hidden === true && overlayTimerSafe.turn === "player",
+      `結算 pending 計時器在重開後不會蓋住新局（elapsed=${overlayTimerSafe.elapsed.toFixed(0)}ms）`);
+
     // 6. 場上上限：7 隻滿場時出隨從被擋（不扣費）；亡語在死者移除後召喚
     const cap = await page.evaluate(() => {
       const T = window.__test; const g = T.game();
@@ -260,6 +334,62 @@ async function run() {
     // 7. RWD：無水平溢出
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     assert(overflow <= 2, `無水平溢出（${overflow}）`);
+
+    if (vp.w <= 400) {
+      const stickySetup = await page.evaluate(() => {
+        window.scrollTo(0, 0);
+        const tutorial = document.getElementById("cbTutorial");
+        if (tutorial) tutorial.classList.remove("show");
+        const T = window.__test;
+        const g = T.game();
+        g.turn = "player";
+        g.over = false;
+        g.selected = null;
+        g.pendingSpell = null;
+        g.player.hand = [];
+        g.player.field = [];
+        g.enemy.field = [];
+        g.player.mana = g.player.manaMax = 10;
+        const uid = T.giveCard("footman");
+        const hand = document.getElementById("playerHand").getBoundingClientRect();
+        const endBtn = document.getElementById("endTurnBtn");
+        const end = endBtn.getBoundingClientRect();
+        const hit = document.elementFromPoint(end.left + end.width / 2, end.top + end.height / 2);
+        return {
+          uid,
+          handVisible: hand.top < window.innerHeight && hand.bottom > 0 && hand.left >= 0 && hand.right <= window.innerWidth,
+          endVisible: end.top >= 0 && end.bottom <= window.innerHeight && end.left >= 0 && end.right <= window.innerWidth,
+          endHit: !!(hit && hit.closest && hit.closest("#endTurnBtn")),
+          endRect: { left: end.left, right: end.right, top: end.top, bottom: end.bottom },
+          scrollY: window.scrollY,
+        };
+      });
+      assert(stickySetup.handVisible && stickySetup.endVisible && stickySetup.endHit && stickySetup.scrollY === 0,
+        `手機首屏可看到且可點擊手牌與結束回合按鈕（end left=${stickySetup.endRect.left}, right=${stickySetup.endRect.right}）`);
+      await page.locator(`.hand .card[data-uid="${stickySetup.uid}"]`).click();
+      await page.locator("#endTurnBtn").click();
+      const mobileAction = await page.evaluate(() => ({
+        turn: window.__test.game().turn,
+        fieldCount: window.__test.game().player.field.length,
+      }));
+      assert(mobileAction.turn === "enemy" && mobileAction.fieldCount >= 1, "手機首屏不捲動即可出牌並結束回合");
+      await waitPlayerTurn(page);
+
+      const codexHit = await page.evaluate(() => {
+        const btn = document.getElementById("kwCodexBtn");
+        const rect = btn.getBoundingClientRect();
+        const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        return {
+          visible: rect.top >= 0 && rect.bottom <= window.innerHeight && rect.left >= 0 && rect.right <= window.innerWidth,
+          hit: !!(hit && hit.closest && hit.closest("#kwCodexBtn")),
+        };
+      });
+      assert(codexHit.visible && codexHit.hit, "手機關鍵字圖鑑按鈕未被底部操作列遮住");
+      await page.locator("#kwCodexBtn").click();
+      const codexOpen = await page.evaluate(() => document.getElementById("kwCodex").classList.contains("show"));
+      assert(codexOpen === true, "手機可點開關鍵字圖鑑");
+      await page.locator("#kwCodexClose").click();
+    }
 
     // Stage 3：卡包頁牌組編輯器可用真實點擊加入、儲存，重載後仍存在
     await page.evaluate(({ collection }) => {
@@ -291,6 +421,24 @@ async function run() {
     }));
     assert(deckReloaded.validation.ok === true && deckReloaded.countText === "20/20" && sameMultiset(deckReloaded.deck.cards, LEGAL_DECK_IDS), "重載後牌組仍保留並維持合法");
 
+    const downgradeRecommendation = await page.evaluate(({ deckIds, collection }) => {
+      const T = window.__deckTest;
+      T.setCollection({ ...collection, groveHerbalist: 1 });
+      T.setDeck(deckIds);
+      T.setLastNewCards(["groveHerbalist"]);
+      const rec = T.recommendation();
+      return {
+        text: T.recommendationText(),
+        rec: rec && { fresh: rec.fresh.id, old: rec.old.id },
+        newScore: T.score("groveHerbalist"),
+        oldScore: T.score("knight"),
+      };
+    }, { deckIds: LEGAL_DECK_IDS, collection: collectionForDeck(LEGAL_DECK_IDS) });
+    assert(downgradeRecommendation.newScore <= downgradeRecommendation.oldScore
+      && !downgradeRecommendation.rec
+      && downgradeRecommendation.text === "",
+      `新卡分數不高於舊卡時不顯示推薦替換（new=${downgradeRecommendation.newScore}, old=${downgradeRecommendation.oldScore}）`);
+
     // 8. 全程無 console error / pageerror
     assert(errors.length === 0, "無 console 錯誤 / pageerror" + (errors.length ? "：" + errors.slice(0, 3).join(" | ") : ""));
 
@@ -301,7 +449,7 @@ async function run() {
     server.close();
   }
   if (failed > 0) { console.error("\n❌ " + failed + " 項失敗"); process.exit(1); }
-  console.log("\n✅ 卡牌對戰 Stage 4 E2E 全部通過");
+  console.log("\n✅ 卡牌對戰 Stage 5 E2E 全部通過");
 }
 
 run().catch((err) => { console.error(err); process.exit(1); });

@@ -19,6 +19,7 @@
   // collection: { collectKey: count }，collectKey 由 cards.js 提供（含 #foil）
   let collection = loadCollection();
   let deckState = loadDeck();
+  let lastNewCards = [];
 
   function loadCollection() {
     try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || {}; }
@@ -112,11 +113,12 @@
     let newCount = 0, dupCount = 0;
     const last = cards.length - 1;
     let revealTime = 0;
+    lastNewCards = [];
     cards.forEach((card, i) => {
       const key = collectKey(card);
       const had = (collection[key] || 0) > 0;
       if (had) { dupCount++; card._dup = true; }
-      else { newCount++; card._dup = false; }
+      else { newCount++; card._dup = false; lastNewCards.push(cloneCard(card)); }
       collection[key] = (collection[key] || 0) + 1;
 
       const el = renderRevealCard(card);
@@ -170,6 +172,7 @@
       <div class="cost">${card.cost}</div>
       <div class="stars">${"★".repeat(r.stars)}</div>
       ${card._dup ? '<div class="dup-tag">重複</div>' : ''}
+      ${card._dup ? '' : '<div class="new-card-tag">本包新卡</div>'}
       <div class="art">${art}</div>
       <div class="kwrow">${kw}</div>
       <div class="cardname">${card.name}</div>
@@ -259,6 +262,93 @@
     return card.image ? `<img src="${card.image}" alt="">` : card.emoji;
   }
 
+  function deckAddBlockReason(card, counts) {
+    if (!card) return "找不到這張卡。";
+    const owned = totalOwned(card.id);
+    const inDeck = counts ? (counts[card.id] || 0) : (deckCounts()[card.id] || 0);
+    const maxCopies = card.rarity === "legendary" ? 1 : 2;
+    if (owned <= 0) return "尚未擁有這張卡。";
+    if (deckState.cards.length >= Core.DECK_SIZE) return "牌組已滿（20 張）。";
+    if (inDeck >= owned) return `${card.name} 只有 ${owned} 張。`;
+    if (inDeck >= maxCopies) return card.rarity === "legendary" ? "傳說卡最多 1 張。" : "同名卡最多 2 張。";
+    return "";
+  }
+
+  function cardUpgradeScore(card) {
+    if (!card) return 0;
+    const rarityScore = { common: 0, rare: 1, epic: 2, legendary: 3 }[card.rarity] || 0;
+    const keywordScore = (card.keywords || []).length * 2;
+    const statScore = (Number(card.attack) || 0) + (Number(card.health) || 0);
+    const effectScore = card.effect || card.trigger ? 2 : 0;
+    return statScore + keywordScore + effectScore + rarityScore;
+  }
+
+  function isVanillaMinion(card) {
+    return card && card.type === CARD_TYPE.MINION && !(card.keywords || []).length && !card.trigger;
+  }
+
+  function findDeckRecommendation(counts) {
+    if (!lastNewCards.length || deckState.cards.length !== Core.DECK_SIZE) return null;
+    for (const fresh of lastNewCards) {
+      const freshBase = getCardById(fresh.id);
+      if (!freshBase) continue;
+      const freshLimit = Math.min(totalOwned(freshBase.id), freshBase.rarity === "legendary" ? 1 : 2);
+      if ((counts[freshBase.id] || 0) >= freshLimit) continue;
+      const reason = deckAddBlockReason(freshBase, counts);
+      if (reason && !reason.startsWith("牌組已滿")) continue;
+      const freshScore = cardUpgradeScore(freshBase);
+      const candidates = deckState.cards
+        .map((id) => getCardById(id))
+        .filter((card) => card && card.id !== fresh.id && card.type === CARD_TYPE.MINION && card.cost === freshBase.cost)
+        .sort((a, b) => cardUpgradeScore(a) - cardUpgradeScore(b));
+      const oldCard = candidates[0];
+      if (!oldCard) continue;
+      if (freshScore <= cardUpgradeScore(oldCard)) continue;
+      const oldLabel = isVanillaMinion(oldCard) ? "白板" : oldCard.name;
+      return {
+        fresh: freshBase,
+        old: oldCard,
+        reason: `可替換 ${oldCard.cost} 費${oldLabel}，曲線不變。`,
+      };
+    }
+    return null;
+  }
+
+  function replaceDeckCard(oldId, newId) {
+    const idx = deckState.cards.indexOf(oldId);
+    const fresh = getCardById(newId);
+    if (idx === -1 || !fresh) return false;
+    deckState.cards.splice(idx, 1);
+    const reason = deckAddBlockReason(fresh, deckCounts());
+    if (reason) {
+      deckState.cards.splice(idx, 0, oldId);
+      setDeckMessage(reason);
+      renderDeckEditor();
+      return false;
+    }
+    deckState.cards.push(newId);
+    setDeckMessage(`已套用推薦：加入 ${fresh.name}。記得儲存牌組。`);
+    renderDeckEditor();
+    return true;
+  }
+
+  function renderDeckRecommendation(counts) {
+    const box = document.getElementById("deckRecommend");
+    if (!box) return;
+    const rec = findDeckRecommendation(counts);
+    if (!rec) { box.innerHTML = ""; return; }
+    box.innerHTML = `
+      <div class="deck-recommend-card">
+        <div>
+          <div class="deck-recommend-title">推薦替換：${rec.fresh.name}</div>
+          <div class="deck-recommend-reason">${rec.reason}</div>
+        </div>
+        <button type="button" data-old-id="${rec.old.id}" data-new-id="${rec.fresh.id}">套用</button>
+      </div>`;
+    const btn = box.querySelector("button");
+    btn.onclick = () => replaceDeckCard(btn.dataset.oldId, btn.dataset.newId);
+  }
+
   function renderDeckEditor() {
     const collectionList = document.getElementById("deckCollectionList");
     const deckList = document.getElementById("deckList");
@@ -278,8 +368,9 @@
       const owned = totalOwned(card.id);
       const inDeck = counts[card.id] || 0;
       const maxCopies = card.rarity === "legendary" ? 1 : 2;
+      const blockReason = deckAddBlockReason(card, counts);
       const row = document.createElement("div");
-      row.className = "deck-card-row" + (owned <= 0 ? " locked" : "") + (inDeck > Math.min(owned, maxCopies) ? " over" : "");
+      row.className = "deck-card-row" + (owned <= 0 ? " locked" : "") + (inDeck > Math.min(owned, maxCopies) ? " over" : "") + (blockReason ? " blocked-add" : "");
       row.dataset.cardId = card.id;
       row.innerHTML = `
         <div class="deck-art">${cardArt(card)}</div>
@@ -289,8 +380,16 @@
         </div>
         <button class="deck-add-btn" data-card-id="${card.id}">加入</button>`;
       const btn = row.querySelector("button");
-      btn.disabled = owned <= 0 || deckState.cards.length >= Core.DECK_SIZE;
-      btn.onclick = () => addDeckCard(card.id);
+      btn.disabled = !!blockReason;
+      btn.title = blockReason || "加入牌組";
+      row.title = blockReason || "";
+      row.onclick = () => {
+        if (blockReason) setDeckMessage(blockReason);
+      };
+      btn.onclick = (event) => {
+        event.stopPropagation();
+        addDeckCard(card.id);
+      };
       collectionList.appendChild(row);
     });
 
@@ -327,13 +426,21 @@
     errorsBox.innerHTML = validation.ok
       ? "<div>牌組合法，可以儲存並帶進對戰。</div>"
       : validation.errors.map((msg) => `<div>${msg}</div>`).join("");
+    renderDeckRecommendation(counts);
   }
 
   function addDeckCard(cardId) {
-    if (deckState.cards.length >= Core.DECK_SIZE || totalOwned(cardId) <= 0) return;
+    const card = getCardById(cardId);
+    const reason = deckAddBlockReason(card, deckCounts());
+    if (reason) {
+      setDeckMessage(reason);
+      renderDeckEditor();
+      return false;
+    }
     deckState.cards.push(cardId);
     setDeckMessage("");
     renderDeckEditor();
+    return true;
   }
 
   function removeDeckCard(cardId) {
@@ -371,9 +478,6 @@
       window.location.href = "../card-battle/index.html";
     }
   }
-  // 分解金幣值（依稀有度）
-  const DISMANTLE_VALUE = { common: 10, rare: 30, epic: 80, legendary: 200 };
-
   function burstConfetti() {
     for (let i = 0; i < 28; i++) {
       const c = document.createElement("div");
@@ -426,6 +530,25 @@
     clear: clearDeck,
     render: renderDeckEditor,
     owned: totalOwned,
+    score: (cardId) => cardUpgradeScore(getCardById(cardId)),
+    setCollection(next) {
+      collection = Object.assign(Object.create(null), next || {});
+      saveCollection();
+      renderCollection();
+      return collection;
+    },
+    setDeck(cards) {
+      deckState = Core.migrateDeck({ version: 1, cards: Array.isArray(cards) ? cards : [] });
+      renderDeckEditor();
+      return Core.migrateDeck(deckState);
+    },
+    setLastNewCards(cardIds) {
+      lastNewCards = (Array.isArray(cardIds) ? cardIds : []).map((id) => getCardById(id)).filter(Boolean);
+      renderDeckEditor();
+      return lastNewCards.map((card) => card.id);
+    },
+    recommendation: () => findDeckRecommendation(deckCounts()),
+    recommendationText: () => (document.getElementById("deckRecommend")?.textContent || "").trim(),
   };
 
   // 對戰 iframe 打完仗寫入金幣時，這頁（另一個 window）會收到 storage 事件——即時刷新餘額，

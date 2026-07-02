@@ -109,6 +109,8 @@
   /* 重複標記 */
   .card .dup-tag { position:absolute; top:8px; right:6px; font-size:10px; font-weight:800; color:#fff;
     background:rgba(0,0,0,.6); padding:1px 6px; border-radius:8px; z-index:3; }
+  .card .new-card-tag { position:absolute; top:8px; right:6px; font-size:10px; font-weight:900; color:#052e16;
+    background:linear-gradient(180deg,#86efac,#22c55e); padding:1px 6px; border-radius:8px; z-index:3; }
 
   .actions { display:flex; gap:12px; padding:14px; flex-wrap:wrap; justify-content:center; }
   button { background:linear-gradient(180deg,var(--accent),#d97706); color:#1a1206; border:none; padding:12px 24px;
@@ -156,12 +158,19 @@
     min-height:46px; padding:7px; border-radius:8px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); }
   .deck-card-row.locked { opacity:.48; }
   .deck-card-row.over { border-color:#f87171; }
+  .deck-card-row.blocked-add { cursor:not-allowed; }
   .deck-art { width:34px; height:34px; border-radius:6px; display:flex; align-items:center; justify-content:center;
     overflow:hidden; background:rgba(255,255,255,.08); font-size:22px; }
   .deck-art img { width:100%; height:100%; object-fit:cover; }
   .deck-name { font-size:13px; font-weight:800; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
   .deck-meta { font-size:11px; color:var(--muted); margin-top:2px; }
   .deck-add-btn, .deck-remove-btn { min-width:42px; padding:7px 10px; border-radius:8px; font-size:13px; }
+  .deck-recommend { margin-top:10px; display:flex; flex-direction:column; gap:6px; font-size:12px; }
+  .deck-recommend-card { border:1px solid rgba(250,204,21,.35); border-radius:8px; padding:8px;
+    background:rgba(250,204,21,.08); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:center; }
+  .deck-recommend-title { color:#facc15; font-weight:900; margin-bottom:2px; }
+  .deck-recommend-reason { color:var(--muted); line-height:1.35; }
+  .deck-recommend button { padding:7px 10px; border-radius:8px; font-size:12px; white-space:nowrap; }
   .deck-errors { margin-top:10px; display:flex; flex-direction:column; gap:4px; color:#fca5a5; font-size:12px; line-height:1.35; }
   .deck-errors.ok { color:#86efac; }
   .deck-save-msg { color:#86efac; font-size:12px; min-height:16px; }
@@ -230,6 +239,7 @@
       <div class="deck-panel">
         <h3><span>目前牌組</span><span>依費用排序</span></h3>
         <div class="deck-card-list" id="deckList"></div>
+        <div class="deck-recommend" id="deckRecommend"></div>
         <div class="deck-errors" id="deckErrors"></div>
         <div class="deck-save-msg" id="deckSaveMsg"></div>
       </div>

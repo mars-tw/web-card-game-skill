@@ -6,7 +6,7 @@
 
 const path = require("path");
 const cards = require(path.join(__dirname, "..", "templates", "card-battle", "cards.js"));
-const { CARD_POOL, RARITY, KEYWORDS, CARD_TYPE, rollCardByRarity, getCardById, collectKey } = cards;
+const { CARD_POOL, RARITY, KEYWORDS, CARD_TYPE, DISMANTLE_VALUE, rollCardByRarity, getCardById, collectKey } = cards;
 
 let failed = 0;
 function assert(cond, msg) {
@@ -68,6 +68,17 @@ assert(foilPct > 4 && foilPct < 14, `閃卡機率接近 8%（${foilPct.toFixed(2
 console.log("== 工具函式 ==");
 assert(getCardById("dragon")?.name === "烈焰巨龍", "getCardById 正常");
 assert(collectKey({ id: "x", foil: true }) === "x#foil", "collectKey 區分閃卡");
+
+console.log("== 經濟回收 ==");
+assert(DISMANTLE_VALUE.common === 2 && DISMANTLE_VALUE.rare === 8 && DISMANTLE_VALUE.epic === 25 && DISMANTLE_VALUE.legendary === 80,
+  "分解值使用 cards.js 真實匯出值（普 2 / 稀 8 / 史 25 / 傳 80）");
+const totalWeight = Object.values(RARITY).reduce((sum, rarity) => sum + rarity.weight, 0);
+const duplicateDustPerCard = Object.entries(RARITY).reduce((sum, [rarity, spec]) => {
+  return sum + (spec.weight / totalWeight) * DISMANTLE_VALUE[rarity];
+}, 0);
+const duplicateDustPerPack = duplicateDustPerCard * 5;
+console.log(`    全重複一包期望回收：${duplicateDustPerPack.toFixed(2)} 金幣`);
+assert(duplicateDustPerPack < 50, `全重複分解期望低於包價 50%（${duplicateDustPerPack.toFixed(2)} < 50）`);
 
 console.log("");
 if (failed === 0) { console.log("✅ 全部測試通過"); process.exit(0); }

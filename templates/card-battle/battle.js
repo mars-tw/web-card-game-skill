@@ -28,6 +28,17 @@
     normal: { label: "普通", playerHp: 30, enemyHp: 30, playerDraw: 3, enemyDraw: 4, aiSmart: 1 },
     hard:   { label: "困難", playerHp: 26, enemyHp: 34, playerDraw: 3, enemyDraw: 5, aiSmart: 2 },
   };
+  const DIFFICULTY_REWARDS = {
+    easy: { win: 50, loss: 15 },
+    normal: { win: 65, loss: 20 },
+    hard: { win: 85, loss: 30 },
+  };
+  function difficultyReward(win) {
+    const key = (game && game.difficulty) || currentDifficulty();
+    const table = DIFFICULTY_REWARDS[key] || DIFFICULTY_REWARDS.easy;
+    const diff = DIFFICULTY[key] || DIFFICULTY.easy;
+    return { key, label: diff.label, amount: win ? table.win : table.loss };
+  }
   function currentDifficulty() {
     // CP0-16：首次玩（無設定）預設「簡單」對新手友善；老玩家沿用已選難度
     let d = "easy";
@@ -203,6 +214,14 @@
     return !!(minion && minion.canAttack && !isRushHeroLocked(minion));
   }
 
+  function goPack() {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: "switchTab", target: "pack" }, "*");
+    } else {
+      window.location.href = "../card-pack/index.html";
+    }
+  }
+
   function clickEnemyMinion(uid) {
     if (game.turn !== "player" || game.over) return;
     const target = game.enemy.field.find((m) => m.uid === uid);
@@ -266,6 +285,38 @@
     if (!m.canAttack) { flash("這個隨從本回合無法攻擊。"); return; }
     game.selected = game.selected === uid ? null : uid;
     render();
+  }
+
+  function cancelTargeting(message) {
+    if (!game) return;
+    const hadTargeting = !!(game.selected || game.pendingSpell);
+    game.selected = null;
+    game.pendingSpell = null;
+    if (message && hadTargeting) flash(message);
+    if (hadTargeting) render();
+  }
+
+  function targetStatusText() {
+    if (!game) return "載入中。";
+    if (game.over) return "對戰已結束。";
+    if (game.turn !== "player") return "對手行動中。";
+    if (game.pendingSpell) {
+      return game.pendingSpell.need === "friendlyMinion" ? "請選擇友方隨從" : "請選擇敵方隨從";
+    }
+    if (game.selected) {
+      const attacker = game.player.field.find((m) => m.uid === game.selected);
+      if (hasTaunt(game.enemy.field)) return "請選擇有嘲諷的敵方隨從";
+      if (isRushHeroLocked(attacker)) return "請選擇敵方隨從（突襲本回合不能攻擊英雄）";
+      return "請選擇敵方隨從或敵方英雄";
+    }
+    return "輪到你行動。";
+  }
+
+  function updateTargetStatus() {
+    const el = document.getElementById("targetStatus");
+    if (!el) return;
+    el.textContent = targetStatusText();
+    el.classList.toggle("active", !!(game && (game.selected || game.pendingSpell || game.turn !== "player")));
   }
 
   // ===== 戰鬥結算（含聖盾、劇毒、連擊）=====
@@ -445,9 +496,17 @@
   }
 
   function checkWin() {
-    if (game.over) return;
-    if (game.enemy.hp <= 0) { game.over = true; showOverlay("🏆 勝利！", true); }
-    else if (game.player.hp <= 0) { game.over = true; showOverlay("💀 落敗…", false); }
+    settleIfGameEnded();
+  }
+
+  function settleIfGameEnded() {
+    if (!game || game.over) return false;
+    if (game.enemy.hp > 0 && game.player.hp > 0) return false;
+    game.over = true;
+    game.selected = null;
+    game.pendingSpell = null;
+    showOverlay(game.enemy.hp <= 0 ? "🏆 勝利！" : "💀 落敗…", game.enemy.hp <= 0);
+    return true;
   }
 
   // ===== 渲染 =====
@@ -474,6 +533,7 @@
     const selectedMinion = game.selected ? game.player.field.find((m) => m.uid === game.selected) : null;
     enemyHero.classList.toggle("targetable", !!selectedMinion && game.turn === "player" && !hasTaunt(game.enemy.field) && !isRushHeroLocked(selectedMinion));
     enemyHero.onclick = clickEnemyHero;
+    updateTargetStatus();
 
     document.getElementById("endTurnBtn").disabled = game.turn !== "player" || game.over;
     renderQuests();
@@ -482,6 +542,9 @@
   function renderField(elId, field, side) {
     const el = document.getElementById(elId);
     el.innerHTML = "";
+    el.onclick = (event) => {
+      if (event.target === el || event.target.classList.contains("empty-hint")) cancelTargeting("已取消選取。");
+    };
     if (field.length === 0) {
       const hint = document.createElement("div");
       hint.className = "empty-hint";
@@ -496,13 +559,13 @@
         if (card.canAttack && game.turn === "player") c.classList.add("can-attack");
         if (game.selected === card.uid) c.classList.add("selected");
         if (game.pendingSpell && game.pendingSpell.need === "friendlyMinion") c.classList.add("targetable");
-        c.onclick = () => selectMyMinion(card.uid);
+        c.onclick = (event) => { event.stopPropagation(); selectMyMinion(card.uid); };
       } else {
         const spellTargetable = game.pendingSpell && game.pendingSpell.need === "enemyMinion";
         const attackTargetable = game.selected && isLegalTarget(game.enemy, card);
         if (spellTargetable || attackTargetable) c.classList.add("targetable");
         if (game.selected && enemyHasTaunt && !(card.keywords || []).includes("taunt")) c.classList.add("blocked");
-        c.onclick = () => clickEnemyMinion(card.uid);
+        c.onclick = (event) => { event.stopPropagation(); clickEnemyMinion(card.uid); };
       }
       el.appendChild(c);
     });
@@ -554,7 +617,27 @@
     box.appendChild(line); box.scrollTop = box.scrollHeight;
     while (box.children.length > 8) box.removeChild(box.firstChild);
   }
-  function flash(msg) { log("⚠️ " + msg, "me"); }
+  function flash(msg) {
+    log("⚠️ " + msg, "me");
+    showToast(msg);
+  }
+  function showToast(msg) {
+    let stack = document.getElementById("toastStack");
+    if (!stack) {
+      stack = document.createElement("div");
+      stack.id = "toastStack";
+      stack.className = "toast-stack";
+      document.body.appendChild(stack);
+    }
+    const d = document.createElement("div");
+    d.className = "toast-float";
+    d.textContent = msg;
+    stack.appendChild(d);
+    setTimeout(() => {
+      d.remove();
+      if (stack && stack.children.length === 0) stack.remove();
+    }, 1400);
+  }
   function rng() { return Math.random(); }
 
   function hideMulliganButton() {
@@ -606,6 +689,7 @@
       }
       trackQuestFromCoreEvent(event);
     }
+    settleIfGameEnded();
   }
 
   function showCombo(uid, count) {
@@ -783,9 +867,16 @@
   }
 
   function progressQuest(event) {
-    const next = Core.applyQuestProgress(loadQuests(), event);
+    const before = loadQuests();
+    const next = Core.applyQuestProgress(before, event);
     saveQuests(next);
     renderQuests(next);
+    next.quests.forEach((quest) => {
+      const prev = before.quests.find((item) => item.id === quest.id);
+      if (prev && prev.progress < prev.target && quest.progress >= quest.target && !quest.claimed) {
+        showToast(`任務完成：${quest.title}`);
+      }
+    });
     return next;
   }
 
@@ -812,6 +903,52 @@
     return result;
   }
 
+  function hasClaimableQuests(questState) {
+    const state = questState || loadQuests();
+    return state.quests.some((quest) => quest.progress >= quest.target && !quest.claimed);
+  }
+
+  function updateQuestCtas(questState) {
+    const ready = hasClaimableQuests(questState);
+    const claimAllBtn = document.getElementById("questClaimAllBtn");
+    if (claimAllBtn) {
+      claimAllBtn.disabled = !ready;
+      claimAllBtn.title = ready ? "領取所有已完成任務" : "目前沒有可領取的任務";
+    }
+    const overlayQuestBtn = document.getElementById("overlayQuestBtn");
+    if (overlayQuestBtn) {
+      overlayQuestBtn.disabled = !ready;
+      overlayQuestBtn.classList.toggle("ready", ready);
+      overlayQuestBtn.title = ready ? "領取已完成任務" : "目前沒有可領取的任務";
+    }
+  }
+
+  function claimAllQuestsUi() {
+    let state = loadQuests();
+    let reward = 0;
+    let count = 0;
+    for (const quest of state.quests) {
+      if (quest.progress < quest.target || quest.claimed) continue;
+      const result = Core.claimQuest(state, quest.id);
+      if (!result.ok) continue;
+      state = result.state;
+      reward += result.reward;
+      count++;
+    }
+    if (count === 0) {
+      renderQuests(state);
+      flash("目前沒有可領取的任務。");
+      return { ok: false, reward: 0, count: 0, state };
+    }
+    saveQuests(state);
+    const stats = loadStats();
+    stats.coins += reward;
+    saveStats(stats);
+    renderQuests(state);
+    flash(`已領取 ${count} 個任務：+${reward} 金幣`);
+    return { ok: true, reward, count, state };
+  }
+
   function renderQuests(questState) {
     const panel = document.getElementById("questPanel");
     const list = document.getElementById("questList");
@@ -835,6 +972,7 @@
       btn.onclick = () => claimQuestUi(quest.id);
       list.appendChild(row);
     });
+    updateQuestCtas(state);
   }
 
   function showOverlay(title, win) {
@@ -844,16 +982,16 @@
 
     // 更新戰績與金幣
     const s = loadStats();
+    const reward = difficultyReward(win);
     let rewardLine;
     if (win) {
       s.wins++; s.streak++; if (s.streak > s.bestStreak) s.bestStreak = s.streak;
-      const coinReward = 50 + s.streak * 10; // 連勝越多賺越多
-      s.coins += coinReward;
-      rewardLine = `💰 +${coinReward} 金幣（共 ${s.coins}）`;
+      s.coins += reward.amount;
+      rewardLine = `💰 +${reward.amount} 金幣（共 ${s.coins}）`;
     } else {
       s.losses++; s.streak = 0;
-      s.coins += 20; // 落敗安慰金
-      rewardLine = `💰 +20 金幣（共 ${s.coins}）`;
+      s.coins += reward.amount;
+      rewardLine = `💰 +${reward.amount} 金幣（共 ${s.coins}）`;
     }
     saveStats(s);
     if (win) {
@@ -867,10 +1005,13 @@
         <div class="streak">${win && s.streak >= 2 ? `🔥 ${s.streak} 連勝！` : ""}</div>
         <div>戰績：${s.wins} 勝 ${s.losses} 敗 · 最高連勝 ${s.bestStreak}</div>
         <div class="coin">${rewardLine}</div>
+        <div>難度獎勵：${reward.label}${win ? "勝場" : "敗場"} +${reward.amount} 金幣</div>
         <div class="hint">💡 用金幣去「開卡包」抽更強的卡，組成你的牌組！</div>`;
     }
+    updateQuestCtas();
     if (win) burstStars();
-    setTimeout(() => ov.classList.add("show"), 500);
+    const gRef = game;
+    setTimeout(() => { if (game === gRef) ov.classList.add("show"); }, 500);
   }
   function burstStars() {
     for (let i = 0; i < 30; i++) {
@@ -891,6 +1032,17 @@
   // ===== 綁定 & 啟動 =====
   document.getElementById("endTurnBtn").onclick = endTurn;
   document.getElementById("restartBtn").onclick = newGame;
+  document.getElementById("overlayPackBtn").onclick = goPack;
+  document.getElementById("overlayQuestBtn").onclick = claimAllQuestsUi;
+  const claimAllBtn = document.getElementById("questClaimAllBtn");
+  if (claimAllBtn) claimAllBtn.onclick = claimAllQuestsUi;
+  const boardEl = document.querySelector(".board");
+  if (boardEl) {
+    boardEl.addEventListener("click", (event) => {
+      if (event.target.closest(".card, .hero, button, select, label, .quest-panel, .controls, .hand")) return;
+      cancelTargeting("已取消選取。");
+    });
+  }
   // 對戰中重開（牌庫會重新讀最新收藏——開完新卡包回來按這顆就能用到新卡）
   const ngBtn = document.getElementById("newGameBtn");
   if (ngBtn) ngBtn.onclick = newGame;
@@ -940,6 +1092,8 @@
     setQuests: (questState) => { saveQuests(questState); renderQuests(); return loadQuests(); },
     progressQuest: (event) => progressQuest(event),
     claimQuest: (questId) => claimQuestUi(questId),
+    claimAllQuests: () => claimAllQuestsUi(),
+    rewardTable: () => JSON.parse(JSON.stringify(DIFFICULTY_REWARDS)),
     deckInfo: () => ({ source: game.playerDeckSource, ids: [...(game.playerDeckIds || [])], liveIds: [...game.player.hand, ...game.player.deck].map((c) => c.id) }),
     // 直接塞一張指定卡進手牌（回傳 uid），測「法力不足點擊」「場滿」等指定劇本
     giveCard(cardId) {

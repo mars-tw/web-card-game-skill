@@ -22,6 +22,9 @@ const RARITY = {
 // 抽卡變成閃卡(foil)的機率（疊在稀有度之上，更稀有）。
 const FOIL_CHANCE = 0.08;
 
+// 重複卡分解金幣值。卡包頁與 Node 測試共用，避免經濟 gate 測到複製常數。
+const DISMANTLE_VALUE = { common: 2, rare: 8, epic: 25, legendary: 80 };
+
 const CARD_TYPE = { MINION: "minion", SPELL: "spell" };
 
 /* 關鍵字技能定義（顯示用；實際規則在 battle.js）：
@@ -147,8 +150,8 @@ function collectKey(card) {
 
 // 讓瀏覽器與 Node 兩種載入都可用。
 if (typeof window !== "undefined") {
-  Object.assign(window, { RARITY, FOIL_CHANCE, CARD_TYPE, KEYWORDS, CARD_POOL, getCardById, cloneCard, rollCardByRarity, collectKey });
+  Object.assign(window, { RARITY, FOIL_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, CARD_POOL, getCardById, cloneCard, rollCardByRarity, collectKey });
 }
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { RARITY, FOIL_CHANCE, CARD_TYPE, KEYWORDS, CARD_POOL, getCardById, cloneCard, rollCardByRarity, collectKey };
+  module.exports = { RARITY, FOIL_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, CARD_POOL, getCardById, cloneCard, rollCardByRarity, collectKey };
 }
