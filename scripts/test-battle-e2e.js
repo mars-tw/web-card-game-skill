@@ -367,6 +367,22 @@ async function run() {
       });
       assert(stickySetup.handVisible && stickySetup.endVisible && stickySetup.endHit && stickySetup.scrollY === 0,
         `手機首屏可看到且可點擊手牌與結束回合按鈕（end left=${stickySetup.endRect.left}, right=${stickySetup.endRect.right}）`);
+      await page.locator(`.hand .card[data-uid="${stickySetup.uid}"] .card-info-btn`).click();
+      const handDetail = await page.evaluate((uid) => {
+        const g = window.__test.game();
+        return {
+          open: window.__test.detailOpen(),
+          stillInHand: g.player.hand.some((card) => card.uid === uid),
+          fieldCount: g.player.field.length,
+          turn: g.turn,
+          title: document.getElementById("cardDetailTitle").textContent,
+          keywordButtons: document.querySelectorAll("#cardDetailKeywords .detail-keyword").length,
+        };
+      }, stickySetup.uid);
+      assert(handDetail.open && handDetail.stillInHand && handDetail.fieldCount === 0 && handDetail.turn === "player",
+        "手機點卡牌詳情不會誤觸出牌");
+      assert(handDetail.title.length > 0 && handDetail.keywordButtons >= 1, "手機卡牌詳情顯示大卡資料與可點關鍵字");
+      await page.locator("#cardDetailClose").click();
       await page.locator(`.hand .card[data-uid="${stickySetup.uid}"]`).click();
       await page.locator("#endTurnBtn").click();
       const mobileAction = await page.evaluate(() => ({
@@ -375,6 +391,24 @@ async function run() {
       }));
       assert(mobileAction.turn === "enemy" && mobileAction.fieldCount >= 1, "手機首屏不捲動即可出牌並結束回合");
       await waitPlayerTurn(page);
+
+      const fieldDetail = await page.evaluate(() => {
+        const g = window.__test.game();
+        g.turn = "player";
+        g.selected = null;
+        g.pendingSpell = null;
+        if (g.player.field[0]) g.player.field[0].canAttack = true;
+        window.__rerenderBattle();
+        const btn = document.querySelector("#playerField .card .card-info-btn");
+        if (btn) btn.click();
+        return {
+          open: window.__test.detailOpen(),
+          selected: g.selected,
+          enemyHp: g.enemy.hp,
+        };
+      });
+      assert(fieldDetail.open && fieldDetail.selected === null && fieldDetail.enemyHp > 0, "手機場上卡詳情不會誤選攻擊者或攻擊英雄");
+      await page.locator("#cardDetailClose").click();
 
       const codexHit = await page.evaluate(() => {
         const btn = document.getElementById("kwCodexBtn");
@@ -519,6 +553,48 @@ async function run() {
     }));
     assert(deckReloaded.validation.ok === true && deckReloaded.countText === "20/20" && sameMultiset(deckReloaded.deck.cards, LEGAL_DECK_IDS), "重載後牌組仍保留並維持合法");
 
+    const templateDecks = await page.evaluate(({ collection }) => {
+      const T = window.__deckTest;
+      T.setCollection(collection);
+      T.clear();
+      const aggroOk = T.template("aggro");
+      const aggroValidation = T.validation();
+      const aggroCurve = T.curve();
+      const aggroSaved = T.save();
+      T.clear();
+      const controlOk = T.template("control");
+      const controlValidation = T.validation();
+      const controlCurve = T.curve();
+      const controlSaved = T.save();
+      const saved = JSON.parse(localStorage.getItem("card_deck_v1") || "{}");
+      return {
+        aggroOk,
+        aggroValid: aggroValidation.ok,
+        aggroTotal: aggroCurve.total,
+        aggroBars: aggroCurve.curve.filter((n) => n > 0).length,
+        aggroSaved,
+        controlOk,
+        controlValid: controlValidation.ok,
+        controlTotal: controlCurve.total,
+        controlBars: controlCurve.curve.filter((n) => n > 0).length,
+        controlSaved,
+        savedCount: Array.isArray(saved.cards) ? saved.cards.length : 0,
+        countText: document.getElementById("deckCount").textContent,
+        ratioText: document.getElementById("deckRatio").textContent,
+      };
+    }, { collection: collectionForDeck(LEGAL_DECK_IDS) });
+    assert(templateDecks.aggroOk && templateDecks.aggroValid && templateDecks.aggroSaved && templateDecks.aggroTotal === 20 && templateDecks.aggroBars >= 3,
+      "快攻模板可一鍵建立合法 20 張並顯示費用曲線");
+    assert(templateDecks.controlOk && templateDecks.controlValid && templateDecks.controlSaved && templateDecks.controlTotal === 20 && templateDecks.savedCount === 20,
+      "控制模板可一鍵建立合法 20 張並存檔");
+    assert(templateDecks.countText === "20/20" && /隨從/.test(templateDecks.ratioText), "牌組比例與 20/20 狀態可見");
+    await page.goto(base);
+    await page.waitForFunction(() => window.__test && window.__test.game);
+    const templateBattleDeck = await page.evaluate(() => window.__test.deckInfo());
+    assert(templateBattleDeck.source === "saved" && templateBattleDeck.ids.length === 20, "模板牌組存檔後可進入對戰並使用 saved 來源");
+    await page.goto(basePack);
+    await page.waitForFunction(() => window.__deckTest && document.getElementById("deckList"));
+
     const downgradeRecommendation = await page.evaluate(({ deckIds, collection }) => {
       const T = window.__deckTest;
       T.setCollection({ ...collection, groveHerbalist: 1 });
@@ -536,6 +612,45 @@ async function run() {
       && !downgradeRecommendation.rec
       && downgradeRecommendation.text === "",
       `新卡分數不高於舊卡時不顯示推薦替換（new=${downgradeRecommendation.newScore}, old=${downgradeRecommendation.oldScore}）`);
+
+    const goalCheck = await page.evaluate(({ collection }) => {
+      const T = window.__deckTest;
+      const Core = window.CardCore;
+      T.setCollection(collection);
+      T.setGoals({}, "2026-W30");
+      localStorage.setItem("card_stats_v1", JSON.stringify({ version: 2, wins: 0, losses: 0, streak: 0, bestStreak: 0, coins: 0, packsOpened: 0 }));
+      const visibleMilestones = document.querySelectorAll("#milestoneList .goal-item").length;
+      const first = T.claimMilestone("unique_10");
+      const afterFirst = JSON.parse(localStorage.getItem("card_stats_v1")).coins;
+      const second = T.claimMilestone("unique_10");
+      const afterSecond = JSON.parse(localStorage.getItem("card_stats_v1")).coins;
+      const weekly = Core.migrateGoals({}, "2026-W30");
+      const q = weekly.weeklyQuest;
+      const progressed = Core.applyWeeklyQuestProgress(weekly, { type: q.type, amount: q.target });
+      const claimed = Core.claimWeeklyQuest(progressed);
+      const reset = Core.migrateGoals(claimed.state, "2026-W31");
+      return {
+        visibleMilestones,
+        firstOk: first.ok,
+        firstReward: first.reward,
+        afterFirst,
+        secondOk: second.ok,
+        secondReason: second.reason,
+        afterSecond,
+        weeklyReward: claimed.reward,
+        weeklyClaimed: claimed.ok && claimed.state.weeklyQuest.claimed,
+        resetProgress: reset.weeklyQuest.progress,
+        resetClaimed: reset.weeklyQuest.claimed,
+        milestoneTotal: Core.milestoneRewardTotal(),
+      };
+    }, { collection: collectionForDeck(LEGAL_DECK_IDS) });
+    assert(goalCheck.visibleMilestones >= 5 && goalCheck.firstOk && goalCheck.firstReward === 40 && goalCheck.afterFirst === 40,
+      "收藏里程碑 UI 可一次性領取並發放金幣");
+    assert(!goalCheck.secondOk && goalCheck.secondReason === "alreadyClaimed" && goalCheck.afterSecond === 40,
+      "收藏里程碑重複領取不會再次加金幣");
+    assert(goalCheck.weeklyReward >= 80 && goalCheck.weeklyReward <= 120 && goalCheck.weeklyClaimed && goalCheck.resetProgress === 0 && goalCheck.resetClaimed === false,
+      "週任務可完成領取且跨週重置");
+    assert(goalCheck.milestoneTotal <= 300, "里程碑總增發不超過三包價值");
 
     // 8. 全程無 console error / pageerror
     assert(errors.length === 0, "無 console 錯誤 / pageerror" + (errors.length ? "：" + errors.slice(0, 3).join(" | ") : ""));

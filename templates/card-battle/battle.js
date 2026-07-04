@@ -19,6 +19,7 @@
   if (!Core) throw new Error("CardCore 未載入");
   const MAX_FIELD = Core.MAX_FIELD; // 場上隨從上限（雙方皆同；手機版戰場列一行放得下的上限）
   const QUEST_KEY = "card_quests_v1";
+  const GOAL_KEY = "card_goals_v1";
 
   // ===== 難度設定 =====
   // playerHp/enemyHp：雙方起始血量；playerDraw/enemyDraw：起手抽牌數
@@ -734,7 +735,107 @@
         <div class="atk">${card.attack ?? ""}</div>
         <div class="hp ${card.health < card.maxHealth ? "hurt" : ""}">${card.health ?? ""}</div>
       </div>`;
+    const infoBtn = document.createElement("button");
+    infoBtn.type = "button";
+    infoBtn.className = "card-info-btn";
+    infoBtn.textContent = "詳";
+    infoBtn.title = "查看卡牌詳情";
+    infoBtn.setAttribute("aria-label", `查看 ${card.name} 詳情`);
+    infoBtn.onclick = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      openCardDetail(card);
+    };
+    el.appendChild(infoBtn);
     return el;
+  }
+
+  function setChildren(el, children) {
+    if (!el) return;
+    el.innerHTML = "";
+    children.forEach((child) => el.appendChild(child));
+  }
+
+  function makeDetailPill(text) {
+    const pill = document.createElement("span");
+    pill.className = "detail-pill";
+    pill.textContent = text;
+    return pill;
+  }
+
+  function renderDetailArt(card) {
+    const art = document.getElementById("cardDetailArt");
+    if (!art) return;
+    art.innerHTML = "";
+    if (card.image) {
+      const img = document.createElement("img");
+      img.src = card.image;
+      img.alt = card.name;
+      img.onerror = () => {
+        art.innerHTML = "";
+        art.textContent = card.emoji || "";
+      };
+      art.appendChild(img);
+    } else {
+      art.textContent = card.emoji || "";
+    }
+  }
+
+  function showDetailKeyword(keywordId) {
+    const box = document.getElementById("cardDetailKeywordInfo");
+    const kw = typeof KEYWORDS !== "undefined" ? KEYWORDS[keywordId] : null;
+    if (!box || !kw) return;
+    box.textContent = `${kw.label}：${kw.desc}`;
+  }
+
+  function openCardDetail(card) {
+    if (!card) return;
+    const root = document.getElementById("cardDetail");
+    if (!root) return;
+    const rarity = RARITY[card.rarity] || RARITY.common;
+    const title = document.getElementById("cardDetailTitle");
+    const meta = document.getElementById("cardDetailMeta");
+    const stats = document.getElementById("cardDetailStats");
+    const text = document.getElementById("cardDetailText");
+    const keywords = document.getElementById("cardDetailKeywords");
+    if (title) title.textContent = `${card.name}${card.foil ? " 閃卡" : ""}`;
+    renderDetailArt(card);
+    setChildren(meta, [
+      makeDetailPill(`${card.cost} 費`),
+      makeDetailPill(rarity.label || card.rarity),
+      makeDetailPill(card.type === CARD_TYPE.SPELL ? "法術" : "隨從"),
+    ]);
+    const statPills = card.type === CARD_TYPE.SPELL
+      ? [makeDetailPill("法術效果")]
+      : [makeDetailPill(`攻擊 ${card.attack}`), makeDetailPill(`生命 ${card.health}/${card.maxHealth || card.health}`)];
+    setChildren(stats, statPills);
+    if (text) text.textContent = card.text || "沒有額外效果。";
+    if (keywords) {
+      keywords.innerHTML = "";
+      (card.keywords || []).forEach((keywordId) => {
+        const kw = typeof KEYWORDS !== "undefined" ? KEYWORDS[keywordId] : null;
+        if (!kw) return;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "detail-keyword";
+        btn.textContent = `${kw.icon} ${kw.label}`;
+        btn.onclick = () => showDetailKeyword(keywordId);
+        keywords.appendChild(btn);
+      });
+    }
+    const firstKeyword = (card.keywords || [])[0];
+    const keywordInfo = document.getElementById("cardDetailKeywordInfo");
+    if (firstKeyword) showDetailKeyword(firstKeyword);
+    else if (keywordInfo) keywordInfo.textContent = card.type === CARD_TYPE.SPELL ? "法術牌會在施放時立即結算效果。" : "此牌沒有關鍵字。";
+    root.classList.add("show");
+    root.setAttribute("aria-hidden", "false");
+  }
+
+  function closeCardDetail() {
+    const root = document.getElementById("cardDetail");
+    if (!root) return;
+    root.classList.remove("show");
+    root.setAttribute("aria-hidden", "true");
   }
 
   // ===== 動畫 / 工具 =====
@@ -985,6 +1086,18 @@
     return `${d.getFullYear()}-${mm}-${dd}`;
   }
 
+  function weekSeed(date) {
+    const d = date ? new Date(date) : new Date();
+    const local = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const day = (local.getDay() + 6) % 7;
+    local.setDate(local.getDate() - day + 3);
+    const firstThursday = new Date(local.getFullYear(), 0, 4);
+    const firstDay = (firstThursday.getDay() + 6) % 7;
+    firstThursday.setDate(firstThursday.getDate() - firstDay + 3);
+    const week = 1 + Math.round((local - firstThursday) / 604800000);
+    return `${local.getFullYear()}-W${String(week).padStart(2, "0")}`;
+  }
+
   function loadQuests() {
     let raw = null;
     try { raw = JSON.parse(localStorage.getItem(QUEST_KEY)); } catch {}
@@ -1009,14 +1122,32 @@
     return next;
   }
 
+  function loadGoals(seed) {
+    let raw = null;
+    try { raw = JSON.parse(localStorage.getItem(GOAL_KEY)); } catch {}
+    return Core.migrateGoals(raw, seed || weekSeed());
+  }
+
+  function saveGoals(goalState, seed) {
+    try { localStorage.setItem(GOAL_KEY, JSON.stringify(Core.migrateGoals(goalState, seed || weekSeed()))); } catch {}
+  }
+
+  function progressWeeklyGoal(event) {
+    const next = Core.applyWeeklyQuestProgress(loadGoals(), event);
+    saveGoals(next);
+    return next;
+  }
+
   function trackQuestFromCoreEvent(event) {
     if (!event) return;
     if (event.type === "spellCast" && event.side === "player") {
       progressQuest({ type: "playSpell", amount: 1 });
     } else if (event.type === "minionSummoned" && event.side === "player" && event.reason === "play") {
       progressQuest({ type: "summonMinion", amount: 1 });
+      progressWeeklyGoal({ type: "summonMinion", amount: 1 });
     } else if (event.type === "heroDamage" && event.attackerSide === "player" && event.defenderSide === "enemy") {
       progressQuest({ type: "heroDamage", amount: event.amount || 1 });
+      progressWeeklyGoal({ type: "heroDamage", amount: event.amount || 1 });
     }
   }
 
@@ -1125,6 +1256,7 @@
     saveStats(s);
     if (win) {
       progressQuest({ type: "win", amount: 1 });
+      progressWeeklyGoal({ type: "win", amount: 1 });
       if (game.playerDeckSource === "saved") progressQuest({ type: "deckWin", amount: 1 });
     }
     // 顯示戰績
@@ -1184,6 +1316,17 @@
   if (guideSkipBtn) guideSkipBtn.onclick = () => stopGuide(true);
   const guideHintBtn = document.getElementById("guideHintBtn");
   if (guideHintBtn) guideHintBtn.onclick = () => focusGuideTarget();
+  const cardDetailClose = document.getElementById("cardDetailClose");
+  if (cardDetailClose) cardDetailClose.onclick = closeCardDetail;
+  const cardDetail = document.getElementById("cardDetail");
+  if (cardDetail) {
+    cardDetail.addEventListener("click", (event) => {
+      if (event.target === cardDetail) closeCardDetail();
+    });
+  }
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeCardDetail();
+  });
 
   // 提供給入口頁主題切換用（重繪卡面）
   window.__rerenderBattle = render;
@@ -1228,6 +1371,9 @@
     quests: () => loadQuests(),
     setQuests: (questState) => { saveQuests(questState); renderQuests(); return loadQuests(); },
     progressQuest: (event) => progressQuest(event),
+    goals: (seed) => loadGoals(seed),
+    setGoals: (goalState, seed) => { saveGoals(goalState || {}, seed); return loadGoals(seed); },
+    progressWeeklyGoal: (event) => progressWeeklyGoal(event),
     claimQuest: (questId) => claimQuestUi(questId),
     claimAllQuests: () => claimAllQuestsUi(),
     rewardTable: () => JSON.parse(JSON.stringify(DIFFICULTY_REWARDS)),
@@ -1235,6 +1381,8 @@
     guide: () => ({ active: guide.active, step: guide.step, selectedAttacker: guide.selectedAttacker }),
     startGuide: () => startGuide(true),
     skipGuide: () => stopGuide(true),
+    detailOpen: () => document.getElementById("cardDetail")?.classList.contains("show") || false,
+    closeDetail: () => closeCardDetail(),
     // 直接塞一張指定卡進手牌（回傳 uid），測「法力不足點擊」「場滿」等指定劇本
     giveCard(cardId) {
       const c = Object.assign({}, getCardById(cardId));

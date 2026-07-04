@@ -176,10 +176,31 @@
   .deck-recommend-title { color:#facc15; font-weight:900; margin-bottom:2px; }
   .deck-recommend-reason { color:var(--muted); line-height:1.35; }
   .deck-recommend button { padding:7px 10px; border-radius:8px; font-size:12px; white-space:nowrap; }
+  .deck-stats { margin-top:10px; display:flex; flex-direction:column; gap:8px; }
+  .deck-ratio { display:flex; gap:6px; flex-wrap:wrap; font-size:11px; color:var(--muted); }
+  .ratio-pill { border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:4px 8px; background:rgba(255,255,255,.05); }
+  .curve-grid { display:grid; grid-template-columns:repeat(9,minmax(0,1fr)); gap:4px; align-items:end; min-height:74px; }
+  .curve-cell { min-width:0; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--muted); font-size:10px; }
+  .curve-bar { width:100%; min-height:4px; border-radius:5px 5px 2px 2px; background:linear-gradient(180deg,#facc15,#d97706); box-shadow:0 0 8px rgba(250,204,21,.24); }
+  .curve-count { color:#facc15; font-weight:900; font-size:11px; }
   .deck-errors { margin-top:10px; display:flex; flex-direction:column; gap:4px; color:#fca5a5; font-size:12px; line-height:1.35; }
   .deck-errors.ok { color:#86efac; }
   .deck-save-msg { color:#86efac; font-size:12px; min-height:16px; }
   .deck-empty { color:var(--muted); font-size:13px; padding:12px; text-align:center; }
+  .goal-panel { width:min(960px,94vw); margin:10px auto 2px; padding:12px;
+    background:rgba(13,17,23,.72); border:1px solid rgba(255,255,255,.12); border-radius:8px; }
+  .goal-head { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+  .goal-head h2 { font-size:16px; color:var(--ink); }
+  .goal-summary { font-size:12px; color:var(--muted); }
+  .goal-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(220px,.6fr); gap:10px; align-items:start; }
+  .milestone-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:7px; }
+  .goal-item { border:1px solid rgba(255,255,255,.1); border-radius:8px; padding:8px; background:rgba(255,255,255,.04); min-width:0; }
+  .goal-title { font-size:12px; font-weight:900; color:#facc15; margin-bottom:3px; }
+  .goal-progress { font-size:11px; color:var(--muted); margin-bottom:7px; }
+  .goal-item button { width:100%; padding:7px 9px; border-radius:8px; font-size:12px; }
+  .goal-item.claimed { opacity:.62; }
+  .weekly-goal { border-color:rgba(45,212,191,.38); background:rgba(45,212,191,.07); }
+  .weekly-goal .goal-title { color:#5eead4; }
   .series-footer { width:min(960px,94vw); margin:8px auto 16px; padding:10px 12px;
     color:var(--muted); font-size:12px; text-align:center; border-top:1px solid rgba(255,255,255,.08); }
   .series-footer a { color:var(--accent); text-decoration:none; font-weight:800; margin:0 6px; }
@@ -199,6 +220,8 @@
       border-color:rgba(250,204,21,.35); box-shadow:0 10px 28px rgba(0,0,0,.35);
     }
     .deck-current-panel .deck-card-list { max-height:160px; }
+    .goal-grid { grid-template-columns:1fr; }
+    .milestone-list { grid-template-columns:1fr; }
     .series-footer { margin-bottom:20px; }
   }
 
@@ -217,6 +240,17 @@
   <div class="top-actions">
     <button class="ghost" id="goBattleTop">前往對戰</button>
   </div>
+
+  <section class="goal-panel" id="goalPanel">
+    <div class="goal-head">
+      <h2>長線目標</h2>
+      <div class="goal-summary" id="goalSummary"></div>
+    </div>
+    <div class="goal-grid">
+      <div class="milestone-list" id="milestoneList"></div>
+      <div class="goal-item weekly-goal" id="weeklyGoal"></div>
+    </div>
+  </section>
 
   <div class="pack-stage" id="packStage">
     <div class="pack" id="pack">
@@ -240,6 +274,8 @@
       <div class="deck-actions">
         <span class="deck-count" id="deckCount">0/20</span>
         <button id="autoFillDeckBtn">自動補滿</button>
+        <button id="aggroTemplateBtn">快攻模板</button>
+        <button id="controlTemplateBtn">控制模板</button>
         <button id="saveDeckBtn">儲存牌組</button>
         <button class="ghost" id="clearDeckBtn">清空</button>
       </div>
@@ -270,6 +306,10 @@
       <div class="deck-panel deck-current-panel">
         <h3><span>目前牌組</span><span>依費用排序</span></h3>
         <div class="deck-card-list" id="deckList"></div>
+        <div class="deck-stats" id="deckStats">
+          <div class="deck-ratio" id="deckRatio"></div>
+          <div class="curve-grid" id="deckCurve"></div>
+        </div>
         <div class="deck-recommend" id="deckRecommend"></div>
         <div class="deck-errors" id="deckErrors"></div>
         <div class="deck-save-msg" id="deckSaveMsg"></div>

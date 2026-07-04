@@ -159,6 +159,16 @@
     font-weight: 900; font-size: 15px; border: 2px solid #0d2c5e; z-index: 3;
     box-shadow: 0 2px 6px rgba(0,0,0,.5), inset 0 1px 2px rgba(255,255,255,.4);
   }
+  .card-info-btn {
+    position:absolute; top:22px; right:4px; z-index:12; width:24px; height:24px;
+    border:1px solid rgba(255,255,255,.32); border-radius:50%; color:#fff; background:rgba(8,12,18,.82);
+    font-size:12px; font-weight:900; line-height:1; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.45); touch-action:manipulation;
+  }
+  @media (hover:hover) {
+    .card-info-btn { opacity:.25; transition:opacity .15s, transform .15s; }
+    .card:hover .card-info-btn { opacity:1; }
+  }
   .card .stars { position: absolute; top: -7px; right: 4px; font-size: 9px; color: var(--rarity);
     text-shadow: 0 0 4px var(--glow); letter-spacing: -1px; z-index: 3; }
   .card .shield-ring {
@@ -279,6 +289,30 @@
     box-shadow: 0 8px 24px rgba(0,0,0,.35); animation: toastFloat 1.4s ease forwards;
   }
 
+  .card-detail { position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+    padding:16px; background:rgba(6,10,14,.76); z-index:130; }
+  .card-detail.show { display:flex; }
+  .card-detail-card { width:min(420px,94vw); max-height:88vh; overflow:auto; border-radius:16px;
+    background:linear-gradient(180deg,#1a2230,#0f1620); border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 18px 48px rgba(0,0,0,.58); padding:14px; animation:overlayPop .22s ease; }
+  .card-detail-head { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
+  .card-detail-title { min-width:0; font-size:20px; font-weight:900; color:var(--accent); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .card-detail-close { width:34px; height:34px; border-radius:50%; border:1px solid rgba(255,255,255,.16);
+    color:var(--ink); background:#2a3645; font-weight:900; cursor:pointer; }
+  .card-detail-art { aspect-ratio:5/4; border-radius:12px; display:flex; align-items:center; justify-content:center;
+    font-size:72px; overflow:hidden; background:radial-gradient(circle,rgba(255,255,255,.1),rgba(0,0,0,.22));
+    border:1px solid rgba(255,255,255,.08); margin-bottom:10px; }
+  .card-detail-art img { width:100%; height:100%; object-fit:cover; }
+  .card-detail-meta, .card-detail-stats { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+  .detail-pill { border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:5px 9px;
+    background:rgba(255,255,255,.05); color:var(--ink); font-size:12px; font-weight:800; }
+  .card-detail-text { color:#cbd5e1; font-size:13px; line-height:1.45; margin-bottom:10px; }
+  .card-detail-keywords { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+  .detail-keyword { border:1px solid rgba(250,204,21,.35); border-radius:999px; padding:6px 9px;
+    background:rgba(250,204,21,.09); color:#facc15; font-size:12px; font-weight:900; cursor:pointer; }
+  .detail-keyword-info { min-height:36px; color:var(--muted); font-size:12px; line-height:1.45;
+    border-top:1px solid rgba(255,255,255,.08); padding-top:8px; }
+
   .overlay { position: fixed; inset: 0; background: rgba(8,10,14,.9); display: none; align-items: center;
     justify-content: center; flex-direction: column; gap: 18px; z-index: 100; }
   .overlay.show { display: flex; }
@@ -345,6 +379,14 @@
   @keyframes toastFloat { 0%{opacity:0;transform:translateY(-8px)} 15%,80%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-14px)} }
   @keyframes overlayPop { 0%{transform:scale(.3);opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
   @keyframes pulseTarget { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.6)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
   @media (max-width: 700px) {
     :root {
       --card-w: 92px; --card-h: 132px;
@@ -502,6 +544,21 @@
       <h2>📖 關鍵字圖鑑</h2>
       <div id="kwCodexList"></div>
       <button id="kwCodexClose">關閉</button>
+    </div>
+  </div>
+
+  <div class="card-detail" id="cardDetail" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="card-detail-card">
+      <div class="card-detail-head">
+        <div class="card-detail-title" id="cardDetailTitle"></div>
+        <button class="card-detail-close" id="cardDetailClose" type="button" aria-label="關閉">X</button>
+      </div>
+      <div class="card-detail-art" id="cardDetailArt"></div>
+      <div class="card-detail-meta" id="cardDetailMeta"></div>
+      <div class="card-detail-stats" id="cardDetailStats"></div>
+      <div class="card-detail-text" id="cardDetailText"></div>
+      <div class="card-detail-keywords" id="cardDetailKeywords"></div>
+      <div class="detail-keyword-info" id="cardDetailKeywordInfo"></div>
     </div>
   </div>
 

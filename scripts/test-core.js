@@ -394,7 +394,42 @@ testDeckValidation();
 testBuildBattleDeck();
 testDeckMigration();
 testDailyQuests();
+testGoalsAndWeeklyQuests();
 
 console.log("");
 console.log(`PASS ${passed} / FAIL ${failed}`);
 if (failed > 0) process.exit(1);
+
+function testGoalsAndWeeklyQuests() {
+  const total = Core.milestoneRewardTotal();
+  assert(total === 280 && total <= 300, `里程碑總增發 ${total} 金，不超過 3 包價值`);
+
+  const collection10 = {};
+  for (let i = 1; i <= 10; i++) collection10["c" + i] = 1;
+  const migrated = Core.migrateGoals({}, "2026-W27");
+  assert(migrated.version === Core.GOAL_VERSION && migrated.dateSeed === "2026-W27" && migrated.weeklyQuest, "長線目標可從空存檔遷移並產生週任務");
+
+  const firstClaim = Core.claimMilestone(migrated, "unique_10", collection10);
+  const secondClaim = Core.claimMilestone(firstClaim.state, "unique_10", collection10);
+  assert(firstClaim.ok && firstClaim.reward === 40 && firstClaim.state.claimedMilestones.includes("unique_10"), "收藏 10 種里程碑可領一次");
+  assert(!secondClaim.ok && secondClaim.reason === "alreadyClaimed" && secondClaim.reward === 0, "里程碑重複領取被阻擋");
+
+  const foilCollection = {};
+  for (let i = 1; i <= 5; i++) foilCollection["f" + i + "#foil"] = 1;
+  const foilClaim = Core.claimMilestone(migrated, "foil_5", foilCollection);
+  const summary = Core.collectionSummary(foilCollection);
+  assert(summary.unique === 5 && summary.foil === 5 && foilClaim.ok && foilClaim.reward === 40, "閃卡里程碑用 #foil 收藏計算");
+
+  const weekly = Core.migrateGoals({}, "2026-W28");
+  const q = weekly.weeklyQuest;
+  assert(q.reward >= 80 && q.reward <= 120, "週任務獎勵介於 80 到 120 金");
+  const progressed = Core.applyWeeklyQuestProgress(weekly, { type: q.type, amount: q.target + 5 });
+  const weeklyClaim = Core.claimWeeklyQuest(progressed);
+  const weeklyAgain = Core.claimWeeklyQuest(weeklyClaim.state);
+  assert(weeklyClaim.ok && weeklyClaim.reward === q.reward && weeklyClaim.state.weeklyQuest.claimed, "週任務完成後可領取");
+  assert(!weeklyAgain.ok && weeklyAgain.reason === "alreadyClaimed", "週任務同週只能領一次");
+
+  const reset = Core.migrateGoals(weeklyClaim.state, "2026-W29");
+  assert(reset.dateSeed === "2026-W29" && reset.weeklyQuest.progress === 0 && reset.weeklyQuest.claimed === false, "跨週會重置週任務進度與領取狀態");
+  assert(reset.claimedMilestones.includes("unique_10") === weeklyClaim.state.claimedMilestones.includes("unique_10"), "跨週不清除里程碑領取紀錄");
+}

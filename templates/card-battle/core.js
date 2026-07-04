@@ -21,6 +21,7 @@
   const DECK_VERSION = 1;
   const DECK_SIZE = 20;
   const QUEST_VERSION = 1;
+  const GOAL_VERSION = 1;
   const CARD_TYPE = { MINION: "minion", SPELL: "spell" };
   const STATS_DEFAULT = Object.freeze({
     version: STATS_VERSION,
@@ -44,6 +45,20 @@
     Object.freeze({ id: "deck_win_1", type: "deckWin", title: "使用自訂牌組贏得 1 場", target: 1, reward: 40 }),
     Object.freeze({ id: "win_2", type: "win", title: "贏得 2 場對戰", target: 2, reward: 40 }),
     Object.freeze({ id: "summon_minion_12", type: "summonMinion", title: "召喚 12 隻隨從", target: 12, reward: 35 }),
+  ]);
+
+  const MILESTONE_DEFS = Object.freeze([
+    Object.freeze({ id: "unique_10", metric: "unique", target: 10, title: "收藏 10 種卡牌", reward: 40 }),
+    Object.freeze({ id: "unique_20", metric: "unique", target: 20, title: "收藏 20 種卡牌", reward: 60 }),
+    Object.freeze({ id: "unique_40", metric: "unique", target: 40, title: "收藏 40 種卡牌", reward: 80 }),
+    Object.freeze({ id: "foil_5", metric: "foil", target: 5, title: "收藏 5 張閃卡", reward: 40 }),
+    Object.freeze({ id: "foil_15", metric: "foil", target: 15, title: "收藏 15 張閃卡", reward: 60 }),
+  ]);
+  const WEEKLY_QUEST_POOL = Object.freeze([
+    Object.freeze({ id: "weekly_win_3", type: "win", title: "本週勝利 3 場", target: 3, reward: 100 }),
+    Object.freeze({ id: "weekly_open_pack_3", type: "openPack", title: "本週開啟 3 包", target: 3, reward: 80 }),
+    Object.freeze({ id: "weekly_summon_30", type: "summonMinion", title: "本週召喚 30 個手下", target: 30, reward: 90 }),
+    Object.freeze({ id: "weekly_damage_80", type: "heroDamage", title: "本週造成 80 點英雄傷害", target: 80, reward: 120 }),
   ]);
 
   const SPELL_EFFECTS = Object.freeze({
@@ -187,6 +202,136 @@
     if (quest.progress < quest.target) return { ok: false, reason: "incomplete", reward: 0, state: next, quest };
     quest.claimed = true;
     return { ok: true, reason: null, reward: quest.reward, state: next, quest };
+  }
+
+  function cleanClaimedMilestones(source) {
+    const list = [];
+    if (Array.isArray(source && source.claimedMilestones)) {
+      list.push(...source.claimedMilestones);
+    } else if (Array.isArray(source && source.milestones)) {
+      for (const item of source.milestones) {
+        if (typeof item === "string") list.push(item);
+        else if (item && item.claimed && typeof item.id === "string") list.push(item.id);
+      }
+    }
+    return [...new Set(list.filter((id) => typeof id === "string" && MILESTONE_DEFS.some((def) => def.id === id)))];
+  }
+
+  function getWeeklyQuest(dateSeed) {
+    if (!WEEKLY_QUEST_POOL.length) return null;
+    const idx = hashSeed(dateSeed) % WEEKLY_QUEST_POOL.length;
+    return cloneQuest(WEEKLY_QUEST_POOL[idx]);
+  }
+
+  function migrateGoals(raw, dateSeed) {
+    let source = raw;
+    if (typeof source === "string") {
+      try { source = JSON.parse(source); }
+      catch { source = null; }
+    }
+    if (!source || typeof source !== "object" || Array.isArray(source)) source = {};
+    const seed = questDateKey(dateSeed == null ? source.dateSeed : dateSeed);
+    const def = getWeeklyQuest(seed);
+    const oldSeed = questDateKey(source.dateSeed);
+    const existing = oldSeed === seed && source.weeklyQuest && source.weeklyQuest.id === (def && def.id)
+      ? source.weeklyQuest
+      : null;
+    return {
+      version: GOAL_VERSION,
+      dateSeed: seed,
+      claimedMilestones: cleanClaimedMilestones(source),
+      weeklyQuest: def ? cloneQuest(def, existing) : null,
+    };
+  }
+
+  function collectionSummary(collection) {
+    const unique = new Set();
+    const foil = new Set();
+    if (collection && typeof collection === "object" && !Array.isArray(collection)) {
+      for (const [rawKey, rawCount] of Object.entries(collection)) {
+        const count = Number(rawCount);
+        if (!Number.isFinite(count) || count <= 0) continue;
+        const key = String(rawKey || "");
+        if (!key) continue;
+        if (key.endsWith("#foil")) {
+          const id = key.slice(0, -5);
+          if (id) {
+            unique.add(id);
+            foil.add(id);
+          }
+        } else {
+          unique.add(key);
+        }
+      }
+    }
+    return { unique: unique.size, foil: foil.size };
+  }
+
+  function milestoneProgress(def, summary) {
+    if (!def || !summary) return 0;
+    if (def.metric === "foil") return summary.foil || 0;
+    return summary.unique || 0;
+  }
+
+  function listMilestones(goalState, collection) {
+    const state = migrateGoals(goalState);
+    const summary = collectionSummary(collection);
+    return MILESTONE_DEFS.map((def) => {
+      const progress = milestoneProgress(def, summary);
+      return Object.assign({}, def, {
+        progress,
+        achieved: progress >= def.target,
+        claimed: state.claimedMilestones.includes(def.id),
+      });
+    });
+  }
+
+  function claimMilestone(goalState, milestoneId, collection) {
+    const state = migrateGoals(goalState);
+    const def = MILESTONE_DEFS.find((item) => item.id === milestoneId);
+    if (!def) return { ok: false, reason: "notFound", reward: 0, state };
+    if (state.claimedMilestones.includes(def.id)) {
+      return { ok: false, reason: "alreadyClaimed", reward: 0, state, milestone: def };
+    }
+    const summary = collectionSummary(collection);
+    const progress = milestoneProgress(def, summary);
+    if (progress < def.target) {
+      return { ok: false, reason: "incomplete", reward: 0, state, milestone: Object.assign({}, def, { progress }) };
+    }
+    state.claimedMilestones = [...state.claimedMilestones, def.id];
+    return {
+      ok: true,
+      reason: null,
+      reward: def.reward,
+      state,
+      milestone: Object.assign({}, def, { progress, achieved: true, claimed: true }),
+    };
+  }
+
+  function applyWeeklyQuestProgress(goalState, event) {
+    const next = migrateGoals(goalState);
+    const quest = next.weeklyQuest;
+    if (!quest || quest.claimed) return next;
+    const eventType = event && (event.questType || event.type);
+    if (!questEventMatches(quest.type, eventType)) return next;
+    const amountRaw = event && event.amount == null ? 1 : Number(event && event.amount);
+    const amount = Number.isFinite(amountRaw) && amountRaw > 0 ? amountRaw : 1;
+    quest.progress = Math.min(quest.target, quest.progress + amount);
+    return next;
+  }
+
+  function claimWeeklyQuest(goalState) {
+    const next = migrateGoals(goalState);
+    const quest = next.weeklyQuest;
+    if (!quest) return { ok: false, reason: "notFound", reward: 0, state: next };
+    if (quest.claimed) return { ok: false, reason: "alreadyClaimed", reward: 0, state: next, quest };
+    if (quest.progress < quest.target) return { ok: false, reason: "incomplete", reward: 0, state: next, quest };
+    quest.claimed = true;
+    return { ok: true, reason: null, reward: quest.reward, state: next, quest };
+  }
+
+  function milestoneRewardTotal() {
+    return MILESTONE_DEFS.reduce((sum, milestone) => sum + milestone.reward, 0);
   }
 
   function cloneCard(card) {
@@ -798,6 +943,9 @@
     DECK_DEFAULT,
     QUEST_VERSION,
     QUEST_POOL,
+    GOAL_VERSION,
+    MILESTONE_DEFS,
+    WEEKLY_QUEST_POOL,
     CARD_TYPE,
     SPELL_EFFECTS,
     migrateStats,
@@ -806,6 +954,14 @@
     getDailyQuests,
     applyQuestProgress,
     claimQuest,
+    migrateGoals,
+    getWeeklyQuest,
+    collectionSummary,
+    listMilestones,
+    claimMilestone,
+    applyWeeklyQuestProgress,
+    claimWeeklyQuest,
+    milestoneRewardTotal,
     validateDeck,
     buildBattleDeck,
     hasTaunt,

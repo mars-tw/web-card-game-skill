@@ -13,6 +13,7 @@
   const SAVE_KEY = "cardpack_collection_v2";
   const DECK_KEY = "card_deck_v1";
   const QUEST_KEY = "card_quests_v1";
+  const GOAL_KEY = "card_goals_v1";
   const Core = window.CardCore;
   if (!Core) throw new Error("CardCore 未載入");
 
@@ -46,6 +47,18 @@
     return `${d.getFullYear()}-${mm}-${dd}`;
   }
 
+  function weekSeed(date) {
+    const d = date ? new Date(date) : new Date();
+    const local = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const day = (local.getDay() + 6) % 7;
+    local.setDate(local.getDate() - day + 3);
+    const firstThursday = new Date(local.getFullYear(), 0, 4);
+    const firstDay = (firstThursday.getDay() + 6) % 7;
+    firstThursday.setDate(firstThursday.getDate() - firstDay + 3);
+    const week = 1 + Math.round((local - firstThursday) / 604800000);
+    return `${local.getFullYear()}-W${String(week).padStart(2, "0")}`;
+  }
+
   function loadQuests() {
     let raw = null;
     try { raw = JSON.parse(localStorage.getItem(QUEST_KEY)); } catch {}
@@ -56,6 +69,18 @@
   }
   function progressQuest(event) {
     saveQuests(Core.applyQuestProgress(loadQuests(), event));
+  }
+
+  function loadGoals(seed) {
+    let raw = null;
+    try { raw = JSON.parse(localStorage.getItem(GOAL_KEY)); } catch {}
+    return Core.migrateGoals(raw, seed || weekSeed());
+  }
+  function saveGoals(goalState, seed) {
+    try { localStorage.setItem(GOAL_KEY, JSON.stringify(Core.migrateGoals(goalState, seed || weekSeed()))); } catch {}
+  }
+  function progressWeeklyGoal(event) {
+    saveGoals(Core.applyWeeklyQuestProgress(loadGoals(), event));
   }
 
   function loadDeck() {
@@ -83,6 +108,7 @@
     stats.packsOpened = (stats.packsOpened || 0) + 1;
     saveStats(stats);
     progressQuest({ type: "openPack", amount: 1 });
+    progressWeeklyGoal({ type: "openPack", amount: 1 });
     updateCoinDisplay();
 
     const pack = document.getElementById("pack");
@@ -240,6 +266,79 @@
 
     document.getElementById("progress").textContent = `${owned} / ${totalSlots} 已收集（含閃卡）`;
     renderDeckEditor();
+    renderGoals();
+  }
+
+  function renderGoals(goalState) {
+    const summaryEl = document.getElementById("goalSummary");
+    const milestoneList = document.getElementById("milestoneList");
+    const weeklyEl = document.getElementById("weeklyGoal");
+    if (!summaryEl || !milestoneList || !weeklyEl) return;
+    const state = goalState || loadGoals();
+    const summary = Core.collectionSummary(collection);
+    summaryEl.textContent = `收藏 ${summary.unique}/40 種，閃卡 ${summary.foil}/15 張`;
+
+    milestoneList.innerHTML = "";
+    Core.listMilestones(state, collection).forEach((milestone) => {
+      const row = document.createElement("div");
+      row.className = "goal-item" + (milestone.claimed ? " claimed" : "");
+      row.innerHTML = `
+        <div class="goal-title">${milestone.title}</div>
+        <div class="goal-progress">${Math.min(milestone.progress, milestone.target)} / ${milestone.target} · ${milestone.reward} 金幣</div>
+        <button data-milestone-id="${milestone.id}">${milestone.claimed ? "已領取" : "領取"}</button>`;
+      const btn = row.querySelector("button");
+      btn.disabled = !milestone.achieved || milestone.claimed;
+      btn.onclick = () => claimMilestoneUi(milestone.id);
+      milestoneList.appendChild(row);
+    });
+
+    const weekly = state.weeklyQuest;
+    if (!weekly) {
+      weeklyEl.innerHTML = `<div class="goal-title">本週任務</div><div class="goal-progress">尚未產生任務</div>`;
+      return;
+    }
+    const done = weekly.progress >= weekly.target;
+    weeklyEl.classList.toggle("claimed", weekly.claimed);
+    weeklyEl.innerHTML = `
+      <div class="goal-title">本週任務 · ${state.dateSeed}</div>
+      <div class="goal-progress">${weekly.title}</div>
+      <div class="goal-progress">${Math.min(weekly.progress, weekly.target)} / ${weekly.target} · ${weekly.reward} 金幣</div>
+      <button id="weeklyClaimBtn">${weekly.claimed ? "已領取" : "領取"}</button>`;
+    const btn = document.getElementById("weeklyClaimBtn");
+    if (btn) {
+      btn.disabled = !done || weekly.claimed;
+      btn.onclick = claimWeeklyUi;
+    }
+  }
+
+  function claimMilestoneUi(milestoneId) {
+    const result = Core.claimMilestone(loadGoals(), milestoneId, collection);
+    if (!result.ok) {
+      renderGoals(result.state);
+      return result;
+    }
+    saveGoals(result.state);
+    const stats = loadStats();
+    stats.coins += result.reward;
+    saveStats(stats);
+    updateCoinDisplay();
+    renderGoals(result.state);
+    return result;
+  }
+
+  function claimWeeklyUi() {
+    const result = Core.claimWeeklyQuest(loadGoals());
+    if (!result.ok) {
+      renderGoals(result.state);
+      return result;
+    }
+    saveGoals(result.state);
+    const stats = loadStats();
+    stats.coins += result.reward;
+    saveStats(stats);
+    updateCoinDisplay();
+    renderGoals(result.state);
+    return result;
   }
 
   function totalOwned(cardId) {
@@ -375,6 +474,43 @@
     btn.onclick = () => replaceDeckCard(btn.dataset.oldId, btn.dataset.newId);
   }
 
+  function deckStats(counts) {
+    const curve = Array.from({ length: 9 }, () => 0);
+    let minions = 0;
+    let spells = 0;
+    for (const [id, count] of Object.entries(counts || deckCounts())) {
+      const card = getCardById(id);
+      if (!card) continue;
+      const bucket = Math.max(1, Math.min(9, Number(card.cost) || 0)) - 1;
+      curve[bucket] += count;
+      if (card.type === CARD_TYPE.SPELL) spells += count;
+      else minions += count;
+    }
+    return { curve, minions, spells, total: minions + spells };
+  }
+
+  function renderDeckStats(counts) {
+    const curveEl = document.getElementById("deckCurve");
+    const ratioEl = document.getElementById("deckRatio");
+    if (!curveEl || !ratioEl) return;
+    const stats = deckStats(counts);
+    const max = Math.max(1, ...stats.curve);
+    ratioEl.innerHTML = `
+      <span class="ratio-pill">隨從 ${stats.minions}</span>
+      <span class="ratio-pill">法術 ${stats.spells}</span>
+      <span class="ratio-pill">比例 ${stats.total ? Math.round(stats.minions / stats.total * 100) : 0}% / ${stats.total ? Math.round(stats.spells / stats.total * 100) : 0}%</span>`;
+    curveEl.innerHTML = stats.curve.map((count, index) => {
+      const label = index === 8 ? "9+" : String(index + 1);
+      const height = Math.max(4, Math.round((count / max) * 54));
+      return `
+        <div class="curve-cell">
+          <div class="curve-count">${count}</div>
+          <div class="curve-bar" style="height:${height}px"></div>
+          <div>${label}</div>
+        </div>`;
+    }).join("");
+  }
+
   function renderDeckEditor() {
     const collectionList = document.getElementById("deckCollectionList");
     const deckList = document.getElementById("deckList");
@@ -461,6 +597,7 @@
     errorsBox.innerHTML = validation.ok
       ? "<div>牌組合法，可以儲存並帶進對戰。</div>"
       : validation.errors.map((msg) => `<div>${msg}</div>`).join("");
+    renderDeckStats(counts);
     renderDeckRecommendation(counts);
   }
 
@@ -500,6 +637,78 @@
     if (validation.ok) setDeckMessage(`已自動補滿 ${Core.DECK_SIZE} 張，可儲存。`);
     else if (added > 0) setDeckMessage(`已加入 ${added} 張；收藏不足以補成合法 20 張。`);
     else setDeckMessage("目前收藏沒有可加入的卡。");
+    renderDeckEditor();
+    return validation.ok;
+  }
+
+  function templateScore(card, kind) {
+    if (!card) return -999;
+    const keywords = card.keywords || [];
+    const attack = Number(card.attack) || 0;
+    const health = Number(card.health) || 0;
+    const cost = Number(card.cost) || 0;
+    const isSpell = card.type === CARD_TYPE.SPELL;
+    const rarityScore = { common: 0, rare: 1, epic: 2, legendary: 3 }[card.rarity] || 0;
+    if (kind === "control") {
+      let score = cost * 9 + health * 2 + attack + rarityScore * 2;
+      if (keywords.includes("taunt")) score += 16;
+      if (keywords.includes("lifesteal")) score += 14;
+      if (keywords.includes("divineshield")) score += 10;
+      if (keywords.includes("regenerate")) score += 10;
+      if (card.effect === "aoe1" || card.effect === "aoe2") score += 22;
+      if (card.effect === "damage8" || card.effect === "polymorph") score += 18;
+      if (card.effect === "heal5") score += 10;
+      if (isSpell && cost <= 1) score -= 8;
+      return score;
+    }
+    let score = 120 - cost * 12 + attack * 4 + health + rarityScore;
+    if (keywords.includes("charge")) score += 20;
+    if (keywords.includes("rush")) score += 14;
+    if (keywords.includes("windfury")) score += 12;
+    if (keywords.includes("lifesteal")) score += 8;
+    if (card.effect === "damage3" || card.effect === "mana2") score += 18;
+    if (card.effect === "giveShield") score += 8;
+    if (cost >= 6) score -= 18;
+    return score;
+  }
+
+  function fillDeckFromCandidates(candidates) {
+    let added = 0;
+    let progressed = true;
+    while (deckState.cards.length < Core.DECK_SIZE && progressed) {
+      progressed = false;
+      for (const card of candidates) {
+        if (deckState.cards.length >= Core.DECK_SIZE) break;
+        if (deckAddBlockReason(card, deckCounts())) continue;
+        deckState.cards.push(card.id);
+        added++;
+        progressed = true;
+      }
+    }
+    return added;
+  }
+
+  function applyDeckTemplate(kind) {
+    deckState = Core.migrateDeck({ version: 1, cards: [] });
+    const owned = [...CARD_POOL].filter((card) => totalOwned(card.id) > 0);
+    const preferred = [...owned].sort((a, b) =>
+      (templateScore(b, kind) - templateScore(a, kind))
+      || (a.cost - b.cost)
+      || a.name.localeCompare(b.name, "zh-Hant")
+      || a.id.localeCompare(b.id)
+    );
+    const fallback = [...owned].sort((a, b) =>
+      (cardUpgradeScore(b) - cardUpgradeScore(a))
+      || (a.cost - b.cost)
+      || a.name.localeCompare(b.name, "zh-Hant")
+      || a.id.localeCompare(b.id)
+    );
+    fillDeckFromCandidates(preferred);
+    fillDeckFromCandidates(fallback);
+    const validation = Core.validateDeck(deckState.cards, collection, CARD_POOL);
+    const label = kind === "control" ? "控制模板" : "快攻模板";
+    if (validation.ok) setDeckMessage(`${label}已建立 20/20，可直接儲存。`);
+    else setDeckMessage(`${label}缺少可用卡，已先補到 ${deckState.cards.length}/${Core.DECK_SIZE}。`);
     renderDeckEditor();
     return validation.ok;
   }
@@ -574,6 +783,10 @@
   document.getElementById("saveDeckBtn").onclick = saveDeck;
   document.getElementById("clearDeckBtn").onclick = clearDeck;
   document.getElementById("autoFillDeckBtn").onclick = autoFillDeck;
+  const aggroTemplateBtn = document.getElementById("aggroTemplateBtn");
+  const controlTemplateBtn = document.getElementById("controlTemplateBtn");
+  if (aggroTemplateBtn) aggroTemplateBtn.onclick = () => applyDeckTemplate("aggro");
+  if (controlTemplateBtn) controlTemplateBtn.onclick = () => applyDeckTemplate("control");
   const deckSearch = document.getElementById("deckSearch");
   const deckCostFilter = document.getElementById("deckCostFilter");
   const deckRarityFilter = document.getElementById("deckRarityFilter");
@@ -595,6 +808,8 @@
     validation: () => Core.validateDeck(deckState.cards, collection, CARD_POOL),
     add: addDeckCard,
     autoFill: autoFillDeck,
+    template: applyDeckTemplate,
+    curve: () => deckStats(deckCounts()),
     save: saveDeck,
     clear: clearDeck,
     render: renderDeckEditor,
@@ -615,6 +830,15 @@
       renderCollection();
       return collection;
     },
+    goals: (seed) => loadGoals(seed),
+    setGoals(next, seed) {
+      saveGoals(next || {}, seed);
+      renderGoals();
+      return loadGoals(seed);
+    },
+    claimMilestone: (id) => claimMilestoneUi(id),
+    progressWeekly: (event) => { progressWeeklyGoal(event); renderGoals(); return loadGoals(); },
+    claimWeekly: () => claimWeeklyUi(),
     setDeck(cards) {
       deckState = Core.migrateDeck({ version: 1, cards: Array.isArray(cards) ? cards : [] });
       renderDeckEditor();
