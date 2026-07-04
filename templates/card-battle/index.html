@@ -297,20 +297,23 @@
   .result-stats .coin { color: #facc15; font-weight: 800; font-size: 17px; }
   .result-stats .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-  /* 新手引導 + 關鍵字圖鑑（CP0-15）*/
-  .cb-tutorial, .kw-codex { position: fixed; inset: 0; background: rgba(6,10,14,.92); display: none;
+  /* 新手導引 + 關鍵字圖鑑（CP0-15）*/
+  .battle-guide, .kw-codex { position: fixed; inset: 0; background: rgba(6,10,14,.92); display: none;
     align-items: center; justify-content: center; z-index: 110; padding: 16px; }
-  .cb-tutorial.show, .kw-codex.show { display: flex; }
-  .cb-tut-card, .kw-codex-card { background: linear-gradient(180deg, #1a2230, #0f1620);
+  .battle-guide.show, .kw-codex.show { display: flex; }
+  .battle-guide.show { background: rgba(6,10,14,.48); align-items: flex-start; justify-content: center; pointer-events: none; }
+  .guide-panel, .kw-codex-card { background: linear-gradient(180deg, #1a2230, #0f1620);
     border: 1px solid rgba(255,255,255,.12); border-radius: 18px; padding: 24px 26px; max-width: 440px; width: 100%;
     box-shadow: 0 12px 40px rgba(0,0,0,.5); max-height: 90vh; overflow-y: auto; }
-  .cb-tut-card h2, .kw-codex-card h2 { color: var(--accent, #f59e0b); font-size: 23px; margin-bottom: 14px; text-align: center; }
-  .cb-tut-card ol { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
-  .cb-tut-card li { font-size: 14px; line-height: 1.5; }
-  .cb-tut-card li b { color: #facc15; }
-  .cb-tut-tip { font-size: 12px; color: #9fb0a4; background: rgba(245,158,11,.1); padding: 10px 12px; border-radius: 10px; margin-bottom: 16px; line-height: 1.5; }
-  .cb-tut-card button, .kw-codex-card button { width: 100%; background: linear-gradient(180deg,#f59e0b,#d97706);
+  .guide-panel { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); max-width: 520px; width: min(520px, calc(100vw - 28px)); pointer-events: auto; }
+  .guide-panel h2, .kw-codex-card h2 { color: var(--accent, #f59e0b); font-size: 23px; margin-bottom: 14px; text-align: center; }
+  .guide-step-label { font-size: 12px; color: #facc15; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+  .guide-copy { font-size: 14px; line-height: 1.5; color: var(--ink); margin-bottom: 14px; }
+  .guide-actions { display: flex; gap: 8px; }
+  .guide-actions button, .kw-codex-card button { width: 100%; background: linear-gradient(180deg,#f59e0b,#d97706);
     color: #1a1206; border: none; padding: 13px; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; }
+  .guide-actions button.secondary { background: #2a3645; color: var(--ink); }
+  .guide-focus { outline: 4px solid #facc15 !important; box-shadow: 0 0 0 8px rgba(250,204,21,.22), 0 0 32px rgba(250,204,21,.8) !important; z-index: 120 !important; position: relative; }
   .kw-codex-btn { position: fixed; bottom: 12px; right: 12px; z-index: 60; background: #1a2230;
     color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
     font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
@@ -343,12 +346,27 @@
   @keyframes overlayPop { 0%{transform:scale(.3);opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
   @keyframes pulseTarget { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.6)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
   @media (max-width: 700px) {
+    :root {
+      --card-w: 92px; --card-h: 132px;
+      --mobile-controls-h: 62px;
+      --mobile-hand-h: 150px;
+      --mobile-quest-h: 110px;
+      --mobile-log-h: 38px;
+      --mobile-target-h: 30px;
+    }
+    header { padding: 6px; font-size: 14px; letter-spacing: 1px; }
+    .board { gap: 5px; padding: 6px 8px calc(var(--mobile-controls-h) + var(--mobile-hand-h) + var(--mobile-quest-h) + var(--mobile-log-h) + var(--mobile-target-h) + 20px); }
+    .hero-row { padding: 6px 10px; border-radius: 10px; }
+    .hero .avatar { font-size: 24px; }
+    .hero .name { font-size: 14px; }
+    .hp-badge, .mana-badge { font-size: 13px; padding: 2px 8px; }
+    .battlefield { min-height: calc(var(--card-h) + 10px); gap: 5px; padding: 5px; }
     .quest-list { grid-template-columns: 1fr; }
     .quest-item { grid-template-columns: minmax(0,1fr) auto; }
-    .series-footer { padding-bottom: 54px; }
-    .board { padding-bottom: calc(var(--card-h) + 122px); }
+    .series-footer { padding-bottom: calc(var(--mobile-controls-h) + var(--mobile-hand-h) + 10px); }
     .hand {
-      position: fixed; left: 0; bottom: 64px; z-index: 70; width: 100vw; max-width: 100vw;
+      position: fixed; left: 0; bottom: var(--mobile-controls-h); z-index: 70; width: 100vw; max-width: 100vw;
+      height: var(--mobile-hand-h); min-height: var(--mobile-hand-h);
       justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden;
       background: rgba(8,10,14,.92); border-top: 1px solid rgba(255,255,255,.08);
       border-bottom: 1px solid rgba(255,255,255,.08); padding: 8px 10px;
@@ -357,6 +375,7 @@
     .hand .card { scroll-snap-align: start; }
     .controls {
       position: fixed; left: 0; bottom: 0; z-index: 75; width: 100vw; max-width: 100vw;
+      height: var(--mobile-controls-h);
       overflow: hidden; justify-content: space-between; flex-wrap: nowrap; gap: 8px;
       background: rgba(8,10,14,.96); border-top: 1px solid rgba(255,255,255,.1);
       padding: 8px 10px;
@@ -371,8 +390,35 @@
     #mulliganBtn { order: 1; }
     #newGameBtn { order: 3; }
     #toPackBtn { order: 4; }
+    #guideReplayBtn { order: 5; }
     #endTurnBtn { flex: 0 0 auto; min-width: 112px; position: relative; z-index: 2; padding-inline: 16px; }
-    .kw-codex-btn { bottom: calc(var(--card-h) + 86px); z-index: 90; }
+    .target-status {
+      position: fixed; left: 8px; right: 8px;
+      bottom: calc(var(--mobile-controls-h) + var(--mobile-hand-h) + var(--mobile-quest-h) + var(--mobile-log-h));
+      min-height: var(--mobile-target-h); z-index: 67; background: rgba(9,14,22,.94);
+      width: auto; padding-inline: 10px;
+    }
+    #log {
+      position: fixed; left: 8px; right: 8px;
+      bottom: calc(var(--mobile-controls-h) + var(--mobile-hand-h) + var(--mobile-quest-h));
+      z-index: 67; width: auto; height: var(--mobile-log-h); padding: 4px 10px;
+      background: rgba(9,14,22,.9); border: 1px solid rgba(255,255,255,.08); border-radius: 10px;
+    }
+    .quest-panel {
+      position: fixed; left: 8px; right: 8px;
+      bottom: calc(var(--mobile-controls-h) + var(--mobile-hand-h));
+      z-index: 67; max-height: var(--mobile-quest-h); overflow: hidden;
+      background: rgba(13,20,30,.94);
+    }
+    .quest-panel h2 { margin-bottom: 2px; }
+    .quest-list { display: flex; overflow-x: auto; overflow-y: hidden; gap: 6px; padding-bottom: 2px; }
+    .quest-item { flex: 0 0 264px; min-height: 58px; padding: 6px; }
+    .kw-codex-btn { top: 8px; bottom: auto; right: 10px; z-index: 90; }
+    .kw-codex-card { max-height: 82vh; padding: 20px; }
+    .kw-codex-card button { position: sticky; bottom: 0; }
+    .guide-panel { bottom: calc(var(--mobile-controls-h) + var(--mobile-hand-h) + 12px); padding: 16px; }
+    .guide-panel h2 { font-size: 18px; margin-bottom: 8px; }
+    .guide-copy { font-size: 13px; }
   }
 </style>
 </head>
@@ -415,6 +461,7 @@
         <button class="mulligan-btn" id="mulliganBtn" style="display:none">🔄 重抽起手牌</button>
         <button class="mulligan-btn" id="newGameBtn" title="重開一局（會帶入最新收藏的牌組）">🔁 重新開始</button>
         <button class="mulligan-btn" id="toPackBtn" title="前往卡包與牌組編輯器">🃏 卡包／牌組</button>
+        <button class="mulligan-btn" id="guideReplayBtn" title="重看三步導引">🧭 導引</button>
       </div>
       <button class="end-turn" id="endTurnBtn">結束回合 ▶</button>
     </div>
@@ -435,18 +482,16 @@
     </div>
   </div>
 
-  <!-- 首次遊玩引導（CP0-15）-->
-  <div class="cb-tutorial" id="cbTutorial">
-    <div class="cb-tut-card">
-      <h2>⚔️ 對戰教學</h2>
-      <ol>
-        <li><b>① 出牌</b>：點手牌中費用足夠的卡（隨從上場、法術立即生效）</li>
-        <li><b>② 攻擊</b>：點你的隨從選為攻擊者，再點敵方隨從或英雄</li>
-        <li><b>③ 打臉獲勝</b>：把敵方英雄血量打到 0 就贏！</li>
-        <li><b>④ 善用技能</b>：嘲諷🛡擋路、衝鋒⚡即攻、突襲💨解場、吸血🩸續戰</li>
-      </ol>
-      <p class="cb-tut-tip">💡 法力每回合 +1。點下方「關鍵字」隨時查技能說明。開卡包抽強卡組牌組！</p>
-      <button id="cbTutOk">開始對戰 ▶</button>
+  <!-- 首次遊玩三步導引（R6）-->
+  <div class="battle-guide" id="battleGuide" aria-live="polite">
+    <div class="guide-panel">
+      <h2 id="guideTitle">對戰導引</h2>
+      <div class="guide-step-label" id="guideStepLabel">STEP 1 / 3</div>
+      <p class="guide-copy" id="guideCopy">點一張發亮的手牌出牌。</p>
+      <div class="guide-actions">
+        <button class="secondary" id="guideSkipBtn">略過</button>
+        <button id="guideHintBtn">我知道了</button>
+      </div>
     </div>
   </div>
 
@@ -504,17 +549,6 @@
         // 立即以新難度重開一局
         if (window.__newGame) window.__newGame();
       });
-    })();
-
-    // 新手引導（CP0-15）：首次顯示，存 localStorage
-    (function setupTutorial() {
-      let seen = false;
-      try { seen = localStorage.getItem("cb_tutorial_seen") === "1"; } catch {}
-      if (!seen) document.getElementById("cbTutorial").classList.add("show");
-      document.getElementById("cbTutOk").onclick = () => {
-        document.getElementById("cbTutorial").classList.remove("show");
-        try { localStorage.setItem("cb_tutorial_seen", "1"); } catch {}
-      };
     })();
 
     // 關鍵字圖鑑（CP0-15 觸控友善：手機看不到 title tooltip）

@@ -78,6 +78,7 @@ async function run() {
 
   const server = await startServer();
   const port = server.address().port;
+  const shellBase = "http://127.0.0.1:" + port + "/templates/index.html";
   const base = "http://127.0.0.1:" + port + "/templates/card-battle/index.html";
   const basePack = "http://127.0.0.1:" + port + "/templates/card-pack/index.html";
   const browser = await chromium.launch();
@@ -91,12 +92,12 @@ async function run() {
     page.on("pageerror", (e) => errors.push("pageerror: " + (e && e.message)));
 
     await page.goto(base);
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => { localStorage.clear(); localStorage.setItem("cb_guide_done_v1", "1"); });
     await page.reload();
     await page.waitForFunction(() => window.__test && window.__test.game);
     await sleep(300);
     // 關掉首次教學浮層（若有）
-    await page.evaluate(() => document.querySelectorAll(".overlay.show, .tutorial-overlay, #tutorialOverlay, #cbTutorial").forEach((el) => el.classList.remove("show")));
+    await page.evaluate(() => document.querySelectorAll(".overlay.show, .tutorial-overlay, #tutorialOverlay, #cbTutorial, #battleGuide").forEach((el) => el.classList.remove("show")));
 
     // 1. 開局健全
     const boot = await page.evaluate(() => {
@@ -125,11 +126,11 @@ async function run() {
     }, { deckIds: LEGAL_DECK_IDS, collection: collectionForDeck(LEGAL_DECK_IDS) });
     assert(invalidDeckCheck.source === "fallback", "非法 card_deck_v1 會 fallback，不阻擋開局");
 
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => { localStorage.clear(); localStorage.setItem("cb_guide_done_v1", "1"); });
     await page.reload();
     await page.waitForFunction(() => window.__test && window.__test.game);
     await sleep(300);
-    await page.evaluate(() => document.querySelectorAll(".overlay.show, .tutorial-overlay, #tutorialOverlay, #cbTutorial").forEach((el) => el.classList.remove("show")));
+    await page.evaluate(() => document.querySelectorAll(".overlay.show, .tutorial-overlay, #tutorialOverlay, #cbTutorial, #battleGuide").forEach((el) => el.classList.remove("show")));
 
     // 2. Stage 1 核心修復：AI 隨從攻擊權每回合重置
     //    模擬「AI 上回合召喚的非衝鋒隨從」（canAttack=false 掛在場上），
@@ -169,7 +170,7 @@ async function run() {
     assert(spellSafe.knightHp === 4, "騎士沒有被錯誤結算傷害");
 
     // 4. Mulligan 規則：無效點擊不沒收；結束回合即失效
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => { localStorage.clear(); localStorage.setItem("cb_guide_done_v1", "1"); });
     await page.reload();
     await page.waitForFunction(() => window.__test && window.__test.game);
     await sleep(300);
@@ -190,7 +191,7 @@ async function run() {
 
     // 4b. 指定型法術結算也要沒收重抽權（Codex 複審抓到的缺口：只有 playFromHand
     //     直接出牌路徑有燒，經 resolvePendingSpell 結算的第一張牌沒燒）
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => { localStorage.clear(); localStorage.setItem("cb_guide_done_v1", "1"); });
     await page.reload();
     await page.waitForFunction(() => window.__test && window.__test.game);
     await sleep(300);
@@ -389,6 +390,82 @@ async function run() {
       const codexOpen = await page.evaluate(() => document.getElementById("kwCodex").classList.contains("show"));
       assert(codexOpen === true, "手機可點開關鍵字圖鑑");
       await page.locator("#kwCodexClose").click();
+
+      const mobileDock = await page.evaluate(() => {
+        const rect = (sel) => {
+          const el = document.querySelector(sel);
+          if (!el) return null;
+          const r = el.getBoundingClientRect();
+          return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height };
+        };
+        const hitOk = (sel) => {
+          const r = rect(sel);
+          if (!r) return false;
+          const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+          return !!(hit && hit.closest && hit.closest(sel));
+        };
+        const overlap = (a, b) => !!(a && b && a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top);
+        const hand = rect("#playerHand"), controls = rect(".controls");
+        const target = rect("#targetStatus"), log = rect("#log"), quest = rect("#questPanel");
+        return {
+          target, log, quest, hand, controls,
+          targetHit: hitOk("#targetStatus"),
+          logHit: hitOk("#log"),
+          questButtonHit: hitOk("#questClaimAllBtn"),
+          targetCovered: overlap(target, hand) || overlap(target, controls),
+          logCovered: overlap(log, hand) || overlap(log, controls),
+          questCovered: overlap(quest, hand) || overlap(quest, controls),
+        };
+      });
+      assert(mobileDock.targetHit && mobileDock.logHit && mobileDock.questButtonHit, "手機目標列、日誌、任務按鈕可見且可命中");
+      assert(!mobileDock.targetCovered && !mobileDock.logCovered && !mobileDock.questCovered, "手機目標/日誌/任務不被固定手牌或控制列遮住");
+
+      await page.goto(shellBase);
+      await page.waitForSelector(".tabbar");
+      const shellMobile = await page.evaluate(() => {
+        const tabs = [...document.querySelectorAll(".tab")].map((tab) => {
+          const r = tab.getBoundingClientRect();
+          return { text: tab.textContent.trim(), width: r.width, height: r.height, scrollHeight: tab.scrollHeight, clientHeight: tab.clientHeight };
+        });
+        const bar = document.querySelector(".tabbar").getBoundingClientRect();
+        return {
+          overflow: document.documentElement.scrollWidth - window.innerWidth,
+          barHeight: bar.height,
+          tabs,
+          swatches: document.querySelectorAll(".swatch").length,
+        };
+      });
+      assert(shellMobile.overflow <= 2 && shellMobile.barHeight <= 64, `手機入口 shell 無水平溢出且高度緊湊（overflow=${shellMobile.overflow}, h=${shellMobile.barHeight}）`);
+      assert(shellMobile.tabs.every((tab) => tab.scrollHeight <= tab.clientHeight + 2 && tab.height <= 56 && tab.width >= 54), "手機入口 tab 不直排、不被文字撐高");
+
+      await page.goto(base);
+      await page.evaluate(() => localStorage.clear());
+      await page.reload();
+      await page.waitForFunction(() => window.__test && window.__test.game);
+      const guideAuto = await page.evaluate(() => ({
+        active: window.__test.guide().active,
+        step: window.__test.guide().step,
+        visible: document.getElementById("battleGuide").classList.contains("show"),
+        hasWolf: !!document.querySelector('.hand .card[data-card-id="wolf"]'),
+      }));
+      assert(guideAuto.active && guideAuto.step === 0 && guideAuto.visible && guideAuto.hasWolf, "清空存檔後首次對戰自動開啟三步導引");
+      await page.locator("#guideSkipBtn").click();
+      const guideSkipped = await page.evaluate(() => ({
+        visible: document.getElementById("battleGuide").classList.contains("show"),
+        stored: localStorage.getItem("cb_guide_done_v1"),
+      }));
+      assert(!guideSkipped.visible && guideSkipped.stored === "1", "三步導引可略過並記錄已完成");
+      await page.locator("#guideReplayBtn").click();
+      await page.waitForFunction(() => window.__test.guide().active && window.__test.guide().step === 0);
+      await page.locator('.hand .card[data-card-id="wolf"]').click();
+      await page.waitForFunction(() => window.__test.guide().step === 1);
+      await page.locator('#playerField .card[data-card-id="wolf"]').click();
+      await page.locator("#enemyHero").click();
+      await page.waitForFunction(() => window.__test.guide().step === 2);
+      await page.locator("#endTurnBtn").click();
+      await page.waitForFunction(() => !window.__test.guide().active);
+      const guideDone = await page.evaluate(() => ({ stored: localStorage.getItem("cb_guide_done_v1"), turn: window.__test.game().turn }));
+      assert(guideDone.stored === "1" && guideDone.turn === "enemy", "可依 UI 完成出牌→攻擊→結束回合三步導引");
     }
 
     // Stage 3：卡包頁牌組編輯器可用真實點擊加入、儲存，重載後仍存在
@@ -398,8 +475,18 @@ async function run() {
     }, { collection: collectionForDeck(LEGAL_DECK_IDS) });
     await page.goto(basePack);
     await page.waitForFunction(() => window.__deckTest && document.getElementById("deckCollectionList"));
-    for (const id of LEGAL_DECK_IDS) {
-      await page.locator(`button.deck-add-btn[data-card-id="${id}"]`).click();
+    if (vp.w <= 400) {
+      await page.locator("#deckSearch").fill("迅捷");
+      await page.locator("#deckCostFilter").selectOption("2");
+      await page.locator("#deckRarityFilter").selectOption("common");
+      const filtered = await page.evaluate(() => window.__deckTest.visibleCards());
+      assert(filtered.includes("wolf") && filtered.every((id) => id === "wolf"), "手機牌組編輯器可用搜尋/費用/稀有度篩出迅捷狼");
+      await page.evaluate(() => window.__deckTest.setFilters({ search: "", cost: "all", rarity: "all" }));
+      await page.locator("#autoFillDeckBtn").click();
+    } else {
+      for (const id of LEGAL_DECK_IDS) {
+        await page.locator(`button.deck-add-btn[data-card-id="${id}"]`).click();
+      }
     }
     await page.locator("#saveDeckBtn").click();
     const deckSaved = await page.evaluate(() => {
@@ -408,9 +495,20 @@ async function run() {
         saved,
         validation: window.__deckTest.validation(),
         message: document.getElementById("deckSaveMsg").textContent,
+        count: document.getElementById("deckCount").textContent,
       };
     });
-    assert(deckSaved.validation.ok === true && sameMultiset(deckSaved.saved.cards, LEGAL_DECK_IDS), "牌組編輯器可加入 20 張合法牌並儲存");
+    if (vp.w <= 400) {
+      assert(deckSaved.validation.ok === true && deckSaved.count === "20/20" && deckSaved.saved.cards.length === 20, "手機牌組編輯器可自動補滿合法 20 張並儲存");
+      await page.goto(base);
+      await page.waitForFunction(() => window.__test && window.__test.game);
+      const savedBattleDeck = await page.evaluate(() => window.__test.deckInfo());
+      assert(savedBattleDeck.source === "saved" && savedBattleDeck.ids.length === 20, "手機自動補滿牌組會帶入下一場對戰");
+      await page.goto(basePack);
+      await page.waitForFunction(() => window.__deckTest && document.getElementById("deckList"));
+    } else {
+      assert(deckSaved.validation.ok === true && sameMultiset(deckSaved.saved.cards, LEGAL_DECK_IDS), "牌組編輯器可加入 20 張合法牌並儲存");
+    }
     assert(deckSaved.message === "牌組已儲存。", "儲存成功訊息顯示正確");
     await page.reload();
     await page.waitForFunction(() => window.__deckTest && document.getElementById("deckList"));

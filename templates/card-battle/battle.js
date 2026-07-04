@@ -70,9 +70,17 @@
   };
 
   let game;
+  const GUIDE_KEY = "cb_guide_done_v1";
+  let guide = { active: false, step: 0, selectedAttacker: null };
+  const GUIDE_STEPS = [
+    { label: "STEP 1 / 3", title: "先出一張牌", copy: "點手牌中發亮的「迅捷狼」。它有衝鋒，登場後可以立刻攻擊。" },
+    { label: "STEP 2 / 3", title: "選擇攻擊", copy: "先點你場上的迅捷狼，再點敵方英雄完成一次攻擊。" },
+    { label: "STEP 3 / 3", title: "結束回合", copy: "攻擊後點「結束回合」，讓對手行動。之後就照這個節奏出牌、攻擊、結束回合。" },
+  ];
 
   // ===== 初始化 =====
   function newGame() {
+    stopGuide(false);
     const diffKey = currentDifficulty();
     const D = DIFFICULTY[diffKey];
     const playerDeck = buildDeck(true);
@@ -101,6 +109,120 @@
     log(`⚔️ 對戰開始！（難度：${D.label}）善用技能取勝。`, "me");
     render();
     offerMulligan(D.playerDraw); // 提供起手重抽
+  }
+
+  function hasSeenGuide() {
+    try { return localStorage.getItem(GUIDE_KEY) === "1"; } catch { return true; }
+  }
+
+  function markGuideSeen() {
+    try {
+      localStorage.setItem(GUIDE_KEY, "1");
+      localStorage.setItem("cb_tutorial_seen", "1");
+    } catch {}
+  }
+
+  function guideEls() {
+    return {
+      root: document.getElementById("battleGuide"),
+      title: document.getElementById("guideTitle"),
+      label: document.getElementById("guideStepLabel"),
+      copy: document.getElementById("guideCopy"),
+    };
+  }
+
+  function clearGuideFocus() {
+    document.querySelectorAll(".guide-focus").forEach((el) => el.classList.remove("guide-focus"));
+  }
+
+  function focusGuideTarget() {
+    if (!guide.active) return;
+    clearGuideFocus();
+    let el = null;
+    if (guide.step === 0) {
+      el = document.querySelector('.hand .card[data-card-id="wolf"]') || document.querySelector(".hand .card.playable");
+    } else if (guide.step === 1) {
+      el = guide.selectedAttacker ? document.getElementById("enemyHero") : document.querySelector("#playerField .card.can-attack");
+    } else if (guide.step === 2) {
+      el = document.getElementById("endTurnBtn");
+    }
+    if (!el) return;
+    el.classList.add("guide-focus");
+    try { el.scrollIntoView({ block: "nearest", inline: "nearest" }); } catch {}
+  }
+
+  function renderGuide() {
+    const els = guideEls();
+    if (!els.root) return;
+    if (!guide.active) {
+      els.root.classList.remove("show");
+      clearGuideFocus();
+      return;
+    }
+    const step = GUIDE_STEPS[guide.step] || GUIDE_STEPS[0];
+    els.title.textContent = step.title;
+    els.label.textContent = step.label;
+    els.copy.textContent = step.copy;
+    els.root.classList.add("show");
+    focusGuideTarget();
+  }
+
+  function prepareGuideScenario() {
+    if (!game) return;
+    game.turn = "player";
+    game.over = false;
+    game.selected = null;
+    game.pendingSpell = null;
+    game.player.manaMax = Math.max(game.player.manaMax, 2);
+    game.player.mana = Math.max(game.player.mana, 2);
+    game.enemy.field = [];
+    if (!game.player.hand.some((card) => card.id === "wolf")) {
+      const wolf = getCardById("wolf");
+      if (wolf) {
+        wolf.uid = "guide" + Math.random().toString(36).slice(2, 8);
+        wolf.maxHealth = wolf.health;
+        game.player.hand.unshift(wolf);
+      }
+    }
+    render();
+  }
+
+  function startGuide(resetGame) {
+    if (resetGame) newGame();
+    guide = { active: true, step: 0, selectedAttacker: null };
+    prepareGuideScenario();
+    renderGuide();
+  }
+
+  function stopGuide(markSeen) {
+    if (!guide.active) return;
+    guide.active = false;
+    guide.selectedAttacker = null;
+    if (markSeen) markGuideSeen();
+    renderGuide();
+  }
+
+  function maybeStartGuide() {
+    if (!hasSeenGuide()) startGuide(false);
+  }
+
+  function advanceGuide(eventName) {
+    if (!guide.active) return;
+    if (guide.step === 0 && eventName === "play") {
+      guide.step = 1;
+      guide.selectedAttacker = null;
+      renderGuide();
+    } else if (guide.step === 1 && eventName === "attackerSelected") {
+      guide.selectedAttacker = game.selected;
+      renderGuide();
+    } else if (guide.step === 1 && eventName === "attack") {
+      guide.step = 2;
+      guide.selectedAttacker = null;
+      renderGuide();
+    } else if (guide.step === 2 && eventName === "endTurn") {
+      stopGuide(true);
+      flash("導引完成，輪到你自己判斷節奏。");
+    }
   }
 
   // CP2-6 起手 Mulligan：開局可把起手牌洗回牌庫重抽一次，降低運氣權重
@@ -200,6 +322,7 @@
       logSpellEffect(result.card, result.target, "player");
     }
     render(); checkWin();
+    advanceGuide("play");
   }
 
   // ===== 攻擊：嘲諷限制 =====
@@ -271,6 +394,7 @@
         handleCoreResult(result);
         if (result.ok) log(`${attacker.name} 攻擊敵方英雄，造成 ${attacker.attack} 點傷害！`, "me");
         else showCoreFailure(result);
+        if (result.ok) advanceGuide("attack");
       }
       game.selected = null;
       render(); checkWin();
@@ -285,6 +409,7 @@
     if (!m.canAttack) { flash("這個隨從本回合無法攻擊。"); return; }
     game.selected = game.selected === uid ? null : uid;
     render();
+    if (game.selected === uid) advanceGuide("attackerSelected");
   }
 
   function cancelTargeting(message) {
@@ -330,6 +455,7 @@
     handleCoreResult(result);
     if (result.ok) log(`${attacker.name} 與 ${defender.name} 交戰！`, attackerSide.side === "player" ? "me" : "ai");
     else showCoreFailure(result);
+    if (result.ok && attackerSide.side === "player") advanceGuide("attack");
   }
 
   // 對隨從造成傷害（含聖盾、劇毒、跳字；亡語在 cleanup 觸發）
@@ -385,6 +511,7 @@
     const result = Core.advanceTurn(game, { phase: "endPlayer" }, rng);
     handleCoreResult(result);
     render();
+    advanceGuide("endTurn");
     const gRef = game;
     setTimeout(() => { if (game === gRef) aiTurn(); }, 700); // 幽靈計時器防護
   }
@@ -537,6 +664,7 @@
 
     document.getElementById("endTurnBtn").disabled = game.turn !== "player" || game.over;
     renderQuests();
+    focusGuideTarget();
   }
 
   function renderField(elId, field, side) {
@@ -577,6 +705,7 @@
     const el = document.createElement("div");
     el.className = "card spawn rarity-" + card.rarity + (card.type === CARD_TYPE.SPELL ? " spell-card" : "") + (card.foil ? " foil" : "") + (r.idle ? " legend-idle" : "");
     el.dataset.uid = card.uid;
+    el.dataset.cardId = card.id;
     el.style.setProperty("--rarity", r.color);
     el.style.setProperty("--glow", r.glow);
     el.style.setProperty("--glow-size", (r.glowSize || 0) + "px");
@@ -1047,6 +1176,14 @@
   const ngBtn = document.getElementById("newGameBtn");
   if (ngBtn) ngBtn.onclick = newGame;
   newGame();
+  maybeStartGuide();
+
+  const guideReplayBtn = document.getElementById("guideReplayBtn");
+  if (guideReplayBtn) guideReplayBtn.onclick = () => startGuide(true);
+  const guideSkipBtn = document.getElementById("guideSkipBtn");
+  if (guideSkipBtn) guideSkipBtn.onclick = () => stopGuide(true);
+  const guideHintBtn = document.getElementById("guideHintBtn");
+  if (guideHintBtn) guideHintBtn.onclick = () => focusGuideTarget();
 
   // 提供給入口頁主題切換用（重繪卡面）
   window.__rerenderBattle = render;
@@ -1095,6 +1232,9 @@
     claimAllQuests: () => claimAllQuestsUi(),
     rewardTable: () => JSON.parse(JSON.stringify(DIFFICULTY_REWARDS)),
     deckInfo: () => ({ source: game.playerDeckSource, ids: [...(game.playerDeckIds || [])], liveIds: [...game.player.hand, ...game.player.deck].map((c) => c.id) }),
+    guide: () => ({ active: guide.active, step: guide.step, selectedAttacker: guide.selectedAttacker }),
+    startGuide: () => startGuide(true),
+    skipGuide: () => stopGuide(true),
     // 直接塞一張指定卡進手牌（回傳 uid），測「法力不足點擊」「場滿」等指定劇本
     giveCard(cardId) {
       const c = Object.assign({}, getCardById(cardId));

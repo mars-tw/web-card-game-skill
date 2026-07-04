@@ -25,6 +25,7 @@
     border-bottom: 1px solid #232f3e; flex-shrink: 0;
   }
   .brand {
+    display: inline-flex; align-items: center; gap: 6px;
     font-weight: 800; letter-spacing: 1px; color: var(--accent);
     text-shadow: 0 0 12px color-mix(in srgb, var(--accent) 40%, transparent);
     margin-right: 12px; font-size: 16px; white-space: nowrap;
@@ -33,13 +34,14 @@
     appearance: none; border: none; background: transparent; color: #8b98a8;
     font-size: 15px; font-weight: 700; padding: 10px 22px; border-radius: 10px 10px 0 0;
     cursor: pointer; transition: background .15s, color .15s; font-family: inherit;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap;
   }
   .tab:hover { color: #e6edf3; background: rgba(255,255,255,.04); }
   .tab.active {
     color: #1a1206; background: linear-gradient(180deg, var(--accent), #d97706);
     box-shadow: 0 2px 10px color-mix(in srgb, var(--accent) 35%, transparent);
   }
-  .tab .ico { margin-right: 6px; }
+  .tab .ico { line-height: 1; }
 
   /* 主題選擇器（靠右）*/
   .theme-picker { margin-left: auto; display: flex; align-items: center; gap: 6px; }
@@ -61,11 +63,29 @@
     background: var(--stage); display: none;
   }
   .frame.active { display: block; }
+
+  @media (max-width: 700px) {
+    .tabbar { gap: 6px; padding: 6px 8px; min-height: 56px; overflow: hidden; }
+    .brand { margin-right: 0; font-size: 0; flex: 0 0 auto; }
+    .brand-icon { font-size: 22px; }
+    .brand-text { display: none; }
+    .tab { min-width: 72px; padding: 8px 10px; border-radius: 12px; font-size: 12px; flex-direction: column; gap: 3px; line-height: 1.05; }
+    .tab .ico { font-size: 18px; }
+    .theme-picker { margin-left: auto; gap: 5px; flex: 0 0 auto; }
+    .theme-picker .lbl { display: none; }
+    .swatch { width: 24px; height: 24px; }
+  }
+
+  @media (max-width: 390px) {
+    .tabbar { gap: 4px; padding-inline: 6px; }
+    .tab { min-width: 64px; padding-inline: 7px; font-size: 11px; }
+    .swatch { width: 22px; height: 22px; }
+  }
 </style>
 </head>
 <body>
   <nav class="tabbar">
-    <span class="brand">🎴 卡牌遊戲</span>
+    <span class="brand"><span class="brand-icon">🎴</span><span class="brand-text">卡牌遊戲</span></span>
     <button class="tab active" data-target="battle"><span class="ico">⚔️</span>對戰</button>
     <button class="tab" data-target="pack"><span class="ico">🎁</span>開卡包</button>
 

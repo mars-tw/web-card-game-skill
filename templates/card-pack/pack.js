@@ -20,6 +20,7 @@
   let collection = loadCollection();
   let deckState = loadDeck();
   let lastNewCards = [];
+  let deckFilters = { search: "", cost: "all", rarity: "all" };
 
   function loadCollection() {
     try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || {}; }
@@ -258,6 +259,31 @@
     return (a.cost - b.cost) || a.name.localeCompare(b.name, "zh-Hant") || a.id.localeCompare(b.id);
   }
 
+  function normalizeSearch(text) {
+    return String(text || "").trim().toLocaleLowerCase("zh-Hant");
+  }
+
+  function costMatches(card, filter) {
+    if (filter === "0-1") return card.cost <= 1;
+    if (filter === "2") return card.cost === 2;
+    if (filter === "3") return card.cost === 3;
+    if (filter === "4") return card.cost === 4;
+    if (filter === "5+") return card.cost >= 5;
+    return true;
+  }
+
+  function cardSearchText(card) {
+    const keywordText = (card.keywords || []).map((key) => KEYWORDS[key]?.label || key).join(" ");
+    return normalizeSearch([card.name, card.id, card.text, keywordText, RARITY[card.rarity]?.label].join(" "));
+  }
+
+  function cardMatchesFilters(card) {
+    if (!costMatches(card, deckFilters.cost)) return false;
+    if (deckFilters.rarity !== "all" && card.rarity !== deckFilters.rarity) return false;
+    const q = normalizeSearch(deckFilters.search);
+    return !q || cardSearchText(card).includes(q);
+  }
+
   function cardArt(card) {
     return card.image ? `<img src="${card.image}" alt="">` : card.emoji;
   }
@@ -355,6 +381,7 @@
     const deckCount = document.getElementById("deckCount");
     const errorsBox = document.getElementById("deckErrors");
     const saveBtn = document.getElementById("saveDeckBtn");
+    const filterCount = document.getElementById("deckFilterCount");
     if (!collectionList || !deckList || !deckCount || !errorsBox || !saveBtn) return;
 
     deckState = Core.migrateDeck(deckState);
@@ -364,7 +391,9 @@
     saveBtn.disabled = !validation.ok;
 
     collectionList.innerHTML = "";
-    [...CARD_POOL].sort(cardSort).forEach((card) => {
+    const visibleCards = [...CARD_POOL].filter(cardMatchesFilters).sort(cardSort);
+    if (filterCount) filterCount.textContent = `${visibleCards.length} / ${CARD_POOL.length} 張`;
+    visibleCards.forEach((card) => {
       const owned = totalOwned(card.id);
       const inDeck = counts[card.id] || 0;
       const maxCopies = card.rarity === "legendary" ? 1 : 2;
@@ -392,6 +421,12 @@
       };
       collectionList.appendChild(row);
     });
+    if (visibleCards.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "deck-empty";
+      empty.textContent = "沒有符合篩選的卡。";
+      collectionList.appendChild(empty);
+    }
 
     deckList.innerHTML = "";
     const grouped = Object.keys(counts)
@@ -441,6 +476,32 @@
     setDeckMessage("");
     renderDeckEditor();
     return true;
+  }
+
+  function autoFillDeck() {
+    deckState = Core.migrateDeck(deckState);
+    let added = 0;
+    const candidates = [...CARD_POOL]
+      .filter((card) => totalOwned(card.id) > 0)
+      .sort((a, b) => (a.cost - b.cost) || (cardUpgradeScore(b) - cardUpgradeScore(a)) || a.name.localeCompare(b.name, "zh-Hant"));
+    let progressed = true;
+    while (deckState.cards.length < Core.DECK_SIZE && progressed) {
+      progressed = false;
+      for (const card of candidates) {
+        if (deckState.cards.length >= Core.DECK_SIZE) break;
+        const reason = deckAddBlockReason(card, deckCounts());
+        if (reason) continue;
+        deckState.cards.push(card.id);
+        added++;
+        progressed = true;
+      }
+    }
+    const validation = Core.validateDeck(deckState.cards, collection, CARD_POOL);
+    if (validation.ok) setDeckMessage(`已自動補滿 ${Core.DECK_SIZE} 張，可儲存。`);
+    else if (added > 0) setDeckMessage(`已加入 ${added} 張；收藏不足以補成合法 20 張。`);
+    else setDeckMessage("目前收藏沒有可加入的卡。");
+    renderDeckEditor();
+    return validation.ok;
   }
 
   function removeDeckCard(cardId) {
@@ -512,6 +573,13 @@
   document.getElementById("goBattleTop").onclick = goBattle;
   document.getElementById("saveDeckBtn").onclick = saveDeck;
   document.getElementById("clearDeckBtn").onclick = clearDeck;
+  document.getElementById("autoFillDeckBtn").onclick = autoFillDeck;
+  const deckSearch = document.getElementById("deckSearch");
+  const deckCostFilter = document.getElementById("deckCostFilter");
+  const deckRarityFilter = document.getElementById("deckRarityFilter");
+  if (deckSearch) deckSearch.oninput = () => { deckFilters.search = deckSearch.value; renderDeckEditor(); };
+  if (deckCostFilter) deckCostFilter.onchange = () => { deckFilters.cost = deckCostFilter.value; renderDeckEditor(); };
+  if (deckRarityFilter) deckRarityFilter.onchange = () => { deckFilters.rarity = deckRarityFilter.value; renderDeckEditor(); };
 
   // 更新金幣顯示（CP0-2）
   function updateCoinDisplay() {
@@ -526,9 +594,19 @@
     deck: () => Core.migrateDeck(deckState),
     validation: () => Core.validateDeck(deckState.cards, collection, CARD_POOL),
     add: addDeckCard,
+    autoFill: autoFillDeck,
     save: saveDeck,
     clear: clearDeck,
     render: renderDeckEditor,
+    setFilters(next) {
+      deckFilters = Object.assign({}, deckFilters, next || {});
+      if (deckSearch) deckSearch.value = deckFilters.search || "";
+      if (deckCostFilter) deckCostFilter.value = deckFilters.cost || "all";
+      if (deckRarityFilter) deckRarityFilter.value = deckFilters.rarity || "all";
+      renderDeckEditor();
+      return Object.assign({}, deckFilters);
+    },
+    visibleCards: () => [...document.querySelectorAll("#deckCollectionList .deck-card-row")].map((el) => el.dataset.cardId),
     owned: totalOwned,
     score: (cardId) => cardUpgradeScore(getCardById(cardId)),
     setCollection(next) {

@@ -152,7 +152,12 @@
   .deck-count { color:#facc15; font-weight:900; min-width:54px; text-align:right; }
   .deck-layout { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr); gap:12px; align-items:start; }
   .deck-panel { background:rgba(13,17,23,.72); border:1px solid rgba(255,255,255,.12); border-radius:8px; padding:12px; min-width:0; }
+  .deck-current-panel { position:sticky; top:10px; z-index:10; }
   .deck-panel h3 { font-size:14px; color:var(--muted); margin-bottom:8px; display:flex; justify-content:space-between; gap:8px; }
+  .deck-tools { display:grid; grid-template-columns:minmax(160px,1fr) minmax(96px,.35fr) minmax(112px,.4fr); gap:8px; margin-bottom:10px; }
+  .deck-tools input, .deck-tools select { min-width:0; border:1px solid rgba(255,255,255,.12); border-radius:8px;
+    background:rgba(8,12,18,.84); color:var(--ink); padding:9px 10px; font:inherit; font-size:13px; }
+  .deck-filter-count { font-size:11px; color:var(--muted); }
   .deck-card-list { display:flex; flex-direction:column; gap:7px; max-height:460px; overflow:auto; padding-right:2px; }
   .deck-card-row { display:grid; grid-template-columns:34px minmax(0,1fr) auto; gap:8px; align-items:center;
     min-height:46px; padding:7px; border-radius:8px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); }
@@ -182,11 +187,18 @@
 
   @media (max-width:700px) {
     .deck-layout { grid-template-columns:1fr; }
-    .deck-card-list { max-height:360px; }
+    .deck-tools { grid-template-columns:1fr 1fr; }
+    .deck-tools input { grid-column:1 / -1; }
+    .deck-card-list { max-height:420px; }
     .deck-card-row { grid-template-columns:32px minmax(0,1fr) auto; }
     .deck-head { align-items:flex-start; }
     .deck-actions { width:100%; }
     .deck-actions button { flex:1 1 auto; padding-inline:12px; }
+    .deck-current-panel {
+      position:sticky; top:8px; z-index:30; order:-1;
+      border-color:rgba(250,204,21,.35); box-shadow:0 10px 28px rgba(0,0,0,.35);
+    }
+    .deck-current-panel .deck-card-list { max-height:160px; }
     .series-footer { margin-bottom:20px; }
   }
 
@@ -227,16 +239,35 @@
       <h2>牌組編輯器</h2>
       <div class="deck-actions">
         <span class="deck-count" id="deckCount">0/20</span>
+        <button id="autoFillDeckBtn">自動補滿</button>
         <button id="saveDeckBtn">儲存牌組</button>
         <button class="ghost" id="clearDeckBtn">清空</button>
       </div>
     </div>
     <div class="deck-layout">
-      <div class="deck-panel">
-        <h3><span>收藏清單</span><span>點擊加入</span></h3>
+      <div class="deck-panel deck-collection-panel">
+        <h3><span>收藏清單</span><span id="deckFilterCount" class="deck-filter-count">全部卡牌</span></h3>
+        <div class="deck-tools">
+          <input id="deckSearch" type="search" placeholder="搜尋卡名、效果、關鍵字" autocomplete="off" />
+          <select id="deckCostFilter" aria-label="費用篩選">
+            <option value="all">全部費用</option>
+            <option value="0-1">0-1 費</option>
+            <option value="2">2 費</option>
+            <option value="3">3 費</option>
+            <option value="4">4 費</option>
+            <option value="5+">5+ 費</option>
+          </select>
+          <select id="deckRarityFilter" aria-label="稀有度篩選">
+            <option value="all">全部稀有度</option>
+            <option value="common">普通</option>
+            <option value="rare">稀有</option>
+            <option value="epic">史詩</option>
+            <option value="legendary">傳說</option>
+          </select>
+        </div>
         <div class="deck-card-list" id="deckCollectionList"></div>
       </div>
-      <div class="deck-panel">
+      <div class="deck-panel deck-current-panel">
         <h3><span>目前牌組</span><span>依費用排序</span></h3>
         <div class="deck-card-list" id="deckList"></div>
         <div class="deck-recommend" id="deckRecommend"></div>
