@@ -1,202 +1,166 @@
-# 卡牌資料結構說明 (data-model.md)
+# 卡牌資料模型
 
-要新增卡片、調整數值、加稀有度或加法術效果，都在這份說明的範圍內。
-唯一要改的檔案是 `templates/card-battle/cards.js`（卡包模板也載入它）。
+本文件對齊 `templates/card-battle/cards.js`、`core.js`、`battle.js` 與 `templates/card-pack/pack.js`。
 
-## 一張卡的欄位
+## Storage Key
 
-```js
-{
-  id: "dragon",            // 唯一識別字；也用於圖檔命名 assets/cards/<id>.png
-  name: "烈焰巨龍",         // 顯示名稱
-  type: CARD_TYPE.MINION,  // MINION（隨從，可上場攻擊）或 SPELL（法術，即時效果）
-  rarity: "legendary",     // common | rare | epic | legendary
-  cost: 7,                 // 法力消耗
-  attack: 8,               // 攻擊力（minion 用；spell 可省略）
-  health: 8,               // 生命值（minion 用；spell 可省略）
-  emoji: "🐉",             // 佔位圖案（沒有 image 時顯示）
-  image: null,             // 美術路徑；null = 用 emoji；填路徑後自動換圖
-  keywords: ["charge"],    // 隨從的關鍵字技能陣列（見下方「關鍵字技能」）
-  trigger: "rebirth",      // 戰吼/亡語對應的效果代號（對應 battle.js 的 ABILITY_EFFECTS）
-  text: "傳說中的毀滅之力。", // 卡面說明
-  effect: "damage3",       // 僅 SPELL 需要：對應 battle.js 的 SPELL_EFFECTS 代號
-  foil: false,             // 星級變體：母表一律 false，抽卡時才 roll 成 true（閃卡）
-}
-```
+| key | 用途 | schema |
+|---|---|---|
+| `card_stats_v1` | 對戰/開包共同經濟與戰績 | `STATS_VERSION = 2` |
+| `cardpack_collection_v2` | 收藏與閃卡數量 | 物件 map |
+| `card_deck_v1` | 玩家牌組 | `DECK_VERSION = 1` |
+| `card_quests_v1` | 每日任務 | `QUEST_VERSION = 1` |
+| `card_goals_v1` | 收藏里程碑與週任務 | `GOAL_VERSION = 1` |
 
-## 關鍵字技能
-
-隨從靠 `keywords` 陣列帶技能，這是「需要思考」的核心。可組合多個（如 `["taunt","divineshield"]`）：
-
-| 代號 | 技能 | 規則 |
-|------|------|------|
-| `taunt` | 嘲諷 | 場上有嘲諷時，攻擊方只能打嘲諷隨從（不能打臉/打別的） |
-| `charge` | 衝鋒 | 召喚當回合即可攻擊（無召喚病） |
-| `battlecry` | 戰吼 | 出場時觸發 `trigger` 效果一次 |
-| `deathrattle` | 亡語 | 死亡時觸發 `trigger` 效果一次 |
-| `divineshield` | 聖盾 | 免疫第一次受到的傷害（破盾後才正常扣血） |
-| `windfury` | 連擊 | 每回合可攻擊兩次 |
-| `poison` | 劇毒 | 對隨從造成傷害時無視血量直接消滅（聖盾可擋） |
-| `regenerate` | 回復 | 每回合結束時補滿生命 |
-| `lifesteal` | 吸血 | 隨從造成實際傷害時，為己方英雄恢復等量生命（不超過 maxHp） |
-| `rush` | 突襲 | 召喚當回合可攻擊隨從，但不能攻擊英雄；下回合起可正常打臉 |
-
-## 難度系統
-
-`battle.js` 頂部的 `DIFFICULTY` 定義三檔（簡單/普通/困難），存在 `localStorage`
-的 `cardgame_difficulty`，對戰頁控制列有下拉可切換（換難度即重開一局）。
-每檔影響：雙方起始血量、起手抽牌數、AI 聰明度 `aiSmart`（0=只打臉、1=會換威脅、
-2=會算殺並用劇毒換大物）。要調整數值改 `DIFFICULTY` 物件即可。
-
-結算金幣依難度分層：
-
-| 難度 | 勝場 | 敗場 |
-|------|------|------|
-| 簡單 | 50 | 15 |
-| 普通 | 65 | 20 |
-| 困難 | 85 | 30 |
-
-結算 overlay 會顯示目前難度獎勵；勝敗仍會累計 `wins`、`losses`、`streak` 與 `bestStreak`。
-
-`battlecry` / `deathrattle` 要搭配 `trigger`，對應 `battle.js` 的 `ABILITY_EFFECTS`（如
-`healHero2`、`damageAny1`、`summonSkeleton`、`rebirth`、`aoeEnemy2`）。要加新觸發效果就在
-`ABILITY_EFFECTS` 註冊一個代號。
-
-## 每日任務資料模型
-
-每日任務存於 `localStorage` 的 `card_quests_v1`，由 `core.js` 純函式遷移與更新。
-日期由 UI 層注入 `dateSeed`（格式建議 `YYYY-MM-DD`），core 不讀系統時間。
+## 卡牌母表
 
 ```js
-{
-  version: 1,
-  dateSeed: "2026-07-02",
-  quests: [
-    {
-      id: "play_spell_5",
-      type: "playSpell",
-      title: "打出 5 張法術",
-      target: 5,
-      progress: 2,
-      reward: 25,
-      claimed: false
-    }
-  ]
-}
-```
-
-任務物件欄位：
-
-| 欄位 | 說明 |
-|------|------|
-| `id` | 任務唯一識別字 |
-| `type` | 進度事件類型，如 `win`、`playSpell`、`summonMinion` |
-| `title` | 使用者可見任務文字 |
-| `target` | 完成門檻 |
-| `progress` | 目前進度，遷移時會限制在 `0..target` |
-| `reward` | 金幣獎勵，介於 20-40 |
-| `claimed` | 是否已領取；只能領一次 |
-
-任務池目前 8 種：
-
-| id | 目標 | 獎勵 |
-|----|------|------|
-| `win_1` | 贏得 1 場對戰 | 30 |
-| `play_spell_5` | 打出 5 張法術 | 25 |
-| `summon_minion_8` | 召喚 8 隻隨從 | 25 |
-| `hero_damage_20` | 對敵方英雄造成 20 點傷害 | 30 |
-| `open_pack_1` | 開啟 1 包卡包 | 20 |
-| `deck_win_1` | 使用自訂牌組贏得 1 場 | 40 |
-| `win_2` | 贏得 2 場對戰 | 40 |
-| `summon_minion_12` | 召喚 12 隻隨從 | 35 |
-
-核心 API：
-
-- `getDailyQuests(dateSeed)`：依日期種子穩定輪出 3 個任務。
-- `applyQuestProgress(questState, event)`：依事件累積進度並回傳新狀態。
-- `claimQuest(questState, questId)`：完成後領取金幣，回傳 `{ ok, reward, state }`，已領不可重領。
-- `migrateQuests(raw, dateSeed)`：補齊版本與欄位；`dateSeed` 不同時重置為當日 3 個任務。
-
-## 牌組編輯與防呆
-
-正式牌組存於 `localStorage` 的 `card_deck_v1`，形狀為 `{ version, cards: [id×20] }`。
-規則：
-
-- 固定 20 張才能儲存並帶入對戰。
-- 同一卡 id 最多 2 張；傳說卡最多 1 張。
-- 只能放收藏中擁有的卡；普通與閃卡份數合計，但牌組層級不區分閃卡。
-- 編輯器允許未滿 20 張的中間狀態，但會直接禁止非法加入：超過持有數、同名上限、傳說上限或牌組超過 20 張。
-- 開包結果會標記「本包新卡」；若牌組已滿且新卡能維持費用曲線，編輯器只提供「推薦替換」提示，玩家按下套用才會修改牌組。
-
-## 金幣經濟
-
-開包成本為 100 金幣，首包免費。重複卡分解值：
-
-| 稀有度 | 分解值 |
-|--------|--------|
-| 普通 | 2 |
-| 稀有 | 8 |
-| 史詩 | 25 |
-| 傳說 | 80 |
-
-以目前 `RARITY.weight`（普通 62、稀有 26、史詩 10、傳說 2）計算，全重複一包的期望回收約 37.1 金幣，低於包價的一半，避免全重複期進入正收益循環。
-
-## 新增一張隨從
-
-在 `CARD_POOL` 陣列加一筆即可，例如：
-
-```js
-// 一個帶嘲諷+聖盾的肉盾
-{ id: "wall", name: "魔法石牆", type: CARD_TYPE.MINION, rarity: "rare",
-  cost: 4, attack: 1, health: 6, emoji: "🧱", image: null,
-  keywords: ["taunt", "divineshield"], text: "嘲諷 + 聖盾。", foil: false },
-```
-
-## 新增一張法術
-
-法術要有 `effect`，並到 `battle.js` 的 `SPELL_EFFECTS` 註冊行為：
-
-```js
-// cards.js
-{ id: "frost", name: "冰霜新星", type: CARD_TYPE.SPELL, rarity: "rare",
-  cost: 3, emoji: "❄️", image: null,
-  text: "對所有敵方隨從造成 1 點傷害。", effect: "aoe1" },
-
-// battle.js 的 SPELL_EFFECTS 物件加：
-aoe1: { needsTarget: null,
-        apply: (g) => { [...g.enemy.field].forEach(m => damageMinion(g, m, 1)); } },
-```
-
-`needsTarget` 可為：
-- `null`：施放後立即生效（如治療、全體傷害、加法力）
-- `"enemyMinion"`：需玩家點選一個敵方隨從當目標（如單體火焰箭）
-
-## 調整稀有度 / 抽卡機率
-
-`RARITY` 物件的 `weight` 決定抽到的相對機率（不需加總為 100）：
-
-```js
-const RARITY = {
-  common:    { label: "普通", weight: 60, color: "#9aa5b1", glow: "..." },
-  rare:      { label: "稀有", weight: 25, color: "#3b82f6", glow: "..." },
-  epic:      { label: "史詩", weight: 12, color: "#a855f7", glow: "..." },
-  legendary: { label: "傳說", weight: 3,  color: "#f59e0b", glow: "..." },
+card = {
+  id: "dragon",
+  name: "烈焰巨龍",
+  type: CARD_TYPE.MINION,      // minion | spell
+  rarity: "legendary",        // common | rare | epic | legendary
+  cost: 7,
+  attack: 8,                  // minion only
+  health: 8,                  // minion only
+  emoji: "🐉",
+  image: "../../assets/cards/dragon.png",
+  keywords: ["charge"],
+  trigger: "rebirth",
+  effect: "damage8",
+  text: "顯示文字",
+  foil: false
 };
 ```
 
-`color` 同時是卡框邊色與發光色，改這裡整套卡的視覺就變。
+- `CARD_POOL` 目前 40 張。
+- `image: null` 代表使用 emoji fallback。
+- `foil` 只在抽卡結果上產生，母表固定 false。
 
-## 平衡建議（經驗法則）
+## 稀有度、開包與收藏
 
-- **法力曲線**：cost ≈ (attack + health) / 2 上下浮動。低費小、高費大。
-- **傳說卡**要明顯比同費強，但保持 cost 6+ 避免太早出場。
-- **法術**通常 cost 比「等值隨從」略低，因為即時且無法被反打。
-- 牌庫預設 20 張隨機抽（`buildDeck()`）；想要固定牌組可改成手寫陣列。
+| 稀有度 | 權重 | 星級 | 分解值 |
+|---|---:|---:|---:|
+| common | 62 | 1 | 2 |
+| rare | 26 | 2 | 8 |
+| epic | 10 | 3 | 25 |
+| legendary | 2 | 4 | 80 |
 
-## 數值如何流動（給要改引擎的人）
+- 閃卡機率 `FOIL_CHANCE = 0.08`。
+- `PACK_SIZE = 5`。
+- `PACK_COST = 100`，首包免費。
+- 若 5 張全為 common，最後一張會重抽到至少 rare。
 
-1. `buildDeck()` → 用 `rollCardByRarity()` 抽 20 張組牌庫
-2. `drawCard()` → 從牌庫 pop 一張進手牌，並貼上戰局唯一 `uid`
-3. `playFromHand()` → 扣法力、隨從進 `field` / 法術跑 `SPELL_EFFECTS`
-4. `resolveAttack()` → 雙方互扣血量，`cleanupField()` 清掉 health ≤ 0 的隨從
-5. `checkWin()` → 任一英雄 hp ≤ 0 結束
+收藏 shape：
+
+```js
+collection = {
+  dragon: 1,
+  "phoenix#foil": 1
+};
+```
+
+`collectionSummary(collection)` 會回傳：
+
+```js
+{ unique: 40, foil: 15 }
+```
+
+## 對戰與牌組
+
+| 常數 | 值 |
+|---|---:|
+| `START_HP` | 30 |
+| `MAX_MANA` | 10 |
+| `MAX_FIELD` | 7 |
+| `HAND_LIMIT` | 8 |
+| `DECK_SIZE` | 20 |
+
+牌組 shape：
+
+```js
+deck = {
+  version: 1,
+  cards: ["footman", "archer"]
+};
+```
+
+驗證規則：
+
+- 必須剛好 20 張。
+- 同名卡最多 2 張。
+- 傳說卡最多 1 張。
+- 牌組數量不能超過收藏擁有數。
+- 進對戰時 `buildBattleDeck(deckCardIds, CARD_POOL, rng, collection)` 會洗牌並保留閃卡狀態。
+
+## 每日任務 `card_quests_v1`
+
+```js
+questState = {
+  version: 1,
+  dateSeed: "2026-07-05",
+  quests: [
+    { id: "win_1", type: "win", title: "贏得 1 場", target: 1, progress: 0, reward: 30, claimed: false }
+  ]
+};
+```
+
+每日任務池 8 選 3：
+
+| id | type | target | reward |
+|---|---|---:|---:|
+| `win_1` | `win` | 1 | 30 |
+| `play_spell_5` | `playSpell` | 5 | 25 |
+| `summon_minion_8` | `summonMinion` | 8 | 25 |
+| `hero_damage_20` | `heroDamage` | 20 | 30 |
+| `open_pack_1` | `openPack` | 1 | 20 |
+| `deck_win_1` | `deckWin` | 1 | 40 |
+| `win_2` | `win` | 2 | 40 |
+| `summon_minion_12` | `summonMinion` | 12 | 35 |
+
+`questEventMatches()` 會把 `spellCast` 對應到 `playSpell`，`minionSummoned` 對應到 `summonMinion`。
+
+## 收藏目標 `card_goals_v1`
+
+```js
+goalState = {
+  version: 1,
+  dateSeed: "2026-W27",
+  claimedMilestones: ["unique_10"],
+  weeklyQuest: {
+    id: "weekly_win_3",
+    type: "win",
+    title: "本週贏得 3 場",
+    target: 3,
+    progress: 0,
+    reward: 100,
+    claimed: false
+  }
+};
+```
+
+收藏里程碑：
+
+| id | metric | target | reward |
+|---|---|---:|---:|
+| `unique_10` | unique | 10 | 40 |
+| `unique_20` | unique | 20 | 60 |
+| `unique_40` | unique | 40 | 80 |
+| `foil_5` | foil | 5 | 40 |
+| `foil_15` | foil | 15 | 60 |
+
+週任務池：
+
+| id | type | target | reward |
+|---|---|---:|---:|
+| `weekly_win_3` | `win` | 3 | 100 |
+| `weekly_open_pack_3` | `openPack` | 3 | 80 |
+| `weekly_summon_30` | `summonMinion` | 30 | 90 |
+| `weekly_damage_80` | `heroDamage` | 80 | 120 |
+
+## 測試契約
+
+| 指令 | 覆蓋 |
+|---|---|
+| `node scripts/test-cards.js` | 卡牌資料、稀有度、圖片路徑、抽卡函式 |
+| `node scripts/test-core.js` | 對戰核心、存檔遷移、任務、里程碑、週任務、牌組驗證 |
