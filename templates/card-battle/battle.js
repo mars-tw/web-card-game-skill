@@ -938,9 +938,17 @@
     infoBtn.textContent = "詳";
     infoBtn.title = "查看卡牌詳情";
     infoBtn.setAttribute("aria-label", `查看 ${card.name} 詳情`);
-    infoBtn.onclick = (event) => {
+    const stopInfoEvent = (event) => {
       event.preventDefault();
       event.stopPropagation();
+    };
+    ["pointerdown", "mousedown", "touchstart"].forEach((eventName) => {
+      infoBtn.addEventListener(eventName, (event) => {
+        event.stopPropagation();
+      }, { passive: true });
+    });
+    infoBtn.onclick = (event) => {
+      stopInfoEvent(event);
       openCardDetail(card);
     };
     el.appendChild(infoBtn);

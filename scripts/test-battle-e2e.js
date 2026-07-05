@@ -87,6 +87,17 @@ async function waitPlayerTurn(page, max) {
   return null;
 }
 
+async function waitCardDetail(page, open) {
+  await page.waitForFunction((expected) => {
+    const el = document.getElementById("cardDetail");
+    if (!el) return false;
+    const visible = el.classList.contains("show")
+      && el.getAttribute("aria-hidden") === "false"
+      && getComputedStyle(el).display !== "none";
+    return visible === expected;
+  }, open);
+}
+
 async function run() {
   let chromium;
   try { ({ chromium } = require("playwright")); }
@@ -398,6 +409,7 @@ async function run() {
       assert(stickySetup.handVisible && stickySetup.endVisible && stickySetup.endHit && stickySetup.scrollY === 0,
         `手機首屏可看到且可點擊手牌與結束回合按鈕（end left=${stickySetup.endRect.left}, right=${stickySetup.endRect.right}）`);
       await page.locator(`.hand .card[data-uid="${stickySetup.uid}"] .card-info-btn`).click();
+      await waitCardDetail(page, true);
       const handDetail = await page.evaluate((uid) => {
         const g = window.__test.game();
         return {
@@ -416,6 +428,7 @@ async function run() {
       assert(handDetail.title.length > 0 && handDetail.keywordButtons >= 1, "手機卡牌詳情顯示大卡資料與可點關鍵字");
       assert(/軸線/.test(handDetail.meta) && handDetail.flavor.includes("「"), "手機卡牌詳情顯示軸線標籤與風味文字");
       await page.locator("#cardDetailClose").click();
+      await waitCardDetail(page, false);
       await page.locator(`.hand .card[data-uid="${stickySetup.uid}"]`).click();
       await page.locator("#endTurnBtn").click();
       const mobileAction = await page.evaluate(() => ({
@@ -425,24 +438,46 @@ async function run() {
       assert(mobileAction.turn === "enemy" && mobileAction.fieldCount >= 1, "手機首屏不捲動即可出牌並結束回合");
       await waitPlayerTurn(page);
 
-      const fieldDetail = await page.evaluate(() => {
+      const fieldSetup = await page.evaluate(() => {
         const g = window.__test.game();
+        window.__test.setup(["footman"], []);
         g.turn = "player";
+        g.over = false;
         g.selected = null;
         g.pendingSpell = null;
+        g.enemy.hp = 30;
         if (g.player.field[0]) g.player.field[0].canAttack = true;
         window.__rerenderBattle();
-        const btn = document.querySelector("#playerField .card .card-info-btn");
-        if (btn) btn.click();
+        const uid = g.player.field[0] && g.player.field[0].uid;
+        return { uid, enemyHp: g.enemy.hp };
+      });
+      await page.waitForFunction((uid) => {
+        const btn = document.querySelector(`#playerField .card[data-uid="${uid}"] .card-info-btn`);
+        const rect = btn && btn.getBoundingClientRect();
+        const hit = rect && document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        return !!btn && rect.width >= 32 && rect.height >= 32 && !!(hit && hit.closest && hit.closest(".card-info-btn"));
+      }, fieldSetup.uid);
+      const fieldButton = await page.evaluate((uid) => {
+        const btn = document.querySelector(`#playerField .card[data-uid="${uid}"] .card-info-btn`);
+        const rect = btn && btn.getBoundingClientRect();
+        return rect ? { width: rect.width, height: rect.height } : null;
+      }, fieldSetup.uid);
+      assert(fieldSetup.uid && fieldButton && fieldButton.width >= 32 && fieldButton.height >= 32,
+        `手機場上卡詳情按鈕有獨立命中區（${fieldButton ? fieldButton.width + "x" + fieldButton.height : "missing"}）`);
+      await page.locator(`#playerField .card[data-uid="${fieldSetup.uid}"] .card-info-btn`).click();
+      await waitCardDetail(page, true);
+      const fieldDetail = await page.evaluate((enemyHpBefore) => {
+        const g = window.__test.game();
         return {
           open: window.__test.detailOpen(),
           selected: g.selected,
           enemyHp: g.enemy.hp,
+          enemyHpBefore,
         };
-      });
-      assert(fieldDetail.open && fieldDetail.selected === null && fieldDetail.enemyHp > 0, "手機場上卡詳情不會誤選攻擊者或攻擊英雄");
+      }, fieldSetup.enemyHp);
+      assert(fieldDetail.open && fieldDetail.selected === null && fieldDetail.enemyHp === fieldDetail.enemyHpBefore, "手機場上卡詳情不會誤選攻擊者或攻擊英雄");
       await page.locator("#cardDetailClose").click();
-      await page.evaluate(() => window.__test.closeDetail());
+      await waitCardDetail(page, false);
 
       const codexHit = await page.evaluate(() => {
         const btn = document.getElementById("kwCodexBtn");
