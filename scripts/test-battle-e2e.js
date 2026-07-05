@@ -32,6 +32,10 @@ const R16_NEW_IDS = [
 ];
 const R16_AGGRO_IDS = ["sparkSquire", "alleySkirmisher", "emberVolley", "dawnRider", "battleDrummer"];
 const R16_CONTROL_IDS = ["bulwarkMonk", "sanctuaryWarden", "tidebinderHex", "bastionColossus", "highArchivist"];
+const R20_AGGRO_DECK_IDS = [
+  "wolf", "wolf", "raptor", "raptor", "griffin", "griffin", "firebolt", "firebolt", "manaSurge", "manaSurge",
+  "frontScout", "frontScout", "linebreaker", "linebreaker", "sparkSquire", "sparkSquire", "alleySkirmisher", "alleySkirmisher", "dawnRider", "dawnRider",
+];
 
 function countIds(ids) {
   return ids.reduce((acc, id) => {
@@ -137,6 +141,20 @@ async function run() {
       return window.__test.deckInfo();
     }, { deckIds: LEGAL_DECK_IDS, collection: collectionForDeck(LEGAL_DECK_IDS) });
     assert(invalidDeckCheck.source === "fallback", "非法 card_deck_v1 會 fallback，不阻擋開局");
+
+    const hardAiDeck = await page.evaluate(({ deckIds, collection }) => {
+      localStorage.clear();
+      localStorage.setItem("cb_guide_done_v1", "1");
+      localStorage.setItem("cardgame_difficulty", "hard");
+      localStorage.setItem("cardpack_collection_v2", JSON.stringify(collection));
+      localStorage.setItem("card_deck_v1", JSON.stringify({ version: 1, cards: deckIds }));
+      window.__newGame();
+      return window.__test.aiDeckInfo();
+    }, { deckIds: R20_AGGRO_DECK_IDS, collection: collectionForDeck(R20_AGGRO_DECK_IDS) });
+    assert(hardAiDeck.source === "archetype" && hardAiDeck.playerArchetype === "aggro" && hardAiDeck.archetype === "control",
+      "困難 AI 會依玩家快攻牌組選控制反制 archetype");
+    assert(hardAiDeck.ids.length === 20 && sameMultiset(hardAiDeck.ids, hardAiDeck.templateIds),
+      "困難 AI 牌堆來自對應 archetype 模板卡池");
 
     await page.evaluate(() => { localStorage.clear(); localStorage.setItem("cb_guide_done_v1", "1"); });
     await page.reload();
@@ -424,6 +442,7 @@ async function run() {
       });
       assert(fieldDetail.open && fieldDetail.selected === null && fieldDetail.enemyHp > 0, "手機場上卡詳情不會誤選攻擊者或攻擊英雄");
       await page.locator("#cardDetailClose").click();
+      await page.evaluate(() => window.__test.closeDetail());
 
       const codexHit = await page.evaluate(() => {
         const btn = document.getElementById("kwCodexBtn");
@@ -578,6 +597,29 @@ async function run() {
       assert(packMissionOpen.open && packMissionOpen.daily >= 3 && packMissionOpen.weekly === 1 && packMissionOpen.milestones >= 5,
         "開包頁也可開啟整合任務抽屜");
       await page.locator("#missionDrawerClose").click();
+
+      await page.locator("#collectionOwnershipFilter").selectOption("missing");
+      await page.locator("#collectionRarityFilter").selectOption("rare");
+      await page.locator("#collectionSort").selectOption("cost");
+      const collectionFilter = await page.evaluate(() => {
+        const cards = window.__deckTest.visibleCollection();
+        const costs = cards.map((card) => card.cost);
+        const sortedByCost = costs.every((cost, index) => index === 0 || costs[index - 1] <= cost);
+        const box = window.__deckTest.collectionToolsBox();
+        return {
+          count: cards.length,
+          allRareMissing: cards.every((card) => card.rarity === "rare" && card.owned === false),
+          sortedByCost,
+          box,
+          controls: document.querySelectorAll("#collectionTools input, #collectionTools select").length,
+          overflow: document.documentElement.scrollWidth - window.innerWidth,
+        };
+      });
+      assert(collectionFilter.count > 0 && collectionFilter.allRareMissing,
+        "手機收藏冊可篩選未擁有＋稀有度組合");
+      assert(collectionFilter.sortedByCost && collectionFilter.controls === 6 && collectionFilter.box.height <= 180 && collectionFilter.overflow <= 2,
+        "手機收藏冊排序生效且篩選控件一屏可操作");
+      await page.evaluate(() => window.__deckTest.setCollectionFilters({ search: "", axis: "all", keyword: "all", rarity: "all", ownership: "all", sort: "cost" }));
 
       await page.locator("#deckSearch").fill("迅捷");
       await page.locator("#deckCostFilter").selectOption("2");

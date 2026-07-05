@@ -127,6 +127,10 @@
   /* 收藏冊 */
   .collection { width:min(960px,94vw); padding:16px; }
   .collection h2 { font-size:16px; margin-bottom:10px; color:var(--muted); display:flex; justify-content:space-between; align-items:center; }
+  .collection-meta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end; font-size:12px; }
+  .collection-tools { display:grid; grid-template-columns:minmax(150px,1.2fr) repeat(5,minmax(96px,.6fr)); gap:8px; margin-bottom:10px; }
+  .collection-tools input, .collection-tools select { min-width:0; border:1px solid rgba(255,255,255,.12); border-radius:8px;
+    background:rgba(8,12,18,.84); color:var(--ink); padding:9px 10px; font:inherit; font-size:13px; }
   .collection .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(74px,1fr)); gap:8px; }
   .slot { aspect-ratio:5/7; border-radius:8px; border:2px solid #2a3645; display:flex; flex-direction:column;
     align-items:center; justify-content:center; font-size:24px; background:#131a24; position:relative; overflow:hidden; }
@@ -237,6 +241,9 @@
   .series-footer a:hover { text-decoration:underline; }
 
   @media (max-width:700px) {
+    .collection h2 { align-items:flex-start; gap:8px; }
+    .collection-tools { grid-template-columns:1fr 1fr; }
+    .collection-tools input { grid-column:1 / -1; }
     .deck-layout { grid-template-columns:1fr; }
     .deck-tools { grid-template-columns:1fr 1fr; }
     .deck-tools input { grid-column:1 / -1; }
@@ -378,7 +385,49 @@
   </section>
 
   <div class="collection">
-    <h2>📖 收藏冊 <span id="progress"></span></h2>
+    <h2>
+      <span>📖 收藏冊</span>
+      <span class="collection-meta"><span id="progress"></span><span id="collectionFilterCount"></span></span>
+    </h2>
+    <div class="collection-tools" id="collectionTools">
+      <input id="collectionSearch" type="search" placeholder="搜尋收藏、效果、風味" autocomplete="off" />
+      <select id="collectionAxisFilter" aria-label="軸線篩選">
+        <option value="all">全部軸線</option>
+        <option value="aggro">快攻</option>
+        <option value="control">控制</option>
+        <option value="neutral">中立</option>
+      </select>
+      <select id="collectionKeywordFilter" aria-label="關鍵字篩選">
+        <option value="all">全部關鍵字</option>
+        <option value="taunt">嘲諷</option>
+        <option value="charge">衝鋒</option>
+        <option value="rush">突襲</option>
+        <option value="lifesteal">吸血</option>
+        <option value="battlecry">戰吼</option>
+        <option value="deathrattle">亡語</option>
+        <option value="divineshield">聖盾</option>
+        <option value="windfury">風怒</option>
+        <option value="poison">劇毒</option>
+        <option value="regenerate">回復</option>
+      </select>
+      <select id="collectionRarityFilter" aria-label="稀有度篩選">
+        <option value="all">全部稀有度</option>
+        <option value="common">普通</option>
+        <option value="rare">稀有</option>
+        <option value="epic">史詩</option>
+        <option value="legendary">傳說</option>
+      </select>
+      <select id="collectionOwnershipFilter" aria-label="擁有狀態篩選">
+        <option value="all">全部狀態</option>
+        <option value="owned">已擁有</option>
+        <option value="missing">未擁有</option>
+      </select>
+      <select id="collectionSort" aria-label="收藏排序">
+        <option value="cost">依費用</option>
+        <option value="rarity">依稀有度</option>
+        <option value="name">依名稱</option>
+      </select>
+    </div>
     <div class="grid" id="collectionGrid"></div>
   </div>
 

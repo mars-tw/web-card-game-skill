@@ -85,14 +85,22 @@
     const diffKey = currentDifficulty();
     const D = DIFFICULTY[diffKey];
     const playerDeck = buildDeck(true);
-    const enemyDeck = buildDeck(false);
     const playerDeckSource = playerDeck._deckSource || "fallback";
     const playerDeckIds = playerDeck.map((card) => card.id);
+    const playerArchetype = detectDeckArchetype(playerDeckIds);
+    const enemyPlan = buildAiDeck(diffKey, playerArchetype);
+    const enemyDeck = enemyPlan.deck;
+    const enemyDeckIds = enemyDeck.map((card) => card.id);
     delete playerDeck._deckSource;
     game = {
       difficulty: diffKey, aiSmart: D.aiSmart,
       playerDeckSource,
       playerDeckIds,
+      playerArchetype,
+      enemyDeckSource: enemyPlan.source,
+      enemyArchetype: enemyPlan.archetype,
+      enemyDeckIds,
+      enemyTemplateIds: enemyPlan.templateIds || [],
       turn: "player",
       player: { side: "player", hp: D.playerHp, maxHp: D.playerHp, mana: 1, manaMax: 1, deck: playerDeck, hand: [], field: [] },
       enemy:  { side: "enemy",  hp: D.enemyHp, maxHp: D.enemyHp, mana: 0, manaMax: 0, deck: enemyDeck, hand: [], field: [] },
@@ -277,6 +285,94 @@
     deck._deckSource = "saved";
     return deck;
   }
+
+  function templateScore(card, kind) {
+    if (!card) return -999;
+    const keywords = card.keywords || [];
+    const attack = Number(card.attack) || 0;
+    const health = Number(card.health) || 0;
+    const cost = Number(card.cost) || 0;
+    const isSpell = card.type === CARD_TYPE.SPELL;
+    const rarityScore = { common: 0, rare: 1, epic: 2, legendary: 3 }[card.rarity] || 0;
+    if (kind === "control") {
+      let score = cost * 9 + health * 2 + attack + rarityScore * 2;
+      if (card.axis === "control") score += 28;
+      if (card.axis === "aggro") score -= 12;
+      if (keywords.includes("taunt")) score += 16;
+      if (keywords.includes("lifesteal")) score += 14;
+      if (keywords.includes("divineshield")) score += 10;
+      if (keywords.includes("regenerate")) score += 10;
+      if (card.effect === "aoe1" || card.effect === "aoe2") score += 22;
+      if (card.effect === "damage8" || card.effect === "polymorph") score += 18;
+      if (card.effect === "heal5") score += 10;
+      if (isSpell && cost <= 1) score -= 8;
+      return score;
+    }
+    let score = 120 - cost * 12 + attack * 4 + health + rarityScore;
+    if (card.axis === "aggro") score += 28;
+    if (card.axis === "control") score -= 10;
+    if (keywords.includes("charge")) score += 20;
+    if (keywords.includes("rush")) score += 14;
+    if (keywords.includes("windfury")) score += 12;
+    if (keywords.includes("lifesteal")) score += 8;
+    if (card.effect === "damage3" || card.effect === "mana2") score += 18;
+    if (card.effect === "giveShield") score += 8;
+    if (cost >= 6) score -= 18;
+    return score;
+  }
+
+  function buildArchetypeDeckIds(kind) {
+    const ids = [];
+    const candidates = [...CARD_POOL].sort((a, b) =>
+      (templateScore(b, kind) - templateScore(a, kind))
+      || (a.cost - b.cost)
+      || a.name.localeCompare(b.name, "zh-Hant")
+      || a.id.localeCompare(b.id)
+    );
+    for (const card of candidates) {
+      const maxCopies = card.rarity === "legendary" ? 1 : 2;
+      for (let i = 0; i < maxCopies && ids.length < Core.DECK_SIZE; i++) ids.push(card.id);
+      if (ids.length >= Core.DECK_SIZE) break;
+    }
+    return ids;
+  }
+
+  function buildArchetypeDeck(kind) {
+    const ids = buildArchetypeDeckIds(kind);
+    const deck = Core.buildBattleDeck(ids, CARD_POOL, rng);
+    deck._templateIds = ids;
+    return deck;
+  }
+
+  function detectDeckArchetype(ids) {
+    const score = { aggro: 0, control: 0 };
+    for (const id of Array.isArray(ids) ? ids : []) {
+      const card = getCardById(id);
+      if (!card || !score.hasOwnProperty(card.axis)) continue;
+      score[card.axis] += 1;
+    }
+    if (score.aggro >= score.control + 2) return "aggro";
+    if (score.control >= score.aggro + 2) return "control";
+    return "neutral";
+  }
+
+  function randomArchetype() {
+    return rng() < 0.5 ? "aggro" : "control";
+  }
+
+  function buildAiDeck(diffKey, playerArchetype) {
+    if (diffKey === "easy") {
+      return { deck: buildDeck(false), source: "random", archetype: "random", templateIds: [] };
+    }
+    let archetype = randomArchetype();
+    if (diffKey === "hard") {
+      if (playerArchetype === "aggro") archetype = "control";
+      else if (playerArchetype === "control") archetype = "aggro";
+    }
+    const deck = buildArchetypeDeck(archetype);
+    return { deck, source: "archetype", archetype, templateIds: deck._templateIds || [] };
+  }
+
   // useCollection=true：玩家用開包收藏；false：AI 用隨機卡池
   function buildDeck(useCollection) {
     if (useCollection) {
@@ -517,16 +613,141 @@
     setTimeout(() => { if (game === gRef) aiTurn(); }, 700); // 幽靈計時器防護
   }
 
+  function minionThreatScore(m) {
+    if (!m) return 0;
+    const keywords = m.keywords || [];
+    let score = (Number(m.attack) || 0) * 3 + (Number(m.health) || 0);
+    if (keywords.includes("taunt")) score += 5;
+    if (keywords.includes("charge") || keywords.includes("windfury")) score += 4;
+    if (keywords.includes("poison") || keywords.includes("lifesteal")) score += 3;
+    if (m.shield) score += 3;
+    return score;
+  }
+
+  function chooseRemovalTarget(effect) {
+    const field = [...game.player.field];
+    if (!field.length) return null;
+    const damage = effect === "damage8" ? 8 : effect === "damage3" ? 3 : 0;
+    if (effect === "polymorph") {
+      const worthTransforming = field.filter((m) =>
+        m.health >= 5 || m.attack >= 4 || (m.keywords || []).includes("taunt") || (m.keywords || []).includes("regenerate")
+      );
+      return (worthTransforming.length ? worthTransforming : field).sort((a, b) => minionThreatScore(b) - minionThreatScore(a))[0] || null;
+    }
+    if (damage > 0) {
+      return field.sort((a, b) => {
+        const lethalA = a.health <= damage ? 1 : 0;
+        const lethalB = b.health <= damage ? 1 : 0;
+        return (lethalB - lethalA) || (minionThreatScore(b) - minionThreatScore(a));
+      })[0] || null;
+    }
+    return null;
+  }
+
+  function chooseShieldTarget() {
+    return [...game.enemy.field]
+      .filter((m) => !m.shield)
+      .sort((a, b) => {
+        const tauntA = (a.keywords || []).includes("taunt") ? 1 : 0;
+        const tauntB = (b.keywords || []).includes("taunt") ? 1 : 0;
+        return (tauntB - tauntA) || (minionThreatScore(b) - minionThreatScore(a));
+      })[0] || null;
+  }
+
+  function chooseAiSpellPlay(card) {
+    const kind = game.enemyArchetype || "random";
+    const ai = game.enemy;
+    const playerField = game.player.field;
+    if (kind === "random") {
+      if (card.effect === "heal5") return { used: ai.hp <= 22, targetUid: null };
+      if (card.effect === "aoe1" || card.effect === "aoe2") return { used: playerField.length >= 2, targetUid: null };
+      if (card.effect === "damage3" || card.effect === "damage8") {
+        const target = [...playerField].sort((a, b) => b.attack - a.attack)[0] || null;
+        return { used: !!target, targetUid: target && target.uid };
+      }
+      if (card.effect === "mana2") return { used: true, targetUid: null };
+      return { used: false, targetUid: null };
+    }
+    if (card.effect === "heal5") {
+      const missingHp = ai.maxHp - ai.hp;
+      return { used: missingHp >= (kind === "control" ? 4 : 8), targetUid: null };
+    }
+    if (card.effect === "aoe1" || card.effect === "aoe2") {
+      const pressure = playerField.reduce((sum, m) => sum + (Number(m.attack) || 0), 0);
+      const enoughTargets = kind === "control" ? (playerField.length >= 2 || pressure >= 4) : playerField.length >= 3;
+      return { used: enoughTargets, targetUid: null };
+    }
+    if (card.effect === "mana2") {
+      return { used: ai.hand.some((c) => c !== card && c.cost > ai.mana), targetUid: null };
+    }
+    if (card.effect === "giveShield") {
+      const target = chooseShieldTarget();
+      const used = !!target && (kind === "control" || (target.attack || 0) >= 3);
+      return { used, targetUid: target && target.uid };
+    }
+    if (card.effect === "damage3" || card.effect === "damage8" || card.effect === "polymorph") {
+      const target = chooseRemovalTarget(card.effect);
+      const hasTauntTarget = target && (target.keywords || []).includes("taunt");
+      const used = !!target && (kind === "control" || hasTauntTarget || minionThreatScore(target) >= 12);
+      return { used, targetUid: target && target.uid };
+    }
+    return { used: false, targetUid: null };
+  }
+
+  function aiPlayPriority(card) {
+    const kind = game.enemyArchetype || "random";
+    if (kind === "random") return card.cost * 10 + (card.type === CARD_TYPE.MINION ? 2 : 0);
+    const keywords = card.keywords || [];
+    const attack = Number(card.attack) || 0;
+    const health = Number(card.health) || 0;
+    const cost = Number(card.cost) || 0;
+    const spellPlan = card.type === CARD_TYPE.SPELL ? chooseAiSpellPlay(card) : null;
+    if (kind === "control") {
+      let score = cost * 7 + health * 3 + attack;
+      if (card.axis === "control") score += 24;
+      if (keywords.includes("taunt")) score += 18;
+      if (keywords.includes("lifesteal")) score += 12;
+      if (keywords.includes("divineshield") || keywords.includes("regenerate")) score += 8;
+      if (card.type === CARD_TYPE.SPELL) score += spellPlan && spellPlan.used ? 34 : -8;
+      return score;
+    }
+    let score = 110 - cost * 9 + attack * 5 + health;
+    if (card.axis === "aggro") score += 24;
+    if (keywords.includes("charge")) score += 24;
+    if (keywords.includes("rush")) score += 14;
+    if (keywords.includes("windfury")) score += 10;
+    if (card.type === CARD_TYPE.SPELL) score += spellPlan && spellPlan.used ? 22 : -10;
+    return score;
+  }
+
+  function chooseAiAttackTarget(atk, lethal) {
+    const smart = game.aiSmart || 0;
+    const kind = game.enemyArchetype || "random";
+    if (lethal || smart < 1) return null;
+    if (isRushHeroLocked(atk) && game.player.field.length) {
+      return [...game.player.field].sort((a, b) => a.health - b.health || minionThreatScore(b) - minionThreatScore(a))[0] || null;
+    }
+    if (kind === "aggro") return null;
+    if (smart >= 2 && (atk.keywords || []).includes("poison")) {
+      return [...game.player.field].sort((a, b) => b.health - a.health || minionThreatScore(b) - minionThreatScore(a))[0] || null;
+    }
+    const threshold = kind === "control" ? (smart >= 2 ? 2 : 3) : (smart >= 2 ? 3 : 4);
+    const candidates = game.player.field.filter((m) => m.attack >= threshold);
+    return candidates.sort((a, b) => minionThreatScore(b) - minionThreatScore(a))[0] || null;
+  }
+
   function aiTurn() {
     if (game.over) return;
     const ai = game.enemy;
     handleCoreResult(Core.advanceTurn(game, { phase: "startEnemy" }, rng));
 
-    // 出牌（貪心：先出貴的隨從；法術看場面）
+    // 出牌：簡單維持貴牌優先；archetype AI 依快攻/控制權重調整出牌序。
     let acted = true;
     while (acted) {
       acted = false;
-      const affordable = ai.hand.filter((c) => c.cost <= ai.mana).sort((a, b) => b.cost - a.cost);
+      const affordable = ai.hand.filter((c) => c.cost <= ai.mana).sort((a, b) =>
+        (aiPlayPriority(b) - aiPlayPriority(a)) || (b.cost - a.cost)
+      );
       for (const card of affordable) {
         if (card.type === CARD_TYPE.MINION) {
           if (ai.field.length >= MAX_FIELD) continue; // 場滿：跳過隨從，讓 AI 還有機會出法術
@@ -536,18 +757,9 @@
           log(`對手召喚了 ${card.name}。`, "ai");
           acted = true; break;
         } else {
-          let used = false;
-          let targetUid = null;
-          if (card.effect === "heal5" && ai.hp <= 22) { used = true; }
-          else if ((card.effect === "aoe1" || card.effect === "aoe2") && game.player.field.length >= 2) { used = true; }
-          else if ((card.effect === "damage3" || card.effect === "damage8") && game.player.field.length) {
-            const t = [...game.player.field].sort((a,b)=>b.attack-a.attack)[0];
-            targetUid = t && t.uid;
-            used = true;
-          }
-          else if (card.effect === "mana2") { used = true; }
-          if (used) {
-            const result = Core.playCard(game, { side: "enemy", cardUid: card.uid, targetUid, burnMulligan: false, trackCombo: false }, rng);
+          const plan = chooseAiSpellPlay(card);
+          if (plan.used) {
+            const result = Core.playCard(game, { side: "enemy", cardUid: card.uid, targetUid: plan.targetUid, burnMulligan: false, trackCombo: false }, rng);
             if (!result.ok) continue;
             handleCoreResult(result);
             logAiSpell(card.effect);
@@ -579,22 +791,7 @@
           animateAttackToward(atk.uid, t.uid);
           resolveAttack(ai, atk, t);
         } else {
-          // AI 聰明度：簡單只打臉；普通威脅≥4 換；困難威脅≥3 換且優先用劇毒換大物
-          const smart = game.aiSmart || 0;
-          let threat = null;
-          if (smart >= 1 && !lethal) { // 斬殺局面跳過換牌，全壓臉
-            const thr = smart >= 2 ? 3 : 4;
-            const candidates = game.player.field.filter((m) => m.attack >= thr);
-            if (smart >= 2 && (atk.keywords || []).includes("poison")) {
-              // 困難：劇毒隨從優先去換掉血最厚的大物
-              threat = [...game.player.field].sort((a, b) => b.health - a.health)[0] || null;
-            } else {
-              threat = candidates.sort((a, b) => b.attack - a.attack)[0] || null;
-            }
-          }
-          if (!threat && isRushHeroLocked(atk) && game.player.field.length) {
-            threat = [...game.player.field].sort((a, b) => a.health - b.health)[0] || null;
-          }
+          const threat = chooseAiAttackTarget(atk, lethal);
           if (threat) { animateAttackToward(atk.uid, threat.uid); resolveAttack(ai, atk, threat); }
           else if (canAttackHeroNow(atk)) {
             animateAttackToward(atk.uid, "playerHero");
@@ -974,6 +1171,9 @@
     if (effect === "heal5") log("對手施放治療術。", "ai");
     else if (effect === "aoe1" || effect === "aoe2") log("對手施放範圍法術！", "ai");
     else if (effect === "damage3" || effect === "damage8") log("對手對你的隨從施放傷害法術。", "ai");
+    else if (effect === "polymorph") log("對手將你的隨從變形。", "ai");
+    else if (effect === "giveShield") log("對手施放聖盾術。", "ai");
+    else if (effect === "mana2") log("對手施放法力湧動。", "ai");
   }
 
   function logDeathrattleSummon(event) {
@@ -1564,6 +1764,15 @@
     claimAllQuests: () => claimAllQuestsUi(),
     rewardTable: () => JSON.parse(JSON.stringify(DIFFICULTY_REWARDS)),
     deckInfo: () => ({ source: game.playerDeckSource, ids: [...(game.playerDeckIds || [])], liveIds: [...game.player.hand, ...game.player.deck].map((c) => c.id) }),
+    aiDeckInfo: () => ({
+      source: game.enemyDeckSource,
+      archetype: game.enemyArchetype,
+      playerArchetype: game.playerArchetype,
+      ids: [...(game.enemyDeckIds || [])],
+      liveIds: [...game.enemy.hand, ...game.enemy.deck].map((c) => c.id),
+      templateIds: [...(game.enemyTemplateIds || [])],
+    }),
+    archetypeTemplateIds: (kind) => buildArchetypeDeckIds(kind),
     guide: () => ({ active: guide.active, step: guide.step, selectedAttacker: guide.selectedAttacker }),
     startGuide: () => startGuide(true),
     skipGuide: () => stopGuide(true),

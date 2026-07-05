@@ -22,6 +22,7 @@
   let deckState = loadDeck();
   let lastNewCards = [];
   let deckFilters = { search: "", cost: "all", rarity: "all" };
+  let collectionFilters = { search: "", axis: "all", keyword: "all", rarity: "all", ownership: "all", sort: "cost" };
 
   function loadCollection() {
     try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || {}; }
@@ -221,31 +222,51 @@
     let owned = 0;
     const totalSlots = CARD_POOL.length * 2; // 每張卡有普通+閃卡兩種
 
+    const slots = [];
     CARD_POOL.forEach((card) => {
       [false, true].forEach((isFoil) => {
-        const r = RARITY[card.rarity] || RARITY.common;
         const key = isFoil ? card.id + "#foil" : card.id;
         const count = collection[key] || 0;
         if (count > 0) owned++;
-        const slot = document.createElement("div");
-        slot.className = "slot " + (count > 0 ? (isFoil ? "owned foil" : "owned") : "locked");
-        slot.style.setProperty("--rarity", r.color);
-        slot.style.setProperty("--glow", r.glow);
-        const icon = count > 0
-          ? (card.image ? `<img src="${card.image}" alt="">` : card.emoji)
-          : "❓";
-        // CP2-7 重複卡可分解成金幣（dup 出口）：保留 1 張，多的可分解
-        const dupes = Math.max(0, count - 1);
-        const dustValue = DISMANTLE_VALUE[card.rarity] || 10;
-        slot.innerHTML = `
-          ${isFoil ? '<div class="fstar">✦</div>' : ''}
-          <div>${icon}</div>
-          <div class="nm">${count > 0 ? card.name : "???"}</div>
-          ${count > 1 ? `<div class="count">×${count}</div>` : ""}
-          ${dupes > 0 ? `<button class="dismantle-btn" data-key="${key}" data-val="${dustValue}" data-dupes="${dupes}">分解 +${dupes * dustValue}💰</button>` : ""}`;
-        grid.appendChild(slot);
+        const isOwned = count > 0;
+        if (!cardMatchesQuery(card, collectionFilters, isOwned)) return;
+        slots.push({ card, isFoil, key, count, isOwned });
       });
     });
+    slots.sort((a, b) => sortCards(a.card, b.card, collectionFilters.sort) || ((a.isFoil ? 1 : 0) - (b.isFoil ? 1 : 0)));
+    slots.forEach(({ card, isFoil, key, count, isOwned }) => {
+      const r = RARITY[card.rarity] || RARITY.common;
+      const slot = document.createElement("div");
+      slot.className = "slot " + (isOwned ? (isFoil ? "owned foil" : "owned") : "locked");
+      slot.dataset.cardId = card.id;
+      slot.dataset.foil = isFoil ? "1" : "0";
+      slot.dataset.rarity = card.rarity;
+      slot.dataset.axis = card.axis || "neutral";
+      slot.dataset.cost = String(card.cost);
+      slot.dataset.owned = isOwned ? "1" : "0";
+      slot.dataset.name = card.name;
+      slot.style.setProperty("--rarity", r.color);
+      slot.style.setProperty("--glow", r.glow);
+      const icon = isOwned
+        ? (card.image ? `<img src="${card.image}" alt="">` : card.emoji)
+        : "❓";
+      // CP2-7 重複卡可分解成金幣（dup 出口）：保留 1 張，多的可分解
+      const dupes = Math.max(0, count - 1);
+      const dustValue = DISMANTLE_VALUE[card.rarity] || 10;
+      slot.innerHTML = `
+        ${isFoil ? '<div class="fstar">✦</div>' : ''}
+        <div>${icon}</div>
+        <div class="nm">${isOwned ? card.name : "???"}</div>
+        ${count > 1 ? `<div class="count">×${count}</div>` : ""}
+        ${dupes > 0 ? `<button class="dismantle-btn" data-key="${key}" data-val="${dustValue}" data-dupes="${dupes}">分解 +${dupes * dustValue}💰</button>` : ""}`;
+      grid.appendChild(slot);
+    });
+    if (slots.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "deck-empty";
+      empty.textContent = "沒有符合篩選的收藏格。";
+      grid.appendChild(empty);
+    }
 
     // 綁分解按鈕（兩段式確認：第一下變「確定？」，再點才真的分解，避免誤觸一次拆光）
     grid.querySelectorAll(".dismantle-btn").forEach((btn) => {
@@ -267,6 +288,8 @@
     });
 
     document.getElementById("progress").textContent = `${owned} / ${totalSlots} 已收集（含閃卡）`;
+    const filterCount = document.getElementById("collectionFilterCount");
+    if (filterCount) filterCount.textContent = `顯示 ${slots.length} / ${totalSlots}`;
     renderDeckEditor();
     renderGoals();
   }
@@ -510,6 +533,22 @@
     return (a.cost - b.cost) || a.name.localeCompare(b.name, "zh-Hant") || a.id.localeCompare(b.id);
   }
 
+  function sortCards(a, b, sortKey) {
+    const rarityRank = { common: 0, rare: 1, epic: 2, legendary: 3 };
+    if (sortKey === "rarity") {
+      return ((rarityRank[a.rarity] ?? 0) - (rarityRank[b.rarity] ?? 0))
+        || (a.cost - b.cost)
+        || a.name.localeCompare(b.name, "zh-Hant")
+        || a.id.localeCompare(b.id);
+    }
+    if (sortKey === "name") {
+      return a.name.localeCompare(b.name, "zh-Hant")
+        || (a.cost - b.cost)
+        || a.id.localeCompare(b.id);
+    }
+    return cardSort(a, b);
+  }
+
   function normalizeSearch(text) {
     return String(text || "").trim().toLocaleLowerCase("zh-Hant");
   }
@@ -529,11 +568,25 @@
     return normalizeSearch([card.name, card.id, card.text, card.flavor, keywordText, axisText, RARITY[card.rarity]?.label].join(" "));
   }
 
-  function cardMatchesFilters(card) {
-    if (!costMatches(card, deckFilters.cost)) return false;
-    if (deckFilters.rarity !== "all" && card.rarity !== deckFilters.rarity) return false;
-    const q = normalizeSearch(deckFilters.search);
+  function ownershipMatches(filter, owned) {
+    if (filter === "owned") return owned === true;
+    if (filter === "missing") return owned === false;
+    return true;
+  }
+
+  function cardMatchesQuery(card, filters, owned) {
+    const query = Object.assign({ search: "", cost: "all", rarity: "all", axis: "all", keyword: "all", ownership: "all" }, filters || {});
+    if (!costMatches(card, query.cost)) return false;
+    if (query.rarity !== "all" && card.rarity !== query.rarity) return false;
+    if (query.axis !== "all" && card.axis !== query.axis) return false;
+    if (query.keyword !== "all" && !(card.keywords || []).includes(query.keyword)) return false;
+    if (typeof owned === "boolean" && !ownershipMatches(query.ownership, owned)) return false;
+    const q = normalizeSearch(query.search);
     return !q || cardSearchText(card).includes(q);
+  }
+
+  function cardMatchesFilters(card) {
+    return cardMatchesQuery(card, deckFilters, totalOwned(card.id) > 0);
   }
 
   function cardArt(card) {
@@ -680,7 +733,7 @@
     saveBtn.disabled = !validation.ok;
 
     collectionList.innerHTML = "";
-    const visibleCards = [...CARD_POOL].filter(cardMatchesFilters).sort(cardSort);
+    const visibleCards = [...CARD_POOL].filter(cardMatchesFilters).sort((a, b) => sortCards(a, b, "cost"));
     if (filterCount) filterCount.textContent = `${visibleCards.length} / ${CARD_POOL.length} 張`;
     visibleCards.forEach((card) => {
       const owned = totalOwned(card.id);
@@ -962,6 +1015,18 @@
   if (deckSearch) deckSearch.oninput = () => { deckFilters.search = deckSearch.value; renderDeckEditor(); };
   if (deckCostFilter) deckCostFilter.onchange = () => { deckFilters.cost = deckCostFilter.value; renderDeckEditor(); };
   if (deckRarityFilter) deckRarityFilter.onchange = () => { deckFilters.rarity = deckRarityFilter.value; renderDeckEditor(); };
+  const collectionSearch = document.getElementById("collectionSearch");
+  const collectionAxisFilter = document.getElementById("collectionAxisFilter");
+  const collectionKeywordFilter = document.getElementById("collectionKeywordFilter");
+  const collectionRarityFilter = document.getElementById("collectionRarityFilter");
+  const collectionOwnershipFilter = document.getElementById("collectionOwnershipFilter");
+  const collectionSort = document.getElementById("collectionSort");
+  if (collectionSearch) collectionSearch.oninput = () => { collectionFilters.search = collectionSearch.value; renderCollection(); };
+  if (collectionAxisFilter) collectionAxisFilter.onchange = () => { collectionFilters.axis = collectionAxisFilter.value; renderCollection(); };
+  if (collectionKeywordFilter) collectionKeywordFilter.onchange = () => { collectionFilters.keyword = collectionKeywordFilter.value; renderCollection(); };
+  if (collectionRarityFilter) collectionRarityFilter.onchange = () => { collectionFilters.rarity = collectionRarityFilter.value; renderCollection(); };
+  if (collectionOwnershipFilter) collectionOwnershipFilter.onchange = () => { collectionFilters.ownership = collectionOwnershipFilter.value; renderCollection(); };
+  if (collectionSort) collectionSort.onchange = () => { collectionFilters.sort = collectionSort.value; renderCollection(); };
 
   // 更新金幣顯示（CP0-2）
   function updateCoinDisplay() {
@@ -991,6 +1056,30 @@
       return Object.assign({}, deckFilters);
     },
     visibleCards: () => [...document.querySelectorAll("#deckCollectionList .deck-card-row")].map((el) => el.dataset.cardId),
+    setCollectionFilters(next) {
+      collectionFilters = Object.assign({}, collectionFilters, next || {});
+      if (collectionSearch) collectionSearch.value = collectionFilters.search || "";
+      if (collectionAxisFilter) collectionAxisFilter.value = collectionFilters.axis || "all";
+      if (collectionKeywordFilter) collectionKeywordFilter.value = collectionFilters.keyword || "all";
+      if (collectionRarityFilter) collectionRarityFilter.value = collectionFilters.rarity || "all";
+      if (collectionOwnershipFilter) collectionOwnershipFilter.value = collectionFilters.ownership || "all";
+      if (collectionSort) collectionSort.value = collectionFilters.sort || "cost";
+      renderCollection();
+      return Object.assign({}, collectionFilters);
+    },
+    visibleCollection: () => [...document.querySelectorAll("#collectionGrid .slot")].map((el) => ({
+      id: el.dataset.cardId,
+      foil: el.dataset.foil === "1",
+      rarity: el.dataset.rarity,
+      axis: el.dataset.axis,
+      cost: Number(el.dataset.cost),
+      owned: el.dataset.owned === "1",
+      name: el.dataset.name,
+    })),
+    collectionToolsBox: () => {
+      const box = document.getElementById("collectionTools")?.getBoundingClientRect();
+      return box ? { top: box.top, bottom: box.bottom, height: box.height, width: box.width } : null;
+    },
     owned: totalOwned,
     score: (cardId) => cardUpgradeScore(getCardById(cardId)),
     setCollection(next) {
