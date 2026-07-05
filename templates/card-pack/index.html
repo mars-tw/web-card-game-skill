@@ -201,6 +201,36 @@
   .goal-item.claimed { opacity:.62; }
   .weekly-goal { border-color:rgba(45,212,191,.38); background:rgba(45,212,191,.07); }
   .weekly-goal .goal-title { color:#5eead4; }
+  .mission-drawer-btn { position: fixed; bottom: 12px; left: 12px; z-index: 90; background: #1a2230;
+    color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
+    font-size: 13px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
+  .mission-badge { position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; border-radius:999px;
+    background:#ef4444; color:#fff; display:none; align-items:center; justify-content:center; font-size:11px; padding:0 5px; }
+  .mission-badge.show { display:flex; }
+  .mission-drawer { position:fixed; inset:0; z-index:135; display:none; align-items:flex-end; justify-content:center;
+    background:rgba(6,10,14,.7); padding:12px; }
+  .mission-drawer.show { display:flex; }
+  .mission-card { width:min(720px,96vw); max-height:86vh; overflow:auto; border-radius:16px 16px 10px 10px;
+    background:linear-gradient(180deg,#1a2230,#0f1620); border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 18px 48px rgba(0,0,0,.58); padding:14px; }
+  .mission-head { position:sticky; top:0; z-index:2; background:linear-gradient(180deg,#1a2230,#151c28);
+    display:flex; align-items:center; justify-content:space-between; gap:8px; padding-bottom:10px; margin-bottom:10px; }
+  .mission-title { font-size:18px; font-weight:900; color:var(--accent); }
+  .mission-actions { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+  .mission-actions button { border:none; border-radius:10px; padding:8px 10px; font-weight:900; cursor:pointer; }
+  .mission-claim-all { background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; }
+  .mission-close { background:#2a3645; color:var(--ink); }
+  .mission-section { margin-top:10px; }
+  .mission-section h3 { font-size:13px; color:#facc15; margin-bottom:6px; }
+  .mission-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:7px; }
+  .mission-item { border:1px solid rgba(255,255,255,.1); border-radius:8px; padding:8px; background:rgba(255,255,255,.04); }
+  .mission-item.ready { border-color:rgba(250,204,21,.5); background:rgba(250,204,21,.08); }
+  .mission-item.claimed { opacity:.6; }
+  .mission-name { font-size:12px; font-weight:900; color:var(--ink); margin-bottom:4px; }
+  .mission-progress { font-size:11px; color:var(--muted); margin-bottom:7px; }
+  .mission-item button { width:100%; border:none; border-radius:8px; padding:7px 9px; font-size:12px; font-weight:900;
+    background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; cursor:pointer; }
+  .mission-item button:disabled, .mission-actions button:disabled { background:#2a3645; color:var(--muted); cursor:default; filter:none; }
   .series-footer { width:min(960px,94vw); margin:8px auto 16px; padding:10px 12px;
     color:var(--muted); font-size:12px; text-align:center; border-top:1px solid rgba(255,255,255,.08); }
   .series-footer a { color:var(--accent); text-decoration:none; font-weight:800; margin:0 6px; }
@@ -222,6 +252,11 @@
     .deck-current-panel .deck-card-list { max-height:160px; }
     .goal-grid { grid-template-columns:1fr; }
     .milestone-list { grid-template-columns:1fr; }
+    .mission-drawer-btn { top: 8px; bottom: auto; left: 10px; z-index: 90; }
+    .mission-drawer { align-items:flex-start; padding:50px 8px 8px; }
+    .mission-card { max-height:calc(100vh - 64px); padding:12px; }
+    .mission-list { grid-template-columns:1fr; }
+    .mission-actions button { padding:8px 9px; }
     .series-footer { margin-bottom:20px; }
   }
 
@@ -236,6 +271,7 @@
 </head>
 <body>
   <header>🎴 開卡包 · CARD PACK 🎴</header>
+  <button class="mission-drawer-btn" id="missionDrawerBtn">任務<span class="mission-badge" id="missionBadge">0</span></button>
   <div class="coin-bar">💰 金幣 <span id="coinBalance">0</span> · 一包 100 金（首包免費）</div>
   <div class="top-actions">
     <button class="ghost" id="goBattleTop">前往對戰</button>
@@ -266,6 +302,30 @@
   <div class="actions" id="actions" style="display:none;">
     <button id="againBtn">再開一包 🎁</button>
     <button class="ghost" id="toBattleBtn">前往對戰 →</button>
+  </div>
+
+  <div class="mission-drawer" id="missionDrawer" aria-hidden="true">
+    <div class="mission-card">
+      <div class="mission-head">
+        <div class="mission-title">任務中心</div>
+        <div class="mission-actions">
+          <button class="mission-claim-all" id="missionClaimAllBtn">全部領取</button>
+          <button class="mission-close" id="missionDrawerClose">關閉</button>
+        </div>
+      </div>
+      <section class="mission-section">
+        <h3>每日任務</h3>
+        <div class="mission-list" id="missionDailyList"></div>
+      </section>
+      <section class="mission-section">
+        <h3>每週任務</h3>
+        <div class="mission-list" id="missionWeeklyList"></div>
+      </section>
+      <section class="mission-section">
+        <h3>收藏里程碑</h3>
+        <div class="mission-list" id="missionMilestoneList"></div>
+      </section>
+    </div>
   </div>
 
   <section class="deck-builder" id="deckBuilder">

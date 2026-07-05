@@ -115,7 +115,97 @@ const CARD_POOL = [
   // 傳說
   { id: "bloodmoonQueen", name: "血月女王", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 6, health: 6, emoji: "👑", image: null, keywords: ["charge", "lifesteal"], text: "衝鋒 + 吸血：逆轉血線的傳說威脅。", foil: false },
   { id: "skyJudicator",  name: "天穹裁決者", type: CARD_TYPE.MINION, rarity: "legendary", cost: 9, attack: 9, health: 9, emoji: "⚖️", image: null, keywords: ["rush", "taunt", "divineshield"], text: "突襲 + 嘲諷 + 聖盾：終局裁決。", foil: false },
+  // ===== R16 構築軸線擴充：快攻 5 張、控制 5 張 =====
+  { id: "sparkSquire",    name: "火花侍從", type: CARD_TYPE.MINION, rarity: "common", cost: 1, attack: 2, health: 1, emoji: "🗡️", image: null, keywords: ["rush"], text: "突襲：前期搶回場面的小型突擊手。", foil: false },
+  { id: "alleySkirmisher", name: "巷戰斥候", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 3, health: 1, emoji: "🏃", image: null, keywords: ["charge"], text: "衝鋒：立刻壓低敵方血量。", foil: false },
+  { id: "emberVolley",    name: "餘燼齊射", type: CARD_TYPE.SPELL,  rarity: "common", cost: 1, emoji: "🔥", image: null, text: "對一個敵方手下造成 3 點傷害。", effect: "damage3", foil: false },
+  { id: "bulwarkMonk",    name: "壁壘武僧", type: CARD_TYPE.MINION, rarity: "common", cost: 3, attack: 1, health: 5, emoji: "🛡️", image: null, keywords: ["taunt"], text: "嘲諷：用厚實身軀拖慢快攻。", foil: false },
+  { id: "dawnRider",      name: "晨鋒騎手", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 3, health: 2, emoji: "🌅", image: null, keywords: ["charge", "lifesteal"], text: "衝鋒 + 吸血：進攻同時穩住血線。", foil: false },
+  { id: "battleDrummer",  name: "戰鼓手", type: CARD_TYPE.MINION, rarity: "rare", cost: 2, attack: 1, health: 3, emoji: "🥁", image: null, keywords: ["battlecry"], trigger: "damageAny1", text: "戰吼：對一個敵方手下造成 1 點傷害。", foil: false },
+  { id: "sanctuaryWarden", name: "聖所看守", type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 2, health: 6, emoji: "⛪", image: null, keywords: ["taunt", "battlecry"], trigger: "healHero2", text: "嘲諷。戰吼：為你的英雄恢復 2 點生命。", foil: false },
+  { id: "tidebinderHex",  name: "縛潮咒印", type: CARD_TYPE.SPELL,  rarity: "epic", cost: 4, emoji: "🌊", image: null, text: "將一個敵方手下變成 1/1 綿羊。", effect: "polymorph", foil: false },
+  { id: "bastionColossus", name: "棱堡巨像", type: CARD_TYPE.MINION, rarity: "epic", cost: 6, attack: 4, health: 8, emoji: "🗿", image: null, keywords: ["taunt", "regenerate"], text: "嘲諷 + 再生：控制牌組的防線核心。", foil: false },
+  { id: "highArchivist",  name: "至高典藏師", type: CARD_TYPE.MINION, rarity: "legendary", cost: 6, attack: 3, health: 8, emoji: "📚", image: null, keywords: ["taunt", "battlecry"], trigger: "aoeEnemy2", text: "嘲諷。戰吼：對所有敵方手下造成 2 點傷害。", foil: false },
 ];
+
+const AXIS_LABELS = Object.freeze({ aggro: "快攻", control: "控制", neutral: "中立" });
+const CARD_AXIS = Object.freeze({
+  footman: "control", archer: "neutral", wolf: "aggro", cleric: "neutral",
+  knight: "control", mage: "neutral", raptor: "aggro", guardian: "control",
+  golem: "control", griffin: "aggro", lich: "neutral", paladin: "control",
+  dragon: "aggro", phoenix: "neutral", titan: "control", archmage: "control",
+  firebolt: "aggro", heal: "control", shieldUp: "control", manaSurge: "aggro",
+  frost: "control", lightning: "control", polymorph: "control", meteor: "control",
+  mooncat: "aggro", frontScout: "aggro", groveHerbalist: "control", holyGlimmer: "control",
+  duskwrightBat: "aggro", linebreaker: "aggro", bannerGuard: "control", thunderClap: "aggro",
+  arcaneVeil: "control", abyssWalker: "control", stormGriffin: "aggro", duskWitch: "control",
+  starfall: "control", forbiddenHex: "control", bloodmoonQueen: "aggro", skyJudicator: "control",
+  sparkSquire: "aggro", alleySkirmisher: "aggro", emberVolley: "aggro", bulwarkMonk: "control",
+  dawnRider: "aggro", battleDrummer: "aggro", sanctuaryWarden: "control", tidebinderHex: "control",
+  bastionColossus: "control", highArchivist: "control",
+});
+const CARD_FLAVOR = Object.freeze({
+  footman: "城門下的第一面盾，總是比晨鐘更早醒來。",
+  archer: "她的箭會先抵達，警告才跟著風聲傳來。",
+  wolf: "迅捷狼只認得兩種路：獵物的路與回家的路。",
+  cleric: "巡禮者說他的祝禱像暖燈，也像最後一道命令。",
+  knight: "白潮騎士守住的不是橋，而是城民仍能相信的明天。",
+  mage: "她把火星藏進袖口，讓敵人以為那只是禮節。",
+  raptor: "毒牙迅猛龍的影子掠過時，草葉會先枯一半。",
+  guardian: "守護者從不追擊；他只是讓敵人無路可走。",
+  golem: "古岩魔像每走一步，都像王國舊誓重新落印。",
+  griffin: "雙翼獅鷲俯衝兩次，第二次通常已經沒人看見。",
+  lich: "巫妖保存記憶的方式，是讓死者替他繼續說話。",
+  paladin: "聖盾騎士的盔甲映著太陽，也映著未退的敵軍。",
+  dragon: "炎龍只在王冠熔化時，才承認自己曾經降落。",
+  phoenix: "不滅鳳凰的灰燼裡，總有一枚還燙手的黎明。",
+  titan: "遠古泰坦睡在山脈之下，呼吸就是季節。",
+  archmage: "大法師從不高聲施法，因為雷霆會替他回答。",
+  firebolt: "火焰箭很短，短到敵人來不及後悔。",
+  heal: "治癒術不能改寫戰爭，只能替下一次選擇爭取時間。",
+  shieldUp: "聖盾術的光很薄，卻足以隔開命運的一擊。",
+  manaSurge: "法力湧泉在地底翻身時，連學徒都能聽見星光。",
+  frost: "霜環術不是寒冷，而是把戰場按下暫停。",
+  lightning: "雷鏈只問距離，不問身分。",
+  polymorph: "變形術最殘酷的地方，是敵人還記得自己曾經威風。",
+  meteor: "隕星術墜落後，地圖師會多畫一個湖。",
+  mooncat: "月影貓踩過屋脊，傷口便像夜色一樣慢慢合攏。",
+  frontScout: "前線斥候帶回的不是情報，而是敵人還沒反應的空隙。",
+  groveHerbalist: "林地藥師認得每片葉子，也認得每種疼痛。",
+  holyGlimmer: "聖光微芒不足以照亮城牆，卻足以讓守軍站起來。",
+  duskwrightBat: "暮翼蝠從鐘樓倒掛，等戰鼓替牠數拍。",
+  linebreaker: "破陣者只衝最窄的缺口，因為那裡最容易撕開戰線。",
+  bannerGuard: "戰旗守衛倒下之前，旗影不會碰到地面。",
+  thunderClap: "雷鳴掌響起時，前排士兵會同時低頭。",
+  arcaneVeil: "秘法帷幕像薄霧，遮住的是傷口，也是恐懼。",
+  abyssWalker: "深淵行者把黑潮披在肩上，替盟友擋下最冷的浪。",
+  stormGriffin: "暴風獅鷲在雲層裡磨爪，等一道閃電開門。",
+  duskWitch: "暮色女巫從不交易靈魂，她只收取未說出口的願望。",
+  starfall: "星墜術落下時，整片夜空都像被重新洗牌。",
+  forbiddenHex: "禁咒變形把傲慢折小，直到牠只剩咩聲。",
+  bloodmoonQueen: "血月女王的微笑很輕，足以讓整座城失眠。",
+  skyJudicator: "天穹裁決者降臨時，審判先於影子落地。",
+  sparkSquire: "火花侍從還不懂恐懼，只懂向前。",
+  alleySkirmisher: "巷戰斥候熟悉每一條捷徑，也熟悉每一次背刺。",
+  emberVolley: "餘燼齊射來自撤退的火堆，專打追兵的腳步。",
+  bulwarkMonk: "壁壘武僧的沉默，比任何城門都厚。",
+  dawnRider: "晨鋒騎手把第一道日光磨成槍尖。",
+  battleDrummer: "戰鼓手敲下節拍，讓整條前線同時吸氣。",
+  sanctuaryWarden: "聖所看守不問來者姓名，只問還能不能站起來。",
+  tidebinderHex: "縛潮咒印把怒濤繫成細繩，再繫到敵人的腳踝。",
+  bastionColossus: "棱堡巨像不是被建造出來的，是城牆自己學會了走路。",
+  highArchivist: "至高典藏師翻開禁頁時，灰塵會先替敵軍默哀。",
+});
+
+for (const card of CARD_POOL) {
+  card.axis = CARD_AXIS[card.id] || "neutral";
+  card.flavor = CARD_FLAVOR[card.id] || "這張卡仍在等待屬於自己的傳說。";
+}
+
+function cardAxisLabel(card) {
+  const axis = card && card.axis ? card.axis : "neutral";
+  return AXIS_LABELS[axis] || AXIS_LABELS.neutral;
+}
 
 // 依 id 取卡（淺拷貝，避免改到母表）。
 function getCardById(id) {
@@ -150,8 +240,8 @@ function collectKey(card) {
 
 // 讓瀏覽器與 Node 兩種載入都可用。
 if (typeof window !== "undefined") {
-  Object.assign(window, { RARITY, FOIL_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, CARD_POOL, getCardById, cloneCard, rollCardByRarity, collectKey });
+  Object.assign(window, { RARITY, FOIL_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, CARD_POOL, AXIS_LABELS, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel });
 }
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { RARITY, FOIL_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, CARD_POOL, getCardById, cloneCard, rollCardByRarity, collectKey };
+  module.exports = { RARITY, FOIL_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, CARD_POOL, AXIS_LABELS, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel };
 }

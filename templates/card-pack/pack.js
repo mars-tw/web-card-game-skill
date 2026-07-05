@@ -81,6 +81,8 @@
   }
   function progressWeeklyGoal(event) {
     saveGoals(Core.applyWeeklyQuestProgress(loadGoals(), event));
+    renderMissionDrawer();
+    updateMissionBadge();
   }
 
   function loadDeck() {
@@ -276,7 +278,7 @@
     if (!summaryEl || !milestoneList || !weeklyEl) return;
     const state = goalState || loadGoals();
     const summary = Core.collectionSummary(collection);
-    summaryEl.textContent = `收藏 ${summary.unique}/40 種，閃卡 ${summary.foil}/15 張`;
+    summaryEl.textContent = `收藏 ${summary.unique}/${CARD_POOL.length} 種，閃卡 ${summary.foil}/15 張`;
 
     milestoneList.innerHTML = "";
     Core.listMilestones(state, collection).forEach((milestone) => {
@@ -309,6 +311,8 @@
       btn.disabled = !done || weekly.claimed;
       btn.onclick = claimWeeklyUi;
     }
+    renderMissionDrawer();
+    updateMissionBadge();
   }
 
   function claimMilestoneUi(milestoneId) {
@@ -339,6 +343,154 @@
     updateCoinDisplay();
     renderGoals(result.state);
     return result;
+  }
+
+  function isReady(item) {
+    return item && item.progress >= item.target && !item.claimed;
+  }
+
+  function addMissionReward(amount) {
+    if (!amount) return;
+    const stats = loadStats();
+    stats.coins += amount;
+    saveStats(stats);
+    updateCoinDisplay();
+  }
+
+  function claimQuestUi(questId) {
+    const result = Core.claimQuest(loadQuests(), questId);
+    if (!result.ok) {
+      renderMissionDrawer();
+      return result;
+    }
+    saveQuests(result.state);
+    addMissionReward(result.reward);
+    renderMissionDrawer();
+    updateMissionBadge();
+    return result;
+  }
+
+  function missionClaimableCount() {
+    const daily = loadQuests().quests.filter(isReady).length;
+    const goals = loadGoals();
+    const weekly = isReady(goals.weeklyQuest) ? 1 : 0;
+    const milestones = Core.listMilestones(goals, collection).filter((milestone) => milestone.achieved && !milestone.claimed).length;
+    return daily + weekly + milestones;
+  }
+
+  function updateMissionBadge() {
+    const badge = document.getElementById("missionBadge");
+    if (!badge) return;
+    const count = missionClaimableCount();
+    badge.textContent = String(count);
+    badge.classList.toggle("show", count > 0);
+  }
+
+  function missionItemHtml(item, buttonText) {
+    return `
+      <div class="mission-name">${item.title}</div>
+      <div class="mission-progress">${Math.min(item.progress || 0, item.target)} / ${item.target} · ${item.reward} 金幣</div>
+      <button>${item.claimed ? "已領取" : buttonText}</button>`;
+  }
+
+  function renderMissionDrawer() {
+    const dailyList = document.getElementById("missionDailyList");
+    const weeklyList = document.getElementById("missionWeeklyList");
+    const milestoneList = document.getElementById("missionMilestoneList");
+    const claimAllBtn = document.getElementById("missionClaimAllBtn");
+    if (!dailyList || !weeklyList || !milestoneList) return;
+
+    const dailyState = loadQuests();
+    dailyList.innerHTML = "";
+    dailyState.quests.forEach((quest) => {
+      const row = document.createElement("div");
+      row.className = "mission-item" + (isReady(quest) ? " ready" : "") + (quest.claimed ? " claimed" : "");
+      row.innerHTML = missionItemHtml(quest, "領取");
+      const btn = row.querySelector("button");
+      btn.disabled = !isReady(quest);
+      btn.onclick = () => claimQuestUi(quest.id);
+      dailyList.appendChild(row);
+    });
+
+    const goals = loadGoals();
+    weeklyList.innerHTML = "";
+    if (goals.weeklyQuest) {
+      const quest = goals.weeklyQuest;
+      const row = document.createElement("div");
+      row.className = "mission-item" + (isReady(quest) ? " ready" : "") + (quest.claimed ? " claimed" : "");
+      row.innerHTML = missionItemHtml(quest, "領取");
+      const btn = row.querySelector("button");
+      btn.disabled = !isReady(quest);
+      btn.onclick = claimWeeklyUi;
+      weeklyList.appendChild(row);
+    }
+
+    milestoneList.innerHTML = "";
+    Core.listMilestones(goals, collection).forEach((milestone) => {
+      const row = document.createElement("div");
+      row.className = "mission-item" + (milestone.achieved && !milestone.claimed ? " ready" : "") + (milestone.claimed ? " claimed" : "");
+      row.innerHTML = missionItemHtml(milestone, "領取");
+      const btn = row.querySelector("button");
+      btn.disabled = !milestone.achieved || milestone.claimed;
+      btn.onclick = () => claimMilestoneUi(milestone.id);
+      milestoneList.appendChild(row);
+    });
+
+    if (claimAllBtn) claimAllBtn.disabled = missionClaimableCount() === 0;
+    updateMissionBadge();
+  }
+
+  function claimAllMissionsUi() {
+    let reward = 0;
+    let count = 0;
+    let dailyState = loadQuests();
+    for (const quest of dailyState.quests) {
+      if (!isReady(quest)) continue;
+      const result = Core.claimQuest(dailyState, quest.id);
+      if (!result.ok) continue;
+      dailyState = result.state;
+      reward += result.reward;
+      count++;
+    }
+    saveQuests(dailyState);
+
+    let goals = loadGoals();
+    if (isReady(goals.weeklyQuest)) {
+      const result = Core.claimWeeklyQuest(goals);
+      if (result.ok) {
+        goals = result.state;
+        reward += result.reward;
+        count++;
+      }
+    }
+    for (const milestone of Core.listMilestones(goals, collection)) {
+      if (!milestone.achieved || milestone.claimed) continue;
+      const result = Core.claimMilestone(goals, milestone.id, collection);
+      if (!result.ok) continue;
+      goals = result.state;
+      reward += result.reward;
+      count++;
+    }
+    saveGoals(goals);
+    addMissionReward(reward);
+    renderGoals(goals);
+    renderMissionDrawer();
+    return { ok: count > 0, reward, count };
+  }
+
+  function openMissionDrawer() {
+    renderMissionDrawer();
+    const drawer = document.getElementById("missionDrawer");
+    if (!drawer) return;
+    drawer.classList.add("show");
+    drawer.setAttribute("aria-hidden", "false");
+  }
+
+  function closeMissionDrawer() {
+    const drawer = document.getElementById("missionDrawer");
+    if (!drawer) return;
+    drawer.classList.remove("show");
+    drawer.setAttribute("aria-hidden", "true");
   }
 
   function totalOwned(cardId) {
@@ -373,7 +525,8 @@
 
   function cardSearchText(card) {
     const keywordText = (card.keywords || []).map((key) => KEYWORDS[key]?.label || key).join(" ");
-    return normalizeSearch([card.name, card.id, card.text, keywordText, RARITY[card.rarity]?.label].join(" "));
+    const axisText = typeof cardAxisLabel === "function" ? cardAxisLabel(card) : card.axis;
+    return normalizeSearch([card.name, card.id, card.text, card.flavor, keywordText, axisText, RARITY[card.rarity]?.label].join(" "));
   }
 
   function cardMatchesFilters(card) {
@@ -651,6 +804,8 @@
     const rarityScore = { common: 0, rare: 1, epic: 2, legendary: 3 }[card.rarity] || 0;
     if (kind === "control") {
       let score = cost * 9 + health * 2 + attack + rarityScore * 2;
+      if (card.axis === "control") score += 28;
+      if (card.axis === "aggro") score -= 12;
       if (keywords.includes("taunt")) score += 16;
       if (keywords.includes("lifesteal")) score += 14;
       if (keywords.includes("divineshield")) score += 10;
@@ -662,6 +817,8 @@
       return score;
     }
     let score = 120 - cost * 12 + attack * 4 + health + rarityScore;
+    if (card.axis === "aggro") score += 28;
+    if (card.axis === "control") score -= 10;
     if (keywords.includes("charge")) score += 20;
     if (keywords.includes("rush")) score += 14;
     if (keywords.includes("windfury")) score += 12;
@@ -787,6 +944,18 @@
   const controlTemplateBtn = document.getElementById("controlTemplateBtn");
   if (aggroTemplateBtn) aggroTemplateBtn.onclick = () => applyDeckTemplate("aggro");
   if (controlTemplateBtn) controlTemplateBtn.onclick = () => applyDeckTemplate("control");
+  const missionDrawerBtn = document.getElementById("missionDrawerBtn");
+  const missionDrawerClose = document.getElementById("missionDrawerClose");
+  const missionClaimAllBtn = document.getElementById("missionClaimAllBtn");
+  const missionDrawer = document.getElementById("missionDrawer");
+  if (missionDrawerBtn) missionDrawerBtn.onclick = openMissionDrawer;
+  if (missionDrawerClose) missionDrawerClose.onclick = closeMissionDrawer;
+  if (missionClaimAllBtn) missionClaimAllBtn.onclick = claimAllMissionsUi;
+  if (missionDrawer) {
+    missionDrawer.addEventListener("click", (event) => {
+      if (event.target === missionDrawer) closeMissionDrawer();
+    });
+  }
   const deckSearch = document.getElementById("deckSearch");
   const deckCostFilter = document.getElementById("deckCostFilter");
   const deckRarityFilter = document.getElementById("deckRarityFilter");
@@ -836,6 +1005,15 @@
       renderGoals();
       return loadGoals(seed);
     },
+    quests: () => loadQuests(),
+    setQuests(next) {
+      saveQuests(next || {});
+      renderMissionDrawer();
+      return loadQuests();
+    },
+    missionCount: () => missionClaimableCount(),
+    openMissionDrawer: () => openMissionDrawer(),
+    claimAllMissions: () => claimAllMissionsUi(),
     claimMilestone: (id) => claimMilestoneUi(id),
     progressWeekly: (event) => { progressWeeklyGoal(event); renderGoals(); return loadGoals(); },
     claimWeekly: () => claimWeeklyUi(),

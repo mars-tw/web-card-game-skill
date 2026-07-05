@@ -797,6 +797,7 @@
     const meta = document.getElementById("cardDetailMeta");
     const stats = document.getElementById("cardDetailStats");
     const text = document.getElementById("cardDetailText");
+    const flavor = document.getElementById("cardDetailFlavor");
     const keywords = document.getElementById("cardDetailKeywords");
     if (title) title.textContent = `${card.name}${card.foil ? " 閃卡" : ""}`;
     renderDetailArt(card);
@@ -804,12 +805,14 @@
       makeDetailPill(`${card.cost} 費`),
       makeDetailPill(rarity.label || card.rarity),
       makeDetailPill(card.type === CARD_TYPE.SPELL ? "法術" : "隨從"),
+      makeDetailPill(`軸線 ${typeof cardAxisLabel === "function" ? cardAxisLabel(card) : "中立"}`),
     ]);
     const statPills = card.type === CARD_TYPE.SPELL
       ? [makeDetailPill("法術效果")]
       : [makeDetailPill(`攻擊 ${card.attack}`), makeDetailPill(`生命 ${card.health}/${card.maxHealth || card.health}`)];
     setChildren(stats, statPills);
     if (text) text.textContent = card.text || "沒有額外效果。";
+    if (flavor) flavor.textContent = card.flavor ? `「${card.flavor}」` : "";
     if (keywords) {
       keywords.innerHTML = "";
       (card.keywords || []).forEach((keywordId) => {
@@ -1135,6 +1138,8 @@
   function progressWeeklyGoal(event) {
     const next = Core.applyWeeklyQuestProgress(loadGoals(), event);
     saveGoals(next);
+    renderMissionDrawer();
+    updateMissionBadge();
     return next;
   }
 
@@ -1209,6 +1214,170 @@
     return { ok: true, reward, count, state };
   }
 
+  function isReady(item) {
+    return item && item.progress >= item.target && !item.claimed;
+  }
+
+  function addMissionReward(amount) {
+    if (!amount) return;
+    const stats = loadStats();
+    stats.coins += amount;
+    saveStats(stats);
+  }
+
+  function claimWeeklyUi() {
+    const result = Core.claimWeeklyQuest(loadGoals());
+    if (!result.ok) {
+      renderMissionDrawer();
+      return result;
+    }
+    saveGoals(result.state);
+    addMissionReward(result.reward);
+    renderMissionDrawer();
+    updateMissionBadge();
+    flash(`本週任務完成：+${result.reward} 金幣`);
+    return result;
+  }
+
+  function claimMilestoneUi(milestoneId) {
+    const result = Core.claimMilestone(loadGoals(), milestoneId, loadCollection());
+    if (!result.ok) {
+      renderMissionDrawer();
+      return result;
+    }
+    saveGoals(result.state);
+    addMissionReward(result.reward);
+    renderMissionDrawer();
+    updateMissionBadge();
+    flash(`收藏里程碑完成：+${result.reward} 金幣`);
+    return result;
+  }
+
+  function missionClaimableCount() {
+    const daily = loadQuests().quests.filter(isReady).length;
+    const goals = loadGoals();
+    const weekly = isReady(goals.weeklyQuest) ? 1 : 0;
+    const milestones = Core.listMilestones(goals, loadCollection()).filter((milestone) => milestone.achieved && !milestone.claimed).length;
+    return daily + weekly + milestones;
+  }
+
+  function updateMissionBadge() {
+    const badge = document.getElementById("missionBadge");
+    if (!badge) return;
+    const count = missionClaimableCount();
+    badge.textContent = String(count);
+    badge.classList.toggle("show", count > 0);
+  }
+
+  function missionItemHtml(item, buttonText) {
+    return `
+      <div class="mission-name">${item.title}</div>
+      <div class="mission-progress">${Math.min(item.progress || 0, item.target)} / ${item.target} · ${item.reward} 金幣</div>
+      <button>${item.claimed ? "已領取" : buttonText}</button>`;
+  }
+
+  function renderMissionDrawer() {
+    const dailyList = document.getElementById("missionDailyList");
+    const weeklyList = document.getElementById("missionWeeklyList");
+    const milestoneList = document.getElementById("missionMilestoneList");
+    const claimAllBtn = document.getElementById("missionClaimAllBtn");
+    if (!dailyList || !weeklyList || !milestoneList) return;
+
+    const dailyState = loadQuests();
+    dailyList.innerHTML = "";
+    dailyState.quests.forEach((quest) => {
+      const row = document.createElement("div");
+      row.className = "mission-item" + (isReady(quest) ? " ready" : "") + (quest.claimed ? " claimed" : "");
+      row.innerHTML = missionItemHtml(quest, "領取");
+      const btn = row.querySelector("button");
+      btn.disabled = !isReady(quest);
+      btn.onclick = () => { claimQuestUi(quest.id); renderMissionDrawer(); updateMissionBadge(); };
+      dailyList.appendChild(row);
+    });
+
+    const goals = loadGoals();
+    weeklyList.innerHTML = "";
+    if (goals.weeklyQuest) {
+      const quest = goals.weeklyQuest;
+      const row = document.createElement("div");
+      row.className = "mission-item" + (isReady(quest) ? " ready" : "") + (quest.claimed ? " claimed" : "");
+      row.innerHTML = missionItemHtml(quest, "領取");
+      const btn = row.querySelector("button");
+      btn.disabled = !isReady(quest);
+      btn.onclick = claimWeeklyUi;
+      weeklyList.appendChild(row);
+    }
+
+    milestoneList.innerHTML = "";
+    Core.listMilestones(goals, loadCollection()).forEach((milestone) => {
+      const row = document.createElement("div");
+      row.className = "mission-item" + (milestone.achieved && !milestone.claimed ? " ready" : "") + (milestone.claimed ? " claimed" : "");
+      row.innerHTML = missionItemHtml(milestone, "領取");
+      const btn = row.querySelector("button");
+      btn.disabled = !milestone.achieved || milestone.claimed;
+      btn.onclick = () => claimMilestoneUi(milestone.id);
+      milestoneList.appendChild(row);
+    });
+
+    if (claimAllBtn) claimAllBtn.disabled = missionClaimableCount() === 0;
+    updateMissionBadge();
+  }
+
+  function claimAllMissionsUi() {
+    let reward = 0;
+    let count = 0;
+    let dailyState = loadQuests();
+    for (const quest of dailyState.quests) {
+      if (!isReady(quest)) continue;
+      const result = Core.claimQuest(dailyState, quest.id);
+      if (!result.ok) continue;
+      dailyState = result.state;
+      reward += result.reward;
+      count++;
+    }
+    saveQuests(dailyState);
+
+    let goals = loadGoals();
+    if (isReady(goals.weeklyQuest)) {
+      const result = Core.claimWeeklyQuest(goals);
+      if (result.ok) {
+        goals = result.state;
+        reward += result.reward;
+        count++;
+      }
+    }
+    for (const milestone of Core.listMilestones(goals, loadCollection())) {
+      if (!milestone.achieved || milestone.claimed) continue;
+      const result = Core.claimMilestone(goals, milestone.id, loadCollection());
+      if (!result.ok) continue;
+      goals = result.state;
+      reward += result.reward;
+      count++;
+    }
+    saveGoals(goals);
+    addMissionReward(reward);
+    renderQuests(dailyState);
+    renderMissionDrawer();
+    if (count > 0) flash(`已領取 ${count} 個獎勵：+${reward} 金幣`);
+    else flash("目前沒有可領取的任務獎勵");
+    return { ok: count > 0, reward, count };
+  }
+
+  function openMissionDrawer() {
+    renderMissionDrawer();
+    const drawer = document.getElementById("missionDrawer");
+    if (!drawer) return;
+    drawer.classList.add("show");
+    drawer.setAttribute("aria-hidden", "false");
+  }
+
+  function closeMissionDrawer() {
+    const drawer = document.getElementById("missionDrawer");
+    if (!drawer) return;
+    drawer.classList.remove("show");
+    drawer.setAttribute("aria-hidden", "true");
+  }
+
   function renderQuests(questState) {
     const panel = document.getElementById("questPanel");
     const list = document.getElementById("questList");
@@ -1233,6 +1402,8 @@
       list.appendChild(row);
     });
     updateQuestCtas(state);
+    renderMissionDrawer();
+    updateMissionBadge();
   }
 
   function showOverlay(title, win) {
@@ -1327,6 +1498,18 @@
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeCardDetail();
   });
+  const missionDrawerBtn = document.getElementById("missionDrawerBtn");
+  if (missionDrawerBtn) missionDrawerBtn.onclick = openMissionDrawer;
+  const missionDrawerClose = document.getElementById("missionDrawerClose");
+  if (missionDrawerClose) missionDrawerClose.onclick = closeMissionDrawer;
+  const missionClaimAllBtn = document.getElementById("missionClaimAllBtn");
+  if (missionClaimAllBtn) missionClaimAllBtn.onclick = claimAllMissionsUi;
+  const missionDrawer = document.getElementById("missionDrawer");
+  if (missionDrawer) {
+    missionDrawer.addEventListener("click", (event) => {
+      if (event.target === missionDrawer) closeMissionDrawer();
+    });
+  }
 
   // 提供給入口頁主題切換用（重繪卡面）
   window.__rerenderBattle = render;
@@ -1374,6 +1557,9 @@
     goals: (seed) => loadGoals(seed),
     setGoals: (goalState, seed) => { saveGoals(goalState || {}, seed); return loadGoals(seed); },
     progressWeeklyGoal: (event) => progressWeeklyGoal(event),
+    missionCount: () => missionClaimableCount(),
+    openMissionDrawer: () => openMissionDrawer(),
+    claimAllMissions: () => claimAllMissionsUi(),
     claimQuest: (questId) => claimQuestUi(questId),
     claimAllQuests: () => claimAllQuestsUi(),
     rewardTable: () => JSON.parse(JSON.stringify(DIFFICULTY_REWARDS)),

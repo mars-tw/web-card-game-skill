@@ -26,6 +26,12 @@ const LEGAL_DECK_IDS = [
   "footman", "footman", "archer", "archer", "wolf", "wolf", "cleric", "cleric", "knight", "knight",
   "mage", "mage", "raptor", "raptor", "guardian", "guardian", "golem", "golem", "griffin", "griffin",
 ];
+const R16_NEW_IDS = [
+  "sparkSquire", "alleySkirmisher", "emberVolley", "bulwarkMonk", "dawnRider",
+  "battleDrummer", "sanctuaryWarden", "tidebinderHex", "bastionColossus", "highArchivist",
+];
+const R16_AGGRO_IDS = ["sparkSquire", "alleySkirmisher", "emberVolley", "dawnRider", "battleDrummer"];
+const R16_CONTROL_IDS = ["bulwarkMonk", "sanctuaryWarden", "tidebinderHex", "bastionColossus", "highArchivist"];
 
 function countIds(ids) {
   return ids.reduce((acc, id) => {
@@ -43,6 +49,12 @@ function sameMultiset(a, b) {
 
 function collectionForDeck(ids) {
   return countIds(ids);
+}
+
+function richCollection() {
+  const collection = collectionForDeck(LEGAL_DECK_IDS);
+  for (const id of R16_NEW_IDS) collection[id] = id === "highArchivist" ? 1 : 2;
+  return collection;
 }
 
 function startServer() {
@@ -376,12 +388,15 @@ async function run() {
           fieldCount: g.player.field.length,
           turn: g.turn,
           title: document.getElementById("cardDetailTitle").textContent,
+          meta: document.getElementById("cardDetailMeta").textContent,
+          flavor: document.getElementById("cardDetailFlavor").textContent,
           keywordButtons: document.querySelectorAll("#cardDetailKeywords .detail-keyword").length,
         };
       }, stickySetup.uid);
       assert(handDetail.open && handDetail.stillInHand && handDetail.fieldCount === 0 && handDetail.turn === "player",
         "手機點卡牌詳情不會誤觸出牌");
       assert(handDetail.title.length > 0 && handDetail.keywordButtons >= 1, "手機卡牌詳情顯示大卡資料與可點關鍵字");
+      assert(/軸線/.test(handDetail.meta) && handDetail.flavor.includes("「"), "手機卡牌詳情顯示軸線標籤與風味文字");
       await page.locator("#cardDetailClose").click();
       await page.locator(`.hand .card[data-uid="${stickySetup.uid}"]`).click();
       await page.locator("#endTurnBtn").click();
@@ -424,6 +439,49 @@ async function run() {
       const codexOpen = await page.evaluate(() => document.getElementById("kwCodex").classList.contains("show"));
       assert(codexOpen === true, "手機可點開關鍵字圖鑑");
       await page.locator("#kwCodexClose").click();
+
+      const battleMissionSetup = await page.evaluate(({ collection }) => {
+        localStorage.setItem("card_stats_v1", JSON.stringify({ version: 2, wins: 0, losses: 0, streak: 0, bestStreak: 0, coins: 0, packsOpened: 0 }));
+        localStorage.setItem("cardpack_collection_v2", JSON.stringify(collection));
+        const T = window.__test;
+        T.setQuests({});
+        T.setGoals({});
+        const daily = T.quests().quests[0];
+        T.progressQuest({ type: daily.type, amount: daily.target });
+        const weekly = T.goals().weeklyQuest;
+        T.progressWeeklyGoal({ type: weekly.type, amount: weekly.target });
+        return {
+          count: T.missionCount(),
+          badge: document.getElementById("missionBadge").textContent,
+        };
+      }, { collection: collectionForDeck(LEGAL_DECK_IDS) });
+      assert(battleMissionSetup.count >= 3 && Number(battleMissionSetup.badge) >= 3, "對戰頁任務抽屜紅點合併每日/每週/里程碑可領數");
+      await page.locator("#missionDrawerBtn").click();
+      const battleMissionOpen = await page.evaluate(() => {
+        const btn = document.getElementById("missionClaimAllBtn");
+        const rect = btn.getBoundingClientRect();
+        const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        return {
+          open: document.getElementById("missionDrawer").classList.contains("show"),
+          daily: document.querySelectorAll("#missionDailyList .mission-item").length,
+          weekly: document.querySelectorAll("#missionWeeklyList .mission-item").length,
+          milestones: document.querySelectorAll("#missionMilestoneList .mission-item").length,
+          claimVisible: rect.top >= 0 && rect.bottom <= window.innerHeight,
+          claimHit: !!(hit && hit.closest && hit.closest("#missionClaimAllBtn")),
+        };
+      });
+      assert(battleMissionOpen.open && battleMissionOpen.daily >= 3 && battleMissionOpen.weekly === 1 && battleMissionOpen.milestones >= 5,
+        "對戰頁任務抽屜整合每日/每週/里程碑");
+      assert(battleMissionOpen.claimVisible && battleMissionOpen.claimHit, "手機任務抽屜一屏可點全部領取");
+      await page.locator("#missionClaimAllBtn").click();
+      const battleMissionClaimed = await page.evaluate(() => ({
+        coins: window.__test.stats().coins,
+        count: window.__test.missionCount(),
+        badgeShown: document.getElementById("missionBadge").classList.contains("show"),
+      }));
+      assert(battleMissionClaimed.coins > 0 && battleMissionClaimed.count === 0 && !battleMissionClaimed.badgeShown,
+        "對戰頁任務抽屜可一鍵領取所有可領獎勵並清除紅點");
+      await page.locator("#missionDrawerClose").click();
 
       const mobileDock = await page.evaluate(() => {
         const rect = (sel) => {
@@ -510,6 +568,17 @@ async function run() {
     await page.goto(basePack);
     await page.waitForFunction(() => window.__deckTest && document.getElementById("deckCollectionList"));
     if (vp.w <= 400) {
+      await page.locator("#missionDrawerBtn").click();
+      const packMissionOpen = await page.evaluate(() => ({
+        open: document.getElementById("missionDrawer").classList.contains("show"),
+        daily: document.querySelectorAll("#missionDailyList .mission-item").length,
+        weekly: document.querySelectorAll("#missionWeeklyList .mission-item").length,
+        milestones: document.querySelectorAll("#missionMilestoneList .mission-item").length,
+      }));
+      assert(packMissionOpen.open && packMissionOpen.daily >= 3 && packMissionOpen.weekly === 1 && packMissionOpen.milestones >= 5,
+        "開包頁也可開啟整合任務抽屜");
+      await page.locator("#missionDrawerClose").click();
+
       await page.locator("#deckSearch").fill("迅捷");
       await page.locator("#deckCostFilter").selectOption("2");
       await page.locator("#deckRarityFilter").selectOption("common");
@@ -553,18 +622,20 @@ async function run() {
     }));
     assert(deckReloaded.validation.ok === true && deckReloaded.countText === "20/20" && sameMultiset(deckReloaded.deck.cards, LEGAL_DECK_IDS), "重載後牌組仍保留並維持合法");
 
-    const templateDecks = await page.evaluate(({ collection }) => {
+    const templateDecks = await page.evaluate(({ collection, aggroIds, controlIds }) => {
       const T = window.__deckTest;
       T.setCollection(collection);
       T.clear();
       const aggroOk = T.template("aggro");
       const aggroValidation = T.validation();
       const aggroCurve = T.curve();
+      const aggroCards = T.deck().cards;
       const aggroSaved = T.save();
       T.clear();
       const controlOk = T.template("control");
       const controlValidation = T.validation();
       const controlCurve = T.curve();
+      const controlCards = T.deck().cards;
       const controlSaved = T.save();
       const saved = JSON.parse(localStorage.getItem("card_deck_v1") || "{}");
       return {
@@ -572,21 +643,25 @@ async function run() {
         aggroValid: aggroValidation.ok,
         aggroTotal: aggroCurve.total,
         aggroBars: aggroCurve.curve.filter((n) => n > 0).length,
+        aggroNewCount: aggroCards.filter((id) => aggroIds.includes(id)).length,
         aggroSaved,
         controlOk,
         controlValid: controlValidation.ok,
         controlTotal: controlCurve.total,
         controlBars: controlCurve.curve.filter((n) => n > 0).length,
+        controlNewCount: controlCards.filter((id) => controlIds.includes(id)).length,
         controlSaved,
         savedCount: Array.isArray(saved.cards) ? saved.cards.length : 0,
         countText: document.getElementById("deckCount").textContent,
         ratioText: document.getElementById("deckRatio").textContent,
       };
-    }, { collection: collectionForDeck(LEGAL_DECK_IDS) });
+    }, { collection: richCollection(), aggroIds: R16_AGGRO_IDS, controlIds: R16_CONTROL_IDS });
     assert(templateDecks.aggroOk && templateDecks.aggroValid && templateDecks.aggroSaved && templateDecks.aggroTotal === 20 && templateDecks.aggroBars >= 3,
       "快攻模板可一鍵建立合法 20 張並顯示費用曲線");
     assert(templateDecks.controlOk && templateDecks.controlValid && templateDecks.controlSaved && templateDecks.controlTotal === 20 && templateDecks.savedCount === 20,
       "控制模板可一鍵建立合法 20 張並存檔");
+    assert(templateDecks.aggroNewCount >= 4 && templateDecks.controlNewCount >= 4,
+      `R16 新卡會被模板選入：快攻 ${templateDecks.aggroNewCount}，控制 ${templateDecks.controlNewCount}`);
     assert(templateDecks.countText === "20/20" && /隨從/.test(templateDecks.ratioText), "牌組比例與 20/20 狀態可見");
     await page.goto(base);
     await page.waitForFunction(() => window.__test && window.__test.game);

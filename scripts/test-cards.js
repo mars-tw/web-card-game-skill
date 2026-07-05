@@ -6,7 +6,11 @@
 
 const path = require("path");
 const cards = require(path.join(__dirname, "..", "templates", "card-battle", "cards.js"));
-const { CARD_POOL, RARITY, KEYWORDS, CARD_TYPE, DISMANTLE_VALUE, rollCardByRarity, getCardById, collectKey } = cards;
+const { CARD_POOL, RARITY, KEYWORDS, CARD_TYPE, DISMANTLE_VALUE, AXIS_LABELS, rollCardByRarity, getCardById, collectKey, cardAxisLabel } = cards;
+const R16_NEW_IDS = [
+  "sparkSquire", "alleySkirmisher", "emberVolley", "bulwarkMonk", "dawnRider",
+  "battleDrummer", "sanctuaryWarden", "tidebinderHex", "bastionColossus", "highArchivist",
+];
 
 let failed = 0;
 function assert(cond, msg) {
@@ -15,10 +19,11 @@ function assert(cond, msg) {
 }
 
 console.log("== 結構檢查 ==");
-assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 40, `卡池至少 40 張（實際 ${CARD_POOL.length}）`);
+assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 50, `卡池至少 50 張（實際 ${CARD_POOL.length}）`);
 assert(Object.keys(RARITY).length === 4, "稀有度有 4 級");
 assert(Object.keys(KEYWORDS).length >= 5, "關鍵字技能至少 5 種");
 assert(KEYWORDS.lifesteal?.label === "吸血" && KEYWORDS.rush?.label === "突襲", "新關鍵字吸血與突襲有繁中 label");
+assert(AXIS_LABELS.aggro === "快攻" && AXIS_LABELS.control === "控制" && AXIS_LABELS.neutral === "中立", "軸線標籤完整");
 
 console.log("== 欄位完整性 ==");
 let badFields = 0;
@@ -26,9 +31,24 @@ for (const c of CARD_POOL) {
   if (!c.id || !c.name || !c.type || !c.rarity || c.cost == null) badFields++;
   if (!("image" in c)) badFields++;
   if (!("foil" in c)) badFields++;
+  if (typeof c.flavor !== "string" || c.flavor.trim().length < 8) badFields++;
+  if (!["aggro", "control", "neutral"].includes(c.axis)) badFields++;
+  if (!cardAxisLabel(c)) badFields++;
   if (c.type === CARD_TYPE.MINION && !Array.isArray(c.keywords)) badFields++;
 }
 assert(badFields === 0, `所有卡欄位完整（異常 ${badFields}）`);
+
+console.log("== R16 新卡分布 ==");
+const newCards = R16_NEW_IDS.map((id) => getCardById(id));
+const newRarity = newCards.reduce((acc, c) => { if (c) acc[c.rarity] = (acc[c.rarity] || 0) + 1; return acc; }, {});
+const newAxis = newCards.reduce((acc, c) => { if (c) acc[c.axis] = (acc[c.axis] || 0) + 1; return acc; }, {});
+const newCosts = newCards.map((c) => c && c.cost).filter((n) => typeof n === "number");
+assert(newCards.every(Boolean), "R16 新卡 id 全部存在");
+assert(newRarity.common === 4 && newRarity.rare === 3 && newRarity.epic === 2 && newRarity.legendary === 1,
+  `R16 新卡四稀有度分布為 4/3/2/1（實際 ${JSON.stringify(newRarity)}）`);
+assert(newAxis.aggro === 5 && newAxis.control === 5, `R16 新卡快攻/控制各 5 張（實際 ${JSON.stringify(newAxis)}）`);
+assert(Math.min(...newCosts) <= 1 && Math.max(...newCosts) >= 6 && newCosts.filter((cost) => cost <= 3).length >= 6,
+  "R16 新卡費用曲線含低費節奏與高費控制收束");
 
 console.log("== id 唯一性 ==");
 const ids = CARD_POOL.map((c) => c.id);
