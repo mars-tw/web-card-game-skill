@@ -229,7 +229,9 @@
   .dda-toggle input, .ai-thought-toggle input { width:16px; height:16px; accent-color:var(--accent); }
   .perf-toggle select, .text-size-toggle select { background:var(--panel); color:var(--ink); border:1px solid var(--panel-border);
     border-radius:10px; padding:3px 6px; font-family:inherit; font-weight:800; }
-  .perf-diag { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #facc15; }
+  .perf-diag, .perf-history { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .perf-diag { color: #facc15; }
+  .perf-history { color: var(--muted); font-size: 11px; }
   .hint-highlight { outline:3px solid #38bdf8 !important; box-shadow:0 0 18px #38bdf8, 0 0 0 2px #e0f2fe !important; z-index:40 !important; }
   button.end-turn {
     background: linear-gradient(180deg, var(--accent), #d97706); color: #1a1206; font-weight: 800; font-size: 15px;
@@ -501,6 +503,7 @@
     .perf-toggle { order: 9; flex:0 0 auto; padding-inline:9px; }
     .text-size-toggle { order: 10; flex:0 0 auto; padding-inline:9px; }
     .perf-diag { max-width: 128px; }
+    .perf-history { max-width: 118px; }
     #endTurnBtn { flex: 0 0 auto; min-width: 112px; position: relative; z-index: 2; padding-inline: 16px; }
     .target-status {
       position: fixed; left: 8px; right: 8px;
@@ -561,8 +564,8 @@
       </div>
     </div>
 
-    <div class="target-status" id="targetStatus">輪到你行動。</div>
-    <div id="log"></div>
+    <div class="target-status" id="targetStatus" aria-live="polite">輪到你行動。</div>
+    <div id="log" role="log" aria-live="polite" aria-atomic="false"></div>
     <div class="hand" id="playerHand"></div>
     <div class="controls">
       <div class="controls-scroll">
@@ -593,6 +596,7 @@
             <option value="low">低</option>
           </select>
           <span class="perf-diag" id="perfDiag" aria-live="polite">FPS -- · 高動畫 · 自動觀察中</span>
+          <span class="perf-history" id="perfHistory" aria-live="polite">紀錄 --</span>
         </label>
         <label class="text-size-toggle">文字
           <select id="textSizeSel" aria-label="文字大小">
@@ -607,7 +611,7 @@
 
     <section class="quest-panel" id="questPanel">
       <h2><span>每日任務</span><span class="quest-head-actions"><button class="quest-claim-all" id="questClaimAllBtn">全部領取</button><span id="questDateLabel"></span></span></h2>
-      <div class="quest-list" id="questList"></div>
+      <div class="quest-list" id="questList" aria-live="polite"></div>
     </section>
   </div>
 
@@ -635,7 +639,7 @@
   </div>
 
   <!-- 關鍵字圖鑑（CP0-15 觸控友善）-->
-  <button class="mission-drawer-btn" id="missionDrawerBtn">任務<span class="mission-badge" id="missionBadge">0</span></button>
+  <button class="mission-drawer-btn" id="missionDrawerBtn">任務<span class="mission-badge" id="missionBadge" aria-live="polite">0</span></button>
   <button class="kw-codex-btn" id="kwCodexBtn">📖 關鍵字</button>
   <div class="kw-codex" id="kwCodex">
     <div class="kw-codex-card">
@@ -656,15 +660,15 @@
       </div>
       <section class="mission-section">
         <h3>每日任務</h3>
-        <div class="mission-list" id="missionDailyList"></div>
+        <div class="mission-list" id="missionDailyList" aria-live="polite"></div>
       </section>
       <section class="mission-section">
         <h3>每週任務</h3>
-        <div class="mission-list" id="missionWeeklyList"></div>
+        <div class="mission-list" id="missionWeeklyList" aria-live="polite"></div>
       </section>
       <section class="mission-section">
         <h3>收藏里程碑</h3>
-        <div class="mission-list" id="missionMilestoneList"></div>
+        <div class="mission-list" id="missionMilestoneList" aria-live="polite"></div>
       </section>
     </div>
   </div>

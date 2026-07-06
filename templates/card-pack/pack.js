@@ -50,7 +50,10 @@
   function recoveryToast(message) {
     const div = document.createElement("div");
     div.textContent = message;
-    div.style.cssText = "position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:220;background:rgba(15,23,42,.96);color:#fff;border:1px solid rgba(250,204,21,.35);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:900;box-shadow:0 8px 24px rgba(0,0,0,.35);";
+    div.setAttribute("role", "status");
+    div.setAttribute("aria-live", "polite");
+    div.setAttribute("aria-atomic", "true");
+    div.style.cssText = "position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:220;background:rgba(15,23,42,.96);color:#fff;border:1px solid rgba(250,204,21,.35);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:900;box-shadow:0 8px 24px rgba(0,0,0,.35);pointer-events:none;";
     document.body.appendChild(div);
     setTimeout(() => div.remove(), 2600);
   }
@@ -495,7 +498,7 @@
       slot.innerHTML = `
         ${isFoil ? '<div class="fstar">✦</div>' : ''}
         <div>${icon}</div>
-        <div class="nm">${isOwned ? card.name : "???"}</div>
+        <div class="nm">${isOwned ? card.name : "未擁有"}</div>
         ${count > 1 ? `<div class="count">×${count}</div>` : ""}
         ${dupes > 0 ? `<button class="dismantle-btn" data-key="${key}" data-val="${dustValue}" data-dupes="${dupes}">分解 +${dupes * dustValue}💰</button>` : ""}`;
       grid.appendChild(slot);
@@ -589,6 +592,7 @@
     saveStats(stats);
     updateCoinDisplay();
     renderGoals(result.state);
+    recoveryToast(`收藏里程碑完成：+${result.reward} 金幣`);
     return result;
   }
 
@@ -604,6 +608,7 @@
     saveStats(stats);
     updateCoinDisplay();
     renderGoals(result.state);
+    recoveryToast(`本週任務完成：+${result.reward} 金幣`);
     return result;
   }
 
@@ -629,6 +634,7 @@
     addMissionReward(result.reward);
     renderMissionDrawer();
     updateMissionBadge();
+    recoveryToast(`任務完成：+${result.reward} 金幣`);
     return result;
   }
 
@@ -737,6 +743,7 @@
     addMissionReward(reward);
     renderGoals(goals);
     renderMissionDrawer();
+    recoveryToast(count > 0 ? `已領取 ${count} 個獎勵：+${reward} 金幣` : "目前沒有可領取的任務獎勵");
     return { ok: count > 0, reward, count };
   }
 

@@ -194,16 +194,17 @@ async function run() {
       assert(/CACHE_VERSION/.test(pwaCheck.swText)
         && /networkFirst/.test(pwaCheck.swText)
         && /cacheFirst/.test(pwaCheck.swText)
-        && pwaCheck.swText.includes("card-battle-r36-v1")
+        && pwaCheck.swText.includes("card-battle-r40-v1")
         && pwaCheck.swText.includes("offline.html")
+        && pwaCheck.swText.includes("sw.js")
         && pwaCheck.swText.includes("templates/card-battle")
         && pwaCheck.swText.includes("templates/card-pack")
         && pwaCheck.swText.includes("templates/card-battle/battle.js")
         && pwaCheck.swText.includes("templates/card-pack/pack.js")
         && pwaCheck.swText.includes("assets/cards/wolf.png")
-        && pwaCheck.version === "card-battle-r36-v1"
-        && pwaCheck.versionLabel.includes("card-battle-r36-v1")
-        && pwaCheck.checked.version === "card-battle-r36-v1",
+        && pwaCheck.version === "card-battle-r40-v1"
+        && pwaCheck.versionLabel.includes("card-battle-r40-v1")
+        && pwaCheck.checked.version === "card-battle-r40-v1",
         "Service worker 使用版本快取並涵蓋 battle/pack 子路徑");
       assert(pwaCheck.skipped === true && pwaCheck.promptVisible === true, "navigator.webdriver 會跳過 SW 註冊且更新提示可顯示");
     }
@@ -223,6 +224,30 @@ async function run() {
     });
     assert(boot.turn === "player", "開局輪到玩家");
     assert(boot.playerHand >= 3, `玩家起手 ≥3 張（${boot.playerHand}）`);
+
+    if (vp.w === 390) {
+      const liveRegions = await page.evaluate(() => ({
+        log: document.getElementById("log")?.getAttribute("aria-live"),
+        target: document.getElementById("targetStatus")?.getAttribute("aria-live"),
+        quest: document.getElementById("questList")?.getAttribute("aria-live"),
+        badge: document.getElementById("missionBadge")?.getAttribute("aria-live"),
+      }));
+      assert(liveRegions.log === "polite" && liveRegions.target === "polite"
+        && liveRegions.quest === "polite" && liveRegions.badge === "polite",
+        "手機對戰主要提示與任務通知使用 aria-live=polite");
+      await page.locator("#hintBtn").focus();
+      await page.keyboard.press("Tab");
+      const tabSmoke = await page.evaluate(() => {
+        const active = document.activeElement;
+        const style = active ? getComputedStyle(active) : null;
+        return {
+          id: active && active.id,
+          inControls: !!(active && active.closest && active.closest(".controls")),
+          outline: !!(style && style.outlineStyle !== "none" && parseFloat(style.outlineWidth) >= 2),
+        };
+      });
+      assert(tabSmoke.inControls && tabSmoke.outline, `手機鍵盤 Tab 可移動到主要控制並顯示焦點（${tabSmoke.id || "unknown"}）`);
+    }
 
     // Stage 3：合法存檔牌組進對戰；非法存檔不擋新局，改走既有 fallback 牌庫
     const legalDeckCheck = await page.evaluate(({ deckIds, collection }) => {
@@ -508,12 +533,16 @@ async function run() {
           hintDisabled: document.getElementById("hintBtn").disabled,
           lastHint: window.__test.lastHint(),
           logText: window.__test.logText(),
+          toastLive: document.getElementById("toastStack")?.getAttribute("aria-live") || "",
+          logLive: document.getElementById("log")?.getAttribute("aria-live") || "",
         };
       }, stickySetup.uid);
       assert(hintCheck.highlights >= 1 && hintCheck.stillInHand && hintCheck.fieldCount === 0 && hintCheck.hintDisabled,
         "手機提示會高亮建議且不自動出牌/攻擊");
       assert(hintCheck.lastHint && hintCheck.lastHint.reason && /建議|用足|衝鋒|突襲|嘲諷|吸血/.test(hintCheck.logText),
         "提示高亮時會附上為什麼文案");
+      assert(hintCheck.toastLive === "polite" && hintCheck.logLive === "polite",
+        "提示 toast 與 log 使用 polite live region");
       await page.locator("#ddaToggle").uncheck();
       const ddaOff = await page.evaluate(() => window.__test.dda());
       assert(ddaOff.stats.enabled === false && ddaOff.profile.enabled === false && ddaOff.profile.mistakeRate === 0 && ddaOff.profile.scoreBias === 0,
@@ -533,7 +562,17 @@ async function run() {
         sel.dispatchEvent(new Event("change", { bubbles: true }));
         const autoLow = window.__test.forceFps(40);
         const autoHigh = window.__test.forceFps(55);
-        return { low, high, autoLow, autoHigh, attr: document.documentElement.dataset.perf, diag: document.getElementById("perfDiag")?.textContent || "" };
+        const finalPerf = window.__test.perf();
+        return {
+          low,
+          high,
+          autoLow,
+          autoHigh,
+          attr: document.documentElement.dataset.perf,
+          diag: document.getElementById("perfDiag")?.textContent || "",
+          history: finalPerf.history,
+          historyText: finalPerf.historyText,
+        };
       });
       assert(perfModes.low.mode === "low" && perfModes.low.effective === "low"
         && perfModes.high.mode === "high" && perfModes.high.effective === "high",
@@ -541,6 +580,11 @@ async function run() {
       assert(perfModes.autoLow.mode === "auto" && perfModes.autoLow.effective === "low"
         && perfModes.autoHigh.effective === "high" && perfModes.attr === "high" && /FPS/.test(perfModes.diag) && perfModes.diag.includes("55"),
         "自動效能會在 FPS 低於 45 降低動畫並於回穩恢復");
+      assert(perfModes.history.length >= 2
+        && perfModes.history.some((item) => /低於 45/.test(item.reason) && item.time)
+        && perfModes.history.some((item) => /回穩/.test(item.reason) && item.time)
+        && /紀錄/.test(perfModes.historyText),
+        "效能診斷記錄最近降級/恢復歷史");
 
       const textSizeCheck = await page.evaluate(() => {
         const T = window.__test;
@@ -972,15 +1016,22 @@ async function run() {
         pwaVersion: T.pwaVersion(),
         missionOpen: T.missionOpen(),
         missionAria: document.getElementById("missionDrawer").getAttribute("aria-hidden"),
+        summaryLive: document.getElementById("summary")?.getAttribute("aria-live") || "",
+        missionDailyLive: document.getElementById("missionDailyList")?.getAttribute("aria-live") || "",
+        badgeLive: document.getElementById("missionBadge")?.getAttribute("aria-live") || "",
+        deckSaveLive: document.getElementById("deckSaveMsg")?.getAttribute("aria-live") || "",
       };
     });
     await page.waitForFunction(() => /mission/.test(document.activeElement?.id || ""));
     const packMissionFocus = await page.evaluate(() => document.activeElement?.id || "");
     assert(packR36.textState.attr === "large" && packR36.textState.select === "large"
-      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r36-v1"),
+      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r40-v1"),
       "開包戰績區顯示版本並可調整文字大小");
     assert(packR36.missionOpen && packR36.missionAria === "false" && /mission/.test(packMissionFocus),
       "開包任務抽屜開啟後焦點進入抽屜控制");
+    assert(packR36.summaryLive === "polite" && packR36.missionDailyLive === "polite"
+      && packR36.badgeLive === "polite" && packR36.deckSaveLive === "polite",
+      "開包頁摘要、任務與牌組通知使用 aria-live=polite");
     await page.keyboard.press("Escape");
     await page.waitForFunction(() => !document.getElementById("missionDrawer").classList.contains("show") && document.getElementById("missionDrawer").getAttribute("aria-hidden") === "true");
     const recordText = await page.evaluate(() => window.__deckTest.recordText());

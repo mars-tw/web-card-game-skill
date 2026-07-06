@@ -75,7 +75,7 @@
   const PERF_KEY = "card_perf_mode_v1";
   const TEXT_SIZE_KEY = "card_text_size_v1";
   let guide = { active: false, step: 0, selectedAttacker: null };
-  const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0, reason: "自動觀察中" };
+  const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0, reason: "自動觀察中", history: [] };
   let detailReturnFocus = null;
   let missionReturnFocus = null;
   const GUIDE_STEPS = [
@@ -109,7 +109,34 @@
     return text;
   }
 
-  function applyPerfState(mode, effective, reason) {
+  function updatePerfHistory() {
+    const el = document.getElementById("perfHistory");
+    const text = perfState.history.length
+      ? "紀錄 " + perfState.history.map((item) => `${item.time} ${item.reason}`).join("｜")
+      : "紀錄 --";
+    if (el) {
+      el.textContent = text;
+      el.title = text;
+    }
+    return text;
+  }
+
+  function perfTimeLabel(date) {
+    const d = date || new Date();
+    return [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, "0")).join(":");
+  }
+
+  function recordPerfHistory(reason) {
+    if (!reason || !/(降低動畫|恢復高動畫)/.test(reason)) return;
+    const last = perfState.history[0];
+    if (last && last.reason === reason) return;
+    perfState.history.unshift({ time: perfTimeLabel(), reason });
+    perfState.history = perfState.history.slice(0, 5);
+    updatePerfHistory();
+  }
+
+  function applyPerfState(mode, effective, reason, trackHistory) {
+    const previousEffective = perfState.effective;
     perfState.mode = mode || currentPerfMode();
     perfState.effective = effective === "low" ? "low" : "high";
     if (reason) perfState.reason = reason;
@@ -117,6 +144,8 @@
     const sel = document.getElementById("perfModeSel");
     if (sel) sel.value = perfState.mode;
     updatePerfDiagnostics();
+    if (trackHistory && previousEffective !== perfState.effective) recordPerfHistory(perfState.reason);
+    updatePerfHistory();
   }
 
   function applyPerfEstimate(fps) {
@@ -124,8 +153,8 @@
     const mode = currentPerfMode();
     if (mode === "low") applyPerfState("low", "low", "手動鎖定低動畫");
     else if (mode === "high") applyPerfState("high", "high", "手動鎖定高動畫");
-    else if (perfState.fps < 45) applyPerfState("auto", "low", `FPS ${perfState.fps} 低於 45，自動降低動畫`);
-    else if (perfState.fps >= 52) applyPerfState("auto", "high", `FPS ${perfState.fps} 回穩，恢復高動畫`);
+    else if (perfState.fps < 45) applyPerfState("auto", "low", `FPS ${perfState.fps} 低於 45，自動降低動畫`, true);
+    else if (perfState.fps >= 52) applyPerfState("auto", "high", `FPS ${perfState.fps} 回穩，恢復高動畫`, true);
     else applyPerfState("auto", perfState.effective, "自動觀察中");
     return perfSnapshot();
   }
@@ -135,7 +164,15 @@
   }
 
   function perfSnapshot() {
-    return { mode: perfState.mode, effective: perfState.effective, fps: perfState.fps, reason: perfState.reason, text: updatePerfDiagnostics() };
+    return {
+      mode: perfState.mode,
+      effective: perfState.effective,
+      fps: perfState.fps,
+      reason: perfState.reason,
+      text: updatePerfDiagnostics(),
+      historyText: updatePerfHistory(),
+      history: perfState.history.map((item) => ({ time: item.time, reason: item.reason })),
+    };
   }
 
   function startPerfMonitor() {
@@ -1486,10 +1523,14 @@
       stack = document.createElement("div");
       stack.id = "toastStack";
       stack.className = "toast-stack";
+      stack.setAttribute("role", "status");
+      stack.setAttribute("aria-live", "polite");
+      stack.setAttribute("aria-atomic", "false");
       document.body.appendChild(stack);
     }
     const d = document.createElement("div");
     d.className = "toast-float";
+    d.setAttribute("aria-live", "polite");
     d.textContent = msg;
     stack.appendChild(d);
     setTimeout(() => {

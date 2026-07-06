@@ -307,8 +307,8 @@
 </head>
 <body>
   <header>🎴 開卡包 · CARD PACK 🎴</header>
-  <button class="mission-drawer-btn" id="missionDrawerBtn">任務<span class="mission-badge" id="missionBadge">0</span></button>
-  <div class="coin-bar">💰 金幣 <span id="coinBalance">0</span> · 一包 100 金（首包免費）</div>
+  <button class="mission-drawer-btn" id="missionDrawerBtn">任務<span class="mission-badge" id="missionBadge" aria-live="polite">0</span></button>
+  <div class="coin-bar">💰 金幣 <span id="coinBalance" aria-live="polite">0</span> · 一包 100 金（首包免費）</div>
   <div class="top-actions">
     <button class="ghost" id="goBattleTop">前往對戰</button>
   </div>
@@ -316,7 +316,7 @@
   <section class="goal-panel" id="goalPanel">
     <div class="goal-head">
       <h2>長線目標</h2>
-      <div class="goal-summary" id="goalSummary"></div>
+      <div class="goal-summary" id="goalSummary" aria-live="polite"></div>
     </div>
     <div class="goal-grid">
       <div class="milestone-list" id="milestoneList"></div>
@@ -364,7 +364,7 @@
   </div>
 
   <div class="reveal-row" id="revealRow"></div>
-  <div class="summary" id="summary"></div>
+  <div class="summary" id="summary" aria-live="polite"></div>
 
   <div class="actions" id="actions" style="display:none;">
     <button id="againBtn">再開一包 🎁</button>
@@ -382,15 +382,15 @@
       </div>
       <section class="mission-section">
         <h3>每日任務</h3>
-        <div class="mission-list" id="missionDailyList"></div>
+        <div class="mission-list" id="missionDailyList" aria-live="polite"></div>
       </section>
       <section class="mission-section">
         <h3>每週任務</h3>
-        <div class="mission-list" id="missionWeeklyList"></div>
+        <div class="mission-list" id="missionWeeklyList" aria-live="polite"></div>
       </section>
       <section class="mission-section">
         <h3>收藏里程碑</h3>
-        <div class="mission-list" id="missionMilestoneList"></div>
+        <div class="mission-list" id="missionMilestoneList" aria-live="polite"></div>
       </section>
     </div>
   </div>
@@ -439,7 +439,7 @@
         </div>
         <div class="deck-recommend" id="deckRecommend"></div>
         <div class="deck-errors" id="deckErrors"></div>
-        <div class="deck-save-msg" id="deckSaveMsg"></div>
+        <div class="deck-save-msg" id="deckSaveMsg" aria-live="polite"></div>
       </div>
     </div>
   </section>

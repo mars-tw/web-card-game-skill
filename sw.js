@@ -1,10 +1,11 @@
-const CACHE_VERSION = "card-battle-r36-v1";
+const CACHE_VERSION = "card-battle-r40-v1";
 const ASSET_CACHE = `${CACHE_VERSION}-assets`;
 const HTML_CACHE = `${CACHE_VERSION}-html`;
 
 const CORE_ASSETS = [
   "./",
   "index.html",
+  "sw.js",
   "offline.html",
   "templates/index.html",
   "templates/card-battle/index.html",
