@@ -23,6 +23,8 @@
   let lastNewCards = [];
   let deckFilters = { search: "", cost: "all", rarity: "all" };
   let collectionFilters = { search: "", axis: "all", keyword: "all", rarity: "all", ownership: "all", sort: "cost" };
+  let recordFilters = { difficulty: "all" };
+  let lastRecordCopy = "";
 
   function loadCollection() {
     try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || {}; }
@@ -1052,6 +1054,10 @@
   if (collectionRarityFilter) collectionRarityFilter.onchange = () => { collectionFilters.rarity = collectionRarityFilter.value; renderCollection(); };
   if (collectionOwnershipFilter) collectionOwnershipFilter.onchange = () => { collectionFilters.ownership = collectionOwnershipFilter.value; renderCollection(); };
   if (collectionSort) collectionSort.onchange = () => { collectionFilters.sort = collectionSort.value; renderCollection(); };
+  const recordDifficultyFilter = document.getElementById("recordDifficultyFilter");
+  if (recordDifficultyFilter) recordDifficultyFilter.onchange = () => { recordFilters.difficulty = recordDifficultyFilter.value; renderRecordPanel(); };
+  const copyRecordBtn = document.getElementById("copyRecordBtn");
+  if (copyRecordBtn) copyRecordBtn.onclick = () => copyRecordJson();
   const clearRecordBtn = document.getElementById("clearRecordBtn");
   if (clearRecordBtn) clearRecordBtn.onclick = clearRecordStats;
 
@@ -1075,17 +1081,93 @@
     }, Object.create(null));
   }
 
+  function filteredRecordGames(stats) {
+    const allGames = stats.telemetry.games || [];
+    const difficulty = recordFilters.difficulty || "all";
+    return difficulty === "all" ? allGames : allGames.filter((game) => game.difficulty === difficulty);
+  }
+
+  function recordSummary(stats) {
+    const games = filteredRecordGames(stats);
+    const filtered = (recordFilters.difficulty || "all") !== "all";
+    const wins = filtered ? games.filter((game) => game.win).length : stats.wins;
+    const losses = filtered ? games.filter((game) => !game.win).length : stats.losses;
+    const totalTurns = games.reduce((sum, game) => sum + (game.turns || 0), 0);
+    return {
+      filter: Object.assign({}, recordFilters),
+      games,
+      wins,
+      losses,
+      total: wins + losses,
+      avgTurns: games.length ? (totalTurns / games.length).toFixed(1) : "0.0",
+    };
+  }
+
+  function recordSnapshot() {
+    const stats = loadStats();
+    const diffLabels = { easy: "簡單", normal: "普通", hard: "困難" };
+    const axisLabels = { aggro: "快攻", control: "控制", neutral: "中立" };
+    const summary = recordSummary(stats);
+    const byDifficulty = summarizeGames(summary.games, "difficulty");
+    const byArchetype = summarizeGames(summary.games, "archetype");
+    const topCards = Object.entries(stats.telemetry.cardPlays || {})
+      .map(([id, count]) => ({ card: getCardById(id), count }))
+      .filter((item) => item.card)
+      .sort((a, b) => b.count - a.count || a.card.name.localeCompare(b.card.name, "zh-Hant"))
+      .slice(0, 5)
+      .map((item) => ({ id: item.card.id, name: item.card.name, count: item.count }));
+    return {
+      exportedAt: new Date().toISOString(),
+      filter: summary.filter,
+      total: { wins: summary.wins, losses: summary.losses, winRate: percent(summary.wins, summary.total), avgTurns: summary.avgTurns },
+      difficulty: Object.keys(diffLabels).reduce((acc, key) => {
+        const row = byDifficulty[key] || { wins: 0, total: 0 };
+        acc[key] = { label: diffLabels[key], wins: row.wins, total: row.total, winRate: percent(row.wins, row.total) };
+        return acc;
+      }, {}),
+      archetype: Object.keys(axisLabels).reduce((acc, key) => {
+        const row = byArchetype[key] || { wins: 0, total: 0 };
+        acc[key] = { label: axisLabels[key], wins: row.wins, total: row.total, winRate: percent(row.wins, row.total) };
+        return acc;
+      }, {}),
+      topCards,
+    };
+  }
+
+  async function copyRecordJson() {
+    const text = JSON.stringify(recordSnapshot(), null, 2);
+    lastRecordCopy = text;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const area = document.createElement("textarea");
+        area.value = text;
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        area.remove();
+      }
+      recoveryToast("戰績 JSON 已複製到剪貼簿。");
+    } catch {
+      recoveryToast("無法寫入剪貼簿，已保留 JSON 內容供測試讀取。");
+    }
+    return text;
+  }
+
   function renderRecordPanel() {
     const grid = document.getElementById("recordGrid");
     if (!grid) return;
     const stats = loadStats();
-    const games = stats.telemetry.games || [];
+    const summary = recordSummary(stats);
+    const games = summary.games;
     const diffLabels = { easy: "簡單", normal: "普通", hard: "困難" };
     const axisLabels = { aggro: "快攻", control: "控制", neutral: "中立" };
     const byDifficulty = summarizeGames(games, "difficulty");
     const byArchetype = summarizeGames(games, "archetype");
-    const totalTurns = games.reduce((sum, game) => sum + (game.turns || 0), 0);
-    const avgTurns = games.length ? (totalTurns / games.length).toFixed(1) : "0.0";
+    const filterLabel = recordFilters.difficulty === "all" ? "全部難度" : diffLabels[recordFilters.difficulty] || "全部難度";
     const topCards = Object.entries(stats.telemetry.cardPlays || {})
       .map(([id, count]) => ({ card: getCardById(id), count }))
       .filter((item) => item.card)
@@ -1100,9 +1182,9 @@
       return `${axisLabels[key]}：${row.wins}/${row.total}（${percent(row.wins, row.total)}）`;
     }).join("\n");
     grid.innerHTML = `
-      <div class="record-card"><div class="record-title">總覽</div><div class="record-value">${stats.wins} 勝 ${stats.losses} 敗\n勝率 ${percent(stats.wins, stats.wins + stats.losses)}\n平均 ${avgTurns} 回合</div></div>
+      <div class="record-card"><div class="record-title">總覽｜${filterLabel}</div><div class="record-value">${summary.wins} 勝 ${summary.losses} 敗\n勝率 ${percent(summary.wins, summary.total)}\n平均 ${summary.avgTurns} 回合</div></div>
       <div class="record-card"><div class="record-title">難度勝率</div><div class="record-value">${diffText}</div></div>
-      <div class="record-card"><div class="record-title">流派勝率</div><div class="record-value">${archetypeText}</div></div>
+      <div class="record-card"><div class="record-title">牌組軸線分組</div><div class="record-value">${archetypeText}</div></div>
       <div class="record-card"><div class="record-title">常用卡 Top 5</div><div class="record-value">${topCards.length ? topCards.map((item, index) => `${index + 1}. ${item.card.name} x${item.count}`).join("\n") : "尚無出牌紀錄"}</div></div>`;
   }
 
@@ -1206,6 +1288,15 @@
     recommendation: () => findDeckRecommendation(deckCounts()),
     recommendationText: () => (document.getElementById("deckRecommend")?.textContent || "").trim(),
     recordText: () => (document.getElementById("recordPanel")?.textContent || "").trim(),
+    setRecordFilter(next) {
+      recordFilters = Object.assign({}, recordFilters, next || {});
+      if (recordDifficultyFilter) recordDifficultyFilter.value = recordFilters.difficulty || "all";
+      renderRecordPanel();
+      return Object.assign({}, recordFilters);
+    },
+    recordSnapshot: () => recordSnapshot(),
+    copyRecord: () => copyRecordJson(),
+    lastRecordCopy: () => lastRecordCopy,
     clearRecord: () => clearRecordStats(),
   };
 

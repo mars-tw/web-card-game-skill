@@ -210,6 +210,9 @@
   .record-head { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
   .record-head h2 { font-size:16px; color:var(--ink); }
   .record-head button { padding:7px 10px; border-radius:8px; font-size:12px; }
+  .record-tools { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .record-tools select { background:rgba(15,23,42,.9); color:var(--ink); border:1px solid rgba(255,255,255,.14);
+    border-radius:8px; padding:7px 9px; font-size:12px; font-weight:800; }
   .record-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:8px; }
   .record-card { border:1px solid rgba(255,255,255,.1); border-radius:8px; padding:8px; background:rgba(255,255,255,.04); }
   .record-title { font-size:12px; color:#facc15; font-weight:900; margin-bottom:5px; }
@@ -308,7 +311,16 @@
   <section class="record-panel" id="recordPanel">
     <div class="record-head">
       <h2>戰績</h2>
-      <button class="ghost" id="clearRecordBtn">清除戰績</button>
+      <div class="record-tools">
+        <select id="recordDifficultyFilter" aria-label="戰績難度篩選">
+          <option value="all">全部難度</option>
+          <option value="easy">簡單</option>
+          <option value="normal">普通</option>
+          <option value="hard">困難</option>
+        </select>
+        <button class="ghost" id="copyRecordBtn">複製 JSON</button>
+        <button class="ghost" id="clearRecordBtn">清除戰績</button>
+      </div>
     </div>
     <div class="record-grid" id="recordGrid"></div>
   </section>

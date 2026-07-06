@@ -106,6 +106,7 @@
       dda,
       turnCount: 1,
       hintUsedTurn: null,
+      lastHint: null,
       turn: "player",
       player: { side: "player", hp: D.playerHp, maxHp: D.playerHp, mana: 1, manaMax: 1, deck: playerDeck, hand: [], field: [] },
       enemy:  { side: "enemy",  hp: D.enemyHp, maxHp: D.enemyHp, mana: 0, manaMax: 0, deck: enemyDeck, hand: [], field: [] },
@@ -123,6 +124,7 @@
     log(`⚔️ 對戰開始！（難度：${D.label}）善用技能取勝。`, "me");
     render();
     syncDdaToggle();
+    syncAiThoughtToggle();
     offerMulligan(D.playerDraw); // 提供起手重抽
   }
 
@@ -578,6 +580,64 @@
     return 0;
   }
 
+  function minionLine(m) {
+    if (!m) return "目標";
+    return `${Number(m.attack) || 0}/${Number(m.health) || 0} ${m.name}`;
+  }
+
+  function spellDamage(effect) {
+    if (effect === "damage8") return 8;
+    if (effect === "damage3") return 3;
+    if (effect === "aoe2") return 2;
+    if (effect === "aoe1") return 1;
+    return 0;
+  }
+
+  function hintCopyForPlay(card, target) {
+    const keywords = card.keywords || [];
+    if (card.type === CARD_TYPE.MINION) {
+      if (keywords.includes("charge")) return { reason: "有衝鋒，能立刻施壓。", estimate: "" };
+      if (keywords.includes("rush") && game.enemy.field.length) return { reason: "有突襲，可立即處理敵方隨從。", estimate: "" };
+      if (keywords.includes("taunt") && game.player.hp <= 16) return { reason: "血量偏低，先架嘲諷保護英雄。", estimate: "" };
+      if (keywords.includes("lifesteal") && game.player.hp <= 20) return { reason: "吸血能穩住生命。", estimate: "" };
+      return { reason: "用足法力建立場面。", estimate: "" };
+    }
+    if (card.effect === "mana2") return { reason: "先補法力，能接著打出更高費手牌。", estimate: "" };
+    if (card.effect === "heal5") return { reason: "英雄受傷，治療能拉回安全血線。", estimate: "預計恢復 5 點生命。" };
+    if (card.effect === "aoe1" || card.effect === "aoe2") {
+      const damage = spellDamage(card.effect);
+      const kills = game.enemy.field.filter((m) => m.health <= damage).length;
+      return kills > 0
+        ? { reason: `此法術可換 ${kills} 隻隨從。`, estimate: `預計造成全場 ${damage} 點傷害。` }
+        : { reason: "敵方場面展開，範圍法術能壓低全場血量。", estimate: `預計造成全場 ${damage} 點傷害。` };
+    }
+    if (card.effect === "giveShield") return { reason: "保護場上最高威脅隨從。", estimate: target ? `預計讓 ${target.name} 獲得聖盾。` : "" };
+    if (card.effect === "polymorph") return { reason: "變形高威脅隨從，降低反擊壓力。", estimate: target ? `預計把 ${minionLine(target)} 變成綿羊。` : "" };
+    const damage = spellDamage(card.effect);
+    if (damage && target) {
+      const hasTauntTarget = (target.keywords || []).includes("taunt");
+      return {
+        reason: hasTauntTarget ? "先解嘲諷才能打臉。" : "先移除高威脅隨從，降低下回合傷害。",
+        estimate: target.health <= damage ? `預計擊殺 ${minionLine(target)}。` : `預計對 ${target.name} 造成 ${damage} 點傷害。`,
+      };
+    }
+    return { reason: "這一步能提升目前局面的交換效率。", estimate: "" };
+  }
+
+  function hintCopyForAttack(attacker, target, hero, forcedTaunt) {
+    if (hero) return { reason: "場上沒有嘲諷，直接打臉能加速終結。", estimate: `預計造成 ${attacker.attack} 點英雄傷害。` };
+    if (forcedTaunt) {
+      return {
+        reason: "先解嘲諷才能打臉。",
+        estimate: target && target.health <= attacker.attack ? `預計擊殺 ${minionLine(target)}。` : `預計對 ${target.name} 造成 ${attacker.attack} 點傷害。`,
+      };
+    }
+    return {
+      reason: "先清掉高威脅隨從，降低下回合傷害。",
+      estimate: target && target.health <= attacker.attack ? `預計擊殺 ${minionLine(target)}。` : `預計對 ${target.name} 造成 ${attacker.attack} 點傷害。`,
+    };
+  }
+
   function bestHintAction() {
     if (!game || game.turn !== "player" || game.over) return null;
     const actions = [];
@@ -585,24 +645,24 @@
       if (card.cost > game.player.mana) continue;
       if (card.type === CARD_TYPE.MINION) {
         if (game.player.field.length >= MAX_FIELD) continue;
-        actions.push({ type: "play", card, score: playerHintScore(card), label: `建議出牌：${card.name}` });
+        actions.push(Object.assign({ type: "play", card, score: playerHintScore(card), label: `建議出牌：${card.name}` }, hintCopyForPlay(card)));
       } else {
         const spec = Core.SPELL_EFFECTS[card.effect] || { needsTarget: null };
         const target = spec.needsTarget ? targetPoolForPlayerSpell(card)[0] : null;
         if (spec.needsTarget && !target) continue;
-        actions.push({ type: "play", card, target, score: playerHintScore(card, target), label: target ? `建議施放 ${card.name} → ${target.name}` : `建議施放：${card.name}` });
+        actions.push(Object.assign({ type: "play", card, target, score: playerHintScore(card, target), label: target ? `建議施放 ${card.name} → ${target.name}` : `建議施放：${card.name}` }, hintCopyForPlay(card, target)));
       }
     }
     for (const attacker of game.player.field.filter((m) => m.canAttack)) {
       const taunts = game.enemy.field.filter((m) => (m.keywords || []).includes("taunt"));
       if (taunts.length) {
         const target = taunts.sort((a, b) => a.health - b.health || minionThreatScore(b) - minionThreatScore(a))[0];
-        actions.push({ type: "attack", attacker, target, score: 18 + minionThreatScore(target), label: `建議攻擊：${attacker.name} → ${target.name}` });
+        actions.push(Object.assign({ type: "attack", attacker, target, score: 18 + minionThreatScore(target), label: `建議攻擊：${attacker.name} → ${target.name}` }, hintCopyForAttack(attacker, target, false, true)));
       } else if (canAttackHeroNow(attacker)) {
-        actions.push({ type: "attack", attacker, hero: "enemyHero", score: 30 + attacker.attack * 4, label: `建議攻擊敵方英雄：${attacker.name}` });
+        actions.push(Object.assign({ type: "attack", attacker, hero: "enemyHero", score: 30 + attacker.attack * 4, label: `建議攻擊敵方英雄：${attacker.name}` }, hintCopyForAttack(attacker, null, true, false)));
       } else if (game.enemy.field.length) {
         const target = [...game.enemy.field].sort((a, b) => a.health - b.health || minionThreatScore(b) - minionThreatScore(a))[0];
-        actions.push({ type: "attack", attacker, target, score: 12 + minionThreatScore(target), label: `建議攻擊：${attacker.name} → ${target.name}` });
+        actions.push(Object.assign({ type: "attack", attacker, target, score: 12 + minionThreatScore(target), label: `建議攻擊：${attacker.name} → ${target.name}` }, hintCopyForAttack(attacker, target, false, false)));
       }
     }
     return actions.sort((a, b) => b.score - a.score)[0] || null;
@@ -630,7 +690,18 @@
     const target = action.target ? elFor(action.target.uid) : action.hero ? document.getElementById(action.hero) : null;
     if (primary) primary.classList.add("hint-highlight");
     if (target) target.classList.add("hint-highlight");
-    flash(action.label);
+    const why = [action.reason, action.estimate].filter(Boolean).join(" ");
+    game.lastHint = {
+      type: action.type,
+      label: action.label,
+      reason: action.reason || "",
+      estimate: action.estimate || "",
+      cardId: action.card && action.card.id,
+      attackerId: action.attacker && action.attacker.id,
+      targetId: action.target && action.target.id,
+      hero: action.hero || "",
+    };
+    flash(why ? `${action.label}｜${why}` : action.label);
     setTimeout(clearHintHighlights, 3000);
     updateHintButton();
     return action;
@@ -740,6 +811,72 @@
       return copy;
     }
     return list;
+  }
+
+  function aiThoughtEnabled() {
+    try { return localStorage.getItem("card_ai_thoughts_v1") === "1"; }
+    catch { return false; }
+  }
+
+  function syncAiThoughtToggle() {
+    const toggle = document.getElementById("aiThoughtToggle");
+    if (!toggle) return;
+    toggle.checked = aiThoughtEnabled();
+  }
+
+  function setAiThoughtEnabled(enabled) {
+    try { localStorage.setItem("card_ai_thoughts_v1", enabled ? "1" : "0"); } catch {}
+    syncAiThoughtToggle();
+    flash(enabled ? "已開啟 AI 思路。" : "已關閉 AI 思路。");
+    return aiThoughtEnabled();
+  }
+
+  function logAiThought(message) {
+    if (aiThoughtEnabled() && message) log(`AI：${message}`, "ai");
+  }
+
+  function findBattleMinion(uid) {
+    if (!uid || !game) return null;
+    return [...game.player.field, ...game.enemy.field].find((m) => m.uid === uid) || null;
+  }
+
+  function aiMinionReason(card) {
+    const kind = game.enemyArchetype || "random";
+    const keywords = card.keywords || [];
+    if (kind === "aggro") {
+      if (keywords.includes("charge")) return `快攻優先立即傷害，召喚 ${card.name} 施壓。`;
+      if (keywords.includes("rush")) return `快攻先搶節奏，${card.name} 可處理阻擋者。`;
+      return `快攻優先鋪場，打出 ${card.name} 增加場攻。`;
+    }
+    if (kind === "control") {
+      if (keywords.includes("taunt")) return `控制優先護血，架起 ${card.name} 擋住攻勢。`;
+      if (keywords.includes("lifesteal")) return `控制需要回復資源，${card.name} 可穩住血線。`;
+      return `控制優先高品質站場，打出 ${card.name}。`;
+    }
+    return `依費用效率打出 ${card.name}。`;
+  }
+
+  function aiSpellReason(card, target) {
+    const effect = card.effect;
+    if (effect === "heal5") return `護血優先，${card.name} 回復英雄生命。`;
+    if (effect === "mana2") return `先取得法力，準備接續高費手牌。`;
+    if (effect === "aoe1" || effect === "aoe2") return `解場優先，${card.name} 壓低你的整個場面。`;
+    if (effect === "giveShield" && target) return `保護核心隨從，讓 ${target.name} 獲得聖盾。`;
+    if (effect === "polymorph" && target) return `解掉高威脅，將 ${target.name} 變形。`;
+    if ((effect === "damage3" || effect === "damage8") && target) return `解場優先，${card.name} 換掉 ${target.name}。`;
+    return `依局面施放 ${card.name || fallbackSpellName(effect)}。`;
+  }
+
+  function aiAttackReason(attacker, target, options) {
+    const opt = options || {};
+    if (opt.hero) {
+      if (opt.lethal) return `已達斬殺線，${attacker.name} 直接攻擊英雄。`;
+      return `沒有嘲諷阻擋，${attacker.name} 直接壓低英雄血量。`;
+    }
+    if (!target) return "";
+    if (opt.forcedTaunt) return `先解嘲諷，${attacker.name} 攻擊 ${target.name} 才能打開路線。`;
+    if (isRushHeroLocked(attacker)) return `突襲本回合不能打臉，${attacker.name} 先交換 ${target.name}。`;
+    return `解場優先，${attacker.name} 攻擊 ${target.name} 降低下回合傷害。`;
   }
 
   function chooseRemovalTarget(effect) {
@@ -876,14 +1013,17 @@
           if (!result.ok) continue;
           handleCoreResult(result);
           log(`對手召喚了 ${card.name}。`, "ai");
+          logAiThought(aiMinionReason(card));
           acted = true; break;
         } else {
           const plan = chooseAiSpellPlay(card);
           if (plan.used) {
+            const target = findBattleMinion(plan.targetUid);
             const result = Core.playCard(game, { side: "enemy", cardUid: card.uid, targetUid: plan.targetUid, burnMulligan: false, trackCombo: false }, rng);
             if (!result.ok) continue;
             handleCoreResult(result);
-            logAiSpell(card.effect);
+            logAiSpell(card, target);
+            logAiThought(aiSpellReason(card, target));
             acted = true; break;
           }
         }
@@ -909,12 +1049,18 @@
         const playerTaunts = game.player.field.filter((m) => (m.keywords || []).includes("taunt"));
         if (playerTaunts.length) {
           const t = maybeDdaSecondBest(playerTaunts.sort((a, b) => a.health - b.health || minionThreatScore(b) - minionThreatScore(a)))[0];
+          logAiThought(aiAttackReason(atk, t, { forcedTaunt: true, lethal }));
           animateAttackToward(atk.uid, t.uid);
           resolveAttack(ai, atk, t);
         } else {
           const threat = chooseAiAttackTarget(atk, lethal);
-          if (threat) { animateAttackToward(atk.uid, threat.uid); resolveAttack(ai, atk, threat); }
+          if (threat) {
+            logAiThought(aiAttackReason(atk, threat, { lethal }));
+            animateAttackToward(atk.uid, threat.uid);
+            resolveAttack(ai, atk, threat);
+          }
           else if (canAttackHeroNow(atk)) {
+            logAiThought(aiAttackReason(atk, null, { hero: true, lethal }));
             animateAttackToward(atk.uid, "playerHero");
             const result = Core.resolveHeroAttack(game, { attackerSide: "enemy", attackerUid: atk.uid, defenderSide: "player" }, rng);
             handleCoreResult(result);
@@ -1298,12 +1444,15 @@
     else if ((effect === "damage3" || effect === "damage8") && target) log(`${name}擊中了 ${target.name}。`, "me");
   }
 
-  function logAiSpell(effect) {
+  function logAiSpell(cardOrEffect, target) {
+    const card = typeof cardOrEffect === "string" ? { effect: cardOrEffect } : (cardOrEffect || {});
+    const effect = card.effect;
+    const name = card.name || fallbackSpellName(effect);
     if (effect === "heal5") log("對手施放治療術。", "ai");
     else if (effect === "aoe1" || effect === "aoe2") log("對手施放範圍法術！", "ai");
-    else if (effect === "damage3" || effect === "damage8") log("對手對你的隨從施放傷害法術。", "ai");
-    else if (effect === "polymorph") log("對手將你的隨從變形。", "ai");
-    else if (effect === "giveShield") log("對手施放聖盾術。", "ai");
+    else if (effect === "damage3" || effect === "damage8") log(`對手用 ${name} 攻擊 ${target ? target.name : "你的隨從"}。`, "ai");
+    else if (effect === "polymorph") log(`對手將 ${target ? target.name : "你的隨從"} 變形。`, "ai");
+    else if (effect === "giveShield") log(`對手施放聖盾術保護 ${target ? target.name : "隨從"}。`, "ai");
     else if (effect === "mana2") log("對手施放法力湧動。", "ai");
   }
 
@@ -1861,6 +2010,8 @@
   if (hintBtn) hintBtn.onclick = showHint;
   const ddaToggle = document.getElementById("ddaToggle");
   if (ddaToggle) ddaToggle.onchange = () => setDdaEnabled(ddaToggle.checked);
+  const aiThoughtToggle = document.getElementById("aiThoughtToggle");
+  if (aiThoughtToggle) aiThoughtToggle.onchange = () => setAiThoughtEnabled(aiThoughtToggle.checked);
   document.getElementById("restartBtn").onclick = newGame;
   document.getElementById("overlayPackBtn").onclick = goPack;
   document.getElementById("overlayQuestBtn").onclick = claimAllQuestsUi;
@@ -1947,6 +2098,8 @@
     difficulty: () => ({ key: game.difficulty, aiSmart: game.aiSmart, playerHp: game.player.hp, enemyHp: game.enemy.hp }),
     // ===== E2E 掛鉤（scripts/test-battle-e2e.js 用）=====
     endTurn: () => endTurn(),
+    runAiTurn: () => aiTurn(),
+    logText: () => document.getElementById("log")?.textContent || "",
     playFromHand: (uid) => playFromHand(uid),
     stats: () => loadStats(),
     quests: () => loadQuests(),
@@ -1954,7 +2107,10 @@
     progressQuest: (event) => progressQuest(event),
     setDdaEnabled: (enabled) => setDdaEnabled(enabled),
     dda: () => ({ stats: loadStats().dda, profile: Core.ddaProfile(loadStats().dda), game: game && game.dda }),
+    setAiThoughts: (enabled) => setAiThoughtEnabled(enabled),
+    aiThoughts: () => ({ enabled: aiThoughtEnabled(), checked: !!document.getElementById("aiThoughtToggle")?.checked }),
     hint: () => showHint(),
+    lastHint: () => game && game.lastHint,
     hintHighlights: () => [...document.querySelectorAll(".hint-highlight")].map((el) => el.dataset.uid || el.id || el.dataset.cardId || el.className),
     safeSaveAfterError: (message) => { safeSaveAfterError(message); return loadStats(); },
     goals: (seed) => loadGoals(seed),

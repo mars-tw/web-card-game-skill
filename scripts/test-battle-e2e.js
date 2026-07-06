@@ -416,10 +416,14 @@ async function run() {
           stillInHand: g.player.hand.some((card) => card.uid === uid),
           fieldCount: g.player.field.length,
           hintDisabled: document.getElementById("hintBtn").disabled,
+          lastHint: window.__test.lastHint(),
+          logText: window.__test.logText(),
         };
       }, stickySetup.uid);
       assert(hintCheck.highlights >= 1 && hintCheck.stillInHand && hintCheck.fieldCount === 0 && hintCheck.hintDisabled,
         "手機提示會高亮建議且不自動出牌/攻擊");
+      assert(hintCheck.lastHint && hintCheck.lastHint.reason && /建議|用足|衝鋒|突襲|嘲諷|吸血/.test(hintCheck.logText),
+        "提示高亮時會附上為什麼文案");
       await page.locator("#ddaToggle").uncheck();
       const ddaOff = await page.evaluate(() => window.__test.dda());
       assert(ddaOff.stats.enabled === false && ddaOff.profile.enabled === false && ddaOff.profile.mistakeRate === 0 && ddaOff.profile.scoreBias === 0,
@@ -457,6 +461,55 @@ async function run() {
       }));
       assert(mobileAction.turn === "enemy" && mobileAction.fieldCount >= 1, "手機首屏不捲動即可出牌並結束回合");
       await waitPlayerTurn(page);
+
+      const spellHintSetup = await page.evaluate(() => {
+        const T = window.__test;
+        T.setup([], ["footman"]);
+        const g = T.game();
+        g.player.hand = [];
+        g.player.mana = g.player.manaMax = 10;
+        g.hintUsedTurn = null;
+        g.lastHint = null;
+        T.giveCard("firebolt");
+        return { enemyCount: g.enemy.field.length };
+      });
+      const spellHint = await page.evaluate(() => {
+        window.__test.hint();
+        return {
+          setupOk: document.querySelectorAll("#enemyField .card").length,
+          lastHint: window.__test.lastHint(),
+          logText: window.__test.logText(),
+        };
+      });
+      assert(spellHintSetup.enemyCount === 1 && spellHint.setupOk === 1
+        && /先解嘲諷才能打臉|高威脅/.test(spellHint.lastHint.reason)
+        && /預計擊殺/.test(spellHint.lastHint.estimate)
+        && /預計擊殺/.test(spellHint.logText),
+        "指定法術提示會說明理由並預估擊殺目標");
+
+      await page.locator("#aiThoughtToggle").check();
+      const aiThoughtLog = await page.evaluate(() => {
+        const T = window.__test;
+        const g = T.game();
+        const card = Object.assign({}, window.getCardById("wolf"));
+        card.uid = "aiThought" + Math.random().toString(36).slice(2, 8);
+        card.maxHealth = card.health;
+        g.turn = "enemy";
+        g.over = false;
+        g.enemyArchetype = "aggro";
+        g.enemy.mana = g.enemy.manaMax = 10;
+        g.enemy.hand = [card];
+        g.enemy.deck = [];
+        g.enemy.field = [];
+        g.player.field = [];
+        document.getElementById("log").innerHTML = "";
+        T.runAiTurn();
+        const text = T.logText();
+        window.__newGame();
+        return { toggle: T.aiThoughts(), text };
+      });
+      assert(aiThoughtLog.toggle.enabled && /AI：/.test(aiThoughtLog.text) && /快攻|鋪場|施壓|費用/.test(aiThoughtLog.text),
+        "開啟顯示 AI 思路後，AI 出牌會在 log 附理由");
 
       const fieldSetup = await page.evaluate(() => {
         const g = window.__test.game();
@@ -781,6 +834,43 @@ async function run() {
     const recordText = await page.evaluate(() => window.__deckTest.recordText());
     assert(/1 勝 0 敗/.test(recordText) && /勝率 100%/.test(recordText) && /平均 1\.0 回合/.test(recordText) && recordText.includes(telemetrySeed.wolfName),
       "打完一場後戰績面板顯示勝率、平均回合與常用卡");
+
+    await page.evaluate(() => {
+      localStorage.setItem("card_stats_v1", JSON.stringify({
+        version: 3,
+        wins: 2,
+        losses: 1,
+        streak: 1,
+        lossStreak: 0,
+        bestStreak: 2,
+        coins: 0,
+        packsOpened: 0,
+        telemetry: {
+          games: [
+            { difficulty: "easy", win: true, turns: 4, archetype: "aggro", at: 1 },
+            { difficulty: "hard", win: false, turns: 8, archetype: "control", at: 2 },
+            { difficulty: "hard", win: true, turns: 6, archetype: "neutral", at: 3 },
+          ],
+          cardPlays: { wolf: 2, firebolt: 1 },
+        },
+      }));
+    });
+    await page.locator("#recordDifficultyFilter").selectOption("hard");
+    const filteredRecord = await page.evaluate(async () => {
+      const copyText = await window.__deckTest.copyRecord();
+      return {
+        text: window.__deckTest.recordText(),
+        snapshot: window.__deckTest.recordSnapshot(),
+        copied: JSON.parse(copyText),
+        lastCopy: JSON.parse(window.__deckTest.lastRecordCopy()),
+      };
+    });
+    assert(/總覽｜困難/.test(filteredRecord.text) && /1 勝 1 敗/.test(filteredRecord.text)
+      && /控制：0\/1/.test(filteredRecord.text) && /中立：1\/1/.test(filteredRecord.text),
+      "戰績面板可依難度篩選並依牌組軸線分組顯示");
+    assert(filteredRecord.copied.filter.difficulty === "hard" && filteredRecord.copied.total.wins === 1
+      && filteredRecord.lastCopy.archetype.control.total === 1 && filteredRecord.snapshot.topCards[0].id === "wolf",
+      "戰績可複製目前篩選後的 JSON 文字");
 
     const downgradeRecommendation = await page.evaluate(({ deckIds, collection }) => {
       const T = window.__deckTest;
