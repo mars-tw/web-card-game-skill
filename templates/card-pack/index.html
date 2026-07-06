@@ -213,6 +213,10 @@
   .record-tools { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .record-tools select { background:rgba(15,23,42,.9); color:var(--ink); border:1px solid rgba(255,255,255,.14);
     border-radius:8px; padding:7px 9px; font-size:12px; font-weight:800; }
+  .save-manager { margin-top:10px; display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:8px; align-items:center; }
+  .save-manager textarea { min-height:38px; max-height:90px; resize:vertical; border-radius:8px; padding:8px;
+    background:rgba(15,23,42,.92); color:var(--ink); border:1px solid rgba(255,255,255,.14);
+    font:12px/1.4 ui-monospace, Consolas, monospace; }
   .record-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:8px; }
   .record-card { border:1px solid rgba(255,255,255,.1); border-radius:8px; padding:8px; background:rgba(255,255,255,.04); }
   .record-title { font-size:12px; color:#facc15; font-weight:900; margin-bottom:5px; }
@@ -272,6 +276,8 @@
     .goal-grid { grid-template-columns:1fr; }
     .milestone-list { grid-template-columns:1fr; }
     .record-grid { grid-template-columns:1fr; }
+    .save-manager { grid-template-columns:1fr 1fr; }
+    .save-manager textarea { grid-column:1 / -1; }
     .mission-drawer-btn { top: 8px; bottom: auto; left: 10px; z-index: 90; }
     .mission-drawer { align-items:flex-start; padding:50px 8px 8px; }
     .mission-card { max-height:calc(100vh - 64px); padding:12px; }
@@ -323,6 +329,11 @@
       </div>
     </div>
     <div class="record-grid" id="recordGrid"></div>
+    <div class="save-manager">
+      <textarea id="saveImportText" placeholder="貼上 Base64 存檔碼"></textarea>
+      <button class="ghost" id="exportSaveBtn">匯出存檔</button>
+      <button class="ghost" id="importSaveBtn">匯入存檔</button>
+    </div>
   </section>
 
   <div class="pack-stage" id="packStage">

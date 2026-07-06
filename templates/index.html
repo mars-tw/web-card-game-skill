@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="theme-color" content="#f59e0b" />
 <title>卡牌遊戲 · Card Game</title>
 <style>
   /* 入口頁主題（影響分頁列底色）*/
@@ -63,6 +65,18 @@
     background: var(--stage); display: none;
   }
   .frame.active { display: block; }
+  .pwa-update {
+    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+    z-index: 20; display: none; align-items: center; gap: 10px;
+    max-width: calc(100vw - 24px); padding: 10px 12px; border-radius: 12px;
+    background: rgba(15,23,42,.96); color: #e6edf3; border: 1px solid rgba(245,158,11,.45);
+    box-shadow: 0 10px 30px rgba(0,0,0,.35); font-size: 13px; font-weight: 800;
+  }
+  .pwa-update.show { display: flex; }
+  .pwa-update button {
+    border: none; border-radius: 9px; padding: 7px 10px; font-weight: 900; cursor: pointer;
+    background: linear-gradient(180deg, #f59e0b, #d97706); color: #1a1206;
+  }
 
   @media (max-width: 700px) {
     .tabbar { gap: 6px; padding: 6px 8px; min-height: 56px; overflow: hidden; }
@@ -102,6 +116,10 @@
     <iframe id="battle" class="frame active" src="card-battle/index.html" title="卡牌對戰"></iframe>
     <iframe id="pack"   class="frame"        src="card-pack/index.html"   title="開卡包"></iframe>
   </div>
+  <div class="pwa-update" id="pwaUpdateToast">
+    <span>新版本可用</span>
+    <button id="pwaReloadBtn" type="button">重新載入</button>
+  </div>
 
   <script>
     const tabs = document.querySelectorAll(".tab");
@@ -138,6 +156,36 @@
     frames.forEach((f) => f.addEventListener("load", () => {
       try { f.contentWindow.postMessage({ type: "setTheme", theme: initial === "dark" ? "" : initial }, "*"); } catch {}
     }));
+
+    const pwaState = { skippedForWebdriver: false, registered: false, updatePrompted: false };
+    function showPwaUpdate() {
+      pwaState.updatePrompted = true;
+      const toast = document.getElementById("pwaUpdateToast");
+      if (toast) toast.classList.add("show");
+    }
+    document.getElementById("pwaReloadBtn").addEventListener("click", () => location.reload());
+    async function registerPwa() {
+      if (!("serviceWorker" in navigator)) return pwaState;
+      if (navigator.webdriver) {
+        pwaState.skippedForWebdriver = true;
+        return pwaState;
+      }
+      try {
+        const registration = await navigator.serviceWorker.register("../sw.js");
+        pwaState.registered = true;
+        registration.addEventListener("updatefound", () => {
+          const worker = registration.installing;
+          if (!worker) return;
+          worker.addEventListener("statechange", () => {
+            if (worker.state === "installed" && navigator.serviceWorker.controller) showPwaUpdate();
+          });
+        });
+        if (registration.waiting && navigator.serviceWorker.controller) showPwaUpdate();
+      } catch {}
+      return pwaState;
+    }
+    window.__pwaTest = { state: pwaState, registerPwa, showPwaUpdate };
+    registerPwa();
   </script>
 </body>
 </html>

@@ -17,7 +17,7 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
-const MIME = { ".html": "text/html", ".js": "application/javascript", ".json": "application/json", ".png": "image/png", ".css": "text/css" };
+const MIME = { ".html": "text/html", ".js": "application/javascript", ".json": "application/json", ".webmanifest": "application/manifest+json", ".png": "image/png", ".css": "text/css" };
 
 let failed = 0;
 function assert(cond, msg) { if (cond) console.log("  ✓ " + msg); else { console.error("  ✗ " + msg); failed++; } }
@@ -117,6 +117,38 @@ async function run() {
     const errors = [];
     page.on("console", (m) => { if (m.type() === "error" && !/favicon|net::ERR/.test(m.text())) errors.push("console: " + m.text()); });
     page.on("pageerror", (e) => errors.push("pageerror: " + (e && e.message)));
+
+    if (vp.w === 1280) {
+      await page.goto(shellBase);
+      await page.waitForFunction(() => window.__pwaTest);
+      const pwaCheck = await page.evaluate(async () => {
+        const manifestLink = document.querySelector('link[rel="manifest"]');
+        const manifestResponse = await fetch("../manifest.webmanifest");
+        const manifest = await manifestResponse.json();
+        const swText = await fetch("../sw.js").then((res) => res.text());
+        const state = await window.__pwaTest.registerPwa();
+        window.__pwaTest.showPwaUpdate();
+        return {
+          manifestHref: manifestLink && manifestLink.getAttribute("href"),
+          manifest,
+          swText,
+          skipped: state.skippedForWebdriver,
+          promptVisible: document.getElementById("pwaUpdateToast").classList.contains("show"),
+        };
+      });
+      assert(pwaCheck.manifestHref === "../manifest.webmanifest"
+        && pwaCheck.manifest.name === "卡牌對戰"
+        && pwaCheck.manifest.icons.some((icon) => icon.sizes === "192x192")
+        && pwaCheck.manifest.icons.some((icon) => icon.sizes === "512x512"),
+        "PWA manifest 掛在入口 shell 且含 192/512 icon");
+      assert(/CACHE_VERSION/.test(pwaCheck.swText)
+        && /networkFirst/.test(pwaCheck.swText)
+        && /cacheFirst/.test(pwaCheck.swText)
+        && pwaCheck.swText.includes("templates/card-battle")
+        && pwaCheck.swText.includes("templates/card-pack"),
+        "Service worker 使用版本快取並涵蓋 battle/pack 子路徑");
+      assert(pwaCheck.skipped === true && pwaCheck.promptVisible === true, "navigator.webdriver 會跳過 SW 註冊且更新提示可顯示");
+    }
 
     await page.goto(base);
     await page.evaluate(() => { localStorage.clear(); localStorage.setItem("cb_guide_done_v1", "1"); });
@@ -431,6 +463,26 @@ async function run() {
       await page.locator("#ddaToggle").check();
       const ddaOn = await page.evaluate(() => window.__test.dda());
       assert(ddaOn.stats.enabled === true && ddaOn.profile.enabled === true, "動態難度調節預設/重新開啟有效");
+      const perfModes = await page.evaluate(() => {
+        const sel = document.getElementById("perfModeSel");
+        sel.value = "low";
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+        const low = window.__test.perf();
+        sel.value = "high";
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+        const high = window.__test.perf();
+        sel.value = "auto";
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+        const autoLow = window.__test.forceFps(40);
+        const autoHigh = window.__test.forceFps(55);
+        return { low, high, autoLow, autoHigh, attr: document.documentElement.dataset.perf };
+      });
+      assert(perfModes.low.mode === "low" && perfModes.low.effective === "low"
+        && perfModes.high.mode === "high" && perfModes.high.effective === "high",
+        "效能設定可鎖定高/低動畫");
+      assert(perfModes.autoLow.mode === "auto" && perfModes.autoLow.effective === "low"
+        && perfModes.autoHigh.effective === "high" && perfModes.attr === "high",
+        "自動效能會在 FPS 低於 45 降低動畫並於回穩恢復");
 
       await page.locator(`.hand .card[data-uid="${stickySetup.uid}"] .card-info-btn`).click();
       await waitCardDetail(page, true);
@@ -871,6 +923,60 @@ async function run() {
     assert(filteredRecord.copied.filter.difficulty === "hard" && filteredRecord.copied.total.wins === 1
       && filteredRecord.lastCopy.archetype.control.total === 1 && filteredRecord.snapshot.topCards[0].id === "wolf",
       "戰績可複製目前篩選後的 JSON 文字");
+
+    const saveManager = await page.evaluate(({ deckIds, collection }) => {
+      localStorage.setItem("card_stats_v1", JSON.stringify({
+        version: 3,
+        wins: 7,
+        losses: 2,
+        streak: 2,
+        lossStreak: 0,
+        bestStreak: 4,
+        coins: 321,
+        packsOpened: 6,
+        telemetry: { games: [{ difficulty: "normal", win: true, turns: 5, archetype: "aggro", at: 10 }], cardPlays: { wolf: 3 } },
+      }));
+      localStorage.setItem("cardpack_collection_v2", JSON.stringify(collection));
+      localStorage.setItem("card_deck_v1", JSON.stringify({ version: 1, cards: deckIds }));
+      const T = window.__deckTest;
+      const code = T.exportSave();
+      return Promise.resolve(code).then((saveCode) => {
+        const decoded = T.decodeSave(saveCode);
+        localStorage.setItem("card_stats_v1", JSON.stringify({ version: 3, wins: 0, losses: 0, coins: 1 }));
+        localStorage.setItem("cardpack_collection_v2", JSON.stringify({ wolf: 1 }));
+        localStorage.setItem("card_deck_v1", JSON.stringify({ version: 1, cards: [] }));
+        const beforeBad = localStorage.getItem("card_stats_v1");
+        T.importSave(saveCode, { reload: false });
+        const restored = {
+          stats: JSON.parse(localStorage.getItem("card_stats_v1")),
+          collection: JSON.parse(localStorage.getItem("cardpack_collection_v2")),
+          deck: JSON.parse(localStorage.getItem("card_deck_v1")),
+          backup: T.backupText(),
+          decoded,
+        };
+        let badRejected = false;
+        const beforeReject = localStorage.getItem("card_stats_v1");
+        try { T.importSave("not-a-valid-save", { reload: false }); }
+        catch { badRejected = true; }
+        return {
+          codeLength: saveCode.length,
+          textareaFilled: document.getElementById("saveImportText").value === saveCode,
+          restored,
+          badRejected,
+          unchangedAfterBad: localStorage.getItem("card_stats_v1") === beforeReject,
+          changedFromBeforeBad: beforeBad !== beforeReject,
+        };
+      });
+    }, { deckIds: LEGAL_DECK_IDS, collection: collectionForDeck(LEGAL_DECK_IDS) });
+    assert(saveManager.codeLength > 80 && saveManager.textareaFilled && saveManager.restored.decoded.stats.coins === 321,
+      "存檔管家可匯出 stats/collection/deck/goals/quests Base64 並放入文字框");
+    assert(saveManager.restored.stats.coins === 321
+      && saveManager.restored.collection.wolf === 2
+      && saveManager.restored.deck.cards.length === 20
+      && saveManager.restored.backup.length > 80
+      && saveManager.changedFromBeforeBad,
+      "存檔管家匯入會遷移還原資料並在匯入前自動備份");
+    assert(saveManager.badRejected && saveManager.unchangedAfterBad, "壞存檔碼會拒絕且不覆蓋現有存檔");
 
     const downgradeRecommendation = await page.evaluate(({ deckIds, collection }) => {
       const T = window.__deckTest;

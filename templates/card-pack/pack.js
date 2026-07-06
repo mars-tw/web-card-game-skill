@@ -14,6 +14,7 @@
   const DECK_KEY = "card_deck_v1";
   const QUEST_KEY = "card_quests_v1";
   const GOAL_KEY = "card_goals_v1";
+  const SAVE_BACKUP_KEY = "card_save_backup_v1";
   const Core = window.CardCore;
   if (!Core) throw new Error("CardCore 未載入");
 
@@ -25,6 +26,7 @@
   let collectionFilters = { search: "", axis: "all", keyword: "all", rarity: "all", ownership: "all", sort: "cost" };
   let recordFilters = { difficulty: "all" };
   let lastRecordCopy = "";
+  let lastSaveCopy = "";
 
   function loadCollection() {
     try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || {}; }
@@ -66,6 +68,111 @@
       const reason = event && event.reason;
       safeSaveAfterError(reason && reason.message ? reason.message : String(reason || "unhandled rejection"));
     });
+  }
+
+  function textToBase64(text) {
+    const bytes = new TextEncoder().encode(text);
+    let binary = "";
+    for (let i = 0; i < bytes.length; i += 0x8000) {
+      binary += String.fromCharCode(...bytes.slice(i, i + 0x8000));
+    }
+    return btoa(binary);
+  }
+
+  function base64ToText(code) {
+    const binary = atob(String(code || "").trim());
+    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+
+  function plainObject(value) {
+    return !!value && typeof value === "object" && !Array.isArray(value);
+  }
+
+  function migrateCollectionInput(raw) {
+    if (!plainObject(raw)) throw new Error("collection 格式錯誤");
+    return Object.keys(raw).reduce((acc, key) => {
+      const id = String(key).replace(/#foil$/, "");
+      const card = getCardById(id);
+      const count = Math.max(0, Math.floor(Number(raw[key]) || 0));
+      if (!card) throw new Error("collection 含未知卡牌");
+      if (count > 0) acc[key] = count;
+      return acc;
+    }, Object.create(null));
+  }
+
+  function buildSaveBundle() {
+    return {
+      schema: "card-save-r32",
+      exportedAt: new Date().toISOString(),
+      stats: loadStats(),
+      collection: migrateCollectionInput(collection),
+      deck: loadDeck(),
+      goals: loadGoals(),
+      quests: loadQuests(),
+    };
+  }
+
+  function encodeSaveBundle(bundle) {
+    return textToBase64(JSON.stringify(bundle));
+  }
+
+  function decodeSaveBundle(code) {
+    let payload;
+    try { payload = JSON.parse(base64ToText(code)); }
+    catch { throw new Error("存檔碼無法解碼"); }
+    if (!plainObject(payload) || payload.schema !== "card-save-r32") throw new Error("不是有效的 R32 存檔碼");
+    if (!plainObject(payload.stats) || !plainObject(payload.collection) || !plainObject(payload.deck) || !plainObject(payload.goals) || !plainObject(payload.quests)) {
+      throw new Error("存檔缺少必要欄位");
+    }
+    return {
+      stats: Core.migrateStats(payload.stats),
+      collection: migrateCollectionInput(payload.collection),
+      deck: Core.migrateDeck(payload.deck),
+      goals: Core.migrateGoals(payload.goals, weekSeed()),
+      quests: Core.migrateQuests(payload.quests, todaySeed()),
+    };
+  }
+
+  async function exportSaveBundle() {
+    const code = encodeSaveBundle(buildSaveBundle());
+    lastSaveCopy = code;
+    const input = document.getElementById("saveImportText");
+    if (input) input.value = code;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) await navigator.clipboard.writeText(code);
+      recoveryToast("完整存檔已複製到剪貼簿。");
+    } catch {
+      recoveryToast("無法寫入剪貼簿，已放入文字框。");
+    }
+    return code;
+  }
+
+  function importSaveBundle(code, options) {
+    const decoded = decodeSaveBundle(code);
+    let backup = "";
+    try {
+      backup = encodeSaveBundle(buildSaveBundle());
+      localStorage.setItem(SAVE_BACKUP_KEY, backup);
+      localStorage.setItem("card_stats_v1", JSON.stringify(decoded.stats));
+      localStorage.setItem(SAVE_KEY, JSON.stringify(decoded.collection));
+      localStorage.setItem(DECK_KEY, JSON.stringify(decoded.deck));
+      localStorage.setItem(GOAL_KEY, JSON.stringify(decoded.goals));
+      localStorage.setItem(QUEST_KEY, JSON.stringify(decoded.quests));
+    } catch (err) {
+      throw new Error("寫入存檔失敗");
+    }
+    collection = loadCollection();
+    deckState = loadDeck();
+    renderCollection();
+    renderDeckEditor();
+    renderGoals();
+    renderMissionDrawer();
+    updateCoinDisplay();
+    renderRecordPanel();
+    recoveryToast("存檔匯入成功，已建立匯入前備份。");
+    if (!options || options.reload !== false) setTimeout(() => location.reload(), 350);
+    return { ok: true, backup };
   }
 
   function todaySeed() {
@@ -1058,6 +1165,14 @@
   if (recordDifficultyFilter) recordDifficultyFilter.onchange = () => { recordFilters.difficulty = recordDifficultyFilter.value; renderRecordPanel(); };
   const copyRecordBtn = document.getElementById("copyRecordBtn");
   if (copyRecordBtn) copyRecordBtn.onclick = () => copyRecordJson();
+  const exportSaveBtn = document.getElementById("exportSaveBtn");
+  if (exportSaveBtn) exportSaveBtn.onclick = () => exportSaveBundle();
+  const importSaveBtn = document.getElementById("importSaveBtn");
+  if (importSaveBtn) importSaveBtn.onclick = () => {
+    const code = document.getElementById("saveImportText")?.value || "";
+    try { importSaveBundle(code); }
+    catch (err) { recoveryToast("匯入失敗：存檔碼無效，未覆蓋現有存檔。"); }
+  };
   const clearRecordBtn = document.getElementById("clearRecordBtn");
   if (clearRecordBtn) clearRecordBtn.onclick = clearRecordStats;
 
@@ -1297,6 +1412,11 @@
     recordSnapshot: () => recordSnapshot(),
     copyRecord: () => copyRecordJson(),
     lastRecordCopy: () => lastRecordCopy,
+    exportSave: () => exportSaveBundle(),
+    importSave: (code, options) => importSaveBundle(code, options || { reload: false }),
+    lastSaveCopy: () => lastSaveCopy,
+    decodeSave: (code) => decodeSaveBundle(code),
+    backupText: () => localStorage.getItem(SAVE_BACKUP_KEY) || "",
     clearRecord: () => clearRecordStats(),
   };
 

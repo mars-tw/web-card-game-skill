@@ -72,12 +72,71 @@
 
   let game;
   const GUIDE_KEY = "cb_guide_done_v1";
+  const PERF_KEY = "card_perf_mode_v1";
   let guide = { active: false, step: 0, selectedAttacker: null };
+  const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0 };
   const GUIDE_STEPS = [
     { label: "STEP 1 / 3", title: "先出一張牌", copy: "點手牌中發亮的「迅捷狼」。它有衝鋒，登場後可以立刻攻擊。" },
     { label: "STEP 2 / 3", title: "選擇攻擊", copy: "先點你場上的迅捷狼，再點敵方英雄完成一次攻擊。" },
     { label: "STEP 3 / 3", title: "結束回合", copy: "攻擊後點「結束回合」，讓對手行動。之後就照這個節奏出牌、攻擊、結束回合。" },
   ];
+
+  function currentPerfMode() {
+    let mode = "auto";
+    try { mode = localStorage.getItem(PERF_KEY) || "auto"; } catch {}
+    return ["auto", "high", "low"].includes(mode) ? mode : "auto";
+  }
+
+  function setPerfMode(mode) {
+    const next = ["auto", "high", "low"].includes(mode) ? mode : "auto";
+    try { localStorage.setItem(PERF_KEY, next); } catch {}
+    applyPerfState(next, next === "low" ? "low" : "high");
+    flash(next === "auto" ? "效能模式：自動。" : next === "low" ? "效能模式：低動畫。" : "效能模式：高動畫。");
+    return perfSnapshot();
+  }
+
+  function applyPerfState(mode, effective) {
+    perfState.mode = mode || currentPerfMode();
+    perfState.effective = effective === "low" ? "low" : "high";
+    document.documentElement.dataset.perf = perfState.effective;
+    const sel = document.getElementById("perfModeSel");
+    if (sel) sel.value = perfState.mode;
+  }
+
+  function applyPerfEstimate(fps) {
+    perfState.fps = Math.round(Number(fps) || 0);
+    const mode = currentPerfMode();
+    if (mode === "low") applyPerfState("low", "low");
+    else if (mode === "high") applyPerfState("high", "high");
+    else if (perfState.fps < 45) applyPerfState("auto", "low");
+    else if (perfState.fps >= 52) applyPerfState("auto", "high");
+    else applyPerfState("auto", perfState.effective);
+    return perfSnapshot();
+  }
+
+  function isLowPerf() {
+    return perfState.effective === "low";
+  }
+
+  function perfSnapshot() {
+    return { mode: perfState.mode, effective: perfState.effective, fps: perfState.fps };
+  }
+
+  function startPerfMonitor() {
+    applyPerfState(currentPerfMode(), currentPerfMode() === "low" ? "low" : "high");
+    const step = (now) => {
+      if (!perfState.last) perfState.last = now;
+      perfState.frames++;
+      const elapsed = now - perfState.last;
+      if (elapsed >= 1000) {
+        applyPerfEstimate((perfState.frames * 1000) / elapsed);
+        perfState.frames = 0;
+        perfState.last = now;
+      }
+      requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
 
   // ===== 初始化 =====
   function newGame() {
@@ -125,6 +184,7 @@
     render();
     syncDdaToggle();
     syncAiThoughtToggle();
+    applyPerfState(currentPerfMode(), currentPerfMode() === "low" ? "low" : perfState.effective);
     offerMulligan(D.playerDraw); // 提供起手重抽
   }
 
@@ -1487,21 +1547,22 @@
       a.style.setProperty("--lx", dx * 0.85 + "px");
       a.style.setProperty("--ly", dy * 0.85 + "px");
       a.classList.add("lunge-to");
-      setTimeout(() => { a.classList.remove("lunge-to"); a.style.removeProperty("--lx"); a.style.removeProperty("--ly"); }, 360);
+      setTimeout(() => { a.classList.remove("lunge-to"); a.style.removeProperty("--lx"); a.style.removeProperty("--ly"); }, isLowPerf() ? 190 : 360);
       // 命中：受擊震動 + 閃白 + 火花粒子 + 螢幕震
       setTimeout(() => {
         t.classList.add("hit-shake", "hit-flash"); screenShake();
         spawnSparks(tr.left + tr.width / 2, tr.top + tr.height / 2);
-        setTimeout(() => t.classList.remove("hit-shake", "hit-flash"), 320);
-      }, 150);
+        setTimeout(() => t.classList.remove("hit-shake", "hit-flash"), isLowPerf() ? 180 : 320);
+      }, isLowPerf() ? 90 : 150);
     } else {
-      a.classList.add("attacking"); setTimeout(() => a.classList.remove("attacking"), 300);
+      a.classList.add("attacking"); setTimeout(() => a.classList.remove("attacking"), isLowPerf() ? 160 : 300);
     }
   }
 
   // 傷害數字分級（CP1-12）：≤2 小白、3~5 中金、≥6 大紅金
   function floatDamage(uidOrId, amount) {
     const el = elFor(uidOrId); if (!el) return;
+    if (isLowPerf() && amount <= 2) return;
     const r = el.getBoundingClientRect();
     const d = document.createElement("div");
     const tier = amount >= 6 ? "dmg-big" : amount >= 3 ? "dmg-mid" : "dmg-sm";
@@ -1509,7 +1570,7 @@
     d.style.left = (r.left + r.width / 2) + "px";
     d.style.top = (r.top + 8) + "px";
     document.body.appendChild(d);
-    setTimeout(() => d.remove(), 850);
+    setTimeout(() => d.remove(), isLowPerf() ? 480 : 850);
   }
   // CP2-8 連擊回饋文字
   function flashCombo(x, y, n) {
@@ -1517,19 +1578,20 @@
     d.className = "combo-float"; d.textContent = `🔥 ${n} 連擊!`;
     d.style.left = x + "px"; d.style.top = (y - 10) + "px";
     document.body.appendChild(d);
-    setTimeout(() => d.remove(), 900);
+    setTimeout(() => d.remove(), isLowPerf() ? 520 : 900);
   }
   // 命中火花粒子（CP1-12）
   function spawnSparks(x, y) {
-    for (let i = 0; i < 6; i++) {
+    const count = isLowPerf() ? 2 : 6;
+    for (let i = 0; i < count; i++) {
       const s = document.createElement("div");
       s.className = "hit-spark";
-      const a = (Math.PI * 2 * i) / 6 + Math.random() * 0.5, dist = 20 + Math.random() * 25;
+      const a = (Math.PI * 2 * i) / count + Math.random() * 0.5, dist = 20 + Math.random() * 25;
       s.style.left = x + "px"; s.style.top = y + "px";
       s.style.setProperty("--sx", Math.cos(a) * dist + "px");
       s.style.setProperty("--sy", Math.sin(a) * dist + "px");
       document.body.appendChild(s);
-      setTimeout(() => s.remove(), 450);
+      setTimeout(() => s.remove(), isLowPerf() ? 260 : 450);
     }
   }
 
@@ -1542,7 +1604,7 @@
     const b = document.createElement("div");
     b.className = "kw-pop"; b.textContent = label;
     b.style.left = (r.left + r.width / 2) + "px"; b.style.top = (r.top - 6) + "px";
-    document.body.appendChild(b); setTimeout(() => b.remove(), 900);
+    document.body.appendChild(b); setTimeout(() => b.remove(), isLowPerf() ? 520 : 900);
   }
   function flashKeyword(id, label) { flashKeyword2(id, label); }
 
@@ -1550,6 +1612,7 @@
   function screenShake() {
     const board = document.querySelector(".board");
     if (!board) return;
+    if (isLowPerf()) return;
     board.classList.add("shake-screen"); setTimeout(() => board.classList.remove("shake-screen"), 260);
   }
 
@@ -2012,6 +2075,8 @@
   if (ddaToggle) ddaToggle.onchange = () => setDdaEnabled(ddaToggle.checked);
   const aiThoughtToggle = document.getElementById("aiThoughtToggle");
   if (aiThoughtToggle) aiThoughtToggle.onchange = () => setAiThoughtEnabled(aiThoughtToggle.checked);
+  const perfModeSel = document.getElementById("perfModeSel");
+  if (perfModeSel) perfModeSel.onchange = () => setPerfMode(perfModeSel.value);
   document.getElementById("restartBtn").onclick = newGame;
   document.getElementById("overlayPackBtn").onclick = goPack;
   document.getElementById("overlayQuestBtn").onclick = claimAllQuestsUi;
@@ -2027,6 +2092,7 @@
   // 對戰中重開（牌庫會重新讀最新收藏——開完新卡包回來按這顆就能用到新卡）
   const ngBtn = document.getElementById("newGameBtn");
   if (ngBtn) ngBtn.onclick = newGame;
+  startPerfMonitor();
   newGame();
   maybeStartGuide();
 
@@ -2109,6 +2175,9 @@
     dda: () => ({ stats: loadStats().dda, profile: Core.ddaProfile(loadStats().dda), game: game && game.dda }),
     setAiThoughts: (enabled) => setAiThoughtEnabled(enabled),
     aiThoughts: () => ({ enabled: aiThoughtEnabled(), checked: !!document.getElementById("aiThoughtToggle")?.checked }),
+    setPerfMode: (mode) => setPerfMode(mode),
+    perf: () => perfSnapshot(),
+    forceFps: (fps) => applyPerfEstimate(fps),
     hint: () => showHint(),
     lastHint: () => game && game.lastHint,
     hintHighlights: () => [...document.querySelectorAll(".hint-highlight")].map((el) => el.dataset.uid || el.id || el.dataset.cardId || el.className),

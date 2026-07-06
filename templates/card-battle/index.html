@@ -218,10 +218,12 @@
     border: 1px solid var(--panel-border); backdrop-filter: blur(4px); }
   .diff-pick select { background: var(--panel); color: var(--ink); border: 1px solid var(--panel-border);
     border-radius: 12px; padding: 4px 8px; font-family: inherit; font-weight: 700; cursor: pointer; }
-  .dda-toggle, .ai-thought-toggle { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--muted);
+  .dda-toggle, .ai-thought-toggle, .perf-toggle { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--muted);
     background: color-mix(in srgb, var(--panel) 82%, transparent); border:1px solid var(--panel-border);
     border-radius:20px; padding:6px 10px; white-space:nowrap; }
   .dda-toggle input, .ai-thought-toggle input { width:16px; height:16px; accent-color:var(--accent); }
+  .perf-toggle select { background:var(--panel); color:var(--ink); border:1px solid var(--panel-border);
+    border-radius:10px; padding:3px 6px; font-family:inherit; font-weight:800; }
   .hint-highlight { outline:3px solid #38bdf8 !important; box-shadow:0 0 18px #38bdf8, 0 0 0 2px #e0f2fe !important; z-index:40 !important; }
   button.end-turn {
     background: linear-gradient(180deg, var(--accent), #d97706); color: #1a1206; font-weight: 800; font-size: 15px;
@@ -416,6 +418,17 @@
   @keyframes toastFloat { 0%{opacity:0;transform:translateY(-8px)} 15%,80%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-14px)} }
   @keyframes overlayPop { 0%{transform:scale(.3);opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
   @keyframes pulseTarget { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.6)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
+  :root[data-perf="low"] .card.legend-idle,
+  :root[data-perf="low"] .hero.targetable,
+  :root[data-perf="low"] .card.targetable { animation-duration: 1.8s !important; }
+  :root[data-perf="low"] .card.spawn { animation-duration: .16s !important; }
+  :root[data-perf="low"] .card.lunge-to,
+  :root[data-perf="low"] .card.attacking { animation-duration: .18s !important; }
+  :root[data-perf="low"] .hit-spark { display:none; }
+  :root[data-perf="low"] .dmg-float,
+  :root[data-perf="low"] .kw-pop,
+  :root[data-perf="low"] .combo-float,
+  :root[data-perf="low"] .toast-float { animation-duration:.45s !important; }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: .001ms !important;
@@ -465,15 +478,16 @@
       flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; padding-right: 2px;
       scrollbar-width: thin;
     }
-    .controls .diff-pick { flex: 0 0 auto; order: 2; }
+    .controls .diff-pick { flex: 0 0 auto; order: 3; }
     .controls button { flex: 0 0 auto; white-space: nowrap; }
-    #mulliganBtn { order: 1; }
-    #newGameBtn { order: 3; }
-    #toPackBtn { order: 4; }
-    #guideReplayBtn { order: 5; }
-    #hintBtn { order: 2; }
-    .dda-toggle { order: 6; flex:0 0 auto; padding-inline:9px; }
-    .ai-thought-toggle { order: 7; flex:0 0 auto; padding-inline:9px; }
+    #hintBtn { order: 1; position: sticky; left: 0; z-index: 4; }
+    #mulliganBtn { order: 2; }
+    #newGameBtn { order: 4; }
+    #toPackBtn { order: 5; }
+    #guideReplayBtn { order: 6; }
+    .dda-toggle { order: 7; flex:0 0 auto; padding-inline:9px; }
+    .ai-thought-toggle { order: 8; flex:0 0 auto; padding-inline:9px; }
+    .perf-toggle { order: 9; flex:0 0 auto; padding-inline:9px; }
     #endTurnBtn { flex: 0 0 auto; min-width: 112px; position: relative; z-index: 2; padding-inline: 16px; }
     .target-status {
       position: fixed; left: 8px; right: 8px;
@@ -558,6 +572,13 @@
         <label class="ai-thought-toggle" title="在戰鬥紀錄顯示 AI 出牌與攻擊理由。">
           <input id="aiThoughtToggle" type="checkbox" />
           <span>AI 思路</span>
+        </label>
+        <label class="perf-toggle" title="自動依 FPS 調整動畫密度，也可鎖定高/低。">效能
+          <select id="perfModeSel">
+            <option value="auto">自動</option>
+            <option value="high">高</option>
+            <option value="low">低</option>
+          </select>
         </label>
       </div>
       <button class="end-turn" id="endTurnBtn">結束回合 ▶</button>
