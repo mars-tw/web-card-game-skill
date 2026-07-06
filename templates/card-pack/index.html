@@ -7,7 +7,7 @@
 <style>
   :root {
     --bg1: #1a1430; --bg2: #0d1117; --ink: #e6edf3; --muted: #8b98a8; --accent: #f59e0b;
-    --card-w: 132px; --card-h: 186px;
+    --card-w: 132px; --card-h: 186px; --text-scale: 1;
     --bg-img: url("../../assets/backgrounds/dark.png");
   }
   :root[data-theme="fantasy"] { --bg1:#2a1d10; --bg2:#160d05; --accent:#f0a830; --bg-img:url("../../assets/backgrounds/fantasy.png"); }
@@ -15,6 +15,11 @@
   :root[data-theme="forest"]  { --bg1:#14241a; --bg2:#07120c; --accent:#84cc16; --bg-img:url("../../assets/backgrounds/forest.png"); }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root[data-text-size="small"] { --text-scale: .92; }
+  :root[data-text-size="large"] { --text-scale: 1.14; }
+  button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+    outline: 3px solid #facc15; outline-offset: 2px;
+  }
   body {
     font-family: "Segoe UI","Microsoft JhengHei",system-ui,sans-serif;
     background: radial-gradient(ellipse at top,var(--bg1),var(--bg2));
@@ -211,8 +216,10 @@
   .record-head h2 { font-size:16px; color:var(--ink); }
   .record-head button { padding:7px 10px; border-radius:8px; font-size:12px; }
   .record-tools { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .pwa-save-tools { margin-top: 8px; }
   .record-tools select { background:rgba(15,23,42,.9); color:var(--ink); border:1px solid rgba(255,255,255,.14);
     border-radius:8px; padding:7px 9px; font-size:12px; font-weight:800; }
+  .version-pill { border:1px solid rgba(250,204,21,.28); border-radius:999px; padding:6px 9px; color:#facc15; font-size:12px; font-weight:900; background:rgba(250,204,21,.08); }
   .save-manager { margin-top:10px; display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:8px; align-items:center; }
   .save-manager textarea { min-height:38px; max-height:90px; resize:vertical; border-radius:8px; padding:8px;
     background:rgba(15,23,42,.92); color:var(--ink); border:1px solid rgba(255,255,255,.14);
@@ -221,6 +228,9 @@
   .record-card { border:1px solid rgba(255,255,255,.1); border-radius:8px; padding:8px; background:rgba(255,255,255,.04); }
   .record-title { font-size:12px; color:#facc15; font-weight:900; margin-bottom:5px; }
   .record-value { font-size:12px; color:var(--muted); line-height:1.55; white-space:pre-line; }
+  .card .cardname, .deck-name { font-size: calc(13px * var(--text-scale)); }
+  .record-value, .goal-progress, .mission-progress, .deck-meta, .deck-errors, .deck-save-msg { font-size: calc(12px * var(--text-scale)); }
+  .mission-name, .goal-title, .record-title { font-size: calc(12px * var(--text-scale)); }
   .mission-drawer-btn { position: fixed; bottom: 12px; left: 12px; z-index: 90; background: #1a2230;
     color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
     font-size: 13px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
@@ -329,6 +339,15 @@
       </div>
     </div>
     <div class="record-grid" id="recordGrid"></div>
+    <div class="record-tools pwa-save-tools">
+      <select id="packTextSizeSel" aria-label="文字大小">
+        <option value="small">小</option>
+        <option value="medium" selected>中</option>
+        <option value="large">大</option>
+      </select>
+      <span class="version-pill" id="packPwaVersion">版本讀取中</span>
+      <button class="ghost" id="packPwaCheckBtn" type="button">檢查更新</button>
+    </div>
     <div class="save-manager">
       <textarea id="saveImportText" placeholder="貼上 Base64 存檔碼"></textarea>
       <button class="ghost" id="exportSaveBtn">匯出存檔</button>

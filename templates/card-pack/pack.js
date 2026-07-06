@@ -15,6 +15,7 @@
   const QUEST_KEY = "card_quests_v1";
   const GOAL_KEY = "card_goals_v1";
   const SAVE_BACKUP_KEY = "card_save_backup_v1";
+  const TEXT_SIZE_KEY = "card_text_size_v1";
   const Core = window.CardCore;
   if (!Core) throw new Error("CardCore 未載入");
 
@@ -27,6 +28,7 @@
   let recordFilters = { difficulty: "all" };
   let lastRecordCopy = "";
   let lastSaveCopy = "";
+  let missionReturnFocus = null;
 
   function loadCollection() {
     try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || {}; }
@@ -51,6 +53,109 @@
     div.style.cssText = "position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:220;background:rgba(15,23,42,.96);color:#fff;border:1px solid rgba(250,204,21,.35);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:900;box-shadow:0 8px 24px rgba(0,0,0,.35);";
     document.body.appendChild(div);
     setTimeout(() => div.remove(), 2600);
+  }
+
+  function currentTextSize() {
+    let size = "medium";
+    try { size = localStorage.getItem(TEXT_SIZE_KEY) || "medium"; } catch {}
+    return ["small", "medium", "large"].includes(size) ? size : "medium";
+  }
+
+  function applyTextSize(size) {
+    const next = ["small", "medium", "large"].includes(size) ? size : "medium";
+    document.documentElement.dataset.textSize = next;
+    const sel = document.getElementById("packTextSizeSel");
+    if (sel) sel.value = next;
+    return next;
+  }
+
+  function setTextSize(size) {
+    const next = applyTextSize(size);
+    try { localStorage.setItem(TEXT_SIZE_KEY, next); } catch {}
+    return next;
+  }
+
+  function swUrl() {
+    return new URL("../../sw.js", location.href).toString();
+  }
+
+  let pwaReloading = false;
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (pwaReloading) return;
+      pwaReloading = true;
+      location.reload();
+    });
+  }
+
+  function applyWaitingWorker(registration) {
+    if (registration && registration.waiting) registration.waiting.postMessage({ type: "SKIP_WAITING" });
+  }
+
+  async function readCacheVersion() {
+    let version = "unknown";
+    try {
+      const text = await fetch(swUrl(), { cache: "no-store" }).then((res) => res.text());
+      const match = text.match(/CACHE_VERSION\s*=\s*"([^"]+)"/);
+      version = match ? match[1] : "unknown";
+    } catch {}
+    const label = document.getElementById("packPwaVersion");
+    if (label) label.textContent = `版本 ${version}`;
+    return version;
+  }
+
+  async function checkForUpdate() {
+    const version = await readCacheVersion();
+    try {
+      if ("serviceWorker" in navigator) {
+        const reg = await navigator.serviceWorker.getRegistration("../../");
+        if (reg) {
+          await reg.update();
+          if (reg.waiting) applyWaitingWorker(reg);
+        }
+      }
+      recoveryToast(`已檢查更新：${version}`);
+    } catch {
+      recoveryToast("目前無法檢查更新");
+    }
+    return version;
+  }
+
+  function installAccessibilityLabels() {
+    const labels = {
+      missionDrawerBtn: "開啟任務抽屜",
+      missionClaimAllBtn: "領取所有可領任務",
+      missionDrawerClose: "關閉任務抽屜",
+      goBattleTop: "前往對戰",
+      pack: "打開卡包",
+      againBtn: "再開一包",
+      toBattleBtn: "前往對戰",
+      autoFillDeckBtn: "自動補滿牌組",
+      aggroTemplateBtn: "套用快攻模板",
+      controlTemplateBtn: "套用控制模板",
+      saveDeckBtn: "儲存牌組",
+      clearDeckBtn: "清空牌組",
+      copyRecordBtn: "複製戰績 JSON",
+      clearRecordBtn: "清除戰績",
+      exportSaveBtn: "匯出存檔",
+      importSaveBtn: "匯入存檔",
+      packPwaCheckBtn: "檢查更新",
+    };
+    Object.entries(labels).forEach(([id, label]) => {
+      const el = document.getElementById(id);
+      if (el && !el.getAttribute("aria-label")) el.setAttribute("aria-label", label);
+    });
+    ["recordDifficultyFilter", "packTextSizeSel", "deckSearch", "deckCostFilter", "deckRarityFilter", "collectionSearch", "collectionAxisFilter", "collectionKeywordFilter", "collectionRarityFilter", "collectionOwnershipFilter", "collectionSort", "saveImportText"]
+      .forEach((id) => {
+        const el = document.getElementById(id);
+        if (el && !el.getAttribute("aria-label")) el.setAttribute("aria-label", id);
+      });
+    const drawer = document.getElementById("missionDrawer");
+    if (drawer) {
+      drawer.setAttribute("role", "dialog");
+      drawer.setAttribute("aria-modal", "true");
+      drawer.setAttribute("aria-hidden", drawer.classList.contains("show") ? "false" : "true");
+    }
   }
 
   function safeSaveAfterError(message) {
@@ -639,15 +744,20 @@
     renderMissionDrawer();
     const drawer = document.getElementById("missionDrawer");
     if (!drawer) return;
+    missionReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     drawer.classList.add("show");
     drawer.setAttribute("aria-hidden", "false");
+    setTimeout(() => (document.getElementById("missionClaimAllBtn") || document.getElementById("missionDrawerClose"))?.focus(), 0);
   }
 
   function closeMissionDrawer() {
     const drawer = document.getElementById("missionDrawer");
     if (!drawer) return;
+    const restore = missionReturnFocus;
+    missionReturnFocus = null;
     drawer.classList.remove("show");
     drawer.setAttribute("aria-hidden", "true");
+    if (restore && document.contains(restore)) setTimeout(() => restore.focus(), 0);
   }
 
   function totalOwned(cardId) {
@@ -1120,6 +1230,9 @@
   }
 
   // ===== 綁定 =====
+  installAccessibilityLabels();
+  applyTextSize(currentTextSize());
+  readCacheVersion();
   document.getElementById("pack").onclick = openPack;
   document.getElementById("againBtn").onclick = resetForNextPack;
   document.getElementById("toBattleBtn").onclick = goBattle;
@@ -1175,6 +1288,16 @@
   };
   const clearRecordBtn = document.getElementById("clearRecordBtn");
   if (clearRecordBtn) clearRecordBtn.onclick = clearRecordStats;
+  const packTextSizeSel = document.getElementById("packTextSizeSel");
+  if (packTextSizeSel) packTextSizeSel.onchange = () => setTextSize(packTextSizeSel.value);
+  const packPwaCheckBtn = document.getElementById("packPwaCheckBtn");
+  if (packPwaCheckBtn) packPwaCheckBtn.onclick = () => checkForUpdate();
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && document.getElementById("missionDrawer")?.classList.contains("show")) closeMissionDrawer();
+  });
+  window.addEventListener("storage", (event) => {
+    if (event.key === TEXT_SIZE_KEY) applyTextSize(currentTextSize());
+  });
 
   // 更新金幣顯示（CP0-2）
   function updateCoinDisplay() {
@@ -1386,6 +1509,7 @@
     },
     missionCount: () => missionClaimableCount(),
     openMissionDrawer: () => openMissionDrawer(),
+    missionOpen: () => document.getElementById("missionDrawer")?.classList.contains("show") || false,
     claimAllMissions: () => claimAllMissionsUi(),
     claimMilestone: (id) => claimMilestoneUi(id),
     progressWeekly: (event) => { progressWeeklyGoal(event); renderGoals(); return loadGoals(); },
@@ -1417,6 +1541,10 @@
     lastSaveCopy: () => lastSaveCopy,
     decodeSave: (code) => decodeSaveBundle(code),
     backupText: () => localStorage.getItem(SAVE_BACKUP_KEY) || "",
+    setTextSize: (size) => setTextSize(size),
+    textSize: () => ({ value: currentTextSize(), attr: document.documentElement.dataset.textSize, select: document.getElementById("packTextSizeSel")?.value || "" }),
+    pwaVersion: () => document.getElementById("packPwaVersion")?.textContent || "",
+    readCacheVersion: () => readCacheVersion(),
     clearRecord: () => clearRecordStats(),
   };
 

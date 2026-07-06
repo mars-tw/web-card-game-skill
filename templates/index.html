@@ -48,6 +48,9 @@
   /* 主題選擇器（靠右）*/
   .theme-picker { margin-left: auto; display: flex; align-items: center; gap: 6px; }
   .theme-picker .lbl { font-size: 12px; color: #8b98a8; }
+  .pwa-meta { display:flex; align-items:center; gap:7px; margin-left:10px; color:#8b98a8; font-size:12px; }
+  .pwa-meta button { border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.05); color:#e6edf3;
+    border-radius:8px; padding:6px 8px; font:inherit; font-weight:800; cursor:pointer; }
   .swatch {
     width: 26px; height: 26px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;
     transition: transform .12s, border-color .12s;
@@ -88,6 +91,7 @@
     .theme-picker { margin-left: auto; gap: 5px; flex: 0 0 auto; }
     .theme-picker .lbl { display: none; }
     .swatch { width: 24px; height: 24px; }
+    .pwa-meta { display:none; }
   }
 
   @media (max-width: 390px) {
@@ -109,6 +113,10 @@
       <div class="swatch" data-theme="fantasy" title="奇幻"></div>
       <div class="swatch" data-theme="cyber"   title="科幻"></div>
       <div class="swatch" data-theme="forest"  title="森林"></div>
+    </div>
+    <div class="pwa-meta" aria-label="PWA 版本">
+      <span id="pwaVersion">版本讀取中</span>
+      <button id="pwaCheckBtn" type="button">檢查更新</button>
     </div>
   </nav>
 
@@ -157,16 +165,45 @@
       try { f.contentWindow.postMessage({ type: "setTheme", theme: initial === "dark" ? "" : initial }, "*"); } catch {}
     }));
 
-    const pwaState = { skippedForWebdriver: false, registered: false, updatePrompted: false };
+    const pwaState = { skippedForWebdriver: false, registered: false, updatePrompted: false, version: "", checking: false };
+    function swUrl() { return new URL("../sw.js", location.href).toString(); }
+    async function readCacheVersion() {
+      try {
+        const text = await fetch(swUrl(), { cache: "no-store" }).then((res) => res.text());
+        const match = text.match(/CACHE_VERSION\s*=\s*"([^"]+)"/);
+        pwaState.version = match ? match[1] : "unknown";
+      } catch {
+        pwaState.version = "unknown";
+      }
+      const label = document.getElementById("pwaVersion");
+      if (label) label.textContent = `版本 ${pwaState.version}`;
+      return pwaState.version;
+    }
     function showPwaUpdate() {
       pwaState.updatePrompted = true;
       const toast = document.getElementById("pwaUpdateToast");
       if (toast) toast.classList.add("show");
     }
-    document.getElementById("pwaReloadBtn").addEventListener("click", () => location.reload());
+    let pwaReloading = false;
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (pwaReloading) return;
+        pwaReloading = true;
+        location.reload();
+      });
+    }
+    function applyWaitingWorker(registration) {
+      if (registration && registration.waiting) registration.waiting.postMessage({ type: "SKIP_WAITING" });
+      else location.reload();
+    }
+    document.getElementById("pwaReloadBtn").addEventListener("click", async () => {
+      const reg = "serviceWorker" in navigator ? await navigator.serviceWorker.getRegistration("../") : null;
+      applyWaitingWorker(reg);
+    });
     async function registerPwa() {
       if (!("serviceWorker" in navigator)) return pwaState;
-      if (navigator.webdriver) {
+      const allowWebdriver = new URLSearchParams(location.search).get("swtest") === "1";
+      if (navigator.webdriver && !allowWebdriver) {
         pwaState.skippedForWebdriver = true;
         return pwaState;
       }
@@ -184,7 +221,23 @@
       } catch {}
       return pwaState;
     }
-    window.__pwaTest = { state: pwaState, registerPwa, showPwaUpdate };
+    async function checkForUpdate() {
+      pwaState.checking = true;
+      await readCacheVersion();
+      const reg = "serviceWorker" in navigator ? await navigator.serviceWorker.getRegistration("../") : null;
+      if (reg) {
+        await reg.update();
+        if (reg.waiting) {
+          showPwaUpdate();
+          applyWaitingWorker(reg);
+        }
+      }
+      pwaState.checking = false;
+      return pwaState;
+    }
+    document.getElementById("pwaCheckBtn").addEventListener("click", () => checkForUpdate());
+    window.__pwaTest = { state: pwaState, registerPwa, showPwaUpdate, readCacheVersion, checkForUpdate };
+    readCacheVersion();
     registerPwa();
   </script>
 </body>

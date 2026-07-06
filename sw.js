@@ -1,10 +1,11 @@
-const CACHE_VERSION = "card-battle-r32-v1";
+const CACHE_VERSION = "card-battle-r36-v1";
 const ASSET_CACHE = `${CACHE_VERSION}-assets`;
 const HTML_CACHE = `${CACHE_VERSION}-html`;
 
 const CORE_ASSETS = [
   "./",
   "index.html",
+  "offline.html",
   "templates/index.html",
   "templates/card-battle/index.html",
   "templates/card-battle/cards.js",
@@ -18,7 +19,31 @@ const CORE_ASSETS = [
   "assets/backgrounds/dark.png",
   "assets/backgrounds/fantasy.png",
   "assets/backgrounds/cyber.png",
-  "assets/backgrounds/forest.png"
+  "assets/backgrounds/forest.png",
+  "assets/cards/archer.png",
+  "assets/cards/archmage.png",
+  "assets/cards/cleric.png",
+  "assets/cards/dragon.png",
+  "assets/cards/firebolt.png",
+  "assets/cards/footman.png",
+  "assets/cards/frost.png",
+  "assets/cards/golem.png",
+  "assets/cards/griffin.png",
+  "assets/cards/guardian.png",
+  "assets/cards/heal.png",
+  "assets/cards/knight.png",
+  "assets/cards/lich.png",
+  "assets/cards/lightning.png",
+  "assets/cards/mage.png",
+  "assets/cards/manaSurge.png",
+  "assets/cards/meteor.png",
+  "assets/cards/paladin.png",
+  "assets/cards/phoenix.png",
+  "assets/cards/polymorph.png",
+  "assets/cards/raptor.png",
+  "assets/cards/shieldUp.png",
+  "assets/cards/titan.png",
+  "assets/cards/wolf.png"
 ].map((path) => new URL(path, self.registration.scope).toString());
 
 self.addEventListener("install", (event) => {
@@ -44,7 +69,9 @@ async function networkFirst(request) {
     if (response && response.ok) cache.put(request, response.clone());
     return response;
   } catch {
-    return (await cache.match(request)) || caches.match(new URL("templates/index.html", self.registration.scope).toString());
+    return (await cache.match(request))
+      || caches.match(new URL("templates/index.html", self.registration.scope).toString())
+      || caches.match(new URL("offline.html", self.registration.scope).toString());
   }
 }
 
@@ -65,4 +92,12 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
   event.respondWith(isHtmlRequest(request) ? networkFirst(request) : cacheFirst(request));
+});
+
+self.addEventListener("message", (event) => {
+  if (!event.data || typeof event.data !== "object") return;
+  if (event.data.type === "GET_VERSION") {
+    event.source && event.source.postMessage({ type: "CACHE_VERSION", version: CACHE_VERSION });
+  }
+  if (event.data.type === "SKIP_WAITING") self.skipWaiting();
 });

@@ -111,6 +111,51 @@ async function run() {
   const browser = await chromium.launch();
 
   try {
+    const swContext = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: "allow" });
+    const swPage = await swContext.newPage();
+    const swErrors = [];
+    swPage.on("console", (m) => { if (m.type() === "error" && !/favicon|net::ERR/.test(m.text())) swErrors.push("console: " + m.text()); });
+    swPage.on("pageerror", (e) => swErrors.push("pageerror: " + (e && e.message)));
+    await swPage.goto(shellBase + "?swtest=1", { waitUntil: "domcontentloaded" });
+    await swPage.waitForFunction(() => window.__pwaTest);
+    const swInstall = await swPage.evaluate(async () => {
+      const state = await window.__pwaTest.registerPwa();
+      const reg = await navigator.serviceWorker.ready;
+      return { registered: state.registered, scope: reg.scope, controller: !!navigator.serviceWorker.controller };
+    });
+    try {
+      await swPage.reload({ waitUntil: "domcontentloaded" });
+    } catch (err) {
+      void err;
+    }
+    await swPage.waitForFunction(() => navigator.serviceWorker.controller && document.getElementById("battle"));
+    await swPage.waitForFunction(() => document.getElementById("battle")?.contentWindow?.__test);
+    await swContext.setOffline(true);
+    try {
+      await swPage.reload({ waitUntil: "domcontentloaded" });
+    } catch (err) {
+      void err;
+    }
+    await swPage.waitForFunction(() => document.getElementById("battle")?.contentWindow?.__test);
+    const offlineSw = await swPage.evaluate(() => ({
+      controlled: !!navigator.serviceWorker.controller,
+      shell: !!document.querySelector(".tabbar"),
+      battleReady: !!document.getElementById("battle")?.contentWindow?.__test,
+      battleTurn: document.getElementById("battle")?.contentWindow?.__test?.game?.().turn || "",
+    }));
+    assert(swInstall.registered && swInstall.scope.endsWith("/"), "SW test 旗標下可在 webdriver 註冊 root scope");
+    assert(offlineSw.controlled && offlineSw.shell && offlineSw.battleReady && offlineSw.battleTurn === "player",
+      "真 SW 離線 reload 後 shell 與對戰頁仍可載入");
+    await swContext.setOffline(false);
+    await swPage.evaluate(async () => {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map((reg) => reg.unregister()));
+      const keys = await caches.keys();
+      await Promise.all(keys.map((key) => caches.delete(key)));
+    });
+    assert(swErrors.length === 0, "真 SW 離線測試無 console/pageerror" + (swErrors.length ? "：" + swErrors.slice(0, 3).join(" | ") : ""));
+    await swContext.close();
+
   for (const vp of [{ w: 1280, h: 900, name: "桌面 1280x900" }, { w: 390, h: 844, name: "手機 390x844" }]) {
     console.log("\n== 視窗 " + vp.name + " ==");
     const page = await browser.newPage({ viewport: { width: vp.w, height: vp.h } });
@@ -126,12 +171,17 @@ async function run() {
         const manifestResponse = await fetch("../manifest.webmanifest");
         const manifest = await manifestResponse.json();
         const swText = await fetch("../sw.js").then((res) => res.text());
+        const version = await window.__pwaTest.readCacheVersion();
         const state = await window.__pwaTest.registerPwa();
         window.__pwaTest.showPwaUpdate();
+        const checked = await window.__pwaTest.checkForUpdate();
         return {
           manifestHref: manifestLink && manifestLink.getAttribute("href"),
           manifest,
           swText,
+          version,
+          checked,
+          versionLabel: document.getElementById("pwaVersion")?.textContent || "",
           skipped: state.skippedForWebdriver,
           promptVisible: document.getElementById("pwaUpdateToast").classList.contains("show"),
         };
@@ -144,8 +194,16 @@ async function run() {
       assert(/CACHE_VERSION/.test(pwaCheck.swText)
         && /networkFirst/.test(pwaCheck.swText)
         && /cacheFirst/.test(pwaCheck.swText)
+        && pwaCheck.swText.includes("card-battle-r36-v1")
+        && pwaCheck.swText.includes("offline.html")
         && pwaCheck.swText.includes("templates/card-battle")
-        && pwaCheck.swText.includes("templates/card-pack"),
+        && pwaCheck.swText.includes("templates/card-pack")
+        && pwaCheck.swText.includes("templates/card-battle/battle.js")
+        && pwaCheck.swText.includes("templates/card-pack/pack.js")
+        && pwaCheck.swText.includes("assets/cards/wolf.png")
+        && pwaCheck.version === "card-battle-r36-v1"
+        && pwaCheck.versionLabel.includes("card-battle-r36-v1")
+        && pwaCheck.checked.version === "card-battle-r36-v1",
         "Service worker 使用版本快取並涵蓋 battle/pack 子路徑");
       assert(pwaCheck.skipped === true && pwaCheck.promptVisible === true, "navigator.webdriver 會跳過 SW 註冊且更新提示可顯示");
     }
@@ -475,14 +533,26 @@ async function run() {
         sel.dispatchEvent(new Event("change", { bubbles: true }));
         const autoLow = window.__test.forceFps(40);
         const autoHigh = window.__test.forceFps(55);
-        return { low, high, autoLow, autoHigh, attr: document.documentElement.dataset.perf };
+        return { low, high, autoLow, autoHigh, attr: document.documentElement.dataset.perf, diag: document.getElementById("perfDiag")?.textContent || "" };
       });
       assert(perfModes.low.mode === "low" && perfModes.low.effective === "low"
         && perfModes.high.mode === "high" && perfModes.high.effective === "high",
         "效能設定可鎖定高/低動畫");
       assert(perfModes.autoLow.mode === "auto" && perfModes.autoLow.effective === "low"
-        && perfModes.autoHigh.effective === "high" && perfModes.attr === "high",
+        && perfModes.autoHigh.effective === "high" && perfModes.attr === "high" && /FPS/.test(perfModes.diag) && perfModes.diag.includes("55"),
         "自動效能會在 FPS 低於 45 降低動畫並於回穩恢復");
+
+      const textSizeCheck = await page.evaluate(() => {
+        const T = window.__test;
+        T.setTextSize("small");
+        const small = parseFloat(getComputedStyle(document.getElementById("log")).fontSize);
+        T.setTextSize("large");
+        const large = parseFloat(getComputedStyle(document.getElementById("log")).fontSize);
+        return { small, large, state: T.textSize(), stored: localStorage.getItem("card_text_size_v1") };
+      });
+      assert(textSizeCheck.state.attr === "large" && textSizeCheck.state.select === "large"
+        && textSizeCheck.stored === "large" && textSizeCheck.large > textSizeCheck.small,
+        "對戰頁文字大小設定可調整 log 字級並保存");
 
       await page.locator(`.hand .card[data-uid="${stickySetup.uid}"] .card-info-btn`).click();
       await waitCardDetail(page, true);
@@ -503,7 +573,7 @@ async function run() {
         "手機點卡牌詳情不會誤觸出牌");
       assert(handDetail.title.length > 0 && handDetail.keywordButtons >= 1, "手機卡牌詳情顯示大卡資料與可點關鍵字");
       assert(/軸線/.test(handDetail.meta) && handDetail.flavor.includes("「"), "手機卡牌詳情顯示軸線標籤與風味文字");
-      await page.locator("#cardDetailClose").click();
+      await page.keyboard.press("Escape");
       await waitCardDetail(page, false);
       await page.locator(`.hand .card[data-uid="${stickySetup.uid}"]`).click();
       await page.locator("#endTurnBtn").click();
@@ -617,7 +687,8 @@ async function run() {
       await page.locator("#kwCodexBtn").click();
       const codexOpen = await page.evaluate(() => document.getElementById("kwCodex").classList.contains("show"));
       assert(codexOpen === true, "手機可點開關鍵字圖鑑");
-      await page.locator("#kwCodexClose").click();
+      await page.keyboard.press("Escape");
+      await page.waitForFunction(() => !document.getElementById("kwCodex").classList.contains("show") && document.getElementById("kwCodex").getAttribute("aria-hidden") === "true");
 
       const battleMissionSetup = await page.evaluate(({ collection }) => {
         localStorage.setItem("card_stats_v1", JSON.stringify({ version: 2, wins: 0, losses: 0, streak: 0, bestStreak: 0, coins: 0, packsOpened: 0 }));
@@ -660,7 +731,8 @@ async function run() {
       }));
       assert(battleMissionClaimed.coins > 0 && battleMissionClaimed.count === 0 && !battleMissionClaimed.badgeShown,
         "對戰頁任務抽屜可一鍵領取所有可領獎勵並清除紅點");
-      await page.locator("#missionDrawerClose").click();
+      await page.keyboard.press("Escape");
+      await page.waitForFunction(() => !document.getElementById("missionDrawer").classList.contains("show") && document.getElementById("missionDrawer").getAttribute("aria-hidden") === "true");
 
       const mobileDock = await page.evaluate(() => {
         const rect = (sel) => {
@@ -883,6 +955,34 @@ async function run() {
     });
     await page.goto(basePack);
     await page.waitForFunction(() => window.__deckTest && document.getElementById("deckList"));
+    const packR36 = await page.evaluate(async () => {
+      const T = window.__deckTest;
+      await T.readCacheVersion();
+      T.setTextSize("small");
+      const smallEl = document.querySelector("#recordGrid .record-value") || document.getElementById("recordPanel");
+      const small = parseFloat(getComputedStyle(smallEl).fontSize);
+      T.setTextSize("large");
+      const largeEl = document.querySelector("#recordGrid .record-value") || document.getElementById("recordPanel");
+      const large = parseFloat(getComputedStyle(largeEl).fontSize);
+      T.openMissionDrawer();
+      return {
+        small,
+        large,
+        textState: T.textSize(),
+        pwaVersion: T.pwaVersion(),
+        missionOpen: T.missionOpen(),
+        missionAria: document.getElementById("missionDrawer").getAttribute("aria-hidden"),
+      };
+    });
+    await page.waitForFunction(() => /mission/.test(document.activeElement?.id || ""));
+    const packMissionFocus = await page.evaluate(() => document.activeElement?.id || "");
+    assert(packR36.textState.attr === "large" && packR36.textState.select === "large"
+      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r36-v1"),
+      "開包戰績區顯示版本並可調整文字大小");
+    assert(packR36.missionOpen && packR36.missionAria === "false" && /mission/.test(packMissionFocus),
+      "開包任務抽屜開啟後焦點進入抽屜控制");
+    await page.keyboard.press("Escape");
+    await page.waitForFunction(() => !document.getElementById("missionDrawer").classList.contains("show") && document.getElementById("missionDrawer").getAttribute("aria-hidden") === "true");
     const recordText = await page.evaluate(() => window.__deckTest.recordText());
     assert(/1 勝 0 敗/.test(recordText) && /勝率 100%/.test(recordText) && /平均 1\.0 回合/.test(recordText) && recordText.includes(telemetrySeed.wolfName),
       "打完一場後戰績面板顯示勝率、平均回合與常用卡");

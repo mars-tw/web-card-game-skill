@@ -11,7 +11,7 @@
     --panel: #1a2230; --panel-border: #2a3645;
     --ink: #e6edf3; --muted: #8b98a8;
     --mana: #3b82f6; --hp: #ef4444; --accent: #f59e0b;
-    --card-w: 124px; --card-h: 176px;
+    --card-w: 124px; --card-h: 176px; --text-scale: 1;
     --bg-img: url("../../assets/backgrounds/dark.png");
   }
   :root[data-theme="fantasy"] {
@@ -218,12 +218,18 @@
     border: 1px solid var(--panel-border); backdrop-filter: blur(4px); }
   .diff-pick select { background: var(--panel); color: var(--ink); border: 1px solid var(--panel-border);
     border-radius: 12px; padding: 4px 8px; font-family: inherit; font-weight: 700; cursor: pointer; }
-  .dda-toggle, .ai-thought-toggle, .perf-toggle { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--muted);
+  :root[data-text-size="small"] { --text-scale: .92; }
+  :root[data-text-size="large"] { --text-scale: 1.14; }
+  button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+    outline: 3px solid #facc15; outline-offset: 2px;
+  }
+  .dda-toggle, .ai-thought-toggle, .perf-toggle, .text-size-toggle { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--muted);
     background: color-mix(in srgb, var(--panel) 82%, transparent); border:1px solid var(--panel-border);
     border-radius:20px; padding:6px 10px; white-space:nowrap; }
   .dda-toggle input, .ai-thought-toggle input { width:16px; height:16px; accent-color:var(--accent); }
-  .perf-toggle select { background:var(--panel); color:var(--ink); border:1px solid var(--panel-border);
+  .perf-toggle select, .text-size-toggle select { background:var(--panel); color:var(--ink); border:1px solid var(--panel-border);
     border-radius:10px; padding:3px 6px; font-family:inherit; font-weight:800; }
+  .perf-diag { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #facc15; }
   .hint-highlight { outline:3px solid #38bdf8 !important; box-shadow:0 0 18px #38bdf8, 0 0 0 2px #e0f2fe !important; z-index:40 !important; }
   button.end-turn {
     background: linear-gradient(180deg, var(--accent), #d97706); color: #1a1206; font-weight: 800; font-size: 15px;
@@ -259,9 +265,14 @@
   .quest-item.done { border-color: rgba(250,204,21,.45); }
   .quest-item.claimed { opacity: .62; }
 
-  #log { height: 52px; overflow-y: auto; width: min(980px, 97vw); font-size: 12px; color: var(--muted);
+  #log { height: 52px; overflow-y: auto; width: min(980px, 97vw); font-size: calc(12px * var(--text-scale)); color: var(--muted);
     padding: 4px 12px; text-align: center; line-height: 1.5; }
   #log .me { color: #60a5fa; } #log .ai { color: #f87171; }
+  .card .cardname { font-size: calc(11px * var(--text-scale)); }
+  .card .cardtext { font-size: calc(9px * var(--text-scale)); }
+  .quest-title, .mission-name { font-size: calc(12px * var(--text-scale)); }
+  .quest-progress, .mission-progress, .detail-keyword-info, .card-detail-flavor { font-size: calc(11px * var(--text-scale)); }
+  .card-detail-text { font-size: calc(13px * var(--text-scale)); }
 
   /* 浮動傷害 / 技能提示 */
   .dmg-float { position: fixed; transform: translate(-50%, 0); font-weight: 900;
@@ -488,6 +499,8 @@
     .dda-toggle { order: 7; flex:0 0 auto; padding-inline:9px; }
     .ai-thought-toggle { order: 8; flex:0 0 auto; padding-inline:9px; }
     .perf-toggle { order: 9; flex:0 0 auto; padding-inline:9px; }
+    .text-size-toggle { order: 10; flex:0 0 auto; padding-inline:9px; }
+    .perf-diag { max-width: 128px; }
     #endTurnBtn { flex: 0 0 auto; min-width: 112px; position: relative; z-index: 2; padding-inline: 16px; }
     .target-status {
       position: fixed; left: 8px; right: 8px;
@@ -554,7 +567,7 @@
     <div class="controls">
       <div class="controls-scroll">
         <label class="diff-pick">難度
-          <select id="difficultySel">
+          <select id="difficultySel" aria-label="選擇難度">
             <option value="easy" selected>簡單</option>
             <option value="normal">普通</option>
             <option value="hard">困難</option>
@@ -578,6 +591,14 @@
             <option value="auto">自動</option>
             <option value="high">高</option>
             <option value="low">低</option>
+          </select>
+          <span class="perf-diag" id="perfDiag" aria-live="polite">FPS -- · 高動畫 · 自動觀察中</span>
+        </label>
+        <label class="text-size-toggle">文字
+          <select id="textSizeSel" aria-label="文字大小">
+            <option value="small">小</option>
+            <option value="medium" selected>中</option>
+            <option value="large">大</option>
           </select>
         </label>
       </div>
@@ -718,8 +739,29 @@
           `<div class="kw-codex-item"><span class="kwi">${kw.icon}</span><span><span class="kwn">${kw.label}</span><br><span class="kwd">${kw.desc}</span></span></div>`
         ).join("");
       }
-      document.getElementById("kwCodexBtn").onclick = () => document.getElementById("kwCodex").classList.add("show");
-      document.getElementById("kwCodexClose").onclick = () => document.getElementById("kwCodex").classList.remove("show");
+      const codex = document.getElementById("kwCodex");
+      const openBtn = document.getElementById("kwCodexBtn");
+      const closeBtn = document.getElementById("kwCodexClose");
+      let codexReturnFocus = null;
+      function openCodex() {
+        codexReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        codex.classList.add("show");
+        codex.setAttribute("aria-hidden", "false");
+        setTimeout(() => closeBtn.focus(), 0);
+      }
+      function closeCodex() {
+        codex.classList.remove("show");
+        codex.setAttribute("aria-hidden", "true");
+        const restore = codexReturnFocus;
+        codexReturnFocus = null;
+        if (restore && document.contains(restore)) setTimeout(() => restore.focus(), 0);
+      }
+      openBtn.onclick = openCodex;
+      closeBtn.onclick = closeCodex;
+      codex.addEventListener("click", (event) => { if (event.target === codex) closeCodex(); });
+      window.__openKwCodex = openCodex;
+      window.__closeKwCodex = closeCodex;
+      window.__kwCodexOpen = () => codex.classList.contains("show");
     })();
   </script>
 </body>

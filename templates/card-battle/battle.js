@@ -73,8 +73,11 @@
   let game;
   const GUIDE_KEY = "cb_guide_done_v1";
   const PERF_KEY = "card_perf_mode_v1";
+  const TEXT_SIZE_KEY = "card_text_size_v1";
   let guide = { active: false, step: 0, selectedAttacker: null };
-  const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0 };
+  const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0, reason: "自動觀察中" };
+  let detailReturnFocus = null;
+  let missionReturnFocus = null;
   const GUIDE_STEPS = [
     { label: "STEP 1 / 3", title: "先出一張牌", copy: "點手牌中發亮的「迅捷狼」。它有衝鋒，登場後可以立刻攻擊。" },
     { label: "STEP 2 / 3", title: "選擇攻擊", copy: "先點你場上的迅捷狼，再點敵方英雄完成一次攻擊。" },
@@ -90,27 +93,40 @@
   function setPerfMode(mode) {
     const next = ["auto", "high", "low"].includes(mode) ? mode : "auto";
     try { localStorage.setItem(PERF_KEY, next); } catch {}
-    applyPerfState(next, next === "low" ? "low" : "high");
+    applyPerfState(next, next === "low" ? "low" : "high", next === "auto" ? "自動觀察中" : next === "low" ? "手動鎖定低動畫" : "手動鎖定高動畫");
     flash(next === "auto" ? "效能模式：自動。" : next === "low" ? "效能模式：低動畫。" : "效能模式：高動畫。");
     return perfSnapshot();
   }
 
-  function applyPerfState(mode, effective) {
+  function updatePerfDiagnostics() {
+    const el = document.getElementById("perfDiag");
+    const label = perfState.effective === "low" ? "低動畫" : "高動畫";
+    const text = `FPS ${perfState.fps || "--"} · ${label} · ${perfState.reason || "自動觀察中"}`;
+    if (el) {
+      el.textContent = text;
+      el.title = text;
+    }
+    return text;
+  }
+
+  function applyPerfState(mode, effective, reason) {
     perfState.mode = mode || currentPerfMode();
     perfState.effective = effective === "low" ? "low" : "high";
+    if (reason) perfState.reason = reason;
     document.documentElement.dataset.perf = perfState.effective;
     const sel = document.getElementById("perfModeSel");
     if (sel) sel.value = perfState.mode;
+    updatePerfDiagnostics();
   }
 
   function applyPerfEstimate(fps) {
     perfState.fps = Math.round(Number(fps) || 0);
     const mode = currentPerfMode();
-    if (mode === "low") applyPerfState("low", "low");
-    else if (mode === "high") applyPerfState("high", "high");
-    else if (perfState.fps < 45) applyPerfState("auto", "low");
-    else if (perfState.fps >= 52) applyPerfState("auto", "high");
-    else applyPerfState("auto", perfState.effective);
+    if (mode === "low") applyPerfState("low", "low", "手動鎖定低動畫");
+    else if (mode === "high") applyPerfState("high", "high", "手動鎖定高動畫");
+    else if (perfState.fps < 45) applyPerfState("auto", "low", `FPS ${perfState.fps} 低於 45，自動降低動畫`);
+    else if (perfState.fps >= 52) applyPerfState("auto", "high", `FPS ${perfState.fps} 回穩，恢復高動畫`);
+    else applyPerfState("auto", perfState.effective, "自動觀察中");
     return perfSnapshot();
   }
 
@@ -119,11 +135,11 @@
   }
 
   function perfSnapshot() {
-    return { mode: perfState.mode, effective: perfState.effective, fps: perfState.fps };
+    return { mode: perfState.mode, effective: perfState.effective, fps: perfState.fps, reason: perfState.reason, text: updatePerfDiagnostics() };
   }
 
   function startPerfMonitor() {
-    applyPerfState(currentPerfMode(), currentPerfMode() === "low" ? "low" : "high");
+    applyPerfState(currentPerfMode(), currentPerfMode() === "low" ? "low" : "high", currentPerfMode() === "low" ? "手動鎖定低動畫" : currentPerfMode() === "high" ? "手動鎖定高動畫" : "自動觀察中");
     const step = (now) => {
       if (!perfState.last) perfState.last = now;
       perfState.frames++;
@@ -136,6 +152,77 @@
       requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
+  }
+
+  function currentTextSize() {
+    let size = "medium";
+    try { size = localStorage.getItem(TEXT_SIZE_KEY) || "medium"; } catch {}
+    return ["small", "medium", "large"].includes(size) ? size : "medium";
+  }
+
+  function applyTextSize(size) {
+    const next = ["small", "medium", "large"].includes(size) ? size : "medium";
+    document.documentElement.dataset.textSize = next;
+    const sel = document.getElementById("textSizeSel");
+    if (sel) sel.value = next;
+    return next;
+  }
+
+  function setTextSize(size) {
+    const next = applyTextSize(size);
+    try { localStorage.setItem(TEXT_SIZE_KEY, next); } catch {}
+    return next;
+  }
+
+  function installAccessibilityLabels() {
+    const labels = {
+      hintBtn: "取得本回合提示",
+      newGameBtn: "開始新對戰",
+      toPackBtn: "前往開包與牌組編輯",
+      guideReplayBtn: "重看教學",
+      endTurnBtn: "結束回合",
+      mulliganBtn: "重抽起手",
+      questClaimAllBtn: "領取所有可領每日任務",
+      restartBtn: "再戰一場",
+      overlayPackBtn: "前往開包",
+      overlayQuestBtn: "領取每日任務",
+      guideSkipBtn: "略過教學",
+      guideHintBtn: "聚焦教學目標",
+      missionDrawerBtn: "開啟任務抽屜",
+      missionClaimAllBtn: "領取所有可領任務",
+      missionDrawerClose: "關閉任務抽屜",
+      kwCodexBtn: "開啟關鍵字圖鑑",
+      kwCodexClose: "關閉關鍵字圖鑑",
+      cardDetailClose: "關閉卡牌詳情",
+    };
+    Object.entries(labels).forEach(([id, label]) => {
+      const el = document.getElementById(id);
+      if (el && !el.getAttribute("aria-label")) el.setAttribute("aria-label", label);
+    });
+    const controls = {
+      ddaToggle: "動態難度調節",
+      aiThoughtToggle: "顯示 AI 思路",
+      perfModeSel: "動畫效能模式",
+      difficultySel: "選擇難度",
+      textSizeSel: "文字大小",
+    };
+    Object.entries(controls).forEach(([id, label]) => {
+      const el = document.getElementById(id);
+      if (el) el.setAttribute("aria-label", label);
+    });
+    const codex = document.getElementById("kwCodex");
+    if (codex) {
+      codex.setAttribute("role", "dialog");
+      codex.setAttribute("aria-modal", "true");
+      codex.setAttribute("aria-hidden", codex.classList.contains("show") ? "false" : "true");
+    }
+    const mission = document.getElementById("missionDrawer");
+    if (mission) {
+      mission.setAttribute("role", "dialog");
+      mission.setAttribute("aria-modal", "true");
+    }
+    const detail = document.getElementById("cardDetail");
+    if (detail) detail.setAttribute("aria-labelledby", "cardDetailTitle");
   }
 
   // ===== 初始化 =====
@@ -1364,15 +1451,20 @@
     const keywordInfo = document.getElementById("cardDetailKeywordInfo");
     if (firstKeyword) showDetailKeyword(firstKeyword);
     else if (keywordInfo) keywordInfo.textContent = card.type === CARD_TYPE.SPELL ? "法術牌會在施放時立即結算效果。" : "此牌沒有關鍵字。";
+    detailReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     root.classList.add("show");
     root.setAttribute("aria-hidden", "false");
+    setTimeout(() => document.getElementById("cardDetailClose")?.focus(), 0);
   }
 
   function closeCardDetail() {
     const root = document.getElementById("cardDetail");
     if (!root) return;
+    const restore = detailReturnFocus;
+    detailReturnFocus = null;
     root.classList.remove("show");
     root.setAttribute("aria-hidden", "true");
+    if (restore && document.contains(restore)) setTimeout(() => restore.focus(), 0);
   }
 
   // ===== 動畫 / 工具 =====
@@ -1968,15 +2060,20 @@
     renderMissionDrawer();
     const drawer = document.getElementById("missionDrawer");
     if (!drawer) return;
+    missionReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     drawer.classList.add("show");
     drawer.setAttribute("aria-hidden", "false");
+    setTimeout(() => (document.getElementById("missionClaimAllBtn") || document.getElementById("missionDrawerClose"))?.focus(), 0);
   }
 
   function closeMissionDrawer() {
     const drawer = document.getElementById("missionDrawer");
     if (!drawer) return;
+    const restore = missionReturnFocus;
+    missionReturnFocus = null;
     drawer.classList.remove("show");
     drawer.setAttribute("aria-hidden", "true");
+    if (restore && document.contains(restore)) setTimeout(() => restore.focus(), 0);
   }
 
   function renderQuests(questState) {
@@ -2068,6 +2165,8 @@
 
   // ===== 綁定 & 啟動 =====
   installErrorRecovery();
+  installAccessibilityLabels();
+  applyTextSize(currentTextSize());
   document.getElementById("endTurnBtn").onclick = endTurn;
   const hintBtn = document.getElementById("hintBtn");
   if (hintBtn) hintBtn.onclick = showHint;
@@ -2077,6 +2176,8 @@
   if (aiThoughtToggle) aiThoughtToggle.onchange = () => setAiThoughtEnabled(aiThoughtToggle.checked);
   const perfModeSel = document.getElementById("perfModeSel");
   if (perfModeSel) perfModeSel.onchange = () => setPerfMode(perfModeSel.value);
+  const textSizeSel = document.getElementById("textSizeSel");
+  if (textSizeSel) textSizeSel.onchange = () => setTextSize(textSizeSel.value);
   document.getElementById("restartBtn").onclick = newGame;
   document.getElementById("overlayPackBtn").onclick = goPack;
   document.getElementById("overlayQuestBtn").onclick = claimAllQuestsUi;
@@ -2111,7 +2212,10 @@
     });
   }
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeCardDetail();
+    if (event.key !== "Escape") return;
+    if (document.getElementById("cardDetail")?.classList.contains("show")) { closeCardDetail(); return; }
+    if (document.getElementById("missionDrawer")?.classList.contains("show")) { closeMissionDrawer(); return; }
+    if (typeof window.__kwCodexOpen === "function" && window.__kwCodexOpen()) window.__closeKwCodex();
   });
   const missionDrawerBtn = document.getElementById("missionDrawerBtn");
   if (missionDrawerBtn) missionDrawerBtn.onclick = openMissionDrawer;
@@ -2133,6 +2237,7 @@
   window.__difficulties = DIFFICULTY;
   window.addEventListener("storage", (e) => {
     if (e.key === QUEST_KEY) renderQuests();
+    if (e.key === TEXT_SIZE_KEY) applyTextSize(currentTextSize());
   });
 
   // 測試掛鉤：讓自動化測試能建立確定性場景並驗證技能（不影響正常遊玩）
@@ -2178,6 +2283,8 @@
     setPerfMode: (mode) => setPerfMode(mode),
     perf: () => perfSnapshot(),
     forceFps: (fps) => applyPerfEstimate(fps),
+    setTextSize: (size) => setTextSize(size),
+    textSize: () => ({ value: currentTextSize(), attr: document.documentElement.dataset.textSize, select: document.getElementById("textSizeSel")?.value || "" }),
     hint: () => showHint(),
     lastHint: () => game && game.lastHint,
     hintHighlights: () => [...document.querySelectorAll(".hint-highlight")].map((el) => el.dataset.uid || el.id || el.dataset.cardId || el.className),
@@ -2187,6 +2294,7 @@
     progressWeeklyGoal: (event) => progressWeeklyGoal(event),
     missionCount: () => missionClaimableCount(),
     openMissionDrawer: () => openMissionDrawer(),
+    missionOpen: () => document.getElementById("missionDrawer")?.classList.contains("show") || false,
     claimAllMissions: () => claimAllMissionsUi(),
     claimQuest: (questId) => claimQuestUi(questId),
     claimAllQuests: () => claimAllQuestsUi(),
@@ -2212,6 +2320,7 @@
     skipGuide: () => stopGuide(true),
     detailOpen: () => document.getElementById("cardDetail")?.classList.contains("show") || false,
     closeDetail: () => closeCardDetail(),
+    codexOpen: () => typeof window.__kwCodexOpen === "function" ? window.__kwCodexOpen() : document.getElementById("kwCodex")?.classList.contains("show") || false,
     // 直接塞一張指定卡進手牌（回傳 uid），測「法力不足點擊」「場滿」等指定劇本
     giveCard(cardId) {
       const c = Object.assign({}, getCardById(cardId));
