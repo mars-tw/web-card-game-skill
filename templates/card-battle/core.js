@@ -17,20 +17,35 @@
   const START_HP = 30;
   const MAX_FIELD = 7;
   const HAND_LIMIT = 8;
-  const STATS_VERSION = 2;
+  const STATS_VERSION = 3;
   const DECK_VERSION = 1;
   const DECK_SIZE = 20;
   const QUEST_VERSION = 1;
   const GOAL_VERSION = 1;
+  const DDA_MIN_LEVEL = -2;
+  const DDA_MAX_LEVEL = 2;
+  const DDA_DEFAULT = Object.freeze({
+    enabled: true,
+    level: 0,
+  });
   const CARD_TYPE = { MINION: "minion", SPELL: "spell" };
+  const TELEMETRY_DEFAULT = Object.freeze({
+    games: Object.freeze([]),
+    cardPlays: Object.freeze({}),
+  });
   const STATS_DEFAULT = Object.freeze({
     version: STATS_VERSION,
     wins: 0,
     losses: 0,
     streak: 0,
+    lossStreak: 0,
     bestStreak: 0,
     coins: 0,
     packsOpened: 0,
+    dda: DDA_DEFAULT,
+    telemetry: TELEMETRY_DEFAULT,
+    lastSafeSaveAt: 0,
+    lastErrorMessage: "",
   });
   const DECK_DEFAULT = Object.freeze({
     version: DECK_VERSION,
@@ -72,6 +87,77 @@
     polymorph: Object.freeze({ needsTarget: "enemyMinion" }),
   });
 
+  function clampNumber(value, min, max, fallback) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return fallback;
+    return Math.max(min, Math.min(max, n));
+  }
+
+  function migrateDda(raw) {
+    const source = raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
+    return {
+      enabled: source.enabled !== false,
+      level: clampNumber(source.level, DDA_MIN_LEVEL, DDA_MAX_LEVEL, 0),
+    };
+  }
+
+  function migrateTelemetry(raw) {
+    const source = raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
+    const cardPlays = source.cardPlays && typeof source.cardPlays === "object" && !Array.isArray(source.cardPlays)
+      ? Object.keys(source.cardPlays).reduce((acc, id) => {
+          const count = Math.max(0, Math.floor(Number(source.cardPlays[id]) || 0));
+          if (id && count > 0) acc[id] = count;
+          return acc;
+        }, Object.create(null))
+      : Object.create(null);
+    const games = Array.isArray(source.games)
+      ? source.games.slice(-100).map((game) => {
+          const item = game && typeof game === "object" ? game : {};
+          return {
+            difficulty: String(item.difficulty || "easy"),
+            win: item.win === true,
+            turns: Math.max(0, Math.floor(Number(item.turns) || 0)),
+            archetype: ["aggro", "control", "neutral"].includes(item.archetype) ? item.archetype : "neutral",
+            at: Math.max(0, Math.floor(Number(item.at) || 0)),
+          };
+        })
+      : [];
+    return { games, cardPlays };
+  }
+
+  function ddaProfile(rawDda) {
+    const dda = migrateDda(rawDda);
+    if (!dda.enabled) return { enabled: false, level: 0, mistakeRate: 0, scoreBias: 0, label: "關閉" };
+    const level = dda.level;
+    return {
+      enabled: true,
+      level,
+      mistakeRate: level < 0 ? Math.abs(level) * 0.1 : 0,
+      scoreBias: level > 0 ? level * 0.1 : 0,
+      label: level < 0 ? `軟化 ${Math.abs(level)}` : level > 0 ? `強化 ${level}` : "標準",
+    };
+  }
+
+  function nextDdaState(rawDda, resultStats, outcome) {
+    const current = migrateDda(rawDda);
+    if (!current.enabled) return current;
+    const winStreak = Math.max(0, Math.floor(Number(resultStats && resultStats.streak) || 0));
+    const lossStreak = Math.max(0, Math.floor(Number(resultStats && resultStats.lossStreak) || 0));
+    let delta = 0;
+    if (outcome === "win" && winStreak >= 3 && (winStreak - 3) % 2 === 0) delta = 1;
+    if (outcome === "loss" && lossStreak >= 2 && lossStreak % 2 === 0) delta = -1;
+    return Object.assign({}, current, {
+      level: clampNumber(current.level + delta, DDA_MIN_LEVEL, DDA_MAX_LEVEL, 0),
+    });
+  }
+
+  function protectSave(rawStats, errorMessage, timestamp) {
+    const next = migrateStats(rawStats);
+    next.lastSafeSaveAt = Math.max(0, Math.floor(Number(timestamp) || 0));
+    next.lastErrorMessage = String(errorMessage || "").slice(0, 160);
+    return next;
+  }
+
   function migrateStats(raw) {
     let source = raw;
     if (typeof source === "string") {
@@ -81,7 +167,13 @@
     if (!source || typeof source !== "object" || Array.isArray(source)) source = {};
     const next = Object.assign({}, STATS_DEFAULT, source);
     for (const key of Object.keys(STATS_DEFAULT)) {
-      if (typeof next[key] !== "number" || !Number.isFinite(next[key])) {
+      if (key === "dda") {
+        next.dda = migrateDda(next.dda);
+      } else if (key === "telemetry") {
+        next.telemetry = migrateTelemetry(next.telemetry);
+      } else if (key === "lastErrorMessage") {
+        next.lastErrorMessage = typeof next.lastErrorMessage === "string" ? next.lastErrorMessage.slice(0, 160) : "";
+      } else if (typeof next[key] !== "number" || !Number.isFinite(next[key])) {
         next[key] = STATS_DEFAULT[key];
       }
     }
@@ -938,6 +1030,9 @@
     HAND_LIMIT,
     STATS_VERSION,
     STATS_DEFAULT,
+    DDA_MIN_LEVEL,
+    DDA_MAX_LEVEL,
+    DDA_DEFAULT,
     DECK_VERSION,
     DECK_SIZE,
     DECK_DEFAULT,
@@ -949,6 +1044,10 @@
     CARD_TYPE,
     SPELL_EFFECTS,
     migrateStats,
+    migrateDda,
+    ddaProfile,
+    nextDdaState,
+    protectSave,
     migrateDeck,
     migrateQuests,
     getDailyQuests,

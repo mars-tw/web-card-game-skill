@@ -218,6 +218,11 @@
     border: 1px solid var(--panel-border); backdrop-filter: blur(4px); }
   .diff-pick select { background: var(--panel); color: var(--ink); border: 1px solid var(--panel-border);
     border-radius: 12px; padding: 4px 8px; font-family: inherit; font-weight: 700; cursor: pointer; }
+  .dda-toggle { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--muted);
+    background: color-mix(in srgb, var(--panel) 82%, transparent); border:1px solid var(--panel-border);
+    border-radius:20px; padding:6px 10px; white-space:nowrap; }
+  .dda-toggle input { width:16px; height:16px; accent-color:var(--accent); }
+  .hint-highlight { outline:3px solid #38bdf8 !important; box-shadow:0 0 18px #38bdf8, 0 0 0 2px #e0f2fe !important; z-index:40 !important; }
   button.end-turn {
     background: linear-gradient(180deg, var(--accent), #d97706); color: #1a1206; font-weight: 800; font-size: 15px;
     border: none; padding: 11px 26px; border-radius: 24px; cursor: pointer;
@@ -466,6 +471,8 @@
     #newGameBtn { order: 3; }
     #toPackBtn { order: 4; }
     #guideReplayBtn { order: 5; }
+    #hintBtn { order: 2; }
+    .dda-toggle { order: 6; flex:0 0 auto; padding-inline:9px; }
     #endTurnBtn { flex: 0 0 auto; min-width: 112px; position: relative; z-index: 2; padding-inline: 16px; }
     .target-status {
       position: fixed; left: 8px; right: 8px;
@@ -539,9 +546,14 @@
           </select>
         </label>
         <button class="mulligan-btn" id="mulliganBtn" style="display:none">🔄 重抽起手牌</button>
+        <button class="mulligan-btn" id="hintBtn" title="本回合提示最佳一步">💡 提示</button>
         <button class="mulligan-btn" id="newGameBtn" title="重開一局（會帶入最新收藏的牌組）">🔁 重新開始</button>
         <button class="mulligan-btn" id="toPackBtn" title="前往卡包與牌組編輯器">🃏 卡包／牌組</button>
         <button class="mulligan-btn" id="guideReplayBtn" title="重看三步導引">🧭 導引</button>
+        <label class="dda-toggle" title="依近期勝敗小幅調整 AI。可完全關閉。">
+          <input id="ddaToggle" type="checkbox" checked />
+          <span>動態調節</span>
+        </label>
       </div>
       <button class="end-turn" id="endTurnBtn">結束回合 ▶</button>
     </div>

@@ -205,6 +205,15 @@
   .goal-item.claimed { opacity:.62; }
   .weekly-goal { border-color:rgba(45,212,191,.38); background:rgba(45,212,191,.07); }
   .weekly-goal .goal-title { color:#5eead4; }
+  .record-panel { width:min(960px,94vw); margin:10px auto 2px; padding:12px;
+    background:rgba(13,17,23,.72); border:1px solid rgba(255,255,255,.12); border-radius:8px; }
+  .record-head { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+  .record-head h2 { font-size:16px; color:var(--ink); }
+  .record-head button { padding:7px 10px; border-radius:8px; font-size:12px; }
+  .record-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:8px; }
+  .record-card { border:1px solid rgba(255,255,255,.1); border-radius:8px; padding:8px; background:rgba(255,255,255,.04); }
+  .record-title { font-size:12px; color:#facc15; font-weight:900; margin-bottom:5px; }
+  .record-value { font-size:12px; color:var(--muted); line-height:1.55; white-space:pre-line; }
   .mission-drawer-btn { position: fixed; bottom: 12px; left: 12px; z-index: 90; background: #1a2230;
     color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
     font-size: 13px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
@@ -259,6 +268,7 @@
     .deck-current-panel .deck-card-list { max-height:160px; }
     .goal-grid { grid-template-columns:1fr; }
     .milestone-list { grid-template-columns:1fr; }
+    .record-grid { grid-template-columns:1fr; }
     .mission-drawer-btn { top: 8px; bottom: auto; left: 10px; z-index: 90; }
     .mission-drawer { align-items:flex-start; padding:50px 8px 8px; }
     .mission-card { max-height:calc(100vh - 64px); padding:12px; }
@@ -293,6 +303,14 @@
       <div class="milestone-list" id="milestoneList"></div>
       <div class="goal-item weekly-goal" id="weeklyGoal"></div>
     </div>
+  </section>
+
+  <section class="record-panel" id="recordPanel">
+    <div class="record-head">
+      <h2>戰績</h2>
+      <button class="ghost" id="clearRecordBtn">清除戰績</button>
+    </div>
+    <div class="record-grid" id="recordGrid"></div>
   </section>
 
   <div class="pack-stage" id="packStage">

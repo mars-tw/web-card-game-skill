@@ -41,6 +41,31 @@
   }
   function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(Core.migrateStats(s))); } catch {} }
 
+  function recoveryToast(message) {
+    const div = document.createElement("div");
+    div.textContent = message;
+    div.style.cssText = "position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:220;background:rgba(15,23,42,.96);color:#fff;border:1px solid rgba(250,204,21,.35);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:900;box-shadow:0 8px 24px rgba(0,0,0,.35);";
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), 2600);
+  }
+
+  function safeSaveAfterError(message) {
+    try {
+      saveStats(Core.protectSave(loadStats(), message, Date.now()));
+      recoveryToast("系統偵測到錯誤，已保護本地存檔。重新整理可繼續遊玩。");
+    } catch {}
+  }
+
+  function installErrorRecovery() {
+    if (window.__cardPackErrorRecoveryInstalled) return;
+    window.__cardPackErrorRecoveryInstalled = true;
+    window.addEventListener("error", (event) => safeSaveAfterError(event && event.message ? event.message : "unknown error"));
+    window.addEventListener("unhandledrejection", (event) => {
+      const reason = event && event.reason;
+      safeSaveAfterError(reason && reason.message ? reason.message : String(reason || "unhandled rejection"));
+    });
+  }
+
   function todaySeed() {
     const d = new Date();
     const mm = String(d.getMonth() + 1).padStart(2, "0");
@@ -1027,6 +1052,8 @@
   if (collectionRarityFilter) collectionRarityFilter.onchange = () => { collectionFilters.rarity = collectionRarityFilter.value; renderCollection(); };
   if (collectionOwnershipFilter) collectionOwnershipFilter.onchange = () => { collectionFilters.ownership = collectionOwnershipFilter.value; renderCollection(); };
   if (collectionSort) collectionSort.onchange = () => { collectionFilters.sort = collectionSort.value; renderCollection(); };
+  const clearRecordBtn = document.getElementById("clearRecordBtn");
+  if (clearRecordBtn) clearRecordBtn.onclick = clearRecordStats;
 
   // 更新金幣顯示（CP0-2）
   function updateCoinDisplay() {
@@ -1034,8 +1061,68 @@
     if (el) el.textContent = loadStats().coins;
   }
 
+  function percent(wins, total) {
+    return total ? Math.round((wins / total) * 100) + "%" : "0%";
+  }
+
+  function summarizeGames(games, key) {
+    return games.reduce((acc, game) => {
+      const name = game[key] || "neutral";
+      if (!acc[name]) acc[name] = { wins: 0, total: 0 };
+      acc[name].total++;
+      if (game.win) acc[name].wins++;
+      return acc;
+    }, Object.create(null));
+  }
+
+  function renderRecordPanel() {
+    const grid = document.getElementById("recordGrid");
+    if (!grid) return;
+    const stats = loadStats();
+    const games = stats.telemetry.games || [];
+    const diffLabels = { easy: "簡單", normal: "普通", hard: "困難" };
+    const axisLabels = { aggro: "快攻", control: "控制", neutral: "中立" };
+    const byDifficulty = summarizeGames(games, "difficulty");
+    const byArchetype = summarizeGames(games, "archetype");
+    const totalTurns = games.reduce((sum, game) => sum + (game.turns || 0), 0);
+    const avgTurns = games.length ? (totalTurns / games.length).toFixed(1) : "0.0";
+    const topCards = Object.entries(stats.telemetry.cardPlays || {})
+      .map(([id, count]) => ({ card: getCardById(id), count }))
+      .filter((item) => item.card)
+      .sort((a, b) => b.count - a.count || a.card.name.localeCompare(b.card.name, "zh-Hant"))
+      .slice(0, 5);
+    const diffText = Object.keys(diffLabels).map((key) => {
+      const row = byDifficulty[key] || { wins: 0, total: 0 };
+      return `${diffLabels[key]}：${row.wins}/${row.total}（${percent(row.wins, row.total)}）`;
+    }).join("\n");
+    const archetypeText = Object.keys(axisLabels).map((key) => {
+      const row = byArchetype[key] || { wins: 0, total: 0 };
+      return `${axisLabels[key]}：${row.wins}/${row.total}（${percent(row.wins, row.total)}）`;
+    }).join("\n");
+    grid.innerHTML = `
+      <div class="record-card"><div class="record-title">總覽</div><div class="record-value">${stats.wins} 勝 ${stats.losses} 敗\n勝率 ${percent(stats.wins, stats.wins + stats.losses)}\n平均 ${avgTurns} 回合</div></div>
+      <div class="record-card"><div class="record-title">難度勝率</div><div class="record-value">${diffText}</div></div>
+      <div class="record-card"><div class="record-title">流派勝率</div><div class="record-value">${archetypeText}</div></div>
+      <div class="record-card"><div class="record-title">常用卡 Top 5</div><div class="record-value">${topCards.length ? topCards.map((item, index) => `${index + 1}. ${item.card.name} x${item.count}`).join("\n") : "尚無出牌紀錄"}</div></div>`;
+  }
+
+  function clearRecordStats() {
+    const stats = loadStats();
+    stats.wins = 0;
+    stats.losses = 0;
+    stats.streak = 0;
+    stats.lossStreak = 0;
+    stats.bestStreak = 0;
+    stats.telemetry = { games: [], cardPlays: {} };
+    saveStats(stats);
+    renderRecordPanel();
+    return stats;
+  }
+
+  installErrorRecovery();
   renderCollection();
   updateCoinDisplay();
+  renderRecordPanel();
 
   window.__deckTest = {
     deck: () => Core.migrateDeck(deckState),
@@ -1118,11 +1205,16 @@
     },
     recommendation: () => findDeckRecommendation(deckCounts()),
     recommendationText: () => (document.getElementById("deckRecommend")?.textContent || "").trim(),
+    recordText: () => (document.getElementById("recordPanel")?.textContent || "").trim(),
+    clearRecord: () => clearRecordStats(),
   };
 
   // 對戰 iframe 打完仗寫入金幣時，這頁（另一個 window）會收到 storage 事件——即時刷新餘額，
   // 不然兩個 iframe 常駐不重載，切回來看到的是舊值
   window.addEventListener("storage", (e) => {
-    if (e.key === "card_stats_v1") updateCoinDisplay();
+    if (e.key === "card_stats_v1") {
+      updateCoinDisplay();
+      renderRecordPanel();
+    }
   });
 })();

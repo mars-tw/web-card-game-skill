@@ -272,13 +272,41 @@ function testMulliganBurn() {
 function testStatsMigration() {
   const legacy = Core.migrateStats({ wins: 3, coins: 80 });
   assert(legacy.version === Core.STATS_VERSION && legacy.wins === 3 && legacy.coins === 80, "舊檔無 version 會無損升級並補 version");
-  assert(legacy.losses === 0 && legacy.bestStreak === 0 && legacy.packsOpened === 0, "舊檔缺欄位會補預設值");
+  assert(legacy.losses === 0 && legacy.lossStreak === 0 && legacy.bestStreak === 0 && legacy.packsOpened === 0, "舊檔缺欄位會補預設值");
+  assert(legacy.dda.enabled === true && legacy.dda.level === 0 && Array.isArray(legacy.telemetry.games), "舊檔會補 DDA 與本地遙測預設");
 
   const missing = Core.migrateStats({ version: Core.STATS_VERSION, losses: 2 });
   assert(missing.losses === 2 && missing.wins === 0 && missing.coins === 0, "欄位缺失會以 DEFAULT shape 補齊");
 
-  const polluted = Core.migrateStats({ version: NaN, wins: NaN, coins: NaN, packsOpened: "x" });
+  const polluted = Core.migrateStats({ version: NaN, wins: NaN, coins: NaN, packsOpened: "x", dda: { enabled: "no", level: 99 }, telemetry: { games: "bad", cardPlays: { c1: "3" } } });
   assert(polluted.version === Core.STATS_VERSION && polluted.wins === 0 && polluted.coins === 0 && polluted.packsOpened === 0, "NaN 或非數字污染會回到預設數字");
+  assert(polluted.dda.enabled === true && polluted.dda.level === Core.DDA_MAX_LEVEL && polluted.telemetry.cardPlays.c1 === 3, "DDA 與遙測污染值會安全遷移");
+}
+
+function testDdaAndSaveProtection() {
+  const disabled = Core.ddaProfile({ enabled: false, level: 2 });
+  assert(disabled.enabled === false && disabled.level === 0 && disabled.mistakeRate === 0 && disabled.scoreBias === 0, "DDA 關閉時係數完全歸零");
+
+  const loss1 = Core.nextDdaState({ enabled: true, level: 0 }, { lossStreak: 1 }, "loss");
+  const loss2 = Core.nextDdaState(loss1, { lossStreak: 2 }, "loss");
+  const loss4 = Core.nextDdaState(loss2, { lossStreak: 4 }, "loss");
+  assert(loss1.level === 0 && loss2.level === -1 && loss4.level === -2, "連敗 2 場開始軟化並小步進");
+  const lossCap = Core.nextDdaState(loss4, { lossStreak: 6 }, "loss");
+  assert(lossCap.level === Core.DDA_MIN_LEVEL, "DDA 軟化有下限");
+
+  const win2 = Core.nextDdaState({ enabled: true, level: 0 }, { streak: 2 }, "win");
+  const win3 = Core.nextDdaState(win2, { streak: 3 }, "win");
+  const win5 = Core.nextDdaState(win3, { streak: 5 }, "win");
+  assert(win2.level === 0 && win3.level === 1 && win5.level === 2, "連勝 3 場開始增強並小步進");
+  const winCap = Core.nextDdaState(win5, { streak: 7 }, "win");
+  const hardProfile = Core.ddaProfile(winCap);
+  assert(winCap.level === Core.DDA_MAX_LEVEL && hardProfile.scoreBias === 0.2, "DDA 增強有上限且係數正確");
+
+  const softProfile = Core.ddaProfile(lossCap);
+  assert(softProfile.level === -2 && softProfile.mistakeRate === 0.2, "DDA 軟化係數正確");
+
+  const protectedStats = Core.protectSave({ wins: 2, coins: 10 }, "boom", 12345);
+  assert(protectedStats.wins === 2 && protectedStats.coins === 10 && protectedStats.lastSafeSaveAt === 12345 && protectedStats.lastErrorMessage === "boom", "錯誤韌性保護存檔會保留既有欄位並記錄錯誤");
 }
 
 function testDeckValidation() {
@@ -390,6 +418,7 @@ testDeathrattleOrder();
 testComboCount();
 testMulliganBurn();
 testStatsMigration();
+testDdaAndSaveProtection();
 testDeckValidation();
 testBuildBattleDeck();
 testDeckMigration();

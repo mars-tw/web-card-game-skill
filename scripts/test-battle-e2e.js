@@ -408,6 +408,26 @@ async function run() {
       });
       assert(stickySetup.handVisible && stickySetup.endVisible && stickySetup.endHit && stickySetup.scrollY === 0,
         `手機首屏可看到且可點擊手牌與結束回合按鈕（end left=${stickySetup.endRect.left}, right=${stickySetup.endRect.right}）`);
+      await page.locator("#hintBtn").click();
+      const hintCheck = await page.evaluate((uid) => {
+        const g = window.__test.game();
+        return {
+          highlights: window.__test.hintHighlights().length,
+          stillInHand: g.player.hand.some((card) => card.uid === uid),
+          fieldCount: g.player.field.length,
+          hintDisabled: document.getElementById("hintBtn").disabled,
+        };
+      }, stickySetup.uid);
+      assert(hintCheck.highlights >= 1 && hintCheck.stillInHand && hintCheck.fieldCount === 0 && hintCheck.hintDisabled,
+        "手機提示會高亮建議且不自動出牌/攻擊");
+      await page.locator("#ddaToggle").uncheck();
+      const ddaOff = await page.evaluate(() => window.__test.dda());
+      assert(ddaOff.stats.enabled === false && ddaOff.profile.enabled === false && ddaOff.profile.mistakeRate === 0 && ddaOff.profile.scoreBias === 0,
+        "動態難度調節可由設定完全關閉");
+      await page.locator("#ddaToggle").check();
+      const ddaOn = await page.evaluate(() => window.__test.dda());
+      assert(ddaOn.stats.enabled === true && ddaOn.profile.enabled === true, "動態難度調節預設/重新開啟有效");
+
       await page.locator(`.hand .card[data-uid="${stickySetup.uid}"] .card-info-btn`).click();
       await waitCardDetail(page, true);
       const handDetail = await page.evaluate((uid) => {
@@ -744,8 +764,23 @@ async function run() {
     await page.waitForFunction(() => window.__test && window.__test.game);
     const templateBattleDeck = await page.evaluate(() => window.__test.deckInfo());
     assert(templateBattleDeck.source === "saved" && templateBattleDeck.ids.length === 20, "模板牌組存檔後可進入對戰並使用 saved 來源");
+
+    const telemetrySeed = await page.evaluate(() => {
+      localStorage.setItem("card_stats_v1", JSON.stringify({ version: 3, wins: 0, losses: 0, streak: 0, lossStreak: 0, bestStreak: 0, coins: 0, packsOpened: 0 }));
+      window.__newGame();
+      const T = window.__test;
+      const g = T.game();
+      g.player.mana = g.player.manaMax = 10;
+      const uid = T.giveCard("wolf");
+      T.playFromHand(uid);
+      const stats = T.finishGame(true);
+      return { wolfName: window.getCardById("wolf").name, stats };
+    });
     await page.goto(basePack);
     await page.waitForFunction(() => window.__deckTest && document.getElementById("deckList"));
+    const recordText = await page.evaluate(() => window.__deckTest.recordText());
+    assert(/1 勝 0 敗/.test(recordText) && /勝率 100%/.test(recordText) && /平均 1\.0 回合/.test(recordText) && recordText.includes(telemetrySeed.wolfName),
+      "打完一場後戰績面板顯示勝率、平均回合與常用卡");
 
     const downgradeRecommendation = await page.evaluate(({ deckIds, collection }) => {
       const T = window.__deckTest;

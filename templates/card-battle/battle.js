@@ -88,6 +88,8 @@
     const playerDeckSource = playerDeck._deckSource || "fallback";
     const playerDeckIds = playerDeck.map((card) => card.id);
     const playerArchetype = detectDeckArchetype(playerDeckIds);
+    const stats = loadStats();
+    const dda = Core.ddaProfile(stats.dda);
     const enemyPlan = buildAiDeck(diffKey, playerArchetype);
     const enemyDeck = enemyPlan.deck;
     const enemyDeckIds = enemyDeck.map((card) => card.id);
@@ -101,6 +103,9 @@
       enemyArchetype: enemyPlan.archetype,
       enemyDeckIds,
       enemyTemplateIds: enemyPlan.templateIds || [],
+      dda,
+      turnCount: 1,
+      hintUsedTurn: null,
       turn: "player",
       player: { side: "player", hp: D.playerHp, maxHp: D.playerHp, mana: 1, manaMax: 1, deck: playerDeck, hand: [], field: [] },
       enemy:  { side: "enemy",  hp: D.enemyHp, maxHp: D.enemyHp, mana: 0, manaMax: 0, deck: enemyDeck, hand: [], field: [] },
@@ -117,6 +122,7 @@
     document.getElementById("log").innerHTML = "";
     log(`⚔️ 對戰開始！（難度：${D.label}）善用技能取勝。`, "me");
     render();
+    syncDdaToggle();
     offerMulligan(D.playerDraw); // 提供起手重抽
   }
 
@@ -414,8 +420,10 @@
       return;
     }
     if (result.card && result.card.type === CARD_TYPE.MINION) {
+      trackCardUse(result.card);
       log(`你召喚了 ${result.card.name}。`, "me");
     } else if (result.card && result.card.type === CARD_TYPE.SPELL) {
+      trackCardUse(result.card);
       logSpellEffect(result.card, result.target, "player");
     }
     render(); checkWin();
@@ -469,7 +477,10 @@
     const result = Core.resolveTarget(game, { side: "player", targetUid: target && target.uid }, rng);
     handleCoreResult(result);
     if (!result.ok) showCoreFailure(result);
-    else if (result.card) logSpellEffect(result.card, result.target, "player");
+    else if (result.card) {
+      trackCardUse(result.card);
+      logSpellEffect(result.card, result.target, "player");
+    }
     render(); checkWin();
   }
 
@@ -539,6 +550,98 @@
     if (!el) return;
     el.textContent = targetStatusText();
     el.classList.toggle("active", !!(game && (game.selected || game.pendingSpell || game.turn !== "player")));
+  }
+
+  function targetPoolForPlayerSpell(card) {
+    const spec = Core.SPELL_EFFECTS[card.effect] || { needsTarget: null };
+    if (spec.needsTarget === "enemyMinion") return [...game.enemy.field].sort((a, b) => minionThreatScore(b) - minionThreatScore(a));
+    if (spec.needsTarget === "friendlyMinion") return [...game.player.field].sort((a, b) => minionThreatScore(b) - minionThreatScore(a));
+    return [];
+  }
+
+  function playerHintScore(card, target) {
+    const keywords = card.keywords || [];
+    let score = 0;
+    if (card.type === CARD_TYPE.MINION) {
+      score = 20 - card.cost * 2 + (Number(card.attack) || 0) * 4 + (Number(card.health) || 0);
+      if (keywords.includes("charge")) score += 16;
+      if (keywords.includes("rush")) score += game.enemy.field.length ? 12 : 3;
+      if (keywords.includes("taunt")) score += game.player.hp <= 16 ? 10 : 3;
+      if (keywords.includes("lifesteal")) score += game.player.hp <= 20 ? 10 : 4;
+      return score;
+    }
+    if (card.effect === "mana2") return game.player.hand.some((c) => c !== card && c.cost > game.player.mana) ? 28 : 8;
+    if (card.effect === "heal5") return game.player.maxHp - game.player.hp >= 4 ? 24 : 6;
+    if (card.effect === "aoe1" || card.effect === "aoe2") return game.enemy.field.length >= 2 ? 26 + game.enemy.field.length * 3 : 5;
+    if (card.effect === "giveShield") return target ? 16 + minionThreatScore(target) : -999;
+    if (card.effect === "damage3" || card.effect === "damage8" || card.effect === "polymorph") return target ? 18 + minionThreatScore(target) : -999;
+    return 0;
+  }
+
+  function bestHintAction() {
+    if (!game || game.turn !== "player" || game.over) return null;
+    const actions = [];
+    for (const card of game.player.hand) {
+      if (card.cost > game.player.mana) continue;
+      if (card.type === CARD_TYPE.MINION) {
+        if (game.player.field.length >= MAX_FIELD) continue;
+        actions.push({ type: "play", card, score: playerHintScore(card), label: `建議出牌：${card.name}` });
+      } else {
+        const spec = Core.SPELL_EFFECTS[card.effect] || { needsTarget: null };
+        const target = spec.needsTarget ? targetPoolForPlayerSpell(card)[0] : null;
+        if (spec.needsTarget && !target) continue;
+        actions.push({ type: "play", card, target, score: playerHintScore(card, target), label: target ? `建議施放 ${card.name} → ${target.name}` : `建議施放：${card.name}` });
+      }
+    }
+    for (const attacker of game.player.field.filter((m) => m.canAttack)) {
+      const taunts = game.enemy.field.filter((m) => (m.keywords || []).includes("taunt"));
+      if (taunts.length) {
+        const target = taunts.sort((a, b) => a.health - b.health || minionThreatScore(b) - minionThreatScore(a))[0];
+        actions.push({ type: "attack", attacker, target, score: 18 + minionThreatScore(target), label: `建議攻擊：${attacker.name} → ${target.name}` });
+      } else if (canAttackHeroNow(attacker)) {
+        actions.push({ type: "attack", attacker, hero: "enemyHero", score: 30 + attacker.attack * 4, label: `建議攻擊敵方英雄：${attacker.name}` });
+      } else if (game.enemy.field.length) {
+        const target = [...game.enemy.field].sort((a, b) => a.health - b.health || minionThreatScore(b) - minionThreatScore(a))[0];
+        actions.push({ type: "attack", attacker, target, score: 12 + minionThreatScore(target), label: `建議攻擊：${attacker.name} → ${target.name}` });
+      }
+    }
+    return actions.sort((a, b) => b.score - a.score)[0] || null;
+  }
+
+  function clearHintHighlights() {
+    document.querySelectorAll(".hint-highlight").forEach((el) => el.classList.remove("hint-highlight"));
+  }
+
+  function showHint() {
+    if (!game || game.turn !== "player" || game.over) return null;
+    if (game.hintUsedTurn === game.turnCount) {
+      flash("本回合已使用提示。");
+      return null;
+    }
+    const action = bestHintAction();
+    if (!action) {
+      flash("目前沒有可執行的建議。");
+      return null;
+    }
+    game.hintUsedTurn = game.turnCount;
+    clearHintHighlights();
+    const primaryUid = action.card ? action.card.uid : action.attacker && action.attacker.uid;
+    const primary = primaryUid ? elFor(primaryUid) : null;
+    const target = action.target ? elFor(action.target.uid) : action.hero ? document.getElementById(action.hero) : null;
+    if (primary) primary.classList.add("hint-highlight");
+    if (target) target.classList.add("hint-highlight");
+    flash(action.label);
+    setTimeout(clearHintHighlights, 3000);
+    updateHintButton();
+    return action;
+  }
+
+  function updateHintButton() {
+    const btn = document.getElementById("hintBtn");
+    if (!btn || !game) return;
+    const used = game.hintUsedTurn === game.turnCount;
+    btn.disabled = game.turn !== "player" || game.over || used;
+    btn.title = used ? "本回合已使用提示" : "本回合提示最佳一步";
   }
 
   // ===== 戰鬥結算（含聖盾、劇毒、連擊）=====
@@ -624,6 +727,21 @@
     return score;
   }
 
+  function ddaProfile() {
+    return game && game.dda ? game.dda : Core.ddaProfile();
+  }
+
+  function maybeDdaSecondBest(items) {
+    const list = Array.isArray(items) ? items : [];
+    const profile = ddaProfile();
+    if (profile.mistakeRate > 0 && list.length > 1 && rng() < profile.mistakeRate) {
+      const copy = [...list];
+      [copy[0], copy[1]] = [copy[1], copy[0]];
+      return copy;
+    }
+    return list;
+  }
+
   function chooseRemovalTarget(effect) {
     const field = [...game.player.field];
     if (!field.length) return null;
@@ -632,26 +750,26 @@
       const worthTransforming = field.filter((m) =>
         m.health >= 5 || m.attack >= 4 || (m.keywords || []).includes("taunt") || (m.keywords || []).includes("regenerate")
       );
-      return (worthTransforming.length ? worthTransforming : field).sort((a, b) => minionThreatScore(b) - minionThreatScore(a))[0] || null;
+      return maybeDdaSecondBest((worthTransforming.length ? worthTransforming : field).sort((a, b) => minionThreatScore(b) - minionThreatScore(a)))[0] || null;
     }
     if (damage > 0) {
-      return field.sort((a, b) => {
+      return maybeDdaSecondBest(field.sort((a, b) => {
         const lethalA = a.health <= damage ? 1 : 0;
         const lethalB = b.health <= damage ? 1 : 0;
         return (lethalB - lethalA) || (minionThreatScore(b) - minionThreatScore(a));
-      })[0] || null;
+      }))[0] || null;
     }
     return null;
   }
 
   function chooseShieldTarget() {
-    return [...game.enemy.field]
+    return maybeDdaSecondBest([...game.enemy.field]
       .filter((m) => !m.shield)
       .sort((a, b) => {
         const tauntA = (a.keywords || []).includes("taunt") ? 1 : 0;
         const tauntB = (b.keywords || []).includes("taunt") ? 1 : 0;
         return (tauntB - tauntA) || (minionThreatScore(b) - minionThreatScore(a));
-      })[0] || null;
+      }))[0] || null;
   }
 
   function chooseAiSpellPlay(card) {
@@ -709,6 +827,7 @@
       if (keywords.includes("lifesteal")) score += 12;
       if (keywords.includes("divineshield") || keywords.includes("regenerate")) score += 8;
       if (card.type === CARD_TYPE.SPELL) score += spellPlan && spellPlan.used ? 34 : -8;
+      score += ddaProfile().scoreBias * (card.axis === "control" || (spellPlan && spellPlan.used) ? 40 : 10);
       return score;
     }
     let score = 110 - cost * 9 + attack * 5 + health;
@@ -717,6 +836,7 @@
     if (keywords.includes("rush")) score += 14;
     if (keywords.includes("windfury")) score += 10;
     if (card.type === CARD_TYPE.SPELL) score += spellPlan && spellPlan.used ? 22 : -10;
+    score += ddaProfile().scoreBias * (card.axis === "aggro" || keywords.includes("charge") ? 40 : 10);
     return score;
   }
 
@@ -725,15 +845,16 @@
     const kind = game.enemyArchetype || "random";
     if (lethal || smart < 1) return null;
     if (isRushHeroLocked(atk) && game.player.field.length) {
-      return [...game.player.field].sort((a, b) => a.health - b.health || minionThreatScore(b) - minionThreatScore(a))[0] || null;
+      return maybeDdaSecondBest([...game.player.field].sort((a, b) => a.health - b.health || minionThreatScore(b) - minionThreatScore(a)))[0] || null;
     }
     if (kind === "aggro") return null;
     if (smart >= 2 && (atk.keywords || []).includes("poison")) {
-      return [...game.player.field].sort((a, b) => b.health - a.health || minionThreatScore(b) - minionThreatScore(a))[0] || null;
+      return maybeDdaSecondBest([...game.player.field].sort((a, b) => b.health - a.health || minionThreatScore(b) - minionThreatScore(a)))[0] || null;
     }
-    const threshold = kind === "control" ? (smart >= 2 ? 2 : 3) : (smart >= 2 ? 3 : 4);
+    const thresholdOffset = ddaProfile().scoreBias > 0 ? 1 : 0;
+    const threshold = Math.max(1, (kind === "control" ? (smart >= 2 ? 2 : 3) : (smart >= 2 ? 3 : 4)) - thresholdOffset);
     const candidates = game.player.field.filter((m) => m.attack >= threshold);
-    return candidates.sort((a, b) => minionThreatScore(b) - minionThreatScore(a))[0] || null;
+    return maybeDdaSecondBest(candidates.sort((a, b) => minionThreatScore(b) - minionThreatScore(a)))[0] || null;
   }
 
   function aiTurn() {
@@ -745,9 +866,9 @@
     let acted = true;
     while (acted) {
       acted = false;
-      const affordable = ai.hand.filter((c) => c.cost <= ai.mana).sort((a, b) =>
+      const affordable = maybeDdaSecondBest(ai.hand.filter((c) => c.cost <= ai.mana).sort((a, b) =>
         (aiPlayPriority(b) - aiPlayPriority(a)) || (b.cost - a.cost)
-      );
+      ));
       for (const card of affordable) {
         if (card.type === CARD_TYPE.MINION) {
           if (ai.field.length >= MAX_FIELD) continue; // 場滿：跳過隨從，讓 AI 還有機會出法術
@@ -787,7 +908,7 @@
         if (!ai.field.includes(atk) || !atk.canAttack) { step(); return; }
         const playerTaunts = game.player.field.filter((m) => (m.keywords || []).includes("taunt"));
         if (playerTaunts.length) {
-          const t = playerTaunts.sort((a, b) => a.health - b.health)[0];
+          const t = maybeDdaSecondBest(playerTaunts.sort((a, b) => a.health - b.health || minionThreatScore(b) - minionThreatScore(a)))[0];
           animateAttackToward(atk.uid, t.uid);
           resolveAttack(ai, atk, t);
         } else {
@@ -816,6 +937,7 @@
   function endAiTurn() {
     if (game.over) return;
     handleCoreResult(Core.advanceTurn(game, { phase: "endEnemy" }, rng));
+    game.turnCount = (game.turnCount || 1) + 1;
     log("輪到你了。", "me");
     render();
   }
@@ -861,6 +983,7 @@
     updateTargetStatus();
 
     document.getElementById("endTurnBtn").disabled = game.turn !== "player" || game.over;
+    updateHintButton();
     renderQuests();
     focusGuideTarget();
   }
@@ -1290,6 +1413,64 @@
   }
   function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(Core.migrateStats(s))); } catch {} }
 
+  function syncDdaToggle() {
+    const toggle = document.getElementById("ddaToggle");
+    if (!toggle) return;
+    const stats = loadStats();
+    toggle.checked = stats.dda.enabled !== false;
+    toggle.title = `動態調節：${Core.ddaProfile(stats.dda).label}`;
+  }
+
+  function setDdaEnabled(enabled) {
+    const stats = loadStats();
+    stats.dda.enabled = enabled !== false;
+    saveStats(stats);
+    if (game) game.dda = Core.ddaProfile(stats.dda);
+    syncDdaToggle();
+    flash(stats.dda.enabled ? "動態難度調節已開啟。" : "動態難度調節已關閉。");
+    return Core.ddaProfile(stats.dda);
+  }
+
+  function trackCardUse(card) {
+    if (!card || !card.id) return;
+    const stats = loadStats();
+    const plays = stats.telemetry.cardPlays;
+    plays[card.id] = (plays[card.id] || 0) + 1;
+    saveStats(stats);
+  }
+
+  function recordGameTelemetry(stats, win) {
+    const telemetry = stats.telemetry;
+    telemetry.games.push({
+      difficulty: game && game.difficulty ? game.difficulty : currentDifficulty(),
+      win: win === true,
+      turns: game && game.turnCount ? game.turnCount : 1,
+      archetype: game && game.playerArchetype ? game.playerArchetype : "neutral",
+      at: Date.now(),
+    });
+    if (telemetry.games.length > 100) telemetry.games.splice(0, telemetry.games.length - 100);
+  }
+
+  function safeSaveAfterError(message) {
+    try {
+      const protectedStats = Core.protectSave(loadStats(), message, Date.now());
+      saveStats(protectedStats);
+      showToast("系統偵測到錯誤，已保護本地存檔。重新整理可繼續遊玩。");
+    } catch {}
+  }
+
+  function installErrorRecovery() {
+    if (window.__cardErrorRecoveryInstalled) return;
+    window.__cardErrorRecoveryInstalled = true;
+    window.addEventListener("error", (event) => {
+      safeSaveAfterError(event && event.message ? event.message : "unknown error");
+    });
+    window.addEventListener("unhandledrejection", (event) => {
+      const reason = event && event.reason;
+      safeSaveAfterError(reason && reason.message ? reason.message : String(reason || "unhandled rejection"));
+    });
+  }
+
   function todaySeed() {
     const d = new Date();
     const mm = String(d.getMonth() + 1).padStart(2, "0");
@@ -1625,13 +1806,16 @@
     let rewardLine;
     if (win) {
       s.wins++; s.streak++; if (s.streak > s.bestStreak) s.bestStreak = s.streak;
+      s.lossStreak = 0;
       s.coins += reward.amount;
       rewardLine = `💰 +${reward.amount} 金幣（共 ${s.coins}）`;
     } else {
-      s.losses++; s.streak = 0;
+      s.losses++; s.streak = 0; s.lossStreak = (s.lossStreak || 0) + 1;
       s.coins += reward.amount;
       rewardLine = `💰 +${reward.amount} 金幣（共 ${s.coins}）`;
     }
+    recordGameTelemetry(s, win);
+    s.dda = Core.nextDdaState(s.dda, s, win ? "win" : "loss");
     saveStats(s);
     if (win) {
       progressQuest({ type: "win", amount: 1 });
@@ -1646,6 +1830,7 @@
         <div>戰績：${s.wins} 勝 ${s.losses} 敗 · 最高連勝 ${s.bestStreak}</div>
         <div class="coin">${rewardLine}</div>
         <div>難度獎勵：${reward.label}${win ? "勝場" : "敗場"} +${reward.amount} 金幣</div>
+        <div>動態調節：${Core.ddaProfile(s.dda).label}</div>
         <div class="hint">💡 用金幣去「開卡包」抽更強的卡，組成你的牌組！</div>`;
     }
     updateQuestCtas();
@@ -1670,7 +1855,12 @@
   }
 
   // ===== 綁定 & 啟動 =====
+  installErrorRecovery();
   document.getElementById("endTurnBtn").onclick = endTurn;
+  const hintBtn = document.getElementById("hintBtn");
+  if (hintBtn) hintBtn.onclick = showHint;
+  const ddaToggle = document.getElementById("ddaToggle");
+  if (ddaToggle) ddaToggle.onchange = () => setDdaEnabled(ddaToggle.checked);
   document.getElementById("restartBtn").onclick = newGame;
   document.getElementById("overlayPackBtn").onclick = goPack;
   document.getElementById("overlayQuestBtn").onclick = claimAllQuestsUi;
@@ -1762,6 +1952,11 @@
     quests: () => loadQuests(),
     setQuests: (questState) => { saveQuests(questState); renderQuests(); return loadQuests(); },
     progressQuest: (event) => progressQuest(event),
+    setDdaEnabled: (enabled) => setDdaEnabled(enabled),
+    dda: () => ({ stats: loadStats().dda, profile: Core.ddaProfile(loadStats().dda), game: game && game.dda }),
+    hint: () => showHint(),
+    hintHighlights: () => [...document.querySelectorAll(".hint-highlight")].map((el) => el.dataset.uid || el.id || el.dataset.cardId || el.className),
+    safeSaveAfterError: (message) => { safeSaveAfterError(message); return loadStats(); },
     goals: (seed) => loadGoals(seed),
     setGoals: (goalState, seed) => { saveGoals(goalState || {}, seed); return loadGoals(seed); },
     progressWeeklyGoal: (event) => progressWeeklyGoal(event),
@@ -1771,6 +1966,12 @@
     claimQuest: (questId) => claimQuestUi(questId),
     claimAllQuests: () => claimAllQuestsUi(),
     rewardTable: () => JSON.parse(JSON.stringify(DIFFICULTY_REWARDS)),
+    finishGame(win) {
+      if (win) game.enemy.hp = 0;
+      else game.player.hp = 0;
+      settleIfGameEnded();
+      return loadStats();
+    },
     deckInfo: () => ({ source: game.playerDeckSource, ids: [...(game.playerDeckIds || [])], liveIds: [...game.player.hand, ...game.player.deck].map((c) => c.id) }),
     aiDeckInfo: () => ({
       source: game.enemyDeckSource,
