@@ -3,9 +3,43 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="manifest" href="../manifest.webmanifest" />
+<link rel="manifest" href="../manifest.webmanifest?v=card-battle-r45-v1" />
 <meta name="theme-color" content="#f59e0b" />
 <title>卡牌遊戲 · Card Game</title>
+<script>
+  (() => {
+    const CACHE_VERSION = "card-battle-r45-v1";
+    const SW_AUTO_RELOAD_WINDOW_MS = 15000;
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r45_v1";
+    const swPageLoadedAt = Date.now();
+    window.__CARD_CACHE_VERSION = CACHE_VERSION;
+    window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
+    if (!("serviceWorker" in navigator) || window.__cardSwBootGuardInstalled) return;
+    window.__cardSwBootGuardInstalled = true;
+    const hasReloaded = () => { try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; } };
+    const markReloaded = () => { try { sessionStorage.setItem(SW_AUTO_RELOAD_KEY, "1"); } catch {} };
+    const shouldReload = (now) => (Number(now || Date.now()) - swPageLoadedAt) <= SW_AUTO_RELOAD_WINDOW_MS && !hasReloaded();
+    const notify = () => {
+      window.__cardSwUpdatePending = true;
+      try { window.dispatchEvent(new CustomEvent("card-sw-update-available")); } catch {}
+      if (typeof window.__cardSwUpdatePrompt === "function") window.__cardSwUpdatePrompt();
+    };
+    window.__CARD_SW_BOOT.shouldAutoReloadForSwUpdate = shouldReload;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (window.__cardSwBootReloading) return;
+      if (shouldReload()) {
+        window.__cardSwBootReloading = true;
+        markReloaded();
+        location.reload();
+        return;
+      }
+      notify();
+    });
+    navigator.serviceWorker.getRegistration(new URL("../", location.href).toString())
+      .then((registration) => { if (registration) registration.update(); })
+      .catch(() => {});
+  })();
+</script>
 <style>
   /* 入口頁主題（影響分頁列底色）*/
   :root { --bar1:#141c28; --bar2:#0f1620; --accent:#f59e0b; --stage:#0f1419; }
@@ -166,10 +200,10 @@
     }));
 
     const pwaState = { skippedForWebdriver: false, registered: false, updatePrompted: false, version: "", checking: false };
-    const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r44_v1";
-    const swPageLoadedAt = Date.now();
-    function swUrl() { return new URL("../sw.js", location.href).toString(); }
+    const CACHE_VERSION = window.__CARD_CACHE_VERSION || "card-battle-r45-v1";
+    const SW_AUTO_RELOAD_WINDOW_MS = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_WINDOW_MS || 15000;
+    const SW_AUTO_RELOAD_KEY = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r45_v1";
+    function swUrl() { return new URL(`../sw.js?v=${CACHE_VERSION}`, location.href).toString(); }
     async function readCacheVersion() {
       try {
         const text = await fetch(swUrl(), { cache: "no-store" }).then((res) => res.text());
@@ -187,28 +221,12 @@
       const toast = document.getElementById("pwaUpdateToast");
       if (toast) toast.classList.add("show");
     }
-    function hasAutoReloadedForSwUpdate() {
-      try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
-    }
-    function markAutoReloadedForSwUpdate() {
-      try { sessionStorage.setItem(SW_AUTO_RELOAD_KEY, "1"); } catch {}
-    }
+    window.__cardSwUpdatePrompt = showPwaUpdate;
+    if (window.__cardSwUpdatePending) showPwaUpdate();
     function shouldAutoReloadForSwUpdate(now) {
-      return (Number(now || Date.now()) - swPageLoadedAt) <= SW_AUTO_RELOAD_WINDOW_MS
-        && !hasAutoReloadedForSwUpdate();
-    }
-    let pwaReloading = false;
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.addEventListener("controllerchange", () => {
-        if (pwaReloading) return;
-        if (shouldAutoReloadForSwUpdate()) {
-          pwaReloading = true;
-          markAutoReloadedForSwUpdate();
-          location.reload();
-          return;
-        }
-        showPwaUpdate();
-      });
+      return typeof window.__CARD_SW_BOOT?.shouldAutoReloadForSwUpdate === "function"
+        ? window.__CARD_SW_BOOT.shouldAutoReloadForSwUpdate(now)
+        : false;
     }
     function applyWaitingWorker(registration) {
       if (registration && registration.waiting) registration.waiting.postMessage({ type: "SKIP_WAITING" });
@@ -226,7 +244,7 @@
         return pwaState;
       }
       try {
-        const registration = await navigator.serviceWorker.register("../sw.js");
+        const registration = await navigator.serviceWorker.register(`../sw.js?v=${CACHE_VERSION}`);
         pwaState.registered = true;
         registration.addEventListener("updatefound", () => {
           const worker = registration.installing;

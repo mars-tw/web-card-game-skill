@@ -1,20 +1,18 @@
-const CACHE_VERSION = "card-battle-r44-v1";
+const CACHE_VERSION = "card-battle-r45-v1";
 const ASSET_CACHE = `${CACHE_VERSION}-assets`;
 const HTML_CACHE = `${CACHE_VERSION}-html`;
+
+function versioned(path) {
+  return `${path}?v=${CACHE_VERSION}`;
+}
 
 const CORE_ASSETS = [
   "./",
   "index.html",
-  "sw.js",
   "offline.html",
   "templates/index.html",
   "templates/card-battle/index.html",
-  "templates/card-battle/cards.js",
-  "templates/card-battle/core.js",
-  "templates/card-battle/battle.js",
   "templates/card-pack/index.html",
-  "templates/card-pack/pack.js",
-  "manifest.webmanifest",
   "assets/icons/icon-192.png",
   "assets/icons/icon-512.png",
   "assets/backgrounds/dark.png",
@@ -44,7 +42,13 @@ const CORE_ASSETS = [
   "assets/cards/raptor.png",
   "assets/cards/shieldUp.png",
   "assets/cards/titan.png",
-  "assets/cards/wolf.png"
+  "assets/cards/wolf.png",
+  versioned("sw.js"),
+  versioned("manifest.webmanifest"),
+  versioned("templates/card-battle/cards.js"),
+  versioned("templates/card-battle/core.js"),
+  versioned("templates/card-battle/battle.js"),
+  versioned("templates/card-pack/pack.js")
 ].map((path) => new URL(path, self.registration.scope).toString());
 
 self.addEventListener("install", (event) => {
@@ -77,7 +81,7 @@ async function networkFirst(request) {
 }
 
 async function cacheFirst(request) {
-  const cached = await caches.match(request);
+  const cached = await caches.match(request, { ignoreSearch: false });
   if (cached) return cached;
   const response = await fetch(request);
   if (response && response.ok) {

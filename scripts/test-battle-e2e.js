@@ -98,6 +98,49 @@ async function waitCardDetail(page, open) {
   }, open);
 }
 
+async function isLocatorHittable(page, selector) {
+  const locator = page.locator(selector).first();
+  await locator.evaluate((el) => el.scrollIntoView({ block: "center", inline: "center", behavior: "instant" }));
+  await sleep(50);
+  return locator.evaluate((el) => {
+    const rect = el.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return false;
+    if (rect.right <= 0 || rect.bottom <= 0 || rect.left >= innerWidth || rect.top >= innerHeight) return false;
+    const x = Math.min(Math.max(rect.left + rect.width / 2, 0), innerWidth - 1);
+    const y = Math.min(Math.max(rect.top + rect.height / 2, 0), innerHeight - 1);
+    const hit = document.elementFromPoint(x, y);
+    return !!(hit && (hit === el || el.contains(hit)));
+  });
+}
+
+async function areLocatorsHittable(page, selectors) {
+  for (const selector of selectors) {
+    if (!(await isLocatorHittable(page, selector))) return false;
+  }
+  return true;
+}
+
+async function areAllMatchingHittable(page, selector) {
+  const count = await page.locator(selector).count();
+  if (count === 0) return false;
+  for (let i = 0; i < count; i++) {
+    const locator = page.locator(selector).nth(i);
+    await locator.evaluate((el) => el.scrollIntoView({ block: "center", inline: "center", behavior: "instant" }));
+    await sleep(50);
+    const ok = await locator.evaluate((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return false;
+      if (rect.right <= 0 || rect.bottom <= 0 || rect.left >= innerWidth || rect.top >= innerHeight) return false;
+      const x = Math.min(Math.max(rect.left + rect.width / 2, 0), innerWidth - 1);
+      const y = Math.min(Math.max(rect.top + rect.height / 2, 0), innerHeight - 1);
+      const hit = document.elementFromPoint(x, y);
+      return !!(hit && (hit === el || el.contains(hit)));
+    });
+    if (!ok) return false;
+  }
+  return true;
+}
+
 async function run() {
   let chromium;
   try { ({ chromium } = require("playwright")); }
@@ -156,7 +199,7 @@ async function run() {
     assert(swErrors.length === 0, "真 SW 離線測試無 console/pageerror" + (swErrors.length ? "：" + swErrors.slice(0, 3).join(" | ") : ""));
     await swContext.close();
 
-  for (const vp of [{ w: 1280, h: 900, name: "桌面 1280x900" }, { w: 390, h: 844, name: "手機 390x844" }]) {
+  for (const vp of [{ w: 1280, h: 900, name: "桌面 1280x900" }, { w: 1366, h: 700, name: "矮桌機 1366x700" }, { w: 390, h: 844, name: "手機 390x844" }]) {
     console.log("\n== 視窗 " + vp.name + " ==");
     const page = await browser.newPage({ viewport: { width: vp.w, height: vp.h } });
     const errors = [];
@@ -172,8 +215,8 @@ async function run() {
         const manifest = await manifestResponse.json();
         const swText = await fetch("../sw.js").then((res) => res.text());
         const shellText = document.documentElement.outerHTML;
-        const battleText = await fetch("card-battle/battle.js").then((res) => res.text());
-        const packText = await fetch("card-pack/pack.js").then((res) => res.text());
+        const battleHtml = await fetch("card-battle/index.html").then((res) => res.text());
+        const packHtml = await fetch("card-pack/index.html").then((res) => res.text());
         const version = await window.__pwaTest.readCacheVersion();
         const state = await window.__pwaTest.registerPwa();
         window.__pwaTest.showPwaUpdate();
@@ -183,8 +226,12 @@ async function run() {
           key: window.__pwaTest.SW_AUTO_RELOAD_KEY,
           early: window.__pwaTest.shouldAutoReloadForSwUpdate(),
           shell: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(shellText) && /sessionStorage/.test(shellText) && /controllerchange/.test(shellText),
-          battle: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(battleText) && /sessionStorage/.test(battleText) && /controllerchange/.test(battleText),
-          pack: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(packText) && /sessionStorage/.test(packText) && /controllerchange/.test(packText),
+          battle: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(battleHtml) && /sessionStorage/.test(battleHtml) && /controllerchange/.test(battleHtml),
+          pack: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(packHtml) && /sessionStorage/.test(packHtml) && /controllerchange/.test(packHtml),
+          versionedRefs: /cards\.js\?v=card-battle-r45-v1/.test(battleHtml)
+            && /battle\.js\?v=card-battle-r45-v1/.test(battleHtml)
+            && /pack\.js\?v=card-battle-r45-v1/.test(packHtml)
+            && /manifest\.webmanifest\?v=card-battle-r45-v1/.test(shellText),
         };
         return {
           manifestHref: manifestLink && manifestLink.getAttribute("href"),
@@ -198,7 +245,7 @@ async function run() {
           promptVisible: document.getElementById("pwaUpdateToast").classList.contains("show"),
         };
       });
-      assert(pwaCheck.manifestHref === "../manifest.webmanifest"
+      assert(pwaCheck.manifestHref === "../manifest.webmanifest?v=card-battle-r45-v1"
         && pwaCheck.manifest.name === "卡牌對戰"
         && pwaCheck.manifest.icons.some((icon) => icon.sizes === "192x192")
         && pwaCheck.manifest.icons.some((icon) => icon.sizes === "512x512"),
@@ -206,24 +253,37 @@ async function run() {
       assert(/CACHE_VERSION/.test(pwaCheck.swText)
         && /networkFirst/.test(pwaCheck.swText)
         && /cacheFirst/.test(pwaCheck.swText)
-        && pwaCheck.swText.includes("card-battle-r44-v1")
+        && pwaCheck.swText.includes("card-battle-r45-v1")
         && pwaCheck.swText.includes("offline.html")
-        && pwaCheck.swText.includes("sw.js")
+        && pwaCheck.swText.includes("versioned(\"sw.js\")")
         && pwaCheck.swText.includes("templates/card-battle")
         && pwaCheck.swText.includes("templates/card-pack")
         && pwaCheck.swText.includes("templates/card-battle/battle.js")
         && pwaCheck.swText.includes("templates/card-pack/pack.js")
         && pwaCheck.swText.includes("assets/cards/wolf.png")
-        && pwaCheck.version === "card-battle-r44-v1"
-        && pwaCheck.versionLabel.includes("card-battle-r44-v1")
-        && pwaCheck.checked.version === "card-battle-r44-v1",
+        && pwaCheck.version === "card-battle-r45-v1"
+        && pwaCheck.versionLabel.includes("card-battle-r45-v1")
+        && pwaCheck.checked.version === "card-battle-r45-v1",
         "Service worker 使用版本快取並涵蓋 battle/pack 子路徑");
       assert(/self\.skipWaiting\(\)/.test(pwaCheck.swText) && /self\.clients\.claim\(\)/.test(pwaCheck.swText),
         "Service worker install 會 skipWaiting，activate 會 clients.claim");
-      assert(pwaCheck.guard.windowMs === 15000 && pwaCheck.guard.key === "card_sw_auto_reload_r44_v1"
-        && pwaCheck.guard.early === true && pwaCheck.guard.shell && pwaCheck.guard.battle && pwaCheck.guard.pack,
-        "入口 shell、battle、pack 都有 15 秒自動重載與 sessionStorage 守衛");
+      assert(pwaCheck.guard.windowMs === 15000 && pwaCheck.guard.key === "card_sw_auto_reload_r45_v1"
+        && pwaCheck.guard.early === true && pwaCheck.guard.shell && pwaCheck.guard.battle && pwaCheck.guard.pack && pwaCheck.guard.versionedRefs,
+        "入口 shell、battle、pack 都有 15 秒自動重載、sessionStorage 守衛與版本化本地資源");
       assert(pwaCheck.skipped === true && pwaCheck.promptVisible === true, "navigator.webdriver 會跳過 SW 註冊且更新提示可顯示");
+    }
+
+    if (vp.w === 1366) {
+      await page.goto(shellBase);
+      await page.waitForFunction(() => window.__pwaTest && document.getElementById("battle"));
+      const shellLowHit = {
+        tabOk: await areAllMatchingHittable(page, ".tab"),
+        buttons: { pwaCheckBtn: await isLocatorHittable(page, "#pwaCheckBtn") },
+        overflowX: await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
+      };
+      assert(shellLowHit.tabOk && shellLowHit.buttons.pwaCheckBtn && shellLowHit.overflowX <= 2,
+        "矮桌機 shell 分頁與檢查更新按鈕可達可點");
+      await page.locator("#pwaCheckBtn").click();
     }
 
     await page.goto(base);
@@ -242,8 +302,29 @@ async function run() {
     assert(boot.turn === "player", "開局輪到玩家");
     assert(boot.playerHand >= 3, `玩家起手 ≥3 張（${boot.playerHand}）`);
     const battleSwGuard = await page.evaluate(() => window.__test.swUpdateGuard());
-    assert(battleSwGuard.key === "card_sw_auto_reload_r44_v1" && battleSwGuard.windowMs === 15000 && battleSwGuard.late === false,
+    assert(battleSwGuard.key === "card_sw_auto_reload_r45_v1" && battleSwGuard.windowMs === 15000 && battleSwGuard.late === false,
       "對戰頁 SW 自動更新守衛超過 15 秒不會自動 reload");
+
+    if (vp.w === 1366) {
+      const battleLowHit = {
+        buttons: await areLocatorsHittable(page, ["#hintBtn", "#newGameBtn", "#toPackBtn", "#guideReplayBtn", "#endTurnBtn", "#missionDrawerBtn", "#kwCodexBtn"]),
+        ...(await page.evaluate(() => {
+        const scrollBox = (selector) => {
+          const el = document.querySelector(selector);
+          const style = el && getComputedStyle(el);
+          return !!(style && style.maxHeight !== "none" && /(auto|scroll)/.test(style.overflowY));
+        };
+        return {
+          detail: scrollBox(".card-detail-card"),
+          codex: scrollBox(".kw-codex-card"),
+          mission: scrollBox(".mission-card"),
+          overlay: /(auto|scroll)/.test(getComputedStyle(document.getElementById("overlay")).overflowY),
+        };
+        })),
+      };
+      assert(battleLowHit.buttons && battleLowHit.detail && battleLowHit.codex && battleLowHit.mission && battleLowHit.overlay,
+        "矮桌機對戰主要按鈕可點，詳情/圖鑑/任務/結算層可垂直捲動");
+    }
 
     if (vp.w === 390) {
       const liveRegions = await page.evaluate(() => ({
@@ -1019,6 +1100,27 @@ async function run() {
     });
     await page.goto(basePack);
     await page.waitForFunction(() => window.__deckTest && document.getElementById("deckList"));
+    if (vp.w === 1366) {
+      const packLowHit = {
+        buttons: await areLocatorsHittable(page, ["#goBattleTop", "#pack", "#packPwaCheckBtn", "#autoFillDeckBtn", "#saveDeckBtn"]),
+        ...(await page.evaluate(() => {
+        const scrollBox = (selector) => {
+          const el = document.querySelector(selector);
+          const style = el && getComputedStyle(el);
+          return !!(style && style.maxHeight !== "none" && /(auto|scroll)/.test(style.overflowY));
+        };
+        return {
+          goal: scrollBox(".goal-panel"),
+          record: scrollBox(".record-panel"),
+          deckPanel: scrollBox(".deck-panel"),
+          mission: scrollBox(".mission-card"),
+        };
+        })),
+      };
+      assert(packLowHit.buttons && packLowHit.goal && packLowHit.record && packLowHit.deckPanel && packLowHit.mission,
+        "矮桌機開包主要按鈕含檢查更新可點，目標/戰績/牌組/任務面板可垂直捲動");
+      await page.locator("#packPwaCheckBtn").click();
+    }
     const packR36 = await page.evaluate(async () => {
       const T = window.__deckTest;
       await T.readCacheVersion();
@@ -1046,11 +1148,11 @@ async function run() {
     await page.waitForFunction(() => /mission/.test(document.activeElement?.id || ""));
     const packMissionFocus = await page.evaluate(() => document.activeElement?.id || "");
     assert(packR36.textState.attr === "large" && packR36.textState.select === "large"
-      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r44-v1"),
+      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r45-v1"),
       "開包戰績區顯示版本並可調整文字大小");
     assert(packR36.missionOpen && packR36.missionAria === "false" && /mission/.test(packMissionFocus),
       "開包任務抽屜開啟後焦點進入抽屜控制");
-    assert(packR36.swGuard.key === "card_sw_auto_reload_r44_v1" && packR36.swGuard.windowMs === 15000 && packR36.swGuard.late === false,
+    assert(packR36.swGuard.key === "card_sw_auto_reload_r45_v1" && packR36.swGuard.windowMs === 15000 && packR36.swGuard.late === false,
       "開包頁 SW 自動更新守衛超過 15 秒不會自動 reload");
     assert(packR36.summaryLive === "polite" && packR36.missionDailyLive === "polite"
       && packR36.badgeLive === "polite" && packR36.deckSaveLive === "polite",

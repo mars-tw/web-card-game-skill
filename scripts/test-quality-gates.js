@@ -268,18 +268,23 @@ function normalizeRef(ref, baseFile) {
   let value = decodeHtml(String(ref || "")).trim().replace(/^['"]|['"]$/g, "");
   if (!value || value.startsWith("#")) return null;
   if (/^(?:https?:|mailto:|tel:|data:|javascript:|about:)/i.test(value)) return null;
-  value = value.split("#")[0].split("?")[0];
+  value = value.split("#")[0];
+  if (/[\r\n{};]/.test(value)) return null;
+  if (/\?v=$/.test(value)) return null;
   if (!value) return null;
+  const queryAt = value.indexOf("?");
+  const pathPart = queryAt === -1 ? value : value.slice(0, queryAt);
+  const queryPart = queryAt === -1 ? "" : value.slice(queryAt);
   const baseAbs = abs(baseFile);
-  const target = value.startsWith("/")
-    ? path.resolve(ROOT, "." + value)
-    : path.resolve(path.dirname(baseAbs), value);
+  const target = pathPart.startsWith("/")
+    ? path.resolve(ROOT, "." + pathPart)
+    : path.resolve(path.dirname(baseAbs), pathPart);
   const rel = path.relative(ROOT, target);
   if (rel.startsWith("..") || path.isAbsolute(rel)) return null;
   const normalized = toPosix(path.normalize(rel));
   if (normalized === "") return ".";
   if (!/\.(?:html?|js|css|png|webmanifest|json)$/i.test(normalized)) return null;
-  return normalized;
+  return normalized + queryPart;
 }
 
 function addRequired(required, rel, source) {
@@ -296,7 +301,7 @@ function discoverHtmlResources(file, required, scripts) {
     addRequired(required, rel, `${file}:attr`);
     if (rel && rel.endsWith(".js")) scripts.add(rel);
   }
-  for (const match of html.matchAll(/url\(([^)]+)\)/gi)) {
+  for (const match of html.matchAll(/url\(([^)]+)\)/g)) {
     addRequired(required, normalizeRef(match[1], file), `${file}:css-url`);
   }
   for (const match of html.matchAll(/url=([^"';\s>]+)/gi)) {
@@ -324,17 +329,62 @@ function discoverJsResources(file, required) {
 
 function cacheAssetToRel(asset) {
   let value = String(asset || "").trim().replace(/^['"]|['"]$/g, "");
-  value = value.split("#")[0].split("?")[0];
-  if (value === "./" || value === ".") return ".";
-  if (value.startsWith("/")) value = value.slice(1);
-  return toPosix(path.normalize(value));
+  value = value.split("#")[0];
+  const queryAt = value.indexOf("?");
+  const pathPart = queryAt === -1 ? value : value.slice(0, queryAt);
+  const queryPart = queryAt === -1 ? "" : value.slice(queryAt);
+  if (pathPart === "./" || pathPart === ".") return ".";
+  const normalizedPath = toPosix(path.normalize(pathPart.startsWith("/") ? pathPart.slice(1) : pathPart));
+  return normalizedPath + queryPart;
+}
+
+function resourceFile(rel) {
+  return String(rel || "").split("?")[0];
+}
+
+function readSwCacheVersion() {
+  const match = read("sw.js").match(/CACHE_VERSION\s*=\s*"([^"]+)"/);
+  return match ? match[1] : "";
+}
+
+function checkVersionedHtmlRefs() {
+  const version = readSwCacheVersion();
+  const pages = [
+    "templates/index.html",
+    "templates/card-battle/index.html",
+    "templates/card-pack/index.html",
+  ];
+  const problems = [];
+  for (const file of pages) {
+    const html = read(file);
+    for (const match of html.matchAll(/<(script|link)\b([^>]*)>/gi)) {
+      const tag = match[1].toLowerCase();
+      const attrs = match[2] || "";
+      const urlMatch = attrs.match(/\b(?:src|href)=["']([^"']+)["']/i);
+      if (!urlMatch) continue;
+      const rel = normalizeRef(urlMatch[1], file);
+      if (!rel) continue;
+      const clean = resourceFile(rel);
+      if (!/\.(?:js|css|webmanifest)$/i.test(clean)) continue;
+      const query = rel.includes("?") ? rel.slice(rel.indexOf("?")) : "";
+      const params = new URLSearchParams(query.startsWith("?") ? query.slice(1) : query);
+      const v = params.get("v");
+      if (v !== version) problems.push(`${file} <${tag}> ${urlMatch[1]} 應使用 ?v=${version}`);
+    }
+  }
+  problems.slice(0, 20).forEach((problem) => console.error("    version gate: " + problem));
+  assert(Boolean(version) && problems.length === 0, `三頁本地 script/link 皆使用 ?v=${version}（異常 ${problems.length}）`);
 }
 
 function parseCachedAssets() {
   const sw = read("sw.js");
   const block = sw.match(/const\s+CORE_ASSETS\s*=\s*\[([\s\S]*?)\]\.map/);
   if (!block) return { cached: new Set(), rawCount: 0 };
-  const strings = extractJsStringLiterals(block[1], "sw.js").map((item) => item.text);
+  const version = readSwCacheVersion();
+  const versionedCalls = new Set([...block[1].matchAll(/versioned\("([^"]+)"\)/g)].map((match) => match[1]));
+  const strings = extractJsStringLiterals(block[1], "sw.js").map((item) => (
+    versionedCalls.has(item.text) ? `${item.text}?v=${version}` : item.text
+  ));
   return { cached: new Set(strings.map(cacheAssetToRel)), rawCount: strings.length };
 }
 
@@ -348,7 +398,7 @@ function checkSwCacheCompleteness() {
     "templates/card-pack/index.html",
   ];
   pages.forEach((file) => discoverHtmlResources(file, required, scripts));
-  if (required.has("manifest.webmanifest")) discoverManifestResources("manifest.webmanifest", required);
+  if ([...required.keys()].some((rel) => resourceFile(rel) === "manifest.webmanifest")) discoverManifestResources("manifest.webmanifest", required);
   [
     ...scripts,
     "templates/card-battle/cards.js",
@@ -358,19 +408,19 @@ function checkSwCacheCompleteness() {
   ].forEach((file) => discoverJsResources(file, required));
 
   const { cached, rawCount } = parseCachedAssets();
-  if (process.env.R40_FAKE_SW_MISSING === "1") cached.delete("templates/card-battle/battle.js");
+  if (process.env.R40_FAKE_SW_MISSING === "1") cached.delete(`templates/card-battle/battle.js?v=${readSwCacheVersion()}`);
 
   const missingFiles = [];
   for (const rel of cached) {
     if (rel === ".") continue;
-    if (!fs.existsSync(abs(rel))) missingFiles.push(rel);
+    if (!fs.existsSync(abs(resourceFile(rel)))) missingFiles.push(rel);
   }
   missingFiles.slice(0, 20).forEach((rel) => console.error("    cache missing file: " + rel));
   assert(rawCount > 0 && missingFiles.length === 0, `sw.js CORE_ASSETS 清單項目存在（${rawCount} 項）`);
 
   const missingCache = [];
   for (const [rel, sources] of required.entries()) {
-    if (!fs.existsSync(abs(rel))) missingCache.push(`${rel}（引用檔不存在；${[...sources].join(", ")}）`);
+    if (!fs.existsSync(abs(resourceFile(rel)))) missingCache.push(`${rel}（引用檔不存在；${[...sources].join(", ")}）`);
     else if (!cached.has(rel)) missingCache.push(`${rel}（未列入 sw.js；${[...sources].join(", ")}）`);
   }
   missingCache.slice(0, 20).forEach((rel) => console.error("    resource gate: " + rel));
@@ -380,6 +430,7 @@ function checkSwCacheCompleteness() {
 console.log("== R40 文案品質守門 ==");
 checkCopyQuality();
 console.log("== R40 SW 快取完整性守門 ==");
+checkVersionedHtmlRefs();
 checkSwCacheCompleteness();
 
 if (failed > 0) {

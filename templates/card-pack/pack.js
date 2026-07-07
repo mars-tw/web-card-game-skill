@@ -79,12 +79,13 @@
   }
 
   function swUrl() {
-    return new URL("../../sw.js", location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r45-v1"}`, location.href).toString();
   }
 
-  const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-  const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r44_v1";
-  const swPageLoadedAt = Date.now();
+  const SW_BOOT = window.__CARD_SW_BOOT || {};
+  const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r45_v1";
+  const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
   }
@@ -92,6 +93,7 @@
     try { sessionStorage.setItem(SW_AUTO_RELOAD_KEY, "1"); } catch {}
   }
   function shouldAutoReloadForSwUpdate(now) {
+    if (typeof SW_BOOT.shouldAutoReloadForSwUpdate === "function") return SW_BOOT.shouldAutoReloadForSwUpdate(now);
     return (Number(now || Date.now()) - swPageLoadedAt) <= SW_AUTO_RELOAD_WINDOW_MS
       && !hasAutoReloadedForSwUpdate();
   }
@@ -100,8 +102,11 @@
   }
 
   let pwaReloading = false;
+  window.__cardSwUpdatePrompt = showPwaUpdateNotice;
+  if (window.__cardSwUpdatePending) showPwaUpdateNotice();
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (window.__cardSwBootGuardInstalled) return;
       if (pwaReloading) return;
       if (shouldAutoReloadForSwUpdate()) {
         pwaReloading = true;

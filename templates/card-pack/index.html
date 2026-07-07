@@ -4,6 +4,40 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>開卡包 · Card Pack</title>
+<script>
+  (() => {
+    const CACHE_VERSION = "card-battle-r45-v1";
+    const SW_AUTO_RELOAD_WINDOW_MS = 15000;
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r45_v1";
+    const swPageLoadedAt = Date.now();
+    window.__CARD_CACHE_VERSION = CACHE_VERSION;
+    window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
+    if (!("serviceWorker" in navigator) || window.__cardSwBootGuardInstalled) return;
+    window.__cardSwBootGuardInstalled = true;
+    const hasReloaded = () => { try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; } };
+    const markReloaded = () => { try { sessionStorage.setItem(SW_AUTO_RELOAD_KEY, "1"); } catch {} };
+    const shouldReload = (now) => (Number(now || Date.now()) - swPageLoadedAt) <= SW_AUTO_RELOAD_WINDOW_MS && !hasReloaded();
+    const notify = () => {
+      window.__cardSwUpdatePending = true;
+      try { window.dispatchEvent(new CustomEvent("card-sw-update-available")); } catch {}
+      if (typeof window.__cardSwUpdatePrompt === "function") window.__cardSwUpdatePrompt();
+    };
+    window.__CARD_SW_BOOT.shouldAutoReloadForSwUpdate = shouldReload;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (window.__cardSwBootReloading) return;
+      if (shouldReload()) {
+        window.__cardSwBootReloading = true;
+        markReloaded();
+        location.reload();
+        return;
+      }
+      notify();
+    });
+    navigator.serviceWorker.getRegistration(new URL("../../", location.href).toString())
+      .then((registration) => { if (registration) registration.update(); })
+      .catch(() => {});
+  })();
+</script>
 <style>
   :root {
     --bg1: #1a1430; --bg2: #0d1117; --ink: #e6edf3; --muted: #8b98a8; --accent: #f59e0b;
@@ -240,7 +274,7 @@
   .mission-drawer { position:fixed; inset:0; z-index:135; display:none; align-items:flex-end; justify-content:center;
     background:rgba(6,10,14,.7); padding:12px; }
   .mission-drawer.show { display:flex; }
-  .mission-card { width:min(720px,96vw); max-height:86vh; overflow:auto; border-radius:16px 16px 10px 10px;
+  .mission-card { width:min(720px,96vw); max-height:86vh; overflow-y:auto; border-radius:16px 16px 10px 10px;
     background:linear-gradient(180deg,#1a2230,#0f1620); border:1px solid rgba(255,255,255,.14);
     box-shadow:0 18px 48px rgba(0,0,0,.58); padding:14px; }
   .mission-head { position:sticky; top:0; z-index:2; background:linear-gradient(180deg,#1a2230,#151c28);
@@ -294,6 +328,14 @@
     .mission-list { grid-template-columns:1fr; }
     .mission-actions button { padding:8px 9px; }
     .series-footer { margin-bottom:20px; }
+  }
+  @media (max-height: 760px) and (min-width: 701px) {
+    header { padding: 8px; font-size: 18px; }
+    .pack-stage { min-height: 260px; }
+    .pack { width: 150px; height: 210px; }
+    .goal-panel, .record-panel, .deck-panel, .collection { max-height: calc(100vh - 86px); overflow-y: auto; }
+    .deck-card-list { max-height: 300px; }
+    .mission-card { max-height: calc(100vh - 40px); overflow-y: auto; }
   }
 
   @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
@@ -498,9 +540,9 @@
     <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
   </footer>
 
-  <script src="../card-battle/cards.js"></script>
-  <script src="../card-battle/core.js"></script>
-  <script src="pack.js"></script>
+  <script src="../card-battle/cards.js?v=card-battle-r45-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-r45-v1"></script>
+  <script src="pack.js?v=card-battle-r45-v1"></script>
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);

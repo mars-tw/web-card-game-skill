@@ -74,9 +74,10 @@
   const GUIDE_KEY = "cb_guide_done_v1";
   const PERF_KEY = "card_perf_mode_v1";
   const TEXT_SIZE_KEY = "card_text_size_v1";
-  const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-  const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r44_v1";
-  const swPageLoadedAt = Date.now();
+  const SW_BOOT = window.__CARD_SW_BOOT || {};
+  const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r45_v1";
+  const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0, reason: "自動觀察中", history: [] };
   let detailReturnFocus = null;
@@ -223,6 +224,7 @@
   }
 
   function shouldAutoReloadForSwUpdate(now) {
+    if (typeof SW_BOOT.shouldAutoReloadForSwUpdate === "function") return SW_BOOT.shouldAutoReloadForSwUpdate(now);
     return (Number(now || Date.now()) - swPageLoadedAt) <= SW_AUTO_RELOAD_WINDOW_MS
       && !hasAutoReloadedForSwUpdate();
   }
@@ -232,6 +234,9 @@
   }
 
   function installSwAutoReload() {
+    window.__cardSwUpdatePrompt = showPwaUpdateNotice;
+    if (window.__cardSwUpdatePending) showPwaUpdateNotice();
+    if (window.__cardSwBootGuardInstalled) return;
     if (!("serviceWorker" in navigator)) return;
     let pwaReloading = false;
     navigator.serviceWorker.addEventListener("controllerchange", () => {
