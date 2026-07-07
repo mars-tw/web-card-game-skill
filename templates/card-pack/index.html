@@ -38,7 +38,7 @@
       notify();
     });
     navigator.serviceWorker.getRegistration(new URL("../../", location.href).toString())
-      .then((registration) => { if (registration) registration.update(); })
+      .then((registration) => { if (registration) return registration.update(); })
       .catch(() => {});
   })();
 </script>
