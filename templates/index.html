@@ -166,6 +166,9 @@
     }));
 
     const pwaState = { skippedForWebdriver: false, registered: false, updatePrompted: false, version: "", checking: false };
+    const SW_AUTO_RELOAD_WINDOW_MS = 15000;
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r44_v1";
+    const swPageLoadedAt = Date.now();
     function swUrl() { return new URL("../sw.js", location.href).toString(); }
     async function readCacheVersion() {
       try {
@@ -184,12 +187,27 @@
       const toast = document.getElementById("pwaUpdateToast");
       if (toast) toast.classList.add("show");
     }
+    function hasAutoReloadedForSwUpdate() {
+      try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
+    }
+    function markAutoReloadedForSwUpdate() {
+      try { sessionStorage.setItem(SW_AUTO_RELOAD_KEY, "1"); } catch {}
+    }
+    function shouldAutoReloadForSwUpdate(now) {
+      return (Number(now || Date.now()) - swPageLoadedAt) <= SW_AUTO_RELOAD_WINDOW_MS
+        && !hasAutoReloadedForSwUpdate();
+    }
     let pwaReloading = false;
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.addEventListener("controllerchange", () => {
         if (pwaReloading) return;
-        pwaReloading = true;
-        location.reload();
+        if (shouldAutoReloadForSwUpdate()) {
+          pwaReloading = true;
+          markAutoReloadedForSwUpdate();
+          location.reload();
+          return;
+        }
+        showPwaUpdate();
       });
     }
     function applyWaitingWorker(registration) {
@@ -236,7 +254,7 @@
       return pwaState;
     }
     document.getElementById("pwaCheckBtn").addEventListener("click", () => checkForUpdate());
-    window.__pwaTest = { state: pwaState, registerPwa, showPwaUpdate, readCacheVersion, checkForUpdate };
+    window.__pwaTest = { state: pwaState, registerPwa, showPwaUpdate, readCacheVersion, checkForUpdate, shouldAutoReloadForSwUpdate, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY };
     readCacheVersion();
     registerPwa();
   </script>

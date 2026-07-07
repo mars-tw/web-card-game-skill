@@ -74,6 +74,9 @@
   const GUIDE_KEY = "cb_guide_done_v1";
   const PERF_KEY = "card_perf_mode_v1";
   const TEXT_SIZE_KEY = "card_text_size_v1";
+  const SW_AUTO_RELOAD_WINDOW_MS = 15000;
+  const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r44_v1";
+  const swPageLoadedAt = Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0, reason: "自動觀察中", history: [] };
   let detailReturnFocus = null;
@@ -209,6 +212,38 @@
     const next = applyTextSize(size);
     try { localStorage.setItem(TEXT_SIZE_KEY, next); } catch {}
     return next;
+  }
+
+  function hasAutoReloadedForSwUpdate() {
+    try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
+  }
+
+  function markAutoReloadedForSwUpdate() {
+    try { sessionStorage.setItem(SW_AUTO_RELOAD_KEY, "1"); } catch {}
+  }
+
+  function shouldAutoReloadForSwUpdate(now) {
+    return (Number(now || Date.now()) - swPageLoadedAt) <= SW_AUTO_RELOAD_WINDOW_MS
+      && !hasAutoReloadedForSwUpdate();
+  }
+
+  function showPwaUpdateNotice() {
+    showToast("新版本可用，結束這場後重新整理即可更新。");
+  }
+
+  function installSwAutoReload() {
+    if (!("serviceWorker" in navigator)) return;
+    let pwaReloading = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (pwaReloading) return;
+      if (shouldAutoReloadForSwUpdate()) {
+        pwaReloading = true;
+        markAutoReloadedForSwUpdate();
+        location.reload();
+        return;
+      }
+      showPwaUpdateNotice();
+    });
   }
 
   function installAccessibilityLabels() {
@@ -2206,6 +2241,7 @@
 
   // ===== 綁定 & 啟動 =====
   installErrorRecovery();
+  installSwAutoReload();
   installAccessibilityLabels();
   applyTextSize(currentTextSize());
   document.getElementById("endTurnBtn").onclick = endTurn;
@@ -2326,6 +2362,7 @@
     forceFps: (fps) => applyPerfEstimate(fps),
     setTextSize: (size) => setTextSize(size),
     textSize: () => ({ value: currentTextSize(), attr: document.documentElement.dataset.textSize, select: document.getElementById("textSizeSel")?.value || "" }),
+    swUpdateGuard: () => ({ key: SW_AUTO_RELOAD_KEY, windowMs: SW_AUTO_RELOAD_WINDOW_MS, early: shouldAutoReloadForSwUpdate(), late: shouldAutoReloadForSwUpdate(swPageLoadedAt + SW_AUTO_RELOAD_WINDOW_MS + 1) }),
     hint: () => showHint(),
     lastHint: () => game && game.lastHint,
     hintHighlights: () => [...document.querySelectorAll(".hint-highlight")].map((el) => el.dataset.uid || el.id || el.dataset.cardId || el.className),

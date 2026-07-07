@@ -82,12 +82,34 @@
     return new URL("../../sw.js", location.href).toString();
   }
 
+  const SW_AUTO_RELOAD_WINDOW_MS = 15000;
+  const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r44_v1";
+  const swPageLoadedAt = Date.now();
+  function hasAutoReloadedForSwUpdate() {
+    try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
+  }
+  function markAutoReloadedForSwUpdate() {
+    try { sessionStorage.setItem(SW_AUTO_RELOAD_KEY, "1"); } catch {}
+  }
+  function shouldAutoReloadForSwUpdate(now) {
+    return (Number(now || Date.now()) - swPageLoadedAt) <= SW_AUTO_RELOAD_WINDOW_MS
+      && !hasAutoReloadedForSwUpdate();
+  }
+  function showPwaUpdateNotice() {
+    recoveryToast("新版本可用，請在方便時重新整理。");
+  }
+
   let pwaReloading = false;
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (pwaReloading) return;
-      pwaReloading = true;
-      location.reload();
+      if (shouldAutoReloadForSwUpdate()) {
+        pwaReloading = true;
+        markAutoReloadedForSwUpdate();
+        location.reload();
+        return;
+      }
+      showPwaUpdateNotice();
     });
   }
 
@@ -1552,6 +1574,7 @@
     textSize: () => ({ value: currentTextSize(), attr: document.documentElement.dataset.textSize, select: document.getElementById("packTextSizeSel")?.value || "" }),
     pwaVersion: () => document.getElementById("packPwaVersion")?.textContent || "",
     readCacheVersion: () => readCacheVersion(),
+    swUpdateGuard: () => ({ key: SW_AUTO_RELOAD_KEY, windowMs: SW_AUTO_RELOAD_WINDOW_MS, early: shouldAutoReloadForSwUpdate(), late: shouldAutoReloadForSwUpdate(swPageLoadedAt + SW_AUTO_RELOAD_WINDOW_MS + 1) }),
     clearRecord: () => clearRecordStats(),
   };
 
