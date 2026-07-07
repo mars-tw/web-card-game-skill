@@ -1,4 +1,4 @@
-const CACHE_VERSION = "card-battle-r45-v1";
+const CACHE_VERSION = "card-battle-r46-v1";
 const ASSET_CACHE = `${CACHE_VERSION}-assets`;
 const HTML_CACHE = `${CACHE_VERSION}-html`;
 

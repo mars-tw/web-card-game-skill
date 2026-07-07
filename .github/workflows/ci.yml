@@ -48,6 +48,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: 跑對戰 Stage 1 E2E（AI 攻擊權/pendingSpell/Mulligan/壞存檔/場上上限/RWD）
         run: node scripts/test-battle-e2e.js
+      - name: RWD 九視口矩陣守門（shell/battle/pack 零違規）
+        run: node scripts/test-rwd-matrix.js
 
   deploy:
     name: 部署 GitHub Pages

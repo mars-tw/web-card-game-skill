@@ -6,9 +6,9 @@
 <title>開卡包 · Card Pack</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r45-v1";
+    const CACHE_VERSION = "card-battle-r46-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r45_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r46_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -23,8 +23,12 @@
       if (typeof window.__cardSwUpdatePrompt === "function") window.__cardSwUpdatePrompt();
     };
     window.__CARD_SW_BOOT.shouldAutoReloadForSwUpdate = shouldReload;
+    // 首次安裝（載入時尚無 controller）取得控制權不是「更新」，不自動重載；
+    // 只有原本就受控、被新 SW 接管時才走 15 秒視窗內的一次性自動重載。
+    const wasControlledAtBoot = !!navigator.serviceWorker.controller;
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (window.__cardSwBootReloading) return;
+      if (!wasControlledAtBoot) return;
       if (shouldReload()) {
         window.__cardSwBootReloading = true;
         markReloaded();
@@ -54,10 +58,11 @@
   button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
     outline: 3px solid #facc15; outline-offset: 2px;
   }
+  html { height: 100%; }
   body {
     font-family: "Segoe UI","Microsoft JhengHei",system-ui,sans-serif;
     background: radial-gradient(ellipse at top,var(--bg1),var(--bg2));
-    color: var(--ink); min-height: 100vh; overflow-x: hidden;
+    color: var(--ink); height: 100vh; height: 100dvh; overflow: hidden;
     display: flex; flex-direction: column; align-items: center; position: relative;
   }
   body::before {
@@ -74,14 +79,42 @@
     animation: ambientDrift 20s ease-in-out infinite alternate;
   }
   @keyframes ambientDrift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(2%,-2%) scale(1.06)} }
-  header { padding: 14px; font-size: 22px; font-weight: 800; letter-spacing: 2px;
+  header { padding: 6px 8px; font-size: 18px; font-weight: 800; letter-spacing: 2px; flex-shrink: 0;
     color: var(--accent); text-shadow: 0 0 16px color-mix(in srgb, var(--accent) 50%, transparent); }
-  .coin-bar { font-size: 14px; font-weight: 700; color: #facc15; padding: 4px 14px; border-radius: 20px;
-    background: rgba(250,204,21,.1); border: 1px solid rgba(250,204,21,.25); margin-bottom: 4px; }
-  .coin-bar span { font-size: 16px; font-weight: 900; }
+  /* app-shell 頂列：金幣＋前往對戰同一列，頁面本身不捲動 */
+  .pack-topbar { flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    gap: 10px; flex-wrap: wrap; padding: 0 10px 6px; max-width: 100vw; }
+  .coin-bar { font-size: 13px; font-weight: 700; color: #facc15; padding: 4px 14px; border-radius: 20px;
+    background: rgba(250,204,21,.1); border: 1px solid rgba(250,204,21,.25); margin-bottom: 0; }
+  .coin-bar span { font-size: 15px; font-weight: 900; }
+  /* app-shell 主格線：所有區段同屏可見、各自垂直內捲 */
+  .pack-main {
+    flex: 1 1 auto; min-height: 0; width: min(1280px, 100%);
+    display: grid; gap: 8px; padding: 0 10px 8px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1.25fr);
+    grid-template-areas: "goal open record" "deck deck collection";
+  }
+  .open-panel { grid-area: open; display: flex; flex-direction: column; align-items: center; }
+  .goal-panel { grid-area: goal; }
+  .record-panel { grid-area: record; }
+  .deck-builder { grid-area: deck; display: flex; flex-direction: column; }
+  .collection { grid-area: collection; }
+  .open-panel, .goal-panel, .record-panel, .deck-builder, .collection {
+    min-height: 0; max-height: 100%; overflow-y: auto; width: auto; margin: 0;
+    background: rgba(13,17,23,.72); border: 1px solid rgba(255,255,255,.12); border-radius: 8px;
+  }
+  @media (max-width: 1179px) and (min-width: 701px) {
+    .pack-main {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      grid-template-rows: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-areas: "open deck" "goal record" "collection collection";
+    }
+  }
 
   /* 卡包 */
-  .pack-stage { min-height: 340px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+  .pack-stage { min-height: 0; flex-shrink: 0; width: 100%; padding: 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
   .pack {
     width: 180px; height: 250px; border-radius: 18px; cursor: pointer;
     background: linear-gradient(160deg,#7c3aed,#4c1d95); border: 3px solid #a855f7;
@@ -151,20 +184,22 @@
   .card .new-card-tag { position:absolute; top:8px; right:6px; font-size:10px; font-weight:900; color:#052e16;
     background:linear-gradient(180deg,#86efac,#22c55e); padding:1px 6px; border-radius:8px; z-index:3; }
 
-  .actions { display:flex; gap:12px; padding:14px; flex-wrap:wrap; justify-content:center; }
+  .actions { display:flex; gap:12px; padding:12px; flex-wrap:wrap; justify-content:center; flex-shrink:0; }
+  .reveal-row { flex-shrink: 0; }
   button { background:linear-gradient(180deg,var(--accent),#d97706); color:#1a1206; border:none; padding:12px 24px;
     border-radius:24px; font-size:15px; font-weight:800; cursor:pointer;
     box-shadow:0 4px 12px color-mix(in srgb, var(--accent) 40%, transparent); transition:transform .1s; }
   button:hover { transform:scale(1.05); }
   button.ghost { background:#2a3645; color:var(--ink); box-shadow:none; }
   button:disabled { filter:grayscale(1) brightness(.65); cursor:not-allowed; transform:none; }
-  .top-actions { display:flex; justify-content:center; gap:10px; padding:8px 12px 2px; }
+  .top-actions { display:flex; justify-content:center; gap:10px; padding:0; }
+  .top-actions button { padding:6px 14px; font-size:13px; border-radius:16px; }
 
   .summary { font-size:13px; color:var(--muted); text-align:center; min-height:20px; }
   .summary .new { color:#4ade80; font-weight:700; } .summary .dup { color:#f59e0b; }
 
   /* 收藏冊 */
-  .collection { width:min(960px,94vw); padding:16px; }
+  .collection { padding:12px; }
   .collection h2 { font-size:16px; margin-bottom:10px; color:var(--muted); display:flex; justify-content:space-between; align-items:center; }
   .collection-meta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end; font-size:12px; }
   .collection-tools { display:grid; grid-template-columns:minmax(150px,1.2fr) repeat(5,minmax(96px,.6fr)); gap:8px; margin-bottom:10px; }
@@ -188,20 +223,23 @@
   @media (hover:none) { .slot .dismantle-btn { opacity:1; } } /* 觸控裝置常駐顯示 */
   .slot .fstar { position:absolute; top:2px; right:3px; font-size:9px; color:gold; }
 
-  .deck-builder { width:min(1100px,94vw); padding:16px; }
-  .deck-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; flex-wrap:wrap; }
+  .deck-builder { padding:12px; }
+  .deck-head { flex-shrink:0; display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; flex-wrap:wrap; }
   .deck-head h2 { font-size:18px; color:var(--ink); }
   .deck-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .deck-actions button { padding:8px 14px; font-size:13px; border-radius:14px; }
   .deck-count { color:#facc15; font-weight:900; min-width:54px; text-align:right; }
-  .deck-layout { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr); gap:12px; align-items:start; }
-  .deck-panel { background:rgba(13,17,23,.72); border:1px solid rgba(255,255,255,.12); border-radius:8px; padding:12px; min-width:0; }
-  .deck-current-panel { position:sticky; top:10px; z-index:10; }
+  /* 牌組雙欄各自內捲：deck-panel 是唯一的捲動層（清單不再另設高度） */
+  .deck-layout { flex:1 1 auto; min-height:0; display:grid;
+    grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); grid-template-rows:minmax(0,1fr); gap:12px; align-items:stretch; }
+  .deck-panel { background:rgba(13,17,23,.55); border:1px solid rgba(255,255,255,.12); border-radius:8px; padding:12px;
+    min-width:0; min-height:0; max-height:100%; overflow-y:auto; }
   .deck-panel h3 { font-size:14px; color:var(--muted); margin-bottom:8px; display:flex; justify-content:space-between; gap:8px; }
-  .deck-tools { display:grid; grid-template-columns:minmax(160px,1fr) minmax(96px,.35fr) minmax(112px,.4fr); gap:8px; margin-bottom:10px; }
+  .deck-tools { display:grid; grid-template-columns:minmax(120px,1fr) minmax(88px,.35fr) minmax(100px,.4fr); gap:8px; margin-bottom:10px; }
   .deck-tools input, .deck-tools select { min-width:0; border:1px solid rgba(255,255,255,.12); border-radius:8px;
     background:rgba(8,12,18,.84); color:var(--ink); padding:9px 10px; font:inherit; font-size:13px; }
   .deck-filter-count { font-size:11px; color:var(--muted); }
-  .deck-card-list { display:flex; flex-direction:column; gap:7px; max-height:460px; overflow:auto; padding-right:2px; }
+  .deck-card-list { display:flex; flex-direction:column; gap:7px; padding-right:2px; }
   .deck-card-row { display:grid; grid-template-columns:34px minmax(0,1fr) auto; gap:8px; align-items:center;
     min-height:46px; padding:7px; border-radius:8px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); }
   .deck-card-row.locked { opacity:.48; }
@@ -230,12 +268,11 @@
   .deck-errors.ok { color:#86efac; }
   .deck-save-msg { color:#86efac; font-size:12px; min-height:16px; }
   .deck-empty { color:var(--muted); font-size:13px; padding:12px; text-align:center; }
-  .goal-panel { width:min(960px,94vw); margin:10px auto 2px; padding:12px;
-    background:rgba(13,17,23,.72); border:1px solid rgba(255,255,255,.12); border-radius:8px; }
+  .goal-panel { padding:12px; }
   .goal-head { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
   .goal-head h2 { font-size:16px; color:var(--ink); }
   .goal-summary { font-size:12px; color:var(--muted); }
-  .goal-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(220px,.6fr); gap:10px; align-items:start; }
+  .goal-grid { display:grid; grid-template-columns:1fr; gap:10px; align-items:start; }
   .milestone-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:7px; }
   .goal-item { border:1px solid rgba(255,255,255,.1); border-radius:8px; padding:8px; background:rgba(255,255,255,.04); min-width:0; }
   .goal-title { font-size:12px; font-weight:900; color:#facc15; margin-bottom:3px; }
@@ -244,8 +281,7 @@
   .goal-item.claimed { opacity:.62; }
   .weekly-goal { border-color:rgba(45,212,191,.38); background:rgba(45,212,191,.07); }
   .weekly-goal .goal-title { color:#5eead4; }
-  .record-panel { width:min(960px,94vw); margin:10px auto 2px; padding:12px;
-    background:rgba(13,17,23,.72); border:1px solid rgba(255,255,255,.12); border-radius:8px; }
+  .record-panel { padding:12px; }
   .record-head { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
   .record-head h2 { font-size:16px; color:var(--ink); }
   .record-head button { padding:7px 10px; border-radius:8px; font-size:12px; }
@@ -295,29 +331,32 @@
   .mission-item button { width:100%; border:none; border-radius:8px; padding:7px 9px; font-size:12px; font-weight:900;
     background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; cursor:pointer; }
   .mission-item button:disabled, .mission-actions button:disabled { background:#2a3645; color:var(--muted); cursor:default; filter:none; }
-  .series-footer { width:min(960px,94vw); margin:8px auto 16px; padding:10px 12px;
+  .series-footer { flex-shrink:0; width:min(960px,94vw); margin:0 auto; padding:4px 10px 6px;
     color:var(--muted); font-size:12px; text-align:center; border-top:1px solid rgba(255,255,255,.08); }
   .series-footer a { color:var(--accent); text-decoration:none; font-weight:800; margin:0 6px; }
   .series-footer a:hover { text-decoration:underline; }
 
   @media (max-width:700px) {
+    header { padding: 4px 8px; font-size: 16px; }
+    .pack-main {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1.45fr) minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.1fr);
+      grid-template-areas: "open" "deck" "goal" "record" "collection";
+      gap: 6px; padding: 0 8px 6px;
+    }
+    .pack { width: 132px; height: 184px; }
+    .pack .pack-icon { font-size: 44px; }
     .collection h2 { align-items:flex-start; gap:8px; }
     .collection-tools { grid-template-columns:1fr 1fr; }
     .collection-tools input { grid-column:1 / -1; }
-    .deck-layout { grid-template-columns:1fr; }
+    .deck-layout { grid-template-columns:1fr; grid-template-rows:minmax(0,1fr) minmax(0,1fr); }
     .deck-tools { grid-template-columns:1fr 1fr; }
     .deck-tools input { grid-column:1 / -1; }
-    .deck-card-list { max-height:420px; }
     .deck-card-row { grid-template-columns:32px minmax(0,1fr) auto; }
     .deck-head { align-items:flex-start; }
     .deck-actions { width:100%; }
-    .deck-actions button { flex:1 1 auto; padding-inline:12px; }
-    .deck-current-panel {
-      position:sticky; top:8px; z-index:30; order:-1;
-      border-color:rgba(250,204,21,.35); box-shadow:0 10px 28px rgba(0,0,0,.35);
-    }
-    .deck-current-panel .deck-card-list { max-height:160px; }
-    .goal-grid { grid-template-columns:1fr; }
+    .deck-actions button { flex:1 1 auto; padding-inline:10px; }
+    .deck-current-panel { order:-1; border-color:rgba(250,204,21,.35); }
     .milestone-list { grid-template-columns:1fr; }
     .record-grid { grid-template-columns:1fr; }
     .save-manager { grid-template-columns:1fr 1fr; }
@@ -327,15 +366,24 @@
     .mission-card { max-height:calc(100vh - 64px); padding:12px; }
     .mission-list { grid-template-columns:1fr; }
     .mission-actions button { padding:8px 9px; }
-    .series-footer { margin-bottom:20px; }
   }
-  @media (max-height: 760px) and (min-width: 701px) {
-    header { padding: 8px; font-size: 18px; }
-    .pack-stage { min-height: 260px; }
-    .pack { width: 150px; height: 210px; }
-    .goal-panel, .record-panel, .deck-panel, .collection { max-height: calc(100vh - 86px); overflow-y: auto; }
-    .deck-card-list { max-height: 300px; }
+  @media (max-height: 760px) {
+    header { padding: 3px 8px; font-size: 15px; }
+    .pack-topbar { padding-bottom: 4px; }
+    .coin-bar { font-size: 12px; padding: 3px 10px; }
+    .top-actions button { padding: 4px 12px; font-size: 12px; }
+    .pack { width: 120px; height: 168px; }
+    .pack .pack-icon { font-size: 40px; }
+    .pack .pack-label { font-size: 14px; }
+    .series-footer { padding: 2px 8px 4px; font-size: 11px; }
     .mission-card { max-height: calc(100vh - 40px); overflow-y: auto; }
+  }
+  @media (max-height: 560px) {
+    header { padding: 2px 8px; font-size: 13px; }
+    .pack { width: 96px; height: 134px; }
+    .pack .pack-icon { font-size: 30px; }
+    .pack .pack-hint { display: none; }
+    .series-footer { padding: 1px 8px 3px; font-size: 10px; }
   }
 
   @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
@@ -350,11 +398,14 @@
 <body>
   <header>🎴 開卡包 · CARD PACK 🎴</header>
   <button class="mission-drawer-btn" id="missionDrawerBtn">任務<span class="mission-badge" id="missionBadge" aria-live="polite">0</span></button>
-  <div class="coin-bar">💰 金幣 <span id="coinBalance" aria-live="polite">0</span> · 一包 100 金（首包免費）</div>
-  <div class="top-actions">
-    <button class="ghost" id="goBattleTop">前往對戰</button>
+  <div class="pack-topbar">
+    <div class="coin-bar">💰 金幣 <span id="coinBalance" aria-live="polite">0</span> · 一包 100 金（首包免費）</div>
+    <div class="top-actions">
+      <button class="ghost" id="goBattleTop">前往對戰</button>
+    </div>
   </div>
 
+  <main class="pack-main">
   <section class="goal-panel" id="goalPanel">
     <div class="goal-head">
       <h2>長線目標</h2>
@@ -397,21 +448,23 @@
     </div>
   </section>
 
-  <div class="pack-stage" id="packStage">
-    <div class="pack" id="pack">
-      <div class="pack-icon">🎁</div>
-      <div class="pack-label">神祕卡包</div>
-      <div class="pack-hint">點擊開啟（5 張）</div>
+  <section class="open-panel" id="openPanel">
+    <div class="pack-stage" id="packStage">
+      <div class="pack" id="pack">
+        <div class="pack-icon">🎁</div>
+        <div class="pack-label">神祕卡包</div>
+        <div class="pack-hint">點擊開啟（5 張）</div>
+      </div>
     </div>
-  </div>
 
-  <div class="reveal-row" id="revealRow"></div>
-  <div class="summary" id="summary" aria-live="polite"></div>
+    <div class="reveal-row" id="revealRow"></div>
+    <div class="summary" id="summary" aria-live="polite"></div>
 
-  <div class="actions" id="actions" style="display:none;">
-    <button id="againBtn">再開一包 🎁</button>
-    <button class="ghost" id="toBattleBtn">前往對戰 →</button>
-  </div>
+    <div class="actions" id="actions" style="display:none;">
+      <button id="againBtn">再開一包 🎁</button>
+      <button class="ghost" id="toBattleBtn">前往對戰 →</button>
+    </div>
+  </section>
 
   <div class="mission-drawer" id="missionDrawer" aria-hidden="true">
     <div class="mission-card">
@@ -532,6 +585,7 @@
     </div>
     <div class="grid" id="collectionGrid"></div>
   </div>
+  </main>
 
   <footer class="series-footer">
     🎮 阿軒的小遊戲系列
@@ -540,9 +594,9 @@
     <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
   </footer>
 
-  <script src="../card-battle/cards.js?v=card-battle-r45-v1"></script>
-  <script src="../card-battle/core.js?v=card-battle-r45-v1"></script>
-  <script src="pack.js?v=card-battle-r45-v1"></script>
+  <script src="../card-battle/cards.js?v=card-battle-r46-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-r46-v1"></script>
+  <script src="pack.js?v=card-battle-r46-v1"></script>
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);

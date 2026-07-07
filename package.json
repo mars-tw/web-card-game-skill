@@ -6,6 +6,7 @@
   "scripts": {
     "test": "node scripts/test-cards.js && node scripts/test-core.js && node scripts/test-quality-gates.js",
     "test:e2e": "node scripts/test-battle-e2e.js",
+    "test:rwd": "node scripts/test-rwd-matrix.js",
     "start": "python -m http.server 8000"
   },
   "keywords": [

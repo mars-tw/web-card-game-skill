@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="manifest" href="../manifest.webmanifest?v=card-battle-r45-v1" />
+<link rel="manifest" href="../manifest.webmanifest?v=card-battle-r46-v1" />
 <meta name="theme-color" content="#f59e0b" />
 <title>卡牌遊戲 · Card Game</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r45-v1";
+    const CACHE_VERSION = "card-battle-r46-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r45_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r46_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -25,8 +25,12 @@
       if (typeof window.__cardSwUpdatePrompt === "function") window.__cardSwUpdatePrompt();
     };
     window.__CARD_SW_BOOT.shouldAutoReloadForSwUpdate = shouldReload;
+    // 首次安裝（載入時尚無 controller）取得控制權不是「更新」，不自動重載；
+    // 只有原本就受控、被新 SW 接管時才走 15 秒視窗內的一次性自動重載。
+    const wasControlledAtBoot = !!navigator.serviceWorker.controller;
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (window.__cardSwBootReloading) return;
+      if (!wasControlledAtBoot) return;
       if (shouldReload()) {
         window.__cardSwBootReloading = true;
         markReloaded();
@@ -200,9 +204,9 @@
     }));
 
     const pwaState = { skippedForWebdriver: false, registered: false, updatePrompted: false, version: "", checking: false };
-    const CACHE_VERSION = window.__CARD_CACHE_VERSION || "card-battle-r45-v1";
+    const CACHE_VERSION = window.__CARD_CACHE_VERSION || "card-battle-r46-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-    const SW_AUTO_RELOAD_KEY = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r45_v1";
+    const SW_AUTO_RELOAD_KEY = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r46_v1";
     function swUrl() { return new URL(`../sw.js?v=${CACHE_VERSION}`, location.href).toString(); }
     async function readCacheVersion() {
       try {

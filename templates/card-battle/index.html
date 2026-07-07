@@ -6,9 +6,9 @@
 <title>卡牌對戰 · Card Battle</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r45-v1";
+    const CACHE_VERSION = "card-battle-r46-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r45_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r46_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -23,8 +23,12 @@
       if (typeof window.__cardSwUpdatePrompt === "function") window.__cardSwUpdatePrompt();
     };
     window.__CARD_SW_BOOT.shouldAutoReloadForSwUpdate = shouldReload;
+    // 首次安裝（載入時尚無 controller）取得控制權不是「更新」，不自動重載；
+    // 只有原本就受控、被新 SW 接管時才走 15 秒視窗內的一次性自動重載。
+    const wasControlledAtBoot = !!navigator.serviceWorker.controller;
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (window.__cardSwBootReloading) return;
+      if (!wasControlledAtBoot) return;
       if (shouldReload()) {
         window.__cardSwBootReloading = true;
         markReloaded();
@@ -68,12 +72,13 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { height: 100%; }
   body {
     font-family: "Segoe UI", "Microsoft JhengHei", system-ui, sans-serif;
     background: radial-gradient(ellipse at top, var(--bg1), var(--bg2));
-    color: var(--ink); min-height: 100vh;
+    color: var(--ink); height: 100vh; height: 100dvh;
     display: flex; flex-direction: column; align-items: center;
-    user-select: none; overflow-x: hidden; position: relative;
+    user-select: none; overflow: hidden; position: relative;
   }
   /* 背景圖層（依主題切換，--bg-img 由各主題設定）*/
   body::before {
@@ -96,16 +101,18 @@
     100% { transform: translate(-2%, 2%) scale(1.06); opacity: 1; }
   }
   header {
-    width: 100%; text-align: center; padding: 8px; font-weight: 700;
+    width: 100%; text-align: center; padding: 8px; font-weight: 700; flex-shrink: 0;
     letter-spacing: 2px; color: var(--accent);
     text-shadow: 0 0 12px color-mix(in srgb, var(--accent) 50%, transparent);
   }
 
-  .board { width: min(980px, 97vw); flex: 1; display: flex; flex-direction: column; gap: 7px; padding: 7px; }
+  /* app-shell：頁面本身不捲動，區域各自內捲 */
+  .board { width: min(980px, 97vw); flex: 1; min-height: 0; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 7px; padding: 7px; }
   .board.shake-screen { animation: screenShake .26s; }
 
   .hero-row {
-    display: flex; justify-content: space-between; align-items: center;
+    display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
     background: color-mix(in srgb, var(--panel) 82%, transparent);
     border-radius: 12px; padding: 8px 16px;
     border: 1px solid var(--panel-border);
@@ -123,9 +130,13 @@
   .hp-badge { background: var(--hp); } .mana-badge { background: var(--mana); }
 
   .battlefield {
-    /* flex-wrap：手機窄版面隨從多時換行，不然固定寬卡片會同時被左右裁切、點不到 */
-    min-height: var(--card-h); display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
-    align-items: center; padding: 6px; border-radius: 12px;
+    /* flex-wrap：手機窄版面隨從多時換行，不然固定寬卡片會同時被左右裁切、點不到；
+       桌機 app-shell：戰場 flex 自適應、超出高度時區內垂直捲動 */
+    flex: 1 1 calc(var(--card-h) + 12px); min-height: 56px;
+    max-height: calc(var(--card-h) * 2 + 26px); overflow-y: auto;
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    align-items: center; align-items: safe center; align-content: center; align-content: safe center;
+    padding: 6px; border-radius: 12px;
     /* 戰場棋盤質感：深色半透明 + 細格線紋理 + 內陰影，像放在真實戰場上 */
     background:
       repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 38px),
@@ -235,9 +246,12 @@
   .card .hp.hurt { background: radial-gradient(circle at 35% 30%, #ef4444, #991b1b); box-shadow: 0 0 8px #ef4444, inset 0 1px 2px rgba(255,255,255,.4); }
   .card.spell-card .stats, .card.spell-card .kwrow { display: none; }
 
-  .hand { display: flex; gap: 5px; justify-content: center; align-items: flex-end;
-    min-height: calc(var(--card-h) + 12px); padding: 5px; flex-wrap: wrap; }
+  .hand { display: flex; gap: 5px; justify-content: center;
+    align-items: center; align-items: safe center; align-content: center; align-content: safe center;
+    flex: 0 1 auto; min-height: 34px; max-height: calc(var(--card-h) + 26px); overflow-y: auto;
+    padding: 5px; flex-wrap: wrap; }
   .target-status {
+    flex-shrink: 0;
     min-height: 26px; display: flex; align-items: center; justify-content: center;
     color: var(--muted); font-size: 13px; font-weight: 800;
     background: rgba(0,0,0,.18); border: 1px solid rgba(255,255,255,.08);
@@ -245,8 +259,11 @@
   }
   .target-status.active { color: #facc15; border-color: rgba(250,204,21,.35); background: rgba(250,204,21,.08); }
 
-  .controls { display: flex; gap: 12px; align-items: center; justify-content: center; padding: 6px; }
-  .controls-scroll { display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .controls { display: flex; gap: 12px; align-items: center; justify-content: center; padding: 6px;
+    flex-shrink: 0; position: sticky; bottom: 0; z-index: 30; border-radius: 12px;
+    background: color-mix(in srgb, var(--bg2) 72%, transparent); backdrop-filter: blur(4px); }
+  .controls-scroll { display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap;
+    max-height: 128px; overflow-y: auto; min-width: 0; }
   .diff-pick { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted);
     background: color-mix(in srgb, var(--panel) 82%, transparent); padding: 6px 12px; border-radius: 20px;
     border: 1px solid var(--panel-border); backdrop-filter: blur(4px); }
@@ -284,6 +301,7 @@
     background: color-mix(in srgb, var(--panel) 80%, transparent);
     border: 1px solid var(--panel-border); border-radius: 10px; padding: 8px 10px;
     display: flex; flex-direction: column; gap: 6px; backdrop-filter: blur(4px);
+    flex: 0 1 auto; min-height: 44px; max-height: 132px; overflow-y: auto;
   }
   .quest-panel h2 { font-size: 13px; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
   .quest-head-actions { display: flex; align-items: center; gap: 8px; }
@@ -301,7 +319,7 @@
   .quest-item.done { border-color: rgba(250,204,21,.45); }
   .quest-item.claimed { opacity: .62; }
 
-  #log { height: 52px; overflow-y: auto; width: min(980px, 97vw); font-size: calc(12px * var(--text-scale)); color: var(--muted);
+  #log { height: 52px; flex-shrink: 0; overflow-y: auto; width: auto; font-size: calc(12px * var(--text-scale)); color: var(--muted);
     padding: 4px 12px; text-align: center; line-height: 1.5; }
   #log .me { color: #60a5fa; } #log .ai { color: #f87171; }
   .card .cardname { font-size: calc(11px * var(--text-scale)); }
@@ -404,10 +422,10 @@
     color: #1a1206; border: none; padding: 13px; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; }
   .guide-actions button.secondary { background: #2a3645; color: var(--ink); }
   .guide-focus { outline: 4px solid #facc15 !important; box-shadow: 0 0 0 8px rgba(250,204,21,.22), 0 0 32px rgba(250,204,21,.8) !important; z-index: 120 !important; position: relative; }
-  .kw-codex-btn { position: fixed; bottom: 12px; right: 12px; z-index: 60; background: #1a2230;
+  .kw-codex-btn { position: fixed; top: 8px; bottom: auto; right: 12px; z-index: 60; background: #1a2230;
     color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
     font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
-  .mission-drawer-btn { position: fixed; bottom: 12px; left: 12px; z-index: 90; background: #1a2230;
+  .mission-drawer-btn { position: fixed; top: 8px; bottom: auto; left: 12px; z-index: 90; background: #1a2230;
     color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
     font-size: 13px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
   .mission-badge { position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; border-radius:999px;
@@ -441,7 +459,7 @@
   .kw-codex-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.04); }
   .kw-codex-item .kwi { font-size: 22px; } .kw-codex-item .kwn { font-weight: 800; color: #facc15; }
   .kw-codex-item .kwd { font-size: 12px; color: #9fb0a4; }
-  .series-footer { width: min(980px, 97vw); margin: 8px auto 14px; padding: 10px 12px;
+  .series-footer { width: auto; flex-shrink: 0; margin: 0; padding: 7px 10px;
     color: var(--muted); font-size: 12px; text-align: center; border-top: 1px solid rgba(255,255,255,.08); }
   .series-footer a { color: var(--accent); text-decoration: none; font-weight: 800; margin: 0 6px; }
   .series-footer a:hover { text-decoration: underline; }
@@ -484,14 +502,50 @@
       scroll-behavior: auto !important;
     }
   }
+  /* 矮視口壓縮階層：卡片縮小＋面板收斂，讓 app-shell 一屏裝得下 */
+  @media (max-height: 900px) and (min-width: 701px) {
+    :root { --card-w: 104px; --card-h: 148px; }
+    header { padding: 5px; font-size: 15px; }
+    .board { gap: 6px; padding: 6px; }
+    .hero-row { padding-block: 5px; }
+    #log { height: 40px; }
+    .quest-panel { max-height: 108px; }
+    .controls-scroll { max-height: 88px; }
+  }
   @media (max-height: 760px) and (min-width: 701px) {
-    .board { gap: 5px; padding-block: 5px; }
-    .hero-row { padding-block: 6px; }
-    .battlefield { min-height: 136px; }
-    .hand { min-height: 138px; }
-    .quest-panel { max-height: 118px; overflow-y: auto; }
-    #log { height: 44px; }
+    :root { --card-w: 88px; --card-h: 124px; }
+    header { padding: 3px; font-size: 13px; letter-spacing: 1px; }
+    .board { gap: 5px; padding: 5px; }
+    .hero-row { padding-block: 4px; }
+    .hero .avatar { font-size: 22px; }
+    .hp-badge, .mana-badge { font-size: 13px; padding: 2px 8px; }
+    .battlefield { min-height: 44px; }
+    .target-status { min-height: 20px; padding: 2px 8px; font-size: 12px; }
+    #log { height: 32px; }
+    .hand { max-height: calc(var(--card-h) + 20px); }
+    .controls { padding: 3px; gap: 8px; }
+    .controls-scroll { max-height: 46px; gap: 8px; }
+    button.end-turn { padding: 8px 18px; font-size: 14px; }
+    button.mulligan-btn { padding: 8px 12px; font-size: 12px; }
+    .quest-panel { max-height: 84px; padding: 5px 8px; }
+    .series-footer { padding: 3px 8px; font-size: 11px; }
     .card-detail-card, .kw-codex-card, .mission-card, .guide-panel { max-height: calc(100vh - 40px); overflow-y: auto; }
+  }
+  @media (max-height: 560px) and (min-width: 701px) {
+    :root { --card-w: 78px; --card-h: 108px; }
+    header { padding: 2px; font-size: 12px; }
+    .board { gap: 4px; padding: 4px; }
+    .hero-row { padding-block: 2px; }
+    .hero .avatar { font-size: 18px; }
+    .battlefield { min-height: 34px; align-items: flex-start; align-content: flex-start; }
+    #log { height: 24px; }
+    .hand { min-height: 26px; max-height: calc(var(--card-h) + 16px); padding: 3px;
+      align-items: flex-start; align-content: flex-start; }
+    .controls-scroll { max-height: 42px; }
+    button.end-turn { padding: 7px 14px; font-size: 13px; }
+    .quest-panel { max-height: 52px; min-height: 30px; padding: 4px 8px; }
+    .quest-list { gap: 4px; }
+    .series-footer { padding: 2px 6px; font-size: 10px; }
   }
   @media (max-width: 700px) {
     :root {
@@ -508,35 +562,34 @@
     .hero .avatar { font-size: 24px; }
     .hero .name { font-size: 14px; }
     .hp-badge, .mana-badge { font-size: 13px; padding: 2px 8px; }
-    .battlefield { min-height: calc(var(--card-h) + 10px); gap: 5px; padding: 5px; }
-    .quest-list { grid-template-columns: 1fr; }
+    .battlefield { flex: 0 0 auto; min-height: calc(var(--card-h) + 10px); max-height: none; overflow-y: visible; gap: 5px; padding: 5px; }
     .quest-item { grid-template-columns: minmax(0,1fr) auto; }
-    .series-footer { padding-bottom: calc(var(--mobile-controls-h) + var(--mobile-hand-h) + 10px); }
+    .series-footer { margin: 0; padding: 8px 10px 4px; }
     .hand {
       position: fixed; left: 0; bottom: var(--mobile-controls-h); z-index: 70; width: 100vw; max-width: 100vw;
-      height: var(--mobile-hand-h); min-height: var(--mobile-hand-h);
-      justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden;
+      height: var(--mobile-hand-h); min-height: var(--mobile-hand-h); max-height: var(--mobile-hand-h);
+      justify-content: flex-start; flex-wrap: wrap; overflow-y: auto; overflow-x: hidden;
+      align-items: flex-start; align-content: flex-start;
       background: rgba(8,10,14,.92); border-top: 1px solid rgba(255,255,255,.08);
       border-bottom: 1px solid rgba(255,255,255,.08); padding: 8px 10px;
-      scroll-snap-type: x proximity;
     }
-    .hand .card { scroll-snap-align: start; }
     .card-info-btn { width:36px; height:36px; top:20px; right:3px; }
     .controls {
       position: fixed; left: 0; bottom: 0; z-index: 75; width: 100vw; max-width: 100vw;
       height: var(--mobile-controls-h);
       overflow: hidden; justify-content: space-between; flex-wrap: nowrap; gap: 8px;
       background: rgba(8,10,14,.96); border-top: 1px solid rgba(255,255,255,.1);
-      padding: 8px 10px;
+      padding: 8px 10px; border-radius: 0;
     }
     .controls-scroll {
       min-width: 0; flex: 1 1 auto; display: flex; align-items: center; gap: 8px;
-      flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; padding-right: 2px;
+      flex-wrap: wrap; overflow-y: auto; overflow-x: hidden; max-height: 100%;
+      align-content: flex-start; justify-content: flex-start; padding-right: 2px;
       scrollbar-width: thin;
     }
     .controls .diff-pick { flex: 0 0 auto; order: 3; }
     .controls button { flex: 0 0 auto; white-space: nowrap; }
-    #hintBtn { order: 1; position: sticky; left: 0; z-index: 4; }
+    #hintBtn { order: 1; }
     #mulliganBtn { order: 2; }
     #newGameBtn { order: 4; }
     #toPackBtn { order: 5; }
@@ -563,12 +616,13 @@
     .quest-panel {
       position: fixed; left: 8px; right: 8px;
       bottom: calc(var(--mobile-controls-h) + var(--mobile-hand-h));
-      z-index: 67; max-height: var(--mobile-quest-h); overflow: hidden;
+      z-index: 67; min-height: 0; max-height: var(--mobile-quest-h); overflow-y: auto;
       background: rgba(13,20,30,.94);
     }
     .quest-panel h2 { margin-bottom: 2px; }
-    .quest-list { display: flex; overflow-x: auto; overflow-y: hidden; gap: 6px; padding-bottom: 2px; }
-    .quest-item { flex: 0 0 264px; min-height: 58px; padding: 6px; }
+    /* 任務清單改直向堆疊：由 quest-panel 垂直內捲，不再橫向裁切 */
+    .quest-list { display: flex; flex-direction: column; overflow: visible; gap: 6px; padding-bottom: 2px; }
+    .quest-item { flex: 0 0 auto; min-height: 44px; padding: 6px; }
     .kw-codex-btn { top: 8px; bottom: auto; right: 10px; z-index: 90; }
     .mission-drawer-btn { top: 8px; bottom: auto; left: 10px; z-index: 90; }
     .mission-drawer { align-items:flex-start; padding:50px 8px 8px; }
@@ -656,6 +710,13 @@
       <h2><span>每日任務</span><span class="quest-head-actions"><button class="quest-claim-all" id="questClaimAllBtn">全部領取</button><span id="questDateLabel"></span></span></h2>
       <div class="quest-list" id="questList" aria-live="polite"></div>
     </section>
+
+    <footer class="series-footer">
+      🎮 阿軒的小遊戲系列
+      <a href="https://mars-tw.github.io/tower-defense-skill/" target="_blank" rel="noopener">塔防</a>
+      <a href="https://mars-tw.github.io/pixel-idle-farm-skill/" target="_blank" rel="noopener">像素農場</a>
+      <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
+    </footer>
   </div>
 
   <div class="overlay" id="overlay">
@@ -732,16 +793,9 @@
     </div>
   </div>
 
-  <footer class="series-footer">
-    🎮 阿軒的小遊戲系列
-    <a href="https://mars-tw.github.io/tower-defense-skill/" target="_blank" rel="noopener">塔防</a>
-    <a href="https://mars-tw.github.io/pixel-idle-farm-skill/" target="_blank" rel="noopener">像素農場</a>
-    <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
-  </footer>
-
-  <script src="cards.js?v=card-battle-r45-v1"></script>
-  <script src="core.js?v=card-battle-r45-v1"></script>
-  <script src="battle.js?v=card-battle-r45-v1"></script>
+  <script src="cards.js?v=card-battle-r46-v1"></script>
+  <script src="core.js?v=card-battle-r46-v1"></script>
+  <script src="battle.js?v=card-battle-r46-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {
