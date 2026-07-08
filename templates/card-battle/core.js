@@ -60,12 +60,16 @@
     Object.freeze({ id: "deck_win_1", type: "deckWin", title: "使用自訂牌組贏得 1 場", target: 1, reward: 40 }),
     Object.freeze({ id: "win_2", type: "win", title: "贏得 2 場對戰", target: 2, reward: 40 }),
     Object.freeze({ id: "summon_minion_12", type: "summonMinion", title: "召喚 12 隻隨從", target: 12, reward: 35 }),
+    Object.freeze({ id: "trigger_frenzy_3", type: "frenzy", title: "觸發 3 次狂怒", target: 3, reward: 35 }),
+    Object.freeze({ id: "empower_minion_3", type: "buffTarget", title: "強化 3 個友方隨從", target: 3, reward: 30 }),
+    Object.freeze({ id: "cast_spell_6", type: "playSpell", title: "打出 6 張法術", target: 6, reward: 35 }),
   ]);
 
   const MILESTONE_DEFS = Object.freeze([
     Object.freeze({ id: "unique_10", metric: "unique", target: 10, title: "收藏 10 種卡牌", reward: 40 }),
     Object.freeze({ id: "unique_20", metric: "unique", target: 20, title: "收藏 20 種卡牌", reward: 60 }),
     Object.freeze({ id: "unique_40", metric: "unique", target: 40, title: "收藏 40 種卡牌", reward: 80 }),
+    Object.freeze({ id: "unique_55", metric: "unique", target: 55, title: "收藏 55 種卡牌", reward: 20 }),
     Object.freeze({ id: "foil_5", metric: "foil", target: 5, title: "收藏 5 張閃卡", reward: 40 }),
     Object.freeze({ id: "foil_15", metric: "foil", target: 15, title: "收藏 15 張閃卡", reward: 60 }),
   ]);
@@ -74,16 +78,19 @@
     Object.freeze({ id: "weekly_open_pack_3", type: "openPack", title: "本週開啟 3 包", target: 3, reward: 80 }),
     Object.freeze({ id: "weekly_summon_30", type: "summonMinion", title: "本週召喚 30 個手下", target: 30, reward: 90 }),
     Object.freeze({ id: "weekly_damage_80", type: "heroDamage", title: "本週造成 80 點英雄傷害", target: 80, reward: 120 }),
+    Object.freeze({ id: "weekly_spell_12", type: "playSpell", title: "本週打出 12 張法術", target: 12, reward: 100 }),
   ]);
 
   const SPELL_EFFECTS = Object.freeze({
     damage3: Object.freeze({ needsTarget: "enemyMinion" }),
+    damage5: Object.freeze({ needsTarget: "enemyMinion" }),
     damage8: Object.freeze({ needsTarget: "enemyMinion" }),
     heal5: Object.freeze({ needsTarget: null }),
     aoe1: Object.freeze({ needsTarget: null }),
     aoe2: Object.freeze({ needsTarget: null }),
     mana2: Object.freeze({ needsTarget: null }),
     giveShield: Object.freeze({ needsTarget: "friendlyMinion" }),
+    buffTarget: Object.freeze({ needsTarget: "friendlyMinion" }),
     polymorph: Object.freeze({ needsTarget: "enemyMinion" }),
   });
 
@@ -518,6 +525,12 @@
     return keywords(card).includes(keyword);
   }
 
+  function spellPower(side) {
+    return (side && Array.isArray(side.field) ? side.field : []).reduce((sum, minion) => (
+      sum + (hasKeyword(minion, "spellpower") ? 1 : 0)
+    ), 0);
+  }
+
   function sideKeyOf(state, sideOrKey) {
     if (sideOrKey === "enemy" || sideOrKey === "player") return sideOrKey;
     if (sideOrKey && sideOrKey.side) return sideOrKey.side;
@@ -581,6 +594,14 @@
     if (events) events.push({ type: "polymorph", uid: minion.uid });
   }
 
+  function buffMinion(minion, attack, health, side, events) {
+    if (!minion) return;
+    minion.attack += attack;
+    minion.health += health;
+    minion.maxHealth = (minion.maxHealth == null ? minion.health - health : minion.maxHealth) + health;
+    if (events) events.push({ type: "buffTarget", side: side && side.side, uid: minion.uid, attack, health });
+  }
+
   function summonCard(side, card, rng, events, reason) {
     if (!side || !card) return false;
     if (side.field.length >= MAX_FIELD) {
@@ -624,6 +645,11 @@
       minion.health = 0;
       if (events) events.push({ type: "poison", uid: minion.uid });
     }
+    if (minion.health > 0 && hasKeyword(minion, "frenzy") && !minion._frenzyDone) {
+      minion.attack += 2;
+      minion._frenzyDone = true;
+      if (events) events.push({ type: "frenzy", uid: minion.uid });
+    }
     return amount;
   }
 
@@ -652,6 +678,8 @@
       summonCard(side, makeToken("骷髏", 2, 2, "☠️"), rng, events, "deathrattle");
     } else if (trigger === "rebirth") {
       summonCard(side, makeToken("浴火鳳凰", 5, 1, "🔥"), rng, events, "deathrattle");
+    } else if (trigger === "drawCard1") {
+      drawCardInternal(side, rng, events);
     }
   }
 
@@ -694,25 +722,31 @@
   function applySpellEffect(state, sideKey, effect, target, rng, events) {
     const side = getSide(state, sideKey);
     const foe = getOpponent(state, sideKey);
+    const sp = spellPower(side);
     if (effect === "damage3") {
-      applyDamageToMinion(target, 3, null, events);
+      applyDamageToMinion(target, 3 + sp, null, events);
+      cleanupBoth(state, rng, events);
+    } else if (effect === "damage5") {
+      applyDamageToMinion(target, 5 + sp, null, events);
       cleanupBoth(state, rng, events);
     } else if (effect === "damage8") {
-      applyDamageToMinion(target, 8, null, events);
+      applyDamageToMinion(target, 8 + sp, null, events);
       cleanupBoth(state, rng, events);
     } else if (effect === "heal5") {
       healHero(side, 5, events);
     } else if (effect === "aoe1") {
-      for (const minion of [...foe.field]) applyDamageToMinion(minion, 1, null, events);
+      for (const minion of [...foe.field]) applyDamageToMinion(minion, 1 + sp, null, events);
       cleanupBoth(state, rng, events);
     } else if (effect === "aoe2") {
-      for (const minion of [...foe.field]) applyDamageToMinion(minion, 2, null, events);
+      for (const minion of [...foe.field]) applyDamageToMinion(minion, 2 + sp, null, events);
       cleanupBoth(state, rng, events);
     } else if (effect === "mana2") {
       side.mana += 2;
       events.push({ type: "manaGain", side: side.side, amount: 2 });
     } else if (effect === "giveShield") {
       addShield(target, events);
+    } else if (effect === "buffTarget") {
+      buffMinion(target, 2, 2, side, events);
     } else if (effect === "polymorph") {
       polymorph(target, events);
     }
@@ -1063,6 +1097,7 @@
     milestoneRewardTotal,
     validateDeck,
     buildBattleDeck,
+    spellPower,
     hasTaunt,
     isLegalTarget,
     playCard,

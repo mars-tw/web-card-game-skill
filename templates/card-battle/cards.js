@@ -38,6 +38,8 @@ const CARD_TYPE = { MINION: "minion", SPELL: "spell" };
  *   regenerate   回復  — 每回合結束時補滿生命
  *   lifesteal    吸血  — 造成傷害時為己方英雄恢復等量生命
  *   rush         突襲  — 登場當回合可攻擊隨從，但不能攻擊英雄
+ *   frenzy       狂怒  — 首次受傷存活後，攻擊 +2
+ *   spellpower   法強  — 在場時你的傷害法術 +1
  */
 const KEYWORDS = {
   taunt:        { label: "嘲諷", icon: "🛡", desc: "敵方必須優先攻擊它。" },
@@ -50,6 +52,8 @@ const KEYWORDS = {
   regenerate:   { label: "回復", icon: "💗", desc: "每回合結束補滿生命。" },
   lifesteal:    { label: "吸血", icon: "🩸", desc: "造成傷害時，為己方英雄恢復等量生命。" },
   rush:         { label: "突襲", icon: "💨", desc: "登場當回合可攻擊隨從，但不能攻擊英雄。" },
+  frenzy:       { label: "狂怒", icon: "🔥", desc: "首次受傷存活後，攻擊 +2。" },
+  spellpower:   { label: "法強", icon: "✨", desc: "在場時你的傷害法術 +1（可疊加）。" },
 };
 
 /**
@@ -126,6 +130,20 @@ const CARD_POOL = [
   { id: "tidebinderHex",  name: "縛潮咒印", type: CARD_TYPE.SPELL,  rarity: "epic", cost: 4, emoji: "🌊", image: null, text: "將一個敵方手下變成 1/1 綿羊。", effect: "polymorph", foil: false },
   { id: "bastionColossus", name: "棱堡巨像", type: CARD_TYPE.MINION, rarity: "epic", cost: 6, attack: 4, health: 8, emoji: "🗿", image: null, keywords: ["taunt", "regenerate"], text: "嘲諷 + 再生：控制牌組的防線核心。", foil: false },
   { id: "highArchivist",  name: "至高典藏師", type: CARD_TYPE.MINION, rarity: "legendary", cost: 6, attack: 3, health: 8, emoji: "📚", image: null, keywords: ["taunt", "battlecry"], trigger: "aoeEnemy2", text: "嘲諷。戰吼：對所有敵方手下造成 2 點傷害。", foil: false },
+
+  // ===== R47 霜鋒與奧術：狂怒 6 張、法強/法術 6 張 =====
+  { id: "frenzyCub",       name: "燼鬃幼獅", type: CARD_TYPE.MINION, rarity: "common", cost: 1, attack: 1, health: 2, emoji: "🦁", image: "../../assets/cards/frenzyCub.png", keywords: ["frenzy"], text: "狂怒：首次受傷存活後攻擊 +2。", foil: false },
+  { id: "frostBiter",      name: "霜齒撕咬者", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 2, health: 2, emoji: "🐺", image: "../../assets/cards/frostBiter.png", keywords: ["rush", "frenzy"], text: "突襲 + 狂怒：越打越兇。", foil: false },
+  { id: "arcaneApprentice", name: "奧術學徒", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 1, health: 3, emoji: "📘", image: "../../assets/cards/arcaneApprentice.png", keywords: ["spellpower"], text: "法強：你的傷害法術 +1。", foil: false },
+  { id: "novicePage",      name: "見習書僮", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 1, health: 1, emoji: "📜", image: "../../assets/cards/novicePage.png", keywords: ["battlecry"], trigger: "drawCard1", text: "戰吼：抽 1 張牌。", foil: false },
+  { id: "ragingBrute",     name: "狂怒蠻兵", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 3, health: 4, emoji: "🪓", image: "../../assets/cards/ragingBrute.png", keywords: ["frenzy"], text: "狂怒：受傷後立刻變成重擊威脅。", foil: false },
+  { id: "frostChanneler",  name: "霜脈引導者", type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 2, health: 5, emoji: "❄️", image: "../../assets/cards/frostChanneler.png", keywords: ["spellpower"], text: "法強：讓霜火法術更加致命。", foil: false },
+  { id: "arcaneInfusion",  name: "秘能灌注", type: CARD_TYPE.SPELL, rarity: "rare", cost: 3, emoji: "💫", image: "../../assets/cards/arcaneInfusion.png", text: "使一個友方隨從 +2/+2。", effect: "buffTarget", foil: false },
+  { id: "frostReaver",     name: "霜鋒劫掠者", type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 4, health: 5, emoji: "🧊", image: "../../assets/cards/frostReaver.png", keywords: ["rush", "frenzy"], text: "突襲 + 狂怒：先解場，再壓迫。", foil: false },
+  { id: "arcaneWeaver",    name: "奧術織者", type: CARD_TYPE.MINION, rarity: "epic", cost: 4, attack: 3, health: 4, emoji: "🪄", image: "../../assets/cards/arcaneWeaver.png", keywords: ["spellpower", "battlecry"], trigger: "drawCard1", text: "法強。戰吼：抽 1 張牌。", foil: false },
+  { id: "flameBurst",      name: "烈焰爆裂", type: CARD_TYPE.SPELL, rarity: "epic", cost: 4, emoji: "🔥", image: "../../assets/cards/flameBurst.png", text: "對一個敵方隨從造成 5 點傷害。", effect: "damage5", foil: false },
+  { id: "archLoremaster",  name: "大博學者", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 4, health: 7, emoji: "📚", image: "../../assets/cards/archLoremaster.png", keywords: ["spellpower", "battlecry"], trigger: "drawCard1", text: "法強。戰吼：抽 1 張牌。", foil: false },
+  { id: "frostboundTyrant", name: "霜縛暴君", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 6, health: 8, emoji: "👑", image: "../../assets/cards/frostboundTyrant.png", keywords: ["taunt", "frenzy"], text: "嘲諷 + 狂怒：受傷後守線反擊。", foil: false },
 ];
 
 const AXIS_LABELS = Object.freeze({ aggro: "快攻", control: "控制", neutral: "中立" });
@@ -143,6 +161,9 @@ const CARD_AXIS = Object.freeze({
   sparkSquire: "aggro", alleySkirmisher: "aggro", emberVolley: "aggro", bulwarkMonk: "control",
   dawnRider: "aggro", battleDrummer: "aggro", sanctuaryWarden: "control", tidebinderHex: "control",
   bastionColossus: "control", highArchivist: "control",
+  frenzyCub: "aggro", frostBiter: "aggro", arcaneApprentice: "control", novicePage: "control",
+  ragingBrute: "aggro", frostChanneler: "control", arcaneInfusion: "aggro", frostReaver: "aggro",
+  arcaneWeaver: "control", flameBurst: "aggro", archLoremaster: "control", frostboundTyrant: "control",
 });
 const CARD_FLAVOR = Object.freeze({
   footman: "城門下的第一面盾，總是比晨鐘更早醒來。",
@@ -195,6 +216,18 @@ const CARD_FLAVOR = Object.freeze({
   tidebinderHex: "縛潮咒印把怒濤繫成細繩，再繫到敵人的腳踝。",
   bastionColossus: "棱堡巨像不是被建造出來的，是城牆自己學會了走路。",
   highArchivist: "至高典藏師翻開禁頁時，灰塵會先替敵軍默哀。",
+  frenzyCub: "牠第一次嚐到疼痛時，鬃火才真正醒來。",
+  frostBiter: "霜齒咬住獵物，也咬住敵人的退路。",
+  arcaneApprentice: "學徒背熟的第一句咒語，是別讓光熄滅。",
+  novicePage: "見習書僮跑得不快，卻總能把關鍵頁送到。",
+  ragingBrute: "狂怒蠻兵聽不懂撤退，只聽得見骨裂聲。",
+  frostChanneler: "霜脈引導者把呼吸放慢，讓整座戰場結冰。",
+  arcaneInfusion: "秘能灌注像第二次心跳，催促勇者再上前。",
+  frostReaver: "霜鋒劫掠者的刀光，會先把恐懼凍住。",
+  arcaneWeaver: "奧術織者牽動一線星光，就能改寫整場交換。",
+  flameBurst: "烈焰爆裂沒有方向，只有被吞沒的中心。",
+  archLoremaster: "大博學者翻頁之前，敵軍已被答案壓低頭。",
+  frostboundTyrant: "霜縛暴君舉盾時，冬天便有了王座。",
 });
 
 for (const card of CARD_POOL) {

@@ -409,6 +409,70 @@ function testDailyQuests() {
   assert(polluted.quests[0].progress === 0 && polluted.quests[0].claimed === false, "任務污染值會回到安全預設");
 }
 
+function testFrenzyKeyword() {
+  const angry = minion("angry", { attack: 2, health: 4, maxHealth: 4, keywords: ["frenzy"] });
+  const g = state({ enemy: { field: [angry] } });
+  const first = Core.applyDamage(g, { targetUid: "angry", amount: 1 }, rngFactory());
+  const second = Core.applyDamage(g, { targetUid: "angry", amount: 1 }, rngFactory());
+  assert(first.ok && angry.attack === 4 && angry._frenzyDone === true && first.events.some((e) => e.type === "frenzy" && e.uid === "angry"), "狂怒受傷存活後攻擊 +2");
+  assert(second.ok && angry.attack === 4 && !second.events.some((e) => e.type === "frenzy"), "狂怒同一隻隨從只會觸發一次");
+
+  const shielded = minion("shielded", { attack: 2, health: 4, keywords: ["frenzy"], shield: true });
+  const gShield = state({ enemy: { field: [shielded] } });
+  const shieldHit = Core.applyDamage(gShield, { targetUid: "shielded", amount: 3 }, rngFactory());
+  assert(shieldHit.ok && shielded.attack === 2 && !shieldHit.events.some((e) => e.type === "frenzy"), "狂怒被聖盾擋住時不觸發");
+
+  const doomed = minion("doomed", { attack: 2, health: 2, keywords: ["frenzy"] });
+  const gDoomed = state({ enemy: { field: [doomed] } });
+  const lethal = Core.applyDamage(gDoomed, { targetUid: "doomed", amount: 2 }, rngFactory());
+  assert(lethal.ok && doomed.attack === 2 && !lethal.events.some((e) => e.type === "frenzy"), "狂怒致死傷害不觸發");
+}
+
+function testSpellpowerAndNewSpells() {
+  const sp1 = minion("sp1", { attack: 1, health: 3, keywords: ["spellpower"] });
+  const sp2 = minion("sp2", { attack: 1, health: 3, keywords: ["spellpower"] });
+  const target = minion("target", { health: 6, maxHealth: 6 });
+  const g = state({ player: { field: [sp1, sp2] }, enemy: { field: [target] } });
+  const bolt = Core.castSpellEffect(g, { side: "player", effect: "damage3", targetUid: "target" }, rngFactory());
+  assert(Core.spellPower(g.player) === 2, "法強會計算場上多個來源並可疊加");
+  assert(bolt.ok && target.health === 1, "法強會加成單體傷害法術");
+
+  const gAoe = state({
+    player: { field: [minion("spA", { keywords: ["spellpower"] }), minion("spB", { keywords: ["spellpower"] })] },
+    enemy: { field: [minion("aoeA", { health: 5, maxHealth: 5 }), minion("aoeB", { health: 4, maxHealth: 4 })] },
+  });
+  const aoe = Core.castSpellEffect(gAoe, { side: "player", effect: "aoe1" }, rngFactory());
+  assert(aoe.ok && gAoe.enemy.field[0].health === 2 && gAoe.enemy.field[1].health === 1, "法強會加成範圍傷害法術");
+
+  const gBattlecry = state({
+    player: { hand: [minion("pinger", { cost: 1, keywords: ["battlecry"], trigger: "damageAny1" })], field: [minion("spOnly", { keywords: ["spellpower"] })], mana: 10 },
+    enemy: { field: [minion("pingTarget", { health: 3, maxHealth: 3 })] },
+  });
+  const battlecry = Core.playCard(gBattlecry, { side: "player", cardUid: "pinger" }, rngFactory());
+  assert(battlecry.ok && gBattlecry.enemy.field[0].health === 2, "法強不加成戰吼傷害");
+
+  const damage5Target = minion("damage5Target", { health: 6, maxHealth: 6 });
+  const gDamage5 = state({ enemy: { field: [damage5Target] } });
+  const damage5 = Core.castSpellEffect(gDamage5, { side: "player", effect: "damage5", targetUid: "damage5Target" }, rngFactory());
+  assert(damage5.ok && damage5Target.health === 1, "damage5 對敵方隨從造成 5 點傷害");
+
+  const buffed = minion("buffed", { attack: 2, health: 3, maxHealth: 3 });
+  const gBuff = state({ player: { field: [buffed] } });
+  const buff = Core.castSpellEffect(gBuff, { side: "player", effect: "buffTarget", targetUid: "buffed" }, rngFactory());
+  assert(buff.ok && buffed.attack === 4 && buffed.health === 5 && buffed.maxHealth === 5 && buff.events.some((e) => e.type === "buffTarget"), "buffTarget 讓攻擊、生命與上限各 +2");
+}
+
+function testDrawCard1Ability() {
+  const card = deckCard("drawn", "抽到的牌");
+  const g = state({ player: { deck: [card], hand: [] } });
+  const draw = Core.triggerAbility(g, { side: "player", trigger: "drawCard1" }, rngFactory([0.42]));
+  assert(draw.ok && g.player.hand.length === 1 && g.player.hand[0].id === "drawn" && draw.events.some((e) => e.type === "draw"), "drawCard1 會安全抽 1 張牌");
+
+  const empty = state({ player: { deck: [], hand: [] } });
+  const emptyDraw = Core.triggerAbility(empty, { side: "player", trigger: "drawCard1" }, rngFactory());
+  assert(emptyDraw.ok && empty.player.hand.length === 0, "drawCard1 在牌庫空時安全無事發生");
+}
+
 console.log("== core.js 單元測試 ==");
 testInsufficientMana();
 testMaxField();
@@ -423,6 +487,9 @@ testDeckValidation();
 testBuildBattleDeck();
 testDeckMigration();
 testDailyQuests();
+testFrenzyKeyword();
+testSpellpowerAndNewSpells();
+testDrawCard1Ability();
 testGoalsAndWeeklyQuests();
 
 console.log("");
@@ -431,7 +498,7 @@ if (failed > 0) process.exit(1);
 
 function testGoalsAndWeeklyQuests() {
   const total = Core.milestoneRewardTotal();
-  assert(total === 280 && total <= 300, `里程碑總增發 ${total} 金，不超過 3 包價值`);
+  assert(total === 300 && total <= 300, `里程碑總增發 ${total} 金，不超過 3 包價值`);
 
   const collection10 = {};
   for (let i = 1; i <= 10; i++) collection10["c" + i] = 1;

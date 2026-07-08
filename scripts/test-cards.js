@@ -11,6 +11,10 @@ const R16_NEW_IDS = [
   "sparkSquire", "alleySkirmisher", "emberVolley", "bulwarkMonk", "dawnRider",
   "battleDrummer", "sanctuaryWarden", "tidebinderHex", "bastionColossus", "highArchivist",
 ];
+const R47_NEW_IDS = [
+  "frenzyCub", "frostBiter", "arcaneApprentice", "novicePage", "ragingBrute", "frostChanneler",
+  "arcaneInfusion", "frostReaver", "arcaneWeaver", "flameBurst", "archLoremaster", "frostboundTyrant",
+];
 
 let failed = 0;
 function assert(cond, msg) {
@@ -19,10 +23,11 @@ function assert(cond, msg) {
 }
 
 console.log("== 結構檢查 ==");
-assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 50, `卡池至少 50 張（實際 ${CARD_POOL.length}）`);
+assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 62, `卡池至少 62 張（實際 ${CARD_POOL.length}）`);
 assert(Object.keys(RARITY).length === 4, "稀有度有 4 級");
 assert(Object.keys(KEYWORDS).length >= 5, "關鍵字技能至少 5 種");
 assert(KEYWORDS.lifesteal?.label === "吸血" && KEYWORDS.rush?.label === "突襲", "新關鍵字吸血與突襲有繁中 label");
+assert(KEYWORDS.frenzy?.label === "狂怒" && KEYWORDS.spellpower?.label === "法強", "R47 關鍵字狂怒與法強有繁中 label");
 assert(AXIS_LABELS.aggro === "快攻" && AXIS_LABELS.control === "控制" && AXIS_LABELS.neutral === "中立", "軸線標籤完整");
 
 console.log("== 欄位完整性 ==");
@@ -49,6 +54,18 @@ assert(newRarity.common === 4 && newRarity.rare === 3 && newRarity.epic === 2 &&
 assert(newAxis.aggro === 5 && newAxis.control === 5, `R16 新卡快攻/控制各 5 張（實際 ${JSON.stringify(newAxis)}）`);
 assert(Math.min(...newCosts) <= 1 && Math.max(...newCosts) >= 6 && newCosts.filter((cost) => cost <= 3).length >= 6,
   "R16 新卡費用曲線含低費節奏與高費控制收束");
+
+console.log("== R47 霜鋒與奧術 ==");
+const r47Cards = R47_NEW_IDS.map((id) => getCardById(id));
+const r47Rarity = r47Cards.reduce((acc, c) => { if (c) acc[c.rarity] = (acc[c.rarity] || 0) + 1; return acc; }, {});
+const r47Axis = r47Cards.reduce((acc, c) => { if (c) acc[c.axis] = (acc[c.axis] || 0) + 1; return acc; }, {});
+const r47Costs = r47Cards.map((c) => c && c.cost).filter((n) => typeof n === "number");
+assert(r47Cards.every(Boolean), "R47 12 張新卡 id 全部存在");
+assert(r47Rarity.common === 4 && r47Rarity.rare === 3 && r47Rarity.epic === 3 && r47Rarity.legendary === 2,
+  `R47 稀有度分布為 4/3/3/2（實際 ${JSON.stringify(r47Rarity)}）`);
+assert(r47Axis.aggro === 6 && r47Axis.control === 6, `R47 快攻/控制各 6 張（實際 ${JSON.stringify(r47Axis)}）`);
+assert(r47Costs.includes(1) && r47Costs.includes(7), "R47 費用曲線含 1 費與 7 費");
+assert(r47Cards.every((c) => typeof c.flavor === "string" && c.flavor.length >= 8), "R47 風味文字完整且至少 8 字");
 
 console.log("== id 唯一性 ==");
 const ids = CARD_POOL.map((c) => c.id);

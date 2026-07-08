@@ -6,9 +6,9 @@
 <title>開卡包 · Card Pack</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r46-v1";
+    const CACHE_VERSION = "card-battle-r47-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r46_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r47_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -594,9 +594,9 @@
     <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
   </footer>
 
-  <script src="../card-battle/cards.js?v=card-battle-r46-v1"></script>
-  <script src="../card-battle/core.js?v=card-battle-r46-v1"></script>
-  <script src="pack.js?v=card-battle-r46-v1"></script>
+  <script src="../card-battle/cards.js?v=card-battle-r47-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-r47-v1"></script>
+  <script src="pack.js?v=card-battle-r47-v1"></script>
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);

@@ -42,6 +42,18 @@
     { "id": "frost",     "prompt": "an icy frost nova explosion radiating cold, blue shards, no creature" },
     { "id": "lightning", "prompt": "a violent lightning storm with bolts striking down, no creature" },
     { "id": "polymorph", "prompt": "a swirl of transformation magic turning into a fluffy sheep, whimsical, no creature" },
-    { "id": "meteor",    "prompt": "a massive flaming meteor crashing down from the sky, no creature" }
+    { "id": "meteor",    "prompt": "a massive flaming meteor crashing down from the sky, no creature" },
+    { "id": "frenzyCub", "prompt": "a snarling flame-maned lion cub wreathed in embers" },
+    { "id": "frostBiter", "prompt": "a lean frost-bitten wolf beast with oversized icy fangs lunging forward" },
+    { "id": "arcaneApprentice", "prompt": "a young arcane apprentice holding a glowing golden-blue spellbook" },
+    { "id": "novicePage", "prompt": "a young castle page carrying a sealed glowing codex and feather quill" },
+    { "id": "ragingBrute", "prompt": "a furious scarred brute warrior roaring with a frost-cracked axe and ember-lit scars" },
+    { "id": "frostChanneler", "prompt": "a solitary ice mage channeling a spiraling frost vortex between both hands" },
+    { "id": "arcaneInfusion", "prompt": "a radiant burst of golden-blue empowering magic energy, no creature" },
+    { "id": "frostReaver", "prompt": "a brutal armored frost reaver charging with twin ice blades" },
+    { "id": "arcaneWeaver", "prompt": "an elegant arcane weaver mage weaving golden-blue sigils with both hands" },
+    { "id": "flameBurst", "prompt": "a bursting explosion of flame, no creature" },
+    { "id": "archLoremaster", "prompt": "an elder arch loremaster surrounded by floating sealed tomes and golden-blue arcane light" },
+    { "id": "frostboundTyrant", "prompt": "a towering frost-bound tyrant king in ice armor with a glacial greatshield" }
   ]
 }

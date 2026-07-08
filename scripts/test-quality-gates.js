@@ -6,6 +6,10 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
+const R47_NEW_IDS = [
+  "frenzyCub", "frostBiter", "arcaneApprentice", "novicePage", "ragingBrute", "frostChanneler",
+  "arcaneInfusion", "frostReaver", "arcaneWeaver", "flameBurst", "archLoremaster", "frostboundTyrant",
+];
 let failed = 0;
 
 function assert(condition, message) {
@@ -427,11 +431,50 @@ function checkSwCacheCompleteness() {
   assert(missingCache.length === 0, `入口 shell、battle、pack 的本地資源皆納入 SW 快取（${required.size} 項）`);
 }
 
+function pngInfo(rel) {
+  const buf = fs.readFileSync(abs(rel));
+  const isPng = buf.length > 32 && buf.slice(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
+  return {
+    isPng,
+    width: isPng ? buf.readUInt32BE(16) : 0,
+    height: isPng ? buf.readUInt32BE(20) : 0,
+    colorType: isPng ? buf[25] : -1,
+  };
+}
+
+function checkR47ArtConsistency() {
+  const cards = require(abs("templates/card-battle/cards.js"));
+  const byId = Object.fromEntries(cards.CARD_POOL.map((card) => [card.id, card]));
+  const artConfig = JSON.parse(read("art-config.json"));
+  const artIds = new Set((artConfig.cards || []).map((card) => card.id));
+  const cached = parseCachedAssets().cached;
+  const problems = [];
+  for (const id of R47_NEW_IDS) {
+    const rel = `assets/cards/${id}.png`;
+    const expectedImage = `../../${rel}`;
+    const card = byId[id];
+    if (!card) problems.push(`${id} missing in CARD_POOL`);
+    else if (card.image !== expectedImage) problems.push(`${id} cards.js image ${card.image} !== ${expectedImage}`);
+    if (!artIds.has(id)) problems.push(`${id} missing in art-config.json`);
+    if (!fs.existsSync(abs(rel))) problems.push(`${id} missing PNG file`);
+    else {
+      const info = pngInfo(rel);
+      if (!info.isPng || info.width !== 1024 || info.height !== 1024 || info.colorType !== 2) {
+        problems.push(`${id} PNG expected 1024x1024 RGB, got ${info.width}x${info.height} colorType ${info.colorType}`);
+      }
+    }
+    if (!cached.has(rel)) problems.push(`${id} missing from sw.js CORE_ASSETS`);
+  }
+  problems.slice(0, 20).forEach((problem) => console.error("    r47 art gate: " + problem));
+  assert(problems.length === 0, `R47 新圖與 cards/art-config/sw 三方一致（${R47_NEW_IDS.length} 張）`);
+}
+
 console.log("== R40 文案品質守門 ==");
 checkCopyQuality();
 console.log("== R40 SW 快取完整性守門 ==");
 checkVersionedHtmlRefs();
 checkSwCacheCompleteness();
+checkR47ArtConsistency();
 
 if (failed > 0) {
   console.error(`❌ ${failed} 項守門失敗`);
