@@ -31,3 +31,4 @@ desktop.ini
 # npm（playwright devDependency 用）
 node_modules/
 package-lock.json
+tmp/
