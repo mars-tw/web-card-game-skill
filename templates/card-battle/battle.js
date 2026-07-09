@@ -78,7 +78,7 @@
   const TEXT_SIZE_KEY = "card_text_size_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r48_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r49_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0, reason: "自動觀察中", history: [] };
@@ -345,8 +345,8 @@
       hintUsedTurn: null,
       lastHint: null,
       turn: "player",
-      player: { side: "player", hp: D.playerHp, maxHp: D.playerHp, mana: 1, manaMax: 1, deck: playerDeck, hand: [], field: [] },
-      enemy:  { side: "enemy",  hp: D.enemyHp, maxHp: D.enemyHp, mana: 0, manaMax: 0, deck: enemyDeck, hand: [], field: [] },
+      player: { side: "player", hp: D.playerHp, maxHp: D.playerHp, mana: 1, manaMax: 1, fatigue: 0, deck: playerDeck, hand: [], field: [] },
+      enemy:  { side: "enemy",  hp: D.enemyHp, maxHp: D.enemyHp, mana: 0, manaMax: 0, fatigue: 0, deck: enemyDeck, hand: [], field: [] },
       selected: null,
       pendingSpell: null,
       over: false,
@@ -356,6 +356,8 @@
     game.mulliganUsed = false; // CP2-6 起手可重抽一次
     for (let i = 0; i < D.playerDraw; i++) drawCard(game.player);
     for (let i = 0; i < D.enemyDraw; i++) drawCard(game.enemy);
+    assertOpeningDeckTotal("player", game.player);
+    assertOpeningDeckTotal("enemy", game.enemy);
     document.getElementById("overlay").classList.remove("show");
     document.getElementById("log").innerHTML = "";
     log(`⚔️ 對戰開始！（難度：${D.label}）善用技能取勝。`, "me");
@@ -494,7 +496,7 @@
       // 起手牌洗回牌庫再重抽
       game.player.deck.push(...game.player.hand);
       game.player.hand = [];
-      for (let i = game.player.deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [game.player.deck[i], game.player.deck[j]] = [game.player.deck[j], game.player.deck[i]]; }
+      shuffleInPlace(game.player.deck);
       for (let i = 0; i < drawCount; i++) drawCard(game.player);
       btn.style.display = "none";
       log("🔄 重抽起手牌！", "me");
@@ -504,7 +506,7 @@
 
   // 玩家牌庫：優先用「開卡包收藏」的卡（接通收藏→對戰，CP0-1）。
   // 讀 localStorage 的 cardpack_collection_v2（{collectKey: count}），
-  // 把擁有的卡（含重複份數、閃卡）組進牌庫；不足 24 張才用 rollCardByRarity 保底補。
+  // 把擁有的卡（含重複份數、閃卡）組進牌庫；不足 Core.DECK_SIZE 張才用卡池保底補。
   function loadCollection() {
     try { return JSON.parse(localStorage.getItem("cardpack_collection_v2")) || {}; }
     catch { return {}; }
@@ -627,6 +629,61 @@
     return { deck, source: "archetype", archetype, templateIds: deck._templateIds || [] };
   }
 
+  function shuffleInPlace(list) {
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+    return list;
+  }
+
+  function legalCopyLimit(card) {
+    return card && card.rarity === "legendary" ? 1 : 2;
+  }
+
+  function canAddDeckCopy(deck, card) {
+    if (!card || !card.id) return false;
+    return deck.filter((item) => item.id === card.id).length < legalCopyLimit(card);
+  }
+
+  function rollBattleCardByRarity() {
+    const rarityEntries = Object.entries(window.RARITY || {});
+    const total = rarityEntries.reduce((sum, [, spec]) => sum + (Number(spec.weight) || 0), 0);
+    let roll = rng() * total;
+    let picked = "common";
+    for (const [key, spec] of rarityEntries) {
+      const weight = Number(spec.weight) || 0;
+      if (roll < weight) { picked = key; break; }
+      roll -= weight;
+    }
+    const pool = CARD_POOL.filter((card) => card.rarity === picked);
+    const source = pool[Math.floor(rng() * pool.length)] || CARD_POOL[0];
+    const card = cloneCard(source);
+    card.foil = rng() < (Number(window.FOIL_CHANCE) || 0);
+    return card;
+  }
+
+  function fillDeckFromFullPool(deck) {
+    const candidates = shuffleInPlace(CARD_POOL.map((card) => cloneCard(card)));
+    let progressed = true;
+    while (deck.length < Core.DECK_SIZE && progressed) {
+      progressed = false;
+      for (const card of candidates) {
+        if (deck.length >= Core.DECK_SIZE) break;
+        if (!canAddDeckCopy(deck, card)) continue;
+        deck.push(cloneCard(card));
+        progressed = true;
+      }
+    }
+  }
+
+  function assertOpeningDeckTotal(label, side) {
+    const total = (side.hand ? side.hand.length : 0) + (side.deck ? side.deck.length : 0);
+    if (total !== Core.DECK_SIZE) {
+      throw new Error(`開局 ${label} 牌庫契約錯誤：hand+deck=${total}, expected=${Core.DECK_SIZE}`);
+    }
+  }
+
   // useCollection=true：玩家用開包收藏；false：AI 用隨機卡池
   function buildDeck(useCollection) {
     if (useCollection) {
@@ -636,10 +693,19 @@
     const deck = [];
     if (useCollection) {
       const owned = loadOwnedCards();
-      for (let i = owned.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [owned[i], owned[j]] = [owned[j], owned[i]]; }
-      for (const c of owned) { if (deck.length >= 24) break; deck.push(c); }
+      shuffleInPlace(owned);
+      for (const c of owned) {
+        if (deck.length >= Core.DECK_SIZE) break;
+        if (canAddDeckCopy(deck, c)) deck.push(c);
+      }
     }
-    while (deck.length < 24) deck.push(rollCardByRarity()); // 不足或 AI：隨機補
+    let guard = 0;
+    while (deck.length < Core.DECK_SIZE && guard < Core.DECK_SIZE * 50) {
+      const card = rollBattleCardByRarity();
+      if (canAddDeckCopy(deck, card)) deck.push(card);
+      guard++;
+    }
+    if (deck.length < Core.DECK_SIZE) fillDeckFromFullPool(deck);
     if (useCollection) deck._deckSource = "fallback";
     return deck;
   }
@@ -688,6 +754,11 @@
   }
   function canAttackHeroNow(minion) {
     return !!(minion && minion.canAttack && !isRushHeroLocked(minion));
+  }
+  function heroAttackPotential(minion) {
+    if (!canAttackHeroNow(minion)) return 0;
+    const attacks = (minion.keywords || []).includes("windfury") && !minion._windUsed ? 2 : 1;
+    return (Number(minion.attack) || 0) * attacks;
   }
 
   function goPack() {
@@ -1198,6 +1269,14 @@
       if (card.effect === "heal5") return { used: ai.hp <= 22, targetUid: null };
       if (card.effect === "aoe1" || card.effect === "aoe2") return { used: playerField.length >= 2, targetUid: null };
       if (card.effect === "draw2") return { used: ai.hand.length <= Core.HAND_LIMIT - 2, targetUid: null };
+      if (card.effect === "giveShield") {
+        const target = chooseShieldTarget();
+        return { used: !!target, targetUid: target && target.uid };
+      }
+      if (card.effect === "polymorph") {
+        const target = chooseRemovalTarget(card.effect);
+        return { used: !!target, targetUid: target && target.uid };
+      }
       if (card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8") {
         const target = [...playerField].sort((a, b) => b.attack - a.attack)[0] || null;
         return { used: !!target, targetUid: target && target.uid };
@@ -1333,7 +1412,7 @@
       const queue = ai.field.filter((m) => m.canAttack);
       // CP2-5 致命斬殺檢查：玩家無嘲諷且 AI 總攻擊 ≥ 玩家血量 → 全壓臉直接結束遊戲
       const playerHasTaunt = game.player.field.some((m) => (m.keywords || []).includes("taunt"));
-      const totalAtk = queue.filter(canAttackHeroNow).reduce((s, m) => s + m.attack, 0);
+      const totalAtk = queue.reduce((s, m) => s + heroAttackPotential(m), 0);
       const lethal = !playerHasTaunt && totalAtk >= game.player.hp && game.player.hp > 0 && (game.aiSmart || 0) >= 1;
       let i = 0;
       const step = () => {
@@ -1720,6 +1799,11 @@
         if (sp > 0) log(`法強 +${sp} 強化了${event.side === "enemy" ? "對手" : "你的"}法術。`, event.side === "enemy" ? "ai" : "me");
       } else if (event.type === "heroDamage") {
         floatDamage(event.defenderSide === "enemy" ? "enemyHero" : "playerHero", event.amount);
+      } else if (event.type === "fatigue") {
+        const heroId = event.side === "enemy" ? "enemyHero" : "playerHero";
+        floatDamage(heroId, event.amount);
+        flashKeyword(heroId, `疲勞 ${event.amount}`);
+        log(`${event.side === "enemy" ? "對手" : "你"}牌庫已空，疲勞受到 ${event.amount} 點傷害。`, event.side === "enemy" ? "ai" : "me");
       } else if (event.type === "heroHeal") {
         if (event.amount > 0) flashKeyword(event.side === "player" ? "playerHero" : "enemyHero", `+${event.amount} 生命`);
       } else if (event.type === "regen") {

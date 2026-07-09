@@ -222,7 +222,10 @@ function testLifestealAndRush() {
   assert(rushAttack.ok, "突襲隨從登場當回合攻擊隨從合法");
 
   const rushHero = minion("rushHero", { attack: 3, health: 3, keywords: ["rush"], canAttack: true, justPlayed: true });
-  const g5 = state({ player: { field: [rushHero] } });
+  const g5 = state({
+    player: { field: [rushHero], deck: [deckCard("player-next", "Player Next")] },
+    enemy: { deck: [deckCard("enemy-next", "Enemy Next")] },
+  });
   const blockedHero = Core.resolveHeroAttack(g5, { attackerSide: "player", attackerUid: "rushHero", defenderSide: "enemy" }, rngFactory());
   Core.advanceTurn(g5, { phase: "endPlayer" }, rngFactory());
   Core.advanceTurn(g5, { phase: "startEnemy" }, rngFactory());
@@ -470,7 +473,8 @@ function testDrawCard1Ability() {
 
   const empty = state({ player: { deck: [], hand: [] } });
   const emptyDraw = Core.triggerAbility(empty, { side: "player", trigger: "drawCard1" }, rngFactory());
-  assert(emptyDraw.ok && empty.player.hand.length === 0, "drawCard1 在牌庫空時安全無事發生");
+  assert(emptyDraw.ok && empty.player.hand.length === 0 && empty.player.hp === 29
+    && emptyDraw.events.some((e) => e.type === "fatigue" && e.amount === 1), "drawCard1 牌庫空時觸發 1 點疲勞");
 }
 
 function testDraw2Spell() {
@@ -480,13 +484,45 @@ function testDraw2Spell() {
 
   const empty = state({ player: { deck: [], hand: [] } });
   const emptyDraw = Core.castSpellEffect(empty, { side: "player", effect: "draw2" }, rngFactory());
-  assert(emptyDraw.ok && empty.player.hand.length === 0 && empty.player.deck.length === 0, "draw2 empty deck is safe");
+  assert(emptyDraw.ok && empty.player.hand.length === 0 && empty.player.deck.length === 0 && empty.player.hp === 27
+    && emptyDraw.events.filter((e) => e.type === "fatigue").map((e) => e.amount).join(",") === "1,2", "draw2 空庫會連續觸發 1、2 點疲勞");
 
   const fullHand = Array.from({ length: Core.HAND_LIMIT }, (_, i) => deckCard("hand-" + i, "Hand " + i));
   const burn = state({ player: { deck: [deckCard("burn-a", "Burn A"), deckCard("burn-b", "Burn B")], hand: fullHand } });
   const burnDraw = Core.castSpellEffect(burn, { side: "player", effect: "draw2" }, rngFactory());
   assert(burnDraw.ok && burn.player.hand.length === Core.HAND_LIMIT && burn.player.deck.length === 0
     && burnDraw.events.filter((e) => e.type === "handBurn").length === 2, "draw2 burns cards at hand limit");
+}
+
+function testFatigueWinConditionPressure() {
+  const g = state({
+    game: { turn: "player" },
+    player: { hp: 2, deck: [], hand: [] },
+    enemy: { hp: 2, deck: [], hand: [], manaMax: 0, mana: 0 },
+  });
+  const rng = rngFactory();
+  const firstEnemyDraw = Core.advanceTurn(g, { phase: "startEnemy" }, rng);
+  const firstPlayerDraw = Core.advanceTurn(g, { phase: "endEnemy" }, rng);
+  const lethalEnemyDraw = Core.advanceTurn(g, { phase: "endPlayer" }, rng);
+  const startAgain = Core.advanceTurn(g, { phase: "startEnemy" }, rng);
+  const fatigueEvents = [...firstEnemyDraw.events, ...firstPlayerDraw.events, ...lethalEnemyDraw.events, ...startAgain.events].filter((e) => e.type === "fatigue");
+  assert(fatigueEvents.map((e) => `${e.side}:${e.amount}`).join(",") === "enemy:1,player:1,enemy:2",
+    "雙方空庫時回合抽牌會遞增疲勞");
+  assert(g.enemy.hp <= 0 && g.player.hp > 0, "雙方空庫長局會在疲勞中分出勝負");
+}
+
+function testBattlecryAutoTargetContract() {
+  const pinger = minion("pinger", { cost: 1, keywords: ["battlecry"], trigger: "damageAny1" });
+  const low = minion("low", { health: 2, maxHealth: 2 });
+  const high = minion("high", { health: 5, maxHealth: 5 });
+  const g = state({
+    player: { hand: [pinger], mana: 10 },
+    enemy: { field: [high, low] },
+  });
+  const result = Core.playCard(g, { side: "player", cardUid: "pinger", targetUid: "high" }, rngFactory());
+  const battlecry = result.events.find((e) => e.type === "battlecry");
+  assert(result.ok && battlecry && battlecry.targetUid === "low" && low.health === 1 && high.health === 5,
+    "damageAny1 戰吼目前固定自動命中生命最低的敵方隨從，忽略外部 targetUid");
 }
 
 function uniqueCollection(count) {
@@ -548,6 +584,8 @@ testFrenzyKeyword();
 testSpellpowerAndNewSpells();
 testDrawCard1Ability();
 testDraw2Spell();
+testFatigueWinConditionPressure();
+testBattlecryAutoTargetContract();
 testChroniclePureFunctions();
 testGoalsAndWeeklyQuests();
 

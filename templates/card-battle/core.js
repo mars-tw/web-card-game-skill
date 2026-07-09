@@ -764,6 +764,15 @@
     if (events) events.push({ type: "heroHeal", side: side.side, amount: side.hp - before });
   }
 
+  function applyFatigue(side, events) {
+    if (!side) return 0;
+    const count = Math.max(0, Math.floor(Number(side.fatigue) || 0)) + 1;
+    side.fatigue = count;
+    side.hp -= count;
+    if (events) events.push({ type: "fatigue", side: side.side, amount: count, count });
+    return count;
+  }
+
   function addShield(minion, events) {
     minion.shield = true;
     if (events) events.push({ type: "shieldGain", uid: minion.uid });
@@ -1123,7 +1132,11 @@
   }
 
   function drawCardInternal(side, rng, events) {
-    if (!side || side.deck.length === 0) return null;
+    if (!side) return null;
+    if (!Array.isArray(side.deck) || side.deck.length === 0) {
+      applyFatigue(side, events);
+      return null;
+    }
     if (side.hand.length >= HAND_LIMIT) {
       const burned = side.deck.pop();
       if (events) events.push({ type: "handBurn", side: side.side, cardId: burned && burned.id });

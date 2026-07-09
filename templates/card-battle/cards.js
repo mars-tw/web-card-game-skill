@@ -1,8 +1,8 @@
 /* =========================================================================
  * cards.js — 卡牌資料定義（戰鬥對戰 + 抽牌卡包共用的核心資料層）
  *
- * v2 改版重點：
- *  - 卡池擴充到 24 張（隨從 16 + 法術 8），收集難度自然提高。
+ * 改版重點：
+ *  - 卡池已擴充到 74 張，戰鬥與開包共用同一份資料。
  *  - 每張隨從可帶「關鍵字技能」keywords：嘲諷/衝鋒/亡語/戰吼/聖盾。
  *  - 調降高稀有權重（傳說 3→1.5），抽卡更難。
  *  - 加入「星級變體」：抽卡時有機率變成 foil（閃卡，金色版），更稀有。
@@ -58,7 +58,7 @@ const FACTIONS = Object.freeze({
   }),
 });
 
-/* 關鍵字技能定義（顯示用；實際規則在 battle.js）：
+/* 關鍵字技能定義（顯示用；實際規則在 core.js）：
  *   taunt        嘲諷  — 敵方必須先攻擊有嘲諷的隨從
  *   charge       衝鋒  — 召喚當回合即可攻擊（無召喚病）
  *   battlecry    戰吼  — 出場時觸發一次效果
@@ -88,9 +88,9 @@ const KEYWORDS = {
 };
 
 /**
- * 卡牌總表（卡池，24 張）。
+ * 卡牌總表（卡池）。
  *   keywords  關鍵字技能陣列（隨從用），如 ["taunt"]、["battlecry"]
- *   trigger   戰吼/亡語對應的效果代號，由 battle.js 的 ABILITY_EFFECTS 解析
+ *   trigger   戰吼/亡語對應的效果代號，由 core.js 解析
  *   foil      星級變體：母表一律 false，抽卡時才可能 roll 成 true
  */
 const CARD_POOL = [
@@ -102,7 +102,7 @@ const CARD_POOL = [
   { id: "cleric",    name: "見習牧師", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 1, health: 3, emoji: "🙏", image: "../../assets/cards/cleric.png", keywords: ["battlecry"], trigger: "healHero2", text: "戰吼：為英雄恢復 2 點。", foil: false },
   // 稀有
   { id: "knight",    name: "鋼鐵騎士", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 3, health: 4, emoji: "🛡️", image: "../../assets/cards/knight.png", keywords: ["taunt"], text: "攻守兼備的中堅。", foil: false },
-  { id: "mage",      name: "秘法師",   type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 4, health: 3, emoji: "🔮", image: "../../assets/cards/mage.png", keywords: ["battlecry"], trigger: "damageAny1", text: "戰吼：對一個目標造成 1 點傷害。", foil: false },
+  { id: "mage",      name: "秘法師",   type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 4, health: 3, emoji: "🔮", image: "../../assets/cards/mage.png", keywords: ["battlecry"], trigger: "damageAny1", text: "戰吼：自動對生命最低的敵方隨從造成 1 點傷害。", foil: false },
   { id: "raptor",    name: "迅猛龍",   type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 2, health: 3, emoji: "🦖", image: "../../assets/cards/raptor.png", keywords: ["charge", "poison"], text: "衝鋒 + 劇毒：撲咬即殺。", foil: false },
   { id: "guardian",  name: "符文守衛", type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 2, health: 5, emoji: "🗿", image: "../../assets/cards/guardian.png", keywords: ["taunt", "divineshield"], text: "嘲諷 + 聖盾的銅牆。", foil: false },
   // 史詩
@@ -129,7 +129,7 @@ const CARD_POOL = [
   // ===== Stage 4 擴充（16 張，追加不改舊卡 id）=====
   // 普通
   { id: "mooncat",       name: "月光貓",   type: CARD_TYPE.MINION, rarity: "common", cost: 1, attack: 1, health: 2, emoji: "🐈", image: null, keywords: ["lifesteal"], text: "吸血：小巧但能拖住血線。", foil: false },
-  { id: "frontScout",    name: "前線斥候", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 2, health: 1, emoji: "🪶", image: null, keywords: ["rush"], text: "突襲：登場可攻擊隨從。", foil: false },
+  { id: "frontScout",    name: "前線斥候", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 2, health: 2, emoji: "🪶", image: null, keywords: ["rush"], text: "突襲：登場可攻擊隨從。", foil: false },
   { id: "groveHerbalist", name: "林地藥師", type: CARD_TYPE.MINION, rarity: "common", cost: 3, attack: 2, health: 3, emoji: "🌿", image: null, keywords: ["battlecry"], trigger: "healHero2", text: "戰吼：為英雄恢復 2 點。", foil: false },
   { id: "holyGlimmer",   name: "聖光閃耀", type: CARD_TYPE.SPELL,  rarity: "common", cost: 2, emoji: "🌤️", image: null, text: "為你的英雄恢復 5 點生命。", effect: "heal5", foil: false },
 
@@ -138,12 +138,12 @@ const CARD_POOL = [
   { id: "linebreaker",   name: "破陣槍兵", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 3, health: 2, emoji: "🪓", image: null, keywords: ["rush"], text: "突襲：清掉前排威脅。", foil: false },
   { id: "bannerGuard",   name: "戰旗守衛", type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 2, health: 6, emoji: "🚩", image: null, keywords: ["taunt", "battlecry"], trigger: "healHero2", text: "嘲諷。戰吼：恢復 2 點生命。", foil: false },
   { id: "thunderClap",   name: "雷霆震擊", type: CARD_TYPE.SPELL,  rarity: "rare", cost: 3, emoji: "🌩️", image: null, text: "對所有敵方隨從造成 1 點傷害。", effect: "aoe1", foil: false },
-  { id: "arcaneVeil",    name: "秘能護幕", type: CARD_TYPE.SPELL,  rarity: "rare", cost: 2, emoji: "🔷", image: null, text: "給一個友方隨從一層聖盾。", effect: "giveShield", foil: false },
+  { id: "arcaneVeil",    name: "秘能護幕", type: CARD_TYPE.SPELL,  rarity: "rare", cost: 1, emoji: "🔷", image: null, text: "給一個友方隨從一層聖盾。", effect: "giveShield", foil: false },
 
   // 史詩
   { id: "abyssWalker",   name: "深淵行者", type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 4, health: 6, emoji: "🕳️", image: null, keywords: ["taunt", "lifesteal"], text: "嘲諷 + 吸血的續戰核心。", foil: false },
   { id: "stormGriffin",  name: "暴風獅鷲", type: CARD_TYPE.MINION, rarity: "epic", cost: 6, attack: 4, health: 4, emoji: "🦅", image: null, keywords: ["rush", "windfury"], text: "突襲 + 連擊：一回合處理兩個威脅。", foil: false },
-  { id: "duskWitch",     name: "暮光女巫", type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 3, health: 5, emoji: "🧹", image: null, keywords: ["battlecry", "lifesteal"], trigger: "damageAny1", text: "戰吼：造成 1 點傷害。吸血。", foil: false },
+  { id: "duskWitch",     name: "暮光女巫", type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 3, health: 5, emoji: "🧹", image: null, keywords: ["battlecry", "lifesteal"], trigger: "damageAny1", text: "戰吼：自動對生命最低的敵方隨從造成 1 點傷害。吸血。", foil: false },
   { id: "starfall",      name: "星界崩落", type: CARD_TYPE.SPELL,  rarity: "epic", cost: 5, emoji: "☄️", image: null, text: "對所有敵方隨從造成 2 點傷害。", effect: "aoe2", foil: false },
   { id: "forbiddenHex",  name: "禁咒變形", type: CARD_TYPE.SPELL,  rarity: "epic", cost: 5, emoji: "🐸", image: null, text: "把一個敵方隨從變成 1/1 綿羊。", effect: "polymorph", foil: false },
 
@@ -153,10 +153,10 @@ const CARD_POOL = [
   // ===== R16 構築軸線擴充：快攻 5 張、控制 5 張 =====
   { id: "sparkSquire",    name: "火花侍從", type: CARD_TYPE.MINION, rarity: "common", cost: 1, attack: 2, health: 1, emoji: "🗡️", image: null, keywords: ["rush"], text: "突襲：前期搶回場面的小型突擊手。", foil: false },
   { id: "alleySkirmisher", name: "巷戰斥候", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 3, health: 1, emoji: "🏃", image: null, keywords: ["charge"], text: "衝鋒：立刻壓低敵方血量。", foil: false },
-  { id: "emberVolley",    name: "餘燼齊射", type: CARD_TYPE.SPELL,  rarity: "common", cost: 1, emoji: "🔥", image: null, text: "對一個敵方手下造成 3 點傷害。", effect: "damage3", foil: false },
+  { id: "emberVolley",    name: "餘燼齊射", type: CARD_TYPE.SPELL,  rarity: "common", cost: 2, emoji: "🔥", image: null, text: "對一個敵方手下造成 3 點傷害。", effect: "damage3", foil: false },
   { id: "bulwarkMonk",    name: "壁壘武僧", type: CARD_TYPE.MINION, rarity: "common", cost: 3, attack: 1, health: 5, emoji: "🛡️", image: null, keywords: ["taunt"], text: "嘲諷：用厚實身軀拖慢快攻。", foil: false },
   { id: "dawnRider",      name: "晨鋒騎手", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 3, health: 2, emoji: "🌅", image: null, keywords: ["charge", "lifesteal"], text: "衝鋒 + 吸血：進攻同時穩住血線。", foil: false },
-  { id: "battleDrummer",  name: "戰鼓手", type: CARD_TYPE.MINION, rarity: "rare", cost: 2, attack: 1, health: 3, emoji: "🥁", image: null, keywords: ["battlecry"], trigger: "damageAny1", text: "戰吼：對一個敵方手下造成 1 點傷害。", foil: false },
+  { id: "battleDrummer",  name: "戰鼓手", type: CARD_TYPE.MINION, rarity: "rare", cost: 2, attack: 1, health: 3, emoji: "🥁", image: null, keywords: ["battlecry"], trigger: "damageAny1", text: "戰吼：自動對生命最低的敵方手下造成 1 點傷害。", foil: false },
   { id: "sanctuaryWarden", name: "聖所看守", type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 2, health: 6, emoji: "⛪", image: null, keywords: ["taunt", "battlecry"], trigger: "healHero2", text: "嘲諷。戰吼：為你的英雄恢復 2 點生命。", foil: false },
   { id: "tidebinderHex",  name: "縛潮咒印", type: CARD_TYPE.SPELL,  rarity: "epic", cost: 4, emoji: "🌊", image: null, text: "將一個敵方手下變成 1/1 綿羊。", effect: "polymorph", foil: false },
   { id: "bastionColossus", name: "棱堡巨像", type: CARD_TYPE.MINION, rarity: "epic", cost: 6, attack: 4, health: 8, emoji: "🗿", image: null, keywords: ["taunt", "regenerate"], text: "嘲諷 + 再生：控制牌組的防線核心。", foil: false },
@@ -179,7 +179,7 @@ const CARD_POOL = [
   // ===== R48 白潮編年史：快攻 6 張、控制 6 張 =====
   { id: "emberpup",        name: "餘燼幼犬", type: CARD_TYPE.MINION, rarity: "common", cost: 1, attack: 2, health: 1, emoji: "🐕", image: null, keywords: ["charge"], text: "衝鋒：小小火光也能先咬住戰線。", foil: false },
   { id: "frostfangDire",   name: "霜牙巨狼", type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 5, health: 4, emoji: "🐺", image: "../../assets/cards/frostfangDire.png", keywords: ["rush", "frenzy"], text: "突襲 + 狂怒：冰息撕開前排。", foil: false },
-  { id: "thunderRoc",      name: "雷翼巨鵬", type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 3, health: 4, emoji: "🦅", image: null, keywords: ["windfury"], text: "連擊：雷聲落下兩次。", foil: false },
+  { id: "thunderRoc",      name: "雷翼巨鵬", type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 2, health: 4, emoji: "🦅", image: null, keywords: ["windfury"], text: "連擊：雷聲落下兩次。", foil: false },
   { id: "soulfrostRaven",  name: "魂霜渡鴉", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 2, health: 3, emoji: "🐦", image: null, keywords: ["lifesteal"], text: "吸血：啄食寒意，回補生命。", foil: false },
   { id: "runicScrivener",  name: "符文抄寫員", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 1, health: 2, emoji: "✒️", image: null, keywords: ["battlecry"], trigger: "drawCard1", text: "戰吼：抽 1 張牌。", foil: false },
   { id: "tidecallerAdept", name: "喚潮學徒", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 1, health: 3, emoji: "🌊", image: null, keywords: ["spellpower"], text: "法強：潮聲推高你的傷害法術。", foil: false },

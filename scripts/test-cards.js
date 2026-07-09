@@ -109,6 +109,24 @@ for (const c of CARD_POOL) {
 }
 assert(unknownKeyword === 0, `所有卡牌關鍵字都有定義（缺 ${unknownKeyword}）`);
 
+console.log("== 嚴格優勢回歸檢查 ==");
+const firebolt = getCardById("firebolt");
+const emberVolley = getCardById("emberVolley");
+const shieldUp = getCardById("shieldUp");
+const arcaneVeil = getCardById("arcaneVeil");
+const sparkSquire = getCardById("sparkSquire");
+const frontScout = getCardById("frontScout");
+const griffin = getCardById("griffin");
+const thunderRoc = getCardById("thunderRoc");
+assert(emberVolley.effect === firebolt.effect && emberVolley.cost === firebolt.cost,
+  "餘燼齊射不再以更低費嚴格優於火焰箭");
+assert(arcaneVeil.effect === shieldUp.effect && arcaneVeil.cost === shieldUp.cost,
+  "秘能護幕不再以更高費嚴格劣於聖盾術");
+assert(frontScout.cost > sparkSquire.cost && frontScout.health > sparkSquire.health,
+  "前線斥候用較高生命區隔火花侍從");
+assert(thunderRoc.cost < griffin.cost && thunderRoc.attack < griffin.attack && thunderRoc.health === griffin.health,
+  "雷翼巨鵬用低費低攻區隔獅鷲");
+
 console.log("== 抽卡機率分布（30000 抽）==");
 const N = 30000, dist = {};
 let foilCount = 0;
