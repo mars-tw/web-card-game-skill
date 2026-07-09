@@ -1,4 +1,4 @@
-const CACHE_VERSION = "card-battle-r47-v1";
+const CACHE_VERSION = "card-battle-r48-v1";
 const ASSET_CACHE = `${CACHE_VERSION}-assets`;
 const HTML_CACHE = `${CACHE_VERSION}-html`;
 
@@ -26,6 +26,8 @@ const CORE_ASSETS = [
   "assets/cards/arcaneInfusion.png",
   "assets/cards/arcaneWeaver.png",
   "assets/cards/cleric.png",
+  "assets/cards/countessLongNight.png",
+  "assets/cards/dawnArchbishop.png",
   "assets/cards/dragon.png",
   "assets/cards/firebolt.png",
   "assets/cards/flameBurst.png",
@@ -35,7 +37,9 @@ const CORE_ASSETS = [
   "assets/cards/frostBiter.png",
   "assets/cards/frostChanneler.png",
   "assets/cards/frostReaver.png",
+  "assets/cards/frostfangDire.png",
   "assets/cards/frostboundTyrant.png",
+  "assets/cards/glaciarchWarden.png",
   "assets/cards/golem.png",
   "assets/cards/griffin.png",
   "assets/cards/guardian.png",
@@ -47,6 +51,7 @@ const CORE_ASSETS = [
   "assets/cards/manaSurge.png",
   "assets/cards/meteor.png",
   "assets/cards/novicePage.png",
+  "assets/cards/oathbannerHerald.png",
   "assets/cards/paladin.png",
   "assets/cards/phoenix.png",
   "assets/cards/polymorph.png",

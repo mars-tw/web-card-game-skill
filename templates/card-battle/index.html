@@ -6,9 +6,9 @@
 <title>卡牌對戰 · Card Battle</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r47-v1";
+    const CACHE_VERSION = "card-battle-r48-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r47_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r48_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -379,8 +379,8 @@
   .detail-pill { border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:5px 9px;
     background:rgba(255,255,255,.05); color:var(--ink); font-size:12px; font-weight:800; }
   .card-detail-text { color:#cbd5e1; font-size:13px; line-height:1.45; margin-bottom:10px; }
-  .card-detail-flavor { color:#f8d58a; font-size:12px; line-height:1.45; font-style:italic;
-    border-left:3px solid rgba(250,204,21,.45); padding-left:9px; margin:-2px 0 10px; }
+  .card-detail-flavor { color:#f8d58a; font-size:13px; line-height:1.7; font-style:italic;
+    border-left:3px solid rgba(250,204,21,.45); padding-left:10px; margin:-2px 0 10px; }
   .card-detail-keywords { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
   .detail-keyword { border:1px solid rgba(250,204,21,.35); border-radius:999px; padding:6px 9px;
     background:rgba(250,204,21,.09); color:#facc15; font-size:12px; font-weight:900; cursor:pointer; }
@@ -406,15 +406,16 @@
   .result-stats .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
   /* 新手導引 + 關鍵字圖鑑（CP0-15）*/
-  .battle-guide, .kw-codex { position: fixed; inset: 0; background: rgba(6,10,14,.92); display: none;
+  .battle-guide, .kw-codex, .chronicle-modal { position: fixed; inset: 0; background: rgba(6,10,14,.92); display: none;
     align-items: center; justify-content: center; z-index: 110; padding: 16px; }
-  .battle-guide.show, .kw-codex.show { display: flex; }
+  .battle-guide.show, .kw-codex.show, .chronicle-modal.show { display: flex; }
   .battle-guide.show { background: rgba(6,10,14,.48); align-items: flex-start; justify-content: center; pointer-events: none; }
-  .guide-panel, .kw-codex-card { background: linear-gradient(180deg, #1a2230, #0f1620);
+  .guide-panel, .kw-codex-card, .chronicle-card { background: linear-gradient(180deg, #1a2230, #0f1620);
     border: 1px solid rgba(255,255,255,.12); border-radius: 18px; padding: 24px 26px; max-width: 440px; width: 100%;
     box-shadow: 0 12px 40px rgba(0,0,0,.5); max-height: 90vh; overflow-y: auto; }
+  .chronicle-card { max-width: 900px; padding: 18px; }
   .guide-panel { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); max-width: 520px; width: min(520px, calc(100vw - 28px)); pointer-events: auto; }
-  .guide-panel h2, .kw-codex-card h2 { color: var(--accent, #f59e0b); font-size: 23px; margin-bottom: 14px; text-align: center; }
+  .guide-panel h2, .kw-codex-card h2, .chronicle-card h2 { color: var(--accent, #f59e0b); font-size: 23px; margin-bottom: 14px; text-align: center; }
   .guide-step-label { font-size: 12px; color: #facc15; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
   .guide-copy { font-size: 14px; line-height: 1.5; color: var(--ink); margin-bottom: 14px; }
   .guide-actions { display: flex; gap: 8px; }
@@ -425,12 +426,42 @@
   .kw-codex-btn { position: fixed; top: 8px; bottom: auto; right: 12px; z-index: 60; background: #1a2230;
     color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
     font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
+  .chronicle-btn { position: fixed; top: 8px; bottom: auto; right: 126px; z-index: 60; background: #1a2230;
+    color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
+    font-size: 13px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
   .mission-drawer-btn { position: fixed; top: 8px; bottom: auto; left: 12px; z-index: 90; background: #1a2230;
     color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
     font-size: 13px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
   .mission-badge { position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; border-radius:999px;
     background:#ef4444; color:#fff; display:none; align-items:center; justify-content:center; font-size:11px; padding:0 5px; }
   .mission-badge.show { display:flex; }
+  .chronicle-badge { position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; border-radius:999px;
+    background:#f59e0b; color:#1a1206; display:none; align-items:center; justify-content:center; font-size:11px; padding:0 5px; }
+  .chronicle-badge.show { display:flex; }
+  .chronicle-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; position:sticky; top:0; z-index:3;
+    background:linear-gradient(180deg,#1a2230,#151c28); padding-bottom:10px; }
+  .chronicle-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+  .chronicle-tab, .chronicle-close { border:none; border-radius:10px; padding:8px 11px; font-weight:900; cursor:pointer;
+    background:#2a3645; color:var(--ink); }
+  .chronicle-tab.active, .chronicle-close { background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; }
+  .chronicle-panel { display:none; }
+  .chronicle-panel.active { display:block; }
+  .chapter-list { display:flex; flex-direction:column; gap:10px; }
+  .chapter-item { border:1px solid rgba(255,255,255,.1); border-radius:10px; padding:12px; background:rgba(255,255,255,.04); }
+  .chapter-item.unlocked { border-color:rgba(250,204,21,.32); background:rgba(250,204,21,.06); }
+  .chapter-top { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:8px; }
+  .chapter-title { font-size:16px; font-weight:900; color:#facc15; }
+  .chapter-meta { font-size:12px; color:var(--muted); margin-top:3px; }
+  .chapter-epigraph { color:#fde68a; font-style:italic; line-height:1.7; margin-bottom:8px; }
+  .chapter-body { display:flex; flex-direction:column; gap:8px; color:#dbeafe; line-height:1.78; font-size:14px; user-select:text; }
+  .chapter-featured { margin-top:9px; color:#9fb0a4; font-size:12px; line-height:1.5; }
+  .chapter-claim { border:none; border-radius:10px; padding:8px 10px; font-size:12px; font-weight:900; cursor:pointer;
+    background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; flex-shrink:0; }
+  .chapter-claim:disabled { background:#2a3645; color:var(--muted); cursor:default; filter:none; }
+  .faction-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:10px; }
+  .faction-legend { border:1px solid rgba(255,255,255,.1); border-radius:10px; padding:12px; background:rgba(255,255,255,.04); }
+  .faction-legend h3 { font-size:15px; margin-bottom:8px; }
+  .faction-legend p { color:#dbeafe; line-height:1.75; font-size:14px; user-select:text; }
   .mission-drawer { position:fixed; inset:0; z-index:135; display:none; align-items:flex-end; justify-content:center;
     background:rgba(6,10,14,.7); padding:12px; }
   .mission-drawer.show { display:flex; }
@@ -529,7 +560,7 @@
     button.mulligan-btn { padding: 8px 12px; font-size: 12px; }
     .quest-panel { max-height: 84px; padding: 5px 8px; }
     .series-footer { padding: 3px 8px; font-size: 11px; }
-    .card-detail-card, .kw-codex-card, .mission-card, .guide-panel { max-height: calc(100vh - 40px); overflow-y: auto; }
+    .card-detail-card, .kw-codex-card, .mission-card, .chronicle-card, .guide-panel { max-height: calc(100vh - 40px); overflow-y: auto; }
   }
   @media (max-height: 560px) and (min-width: 701px) {
     :root { --card-w: 78px; --card-h: 108px; }
@@ -624,7 +655,15 @@
     .quest-list { display: flex; flex-direction: column; overflow: visible; gap: 6px; padding-bottom: 2px; }
     .quest-item { flex: 0 0 auto; min-height: 44px; padding: 6px; }
     .kw-codex-btn { top: 8px; bottom: auto; right: 10px; z-index: 90; }
+    .chronicle-btn { top: 8px; bottom: auto; right: 118px; z-index: 90; padding-inline:10px; }
     .mission-drawer-btn { top: 8px; bottom: auto; left: 10px; z-index: 90; }
+    .chronicle-modal { align-items:flex-start; padding:50px 8px 8px; }
+    .chronicle-card { max-height:calc(100vh - 64px); padding:12px; border-radius:14px; }
+    .chronicle-head { align-items:flex-start; }
+    .chronicle-card h2 { font-size:20px; text-align:left; }
+    .chapter-top { flex-direction:column; }
+    .chapter-claim { width:100%; }
+    .faction-grid { grid-template-columns:1fr; }
     .mission-drawer { align-items:flex-start; padding:50px 8px 8px; }
     .mission-card { max-height:calc(100vh - 64px); padding:12px; }
     .mission-list { grid-template-columns:1fr; }
@@ -745,11 +784,31 @@
   <!-- 關鍵字圖鑑（CP0-15 觸控友善）-->
   <button class="mission-drawer-btn" id="missionDrawerBtn">任務<span class="mission-badge" id="missionBadge" aria-live="polite">0</span></button>
   <button class="kw-codex-btn" id="kwCodexBtn">📖 關鍵字</button>
+  <button class="chronicle-btn" id="chronicleBtn">📜 編年史<span class="chronicle-badge" id="chronicleBadge" aria-live="polite">0</span></button>
   <div class="kw-codex" id="kwCodex">
     <div class="kw-codex-card">
       <h2>📖 關鍵字圖鑑</h2>
       <div id="kwCodexList"></div>
       <button id="kwCodexClose">關閉</button>
+    </div>
+  </div>
+
+  <div class="chronicle-modal" id="chronicleModal" aria-hidden="true">
+    <div class="chronicle-card">
+      <div class="chronicle-head">
+        <h2>📜 白潮編年史</h2>
+        <button class="chronicle-close" id="chronicleClose" type="button">關閉</button>
+      </div>
+      <div class="chronicle-tabs" role="tablist" aria-label="編年史分頁">
+        <button class="chronicle-tab active" id="chronicleChaptersTab" type="button" role="tab" aria-selected="true">章節列表</button>
+        <button class="chronicle-tab" id="chronicleFactionsTab" type="button" role="tab" aria-selected="false">陣營傳說</button>
+      </div>
+      <section class="chronicle-panel active" id="chronicleChaptersPanel" role="tabpanel" aria-labelledby="chronicleChaptersTab">
+        <div class="chapter-list" id="chronicleChapterList" aria-live="polite"></div>
+      </section>
+      <section class="chronicle-panel" id="chronicleFactionsPanel" role="tabpanel" aria-labelledby="chronicleFactionsTab">
+        <div class="faction-grid" id="chronicleFactionList"></div>
+      </section>
     </div>
   </div>
 
@@ -793,9 +852,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r47-v1"></script>
-  <script src="core.js?v=card-battle-r47-v1"></script>
-  <script src="battle.js?v=card-battle-r47-v1"></script>
+  <script src="cards.js?v=card-battle-r48-v1"></script>
+  <script src="core.js?v=card-battle-r48-v1"></script>
+  <script src="battle.js?v=card-battle-r48-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {

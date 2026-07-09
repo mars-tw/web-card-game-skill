@@ -473,6 +473,63 @@ function testDrawCard1Ability() {
   assert(emptyDraw.ok && empty.player.hand.length === 0, "drawCard1 在牌庫空時安全無事發生");
 }
 
+function testDraw2Spell() {
+  const g = state({ player: { deck: [deckCard("draw-a", "A"), deckCard("draw-b", "B")], hand: [] } });
+  const draw = Core.castSpellEffect(g, { side: "player", effect: "draw2" }, rngFactory([0.12, 0.34]));
+  assert(draw.ok && g.player.hand.length === 2 && draw.events.filter((e) => e.type === "draw").length === 2, "draw2 draws two cards");
+
+  const empty = state({ player: { deck: [], hand: [] } });
+  const emptyDraw = Core.castSpellEffect(empty, { side: "player", effect: "draw2" }, rngFactory());
+  assert(emptyDraw.ok && empty.player.hand.length === 0 && empty.player.deck.length === 0, "draw2 empty deck is safe");
+
+  const fullHand = Array.from({ length: Core.HAND_LIMIT }, (_, i) => deckCard("hand-" + i, "Hand " + i));
+  const burn = state({ player: { deck: [deckCard("burn-a", "Burn A"), deckCard("burn-b", "Burn B")], hand: fullHand } });
+  const burnDraw = Core.castSpellEffect(burn, { side: "player", effect: "draw2" }, rngFactory());
+  assert(burnDraw.ok && burn.player.hand.length === Core.HAND_LIMIT && burn.player.deck.length === 0
+    && burnDraw.events.filter((e) => e.type === "handBurn").length === 2, "draw2 burns cards at hand limit");
+}
+
+function uniqueCollection(count) {
+  const collection = {};
+  for (let i = 1; i <= count; i++) collection["unique-" + i] = 1;
+  return collection;
+}
+
+function testChroniclePureFunctions() {
+  const first = Core.CHRONICLE_CHAPTERS[0];
+  const second = Core.CHRONICLE_CHAPTERS[1];
+  const third = Core.CHRONICLE_CHAPTERS[2];
+  const finale = Core.CHRONICLE_CHAPTERS[Core.CHRONICLE_CHAPTERS.length - 1];
+
+  const safe = Core.migrateChronicle("not-json");
+  assert(safe.version === Core.CHRONICLE_VERSION && Array.isArray(safe.claimed) && safe.claimed.length === 0, "migrateChronicle bad data returns safe default");
+
+  const migrated = Core.migrateChronicle({ claimed: [first.id, "missing", first.id, third.id] });
+  assert(migrated.claimed.length === 2 && migrated.claimed.includes(first.id) && migrated.claimed.includes(third.id), "migrateChronicle dedupes and filters ids");
+
+  const ctx = Core.chronicleContext({ wins: 3 }, uniqueCollection(12));
+  assert(ctx.wins === 3 && ctx.unique === 12, "chronicleContext returns wins and unique counts");
+
+  const initialList = Core.listChapters({}, { wins: 0 }, {});
+  assert(initialList.find((chapter) => chapter.id === first.id)?.unlocked === true
+    && initialList.find((chapter) => chapter.id === second.id)?.unlocked === false, "listChapters unlocks default chapter only at start");
+
+  const midList = Core.listChapters({}, { wins: 3 }, uniqueCollection(12));
+  assert(midList.find((chapter) => chapter.id === second.id)?.unlocked === true
+    && midList.find((chapter) => chapter.id === third.id)?.unlocked === true, "chapterUnlocked supports wins and unique thresholds");
+
+  assert(Core.chapterUnlocked(finale, { wins: 12, unique: 29 }) === false
+    && Core.chapterUnlocked(finale, { wins: 12, unique: 30 }) === true, "finale requires wins and unique thresholds");
+
+  const locked = Core.claimChapter({}, second.id, { wins: 0 }, {});
+  assert(!locked.ok && locked.reason === "locked", "claimChapter rejects locked chapters");
+
+  const success = Core.claimChapter({}, first.id, { wins: 0 }, {});
+  const repeated = Core.claimChapter(success.state, first.id, { wins: 0 }, {});
+  assert(success.ok && success.reward > 0 && success.state.claimed.includes(first.id), "claimChapter claims unlocked chapter and returns reward");
+  assert(!repeated.ok && repeated.reason === "alreadyClaimed" && repeated.reward === 0, "claimChapter rejects duplicate claim");
+}
+
 console.log("== core.js 單元測試 ==");
 testInsufficientMana();
 testMaxField();
@@ -490,6 +547,8 @@ testDailyQuests();
 testFrenzyKeyword();
 testSpellpowerAndNewSpells();
 testDrawCard1Ability();
+testDraw2Spell();
+testChroniclePureFunctions();
 testGoalsAndWeeklyQuests();
 
 console.log("");

@@ -20,6 +20,7 @@
   const MAX_FIELD = Core.MAX_FIELD; // 場上隨從上限（雙方皆同；手機版戰場列一行放得下的上限）
   const QUEST_KEY = "card_quests_v1";
   const GOAL_KEY = "card_goals_v1";
+  const CHRONICLE_KEY = "card_chronicle_v1";
 
   // ===== 難度設定 =====
   // playerHp/enemyHp：雙方起始血量；playerDraw/enemyDraw：起手抽牌數
@@ -77,12 +78,14 @@
   const TEXT_SIZE_KEY = "card_text_size_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r47_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r48_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0, reason: "自動觀察中", history: [] };
   let detailReturnFocus = null;
   let missionReturnFocus = null;
+  let chronicleReturnFocus = null;
+  let lastUnlockedChapterIds = null;
   const GUIDE_STEPS = [
     { label: "STEP 1 / 3", title: "先出一張牌", copy: "點手牌中發亮的「迅捷狼」。它有衝鋒，登場後可以立刻攻擊。" },
     { label: "STEP 2 / 3", title: "選擇攻擊", copy: "先點你場上的迅捷狼，再點敵方英雄完成一次攻擊。" },
@@ -271,6 +274,10 @@
       missionDrawerClose: "關閉任務抽屜",
       kwCodexBtn: "開啟關鍵字圖鑑",
       kwCodexClose: "關閉關鍵字圖鑑",
+      chronicleBtn: "開啟白潮編年史",
+      chronicleClose: "關閉白潮編年史",
+      chronicleChaptersTab: "顯示編年史章節",
+      chronicleFactionsTab: "顯示陣營傳說",
       cardDetailClose: "關閉卡牌詳情",
     };
     Object.entries(labels).forEach(([id, label]) => {
@@ -298,6 +305,12 @@
     if (mission) {
       mission.setAttribute("role", "dialog");
       mission.setAttribute("aria-modal", "true");
+    }
+    const chronicle = document.getElementById("chronicleModal");
+    if (chronicle) {
+      chronicle.setAttribute("role", "dialog");
+      chronicle.setAttribute("aria-modal", "true");
+      chronicle.setAttribute("aria-labelledby", "chronicleChaptersTab");
     }
     const detail = document.getElementById("cardDetail");
     if (detail) detail.setAttribute("aria-labelledby", "cardDetailTitle");
@@ -349,6 +362,8 @@
     render();
     syncDdaToggle();
     syncAiThoughtToggle();
+    refreshChronicle();
+    updateChronicleBadge();
     applyPerfState(currentPerfMode(), currentPerfMode() === "low" ? "low" : perfState.effective);
     offerMulligan(D.playerDraw); // 提供起手重抽
   }
@@ -539,6 +554,7 @@
       if (keywords.includes("regenerate")) score += 10;
       if (card.effect === "aoe1" || card.effect === "aoe2") score += 22;
       if (card.effect === "damage5" || card.effect === "damage8" || card.effect === "polymorph") score += 18;
+      if (card.effect === "draw2") score += 20;
       if (card.effect === "buffTarget") score += 8;
       if (card.effect === "heal5") score += 10;
       if (isSpell && cost <= 1) score -= 8;
@@ -553,7 +569,7 @@
     if (keywords.includes("lifesteal")) score += 8;
     if (keywords.includes("frenzy")) score += 8;
     if (keywords.includes("spellpower")) score += 6;
-    if (card.effect === "damage3" || card.effect === "damage5" || card.effect === "mana2") score += 18;
+    if (card.effect === "damage3" || card.effect === "damage5" || card.effect === "mana2" || card.effect === "draw2") score += 18;
     if (card.effect === "giveShield" || card.effect === "buffTarget") score += 8;
     if (cost >= 6) score -= 18;
     return score;
@@ -804,9 +820,18 @@
     }
     if (card.effect === "mana2") return game.player.hand.some((c) => c !== card && c.cost > game.player.mana) ? 28 : 8;
     if (card.effect === "heal5") return game.player.maxHp - game.player.hp >= 4 ? 24 : 6;
-    if (card.effect === "aoe1" || card.effect === "aoe2") return game.enemy.field.length >= 2 ? 26 + game.enemy.field.length * 3 : 5;
+    if (card.effect === "draw2") return game.player.hand.length < Core.HAND_LIMIT ? (game.player.hand.length <= Core.HAND_LIMIT - 2 ? 26 : 14) : 4;
+    if (card.effect === "aoe1" || card.effect === "aoe2") {
+      const damage = effectiveSpellDamage(game.player, card.effect);
+      const kills = game.enemy.field.filter((m) => m.health <= damage).length;
+      return game.enemy.field.length >= 2 ? 26 + game.enemy.field.length * 3 + kills * 5 : 5;
+    }
     if (card.effect === "giveShield" || card.effect === "buffTarget") return target ? 16 + minionThreatScore(target) : -999;
-    if (card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8" || card.effect === "polymorph") return target ? 18 + minionThreatScore(target) : -999;
+    if (card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8") {
+      const damage = effectiveSpellDamage(game.player, card.effect);
+      return target ? 18 + minionThreatScore(target) + (target.health <= damage ? 8 : 0) : -999;
+    }
+    if (card.effect === "polymorph") return target ? 18 + minionThreatScore(target) : -999;
     return 0;
   }
 
@@ -824,6 +849,18 @@
     return 0;
   }
 
+  function effectiveSpellDamage(side, effect) {
+    const base = spellDamage(effect);
+    if (!base) return 0;
+    return base + Core.spellPower(side || {});
+  }
+
+  function spellPowerNote(side, effect) {
+    const base = spellDamage(effect);
+    const sp = base ? Core.spellPower(side || {}) : 0;
+    return sp > 0 ? `（含法強 +${sp}）` : "";
+  }
+
   function hintCopyForPlay(card, target) {
     const keywords = card.keywords || [];
     if (card.type === CARD_TYPE.MINION) {
@@ -835,22 +872,23 @@
     }
     if (card.effect === "mana2") return { reason: "先補法力，能接著打出更高費手牌。", estimate: "" };
     if (card.effect === "heal5") return { reason: "英雄受傷，治療能拉回安全血線。", estimate: "預計恢復 5 點生命。" };
+    if (card.effect === "draw2") return { reason: "手牌還有空間，補兩張牌能延續後續回合資源。", estimate: "預計抽 2 張牌；手牌滿時會燒牌。" };
     if (card.effect === "aoe1" || card.effect === "aoe2") {
-      const damage = spellDamage(card.effect);
+      const damage = effectiveSpellDamage(game.player, card.effect);
       const kills = game.enemy.field.filter((m) => m.health <= damage).length;
       return kills > 0
-        ? { reason: `此法術可換 ${kills} 隻隨從。`, estimate: `預計造成全場 ${damage} 點傷害。` }
-        : { reason: "敵方場面展開，範圍法術能壓低全場血量。", estimate: `預計造成全場 ${damage} 點傷害。` };
+        ? { reason: `此法術可換 ${kills} 隻隨從。`, estimate: `預計造成全場 ${damage} 點傷害${spellPowerNote(game.player, card.effect)}。` }
+        : { reason: "敵方場面展開，範圍法術能壓低全場血量。", estimate: `預計造成全場 ${damage} 點傷害${spellPowerNote(game.player, card.effect)}。` };
     }
     if (card.effect === "giveShield") return { reason: "保護場上最高威脅隨從。", estimate: target ? `預計讓 ${target.name} 獲得聖盾。` : "" };
     if (card.effect === "buffTarget") return { reason: "強化場上最高威脅隨從。", estimate: target ? `預計讓 ${target.name} 獲得 +2/+2。` : "" };
     if (card.effect === "polymorph") return { reason: "變形高威脅隨從，降低反擊壓力。", estimate: target ? `預計把 ${minionLine(target)} 變成綿羊。` : "" };
-    const damage = spellDamage(card.effect);
+    const damage = effectiveSpellDamage(game.player, card.effect);
     if (damage && target) {
       const hasTauntTarget = (target.keywords || []).includes("taunt");
       return {
         reason: hasTauntTarget ? "先解嘲諷才能打臉。" : "先移除高威脅隨從，降低下回合傷害。",
-        estimate: target.health <= damage ? `預計擊殺 ${minionLine(target)}。` : `預計對 ${target.name} 造成 ${damage} 點傷害。`,
+        estimate: target.health <= damage ? `預計擊殺 ${minionLine(target)}${spellPowerNote(game.player, card.effect)}。` : `預計對 ${target.name} 造成 ${damage} 點傷害${spellPowerNote(game.player, card.effect)}。`,
       };
     }
     return { reason: "這一步能提升目前局面的交換效率。", estimate: "" };
@@ -1092,10 +1130,11 @@
     const effect = card.effect;
     if (effect === "heal5") return `護血優先，${card.name} 回復英雄生命。`;
     if (effect === "mana2") return `先取得法力，準備接續高費手牌。`;
-    if (effect === "aoe1" || effect === "aoe2") return `解場優先，${card.name} 壓低你的整個場面。`;
+    if (effect === "draw2") return `資源不足，${card.name} 補充兩張手牌。`;
+    if (effect === "aoe1" || effect === "aoe2") return `解場優先，${card.name} 壓低你的整個場面${spellPowerNote(game.enemy, effect)}。`;
     if (effect === "giveShield" && target) return `保護核心隨從，讓 ${target.name} 獲得聖盾。`;
     if (effect === "polymorph" && target) return `解掉高威脅，將 ${target.name} 變形。`;
-    if ((effect === "damage3" || effect === "damage5" || effect === "damage8") && target) return `解場優先，${card.name} 換掉 ${target.name}。`;
+    if ((effect === "damage3" || effect === "damage5" || effect === "damage8") && target) return `解場優先，${card.name} 換掉 ${target.name}${spellPowerNote(game.enemy, effect)}。`;
     if (effect === "buffTarget" && target) return `強化核心隨從，讓 ${target.name} 變成更穩的威脅。`;
     return `依局面施放 ${card.name || fallbackSpellName(effect)}。`;
   }
@@ -1115,7 +1154,7 @@
   function chooseRemovalTarget(effect) {
     const field = [...game.player.field];
     if (!field.length) return null;
-    const damage = effect === "damage8" ? 8 : effect === "damage5" ? 5 : effect === "damage3" ? 3 : 0;
+    const damage = effectiveSpellDamage(game.enemy, effect);
     if (effect === "polymorph") {
       const worthTransforming = field.filter((m) =>
         m.health >= 5 || m.attack >= 4 || (m.keywords || []).includes("taunt") || (m.keywords || []).includes("regenerate")
@@ -1158,6 +1197,7 @@
     if (kind === "random") {
       if (card.effect === "heal5") return { used: ai.hp <= 22, targetUid: null };
       if (card.effect === "aoe1" || card.effect === "aoe2") return { used: playerField.length >= 2, targetUid: null };
+      if (card.effect === "draw2") return { used: ai.hand.length <= Core.HAND_LIMIT - 2, targetUid: null };
       if (card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8") {
         const target = [...playerField].sort((a, b) => b.attack - a.attack)[0] || null;
         return { used: !!target, targetUid: target && target.uid };
@@ -1180,6 +1220,10 @@
     }
     if (card.effect === "mana2") {
       return { used: ai.hand.some((c) => c !== card && c.cost > ai.mana), targetUid: null };
+    }
+    if (card.effect === "draw2") {
+      const room = Core.HAND_LIMIT - ai.hand.length;
+      return { used: room >= (kind === "control" ? 1 : 2), targetUid: null };
     }
     if (card.effect === "giveShield") {
       const target = chooseShieldTarget();
@@ -1481,10 +1525,23 @@
     children.forEach((child) => el.appendChild(child));
   }
 
-  function makeDetailPill(text) {
+  function makeDetailPill(text, className, onClick) {
     const pill = document.createElement("span");
-    pill.className = "detail-pill";
+    pill.className = "detail-pill" + (className ? " " + className : "");
     pill.textContent = text;
+    if (typeof onClick === "function") {
+      pill.setAttribute("role", "button");
+      pill.tabIndex = 0;
+      pill.title = "開啟陣營傳說";
+      pill.style.cursor = "pointer";
+      pill.onclick = onClick;
+      pill.onkeydown = (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onClick();
+        }
+      };
+    }
     return pill;
   }
 
@@ -1526,11 +1583,16 @@
     const keywords = document.getElementById("cardDetailKeywords");
     if (title) title.textContent = `${card.name}${card.foil ? " 閃卡" : ""}`;
     renderDetailArt(card);
+    const factionName = typeof factionLabel === "function" ? factionLabel(card) : chapterFactionName(card.faction);
     setChildren(meta, [
       makeDetailPill(`${card.cost} 費`),
       makeDetailPill(rarity.label || card.rarity),
       makeDetailPill(card.type === CARD_TYPE.SPELL ? "法術" : "隨從"),
       makeDetailPill(`軸線 ${typeof cardAxisLabel === "function" ? cardAxisLabel(card) : "中立"}`),
+      makeDetailPill(`陣營 ${factionName}`, "faction-pill", () => {
+        closeCardDetail();
+        openChronicle(card.faction || "wardens");
+      }),
     ]);
     const statPills = card.type === CARD_TYPE.SPELL
       ? [makeDetailPill("法術效果")]
@@ -1633,6 +1695,8 @@
       } else if (event.type === "frenzy") {
         flashKeyword2(event.uid, "狂怒 +2");
         flashCard(event.uid, "damaged");
+        const minion = findBattleMinion(event.uid);
+        if (minion) log(`${minion.name} 觸發狂怒，攻擊 +2。`, game.enemy.field.some((m) => m.uid === event.uid) ? "ai" : "me");
       } else if (event.type === "lifesteal") {
         flashKeyword2(event.uid, "吸血");
       } else if (event.type === "rushReady") {
@@ -1650,6 +1714,10 @@
         flashKeyword2(event.uid, "亡語");
       } else if (event.type === "battlecry") {
         flashKeyword2(event.uid, "戰吼");
+      } else if (event.type === "spellCast") {
+        const sideObj = event.side === "enemy" ? game.enemy : game.player;
+        const sp = spellDamage(event.effect) ? Core.spellPower(sideObj) : 0;
+        if (sp > 0) log(`法強 +${sp} 強化了${event.side === "enemy" ? "對手" : "你的"}法術。`, event.side === "enemy" ? "ai" : "me");
       } else if (event.type === "heroDamage") {
         floatDamage(event.defenderSide === "enemy" ? "enemyHero" : "playerHero", event.amount);
       } else if (event.type === "heroHeal") {
@@ -1692,6 +1760,7 @@
       giveShield: "聖盾術",
       buffTarget: "秘能灌注",
       polymorph: "變形術",
+      draw2: "戰術補給",
       damage3: "火焰箭",
       damage5: "烈焰爆裂",
       damage8: "隕石術",
@@ -1705,12 +1774,13 @@
     const effect = card.effect;
     const name = card.name || fallbackSpellName(effect);
     if (effect === "heal5") log(`你施放${name}，恢復 5 點生命。`, "me");
-    else if (effect === "aoe1" || effect === "aoe2") log(`${name}橫掃敵方！`, "me");
+    else if (effect === "draw2") log(`${name}：抽了 2 張牌。`, "me");
+    else if (effect === "aoe1" || effect === "aoe2") log(`${name}橫掃敵方，造成 ${effectiveSpellDamage(game.player, effect)} 點傷害${spellPowerNote(game.player, effect)}。`, "me");
     else if (effect === "mana2") log(`${name}：本回合 +2 法力。`, "me");
     else if (effect === "giveShield" && target) log(`${name}：${target.name} 獲得聖盾。`, "me");
     else if (effect === "buffTarget" && target) log(`${name}：${target.name} 獲得 +2/+2。`, "me");
     else if (effect === "polymorph") log(`${name}：敵方隨從被變成綿羊。`, "me");
-    else if ((effect === "damage3" || effect === "damage5" || effect === "damage8") && target) log(`${name}擊中了 ${target.name}。`, "me");
+    else if ((effect === "damage3" || effect === "damage5" || effect === "damage8") && target) log(`${name}擊中了 ${target.name}，造成 ${effectiveSpellDamage(game.player, effect)} 點傷害${spellPowerNote(game.player, effect)}。`, "me");
   }
 
   function logAiSpell(cardOrEffect, target) {
@@ -1718,8 +1788,9 @@
     const effect = card.effect;
     const name = card.name || fallbackSpellName(effect);
     if (effect === "heal5") log("對手施放治療術。", "ai");
-    else if (effect === "aoe1" || effect === "aoe2") log("對手施放範圍法術！", "ai");
-    else if (effect === "damage3" || effect === "damage5" || effect === "damage8") log(`對手用 ${name} 攻擊 ${target ? target.name : "你的隨從"}。`, "ai");
+    else if (effect === "draw2") log("對手施放戰術補給，抽了 2 張牌。", "ai");
+    else if (effect === "aoe1" || effect === "aoe2") log(`對手施放範圍法術，造成 ${effectiveSpellDamage(game.enemy, effect)} 點傷害${spellPowerNote(game.enemy, effect)}。`, "ai");
+    else if (effect === "damage3" || effect === "damage5" || effect === "damage8") log(`對手用 ${name} 攻擊 ${target ? target.name : "你的隨從"}，造成 ${effectiveSpellDamage(game.enemy, effect)} 點傷害${spellPowerNote(game.enemy, effect)}。`, "ai");
     else if (effect === "polymorph") log(`對手將 ${target ? target.name : "你的隨從"} 變形。`, "ai");
     else if (effect === "giveShield") log(`對手施放聖盾術保護 ${target ? target.name : "隨從"}。`, "ai");
     else if (effect === "buffTarget") log(`對手強化了 ${target ? target.name : "隨從"}。`, "ai");
@@ -1944,6 +2015,123 @@
 
   function saveGoals(goalState, seed) {
     try { localStorage.setItem(GOAL_KEY, JSON.stringify(Core.migrateGoals(goalState, seed || weekSeed()))); } catch {}
+  }
+
+  function loadChronicle() {
+    let raw = null;
+    try { raw = JSON.parse(localStorage.getItem(CHRONICLE_KEY)); } catch {}
+    return Core.migrateChronicle(raw);
+  }
+
+  function saveChronicle(chronicleState) {
+    try { localStorage.setItem(CHRONICLE_KEY, JSON.stringify(Core.migrateChronicle(chronicleState))); } catch {}
+  }
+
+  function chapterFactionName(id) {
+    return typeof FACTIONS !== "undefined" && FACTIONS[id] ? FACTIONS[id].name : "白潮守軍";
+  }
+
+  function chapterFeaturedNames(chapter) {
+    return (chapter.featured || []).map((id) => getCardById(id)?.name || id).join("、");
+  }
+
+  function setChronicleTab(tab) {
+    const showFactions = tab === "factions";
+    const chaptersTab = document.getElementById("chronicleChaptersTab");
+    const factionsTab = document.getElementById("chronicleFactionsTab");
+    const chaptersPanel = document.getElementById("chronicleChaptersPanel");
+    const factionsPanel = document.getElementById("chronicleFactionsPanel");
+    chaptersTab?.classList.toggle("active", !showFactions);
+    factionsTab?.classList.toggle("active", showFactions);
+    chaptersTab?.setAttribute("aria-selected", showFactions ? "false" : "true");
+    factionsTab?.setAttribute("aria-selected", showFactions ? "true" : "false");
+    chaptersPanel?.classList.toggle("active", !showFactions);
+    factionsPanel?.classList.toggle("active", showFactions);
+  }
+
+  function renderChronicle() {
+    const list = document.getElementById("chronicleChapterList");
+    if (!list) return;
+    const chapters = Core.listChapters(loadChronicle(), loadStats(), loadCollection());
+    list.innerHTML = "";
+    chapters.forEach((chapter) => {
+      const row = document.createElement("article");
+      row.className = "chapter-item" + (chapter.unlocked ? " unlocked" : "") + (chapter.claimed ? " claimed" : "");
+      const body = chapter.unlocked
+        ? `<div class="chapter-epigraph">「${chapter.epigraph}」</div>
+           <div class="chapter-body">${(chapter.body || []).map((p) => `<p>${p}</p>`).join("")}</div>
+           <div class="chapter-featured">登場卡牌：${chapterFeaturedNames(chapter)}</div>`
+        : `<div class="chapter-body"><p>${chapter.unlockLabel}</p></div>`;
+      row.innerHTML = `
+        <div class="chapter-top">
+          <div>
+            <div class="chapter-title">${chapter.title}</div>
+            <div class="chapter-meta">${chapterFactionName(chapter.faction)} · ${chapter.reward} 金幣 · ${chapter.unlocked ? "已解鎖" : "未解鎖"}</div>
+          </div>
+          <button class="chapter-claim" type="button">${chapter.claimed ? "已領取" : "領取"}</button>
+        </div>
+        ${body}`;
+      const btn = row.querySelector("button");
+      btn.disabled = !chapter.unlocked || chapter.claimed;
+      btn.onclick = () => claimChapterUi(chapter.id);
+      list.appendChild(row);
+    });
+  }
+
+  function renderFactionLegends() {
+    const list = document.getElementById("chronicleFactionList");
+    if (!list || typeof FACTIONS === "undefined") return;
+    list.innerHTML = "";
+    Object.values(FACTIONS).forEach((faction) => {
+      const row = document.createElement("article");
+      row.className = "faction-legend";
+      row.dataset.factionId = faction.id;
+      row.innerHTML = `
+        <h3 style="color:${faction.color || "#facc15"}">${faction.emoji || ""} ${faction.name}</h3>
+        <p>${faction.legend}</p>`;
+      list.appendChild(row);
+    });
+  }
+
+  function chronicleClaimableCount() {
+    return Core.listChapters(loadChronicle(), loadStats(), loadCollection()).filter((chapter) => chapter.unlocked && !chapter.claimed).length;
+  }
+
+  function updateChronicleBadge() {
+    const badge = document.getElementById("chronicleBadge");
+    if (!badge) return;
+    const count = chronicleClaimableCount();
+    badge.textContent = String(count);
+    badge.classList.toggle("show", count > 0);
+  }
+
+  function refreshChronicle() {
+    const chapters = Core.listChapters(loadChronicle(), loadStats(), loadCollection());
+    const unlocked = chapters.filter((chapter) => chapter.unlocked).map((chapter) => chapter.id);
+    if (lastUnlockedChapterIds) {
+      const previous = new Set(lastUnlockedChapterIds);
+      chapters.forEach((chapter) => {
+        if (chapter.unlocked && !previous.has(chapter.id)) showToast(`📜 編年史新章解鎖：${chapter.title}`);
+      });
+    }
+    lastUnlockedChapterIds = unlocked;
+    updateChronicleBadge();
+    return chapters;
+  }
+
+  function claimChapterUi(chapterId) {
+    const result = Core.claimChapter(loadChronicle(), chapterId, loadStats(), loadCollection());
+    if (!result.ok) {
+      renderChronicle();
+      updateChronicleBadge();
+      return result;
+    }
+    saveChronicle(result.state);
+    addMissionReward(result.reward);
+    renderChronicle();
+    updateChronicleBadge();
+    flash(`編年史章節完成：+${result.reward} 金幣`);
+    return result;
   }
 
   function progressWeeklyGoal(event) {
@@ -2199,6 +2387,31 @@
     if (restore && document.contains(restore)) setTimeout(() => restore.focus(), 0);
   }
 
+  function openChronicle(factionId) {
+    renderChronicle();
+    renderFactionLegends();
+    setChronicleTab(factionId ? "factions" : "chapters");
+    const modal = document.getElementById("chronicleModal");
+    if (!modal) return;
+    chronicleReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+    setTimeout(() => {
+      if (factionId) document.querySelector(`.faction-legend[data-faction-id="${factionId}"]`)?.scrollIntoView({ block: "start", behavior: "smooth" });
+      document.getElementById("chronicleClose")?.focus();
+    }, 0);
+  }
+
+  function closeChronicle() {
+    const modal = document.getElementById("chronicleModal");
+    if (!modal) return;
+    const restore = chronicleReturnFocus;
+    chronicleReturnFocus = null;
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+    if (restore && document.contains(restore)) setTimeout(() => restore.focus(), 0);
+  }
+
   function renderQuests(questState) {
     const panel = document.getElementById("questPanel");
     const list = document.getElementById("questList");
@@ -2249,11 +2462,15 @@
     recordGameTelemetry(s, win);
     s.dda = Core.nextDdaState(s.dda, s, win ? "win" : "loss");
     saveStats(s);
+    const ddaInfo = Core.ddaProfile(s.dda);
     if (win) {
       progressQuest({ type: "win", amount: 1 });
       progressWeeklyGoal({ type: "win", amount: 1 });
       if (game.playerDeckSource === "saved") progressQuest({ type: "deckWin", amount: 1 });
     }
+    const lossEncourage = !win && s.lossStreak >= 2
+      ? `<div class="hint">連敗 ${s.lossStreak} 場：已給敗場金幣，動態調節會依設定小幅放慢對手。</div>`
+      : "";
     // 顯示戰績
     const stats = document.getElementById("resultStats");
     if (stats) {
@@ -2262,10 +2479,13 @@
         <div>戰績：${s.wins} 勝 ${s.losses} 敗 · 最高連勝 ${s.bestStreak}</div>
         <div class="coin">${rewardLine}</div>
         <div>難度獎勵：${reward.label}${win ? "勝場" : "敗場"} +${reward.amount} 金幣</div>
-        <div>動態調節：${Core.ddaProfile(s.dda).label}</div>
+        <div>動態調節：${ddaInfo.enabled ? ddaInfo.label : "關閉"}（依近期勝敗調整 AI）</div>
+        ${lossEncourage}
         <div class="hint">💡 用金幣去「開卡包」抽更強的卡，組成你的牌組！</div>`;
     }
     updateQuestCtas();
+    refreshChronicle();
+    updateChronicleBadge();
     if (win) burstStars();
     const gRef = game;
     setTimeout(() => { if (game === gRef) ov.classList.add("show"); }, 500);
@@ -2338,6 +2558,7 @@
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     if (document.getElementById("cardDetail")?.classList.contains("show")) { closeCardDetail(); return; }
+    if (document.getElementById("chronicleModal")?.classList.contains("show")) { closeChronicle(); return; }
     if (document.getElementById("missionDrawer")?.classList.contains("show")) { closeMissionDrawer(); return; }
     if (typeof window.__kwCodexOpen === "function" && window.__kwCodexOpen()) window.__closeKwCodex();
   });
@@ -2353,6 +2574,20 @@
       if (event.target === missionDrawer) closeMissionDrawer();
     });
   }
+  const chronicleBtn = document.getElementById("chronicleBtn");
+  if (chronicleBtn) chronicleBtn.onclick = () => openChronicle();
+  const chronicleClose = document.getElementById("chronicleClose");
+  if (chronicleClose) chronicleClose.onclick = closeChronicle;
+  const chronicleChaptersTab = document.getElementById("chronicleChaptersTab");
+  const chronicleFactionsTab = document.getElementById("chronicleFactionsTab");
+  if (chronicleChaptersTab) chronicleChaptersTab.onclick = () => setChronicleTab("chapters");
+  if (chronicleFactionsTab) chronicleFactionsTab.onclick = () => setChronicleTab("factions");
+  const chronicleModal = document.getElementById("chronicleModal");
+  if (chronicleModal) {
+    chronicleModal.addEventListener("click", (event) => {
+      if (event.target === chronicleModal) closeChronicle();
+    });
+  }
 
   // 提供給入口頁主題切換用（重繪卡面）
   window.__rerenderBattle = render;
@@ -2361,6 +2596,10 @@
   window.__difficulties = DIFFICULTY;
   window.addEventListener("storage", (e) => {
     if (e.key === QUEST_KEY) renderQuests();
+    if (e.key === CHRONICLE_KEY || e.key === "card_stats_v1" || e.key === "cardpack_collection_v2") {
+      refreshChronicle();
+      renderChronicle();
+    }
     if (e.key === TEXT_SIZE_KEY) applyTextSize(currentTextSize());
   });
 
@@ -2421,6 +2660,12 @@
     openMissionDrawer: () => openMissionDrawer(),
     missionOpen: () => document.getElementById("missionDrawer")?.classList.contains("show") || false,
     claimAllMissions: () => claimAllMissionsUi(),
+    chronicle: () => Core.listChapters(loadChronicle(), loadStats(), loadCollection()),
+    claimChapter: (chapterId) => claimChapterUi(chapterId),
+    openChronicle: (factionId) => openChronicle(factionId),
+    closeChronicle: () => closeChronicle(),
+    chronicleOpen: () => document.getElementById("chronicleModal")?.classList.contains("show") || false,
+    chronicleBadge: () => chronicleClaimableCount(),
     claimQuest: (questId) => claimQuestUi(questId),
     claimAllQuests: () => claimAllQuestsUi(),
     rewardTable: () => JSON.parse(JSON.stringify(DIFFICULTY_REWARDS)),

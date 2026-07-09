@@ -79,12 +79,12 @@
   }
 
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r47-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r48-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r47_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r48_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
@@ -843,7 +843,8 @@
   function cardSearchText(card) {
     const keywordText = (card.keywords || []).map((key) => KEYWORDS[key]?.label || key).join(" ");
     const axisText = typeof cardAxisLabel === "function" ? cardAxisLabel(card) : card.axis;
-    return normalizeSearch([card.name, card.id, card.text, card.flavor, keywordText, axisText, RARITY[card.rarity]?.label].join(" "));
+    const factionText = typeof factionLabel === "function" ? factionLabel(card) : card.faction;
+    return normalizeSearch([card.name, card.id, card.text, card.flavor, keywordText, axisText, factionText, RARITY[card.rarity]?.label].join(" "));
   }
 
   function ownershipMatches(filter, owned) {
@@ -1139,10 +1140,13 @@
       if (card.axis === "aggro") score -= 12;
       if (keywords.includes("taunt")) score += 16;
       if (keywords.includes("lifesteal")) score += 14;
+      if (keywords.includes("spellpower")) score += 14;
+      if (keywords.includes("frenzy")) score += 8;
       if (keywords.includes("divineshield")) score += 10;
       if (keywords.includes("regenerate")) score += 10;
       if (card.effect === "aoe1" || card.effect === "aoe2") score += 22;
       if (card.effect === "damage8" || card.effect === "polymorph") score += 18;
+      if (card.effect === "draw2") score += 20;
       if (card.effect === "heal5") score += 10;
       if (isSpell && cost <= 1) score -= 8;
       return score;
@@ -1154,7 +1158,9 @@
     if (keywords.includes("rush")) score += 14;
     if (keywords.includes("windfury")) score += 12;
     if (keywords.includes("lifesteal")) score += 8;
-    if (card.effect === "damage3" || card.effect === "mana2") score += 18;
+    if (keywords.includes("frenzy")) score += 8;
+    if (keywords.includes("spellpower")) score += 6;
+    if (card.effect === "damage3" || card.effect === "mana2" || card.effect === "draw2") score += 18;
     if (card.effect === "giveShield") score += 8;
     if (cost >= 6) score -= 18;
     return score;

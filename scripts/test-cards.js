@@ -6,7 +6,7 @@
 
 const path = require("path");
 const cards = require(path.join(__dirname, "..", "templates", "card-battle", "cards.js"));
-const { CARD_POOL, RARITY, KEYWORDS, CARD_TYPE, DISMANTLE_VALUE, AXIS_LABELS, rollCardByRarity, getCardById, collectKey, cardAxisLabel } = cards;
+const { CARD_POOL, RARITY, KEYWORDS, CARD_TYPE, DISMANTLE_VALUE, AXIS_LABELS, FACTIONS, CARD_FACTION, rollCardByRarity, getCardById, collectKey, cardAxisLabel, factionLabel } = cards;
 const R16_NEW_IDS = [
   "sparkSquire", "alleySkirmisher", "emberVolley", "bulwarkMonk", "dawnRider",
   "battleDrummer", "sanctuaryWarden", "tidebinderHex", "bastionColossus", "highArchivist",
@@ -14,6 +14,10 @@ const R16_NEW_IDS = [
 const R47_NEW_IDS = [
   "frenzyCub", "frostBiter", "arcaneApprentice", "novicePage", "ragingBrute", "frostChanneler",
   "arcaneInfusion", "frostReaver", "arcaneWeaver", "flameBurst", "archLoremaster", "frostboundTyrant",
+];
+const R48_NEW_IDS = [
+  "emberpup", "frostfangDire", "thunderRoc", "soulfrostRaven", "runicScrivener", "tidecallerAdept",
+  "watchtowerBowman", "oathbannerHerald", "dawnArchbishop", "tacticalRequisition", "glaciarchWarden", "countessLongNight",
 ];
 
 let failed = 0;
@@ -24,6 +28,7 @@ function assert(cond, msg) {
 
 console.log("== 結構檢查 ==");
 assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 62, `卡池至少 62 張（實際 ${CARD_POOL.length}）`);
+assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 74, `CARD_POOL has at least 74 cards (actual ${CARD_POOL.length})`);
 assert(Object.keys(RARITY).length === 4, "稀有度有 4 級");
 assert(Object.keys(KEYWORDS).length >= 5, "關鍵字技能至少 5 種");
 assert(KEYWORDS.lifesteal?.label === "吸血" && KEYWORDS.rush?.label === "突襲", "新關鍵字吸血與突襲有繁中 label");
@@ -39,6 +44,8 @@ for (const c of CARD_POOL) {
   if (typeof c.flavor !== "string" || c.flavor.trim().length < 8) badFields++;
   if (!["aggro", "control", "neutral"].includes(c.axis)) badFields++;
   if (!cardAxisLabel(c)) badFields++;
+  if (!FACTIONS[c.faction]) badFields++;
+  if (!factionLabel(c)) badFields++;
   if (c.type === CARD_TYPE.MINION && !Array.isArray(c.keywords)) badFields++;
 }
 assert(badFields === 0, `所有卡欄位完整（異常 ${badFields}）`);
@@ -66,6 +73,20 @@ assert(r47Rarity.common === 4 && r47Rarity.rare === 3 && r47Rarity.epic === 3 &&
 assert(r47Axis.aggro === 6 && r47Axis.control === 6, `R47 快攻/控制各 6 張（實際 ${JSON.stringify(r47Axis)}）`);
 assert(r47Costs.includes(1) && r47Costs.includes(7), "R47 費用曲線含 1 費與 7 費");
 assert(r47Cards.every((c) => typeof c.flavor === "string" && c.flavor.length >= 8), "R47 風味文字完整且至少 8 字");
+
+console.log("== R48 White Tide Chronicle ==");
+const r48Cards = R48_NEW_IDS.map((id) => getCardById(id));
+const r48Rarity = r48Cards.reduce((acc, c) => { if (c) acc[c.rarity] = (acc[c.rarity] || 0) + 1; return acc; }, {});
+const r48Axis = r48Cards.reduce((acc, c) => { if (c) acc[c.axis] = (acc[c.axis] || 0) + 1; return acc; }, {});
+const r48Costs = r48Cards.map((c) => c && c.cost).filter((n) => typeof n === "number");
+assert(r48Cards.every(Boolean), "R48 12 new ids exist");
+assert(r48Rarity.common === 4 && r48Rarity.rare === 3 && r48Rarity.epic === 3 && r48Rarity.legendary === 2,
+  `R48 rarity split is 4/3/3/2 (actual ${JSON.stringify(r48Rarity)})`);
+assert(r48Axis.aggro === 6 && r48Axis.control === 6, `R48 axis split is 6/6 (actual ${JSON.stringify(r48Axis)})`);
+assert(r48Costs.includes(1) && r48Costs.includes(7), "R48 cost curve includes 1 and 7");
+assert(r48Cards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8), "R48 flavor text is present");
+assert(r48Cards.every((c) => FACTIONS[c.faction]), "R48 faction ids all resolve");
+assert(Object.keys(FACTIONS).length === 4 && Object.keys(CARD_FACTION).length >= 74, "R48 factions cover the full card pool");
 
 console.log("== id 唯一性 ==");
 const ids = CARD_POOL.map((c) => c.id);

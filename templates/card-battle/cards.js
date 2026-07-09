@@ -27,6 +27,37 @@ const DISMANTLE_VALUE = { common: 2, rare: 8, epic: 25, legendary: 80 };
 
 const CARD_TYPE = { MINION: "minion", SPELL: "spell" };
 
+const FACTIONS = Object.freeze({
+  wardens: Object.freeze({
+    id: "wardens",
+    name: "白潮守軍",
+    emoji: "⚜️",
+    color: "#3b82f6",
+    legend: "白潮守軍在永冬邊緣築城，不以退路計算勇氣。他們相信城牆不是石頭，而是每一個仍願意留下的人；當霜鋒軍團敲響北門，守軍便把晨鐘、傷兵與最後一盞燈都藏進盾後，直到白潮再度拍上王城的階梯。",
+  }),
+  conclave: Object.freeze({
+    id: "conclave",
+    name: "奧術結社",
+    emoji: "🔮",
+    color: "#a855f7",
+    legend: "奧術結社守著典藏塔，也守著世界仍可被理解的秩序。他們不把知識視為王冠，而視為天秤；每一本禁書都被鎖在星光與誓言之間，因為法術一旦只為勝利服務，下一個被犧牲的往往就是明日。",
+  }),
+  wild: Object.freeze({
+    id: "wild",
+    name: "荒野獸群",
+    emoji: "🐾",
+    color: "#f59e0b",
+    legend: "荒野獸群不承認王城的疆界，也不接受典藏塔的註解。牠們從雷雨、林火與月下獵徑中學會自由，願意為一口熱血衝向寒冬；牠們不是白潮的臣民，卻常在城門將破時，從最不可能的山脊奔來。",
+  }),
+  wintershadow: Object.freeze({
+    id: "wintershadow",
+    name: "凜冬暗影",
+    emoji: "🌘",
+    color: "#60a5fa",
+    legend: "凜冬暗影以絕望為食，卻從不急著吞下獵物。霜縛暴君把整個冬天鎖進胸腔，血月女王便在圍城的夢裡倒酒；他們帶來的不是死亡本身，而是讓人相信春天從未存在過的漫長夜色。",
+  }),
+});
+
 /* 關鍵字技能定義（顯示用；實際規則在 battle.js）：
  *   taunt        嘲諷  — 敵方必須先攻擊有嘲諷的隨從
  *   charge       衝鋒  — 召喚當回合即可攻擊（無召喚病）
@@ -144,6 +175,20 @@ const CARD_POOL = [
   { id: "flameBurst",      name: "烈焰爆裂", type: CARD_TYPE.SPELL, rarity: "epic", cost: 4, emoji: "🔥", image: "../../assets/cards/flameBurst.png", text: "對一個敵方隨從造成 5 點傷害。", effect: "damage5", foil: false },
   { id: "archLoremaster",  name: "大博學者", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 4, health: 7, emoji: "📚", image: "../../assets/cards/archLoremaster.png", keywords: ["spellpower", "battlecry"], trigger: "drawCard1", text: "法強。戰吼：抽 1 張牌。", foil: false },
   { id: "frostboundTyrant", name: "霜縛暴君", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 6, health: 8, emoji: "👑", image: "../../assets/cards/frostboundTyrant.png", keywords: ["taunt", "frenzy"], text: "嘲諷 + 狂怒：受傷後守線反擊。", foil: false },
+
+  // ===== R48 白潮編年史：快攻 6 張、控制 6 張 =====
+  { id: "emberpup",        name: "餘燼幼犬", type: CARD_TYPE.MINION, rarity: "common", cost: 1, attack: 2, health: 1, emoji: "🐕", image: null, keywords: ["charge"], text: "衝鋒：小小火光也能先咬住戰線。", foil: false },
+  { id: "frostfangDire",   name: "霜牙巨狼", type: CARD_TYPE.MINION, rarity: "epic", cost: 5, attack: 5, health: 4, emoji: "🐺", image: "../../assets/cards/frostfangDire.png", keywords: ["rush", "frenzy"], text: "突襲 + 狂怒：冰息撕開前排。", foil: false },
+  { id: "thunderRoc",      name: "雷翼巨鵬", type: CARD_TYPE.MINION, rarity: "rare", cost: 4, attack: 3, health: 4, emoji: "🦅", image: null, keywords: ["windfury"], text: "連擊：雷聲落下兩次。", foil: false },
+  { id: "soulfrostRaven",  name: "魂霜渡鴉", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 2, health: 3, emoji: "🐦", image: null, keywords: ["lifesteal"], text: "吸血：啄食寒意，回補生命。", foil: false },
+  { id: "runicScrivener",  name: "符文抄寫員", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 1, health: 2, emoji: "✒️", image: null, keywords: ["battlecry"], trigger: "drawCard1", text: "戰吼：抽 1 張牌。", foil: false },
+  { id: "tidecallerAdept", name: "喚潮學徒", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 1, health: 3, emoji: "🌊", image: null, keywords: ["spellpower"], text: "法強：潮聲推高你的傷害法術。", foil: false },
+  { id: "watchtowerBowman", name: "望塔弓手", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 2, health: 3, emoji: "🏹", image: null, keywords: [], text: "守線射手：穩定壓低敵方攻勢。", foil: false },
+  { id: "oathbannerHerald", name: "誓旗傳令", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 2, health: 4, emoji: "🚩", image: "../../assets/cards/oathbannerHerald.png", keywords: ["battlecry", "taunt"], trigger: "healHero2", text: "嘲諷。戰吼：為英雄恢復 2 點。", foil: false },
+  { id: "dawnArchbishop", name: "晨曦大主教", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 4, health: 8, emoji: "⛪", image: "../../assets/cards/dawnArchbishop.png", keywords: ["battlecry", "divineshield"], trigger: "healHero2", text: "聖盾。戰吼：為英雄恢復 2 點。", foil: false },
+  { id: "tacticalRequisition", name: "戰術徵調", type: CARD_TYPE.SPELL, rarity: "epic", cost: 3, emoji: "📦", image: null, text: "抽 2 張牌。", effect: "draw2", foil: false },
+  { id: "glaciarchWarden", name: "冰獄看守", type: CARD_TYPE.MINION, rarity: "epic", cost: 6, attack: 3, health: 8, emoji: "🧊", image: "../../assets/cards/glaciarchWarden.png", keywords: ["taunt", "regenerate"], text: "嘲諷 + 回復：寒牢不讓任何人通過。", foil: false },
+  { id: "countessLongNight", name: "長夜伯爵夫人", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 5, health: 7, emoji: "🌙", image: "../../assets/cards/countessLongNight.png", keywords: ["deathrattle", "lifesteal"], trigger: "summonSkeleton", text: "吸血。亡語：召喚一個骷髏(2/2)。", foil: false },
 ];
 
 const AXIS_LABELS = Object.freeze({ aggro: "快攻", control: "控制", neutral: "中立" });
@@ -164,6 +209,9 @@ const CARD_AXIS = Object.freeze({
   frenzyCub: "aggro", frostBiter: "aggro", arcaneApprentice: "control", novicePage: "control",
   ragingBrute: "aggro", frostChanneler: "control", arcaneInfusion: "aggro", frostReaver: "aggro",
   arcaneWeaver: "control", flameBurst: "aggro", archLoremaster: "control", frostboundTyrant: "control",
+  emberpup: "aggro", frostfangDire: "aggro", thunderRoc: "aggro", soulfrostRaven: "aggro",
+  runicScrivener: "aggro", tidecallerAdept: "aggro", watchtowerBowman: "control", oathbannerHerald: "control",
+  dawnArchbishop: "control", tacticalRequisition: "control", glaciarchWarden: "control", countessLongNight: "control",
 });
 const CARD_FLAVOR = Object.freeze({
   footman: "城門下的第一面盾，總是比晨鐘更早醒來。",
@@ -228,16 +276,55 @@ const CARD_FLAVOR = Object.freeze({
   flameBurst: "烈焰爆裂沒有方向，只有被吞沒的中心。",
   archLoremaster: "大博學者翻頁之前，敵軍已被答案壓低頭。",
   frostboundTyrant: "霜縛暴君舉盾時，冬天便有了王座。",
+  emberpup: "牠守著營火最小的一角，卻總是第一個衝進暴雪。",
+  frostfangDire: "霜牙巨狼的喘息像破裂冰湖，獵物聽見時已無路可退。",
+  thunderRoc: "雷翼巨鵬掠過雲脊，替荒野把自由寫成閃電。",
+  soulfrostRaven: "魂霜渡鴉啄走垂死者的寒意，也啄回一點不肯熄滅的心跳。",
+  runicScrivener: "他抄下每一道退路，只為在最亂的夜裡找回前進的句子。",
+  tidecallerAdept: "喚潮學徒聽見海在冰層下翻身，便相信白潮終會回來。",
+  watchtowerBowman: "他數過雪落的次數，卻從不數自己站了多久。",
+  oathbannerHerald: "誓旗升起時，連受傷的人都想起自己曾經發誓不退。",
+  dawnArchbishop: "他祝禱的不是勝利，是還有人值得被守護。",
+  tacticalRequisition: "補給隊遲到三天，卻總在最需要的那一頁準時抵達。",
+  glaciarchWarden: "冰獄看守不問囚名，因為被關住的其實是整個冬天。",
+  countessLongNight: "她收藏黑夜，只為了記得白天長什麼樣子。",
+});
+
+const CARD_FACTION = Object.freeze({
+  footman: "wardens", archer: "wardens", cleric: "wardens", knight: "wardens", guardian: "wardens",
+  golem: "wardens", paladin: "wardens", titan: "wardens", groveHerbalist: "wardens", holyGlimmer: "wardens",
+  bannerGuard: "wardens", sanctuaryWarden: "wardens", bulwarkMonk: "wardens", dawnRider: "wardens",
+  shieldUp: "wardens", heal: "wardens", arcaneVeil: "wardens", bastionColossus: "wardens",
+  battleDrummer: "wardens", watchtowerBowman: "wardens", oathbannerHerald: "wardens", dawnArchbishop: "wardens",
+  mage: "conclave", archmage: "conclave", arcaneApprentice: "conclave", arcaneWeaver: "conclave",
+  archLoremaster: "conclave", novicePage: "conclave", highArchivist: "conclave", frostChanneler: "conclave",
+  manaSurge: "conclave", firebolt: "conclave", frost: "conclave", lightning: "conclave", meteor: "conclave",
+  polymorph: "conclave", forbiddenHex: "conclave", tidebinderHex: "conclave", starfall: "conclave",
+  thunderClap: "conclave", arcaneInfusion: "conclave", flameBurst: "conclave", emberVolley: "conclave",
+  runicScrivener: "conclave", tidecallerAdept: "conclave", tacticalRequisition: "conclave",
+  wolf: "wild", raptor: "wild", griffin: "wild", phoenix: "wild", dragon: "wild", frenzyCub: "wild",
+  frostBiter: "wild", ragingBrute: "wild", frostReaver: "wild", stormGriffin: "wild", mooncat: "wild",
+  frontScout: "wild", linebreaker: "wild", sparkSquire: "wild", alleySkirmisher: "wild", emberpup: "wild",
+  frostfangDire: "wild", thunderRoc: "wild",
+  lich: "wintershadow", duskwrightBat: "wintershadow", duskWitch: "wintershadow", abyssWalker: "wintershadow",
+  skyJudicator: "wintershadow", bloodmoonQueen: "wintershadow", frostboundTyrant: "wintershadow",
+  soulfrostRaven: "wintershadow", glaciarchWarden: "wintershadow", countessLongNight: "wintershadow",
 });
 
 for (const card of CARD_POOL) {
   card.axis = CARD_AXIS[card.id] || "neutral";
+  card.faction = CARD_FACTION[card.id] || "wardens";
   card.flavor = CARD_FLAVOR[card.id] || "這張卡仍在等待屬於自己的傳說。";
 }
 
 function cardAxisLabel(card) {
   const axis = card && card.axis ? card.axis : "neutral";
   return AXIS_LABELS[axis] || AXIS_LABELS.neutral;
+}
+
+function factionLabel(card) {
+  const faction = card && card.faction ? card.faction : "wardens";
+  return FACTIONS[faction] ? FACTIONS[faction].name : FACTIONS.wardens.name;
 }
 
 // 依 id 取卡（淺拷貝，避免改到母表）。
@@ -273,8 +360,8 @@ function collectKey(card) {
 
 // 讓瀏覽器與 Node 兩種載入都可用。
 if (typeof window !== "undefined") {
-  Object.assign(window, { RARITY, FOIL_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, CARD_POOL, AXIS_LABELS, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel });
+  Object.assign(window, { RARITY, FOIL_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, FACTIONS, CARD_POOL, AXIS_LABELS, CARD_FACTION, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel, factionLabel });
 }
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { RARITY, FOIL_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, CARD_POOL, AXIS_LABELS, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel };
+  module.exports = { RARITY, FOIL_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, FACTIONS, CARD_POOL, AXIS_LABELS, CARD_FACTION, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel, factionLabel };
 }

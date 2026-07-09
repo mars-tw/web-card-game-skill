@@ -10,6 +10,9 @@ const R47_NEW_IDS = [
   "frenzyCub", "frostBiter", "arcaneApprentice", "novicePage", "ragingBrute", "frostChanneler",
   "arcaneInfusion", "frostReaver", "arcaneWeaver", "flameBurst", "archLoremaster", "frostboundTyrant",
 ];
+const R48_ARTED_IDS = [
+  "oathbannerHerald", "dawnArchbishop", "frostfangDire", "glaciarchWarden", "countessLongNight",
+];
 let failed = 0;
 
 function assert(condition, message) {
@@ -469,12 +472,40 @@ function checkR47ArtConsistency() {
   assert(problems.length === 0, `R47 新圖與 cards/art-config/sw 三方一致（${R47_NEW_IDS.length} 張）`);
 }
 
+function checkR48ArtConsistency() {
+  const cards = require(abs("templates/card-battle/cards.js"));
+  const byId = Object.fromEntries(cards.CARD_POOL.map((card) => [card.id, card]));
+  const artConfig = JSON.parse(read("art-config.json"));
+  const artIds = new Set((artConfig.cards || []).map((card) => card.id));
+  const cached = parseCachedAssets().cached;
+  const problems = [];
+  for (const id of R48_ARTED_IDS) {
+    const rel = `assets/cards/${id}.png`;
+    const expectedImage = `../../${rel}`;
+    const card = byId[id];
+    if (!card) problems.push(`${id} missing in CARD_POOL`);
+    else if (card.image !== expectedImage) problems.push(`${id} cards.js image ${card.image} !== ${expectedImage}`);
+    if (!artIds.has(id)) problems.push(`${id} missing in art-config.json`);
+    if (!fs.existsSync(abs(rel))) problems.push(`${id} missing PNG file`);
+    else {
+      const info = pngInfo(rel);
+      if (!info.isPng || info.width !== 1024 || info.height !== 1024 || info.colorType !== 2) {
+        problems.push(`${id} PNG expected 1024x1024 RGB, got ${info.width}x${info.height} colorType ${info.colorType}`);
+      }
+    }
+    if (!cached.has(rel)) problems.push(`${id} missing from sw.js CORE_ASSETS`);
+  }
+  problems.slice(0, 20).forEach((problem) => console.error("    r48 art gate: " + problem));
+  assert(problems.length === 0, `R48 art cards are consistent across cards/art-config/sw (${R48_ARTED_IDS.length} cards)`);
+}
+
 console.log("== R40 文案品質守門 ==");
 checkCopyQuality();
 console.log("== R40 SW 快取完整性守門 ==");
 checkVersionedHtmlRefs();
 checkSwCacheCompleteness();
 checkR47ArtConsistency();
+checkR48ArtConsistency();
 
 if (failed > 0) {
   console.error(`❌ ${failed} 項守門失敗`);

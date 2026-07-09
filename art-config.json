@@ -54,6 +54,11 @@
     { "id": "arcaneWeaver", "prompt": "an elegant arcane weaver mage weaving golden-blue sigils with both hands" },
     { "id": "flameBurst", "prompt": "a bursting explosion of flame, no creature" },
     { "id": "archLoremaster", "prompt": "an elder arch loremaster surrounded by floating sealed tomes and golden-blue arcane light" },
-    { "id": "frostboundTyrant", "prompt": "a towering frost-bound tyrant king in ice armor with a glacial greatshield" }
+    { "id": "frostboundTyrant", "prompt": "a towering frost-bound tyrant king in ice armor with a glacial greatshield" },
+    { "id": "oathbannerHerald", "prompt": "holy oath-banner herald knight raising glowing white-gold war banner on frostbitten citadel rampart" },
+    { "id": "dawnArchbishop", "prompt": "radiant archbishop in white-gold vestments, dawn-light halo, warding staff, divine-shield aura" },
+    { "id": "frostfangDire", "prompt": "massive frost-furred dire wolf mid-lunge, glowing ember scars, icy breath" },
+    { "id": "glaciarchWarden", "prompt": "towering glacial warden-jailer in blue ice armor, frozen greatshield" },
+    { "id": "countessLongNight", "prompt": "elegant pale countess of long night in dark-violet gown, crimson lifesteal wisps, spectral shade" }
   ]
 }

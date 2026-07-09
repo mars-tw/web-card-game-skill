@@ -22,6 +22,7 @@
   const DECK_SIZE = 20;
   const QUEST_VERSION = 1;
   const GOAL_VERSION = 1;
+  const CHRONICLE_VERSION = 1;
   const DDA_MIN_LEVEL = -2;
   const DDA_MAX_LEVEL = 2;
   const DDA_DEFAULT = Object.freeze({
@@ -73,6 +74,112 @@
     Object.freeze({ id: "foil_5", metric: "foil", target: 5, title: "收藏 5 張閃卡", reward: 40 }),
     Object.freeze({ id: "foil_15", metric: "foil", target: 15, title: "收藏 15 張閃卡", reward: 60 }),
   ]);
+  const CHRONICLE_CHAPTERS = Object.freeze([
+    Object.freeze({
+      id: "prologue_white_tide",
+      title: "序章：白潮未退",
+      faction: "wardens",
+      unlock: Object.freeze({ metric: "wins", value: 0 }),
+      epigraph: "白潮拍上城階時，守軍才知道海仍記得回家的路。",
+      body: Object.freeze([
+        "白潮王城立在永冬邊緣，北牆之外是霜原，南門之內是仍願意點燈的人。古時候，奧術典藏塔以星軌與潮汐維持寒暖平衡，讓海霧每年一次翻過城垛，替石縫洗去霜鹽，也替人們留下春天會回來的證據。",
+        "後來白潮遲到了。先是港口結冰，接著鐘樓的銅舌被霜咬住，最後連士兵的影子都比本人更冷。城民仍稱它為王城，因為只要城名不改，就好像世界尚未承認自己正在後退。",
+      ]),
+      featured: Object.freeze(["footman", "watchtowerBowman", "oathbannerHerald"]),
+      reward: 20,
+    }),
+    Object.freeze({
+      id: "chapter_king_jailer",
+      title: "第一章：吞冬之王",
+      faction: "wintershadow",
+      unlock: Object.freeze({ metric: "wins", value: 1 }),
+      epigraph: "有人說他墮落，有人說他只是把門關得太久。",
+      body: Object.freeze([
+        "霜縛暴君曾是守城之王。更古老的寒冬自北方裂谷醒來時，他沒有選擇逃亡，而是把整個冬天吞進體內，將自己鑄成牢門、鑰匙與獄卒。他擋住了第一場滅族風暴，也從此無法再分辨囚犯與被保護的人。",
+        "當他率霜鋒軍團南下，旗幟上沒有征服的字句，只有被冰封的王徽。老兵看見那面旗時會脫帽，然後重新握緊武器；他們知道來者不是外敵，而是一個曾經替他們承受太多寒冷的名字。",
+      ]),
+      featured: Object.freeze(["frostboundTyrant", "glaciarchWarden", "frostfangDire"]),
+      reward: 30,
+    }),
+    Object.freeze({
+      id: "chapter_archival_balance",
+      title: "第二章：典藏塔的天秤",
+      faction: "conclave",
+      unlock: Object.freeze({ metric: "unique", value: 12 }),
+      epigraph: "每一本書都很輕，直到有人把王國放在同一側。",
+      body: Object.freeze([
+        "奧術結社守著典藏塔的七百二十一層階梯，也守著不被勝利沖昏頭的學問。塔頂的觀星井能看見潮汐下方的魔脈，塔底的禁書庫則鎖著所有曾讓帝國太快強盛、又太快毀滅的答案。",
+        "當白潮不再準時，結社內部第一次出現裂痕。有人主張打開禁頁，將冬天重新縫回北方；有人堅持若以秩序之名犧牲秩序，典藏塔就只剩一座漂亮的火藥庫。於是學徒們在夜裡抄寫咒式，也抄寫遺書。",
+      ]),
+      featured: Object.freeze(["archLoremaster", "runicScrivener", "tidecallerAdept"]),
+      reward: 40,
+    }),
+    Object.freeze({
+      id: "chapter_wild_oath",
+      title: "第三章：荒野不立誓",
+      faction: "wild",
+      unlock: Object.freeze({ metric: "wins", value: 3 }),
+      epigraph: "牠們不屬於王城，卻仍聽得見城門將裂的聲音。",
+      body: Object.freeze([
+        "荒野獸群從未向白潮王城低頭。狼群穿越舊邊界時不看旗幟，雷翼巨鵬盤旋在典藏塔上方也不是為了致敬。牠們相信活著就是奔跑、獵食、受傷後再站起來，沒有哪一本法典能替風決定方向。",
+        "然而霜鋒軍團南下後，連最深的林徑也覆上不會融化的白霜。幼獸不再追逐月影，山谷裡的水聲像被掐住喉嚨。荒野於是選擇了牠們唯一承認的盟約：誰奪走自由，誰就是獵物。",
+      ]),
+      featured: Object.freeze(["emberpup", "thunderRoc", "frostReaver"]),
+      reward: 50,
+    }),
+    Object.freeze({
+      id: "chapter_bloodmoon_siege",
+      title: "第四章：血月圍城",
+      faction: "wintershadow",
+      unlock: Object.freeze({ metric: "wins", value: 5 }),
+      epigraph: "城牆可以擋住刀劍，卻很難擋住一個夜晚變長。",
+      body: Object.freeze([
+        "血月女王抵達時沒有攻城槌，只有一輪掛得太低的月。她以圍城絕望為食，將飢餓、疑心與未寄出的家書釀成暗紅酒液。白潮王城每熄一盞燈，她的裙襬便多出一層更柔軟的夜色。",
+        "長夜伯爵夫人在城內傳遞夢魘，讓守軍看見家門已空、典藏塔已焚、荒野已跪。可望塔弓手仍在雪裡數更，晨曦大主教仍替陌生人祝禱。絕望最怕的不是勇者，而是有人明明害怕卻仍不肯離開。",
+      ]),
+      featured: Object.freeze(["bloodmoonQueen", "countessLongNight", "dawnArchbishop"]),
+      reward: 60,
+    }),
+    Object.freeze({
+      id: "chapter_supply_pages",
+      title: "第五章：補給頁與空白處",
+      faction: "conclave",
+      unlock: Object.freeze({ metric: "unique", value: 22 }),
+      epigraph: "有些援軍不是從路上抵達，而是從下一頁。",
+      body: Object.freeze([
+        "戰術徵調最初只是典藏塔的一份後勤表格，記錄糧車、藥草、弩弦與願意繼續守夜的人數。圍城第三十日，符文抄寫員發現那些空白欄位會自行浮出名字，像是王城尚未放棄的人在紙上排隊。",
+        "補給隊遲到三天，卻總在最需要的那一頁準時抵達。有人得到一捆箭，有人得到母親的字條，有人只得到一句『再守一刻』。那一刻不長，卻足以讓白潮守軍把城門重新插上門閂。",
+      ]),
+      featured: Object.freeze(["tacticalRequisition", "runicScrivener", "watchtowerBowman"]),
+      reward: 70,
+    }),
+    Object.freeze({
+      id: "chapter_glacial_prison",
+      title: "第六章：冰獄開門",
+      faction: "wardens",
+      unlock: Object.freeze({ metric: "wins", value: 8 }),
+      epigraph: "當獄門開啟，囚犯與獄卒都聽見自己的名字。",
+      body: Object.freeze([
+        "冰獄看守站在霜縛暴君身前，像一面從極北推來的城牆。牠的盾上結著無數面孔，有敵人，也有曾被暴君保護的白潮子民。每一張臉都提醒守軍：他們對抗的不是單純惡意，而是一段被寒冬扭曲的舊恩。",
+        "誓旗傳令在那天攀上破裂城垛，把白金戰旗插進冰縫。旗面沒有命令，只有四個被血與雪洗亮的字：仍在此地。於是城門後的孩子停止哭泣，典藏塔的鐘重新發聲，荒野的群獸也在遠方回應。",
+      ]),
+      featured: Object.freeze(["glaciarchWarden", "oathbannerHerald", "bastionColossus"]),
+      reward: 90,
+    }),
+    Object.freeze({
+      id: "finale_white_tide_returns",
+      title: "終章：白潮回聲",
+      faction: "wardens",
+      unlock: Object.freeze({ metric: "finale", value: Object.freeze({ wins: 12, unique: 30 }) }),
+      epigraph: "潮聲沒有承諾勝利，只承諾仍會回來。",
+      body: Object.freeze([
+        "終戰前夜，霜縛暴君走到王城北門，聽見自己體內的冬天第一次退潮。他終於明白吞下寒冬並沒有拯救族人，只是把每一個明天都鎖進同一間牢房。晨曦大主教向他伸手，沒有赦免，也沒有審判，只問他是否還記得白天長什麼樣子。",
+        "白潮回來時並不壯闊，只是先融開一枚釘子，再推動一艘小船，最後讓城牆下的鹽花重新發亮。典藏塔沒有關閉禁書，荒野也沒有接受王令；他們只是學會在寒冬再臨時，把知識、利爪與盾牌放在同一面城牆上。",
+      ]),
+      featured: Object.freeze(["frostboundTyrant", "dawnArchbishop", "countessLongNight"]),
+      reward: 120,
+    }),
+  ]);
   const WEEKLY_QUEST_POOL = Object.freeze([
     Object.freeze({ id: "weekly_win_3", type: "win", title: "本週勝利 3 場", target: 3, reward: 100 }),
     Object.freeze({ id: "weekly_open_pack_3", type: "openPack", title: "本週開啟 3 包", target: 3, reward: 80 }),
@@ -92,6 +199,7 @@
     giveShield: Object.freeze({ needsTarget: "friendlyMinion" }),
     buffTarget: Object.freeze({ needsTarget: "friendlyMinion" }),
     polymorph: Object.freeze({ needsTarget: "enemyMinion" }),
+    draw2: Object.freeze({ needsTarget: null }),
   });
 
   function clampNumber(value, min, max, fallback) {
@@ -405,6 +513,85 @@
       state,
       milestone: Object.assign({}, def, { progress, achieved: true, claimed: true }),
     };
+  }
+
+  function chronicleIds() {
+    return new Set(CHRONICLE_CHAPTERS.map((chapter) => chapter.id));
+  }
+
+  function migrateChronicle(raw) {
+    let source = raw;
+    if (typeof source === "string") {
+      try { source = JSON.parse(source); }
+      catch { source = null; }
+    }
+    if (!source || typeof source !== "object" || Array.isArray(source)) source = {};
+    const known = chronicleIds();
+    const claimedSource = Array.isArray(source.claimed) ? source.claimed
+      : Array.isArray(source.claimedChapters) ? source.claimedChapters
+      : [];
+    return {
+      version: CHRONICLE_VERSION,
+      claimed: [...new Set(claimedSource.filter((id) => typeof id === "string" && known.has(id)))],
+    };
+  }
+
+  function chronicleContext(stats, collection) {
+    const migratedStats = migrateStats(stats);
+    const summary = collectionSummary(collection);
+    return {
+      wins: Math.max(0, Math.floor(Number(migratedStats.wins) || 0)),
+      unique: Math.max(0, Math.floor(Number(summary.unique) || 0)),
+    };
+  }
+
+  function chapterUnlocked(chapter, ctx) {
+    const context = ctx || { wins: 0, unique: 0 };
+    const unlock = chapter && chapter.unlock ? chapter.unlock : {};
+    const metric = unlock.metric;
+    const value = unlock.value;
+    if (metric === "wins") return (context.wins || 0) >= Math.max(0, Number(value) || 0);
+    if (metric === "unique") return (context.unique || 0) >= Math.max(0, Number(value) || 0);
+    if (metric === "finale") {
+      const need = value && typeof value === "object" ? value : {};
+      return (context.wins || 0) >= Math.max(0, Number(need.wins) || 0)
+        && (context.unique || 0) >= Math.max(0, Number(need.unique) || 0);
+    }
+    return false;
+  }
+
+  function chronicleUnlockLabel(chapter) {
+    const unlock = chapter && chapter.unlock ? chapter.unlock : {};
+    if (unlock.metric === "wins") {
+      const value = Math.max(0, Number(unlock.value) || 0);
+      return value <= 0 ? "序章已解鎖" : `贏得 ${value} 場對戰解鎖`;
+    }
+    if (unlock.metric === "unique") return `收藏 ${Math.max(0, Number(unlock.value) || 0)} 種卡牌解鎖`;
+    if (unlock.metric === "finale") {
+      const need = unlock.value && typeof unlock.value === "object" ? unlock.value : {};
+      return `贏得 ${Math.max(0, Number(need.wins) || 0)} 場且收藏 ${Math.max(0, Number(need.unique) || 0)} 種卡牌解鎖`;
+    }
+    return "尚未解鎖";
+  }
+
+  function listChapters(chronicleState, stats, collection) {
+    const state = migrateChronicle(chronicleState);
+    const ctx = chronicleContext(stats, collection);
+    return CHRONICLE_CHAPTERS.map((chapter) => Object.assign({}, chapter, {
+      unlocked: chapterUnlocked(chapter, ctx),
+      claimed: state.claimed.includes(chapter.id),
+      unlockLabel: chronicleUnlockLabel(chapter),
+    }));
+  }
+
+  function claimChapter(chronicleState, chapterId, stats, collection) {
+    const state = migrateChronicle(chronicleState);
+    const chapter = listChapters(state, stats, collection).find((item) => item.id === chapterId);
+    if (!chapter) return { ok: false, reason: "notFound", reward: 0, state };
+    if (!chapter.unlocked) return { ok: false, reason: "locked", reward: 0, state, chapter };
+    if (state.claimed.includes(chapter.id)) return { ok: false, reason: "alreadyClaimed", reward: 0, state, chapter };
+    state.claimed = [...state.claimed, chapter.id];
+    return { ok: true, reason: null, reward: chapter.reward || 0, state, chapter: Object.assign({}, chapter, { claimed: true }) };
   }
 
   function applyWeeklyQuestProgress(goalState, event) {
@@ -749,6 +936,9 @@
       buffMinion(target, 2, 2, side, events);
     } else if (effect === "polymorph") {
       polymorph(target, events);
+    } else if (effect === "draw2") {
+      drawCardInternal(side, rng, events);
+      drawCardInternal(side, rng, events);
     }
   }
 
@@ -1075,6 +1265,8 @@
     GOAL_VERSION,
     MILESTONE_DEFS,
     WEEKLY_QUEST_POOL,
+    CHRONICLE_VERSION,
+    CHRONICLE_CHAPTERS,
     CARD_TYPE,
     SPELL_EFFECTS,
     migrateStats,
@@ -1092,6 +1284,11 @@
     collectionSummary,
     listMilestones,
     claimMilestone,
+    migrateChronicle,
+    chronicleContext,
+    chapterUnlocked,
+    listChapters,
+    claimChapter,
     applyWeeklyQuestProgress,
     claimWeeklyQuest,
     milestoneRewardTotal,
