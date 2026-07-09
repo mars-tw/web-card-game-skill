@@ -78,7 +78,7 @@
   const TEXT_SIZE_KEY = "card_text_size_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r49_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r50_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0, reason: "自動觀察中", history: [] };
@@ -571,7 +571,7 @@
     if (keywords.includes("lifesteal")) score += 8;
     if (keywords.includes("frenzy")) score += 8;
     if (keywords.includes("spellpower")) score += 6;
-    if (card.effect === "damage3" || card.effect === "damage5" || card.effect === "mana2" || card.effect === "draw2") score += 18;
+    if (card.effect === "damage2" || card.effect === "damage3" || card.effect === "damage5" || card.effect === "mana2" || card.effect === "draw2") score += 18;
     if (card.effect === "giveShield" || card.effect === "buffTarget") score += 8;
     if (cost >= 6) score -= 18;
     return score;
@@ -898,7 +898,7 @@
       return game.enemy.field.length >= 2 ? 26 + game.enemy.field.length * 3 + kills * 5 : 5;
     }
     if (card.effect === "giveShield" || card.effect === "buffTarget") return target ? 16 + minionThreatScore(target) : -999;
-    if (card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8") {
+    if (card.effect === "damage2" || card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8") {
       const damage = effectiveSpellDamage(game.player, card.effect);
       return target ? 18 + minionThreatScore(target) + (target.health <= damage ? 8 : 0) : -999;
     }
@@ -915,6 +915,7 @@
     if (effect === "damage8") return 8;
     if (effect === "damage5") return 5;
     if (effect === "damage3") return 3;
+    if (effect === "damage2") return 2;
     if (effect === "aoe2") return 2;
     if (effect === "aoe1") return 1;
     return 0;
@@ -1205,7 +1206,7 @@
     if (effect === "aoe1" || effect === "aoe2") return `解場優先，${card.name} 壓低你的整個場面${spellPowerNote(game.enemy, effect)}。`;
     if (effect === "giveShield" && target) return `保護核心隨從，讓 ${target.name} 獲得聖盾。`;
     if (effect === "polymorph" && target) return `解掉高威脅，將 ${target.name} 變形。`;
-    if ((effect === "damage3" || effect === "damage5" || effect === "damage8") && target) return `解場優先，${card.name} 換掉 ${target.name}${spellPowerNote(game.enemy, effect)}。`;
+    if ((effect === "damage2" || effect === "damage3" || effect === "damage5" || effect === "damage8") && target) return `解場優先，${card.name} 換掉 ${target.name}${spellPowerNote(game.enemy, effect)}。`;
     if (effect === "buffTarget" && target) return `強化核心隨從，讓 ${target.name} 變成更穩的威脅。`;
     return `依局面施放 ${card.name || fallbackSpellName(effect)}。`;
   }
@@ -1277,7 +1278,7 @@
         const target = chooseRemovalTarget(card.effect);
         return { used: !!target, targetUid: target && target.uid };
       }
-      if (card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8") {
+      if (card.effect === "damage2" || card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8") {
         const target = [...playerField].sort((a, b) => b.attack - a.attack)[0] || null;
         return { used: !!target, targetUid: target && target.uid };
       }
@@ -1314,7 +1315,7 @@
       const used = !!target && (kind === "aggro" || (target.keywords || []).includes("taunt") || minionThreatScore(target) >= 10);
       return { used, targetUid: target && target.uid };
     }
-    if (card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8" || card.effect === "polymorph") {
+    if (card.effect === "damage2" || card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8" || card.effect === "polymorph") {
       const target = chooseRemovalTarget(card.effect);
       const hasTauntTarget = target && (target.keywords || []).includes("taunt");
       const used = !!target && (kind === "control" || hasTauntTarget || minionThreatScore(target) >= 12);
@@ -1372,20 +1373,23 @@
     if (game.over) return;
     const ai = game.enemy;
     handleCoreResult(Core.advanceTurn(game, { phase: "startEnemy" }, rng));
+    if (game.over) { render(); return; }
 
     // 出牌：簡單維持貴牌優先；archetype AI 依快攻/控制權重調整出牌序。
     let acted = true;
-    while (acted) {
+    while (acted && !game.over) {
       acted = false;
       const affordable = maybeDdaSecondBest(ai.hand.filter((c) => c.cost <= ai.mana).sort((a, b) =>
         (aiPlayPriority(b) - aiPlayPriority(a)) || (b.cost - a.cost)
       ));
       for (const card of affordable) {
+        if (game.over) break;
         if (card.type === CARD_TYPE.MINION) {
           if (ai.field.length >= MAX_FIELD) continue; // 場滿：跳過隨從，讓 AI 還有機會出法術
           const result = Core.playCard(game, { side: "enemy", cardUid: card.uid, burnMulligan: false, trackCombo: false }, rng);
           if (!result.ok) continue;
           handleCoreResult(result);
+          if (game.over) { acted = false; break; }
           log(`對手召喚了 ${card.name}。`, "ai");
           logAiThought(aiMinionReason(card));
           acted = true; break;
@@ -1396,6 +1400,7 @@
             const result = Core.playCard(game, { side: "enemy", cardUid: card.uid, targetUid: plan.targetUid, burnMulligan: false, trackCombo: false }, rng);
             if (!result.ok) continue;
             handleCoreResult(result);
+            if (game.over) { acted = false; break; }
             logAiSpell(card, target);
             logAiThought(aiSpellReason(card, target));
             acted = true; break;
@@ -1403,6 +1408,7 @@
         }
       }
     }
+    if (game.over) { render(); return; }
     render();
 
     // 攻擊（考慮玩家嘲諷）
@@ -1457,6 +1463,7 @@
   function endAiTurn() {
     if (game.over) return;
     handleCoreResult(Core.advanceTurn(game, { phase: "endEnemy" }, rng));
+    if (game.over) { render(); return; }
     game.turnCount = (game.turnCount || 1) + 1;
     log("輪到你了。", "me");
     render();
@@ -1845,6 +1852,7 @@
       buffTarget: "秘能灌注",
       polymorph: "變形術",
       draw2: "戰術補給",
+      damage2: "餘燼齊射",
       damage3: "火焰箭",
       damage5: "烈焰爆裂",
       damage8: "隕石術",
@@ -1864,7 +1872,7 @@
     else if (effect === "giveShield" && target) log(`${name}：${target.name} 獲得聖盾。`, "me");
     else if (effect === "buffTarget" && target) log(`${name}：${target.name} 獲得 +2/+2。`, "me");
     else if (effect === "polymorph") log(`${name}：敵方隨從被變成綿羊。`, "me");
-    else if ((effect === "damage3" || effect === "damage5" || effect === "damage8") && target) log(`${name}擊中了 ${target.name}，造成 ${effectiveSpellDamage(game.player, effect)} 點傷害${spellPowerNote(game.player, effect)}。`, "me");
+    else if ((effect === "damage2" || effect === "damage3" || effect === "damage5" || effect === "damage8") && target) log(`${name}擊中了 ${target.name}，造成 ${effectiveSpellDamage(game.player, effect)} 點傷害${spellPowerNote(game.player, effect)}。`, "me");
   }
 
   function logAiSpell(cardOrEffect, target) {
@@ -1874,7 +1882,7 @@
     if (effect === "heal5") log("對手施放治療術。", "ai");
     else if (effect === "draw2") log("對手施放戰術補給，抽了 2 張牌。", "ai");
     else if (effect === "aoe1" || effect === "aoe2") log(`對手施放範圍法術，造成 ${effectiveSpellDamage(game.enemy, effect)} 點傷害${spellPowerNote(game.enemy, effect)}。`, "ai");
-    else if (effect === "damage3" || effect === "damage5" || effect === "damage8") log(`對手用 ${name} 攻擊 ${target ? target.name : "你的隨從"}，造成 ${effectiveSpellDamage(game.enemy, effect)} 點傷害${spellPowerNote(game.enemy, effect)}。`, "ai");
+    else if (effect === "damage2" || effect === "damage3" || effect === "damage5" || effect === "damage8") log(`對手用 ${name} 攻擊 ${target ? target.name : "你的隨從"}，造成 ${effectiveSpellDamage(game.enemy, effect)} 點傷害${spellPowerNote(game.enemy, effect)}。`, "ai");
     else if (effect === "polymorph") log(`對手將 ${target ? target.name : "你的隨從"} 變形。`, "ai");
     else if (effect === "giveShield") log(`對手施放聖盾術保護 ${target ? target.name : "隨從"}。`, "ai");
     else if (effect === "buffTarget") log(`對手強化了 ${target ? target.name : "隨從"}。`, "ai");

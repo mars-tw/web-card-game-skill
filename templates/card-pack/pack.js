@@ -79,12 +79,12 @@
   }
 
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r49-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r50-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r49_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r50_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
@@ -878,7 +878,7 @@
     const inDeck = counts ? (counts[card.id] || 0) : (deckCounts()[card.id] || 0);
     const maxCopies = card.rarity === "legendary" ? 1 : 2;
     if (owned <= 0) return "尚未擁有這張卡。";
-    if (deckState.cards.length >= Core.DECK_SIZE) return "牌組已滿（20 張）。";
+    if (deckState.cards.length >= Core.DECK_SIZE) return `牌組已滿（${Core.DECK_SIZE} 張）。`;
     if (inDeck >= owned) return `${card.name} 只有 ${owned} 張。`;
     if (inDeck >= maxCopies) return card.rarity === "legendary" ? "傳說卡最多 1 張。" : "同名卡最多 2 張。";
     return "";
@@ -1120,7 +1120,7 @@
     }
     const validation = Core.validateDeck(deckState.cards, collection, CARD_POOL);
     if (validation.ok) setDeckMessage(`已自動補滿 ${Core.DECK_SIZE} 張，可儲存。`);
-    else if (added > 0) setDeckMessage(`已加入 ${added} 張；收藏不足以補成合法 20 張。`);
+    else if (added > 0) setDeckMessage(`已加入 ${added} 張；收藏不足以補成合法 ${Core.DECK_SIZE} 張。`);
     else setDeckMessage("目前收藏沒有可加入的卡。");
     renderDeckEditor();
     return validation.ok;
@@ -1160,7 +1160,7 @@
     if (keywords.includes("lifesteal")) score += 8;
     if (keywords.includes("frenzy")) score += 8;
     if (keywords.includes("spellpower")) score += 6;
-    if (card.effect === "damage3" || card.effect === "mana2" || card.effect === "draw2") score += 18;
+    if (card.effect === "damage2" || card.effect === "damage3" || card.effect === "mana2" || card.effect === "draw2") score += 18;
     if (card.effect === "giveShield") score += 8;
     if (cost >= 6) score -= 18;
     return score;
@@ -1201,7 +1201,7 @@
     fillDeckFromCandidates(fallback);
     const validation = Core.validateDeck(deckState.cards, collection, CARD_POOL);
     const label = kind === "control" ? "控制模板" : "快攻模板";
-    if (validation.ok) setDeckMessage(`${label}已建立 20/20，可直接儲存。`);
+    if (validation.ok) setDeckMessage(`${label}已建立 ${Core.DECK_SIZE}/${Core.DECK_SIZE}，可直接儲存。`);
     else setDeckMessage(`${label}缺少可用卡，已先補到 ${deckState.cards.length}/${Core.DECK_SIZE}。`);
     renderDeckEditor();
     return validation.ok;

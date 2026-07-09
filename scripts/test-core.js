@@ -440,6 +440,11 @@ function testSpellpowerAndNewSpells() {
   assert(Core.spellPower(g.player) === 2, "法強會計算場上多個來源並可疊加");
   assert(bolt.ok && target.health === 1, "法強會加成單體傷害法術");
 
+  const damage2Target = minion("damage2Target", { health: 3, maxHealth: 3 });
+  const gDamage2 = state({ enemy: { field: [damage2Target] } });
+  const damage2 = Core.castSpellEffect(gDamage2, { side: "player", effect: "damage2", targetUid: "damage2Target" }, rngFactory());
+  assert(damage2.ok && damage2Target.health === 1, "damage2 對敵方隨從造成 2 點傷害");
+
   const gAoe = state({
     player: { field: [minion("spA", { keywords: ["spellpower"] }), minion("spB", { keywords: ["spellpower"] })] },
     enemy: { field: [minion("aoeA", { health: 5, maxHealth: 5 }), minion("aoeB", { health: 4, maxHealth: 4 })] },

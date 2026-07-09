@@ -189,6 +189,7 @@
   ]);
 
   const SPELL_EFFECTS = Object.freeze({
+    damage2: Object.freeze({ needsTarget: "enemyMinion" }),
     damage3: Object.freeze({ needsTarget: "enemyMinion" }),
     damage5: Object.freeze({ needsTarget: "enemyMinion" }),
     damage8: Object.freeze({ needsTarget: "enemyMinion" }),
@@ -919,7 +920,10 @@
     const side = getSide(state, sideKey);
     const foe = getOpponent(state, sideKey);
     const sp = spellPower(side);
-    if (effect === "damage3") {
+    if (effect === "damage2") {
+      applyDamageToMinion(target, 2 + sp, null, events);
+      cleanupBoth(state, rng, events);
+    } else if (effect === "damage3") {
       applyDamageToMinion(target, 3 + sp, null, events);
       cleanupBoth(state, rng, events);
     } else if (effect === "damage5") {

@@ -26,6 +26,17 @@ function assert(cond, msg) {
   else { console.error("  ✗ " + msg); failed++; }
 }
 
+const TARGETED_DAMAGE = Object.freeze({ damage2: 2, damage3: 3, damage5: 5, damage8: 8 });
+function targetedDamageAmount(card) {
+  return card && card.type === CARD_TYPE.SPELL ? (TARGETED_DAMAGE[card.effect] || 0) : 0;
+}
+function strictlyDominatesTargetedDamage(a, b) {
+  const da = targetedDamageAmount(a);
+  const db = targetedDamageAmount(b);
+  if (!da || !db || a.id === b.id) return false;
+  return a.cost <= b.cost && da >= db && (a.cost < b.cost || da > db);
+}
+
 console.log("== 結構檢查 ==");
 assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 62, `卡池至少 62 張（實際 ${CARD_POOL.length}）`);
 assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 74, `CARD_POOL has at least 74 cards (actual ${CARD_POOL.length})`);
@@ -118,8 +129,22 @@ const sparkSquire = getCardById("sparkSquire");
 const frontScout = getCardById("frontScout");
 const griffin = getCardById("griffin");
 const thunderRoc = getCardById("thunderRoc");
-assert(emberVolley.effect === firebolt.effect && emberVolley.cost === firebolt.cost,
-  "餘燼齊射不再以更低費嚴格優於火焰箭");
+assert(emberVolley.effect !== firebolt.effect && emberVolley.cost < firebolt.cost
+    && targetedDamageAmount(emberVolley) < targetedDamageAmount(firebolt),
+  "餘燼齊射以 1 費 2 傷區隔火焰箭 2 費 3 傷");
+const emberDominance = CARD_POOL.filter((card) =>
+  strictlyDominatesTargetedDamage(emberVolley, card) || strictlyDominatesTargetedDamage(card, emberVolley)
+).map((card) => card.id);
+assert(emberDominance.length === 0, `餘燼齊射沒有和既有單體傷害法術形成嚴格優勢（${emberDominance.join(",") || "none"}）`);
+const targetedDamageCards = CARD_POOL.filter((card) => targetedDamageAmount(card) > 0);
+const targetedDamageDominancePairs = [];
+for (const a of targetedDamageCards) {
+  for (const b of targetedDamageCards) {
+    if (strictlyDominatesTargetedDamage(a, b)) targetedDamageDominancePairs.push(`${a.id}>${b.id}`);
+  }
+}
+assert(targetedDamageDominancePairs.length === 0,
+  `單體傷害法術費用/傷害曲線無嚴格支配（${targetedDamageDominancePairs.join(",") || "none"}）`);
 assert(arcaneVeil.effect === shieldUp.effect && arcaneVeil.cost === shieldUp.cost,
   "秘能護幕不再以更高費嚴格劣於聖盾術");
 assert(frontScout.cost > sparkSquire.cost && frontScout.health > sparkSquire.health,

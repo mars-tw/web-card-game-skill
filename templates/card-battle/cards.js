@@ -153,7 +153,7 @@ const CARD_POOL = [
   // ===== R16 構築軸線擴充：快攻 5 張、控制 5 張 =====
   { id: "sparkSquire",    name: "火花侍從", type: CARD_TYPE.MINION, rarity: "common", cost: 1, attack: 2, health: 1, emoji: "🗡️", image: null, keywords: ["rush"], text: "突襲：前期搶回場面的小型突擊手。", foil: false },
   { id: "alleySkirmisher", name: "巷戰斥候", type: CARD_TYPE.MINION, rarity: "common", cost: 2, attack: 3, health: 1, emoji: "🏃", image: null, keywords: ["charge"], text: "衝鋒：立刻壓低敵方血量。", foil: false },
-  { id: "emberVolley",    name: "餘燼齊射", type: CARD_TYPE.SPELL,  rarity: "common", cost: 2, emoji: "🔥", image: null, text: "對一個敵方手下造成 3 點傷害。", effect: "damage3", foil: false },
+  { id: "emberVolley",    name: "餘燼齊射", type: CARD_TYPE.SPELL,  rarity: "common", cost: 1, emoji: "🔥", image: null, text: "對一個敵方手下造成 2 點傷害。", effect: "damage2", foil: false },
   { id: "bulwarkMonk",    name: "壁壘武僧", type: CARD_TYPE.MINION, rarity: "common", cost: 3, attack: 1, health: 5, emoji: "🛡️", image: null, keywords: ["taunt"], text: "嘲諷：用厚實身軀拖慢快攻。", foil: false },
   { id: "dawnRider",      name: "晨鋒騎手", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 3, health: 2, emoji: "🌅", image: null, keywords: ["charge", "lifesteal"], text: "衝鋒 + 吸血：進攻同時穩住血線。", foil: false },
   { id: "battleDrummer",  name: "戰鼓手", type: CARD_TYPE.MINION, rarity: "rare", cost: 2, attack: 1, health: 3, emoji: "🥁", image: null, keywords: ["battlecry"], trigger: "damageAny1", text: "戰吼：自動對生命最低的敵方手下造成 1 點傷害。", foil: false },
