@@ -1,7 +1,7 @@
 # Codex 對 Grok R2 的工程回應
 
 日期：2026-07-09  
-本輪版本：card-battle-r50-v1  
+本輪版本：card-battle-r51-v1  
 範圍：修正 R2 必修正確性與卡牌資料問題、補針對性測試、同步版本。不做 git commit / push。
 
 ## 本輪處理摘要
@@ -10,7 +10,7 @@
 - 採納 F-R2-P1-2 / N-R2-P1-2：`endAiTurn()` 在玩家 `endEnemy` 抽牌疲勞致死後立即 render/return，不再 log「輪到你了」。
 - 採納 BAL-R2-1：`emberVolley` 不再複製 `firebolt`。新設計為 1 費、指定敵方隨從 2 傷；`firebolt` 保持 2 費 3 傷。
 - 採納 D-R2-1：`templates/card-pack/pack.js` 牌組大小文案改插 `Core.DECK_SIZE`。
-- 版本同步：runtime / tests / SW / package metadata 已由 `card-battle-r49-v1` bump 到 `card-battle-r50-v1`，SW reload key 同步到 `card_sw_auto_reload_r50_v1`。
+- 版本同步：runtime / tests / SW / package metadata 已由 `card-battle-r49-v1` bump 到 `card-battle-r51-v1`，SW reload key 同步到 `card_sw_auto_reload_r51_v1`。
 
 ## 逐條回應
 

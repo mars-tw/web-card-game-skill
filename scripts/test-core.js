@@ -364,6 +364,10 @@ function testBuildBattleDeck() {
 
   const mixedFoil = Core.buildBattleDeck(["c1", "c1"], pool, rngFactory([0]), { c1: 1, "c1#foil": 1 });
   assert(mixedFoil.filter((card) => card.foil === true).length === 1, "buildBattleDeck 會在 1 普通 + 1 閃卡收藏中分配一張閃卡外觀");
+
+  const tideOnly = Core.buildBattleDeck(["c1"], pool, rngFactory([0]), { "c1#tide": 1 });
+  assert(tideOnly.length === 1 && tideOnly[0].tide === true && tideOnly[0].attack === 1 && tideOnly[0].health === 1,
+    "buildBattleDeck 會還原潮鑄外觀但不改戰鬥數值");
 }
 
 function testDeckMigration() {
@@ -571,6 +575,95 @@ function testChroniclePureFunctions() {
   assert(!repeated.ok && repeated.reason === "alreadyClaimed" && repeated.reward === 0, "claimChapter rejects duplicate claim");
 }
 
+function testP0EffectsAndSilence() {
+  const gBuff = state({
+    player: {
+      field: [
+        minion("left", { attack: 1, health: 3 }),
+        minion("howler", { attack: 2, health: 3, keywords: ["battlecry"], trigger: "buffAdjacent1" }),
+        minion("right", { attack: 2, health: 3 }),
+      ],
+    },
+  });
+  const buff = Core.triggerAbility(gBuff, { side: "player", trigger: "buffAdjacent1", sourceUid: "howler" }, rngFactory());
+  assert(buff.ok && gBuff.player.field[0].attack === 2 && gBuff.player.field[2].attack === 3 && gBuff.player.field[1].attack === 2,
+    "buffAdjacent1 buffs only adjacent minions by +1 attack");
+
+  const gAoe = state({
+    player: { field: [minion("captain", { attack: 5, health: 6, keywords: ["battlecry"], trigger: "aoeEnemy1" })] },
+    enemy: { field: [minion("e1", { health: 2 }), minion("e2", { health: 1 })] },
+  });
+  const aoe = Core.triggerAbility(gAoe, { side: "player", trigger: "aoeEnemy1", sourceUid: "captain" }, rngFactory());
+  assert(aoe.ok && gAoe.enemy.field.length === 1 && gAoe.enemy.field[0].uid === "e1" && gAoe.enemy.field[0].health === 1,
+    "aoeEnemy1 damages all enemy minions for 1 and cleans up deaths");
+
+  const gSummon = state({ player: { field: Array.from({ length: Core.MAX_FIELD - 2 }, (_, i) => minion("f" + i)) } });
+  const summon = Core.triggerAbility(gSummon, { side: "player", trigger: "summonTwo1_1" }, rngFactory());
+  assert(summon.ok && gSummon.player.field.length === Core.MAX_FIELD
+    && gSummon.player.field.slice(-2).every((m) => m.attack === 1 && m.health === 1),
+    "summonTwo1_1 summons two 1/1 tokens when there is room");
+
+  const gDiscount = state({
+    player: { hp: 20, mana: 10, manaMax: 10, hand: [spell("void", "nextSpellMinus1", { cost: 3 }), spell("heal", "heal5", { cost: 2 })] },
+    enemy: { hp: 30 },
+  });
+  const voidCast = Core.playCard(gDiscount, { side: "player", cardUid: "void" }, rngFactory());
+  const enemyHpAfterVoid = gDiscount.enemy.hp;
+  Core.advanceTurn(gDiscount, { phase: "endPlayer" }, rngFactory());
+  Core.advanceTurn(gDiscount, { phase: "startEnemy" }, rngFactory());
+  Core.advanceTurn(gDiscount, { phase: "endEnemy" }, rngFactory());
+  const healCast = Core.playCard(gDiscount, { side: "player", cardUid: "heal" }, rngFactory());
+  assert(voidCast.ok && enemyHpAfterVoid === 28 && voidCast.events.some((e) => e.type === "nextSpellDiscount"),
+    "nextSpellMinus1 damages hero and creates the next-spell discount");
+  assert(healCast.ok && gDiscount.player.mana === 9 && !gDiscount.player.nextSpellDiscount,
+    "nextSpellMinus1 persists across turns, discounts the next spell, then clears");
+
+  const target = minion("target", { health: 1, maxHealth: 1, attack: 2 });
+  const taunt = minion("wall", { health: 6, maxHealth: 6, attack: 0, keywords: ["taunt", "divineshield"], shield: true });
+  const gMirror = state({ player: { field: [target, taunt] } });
+  const mirror = Core.castSpellEffect(gMirror, {
+    side: "player",
+    effect: "buffTarget",
+    targetUid: "target",
+    card: spell("mirror", "buffTarget", { mirrorRime: true, cost: 2 }),
+  }, rngFactory());
+  assert(mirror.ok && target.health === 4 && target.maxHealth === 4 && !target.shield && taunt.shield === true,
+    "mirrorRime copies at most 3 taunt health and does not copy divine shield");
+
+  const muted = minion("mute", { attack: 4, health: 2, maxHealth: 5, keywords: ["taunt", "deathrattle", "divineshield"], trigger: "summonSkeleton", shield: true });
+  Core.silenceMinion(muted, []);
+  assert(muted.attack === 4 && muted.health === 2 && muted.maxHealth === 5 && muted.keywords.length === 0 && !muted.trigger && muted.shield === false,
+    "silenceMinion removes keywords, trigger, and shield but preserves attack and health");
+
+  const gSilence = state({
+    player: { mana: 10, hand: [spell("silenceOne", "polymorph", { cost: 2, silenceOnly: true, keywords: ["silence"] })] },
+    enemy: { field: [minion("big", { attack: 5, health: 4, maxHealth: 7, keywords: ["taunt", "deathrattle"], trigger: "summonSkeleton", shield: true })] },
+  });
+  const silence = Core.playCard(gSilence, { side: "player", cardUid: "silenceOne", targetUid: "big" }, rngFactory());
+  const silenced = gSilence.enemy.field[0];
+  assert(silence.ok && silenced.attack === 5 && silenced.health === 4 && silenced.maxHealth === 7
+    && silenced.keywords.length === 0 && !silenced.trigger && silenced.shield === false,
+    "silenceOne silences instead of reducing attack or health like polymorph");
+
+  const gScout = state({
+    player: { field: [minion("scout", { attack: 2, health: 3, keywords: ["battlecry"], trigger: "silenceIfDamaged" })] },
+    enemy: {
+      field: [
+        minion("healthy", { attack: 1, health: 3, maxHealth: 3, keywords: ["taunt"] }),
+        minion("hurt", { attack: 4, health: 2, maxHealth: 5, keywords: ["taunt", "deathrattle"], trigger: "drawCard1" }),
+      ],
+    },
+  });
+  const scout = Core.triggerAbility(gScout, { side: "player", trigger: "silenceIfDamaged", sourceUid: "scout" }, rngFactory());
+  assert(scout.ok && gScout.enemy.field[1].attack === 4 && gScout.enemy.field[1].health === 2
+    && gScout.enemy.field[1].keywords.length === 0 && !gScout.enemy.field[1].trigger && gScout.enemy.field[0].keywords.includes("taunt"),
+    "silenceIfDamaged silences only a damaged enemy minion and preserves attack and health");
+
+  const summary = Core.collectionSummary({ wolf: 1, "wolf#foil": 1, "saltShieldSquire#tide": 1 });
+  assert(summary.unique === 2 && summary.foil === 1 && summary.tide === 1,
+    "collectionSummary counts tide variants while unique still dedupes base ids");
+}
+
 console.log("== core.js 單元測試 ==");
 testInsufficientMana();
 testMaxField();
@@ -592,6 +685,7 @@ testDraw2Spell();
 testFatigueWinConditionPressure();
 testBattlecryAutoTargetContract();
 testChroniclePureFunctions();
+testP0EffectsAndSilence();
 testGoalsAndWeeklyQuests();
 
 console.log("");

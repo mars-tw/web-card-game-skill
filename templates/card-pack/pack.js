@@ -14,6 +14,8 @@
   const DECK_KEY = "card_deck_v1";
   const QUEST_KEY = "card_quests_v1";
   const GOAL_KEY = "card_goals_v1";
+  const PITY_KEY = "card_pack_pity_v1";
+  const PITY_LIMIT = 20;
   const SAVE_BACKUP_KEY = "card_save_backup_v1";
   const TEXT_SIZE_KEY = "card_text_size_v1";
   const Core = window.CardCore;
@@ -79,12 +81,12 @@
   }
 
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r50-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r51-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r50_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r51_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
@@ -227,7 +229,7 @@
   function migrateCollectionInput(raw) {
     if (!plainObject(raw)) throw new Error("collection 格式錯誤");
     return Object.keys(raw).reduce((acc, key) => {
-      const id = String(key).replace(/#foil$/, "");
+      const id = String(key).replace(/#(?:foil|tide)$/, "");
       const card = getCardById(id);
       const count = Math.max(0, Math.floor(Number(raw[key]) || 0));
       if (!card) throw new Error("collection 含未知卡牌");
@@ -366,6 +368,23 @@
     try { localStorage.setItem(DECK_KEY, JSON.stringify(migrated)); } catch {}
   }
 
+  function loadPity() {
+    try {
+      const value = Math.floor(Number(localStorage.getItem(PITY_KEY)) || 0);
+      return Math.max(0, value);
+    } catch {
+      return 0;
+    }
+  }
+
+  function savePity(value) {
+    try { localStorage.setItem(PITY_KEY, String(Math.max(0, Math.floor(Number(value) || 0)))); } catch {}
+  }
+
+  function isRarePlus(card) {
+    return !!card && card.rarity !== "common";
+  }
+
   function openPack() {
     const stats = loadStats();
     // 第一包免費（新玩家體驗）；之後花金幣
@@ -389,10 +408,7 @@
 
     const cards = [];
     for (let i = 0; i < PACK_SIZE; i++) cards.push(rollCardByRarity());
-    // 保底減弱：只保證「至少一張非普通」，而非保證稀有
-    if (cards.every((c) => c.rarity === "common")) {
-      cards[PACK_SIZE - 1] = rollAtLeastRare();
-    }
+    applyPityToCards(cards);
 
     setTimeout(() => revealCards(cards), 600);
   }
@@ -402,6 +418,17 @@
     let card, guard = 0;
     do { card = rollCardByRarity(); guard++; } while (card.rarity === "common" && guard < 30);
     return card;
+  }
+
+  function applyPityToCards(cards) {
+    const pityBefore = loadPity();
+    const naturalRarePlus = cards.some(isRarePlus);
+    const pityForced = !naturalRarePlus && pityBefore >= PITY_LIMIT - 1;
+    if (pityForced) cards[PACK_SIZE - 1] = rollAtLeastRare();
+    const hasRarePlus = cards.some(isRarePlus);
+    const pityAfter = hasRarePlus ? 0 : pityBefore + 1;
+    savePity(pityAfter);
+    return { before: pityBefore, after: pityAfter, forced: pityForced, hasRarePlus };
   }
 
   function revealCards(cards) {
@@ -427,7 +454,7 @@
       revealTime += gap;
       const t = revealTime;
       setTimeout(() => {
-        const isHigh = card.foil || card.rarity === "legendary";
+        const isHigh = card.foil || card.tide || card.rarity === "legendary";
         const cls = isHigh ? "legend-pull"
                   : (card.rarity === "epic" || card.rarity === "rare") ? "rare-pull" : "flip-in";
         el.classList.add(cls);
@@ -456,7 +483,7 @@
   function renderRevealCard(card) {
     const r = RARITY[card.rarity] || RARITY.common;
     const el = document.createElement("div");
-    el.className = "card" + (card.type === CARD_TYPE.SPELL ? " spell" : "") + (card.foil ? " foil" : "");
+    el.className = "card" + (card.type === CARD_TYPE.SPELL ? " spell" : "") + (card.foil ? " foil" : "") + (card.tide ? " tide" : "");
     el.style.setProperty("--rarity", r.color);
     el.style.setProperty("--glow", r.glow);
     const art = card.image
@@ -480,35 +507,43 @@
         <div class="atk">${card.attack ?? ""}</div>
         <div class="hp">${card.health ?? ""}</div>
       </div>
-      ${card.foil ? '<div class="foil-tag">✦ 閃卡 FOIL</div>' : ''}`;
+      ${card.foil ? '<div class="foil-tag">✦ 閃卡 FOIL</div>' : ''}
+      ${card.tide ? '<div class="tide-tag">≋ 潮鑄 TIDE</div>' : ''}`;
     return el;
   }
 
-  // 收藏冊：普通版 + 閃卡版分開算（總槽位 = 卡池 × 2）
+  // 收藏冊：普通版 + 閃卡版 + 潮鑄版分開算（總槽位 = 卡池 × 3）
   function renderCollection() {
     const grid = document.getElementById("collectionGrid");
     grid.innerHTML = "";
     let owned = 0;
-    const totalSlots = CARD_POOL.length * 2; // 每張卡有普通+閃卡兩種
+    const variants = [
+      { kind: "normal", keySuffix: "", foil: false, tide: false, rank: 0 },
+      { kind: "foil", keySuffix: "#foil", foil: true, tide: false, rank: 1 },
+      { kind: "tide", keySuffix: "#tide", foil: false, tide: true, rank: 2 },
+    ];
+    const totalSlots = CARD_POOL.length * variants.length;
 
     const slots = [];
     CARD_POOL.forEach((card) => {
-      [false, true].forEach((isFoil) => {
-        const key = isFoil ? card.id + "#foil" : card.id;
+      variants.forEach((variant) => {
+        const key = card.id + variant.keySuffix;
         const count = collection[key] || 0;
         if (count > 0) owned++;
         const isOwned = count > 0;
         if (!cardMatchesQuery(card, collectionFilters, isOwned)) return;
-        slots.push({ card, isFoil, key, count, isOwned });
+        slots.push({ card, variant, key, count, isOwned });
       });
     });
-    slots.sort((a, b) => sortCards(a.card, b.card, collectionFilters.sort) || ((a.isFoil ? 1 : 0) - (b.isFoil ? 1 : 0)));
-    slots.forEach(({ card, isFoil, key, count, isOwned }) => {
+    slots.sort((a, b) => sortCards(a.card, b.card, collectionFilters.sort) || (a.variant.rank - b.variant.rank));
+    slots.forEach(({ card, variant, key, count, isOwned }) => {
       const r = RARITY[card.rarity] || RARITY.common;
       const slot = document.createElement("div");
-      slot.className = "slot " + (isOwned ? (isFoil ? "owned foil" : "owned") : "locked");
+      slot.className = "slot " + (isOwned ? ("owned" + (variant.foil ? " foil" : "") + (variant.tide ? " tide" : "")) : "locked");
       slot.dataset.cardId = card.id;
-      slot.dataset.foil = isFoil ? "1" : "0";
+      slot.dataset.foil = variant.foil ? "1" : "0";
+      slot.dataset.tide = variant.tide ? "1" : "0";
+      slot.dataset.variant = variant.kind;
       slot.dataset.rarity = card.rarity;
       slot.dataset.axis = card.axis || "neutral";
       slot.dataset.cost = String(card.cost);
@@ -523,7 +558,8 @@
       const dupes = Math.max(0, count - 1);
       const dustValue = DISMANTLE_VALUE[card.rarity] || 10;
       slot.innerHTML = `
-        ${isFoil ? '<div class="fstar">✦</div>' : ''}
+        ${variant.foil ? '<div class="fstar">✦</div>' : ''}
+        ${variant.tide ? '<div class="fstar tide-mark">≋</div>' : ''}
         <div>${icon}</div>
         <div class="nm">${isOwned ? card.name : "未擁有"}</div>
         ${count > 1 ? `<div class="count">×${count}</div>` : ""}
@@ -556,7 +592,7 @@
       };
     });
 
-    document.getElementById("progress").textContent = `${owned} / ${totalSlots} 已收集（含閃卡）`;
+    document.getElementById("progress").textContent = `${owned} / ${totalSlots} 已收集（含閃卡/潮鑄）`;
     const filterCount = document.getElementById("collectionFilterCount");
     if (filterCount) filterCount.textContent = `顯示 ${slots.length} / ${totalSlots}`;
     renderDeckEditor();
@@ -570,7 +606,7 @@
     if (!summaryEl || !milestoneList || !weeklyEl) return;
     const state = goalState || loadGoals();
     const summary = Core.collectionSummary(collection);
-    summaryEl.textContent = `收藏 ${summary.unique}/${CARD_POOL.length} 種，閃卡 ${summary.foil}/15 張`;
+    summaryEl.textContent = `收藏 ${summary.unique}/${CARD_POOL.length} 種，閃卡 ${summary.foil}/15 張，潮鑄 ${summary.tide}/3 張`;
 
     milestoneList.innerHTML = "";
     Core.listMilestones(state, collection).forEach((milestone) => {
@@ -797,7 +833,10 @@
   function totalOwned(cardId) {
     const normal = Number(collection[cardId] || 0);
     const foil = Number(collection[cardId + "#foil"] || 0);
-    return (Number.isFinite(normal) ? normal : 0) + (Number.isFinite(foil) ? foil : 0);
+    const tide = Number(collection[cardId + "#tide"] || 0);
+    return (Number.isFinite(normal) ? normal : 0)
+      + (Number.isFinite(foil) ? foil : 0)
+      + (Number.isFinite(tide) ? tide : 0);
   }
 
   function deckCounts() {
@@ -1517,12 +1556,28 @@
     visibleCollection: () => [...document.querySelectorAll("#collectionGrid .slot")].map((el) => ({
       id: el.dataset.cardId,
       foil: el.dataset.foil === "1",
+      tide: el.dataset.tide === "1",
+      variant: el.dataset.variant || "normal",
       rarity: el.dataset.rarity,
       axis: el.dataset.axis,
       cost: Number(el.dataset.cost),
       owned: el.dataset.owned === "1",
       name: el.dataset.name,
     })),
+    pity: () => loadPity(),
+    setPity(value) {
+      savePity(value);
+      return loadPity();
+    },
+    testPack(cards) {
+      revealCards((cards || []).map(cloneCard));
+      return { pity: loadPity(), collection: Object.assign({}, collection) };
+    },
+    applyPity(cards) {
+      const next = (cards || []).map(cloneCard);
+      const result = applyPityToCards(next);
+      return Object.assign(result, { rarities: next.map((card) => card.rarity), cards: next.map((card) => card.id) });
+    },
     collectionToolsBox: () => {
       const box = document.getElementById("collectionTools")?.getBoundingClientRect();
       return box ? { top: box.top, bottom: box.bottom, height: box.height, width: box.width } : null;

@@ -21,6 +21,7 @@ const RARITY = {
 
 // 抽卡變成閃卡(foil)的機率（疊在稀有度之上，更稀有）。
 const FOIL_CHANCE = 0.08;
+const TIDE_CHANCE = 0.03;
 
 // 重複卡分解金幣值。卡包頁與 Node 測試共用，避免經濟 gate 測到複製常數。
 const DISMANTLE_VALUE = { common: 2, rare: 8, epic: 25, legendary: 80 };
@@ -85,6 +86,7 @@ const KEYWORDS = {
   rush:         { label: "突襲", icon: "💨", desc: "登場當回合可攻擊隨從，但不能攻擊英雄。" },
   frenzy:       { label: "狂怒", icon: "🔥", desc: "首次受傷存活後，攻擊 +2。" },
   spellpower:   { label: "法強", icon: "✨", desc: "在場時你的傷害法術 +1（可疊加）。" },
+  silence:      { label: "靜默", icon: "🤫", desc: "移除隨從的關鍵字、聖盾與觸發效果，但保留攻擊與生命。" },
 };
 
 /**
@@ -189,6 +191,20 @@ const CARD_POOL = [
   { id: "tacticalRequisition", name: "戰術徵調", type: CARD_TYPE.SPELL, rarity: "epic", cost: 3, emoji: "📦", image: null, text: "抽 2 張牌。", effect: "draw2", foil: false },
   { id: "glaciarchWarden", name: "冰獄看守", type: CARD_TYPE.MINION, rarity: "epic", cost: 6, attack: 3, health: 8, emoji: "🧊", image: "../../assets/cards/glaciarchWarden.png", keywords: ["taunt", "regenerate"], text: "嘲諷 + 回復：寒牢不讓任何人通過。", foil: false },
   { id: "countessLongNight", name: "長夜伯爵夫人", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 5, health: 7, emoji: "🌙", image: "../../assets/cards/countessLongNight.png", keywords: ["deathrattle", "lifesteal"], trigger: "summonSkeleton", text: "吸血。亡語：召喚一個骷髏(2/2)。", foil: false },
+
+  // ===== R51 P0 快贏內容擴充：10 張差分卡 + silence 2 張 =====
+  { id: "saltShieldSquire", name: "鹽盾侍從", type: CARD_TYPE.MINION, rarity: "common", cost: 1, attack: 0, health: 3, emoji: "🛡️", image: null, keywords: ["taunt"], text: "嘲諷。便宜的前排，不負責收頭。", foil: false },
+  { id: "iceNeedle", name: "冰針", type: CARD_TYPE.SPELL, rarity: "common", cost: 1, emoji: "❄️", image: null, text: "對一個敵方隨從造成 1 點傷害；若其有嘲諷，再造成 1 點。", effect: "damage2", baseDamage: 1, tauntBonusDamage: 1, foil: false },
+  { id: "packHowler", name: "狼群嚎者", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 2, health: 3, emoji: "🐺", image: null, keywords: ["charge", "battlecry"], trigger: "buffAdjacent1", text: "衝鋒。戰吼：相鄰友方隨從攻擊 +1。", foil: false },
+  { id: "toxinViper", name: "毒涎蝰", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 1, health: 3, emoji: "🐍", image: null, keywords: ["poison", "rush"], text: "劇毒、突襲。低攻擊的精準交換工具。", foil: false },
+  { id: "graveScribe", name: "墓碑抄寫員", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 1, health: 4, emoji: "✒️", image: null, keywords: ["deathrattle"], trigger: "drawCard1", text: "亡語：抽 1 張牌。", foil: false },
+  { id: "mirrorRime", name: "鏡霜", type: CARD_TYPE.SPELL, rarity: "epic", cost: 2, emoji: "🪞", image: null, text: "選擇友方隨從，複製你場上嘲諷隨從的生命差，最多 +3 生命。", effect: "buffTarget", mirrorRime: true, foil: false },
+  { id: "dualTalon", name: "雙爪獵手", type: CARD_TYPE.MINION, rarity: "epic", cost: 4, attack: 2, health: 3, emoji: "🗡️", image: null, keywords: ["windfury"], text: "連擊。可攻擊兩次。", foil: false },
+  { id: "voidTithe", name: "虛空什一稅", type: CARD_TYPE.SPELL, rarity: "epic", cost: 3, emoji: "🕳️", image: null, text: "對敵方英雄造成 2 點傷害；你的下一張法術少 1 費。", effect: "nextSpellMinus1", foil: false },
+  { id: "captainGreywake", name: "灰潮船長", type: CARD_TYPE.MINION, rarity: "legendary", cost: 6, attack: 5, health: 6, emoji: "⚓", image: null, keywords: ["taunt", "battlecry"], trigger: "aoeEnemy1", text: "嘲諷。戰吼：對所有敵方隨從造成 1 點傷害。", foil: false },
+  { id: "ladyAshenBell", name: "灰鐘女士", type: CARD_TYPE.MINION, rarity: "legendary", cost: 5, attack: 3, health: 5, emoji: "🔔", image: null, keywords: ["deathrattle", "lifesteal"], trigger: "summonTwo1_1", text: "吸血。亡語：召喚兩個 1/1 灰鈴侍從。", foil: false },
+  { id: "silenceOne", name: "封口咒", type: CARD_TYPE.SPELL, rarity: "epic", cost: 2, emoji: "🤫", image: null, keywords: ["silence"], text: "使一個敵方隨從靜默。保留攻擊與生命。", effect: "polymorph", silenceOnly: true, foil: false },
+  { id: "scoutInterrogator", name: "斥候訊問", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 2, health: 3, emoji: "🕵️", image: null, keywords: ["battlecry"], trigger: "silenceIfDamaged", text: "戰吼：使一個已受傷的敵方隨從靜默。", foil: false },
 ];
 
 const AXIS_LABELS = Object.freeze({ aggro: "快攻", control: "控制", neutral: "中立" });
@@ -212,6 +228,9 @@ const CARD_AXIS = Object.freeze({
   emberpup: "aggro", frostfangDire: "aggro", thunderRoc: "aggro", soulfrostRaven: "aggro",
   runicScrivener: "aggro", tidecallerAdept: "aggro", watchtowerBowman: "control", oathbannerHerald: "control",
   dawnArchbishop: "control", tacticalRequisition: "control", glaciarchWarden: "control", countessLongNight: "control",
+  saltShieldSquire: "control", iceNeedle: "aggro", packHowler: "aggro", toxinViper: "aggro", graveScribe: "control",
+  mirrorRime: "control", dualTalon: "aggro", voidTithe: "control", captainGreywake: "control", ladyAshenBell: "control",
+  silenceOne: "control", scoutInterrogator: "control",
 });
 const CARD_FLAVOR = Object.freeze({
   footman: "城門下的第一面盾，總是比晨鐘更早醒來。",
@@ -288,6 +307,18 @@ const CARD_FLAVOR = Object.freeze({
   tacticalRequisition: "補給隊遲到三天，卻總在最需要的那一頁準時抵達。",
   glaciarchWarden: "冰獄看守不問囚名，因為被關住的其實是整個冬天。",
   countessLongNight: "她收藏黑夜，只為了記得白天長什麼樣子。",
+  saltShieldSquire: "他把鹽殼盾舉得很高，讓後排終於能喘一口氣。",
+  iceNeedle: "針尖只刺一點，卻足以讓盾牆出現裂縫。",
+  packHowler: "狼群聽見嚎聲時，連影子都會向前一步。",
+  toxinViper: "毒涎蝰不追求壯烈，只追求一次正確的咬合。",
+  graveScribe: "墓碑抄寫員記下名字，也把下一頁留給仍在戰鬥的人。",
+  mirrorRime: "鏡霜不複製榮光，只借來一層能活下去的寒意。",
+  dualTalon: "雙爪獵手從不問哪一爪命中，牠只確認兩爪都已揮出。",
+  voidTithe: "虛空收走一枚代價，再把下一句咒語說得更輕。",
+  captainGreywake: "灰潮船長登岸時，甲板上的浪先替他清場。",
+  ladyAshenBell: "灰鐘女士的鐘聲落下後，侍從才真正開始工作。",
+  silenceOne: "封口咒不改寫肉身，只把那些吵鬧的奇蹟一一熄掉。",
+  scoutInterrogator: "斥候訊問擅長找到裂口，然後讓那裂口失去聲音。",
 });
 
 const CARD_FACTION = Object.freeze({
@@ -296,19 +327,22 @@ const CARD_FACTION = Object.freeze({
   bannerGuard: "wardens", sanctuaryWarden: "wardens", bulwarkMonk: "wardens", dawnRider: "wardens",
   shieldUp: "wardens", heal: "wardens", arcaneVeil: "wardens", bastionColossus: "wardens",
   battleDrummer: "wardens", watchtowerBowman: "wardens", oathbannerHerald: "wardens", dawnArchbishop: "wardens",
+  saltShieldSquire: "wardens", mirrorRime: "wardens", captainGreywake: "wardens", scoutInterrogator: "wardens",
   mage: "conclave", archmage: "conclave", arcaneApprentice: "conclave", arcaneWeaver: "conclave",
   archLoremaster: "conclave", novicePage: "conclave", highArchivist: "conclave", frostChanneler: "conclave",
   manaSurge: "conclave", firebolt: "conclave", frost: "conclave", lightning: "conclave", meteor: "conclave",
   polymorph: "conclave", forbiddenHex: "conclave", tidebinderHex: "conclave", starfall: "conclave",
   thunderClap: "conclave", arcaneInfusion: "conclave", flameBurst: "conclave", emberVolley: "conclave",
   runicScrivener: "conclave", tidecallerAdept: "conclave", tacticalRequisition: "conclave",
+  iceNeedle: "conclave", graveScribe: "conclave", silenceOne: "conclave",
   wolf: "wild", raptor: "wild", griffin: "wild", phoenix: "wild", dragon: "wild", frenzyCub: "wild",
   frostBiter: "wild", ragingBrute: "wild", frostReaver: "wild", stormGriffin: "wild", mooncat: "wild",
   frontScout: "wild", linebreaker: "wild", sparkSquire: "wild", alleySkirmisher: "wild", emberpup: "wild",
-  frostfangDire: "wild", thunderRoc: "wild",
+  frostfangDire: "wild", thunderRoc: "wild", packHowler: "wild", toxinViper: "wild", dualTalon: "wild",
   lich: "wintershadow", duskwrightBat: "wintershadow", duskWitch: "wintershadow", abyssWalker: "wintershadow",
   skyJudicator: "wintershadow", bloodmoonQueen: "wintershadow", frostboundTyrant: "wintershadow",
   soulfrostRaven: "wintershadow", glaciarchWarden: "wintershadow", countessLongNight: "wintershadow",
+  voidTithe: "wintershadow", ladyAshenBell: "wintershadow",
 });
 
 for (const card of CARD_POOL) {
@@ -349,19 +383,21 @@ function rollCardByRarity() {
   }
   const pool = CARD_POOL.filter((c) => c.rarity === picked);
   const card = cloneCard(pool[Math.floor(Math.random() * pool.length)]);
-  card.foil = Math.random() < FOIL_CHANCE; // 閃卡
+  card.tide = Math.random() < TIDE_CHANCE;
+  card.foil = !card.tide && Math.random() < FOIL_CHANCE; // 閃卡
   return card;
 }
 
 // 收集鍵：閃卡與普通版視為不同收藏（提高收集難度）。
 function collectKey(card) {
+  if (card.tide) return card.id + "#tide";
   return card.foil ? card.id + "#foil" : card.id;
 }
 
 // 讓瀏覽器與 Node 兩種載入都可用。
 if (typeof window !== "undefined") {
-  Object.assign(window, { RARITY, FOIL_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, FACTIONS, CARD_POOL, AXIS_LABELS, CARD_FACTION, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel, factionLabel });
+  Object.assign(window, { RARITY, FOIL_CHANCE, TIDE_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, FACTIONS, CARD_POOL, AXIS_LABELS, CARD_FACTION, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel, factionLabel });
 }
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { RARITY, FOIL_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, FACTIONS, CARD_POOL, AXIS_LABELS, CARD_FACTION, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel, factionLabel };
+  module.exports = { RARITY, FOIL_CHANCE, TIDE_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, FACTIONS, CARD_POOL, AXIS_LABELS, CARD_FACTION, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel, factionLabel };
 }

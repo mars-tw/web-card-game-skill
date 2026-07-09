@@ -6,7 +6,7 @@
 
 const path = require("path");
 const cards = require(path.join(__dirname, "..", "templates", "card-battle", "cards.js"));
-const { CARD_POOL, RARITY, KEYWORDS, CARD_TYPE, DISMANTLE_VALUE, AXIS_LABELS, FACTIONS, CARD_FACTION, rollCardByRarity, getCardById, collectKey, cardAxisLabel, factionLabel } = cards;
+const { CARD_POOL, RARITY, KEYWORDS, CARD_TYPE, DISMANTLE_VALUE, AXIS_LABELS, FACTIONS, CARD_FACTION, TIDE_CHANCE, rollCardByRarity, getCardById, collectKey, cardAxisLabel, factionLabel } = cards;
 const R16_NEW_IDS = [
   "sparkSquire", "alleySkirmisher", "emberVolley", "bulwarkMonk", "dawnRider",
   "battleDrummer", "sanctuaryWarden", "tidebinderHex", "bastionColossus", "highArchivist",
@@ -19,6 +19,11 @@ const R48_NEW_IDS = [
   "emberpup", "frostfangDire", "thunderRoc", "soulfrostRaven", "runicScrivener", "tidecallerAdept",
   "watchtowerBowman", "oathbannerHerald", "dawnArchbishop", "tacticalRequisition", "glaciarchWarden", "countessLongNight",
 ];
+const R51_P0_IDS = [
+  "saltShieldSquire", "iceNeedle", "packHowler", "toxinViper", "graveScribe",
+  "mirrorRime", "dualTalon", "voidTithe", "captainGreywake", "ladyAshenBell",
+];
+const R51_SILENCE_IDS = ["silenceOne", "scoutInterrogator"];
 
 let failed = 0;
 function assert(cond, msg) {
@@ -28,22 +33,28 @@ function assert(cond, msg) {
 
 const TARGETED_DAMAGE = Object.freeze({ damage2: 2, damage3: 3, damage5: 5, damage8: 8 });
 function targetedDamageAmount(card) {
-  return card && card.type === CARD_TYPE.SPELL ? (TARGETED_DAMAGE[card.effect] || 0) : 0;
+  if (!card || card.type !== CARD_TYPE.SPELL) return 0;
+  if (Number.isFinite(Number(card.baseDamage))) return Number(card.baseDamage);
+  return TARGETED_DAMAGE[card.effect] || 0;
 }
 function strictlyDominatesTargetedDamage(a, b) {
   const da = targetedDamageAmount(a);
   const db = targetedDamageAmount(b);
   if (!da || !db || a.id === b.id) return false;
+  if (a.tauntBonusDamage || b.tauntBonusDamage) return false;
   return a.cost <= b.cost && da >= db && (a.cost < b.cost || da > db);
 }
 
 console.log("== 結構檢查 ==");
 assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 62, `卡池至少 62 張（實際 ${CARD_POOL.length}）`);
 assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 74, `CARD_POOL has at least 74 cards (actual ${CARD_POOL.length})`);
+assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 86, `CARD_POOL has at least 86 cards after R51 P0 (actual ${CARD_POOL.length})`);
 assert(Object.keys(RARITY).length === 4, "稀有度有 4 級");
 assert(Object.keys(KEYWORDS).length >= 5, "關鍵字技能至少 5 種");
 assert(KEYWORDS.lifesteal?.label === "吸血" && KEYWORDS.rush?.label === "突襲", "新關鍵字吸血與突襲有繁中 label");
 assert(KEYWORDS.frenzy?.label === "狂怒" && KEYWORDS.spellpower?.label === "法強", "R47 關鍵字狂怒與法強有繁中 label");
+assert(KEYWORDS.silence?.label === "靜默" && /移除/.test(KEYWORDS.silence.desc), "R51 silence 關鍵字已註冊");
+assert(TIDE_CHANCE === 0.03, "R51 tideforged 機率為 3%");
 assert(AXIS_LABELS.aggro === "快攻" && AXIS_LABELS.control === "控制" && AXIS_LABELS.neutral === "中立", "軸線標籤完整");
 
 console.log("== 欄位完整性 ==");
@@ -98,6 +109,64 @@ assert(r48Costs.includes(1) && r48Costs.includes(7), "R48 cost curve includes 1 
 assert(r48Cards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8), "R48 flavor text is present");
 assert(r48Cards.every((c) => FACTIONS[c.faction]), "R48 faction ids all resolve");
 assert(Object.keys(FACTIONS).length === 4 && Object.keys(CARD_FACTION).length >= 74, "R48 factions cover the full card pool");
+
+console.log("== R51 P0 content expansion ==");
+const r51Cards = R51_P0_IDS.map((id) => getCardById(id));
+const r51SilenceCards = R51_SILENCE_IDS.map((id) => getCardById(id));
+assert(r51Cards.every(Boolean) && r51SilenceCards.every(Boolean), "R51 P0 10 cards plus 2 silence cards exist");
+assert(r51Cards.every((c) => c.image === null) && r51SilenceCards.every((c) => c.image === null), "R51 P0 images are null placeholders");
+assert(r51Cards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8)
+  && r51SilenceCards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8), "R51 flavor text is present");
+const expectedR51 = {
+  saltShieldSquire: { cost: 1, attack: 0, health: 3, rarity: "common", type: CARD_TYPE.MINION, keywords: ["taunt"] },
+  iceNeedle: { cost: 1, rarity: "common", type: CARD_TYPE.SPELL, effect: "damage2", baseDamage: 1, tauntBonusDamage: 1 },
+  packHowler: { cost: 3, attack: 2, health: 3, rarity: "rare", type: CARD_TYPE.MINION, keywords: ["charge", "battlecry"], trigger: "buffAdjacent1" },
+  toxinViper: { cost: 3, attack: 1, health: 3, rarity: "rare", type: CARD_TYPE.MINION, keywords: ["poison", "rush"] },
+  graveScribe: { cost: 3, attack: 1, health: 4, rarity: "rare", type: CARD_TYPE.MINION, keywords: ["deathrattle"], trigger: "drawCard1" },
+  mirrorRime: { cost: 2, rarity: "epic", type: CARD_TYPE.SPELL, effect: "buffTarget", mirrorRime: true },
+  dualTalon: { cost: 4, attack: 2, health: 3, rarity: "epic", type: CARD_TYPE.MINION, keywords: ["windfury"] },
+  voidTithe: { cost: 3, rarity: "epic", type: CARD_TYPE.SPELL, effect: "nextSpellMinus1" },
+  captainGreywake: { cost: 6, attack: 5, health: 6, rarity: "legendary", type: CARD_TYPE.MINION, keywords: ["taunt", "battlecry"], trigger: "aoeEnemy1" },
+  ladyAshenBell: { cost: 5, attack: 3, health: 5, rarity: "legendary", type: CARD_TYPE.MINION, keywords: ["deathrattle", "lifesteal"], trigger: "summonTwo1_1" },
+  silenceOne: { cost: 2, rarity: "epic", type: CARD_TYPE.SPELL, effect: "polymorph", silenceOnly: true, keywords: ["silence"] },
+  scoutInterrogator: { cost: 3, attack: 2, health: 3, rarity: "rare", type: CARD_TYPE.MINION, keywords: ["battlecry"], trigger: "silenceIfDamaged" },
+};
+for (const [id, spec] of Object.entries(expectedR51)) {
+  const card = getCardById(id);
+  assert(!!card, `${id} exists`);
+  if (!card) continue;
+  for (const [field, expected] of Object.entries(spec)) {
+    if (field === "keywords") {
+      assert(expected.every((kw) => card.keywords.includes(kw)), `${id} keywords include ${expected.join(",")}`);
+    } else {
+      assert(card[field] === expected, `${id}.${field} is ${expected}`);
+    }
+  }
+}
+const p0NewCoreCodes = new Set();
+for (const id of [...R51_P0_IDS, ...R51_SILENCE_IDS]) {
+  const card = getCardById(id);
+  if (!card) continue;
+  if (["buffAdjacent1", "aoeEnemy1", "summonTwo1_1", "nextSpellMinus1"].includes(card.trigger)) p0NewCoreCodes.add(card.trigger);
+  if (["buffAdjacent1", "aoeEnemy1", "summonTwo1_1", "nextSpellMinus1"].includes(card.effect)) p0NewCoreCodes.add(card.effect);
+}
+assert([...p0NewCoreCodes].sort().join(",") === "aoeEnemy1,buffAdjacent1,nextSpellMinus1,summonTwo1_1",
+  `R51 adds exactly four core effect codes (${[...p0NewCoreCodes].sort().join(",")})`);
+assert(R51_P0_IDS.concat(R51_SILENCE_IDS).every((id) => FACTIONS[getCardById(id).faction]), "R51 faction ids all resolve");
+assert(R51_P0_IDS.concat(R51_SILENCE_IDS).every((id) => ["aggro", "control", "neutral"].includes(getCardById(id).axis)), "R51 axis ids all resolve");
+assert(getCardById("toxinViper").cost < getCardById("raptor").cost
+  && getCardById("toxinViper").attack < getCardById("raptor").attack
+  && !getCardById("toxinViper").keywords.includes("charge"), "toxinViper is not a strict replacement for raptor");
+assert(getCardById("captainGreywake").trigger === "aoeEnemy1"
+  && getCardById("highArchivist").trigger === "aoeEnemy2"
+  && getCardById("captainGreywake").health < getCardById("highArchivist").health, "captainGreywake sits below highArchivist as a lower aoe tier");
+assert(getCardById("mirrorRime").mirrorRime === true && getCardById("mirrorRime").cost === 2
+  && !getCardById("mirrorRime").keywords.includes("divineshield"), "mirrorRime is a capped health-copy spell without shield copy");
+assert(getCardById("silenceOne").silenceOnly === true && getCardById("silenceOne").effect === "polymorph",
+  "silenceOne uses polymorph target contract but resolves as silenceOnly");
+assert(getCardById("iceNeedle").baseDamage < targetedDamageAmount(getCardById("emberVolley"))
+  && getCardById("iceNeedle").baseDamage + getCardById("iceNeedle").tauntBonusDamage === targetedDamageAmount(getCardById("emberVolley")),
+  "iceNeedle trades lower normal damage for taunt-specific parity with emberVolley");
 
 console.log("== id 唯一性 ==");
 const ids = CARD_POOL.map((c) => c.id);
@@ -155,20 +224,28 @@ assert(thunderRoc.cost < griffin.cost && thunderRoc.attack < griffin.attack && t
 console.log("== 抽卡機率分布（30000 抽）==");
 const N = 30000, dist = {};
 let foilCount = 0;
+let tideCount = 0;
+let doubleVariantCount = 0;
 for (let i = 0; i < N; i++) {
   const c = rollCardByRarity();
   dist[c.rarity] = (dist[c.rarity] || 0) + 1;
   if (c.foil) foilCount++;
+  if (c.tide) tideCount++;
+  if (c.foil && c.tide) doubleVariantCount++;
 }
 const legendaryPct = (dist.legendary / N) * 100;
 const foilPct = (foilCount / N) * 100;
-console.log(`    分布:`, dist, `| 傳說 ${legendaryPct.toFixed(2)}% | 閃卡 ${foilPct.toFixed(2)}%`);
+const tidePct = (tideCount / N) * 100;
+console.log(`    分布:`, dist, `| 傳說 ${legendaryPct.toFixed(2)}% | 閃卡 ${foilPct.toFixed(2)}% | 潮鑄 ${tidePct.toFixed(2)}%`);
 assert(legendaryPct > 0.5 && legendaryPct < 5, `傳說機率在合理範圍（${legendaryPct.toFixed(2)}%）`);
 assert(foilPct > 4 && foilPct < 14, `閃卡機率接近 8%（${foilPct.toFixed(2)}%）`);
+assert(tidePct > 1.5 && tidePct < 4.5, `潮鑄機率接近 3%（${tidePct.toFixed(2)}%）`);
+assert(doubleVariantCount === 0, "潮鑄與閃卡互斥，不會同時掛在同一張卡");
 
 console.log("== 工具函式 ==");
 assert(getCardById("dragon")?.name === "烈焰巨龍", "getCardById 正常");
 assert(collectKey({ id: "x", foil: true }) === "x#foil", "collectKey 區分閃卡");
+assert(collectKey({ id: "x", tide: true, foil: true }) === "x#tide", "collectKey 潮鑄使用 #tide 且優先於 foil");
 
 console.log("== 經濟回收 ==");
 assert(DISMANTLE_VALUE.common === 2 && DISMANTLE_VALUE.rare === 8 && DISMANTLE_VALUE.epic === 25 && DISMANTLE_VALUE.legendary === 80,

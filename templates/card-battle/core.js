@@ -73,6 +73,7 @@
     Object.freeze({ id: "unique_55", metric: "unique", target: 55, title: "收藏 55 種卡牌", reward: 20 }),
     Object.freeze({ id: "foil_5", metric: "foil", target: 5, title: "收藏 5 張閃卡", reward: 40 }),
     Object.freeze({ id: "foil_15", metric: "foil", target: 15, title: "收藏 15 張閃卡", reward: 60 }),
+    Object.freeze({ id: "tide_3", metric: "tide", target: 3, title: "收藏 3 張潮印", reward: 0 }),
   ]);
   const CHRONICLE_CHAPTERS = Object.freeze([
     Object.freeze({
@@ -201,6 +202,7 @@
     buffTarget: Object.freeze({ needsTarget: "friendlyMinion" }),
     polymorph: Object.freeze({ needsTarget: "enemyMinion" }),
     draw2: Object.freeze({ needsTarget: null }),
+    nextSpellMinus1: Object.freeze({ needsTarget: null }),
   });
 
   function clampNumber(value, min, max, fallback) {
@@ -455,6 +457,7 @@
   function collectionSummary(collection) {
     const unique = new Set();
     const foil = new Set();
+    const tide = new Set();
     if (collection && typeof collection === "object" && !Array.isArray(collection)) {
       for (const [rawKey, rawCount] of Object.entries(collection)) {
         const count = Number(rawCount);
@@ -467,17 +470,24 @@
             unique.add(id);
             foil.add(id);
           }
+        } else if (key.endsWith("#tide")) {
+          const id = key.slice(0, -5);
+          if (id) {
+            unique.add(id);
+            tide.add(id);
+          }
         } else {
           unique.add(key);
         }
       }
     }
-    return { unique: unique.size, foil: foil.size };
+    return { unique: unique.size, foil: foil.size, tide: tide.size };
   }
 
   function milestoneProgress(def, summary) {
     if (!def || !summary) return 0;
     if (def.metric === "foil") return summary.foil || 0;
+    if (def.metric === "tide") return summary.tide || 0;
     return summary.unique || 0;
   }
 
@@ -633,7 +643,10 @@
     if (!collection || typeof collection !== "object") return 0;
     const normal = Number(collection[id] || 0);
     const foil = Number(collection[id + "#foil"] || 0);
-    return Math.max(0, Number.isFinite(normal) ? normal : 0) + Math.max(0, Number.isFinite(foil) ? foil : 0);
+    const tide = Number(collection[id + "#tide"] || 0);
+    return Math.max(0, Number.isFinite(normal) ? normal : 0)
+      + Math.max(0, Number.isFinite(foil) ? foil : 0)
+      + Math.max(0, Number.isFinite(tide) ? tide : 0);
   }
 
   function countIds(ids) {
@@ -674,7 +687,9 @@
           const used = usedById[id] || 0;
           const normal = Math.max(0, Number.isFinite(Number(collection[id] || 0)) ? Number(collection[id] || 0) : 0);
           const foil = Math.max(0, Number.isFinite(Number(collection[id + "#foil"] || 0)) ? Number(collection[id + "#foil"] || 0) : 0);
+          const tide = Math.max(0, Number.isFinite(Number(collection[id + "#tide"] || 0)) ? Number(collection[id + "#tide"] || 0) : 0);
           copy.foil = used >= normal && used < normal + foil;
+          copy.tide = used >= normal + foil && used < normal + foil + tide;
           usedById[id] = used + 1;
         }
         deck.push(copy);
@@ -779,6 +794,16 @@
     if (events) events.push({ type: "shieldGain", uid: minion.uid });
   }
 
+  function silenceMinion(minion, events) {
+    if (!minion) return false;
+    minion.keywords = [];
+    delete minion.trigger;
+    minion.shield = false;
+    delete minion._frenzyDone;
+    if (events) events.push({ type: "silence", uid: minion.uid });
+    return true;
+  }
+
   function polymorph(minion, events) {
     minion.name = "綿羊";
     minion.attack = 1;
@@ -797,6 +822,12 @@
     minion.health += health;
     minion.maxHealth = (minion.maxHealth == null ? minion.health - health : minion.maxHealth) + health;
     if (events) events.push({ type: "buffTarget", side: side && side.side, uid: minion.uid, attack, health });
+  }
+
+  function buffAttackOnly(minion, attack, side, events, eventType) {
+    if (!minion || !attack) return;
+    minion.attack += attack;
+    if (events) events.push({ type: eventType || "buffAttack", side: side && side.side, uid: minion.uid, attack });
   }
 
   function summonCard(side, card, rng, events, reason) {
@@ -827,6 +858,24 @@
       keywords: [],
       foil: false,
     };
+  }
+
+  function mirrorRime(target, side, events) {
+    if (!target || target.health <= 0 || !side || !Array.isArray(side.field)) return 0;
+    const source = side.field
+      .filter((minion) => minion !== target && minion.health > 0 && hasKeyword(minion, "taunt"))
+      .sort((a, b) => (b.health - a.health) || ((b.maxHealth || b.health) - (a.maxHealth || a.health)))[0] || null;
+    if (!source) {
+      if (events) events.push({ type: "mirrorRime", side: side.side, uid: target.uid, sourceUid: null, amount: 0 });
+      return 0;
+    }
+    const gain = Math.max(0, Math.min(3, source.health - target.health));
+    if (gain > 0) {
+      target.health += gain;
+      target.maxHealth = (target.maxHealth == null ? target.health - gain : target.maxHealth) + gain;
+    }
+    if (events) events.push({ type: "mirrorRime", side: side.side, uid: target.uid, sourceUid: source.uid, amount: gain });
+    return gain;
   }
 
   function applyDamageToMinion(minion, amount, source, events) {
@@ -871,12 +920,29 @@
       const foe = getOpponent(state, side);
       for (const minion of [...foe.field]) applyDamageToMinion(minion, 2, null, events);
       cleanupBoth(state, rng, events);
+    } else if (trigger === "aoeEnemy1") {
+      const foe = getOpponent(state, side);
+      for (const minion of [...foe.field]) applyDamageToMinion(minion, 1, null, events);
+      cleanupBoth(state, rng, events);
+    } else if (trigger === "buffAdjacent1") {
+      const index = side.field.indexOf(dyingCard);
+      const targets = [side.field[index - 1], side.field[index + 1]].filter(Boolean);
+      for (const minion of targets) buffAttackOnly(minion, 1, side, events, "buffAdjacent1");
     } else if (trigger === "summonSkeleton") {
       summonCard(side, makeToken("骷髏", 2, 2, "☠️"), rng, events, "deathrattle");
     } else if (trigger === "rebirth") {
       summonCard(side, makeToken("浴火鳳凰", 5, 1, "🔥"), rng, events, "deathrattle");
+    } else if (trigger === "summonTwo1_1") {
+      summonCard(side, makeToken("灰鈴侍從", 1, 1, "🕯️"), rng, events, "deathrattle");
+      summonCard(side, makeToken("灰鈴侍從", 1, 1, "🕯️"), rng, events, "deathrattle");
     } else if (trigger === "drawCard1") {
       drawCardInternal(side, rng, events);
+    } else if (trigger === "silenceIfDamaged") {
+      const foe = getOpponent(state, side);
+      const damaged = [...foe.field]
+        .filter((minion) => minion.health > 0 && minion.health < (minion.maxHealth == null ? minion.health : minion.maxHealth))
+        .sort((a, b) => ((b.attack || 0) * 3 + (b.health || 0)) - ((a.attack || 0) * 3 + (a.health || 0)))[0] || null;
+      if (damaged) silenceMinion(damaged, events);
     }
   }
 
@@ -916,22 +982,54 @@
     return targetPoolForNeed(state, sideKey, need).find((m) => m.uid === targetUid) || null;
   }
 
-  function applySpellEffect(state, sideKey, effect, target, rng, events) {
+  function targetedDamageAmount(effect, card) {
+    if (card && Number.isFinite(Number(card.baseDamage))) return Number(card.baseDamage);
+    if (effect === "damage8") return 8;
+    if (effect === "damage5") return 5;
+    if (effect === "damage3") return 3;
+    if (effect === "damage2") return 2;
+    return 0;
+  }
+
+  function applyTargetedDamage(state, sideKey, effect, target, card, rng, events) {
+    const side = getSide(state, sideKey);
+    const sp = spellPower(side);
+    let damage = targetedDamageAmount(effect, card);
+    if (card && card.tauntBonusDamage && hasKeyword(target, "taunt")) damage += Number(card.tauntBonusDamage) || 0;
+    applyDamageToMinion(target, damage + sp, null, events);
+    cleanupBoth(state, rng, events);
+  }
+
+  function spellCost(side, card) {
+    const base = Math.max(0, Number(card && card.cost) || 0);
+    if (!card || card.type !== CARD_TYPE.SPELL) return base;
+    const discount = Math.max(0, Math.floor(Number(side && side.nextSpellDiscount) || 0));
+    return Math.max(0, base - discount);
+  }
+
+  function spendCardMana(side, card, events) {
+    const cost = spellCost(side, card);
+    side.mana -= cost;
+    if (card && card.type === CARD_TYPE.SPELL && Math.max(0, Math.floor(Number(side.nextSpellDiscount) || 0)) > 0) {
+      const used = Math.min(Math.max(0, Number(card.cost) || 0), Math.max(0, Math.floor(Number(side.nextSpellDiscount) || 0)));
+      side.nextSpellDiscount = 0;
+      if (used > 0 && events) events.push({ type: "spellDiscount", side: side.side, uid: card.uid, amount: used });
+    }
+    return cost;
+  }
+
+  function applySpellEffect(state, sideKey, effect, target, rng, events, card) {
     const side = getSide(state, sideKey);
     const foe = getOpponent(state, sideKey);
     const sp = spellPower(side);
     if (effect === "damage2") {
-      applyDamageToMinion(target, 2 + sp, null, events);
-      cleanupBoth(state, rng, events);
+      applyTargetedDamage(state, sideKey, effect, target, card, rng, events);
     } else if (effect === "damage3") {
-      applyDamageToMinion(target, 3 + sp, null, events);
-      cleanupBoth(state, rng, events);
+      applyTargetedDamage(state, sideKey, effect, target, card, rng, events);
     } else if (effect === "damage5") {
-      applyDamageToMinion(target, 5 + sp, null, events);
-      cleanupBoth(state, rng, events);
+      applyTargetedDamage(state, sideKey, effect, target, card, rng, events);
     } else if (effect === "damage8") {
-      applyDamageToMinion(target, 8 + sp, null, events);
-      cleanupBoth(state, rng, events);
+      applyTargetedDamage(state, sideKey, effect, target, card, rng, events);
     } else if (effect === "heal5") {
       healHero(side, 5, events);
     } else if (effect === "aoe1") {
@@ -946,12 +1044,19 @@
     } else if (effect === "giveShield") {
       addShield(target, events);
     } else if (effect === "buffTarget") {
-      buffMinion(target, 2, 2, side, events);
+      if (card && card.mirrorRime) mirrorRime(target, side, events);
+      else buffMinion(target, 2, 2, side, events);
     } else if (effect === "polymorph") {
-      polymorph(target, events);
+      if (card && card.silenceOnly) silenceMinion(target, events);
+      else polymorph(target, events);
     } else if (effect === "draw2") {
       drawCardInternal(side, rng, events);
       drawCardInternal(side, rng, events);
+    } else if (effect === "nextSpellMinus1") {
+      foe.hp -= 2;
+      if (events) events.push({ type: "heroDamage", attackerSide: side.side, defenderSide: foe.side, amount: 2 });
+      side.nextSpellDiscount = Math.max(1, Math.floor(Number(side.nextSpellDiscount) || 0));
+      if (events) events.push({ type: "nextSpellDiscount", side: side.side, amount: 1 });
     }
   }
 
@@ -996,7 +1101,7 @@
     const index = side.hand.findIndex((c) => c.uid === action.cardUid);
     if (index === -1) return fail("cardNotFound", events);
     const card = side.hand[index];
-    if (card.cost > side.mana) return fail("insufficientMana", events, { card });
+    if (spellCost(side, card) > side.mana) return fail("insufficientMana", events, { card });
 
     if (card.type === CARD_TYPE.SPELL) {
       const spec = SPELL_EFFECTS[card.effect] || { needsTarget: null };
@@ -1009,17 +1114,17 @@
       }
       const target = spec.needsTarget ? findSpellTarget(state, sideKey, spec.needsTarget, action.targetUid) : null;
       if (spec.needsTarget && !target) return fail("targetNotFound", events, { card, need: spec.needsTarget });
-      side.mana -= card.cost;
+      spendCardMana(side, card, events);
       commitCardFromHand(side, index);
       if (action.burnMulligan !== false) burnMulligan(state, events);
       if (action.trackCombo !== false) registerCombo(state, card.uid, events);
       events.push({ type: "spellCast", side: side.side, uid: card.uid, effect: card.effect, targetUid: target && target.uid });
-      applySpellEffect(state, sideKey, card.effect, target, rng, events);
+      applySpellEffect(state, sideKey, card.effect, target, rng, events, card);
       return ok(events, { card, target });
     }
 
     if (side.field.length >= MAX_FIELD) return fail("fieldFull", events, { card });
-    side.mana -= card.cost;
+    spendCardMana(side, card, events);
     commitCardFromHand(side, index);
     if (action.burnMulligan !== false) burnMulligan(state, events);
     if (action.trackCombo !== false) registerCombo(state, card.uid, events);
@@ -1066,18 +1171,18 @@
     }
     const target = findSpellTarget(state, sideKey, pending.need, action && action.targetUid);
     if (!target) return fail("targetNotFound", events, { card, need: pending.need });
-    if (card.cost > side.mana) {
+    if (spellCost(side, card) > side.mana) {
       state.pendingSpell = null;
       events.push({ type: "pendingCancelled", uid: pending.uid, wasSame: false });
       return fail("insufficientMana", events, { card });
     }
-    side.mana -= card.cost;
+    spendCardMana(side, card, events);
     commitCardFromHand(side, index);
     burnMulligan(state, events);
     registerCombo(state, card.uid, events);
     state.pendingSpell = null;
     events.push({ type: "spellCast", side: side.side, uid: card.uid, effect: card.effect, targetUid: target.uid });
-    applySpellEffect(state, sideKey, card.effect, target, rng, events);
+    applySpellEffect(state, sideKey, card.effect, target, rng, events, card);
     return ok(events, { card, target });
   }
 
@@ -1221,7 +1326,7 @@
     const spec = SPELL_EFFECTS[action.effect] || { needsTarget: null };
     const target = spec.needsTarget ? findSpellTarget(state, sideKey, spec.needsTarget, action.targetUid) : null;
     if (spec.needsTarget && !target) return fail("targetNotFound", events);
-    applySpellEffect(state, sideKey, action.effect, target, rng, events);
+    applySpellEffect(state, sideKey, action.effect, target, rng, events, action && action.card);
     return ok(events, { target });
   }
 
@@ -1330,6 +1435,7 @@
     summon,
     healHero,
     addShield,
+    silenceMinion,
     polymorph,
   };
 });

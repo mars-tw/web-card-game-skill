@@ -6,9 +6,9 @@
 <title>開卡包 · Card Pack</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r50-v1";
+    const CACHE_VERSION = "card-battle-r51-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r50_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r51_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -178,6 +178,12 @@
     background-size:250% 250%; animation:foilShine 2s linear infinite; mix-blend-mode:screen; }
   .card .foil-tag { position:absolute; bottom:6px; left:50%; transform:translateX(-50%); font-size:9px; font-weight:800;
     color:#1a1206; background:linear-gradient(90deg,#fde047,#f59e0b); padding:1px 8px; border-radius:8px; z-index:3; }
+  .card.tide { border-color:#38bdf8; box-shadow:0 0 24px rgba(56,189,248,.72),0 6px 16px rgba(0,0,0,.5); }
+  .card.tide::before { content:""; position:absolute; inset:0; border-radius:12px; pointer-events:none; z-index:2;
+    background:repeating-linear-gradient(135deg,rgba(125,211,252,0) 0 9px,rgba(125,211,252,.26) 10px 12px,rgba(14,165,233,0) 13px 22px);
+    mix-blend-mode:screen; }
+  .card .tide-tag { position:absolute; bottom:6px; left:50%; transform:translateX(-50%); font-size:9px; font-weight:800;
+    color:#062133; background:linear-gradient(90deg,#7dd3fc,#38bdf8); padding:1px 8px; border-radius:8px; z-index:3; }
   /* 重複標記 */
   .card .dup-tag { position:absolute; top:8px; right:6px; font-size:10px; font-weight:800; color:#fff;
     background:rgba(0,0,0,.6); padding:1px 6px; border-radius:8px; z-index:3; }
@@ -210,6 +216,9 @@
     align-items:center; justify-content:center; font-size:24px; background:#131a24; position:relative; overflow:hidden; }
   .slot.owned { border-color:var(--rarity); box-shadow:0 0 8px var(--glow); }
   .slot.foil { border-color:gold; box-shadow:0 0 12px gold; }
+  .slot.tide { border-color:#38bdf8; box-shadow:0 0 12px rgba(56,189,248,.82); }
+  .slot.tide::before { content:""; position:absolute; inset:0; pointer-events:none;
+    background:repeating-linear-gradient(135deg,rgba(125,211,252,0) 0 8px,rgba(125,211,252,.22) 9px 11px,rgba(14,165,233,0) 12px 20px); mix-blend-mode:screen; }
   .slot.locked { filter:grayscale(1) brightness(.4); }
   .slot img { width:34px; height:34px; object-fit:cover; border-radius:4px; }
   .slot .count { position:absolute; bottom:2px; right:4px; font-size:10px; color:var(--accent); font-weight:800; }
@@ -222,6 +231,7 @@
   .slot:hover .dismantle-btn { opacity:1; }
   @media (hover:none) { .slot .dismantle-btn { opacity:1; } } /* 觸控裝置常駐顯示 */
   .slot .fstar { position:absolute; top:2px; right:3px; font-size:9px; color:gold; }
+  .slot .tide-mark { color:#7dd3fc; }
 
   .deck-builder { padding:12px; }
   .deck-head { flex-shrink:0; display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; flex-wrap:wrap; }
@@ -564,6 +574,7 @@
         <option value="windfury">風怒</option>
         <option value="poison">劇毒</option>
         <option value="regenerate">回復</option>
+        <option value="silence">靜默</option>
       </select>
       <select id="collectionRarityFilter" aria-label="稀有度篩選">
         <option value="all">全部稀有度</option>
@@ -594,9 +605,9 @@
     <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
   </footer>
 
-  <script src="../card-battle/cards.js?v=card-battle-r50-v1"></script>
-  <script src="../card-battle/core.js?v=card-battle-r50-v1"></script>
-  <script src="pack.js?v=card-battle-r50-v1"></script>
+  <script src="../card-battle/cards.js?v=card-battle-r51-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-r51-v1"></script>
+  <script src="pack.js?v=card-battle-r51-v1"></script>
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);

@@ -6,9 +6,9 @@
 <title>卡牌對戰 · Card Battle</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r50-v1";
+    const CACHE_VERSION = "card-battle-r51-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r50_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r51_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -195,6 +195,14 @@
     content: ""; position: absolute; inset: 0; border-radius: 10px; pointer-events: none;
     background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.35) 50%, transparent 70%);
     background-size: 250% 250%; animation: foilShine 2.5s linear infinite; mix-blend-mode: screen;
+  }
+  .card.tide { border-color:#38bdf8; box-shadow:0 0 18px rgba(56,189,248,.65), 0 4px 10px rgba(0,0,0,.45); }
+  .card.tide::before {
+    content:""; position:absolute; inset:0; border-radius:10px; pointer-events:none; z-index:1;
+    background:
+      repeating-linear-gradient(135deg, rgba(125,211,252,.0) 0 9px, rgba(125,211,252,.22) 10px 12px, rgba(14,165,233,.0) 13px 22px),
+      radial-gradient(circle at 70% 20%, rgba(56,189,248,.24), transparent 36%);
+    mix-blend-mode:screen; opacity:.9;
   }
 
   .card .cost {
@@ -712,6 +720,13 @@
             <option value="hard">困難</option>
           </select>
         </label>
+        <label class="diff-pick">對手
+          <select id="opponentSel" aria-label="選擇對手">
+            <option value="op_ser_halden">🛡️ 哈爾登隊長</option>
+            <option value="op_magister_vey">🔮 維伊魔導師</option>
+            <option value="op_scarra">🐺 斯卡拉狼首</option>
+          </select>
+        </label>
         <button class="mulligan-btn" id="mulliganBtn" style="display:none">🔄 重抽起手牌</button>
         <button class="mulligan-btn" id="hintBtn" title="本回合提示最佳一步">💡 提示</button>
         <button class="mulligan-btn" id="newGameBtn" title="重開一局（會帶入最新收藏的牌組）">🔁 重新開始</button>
@@ -852,9 +867,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r50-v1"></script>
-  <script src="core.js?v=card-battle-r50-v1"></script>
-  <script src="battle.js?v=card-battle-r50-v1"></script>
+  <script src="cards.js?v=card-battle-r51-v1"></script>
+  <script src="core.js?v=card-battle-r51-v1"></script>
+  <script src="battle.js?v=card-battle-r51-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {
@@ -887,6 +902,23 @@
       sel.addEventListener("change", () => {
         try { localStorage.setItem("cardgame_difficulty", sel.value); } catch {}
         // 立即以新難度重開一局
+        if (window.__newGame) window.__newGame();
+      });
+    })();
+
+    (function setupOpponent() {
+      const sel = document.getElementById("opponentSel");
+      if (!sel) return;
+      if (window.__opponents) {
+        sel.innerHTML = Object.values(window.__opponents).map((opponent) =>
+          `<option value="${opponent.id}">${opponent.emoji} ${opponent.name}</option>`
+        ).join("");
+      }
+      let cur = "op_ser_halden";
+      try { cur = localStorage.getItem("cardgame_opponent") || "op_ser_halden"; } catch {}
+      if ([...sel.options].some((option) => option.value === cur)) sel.value = cur;
+      sel.addEventListener("change", () => {
+        try { localStorage.setItem("cardgame_opponent", sel.value); } catch {}
         if (window.__newGame) window.__newGame();
       });
     })();

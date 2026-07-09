@@ -228,10 +228,10 @@ async function run() {
           shell: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(shellText) && /sessionStorage/.test(shellText) && /controllerchange/.test(shellText),
           battle: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(battleHtml) && /sessionStorage/.test(battleHtml) && /controllerchange/.test(battleHtml),
           pack: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(packHtml) && /sessionStorage/.test(packHtml) && /controllerchange/.test(packHtml),
-          versionedRefs: /cards\.js\?v=card-battle-r50-v1/.test(battleHtml)
-            && /battle\.js\?v=card-battle-r50-v1/.test(battleHtml)
-            && /pack\.js\?v=card-battle-r50-v1/.test(packHtml)
-            && /manifest\.webmanifest\?v=card-battle-r50-v1/.test(shellText),
+          versionedRefs: /cards\.js\?v=card-battle-r51-v1/.test(battleHtml)
+            && /battle\.js\?v=card-battle-r51-v1/.test(battleHtml)
+            && /pack\.js\?v=card-battle-r51-v1/.test(packHtml)
+            && /manifest\.webmanifest\?v=card-battle-r51-v1/.test(shellText),
         };
         return {
           manifestHref: manifestLink && manifestLink.getAttribute("href"),
@@ -245,7 +245,7 @@ async function run() {
           promptVisible: document.getElementById("pwaUpdateToast").classList.contains("show"),
         };
       });
-      assert(pwaCheck.manifestHref === "../manifest.webmanifest?v=card-battle-r50-v1"
+      assert(pwaCheck.manifestHref === "../manifest.webmanifest?v=card-battle-r51-v1"
         && pwaCheck.manifest.name === "卡牌對戰"
         && pwaCheck.manifest.icons.some((icon) => icon.sizes === "192x192")
         && pwaCheck.manifest.icons.some((icon) => icon.sizes === "512x512"),
@@ -253,7 +253,7 @@ async function run() {
       assert(/CACHE_VERSION/.test(pwaCheck.swText)
         && /networkFirst/.test(pwaCheck.swText)
         && /cacheFirst/.test(pwaCheck.swText)
-        && pwaCheck.swText.includes("card-battle-r50-v1")
+        && pwaCheck.swText.includes("card-battle-r51-v1")
         && pwaCheck.swText.includes("offline.html")
         && pwaCheck.swText.includes("versioned(\"sw.js\")")
         && pwaCheck.swText.includes("templates/card-battle")
@@ -261,13 +261,13 @@ async function run() {
         && pwaCheck.swText.includes("templates/card-battle/battle.js")
         && pwaCheck.swText.includes("templates/card-pack/pack.js")
         && pwaCheck.swText.includes("assets/cards/wolf.png")
-        && pwaCheck.version === "card-battle-r50-v1"
-        && pwaCheck.versionLabel.includes("card-battle-r50-v1")
-        && pwaCheck.checked.version === "card-battle-r50-v1",
+        && pwaCheck.version === "card-battle-r51-v1"
+        && pwaCheck.versionLabel.includes("card-battle-r51-v1")
+        && pwaCheck.checked.version === "card-battle-r51-v1",
         "Service worker 使用版本快取並涵蓋 battle/pack 子路徑");
       assert(/self\.skipWaiting\(\)/.test(pwaCheck.swText) && /self\.clients\.claim\(\)/.test(pwaCheck.swText),
         "Service worker install 會 skipWaiting，activate 會 clients.claim");
-      assert(pwaCheck.guard.windowMs === 15000 && pwaCheck.guard.key === "card_sw_auto_reload_r50_v1"
+      assert(pwaCheck.guard.windowMs === 15000 && pwaCheck.guard.key === "card_sw_auto_reload_r51_v1"
         && pwaCheck.guard.early === true && pwaCheck.guard.shell && pwaCheck.guard.battle && pwaCheck.guard.pack && pwaCheck.guard.versionedRefs,
         "入口 shell、battle、pack 都有 15 秒自動重載、sessionStorage 守衛與版本化本地資源");
       assert(pwaCheck.skipped === true && pwaCheck.promptVisible === true, "navigator.webdriver 會跳過 SW 註冊且更新提示可顯示");
@@ -302,7 +302,7 @@ async function run() {
     assert(boot.turn === "player", "開局輪到玩家");
     assert(boot.playerHand >= 3, `玩家起手 ≥3 張（${boot.playerHand}）`);
     const battleSwGuard = await page.evaluate(() => window.__test.swUpdateGuard());
-    assert(battleSwGuard.key === "card_sw_auto_reload_r50_v1" && battleSwGuard.windowMs === 15000 && battleSwGuard.late === false,
+    assert(battleSwGuard.key === "card_sw_auto_reload_r51_v1" && battleSwGuard.windowMs === 15000 && battleSwGuard.late === false,
       "對戰頁 SW 自動更新守衛超過 15 秒不會自動 reload");
 
     if (vp.w === 1366) {
@@ -370,22 +370,68 @@ async function run() {
     assert(invalidDeckCheck.source === "fallback", "非法 card_deck_v1 會 fallback，不阻擋開局");
     assert(invalidDeckCheck.liveIds.length === 20, "fallback 玩家開局手牌加牌庫總張數為 DECK_SIZE");
 
-    const easyAiDeck = await page.evaluate(() => window.__test.aiDeckInfo());
-    assert(easyAiDeck.source === "random" && easyAiDeck.liveIds.length === 20, "簡單 AI 隨機牌庫開局手牌加牌庫總張數為 DECK_SIZE");
+    const opponentCheck = await page.evaluate(() => {
+      const opponents = window.__test.opponents();
+      return {
+        opponents,
+        validations: opponents.map((opponent) => {
+          const collection = opponent.deckIds.reduce((acc, id) => {
+            acc[id] = (acc[id] || 0) + 1;
+            return acc;
+          }, {});
+          const validation = window.CardCore.validateDeck(opponent.deckIds, collection, window.CARD_POOL);
+          return { id: opponent.id, len: opponent.deckIds.length, ok: validation.ok, errors: validation.errors };
+        }),
+        selectValue: document.getElementById("opponentSel")?.value || "",
+      };
+    });
+    assert(opponentCheck.opponents.length === 3
+      && opponentCheck.opponents.map((opponent) => opponent.id).sort().join(",") === "op_magister_vey,op_scarra,op_ser_halden",
+      "具名 AI 對手表提供哈爾登、維伊、斯卡拉三人");
+    assert(opponentCheck.validations.every((item) => item.len === 20 && item.ok),
+      `三個 AI 固定牌組都通過 validateDeck（${JSON.stringify(opponentCheck.validations)}）`);
+    assert(opponentCheck.selectValue === "op_ser_halden", "對手下拉選單預設哈爾登隊長");
+
+    const defaultAiDeck = await page.evaluate(() => window.__test.aiDeckInfo());
+    assert(defaultAiDeck.source === "opponent" && defaultAiDeck.opponentId === "op_ser_halden"
+      && defaultAiDeck.opponentName === "哈爾登隊長" && defaultAiDeck.tauntBias > defaultAiDeck.faceBias
+      && defaultAiDeck.liveIds.length === 20 && sameMultiset(defaultAiDeck.ids, defaultAiDeck.templateIds),
+      "預設 AI 使用哈爾登固定嘲諷控制牌組");
+
+    const scarraAiDeck = await page.evaluate(() => {
+      const selected = window.__test.setOpponent("op_scarra");
+      const ai = window.__test.aiDeckInfo();
+      return {
+        selected,
+        ai,
+        stored: localStorage.getItem("cardgame_opponent"),
+        heroName: document.querySelector("#enemyHero .name")?.textContent || "",
+        heroAvatar: document.querySelector("#enemyHero .avatar")?.textContent || "",
+        selectValue: document.getElementById("opponentSel")?.value || "",
+      };
+    });
+    assert(scarraAiDeck.selected === "op_scarra" && scarraAiDeck.stored === "op_scarra"
+      && scarraAiDeck.ai.source === "opponent" && scarraAiDeck.ai.archetype === "aggro"
+      && scarraAiDeck.ai.faceBias > scarraAiDeck.ai.tauntBias && /斯卡拉狼首/.test(scarraAiDeck.heroName)
+      && /🐺/.test(scarraAiDeck.heroAvatar) && scarraAiDeck.selectValue === "op_scarra",
+      "切換斯卡拉後 localStorage、英雄顯示、快攻 faceBias 與固定牌組同步");
 
     const hardAiDeck = await page.evaluate(({ deckIds, collection }) => {
       localStorage.clear();
       localStorage.setItem("cb_guide_done_v1", "1");
       localStorage.setItem("cardgame_difficulty", "hard");
+      localStorage.setItem("cardgame_opponent", "op_magister_vey");
       localStorage.setItem("cardpack_collection_v2", JSON.stringify(collection));
       localStorage.setItem("card_deck_v1", JSON.stringify({ version: 1, cards: deckIds }));
       window.__newGame();
       return window.__test.aiDeckInfo();
     }, { deckIds: R20_AGGRO_DECK_IDS, collection: collectionForDeck(R20_AGGRO_DECK_IDS) });
-    assert(hardAiDeck.source === "archetype" && hardAiDeck.playerArchetype === "aggro" && hardAiDeck.archetype === "control",
-      "困難 AI 會依玩家快攻牌組選控制反制 archetype");
+    assert(hardAiDeck.source === "opponent" && hardAiDeck.playerArchetype === "aggro"
+      && hardAiDeck.opponentId === "op_magister_vey" && hardAiDeck.archetype === "spellburst"
+      && hardAiDeck.faceBias > hardAiDeck.tauntBias,
+      "困難 AI 仍使用玩家指定的維伊固定法強爆發牌組與偏置");
     assert(hardAiDeck.ids.length === 20 && sameMultiset(hardAiDeck.ids, hardAiDeck.templateIds),
-      "困難 AI 牌堆來自對應 archetype 模板卡池");
+      "困難 AI 牌堆來自具名對手模板卡池");
     assert(hardAiDeck.liveIds.length === 20, "困難 AI 開局手牌加牌庫總張數為 DECK_SIZE");
 
     await page.evaluate(() => { localStorage.clear(); localStorage.setItem("cb_guide_done_v1", "1"); });
@@ -1033,6 +1079,41 @@ async function run() {
     }, { collection: collectionForDeck(LEGAL_DECK_IDS) });
     await page.goto(basePack);
     await page.waitForFunction(() => window.__deckTest && document.getElementById("deckCollectionList"));
+    const tidePityCheck = await page.evaluate(() => {
+      const T = window.__deckTest;
+      T.setCollection({ wolf: 1, "wolf#foil": 1, "wolf#tide": 1 });
+      T.setCollectionFilters({ search: "wolf", axis: "all", keyword: "all", rarity: "all", ownership: "all", sort: "cost" });
+      const variants = T.visibleCollection().filter((card) => card.id === "wolf");
+      const common = window.getCardById("wolf");
+      const allCommon = Array.from({ length: 5 }, () => Object.assign({}, common, { foil: false, tide: false }));
+      T.setPity(0);
+      const miss = T.applyPity(allCommon);
+      T.setPity(19);
+      const forced = T.applyPity(allCommon);
+      return {
+        owned: T.owned("wolf"),
+        variants: variants.map((card) => ({ variant: card.variant, owned: card.owned, foil: card.foil, tide: card.tide })),
+        miss,
+        forced,
+        progress: document.getElementById("progress")?.textContent || "",
+      };
+    });
+    assert(tidePityCheck.owned === 3
+      && tidePityCheck.variants.length === 3
+      && tidePityCheck.variants.some((card) => card.variant === "normal" && card.owned)
+      && tidePityCheck.variants.some((card) => card.variant === "foil" && card.owned && card.foil)
+      && tidePityCheck.variants.some((card) => card.variant === "tide" && card.owned && card.tide)
+      && /潮鑄/.test(tidePityCheck.progress),
+      "收藏冊將普通、閃卡、潮鑄分槽顯示且 #tide 計入擁有數");
+    assert(tidePityCheck.miss.forced === false && tidePityCheck.miss.after === 1
+      && tidePityCheck.forced.forced === true && tidePityCheck.forced.after === 0
+      && tidePityCheck.forced.rarities.some((rarity) => rarity !== "common"),
+      "開包 pity 會累積未中 rare+，第 20 包強制 rare+ 後歸零");
+    await page.evaluate(({ collection }) => {
+      window.__deckTest.setCollection(collection);
+      window.__deckTest.setCollectionFilters({ search: "", axis: "all", keyword: "all", rarity: "all", ownership: "all", sort: "cost" });
+      window.__deckTest.setPity(0);
+    }, { collection: collectionForDeck(LEGAL_DECK_IDS) });
     if (vp.w <= 400) {
       await page.locator("#missionDrawerBtn").click();
       const packMissionOpen = await page.evaluate(() => ({
@@ -1218,11 +1299,11 @@ async function run() {
     await page.waitForFunction(() => /mission/.test(document.activeElement?.id || ""));
     const packMissionFocus = await page.evaluate(() => document.activeElement?.id || "");
     assert(packR36.textState.attr === "large" && packR36.textState.select === "large"
-      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r50-v1"),
+      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r51-v1"),
       "開包戰績區顯示版本並可調整文字大小");
     assert(packR36.missionOpen && packR36.missionAria === "false" && /mission/.test(packMissionFocus),
       "開包任務抽屜開啟後焦點進入抽屜控制");
-    assert(packR36.swGuard.key === "card_sw_auto_reload_r50_v1" && packR36.swGuard.windowMs === 15000 && packR36.swGuard.late === false,
+    assert(packR36.swGuard.key === "card_sw_auto_reload_r51_v1" && packR36.swGuard.windowMs === 15000 && packR36.swGuard.late === false,
       "開包頁 SW 自動更新守衛超過 15 秒不會自動 reload");
     assert(packR36.summaryLive === "polite" && packR36.missionDailyLive === "polite"
       && packR36.badgeLive === "polite" && packR36.deckSaveLive === "polite",

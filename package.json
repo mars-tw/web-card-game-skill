@@ -1,10 +1,10 @@
 {
   "name": "web-card-game-skill",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "純原生網頁卡牌遊戲 — Claude Code Skill。零依賴 HTML/CSS/JS，收藏/牌組/對戰 AI/開卡包，localStorage 存檔。",
   "type": "commonjs",
   "scripts": {
-    "test": "node scripts/test-cards.js && node scripts/test-core.js && node scripts/test-quality-gates.js",
+    "test": "node scripts/test-cards.js && node scripts/test-core.js && node scripts/test-quality-gates.js && node scripts/test-balance-sim.js",
     "test:e2e": "node scripts/test-battle-e2e.js",
     "test:rwd": "node scripts/test-rwd-matrix.js",
     "start": "python -m http.server 8000"

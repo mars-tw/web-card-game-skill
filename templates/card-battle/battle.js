@@ -35,6 +35,60 @@
     normal: { win: 65, loss: 20 },
     hard: { win: 85, loss: 30 },
   };
+  const OPPONENT_KEY = "cardgame_opponent";
+  const DEFAULT_OPPONENT_ID = "op_ser_halden";
+  const OPPONENTS = Object.freeze({
+    op_ser_halden: Object.freeze({
+      id: "op_ser_halden",
+      name: "哈爾登隊長",
+      emoji: "🛡️",
+      archetype: "control",
+      deckIds: Object.freeze([
+        "saltShieldSquire", "saltShieldSquire", "footman", "footman", "bulwarkMonk", "bulwarkMonk",
+        "knight", "knight", "guardian", "guardian", "bannerGuard", "bannerGuard",
+        "oathbannerHerald", "oathbannerHerald", "captainGreywake", "highArchivist",
+        "mirrorRime", "mirrorRime", "shieldUp", "shieldUp",
+      ]),
+      tauntBias: 0.9,
+      faceBias: 0.18,
+    }),
+    op_magister_vey: Object.freeze({
+      id: "op_magister_vey",
+      name: "維伊魔導師",
+      emoji: "🔮",
+      archetype: "spellburst",
+      deckIds: Object.freeze([
+        "arcaneApprentice", "arcaneApprentice", "tidecallerAdept", "tidecallerAdept",
+        "frostChanneler", "frostChanneler", "mage", "mage", "arcaneWeaver", "arcaneWeaver",
+        "firebolt", "firebolt", "iceNeedle", "iceNeedle", "emberVolley", "emberVolley",
+        "flameBurst", "flameBurst", "voidTithe", "voidTithe",
+      ]),
+      tauntBias: 0.35,
+      faceBias: 0.56,
+    }),
+    op_scarra: Object.freeze({
+      id: "op_scarra",
+      name: "斯卡拉狼首",
+      emoji: "🐺",
+      archetype: "aggro",
+      deckIds: Object.freeze([
+        "emberpup", "emberpup", "wolf", "wolf", "alleySkirmisher", "alleySkirmisher",
+        "sparkSquire", "sparkSquire", "frontScout", "frontScout", "packHowler", "packHowler",
+        "dualTalon", "dualTalon", "dawnRider", "dawnRider", "firebolt", "firebolt",
+        "emberVolley", "emberVolley",
+      ]),
+      tauntBias: 0.15,
+      faceBias: 0.9,
+    }),
+  });
+  function currentOpponentId() {
+    let id = DEFAULT_OPPONENT_ID;
+    try { id = localStorage.getItem(OPPONENT_KEY) || DEFAULT_OPPONENT_ID; } catch {}
+    return OPPONENTS[id] ? id : DEFAULT_OPPONENT_ID;
+  }
+  function currentOpponent() {
+    return OPPONENTS[currentOpponentId()] || OPPONENTS[DEFAULT_OPPONENT_ID];
+  }
   function difficultyReward(win) {
     const key = (game && game.difficulty) || currentDifficulty();
     const table = DIFFICULTY_REWARDS[key] || DIFFICULTY_REWARDS.easy;
@@ -67,9 +121,13 @@
     healHero2:      (g, side, target, source) => triggerAbilityUi(g, side, "healHero2", target, source),
     damageAny1:     (g, side, target, source) => triggerAbilityUi(g, side, "damageAny1", target, source),
     aoeEnemy2:      (g, side, target, source) => triggerAbilityUi(g, side, "aoeEnemy2", target, source),
+    aoeEnemy1:      (g, side, target, source) => triggerAbilityUi(g, side, "aoeEnemy1", target, source),
+    buffAdjacent1:  (g, side, target, source) => triggerAbilityUi(g, side, "buffAdjacent1", target, source),
     summonSkeleton: (g, side, target, source) => triggerAbilityUi(g, side, "summonSkeleton", target, source),
+    summonTwo1_1:   (g, side, target, source) => triggerAbilityUi(g, side, "summonTwo1_1", target, source),
     rebirth:        (g, side, target, source) => triggerAbilityUi(g, side, "rebirth", target, source),
     drawCard1:      (g, side, target, source) => triggerAbilityUi(g, side, "drawCard1", target, source),
+    silenceIfDamaged: (g, side, target, source) => triggerAbilityUi(g, side, "silenceIfDamaged", target, source),
   };
 
   let game;
@@ -78,7 +136,7 @@
   const TEXT_SIZE_KEY = "card_text_size_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r50_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r51_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0, reason: "自動觀察中", history: [] };
@@ -289,6 +347,7 @@
       aiThoughtToggle: "顯示 AI 思路",
       perfModeSel: "動畫效能模式",
       difficultySel: "選擇難度",
+      opponentSel: "選擇對手",
       textSizeSel: "文字大小",
     };
     Object.entries(controls).forEach(([id, label]) => {
@@ -327,7 +386,8 @@
     const playerArchetype = detectDeckArchetype(playerDeckIds);
     const stats = loadStats();
     const dda = Core.ddaProfile(stats.dda);
-    const enemyPlan = buildAiDeck(diffKey, playerArchetype);
+    const opponent = currentOpponent();
+    const enemyPlan = buildAiDeck(diffKey, playerArchetype, opponent);
     const enemyDeck = enemyPlan.deck;
     const enemyDeckIds = enemyDeck.map((card) => card.id);
     delete playerDeck._deckSource;
@@ -340,6 +400,10 @@
       enemyArchetype: enemyPlan.archetype,
       enemyDeckIds,
       enemyTemplateIds: enemyPlan.templateIds || [],
+      opponentId: opponent.id,
+      opponentName: opponent.name,
+      opponentEmoji: opponent.emoji,
+      opponent,
       dda,
       turnCount: 1,
       hintUsedTurn: null,
@@ -360,7 +424,7 @@
     assertOpeningDeckTotal("enemy", game.enemy);
     document.getElementById("overlay").classList.remove("show");
     document.getElementById("log").innerHTML = "";
-    log(`⚔️ 對戰開始！（難度：${D.label}）善用技能取勝。`, "me");
+    log(`⚔️ 對戰開始！難度：${D.label}；對手：${opponent.emoji} ${opponent.name}。`, "me");
     render();
     syncDdaToggle();
     syncAiThoughtToggle();
@@ -516,10 +580,16 @@
     const owned = [];
     for (const [key, count] of Object.entries(coll)) {
       const foil = key.endsWith("#foil");
-      const id = foil ? key.slice(0, -5) : key;
+      const tide = key.endsWith("#tide");
+      const id = foil || tide ? key.slice(0, -5) : key;
       const base = getCardById(id);
       if (!base) continue;
-      for (let i = 0; i < count; i++) { const c = cloneCard(base); c.foil = foil; owned.push(c); }
+      for (let i = 0; i < count; i++) {
+        const c = cloneCard(base);
+        c.foil = foil;
+        c.tide = tide;
+        owned.push(c);
+      }
     }
     return owned;
   }
@@ -616,17 +686,37 @@
     return rng() < 0.5 ? "aggro" : "control";
   }
 
-  function buildAiDeck(diffKey, playerArchetype) {
-    if (diffKey === "easy") {
-      return { deck: buildDeck(false), source: "random", archetype: "random", templateIds: [] };
+  function collectionForDeckIds(ids) {
+    return (ids || []).reduce((acc, id) => {
+      acc[id] = (acc[id] || 0) + 1;
+      return acc;
+    }, Object.create(null));
+  }
+
+  function buildOpponentDeck(opponent) {
+    const picked = opponent || currentOpponent();
+    const ids = Array.isArray(picked.deckIds) ? [...picked.deckIds] : [];
+    const validation = Core.validateDeck(ids, collectionForDeckIds(ids), CARD_POOL);
+    if (!validation.ok) {
+      throw new Error(`AI opponent deck invalid: ${picked.id} ${validation.errors.join(" | ")}`);
     }
-    let archetype = randomArchetype();
-    if (diffKey === "hard") {
-      if (playerArchetype === "aggro") archetype = "control";
-      else if (playerArchetype === "control") archetype = "aggro";
-    }
-    const deck = buildArchetypeDeck(archetype);
-    return { deck, source: "archetype", archetype, templateIds: deck._templateIds || [] };
+    const deck = Core.buildBattleDeck(ids, CARD_POOL, rng);
+    deck._templateIds = ids;
+    return deck;
+  }
+
+  function buildAiDeck(diffKey, playerArchetype, opponent) {
+    const picked = opponent || currentOpponent();
+    const deck = buildOpponentDeck(picked);
+    return {
+      deck,
+      source: "opponent",
+      archetype: picked.archetype || "neutral",
+      templateIds: deck._templateIds || [],
+      opponentId: picked.id,
+      playerArchetype,
+      difficulty: diffKey,
+    };
   }
 
   function shuffleInPlace(list) {
@@ -659,7 +749,8 @@
     const pool = CARD_POOL.filter((card) => card.rarity === picked);
     const source = pool[Math.floor(rng() * pool.length)] || CARD_POOL[0];
     const card = cloneCard(source);
-    card.foil = rng() < (Number(window.FOIL_CHANCE) || 0);
+    card.tide = rng() < (Number(window.TIDE_CHANCE) || 0);
+    card.foil = !card.tide && rng() < (Number(window.FOIL_CHANCE) || 0);
     return card;
   }
 
@@ -682,6 +773,13 @@
     if (total !== Core.DECK_SIZE) {
       throw new Error(`開局 ${label} 牌庫契約錯誤：hand+deck=${total}, expected=${Core.DECK_SIZE}`);
     }
+  }
+
+  function playableCost(side, card) {
+    const base = Math.max(0, Number(card && card.cost) || 0);
+    if (!card || card.type !== CARD_TYPE.SPELL) return base;
+    const discount = Math.max(0, Math.floor(Number(side && side.nextSpellDiscount) || 0));
+    return Math.max(0, base - discount);
   }
 
   // useCollection=true：玩家用開包收藏；false：AI 用隨機卡池
@@ -984,7 +1082,7 @@
     if (!game || game.turn !== "player" || game.over) return null;
     const actions = [];
     for (const card of game.player.hand) {
-      if (card.cost > game.player.mana) continue;
+      if (playableCost(game.player, card) > game.player.mana) continue;
       if (card.type === CARD_TYPE.MINION) {
         if (game.player.field.length >= MAX_FIELD) continue;
         actions.push(Object.assign({ type: "play", card, score: playerHintScore(card), label: `建議出牌：${card.name}` }, hintCopyForPlay(card)));
@@ -1264,6 +1362,7 @@
 
   function chooseAiSpellPlay(card) {
     const kind = game.enemyArchetype || "random";
+    const opponent = game.opponent || currentOpponent();
     const ai = game.enemy;
     const playerField = game.player.field;
     if (kind === "random") {
@@ -1287,6 +1386,7 @@
         return { used: !!target, targetUid: target && target.uid };
       }
       if (card.effect === "mana2") return { used: true, targetUid: null };
+      if (card.effect === "nextSpellMinus1") return { used: true, targetUid: null };
       return { used: false, targetUid: null };
     }
     if (card.effect === "heal5") {
@@ -1299,11 +1399,11 @@
       return { used: enoughTargets, targetUid: null };
     }
     if (card.effect === "mana2") {
-      return { used: ai.hand.some((c) => c !== card && c.cost > ai.mana), targetUid: null };
+      return { used: ai.hand.some((c) => c !== card && playableCost(ai, c) > ai.mana), targetUid: null };
     }
     if (card.effect === "draw2") {
       const room = Core.HAND_LIMIT - ai.hand.length;
-      return { used: room >= (kind === "control" ? 1 : 2), targetUid: null };
+      return { used: room >= (kind === "control" || kind === "spellburst" ? 1 : 2), targetUid: null };
     }
     if (card.effect === "giveShield") {
       const target = chooseShieldTarget();
@@ -1318,8 +1418,12 @@
     if (card.effect === "damage2" || card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8" || card.effect === "polymorph") {
       const target = chooseRemovalTarget(card.effect);
       const hasTauntTarget = target && (target.keywords || []).includes("taunt");
-      const used = !!target && (kind === "control" || hasTauntTarget || minionThreatScore(target) >= 12);
+      const used = !!target && (kind === "control" || kind === "spellburst" || hasTauntTarget || minionThreatScore(target) >= 12);
       return { used, targetUid: target && target.uid };
+    }
+    if (card.effect === "nextSpellMinus1") {
+      const followSpell = ai.hand.some((c) => c !== card && c.type === CARD_TYPE.SPELL && c.cost > 0);
+      return { used: followSpell || (Number(opponent.faceBias) || 0) >= 0.5, targetUid: null };
     }
     return { used: false, targetUid: null };
   }
@@ -1331,15 +1435,26 @@
     const attack = Number(card.attack) || 0;
     const health = Number(card.health) || 0;
     const cost = Number(card.cost) || 0;
+    const opponent = game.opponent || currentOpponent();
+    const tauntBias = Math.max(0, Math.min(1, Number(opponent.tauntBias) || 0));
     const spellPlan = card.type === CARD_TYPE.SPELL ? chooseAiSpellPlay(card) : null;
     if (kind === "control") {
       let score = cost * 7 + health * 3 + attack;
       if (card.axis === "control") score += 24;
-      if (keywords.includes("taunt")) score += 18;
+      if (keywords.includes("taunt")) score += 18 + tauntBias * 14;
       if (keywords.includes("lifesteal")) score += 12;
       if (keywords.includes("divineshield") || keywords.includes("regenerate")) score += 8;
       if (card.type === CARD_TYPE.SPELL) score += spellPlan && spellPlan.used ? 34 : -8;
       score += ddaProfile().scoreBias * (card.axis === "control" || (spellPlan && spellPlan.used) ? 40 : 10);
+      return score;
+    }
+    if (kind === "spellburst") {
+      let score = 80 - cost * 6 + attack * 2 + health;
+      if (keywords.includes("spellpower")) score += 24;
+      if (keywords.includes("battlecry")) score += 6;
+      if (card.type === CARD_TYPE.SPELL) score += spellPlan && spellPlan.used ? 42 : -6;
+      if (card.effect === "nextSpellMinus1") score += 18;
+      score += ddaProfile().scoreBias * (card.type === CARD_TYPE.SPELL || keywords.includes("spellpower") ? 40 : 10);
       return score;
     }
     let score = 110 - cost * 9 + attack * 5 + health;
@@ -1347,6 +1462,7 @@
     if (keywords.includes("charge")) score += 24;
     if (keywords.includes("rush")) score += 14;
     if (keywords.includes("windfury")) score += 10;
+    if (keywords.includes("taunt")) score += tauntBias * 6;
     if (card.type === CARD_TYPE.SPELL) score += spellPlan && spellPlan.used ? 22 : -10;
     score += ddaProfile().scoreBias * (card.axis === "aggro" || keywords.includes("charge") ? 40 : 10);
     return score;
@@ -1355,11 +1471,13 @@
   function chooseAiAttackTarget(atk, lethal) {
     const smart = game.aiSmart || 0;
     const kind = game.enemyArchetype || "random";
+    const opponent = game.opponent || currentOpponent();
+    const faceBias = Math.max(0, Math.min(1, Number(opponent.faceBias) || 0));
     if (lethal || smart < 1) return null;
     if (isRushHeroLocked(atk) && game.player.field.length) {
       return maybeDdaSecondBest([...game.player.field].sort((a, b) => a.health - b.health || minionThreatScore(b) - minionThreatScore(a)))[0] || null;
     }
-    if (kind === "aggro") return null;
+    if (kind === "aggro" || (faceBias >= 0.75 && rng() < faceBias)) return null;
     if (smart >= 2 && (atk.keywords || []).includes("poison")) {
       return maybeDdaSecondBest([...game.player.field].sort((a, b) => b.health - a.health || minionThreatScore(b) - minionThreatScore(a)))[0] || null;
     }
@@ -1379,7 +1497,7 @@
     let acted = true;
     while (acted && !game.over) {
       acted = false;
-      const affordable = maybeDdaSecondBest(ai.hand.filter((c) => c.cost <= ai.mana).sort((a, b) =>
+      const affordable = maybeDdaSecondBest(ai.hand.filter((c) => playableCost(ai, c) <= ai.mana).sort((a, b) =>
         (aiPlayPriority(b) - aiPlayPriority(a)) || (b.cost - a.cost)
       ));
       for (const card of affordable) {
@@ -1489,6 +1607,15 @@
     set("enemyHp", Math.max(0, game.enemy.hp));
     set("playerMana", game.player.mana);
     set("playerManaMax", game.player.manaMax);
+    const enemyHeroInfo = document.getElementById("enemyHero");
+    if (enemyHeroInfo) {
+      const opponent = game.opponent || currentOpponent();
+      const avatar = enemyHeroInfo.querySelector(".avatar");
+      const name = enemyHeroInfo.querySelector(".name");
+      if (avatar) avatar.textContent = opponent.emoji;
+      if (name) name.textContent = opponent.name;
+      enemyHeroInfo.title = `${opponent.name}｜${opponent.archetype}`;
+    }
 
     renderField("playerField", game.player.field, "player");
     renderField("enemyField", game.enemy.field, "enemy");
@@ -1497,7 +1624,7 @@
     hand.innerHTML = "";
     game.player.hand.forEach((card) => {
       const el = renderCard(card);
-      if (card.cost <= game.player.mana && game.turn === "player") el.classList.add("playable");
+      if (playableCost(game.player, card) <= game.player.mana && game.turn === "player") el.classList.add("playable");
       else el.classList.add("disabled");
       el.onclick = () => playFromHand(card.uid);
       hand.appendChild(el);
@@ -1551,7 +1678,7 @@
   function renderCard(card) {
     const r = RARITY[card.rarity] || RARITY.common;
     const el = document.createElement("div");
-    el.className = "card spawn rarity-" + card.rarity + (card.type === CARD_TYPE.SPELL ? " spell-card" : "") + (card.foil ? " foil" : "") + (r.idle ? " legend-idle" : "");
+    el.className = "card spawn rarity-" + card.rarity + (card.type === CARD_TYPE.SPELL ? " spell-card" : "") + (card.foil ? " foil" : "") + (card.tide ? " tide" : "") + (r.idle ? " legend-idle" : "");
     el.dataset.uid = card.uid;
     el.dataset.cardId = card.id;
     el.style.setProperty("--rarity", r.color);
@@ -1576,7 +1703,7 @@
       <div class="stars">${stars}</div>
       <div class="art">${art}</div>
       <div class="kwrow">${kwBadges}</div>
-      <div class="cardname">${card.name}${card.foil ? " ✦" : ""}</div>
+      <div class="cardname">${card.name}${card.foil ? " ✦" : ""}${card.tide ? " ≋" : ""}</div>
       <div class="cardtext">${card.text || ""}</div>
       <div class="stats">
         <div class="atk">${card.attack ?? ""}</div>
@@ -1667,7 +1794,7 @@
     const text = document.getElementById("cardDetailText");
     const flavor = document.getElementById("cardDetailFlavor");
     const keywords = document.getElementById("cardDetailKeywords");
-    if (title) title.textContent = `${card.name}${card.foil ? " 閃卡" : ""}`;
+    if (title) title.textContent = `${card.name}${card.foil ? " 閃卡" : ""}${card.tide ? " 潮鑄" : ""}`;
     renderDetailArt(card);
     const factionName = typeof factionLabel === "function" ? factionLabel(card) : chapterFactionName(card.faction);
     setChildren(meta, [
@@ -1724,7 +1851,10 @@
   function log(msg, who) {
     const box = document.getElementById("log");
     const line = document.createElement("div");
-    line.className = who || ""; line.textContent = msg;
+    const text = who === "ai" && game
+      ? `${game.opponentEmoji || currentOpponent().emoji} ${game.opponentName || currentOpponent().name}：${msg}`
+      : msg;
+    line.className = who || ""; line.textContent = text;
     box.appendChild(line); box.scrollTop = box.scrollHeight;
     while (box.children.length > 8) box.removeChild(box.firstChild);
   }
@@ -1792,6 +1922,14 @@
       } else if (event.type === "buffTarget") {
         flashKeyword2(event.uid, "+2/+2");
         flashCard(event.uid, "shield-gain");
+      } else if (event.type === "buffAdjacent1") {
+        flashKeyword2(event.uid, "+1 攻");
+        flashCard(event.uid, "shield-gain");
+      } else if (event.type === "mirrorRime") {
+        flashKeyword2(event.uid, event.amount > 0 ? `+${event.amount} 生命` : "鏡霜");
+        if (event.amount > 0) flashCard(event.uid, "shield-gain");
+      } else if (event.type === "silence") {
+        flashKeyword2(event.uid, "靜默");
       } else if (event.type === "polymorph") {
         flashKeyword2(event.uid, "變形！");
       } else if (event.type === "dying") {
@@ -1813,6 +1951,8 @@
         log(`${event.side === "enemy" ? "對手" : "你"}牌庫已空，疲勞受到 ${event.amount} 點傷害。`, event.side === "enemy" ? "ai" : "me");
       } else if (event.type === "heroHeal") {
         if (event.amount > 0) flashKeyword(event.side === "player" ? "playerHero" : "enemyHero", `+${event.amount} 生命`);
+      } else if (event.type === "nextSpellDiscount") {
+        flashKeyword(event.side === "player" ? "playerHero" : "enemyHero", `下張法術 -${event.amount}`);
       } else if (event.type === "regen") {
         flashKeyword2(event.uid, "回復");
         flashCard(event.uid, "regen");
@@ -1852,6 +1992,7 @@
       buffTarget: "秘能灌注",
       polymorph: "變形術",
       draw2: "戰術補給",
+      nextSpellMinus1: "虛空什一稅",
       damage2: "餘燼齊射",
       damage3: "火焰箭",
       damage5: "烈焰爆裂",
@@ -1870,8 +2011,9 @@
     else if (effect === "aoe1" || effect === "aoe2") log(`${name}橫掃敵方，造成 ${effectiveSpellDamage(game.player, effect)} 點傷害${spellPowerNote(game.player, effect)}。`, "me");
     else if (effect === "mana2") log(`${name}：本回合 +2 法力。`, "me");
     else if (effect === "giveShield" && target) log(`${name}：${target.name} 獲得聖盾。`, "me");
-    else if (effect === "buffTarget" && target) log(`${name}：${target.name} 獲得 +2/+2。`, "me");
-    else if (effect === "polymorph") log(`${name}：敵方隨從被變成綿羊。`, "me");
+    else if (effect === "buffTarget" && target) log(`${name}：${target.name}${cardOrEffect && cardOrEffect.mirrorRime ? "獲得鏡霜生命" : "獲得 +2/+2"}。`, "me");
+    else if (effect === "polymorph") log(`${name}：敵方隨從被${cardOrEffect && cardOrEffect.silenceOnly ? "靜默" : "變成綿羊"}。`, "me");
+    else if (effect === "nextSpellMinus1") log(`${name}：敵方英雄受 2 點傷害，你的下一張法術少 1 費。`, "me");
     else if ((effect === "damage2" || effect === "damage3" || effect === "damage5" || effect === "damage8") && target) log(`${name}擊中了 ${target.name}，造成 ${effectiveSpellDamage(game.player, effect)} 點傷害${spellPowerNote(game.player, effect)}。`, "me");
   }
 
@@ -1883,10 +2025,11 @@
     else if (effect === "draw2") log("對手施放戰術補給，抽了 2 張牌。", "ai");
     else if (effect === "aoe1" || effect === "aoe2") log(`對手施放範圍法術，造成 ${effectiveSpellDamage(game.enemy, effect)} 點傷害${spellPowerNote(game.enemy, effect)}。`, "ai");
     else if (effect === "damage2" || effect === "damage3" || effect === "damage5" || effect === "damage8") log(`對手用 ${name} 攻擊 ${target ? target.name : "你的隨從"}，造成 ${effectiveSpellDamage(game.enemy, effect)} 點傷害${spellPowerNote(game.enemy, effect)}。`, "ai");
-    else if (effect === "polymorph") log(`對手將 ${target ? target.name : "你的隨從"} 變形。`, "ai");
+    else if (effect === "polymorph") log(`對手將 ${target ? target.name : "你的隨從"} ${card && card.silenceOnly ? "靜默" : "變形"}。`, "ai");
     else if (effect === "giveShield") log(`對手施放聖盾術保護 ${target ? target.name : "隨從"}。`, "ai");
     else if (effect === "buffTarget") log(`對手強化了 ${target ? target.name : "隨從"}。`, "ai");
     else if (effect === "mana2") log("對手施放法力湧動。", "ai");
+    else if (effect === "nextSpellMinus1") log("對手施放虛空什一稅，下一張法術少 1 費。", "ai");
   }
 
   function logDeathrattleSummon(event) {
@@ -2686,6 +2829,7 @@
   // 提供給難度選擇器：換難度後重開一局
   window.__newGame = newGame;
   window.__difficulties = DIFFICULTY;
+  window.__opponents = OPPONENTS;
   window.addEventListener("storage", (e) => {
     if (e.key === QUEST_KEY) renderQuests();
     if (e.key === CHRONICLE_KEY || e.key === "card_stats_v1" || e.key === "cardpack_collection_v2") {
@@ -2772,10 +2916,32 @@
       source: game.enemyDeckSource,
       archetype: game.enemyArchetype,
       playerArchetype: game.playerArchetype,
+      opponentId: game.opponentId,
+      opponentName: game.opponentName,
+      opponentEmoji: game.opponentEmoji,
+      tauntBias: game.opponent && game.opponent.tauntBias,
+      faceBias: game.opponent && game.opponent.faceBias,
       ids: [...(game.enemyDeckIds || [])],
       liveIds: [...game.enemy.hand, ...game.enemy.deck].map((c) => c.id),
       templateIds: [...(game.enemyTemplateIds || [])],
     }),
+    opponents: () => Object.values(OPPONENTS).map((opponent) => ({
+      id: opponent.id,
+      name: opponent.name,
+      emoji: opponent.emoji,
+      archetype: opponent.archetype,
+      deckIds: [...opponent.deckIds],
+      tauntBias: opponent.tauntBias,
+      faceBias: opponent.faceBias,
+    })),
+    setOpponent(id) {
+      if (!OPPONENTS[id]) return currentOpponentId();
+      try { localStorage.setItem(OPPONENT_KEY, id); } catch {}
+      const sel = document.getElementById("opponentSel");
+      if (sel) sel.value = id;
+      newGame();
+      return currentOpponentId();
+    },
     archetypeTemplateIds: (kind) => buildArchetypeDeckIds(kind),
     guide: () => ({ active: guide.active, step: guide.step, selectedAttacker: guide.selectedAttacker }),
     startGuide: () => startGuide(true),
