@@ -86,7 +86,7 @@ const KEYWORDS = {
   rush:         { label: "突襲", icon: "💨", desc: "登場當回合可攻擊隨從，但不能攻擊英雄。" },
   frenzy:       { label: "狂怒", icon: "🔥", desc: "首次受傷存活後，攻擊 +2。" },
   spellpower:   { label: "法強", icon: "✨", desc: "在場時你的傷害法術 +1（可疊加）。" },
-  silence:      { label: "靜默", icon: "🤫", desc: "移除隨從的關鍵字、聖盾與觸發效果，但保留攻擊與生命。" },
+  silence:      { label: "靜默", icon: "🤫", desc: "移除隨從的關鍵字、聖盾與觸發效果（包含亡語），但保留攻擊與生命。" },
 };
 
 /**
@@ -192,7 +192,7 @@ const CARD_POOL = [
   { id: "glaciarchWarden", name: "冰獄看守", type: CARD_TYPE.MINION, rarity: "epic", cost: 6, attack: 3, health: 8, emoji: "🧊", image: "../../assets/cards/glaciarchWarden.png", keywords: ["taunt", "regenerate"], text: "嘲諷 + 回復：寒牢不讓任何人通過。", foil: false },
   { id: "countessLongNight", name: "長夜伯爵夫人", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 5, health: 7, emoji: "🌙", image: "../../assets/cards/countessLongNight.png", keywords: ["deathrattle", "lifesteal"], trigger: "summonSkeleton", text: "吸血。亡語：召喚一個骷髏(2/2)。", foil: false },
 
-  // ===== R51 P0 快贏內容擴充：10 張差分卡 + silence 2 張 =====
+  // ===== R52 P0 快贏內容擴充：10 張差分卡 + silence 2 張 =====
   { id: "saltShieldSquire", name: "鹽盾侍從", type: CARD_TYPE.MINION, rarity: "common", cost: 1, attack: 0, health: 3, emoji: "🛡️", image: null, keywords: ["taunt"], text: "嘲諷。便宜的前排，不負責收頭。", foil: false },
   { id: "iceNeedle", name: "冰針", type: CARD_TYPE.SPELL, rarity: "common", cost: 1, emoji: "❄️", image: null, text: "對一個敵方隨從造成 1 點傷害；若其有嘲諷，再造成 1 點。", effect: "damage2", baseDamage: 1, tauntBonusDamage: 1, foil: false },
   { id: "packHowler", name: "狼群嚎者", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 2, health: 3, emoji: "🐺", image: null, keywords: ["charge", "battlecry"], trigger: "buffAdjacent1", text: "衝鋒。戰吼：相鄰友方隨從攻擊 +1。", foil: false },
@@ -200,10 +200,10 @@ const CARD_POOL = [
   { id: "graveScribe", name: "墓碑抄寫員", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 1, health: 4, emoji: "✒️", image: null, keywords: ["deathrattle"], trigger: "drawCard1", text: "亡語：抽 1 張牌。", foil: false },
   { id: "mirrorRime", name: "鏡霜", type: CARD_TYPE.SPELL, rarity: "epic", cost: 2, emoji: "🪞", image: null, text: "選擇友方隨從，複製你場上嘲諷隨從的生命差，最多 +3 生命。", effect: "buffTarget", mirrorRime: true, foil: false },
   { id: "dualTalon", name: "雙爪獵手", type: CARD_TYPE.MINION, rarity: "epic", cost: 4, attack: 2, health: 3, emoji: "🗡️", image: null, keywords: ["windfury"], text: "連擊。可攻擊兩次。", foil: false },
-  { id: "voidTithe", name: "虛空什一稅", type: CARD_TYPE.SPELL, rarity: "epic", cost: 3, emoji: "🕳️", image: null, text: "對敵方英雄造成 2 點傷害；你的下一張法術少 1 費。", effect: "nextSpellMinus1", foil: false },
+  { id: "voidTithe", name: "虛空什一稅", type: CARD_TYPE.SPELL, rarity: "epic", cost: 3, emoji: "🕳️", image: null, text: "對敵方英雄造成 2 點傷害；本回合你的下一張法術少 1 費。", effect: "nextSpellMinus1", foil: false },
   { id: "captainGreywake", name: "灰潮船長", type: CARD_TYPE.MINION, rarity: "legendary", cost: 6, attack: 5, health: 6, emoji: "⚓", image: null, keywords: ["taunt", "battlecry"], trigger: "aoeEnemy1", text: "嘲諷。戰吼：對所有敵方隨從造成 1 點傷害。", foil: false },
   { id: "ladyAshenBell", name: "灰鐘女士", type: CARD_TYPE.MINION, rarity: "legendary", cost: 5, attack: 3, health: 5, emoji: "🔔", image: null, keywords: ["deathrattle", "lifesteal"], trigger: "summonTwo1_1", text: "吸血。亡語：召喚兩個 1/1 灰鈴侍從。", foil: false },
-  { id: "silenceOne", name: "封口咒", type: CARD_TYPE.SPELL, rarity: "epic", cost: 2, emoji: "🤫", image: null, keywords: ["silence"], text: "使一個敵方隨從靜默。保留攻擊與生命。", effect: "polymorph", silenceOnly: true, foil: false },
+  { id: "silenceOne", name: "封口咒", type: CARD_TYPE.SPELL, rarity: "epic", cost: 2, emoji: "🤫", image: null, keywords: ["silence"], text: "使一個敵方隨從靜默，移除關鍵字、聖盾與亡語。保留攻擊與生命。", effect: "polymorph", silenceOnly: true, foil: false },
   { id: "scoutInterrogator", name: "斥候訊問", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 2, health: 3, emoji: "🕵️", image: null, keywords: ["battlecry"], trigger: "silenceIfDamaged", text: "戰吼：使一個已受傷的敵方隨從靜默。", foil: false },
 ];
 

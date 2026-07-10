@@ -136,7 +136,7 @@
   const TEXT_SIZE_KEY = "card_text_size_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r51_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r52_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0, reason: "自動觀察中", history: [] };
@@ -991,13 +991,13 @@
     if (card.effect === "heal5") return game.player.maxHp - game.player.hp >= 4 ? 24 : 6;
     if (card.effect === "draw2") return game.player.hand.length < Core.HAND_LIMIT ? (game.player.hand.length <= Core.HAND_LIMIT - 2 ? 26 : 14) : 4;
     if (card.effect === "aoe1" || card.effect === "aoe2") {
-      const damage = effectiveSpellDamage(game.player, card.effect);
+      const damage = effectiveSpellDamage(game.player, card, target);
       const kills = game.enemy.field.filter((m) => m.health <= damage).length;
       return game.enemy.field.length >= 2 ? 26 + game.enemy.field.length * 3 + kills * 5 : 5;
     }
     if (card.effect === "giveShield" || card.effect === "buffTarget") return target ? 16 + minionThreatScore(target) : -999;
     if (card.effect === "damage2" || card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8") {
-      const damage = effectiveSpellDamage(game.player, card.effect);
+      const damage = effectiveSpellDamage(game.player, card, target);
       return target ? 18 + minionThreatScore(target) + (target.health <= damage ? 8 : 0) : -999;
     }
     if (card.effect === "polymorph") return target ? 18 + minionThreatScore(target) : -999;
@@ -1009,7 +1009,12 @@
     return `${Number(m.attack) || 0}/${Number(m.health) || 0} ${m.name}`;
   }
 
-  function spellDamage(effect) {
+  function spellDamage(effect, card, target) {
+    if (card && Number.isFinite(Number(card.baseDamage))) {
+      let base = Number(card.baseDamage);
+      if (card.tauntBonusDamage && target && (target.keywords || []).includes("taunt")) base += Number(card.tauntBonusDamage) || 0;
+      return base;
+    }
     if (effect === "damage8") return 8;
     if (effect === "damage5") return 5;
     if (effect === "damage3") return 3;
@@ -1019,14 +1024,18 @@
     return 0;
   }
 
-  function effectiveSpellDamage(side, effect) {
-    const base = spellDamage(effect);
+  function effectiveSpellDamage(side, effectOrCard, target) {
+    const card = effectOrCard && typeof effectOrCard === "object" ? effectOrCard : null;
+    const effect = card ? card.effect : effectOrCard;
+    const base = spellDamage(effect, card, target);
     if (!base) return 0;
     return base + Core.spellPower(side || {});
   }
 
-  function spellPowerNote(side, effect) {
-    const base = spellDamage(effect);
+  function spellPowerNote(side, effectOrCard, target) {
+    const card = effectOrCard && typeof effectOrCard === "object" ? effectOrCard : null;
+    const effect = card ? card.effect : effectOrCard;
+    const base = spellDamage(effect, card, target);
     const sp = base ? Core.spellPower(side || {}) : 0;
     return sp > 0 ? `（含法強 +${sp}）` : "";
   }
@@ -1044,21 +1053,21 @@
     if (card.effect === "heal5") return { reason: "英雄受傷，治療能拉回安全血線。", estimate: "預計恢復 5 點生命。" };
     if (card.effect === "draw2") return { reason: "手牌還有空間，補兩張牌能延續後續回合資源。", estimate: "預計抽 2 張牌；手牌滿時會燒牌。" };
     if (card.effect === "aoe1" || card.effect === "aoe2") {
-      const damage = effectiveSpellDamage(game.player, card.effect);
+      const damage = effectiveSpellDamage(game.player, card);
       const kills = game.enemy.field.filter((m) => m.health <= damage).length;
       return kills > 0
-        ? { reason: `此法術可換 ${kills} 隻隨從。`, estimate: `預計造成全場 ${damage} 點傷害${spellPowerNote(game.player, card.effect)}。` }
-        : { reason: "敵方場面展開，範圍法術能壓低全場血量。", estimate: `預計造成全場 ${damage} 點傷害${spellPowerNote(game.player, card.effect)}。` };
+        ? { reason: `此法術可換 ${kills} 隻隨從。`, estimate: `預計造成全場 ${damage} 點傷害${spellPowerNote(game.player, card)}。` }
+        : { reason: "敵方場面展開，範圍法術能壓低全場血量。", estimate: `預計造成全場 ${damage} 點傷害${spellPowerNote(game.player, card)}。` };
     }
     if (card.effect === "giveShield") return { reason: "保護場上最高威脅隨從。", estimate: target ? `預計讓 ${target.name} 獲得聖盾。` : "" };
     if (card.effect === "buffTarget") return { reason: "強化場上最高威脅隨從。", estimate: target ? `預計讓 ${target.name} 獲得 +2/+2。` : "" };
     if (card.effect === "polymorph") return { reason: "變形高威脅隨從，降低反擊壓力。", estimate: target ? `預計把 ${minionLine(target)} 變成綿羊。` : "" };
-    const damage = effectiveSpellDamage(game.player, card.effect);
+    const damage = effectiveSpellDamage(game.player, card, target);
     if (damage && target) {
       const hasTauntTarget = (target.keywords || []).includes("taunt");
       return {
         reason: hasTauntTarget ? "先解嘲諷才能打臉。" : "先移除高威脅隨從，降低下回合傷害。",
-        estimate: target.health <= damage ? `預計擊殺 ${minionLine(target)}${spellPowerNote(game.player, card.effect)}。` : `預計對 ${target.name} 造成 ${damage} 點傷害${spellPowerNote(game.player, card.effect)}。`,
+        estimate: target.health <= damage ? `預計擊殺 ${minionLine(target)}${spellPowerNote(game.player, card, target)}。` : `預計對 ${target.name} 造成 ${damage} 點傷害${spellPowerNote(game.player, card, target)}。`,
       };
     }
     return { reason: "這一步能提升目前局面的交換效率。", estimate: "" };
@@ -1304,7 +1313,7 @@
     if (effect === "aoe1" || effect === "aoe2") return `解場優先，${card.name} 壓低你的整個場面${spellPowerNote(game.enemy, effect)}。`;
     if (effect === "giveShield" && target) return `保護核心隨從，讓 ${target.name} 獲得聖盾。`;
     if (effect === "polymorph" && target) return `解掉高威脅，將 ${target.name} 變形。`;
-    if ((effect === "damage2" || effect === "damage3" || effect === "damage5" || effect === "damage8") && target) return `解場優先，${card.name} 換掉 ${target.name}${spellPowerNote(game.enemy, effect)}。`;
+    if ((effect === "damage2" || effect === "damage3" || effect === "damage5" || effect === "damage8") && target) return `解場優先，${card.name} 換掉 ${target.name}${spellPowerNote(game.enemy, card, target)}。`;
     if (effect === "buffTarget" && target) return `強化核心隨從，讓 ${target.name} 變成更穩的威脅。`;
     return `依局面施放 ${card.name || fallbackSpellName(effect)}。`;
   }
@@ -1321,20 +1330,21 @@
     return `解場優先，${attacker.name} 攻擊 ${target.name} 降低下回合傷害。`;
   }
 
-  function chooseRemovalTarget(effect) {
+  function chooseRemovalTarget(effectOrCard) {
+    const card = effectOrCard && typeof effectOrCard === "object" ? effectOrCard : null;
+    const effect = card ? card.effect : effectOrCard;
     const field = [...game.player.field];
     if (!field.length) return null;
-    const damage = effectiveSpellDamage(game.enemy, effect);
     if (effect === "polymorph") {
       const worthTransforming = field.filter((m) =>
         m.health >= 5 || m.attack >= 4 || (m.keywords || []).includes("taunt") || (m.keywords || []).includes("regenerate")
       );
       return maybeDdaSecondBest((worthTransforming.length ? worthTransforming : field).sort((a, b) => minionThreatScore(b) - minionThreatScore(a)))[0] || null;
     }
-    if (damage > 0) {
+    if (spellDamage(effect, card) > 0) {
       return maybeDdaSecondBest(field.sort((a, b) => {
-        const lethalA = a.health <= damage ? 1 : 0;
-        const lethalB = b.health <= damage ? 1 : 0;
+        const lethalA = a.health <= effectiveSpellDamage(game.enemy, card || effect, a) ? 1 : 0;
+        const lethalB = b.health <= effectiveSpellDamage(game.enemy, card || effect, b) ? 1 : 0;
         return (lethalB - lethalA) || (minionThreatScore(b) - minionThreatScore(a));
       }))[0] || null;
     }
@@ -1374,7 +1384,7 @@
         return { used: !!target, targetUid: target && target.uid };
       }
       if (card.effect === "polymorph") {
-        const target = chooseRemovalTarget(card.effect);
+        const target = chooseRemovalTarget(card);
         return { used: !!target, targetUid: target && target.uid };
       }
       if (card.effect === "damage2" || card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8") {
@@ -1416,7 +1426,7 @@
       return { used, targetUid: target && target.uid };
     }
     if (card.effect === "damage2" || card.effect === "damage3" || card.effect === "damage5" || card.effect === "damage8" || card.effect === "polymorph") {
-      const target = chooseRemovalTarget(card.effect);
+      const target = chooseRemovalTarget(card);
       const hasTauntTarget = target && (target.keywords || []).includes("taunt");
       const used = !!target && (kind === "control" || kind === "spellburst" || hasTauntTarget || minionThreatScore(target) >= 12);
       return { used, targetUid: target && target.uid };
@@ -2008,13 +2018,13 @@
     const name = card.name || fallbackSpellName(effect);
     if (effect === "heal5") log(`你施放${name}，恢復 5 點生命。`, "me");
     else if (effect === "draw2") log(`${name}：抽了 2 張牌。`, "me");
-    else if (effect === "aoe1" || effect === "aoe2") log(`${name}橫掃敵方，造成 ${effectiveSpellDamage(game.player, effect)} 點傷害${spellPowerNote(game.player, effect)}。`, "me");
+    else if (effect === "aoe1" || effect === "aoe2") log(`${name}橫掃敵方，造成 ${effectiveSpellDamage(game.player, card)} 點傷害${spellPowerNote(game.player, card)}。`, "me");
     else if (effect === "mana2") log(`${name}：本回合 +2 法力。`, "me");
     else if (effect === "giveShield" && target) log(`${name}：${target.name} 獲得聖盾。`, "me");
     else if (effect === "buffTarget" && target) log(`${name}：${target.name}${cardOrEffect && cardOrEffect.mirrorRime ? "獲得鏡霜生命" : "獲得 +2/+2"}。`, "me");
     else if (effect === "polymorph") log(`${name}：敵方隨從被${cardOrEffect && cardOrEffect.silenceOnly ? "靜默" : "變成綿羊"}。`, "me");
-    else if (effect === "nextSpellMinus1") log(`${name}：敵方英雄受 2 點傷害，你的下一張法術少 1 費。`, "me");
-    else if ((effect === "damage2" || effect === "damage3" || effect === "damage5" || effect === "damage8") && target) log(`${name}擊中了 ${target.name}，造成 ${effectiveSpellDamage(game.player, effect)} 點傷害${spellPowerNote(game.player, effect)}。`, "me");
+    else if (effect === "nextSpellMinus1") log(`${name}：敵方英雄受 2 點傷害，本回合你的下一張法術少 1 費。`, "me");
+    else if ((effect === "damage2" || effect === "damage3" || effect === "damage5" || effect === "damage8") && target) log(`${name}擊中了 ${target.name}，造成 ${effectiveSpellDamage(game.player, card, target)} 點傷害${spellPowerNote(game.player, card, target)}。`, "me");
   }
 
   function logAiSpell(cardOrEffect, target) {
@@ -2023,18 +2033,19 @@
     const name = card.name || fallbackSpellName(effect);
     if (effect === "heal5") log("對手施放治療術。", "ai");
     else if (effect === "draw2") log("對手施放戰術補給，抽了 2 張牌。", "ai");
-    else if (effect === "aoe1" || effect === "aoe2") log(`對手施放範圍法術，造成 ${effectiveSpellDamage(game.enemy, effect)} 點傷害${spellPowerNote(game.enemy, effect)}。`, "ai");
-    else if (effect === "damage2" || effect === "damage3" || effect === "damage5" || effect === "damage8") log(`對手用 ${name} 攻擊 ${target ? target.name : "你的隨從"}，造成 ${effectiveSpellDamage(game.enemy, effect)} 點傷害${spellPowerNote(game.enemy, effect)}。`, "ai");
+    else if (effect === "aoe1" || effect === "aoe2") log(`對手施放範圍法術，造成 ${effectiveSpellDamage(game.enemy, card)} 點傷害${spellPowerNote(game.enemy, card)}。`, "ai");
+    else if (effect === "damage2" || effect === "damage3" || effect === "damage5" || effect === "damage8") log(`對手用 ${name} 攻擊 ${target ? target.name : "你的隨從"}，造成 ${effectiveSpellDamage(game.enemy, card, target)} 點傷害${spellPowerNote(game.enemy, card, target)}。`, "ai");
     else if (effect === "polymorph") log(`對手將 ${target ? target.name : "你的隨從"} ${card && card.silenceOnly ? "靜默" : "變形"}。`, "ai");
     else if (effect === "giveShield") log(`對手施放聖盾術保護 ${target ? target.name : "隨從"}。`, "ai");
     else if (effect === "buffTarget") log(`對手強化了 ${target ? target.name : "隨從"}。`, "ai");
     else if (effect === "mana2") log("對手施放法力湧動。", "ai");
-    else if (effect === "nextSpellMinus1") log("對手施放虛空什一稅，下一張法術少 1 費。", "ai");
+    else if (effect === "nextSpellMinus1") log("對手施放虛空什一稅，本回合下一張法術少 1 費。", "ai");
   }
 
   function logDeathrattleSummon(event) {
     if (event.name === "骷髏") log("亡語：召喚了骷髏(2/2)。", event.side === "player" ? "me" : "ai");
     else if (event.name === "浴火鳳凰") log("亡語：鳳凰浴火重生！", event.side === "player" ? "me" : "ai");
+    else if (event.name) log(`亡語：召喚了 ${event.name}。`, event.side === "player" ? "me" : "ai");
   }
 
   function triggerAbilityUi(g, side, trigger, target, source) {

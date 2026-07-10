@@ -589,6 +589,20 @@ function testP0EffectsAndSilence() {
   assert(buff.ok && gBuff.player.field[0].attack === 2 && gBuff.player.field[2].attack === 3 && gBuff.player.field[1].attack === 2,
     "buffAdjacent1 buffs only adjacent minions by +1 attack");
 
+  const gDeathBuff = state({
+    player: {
+      field: [
+        minion("leftDeathBuff", { attack: 1, health: 3 }),
+        minion("deadHowler", { attack: 2, health: 0, keywords: ["deathrattle"], trigger: "buffAdjacent1" }),
+        minion("rightDeathBuff", { attack: 2, health: 3 }),
+      ],
+    },
+  });
+  const deathBuff = Core.cleanupField(gDeathBuff, { side: "player" }, rngFactory());
+  assert(deathBuff.ok && gDeathBuff.player.field[0].uid === "leftDeathBuff" && gDeathBuff.player.field[0].attack === 2
+    && gDeathBuff.player.field[1].uid === "rightDeathBuff" && gDeathBuff.player.field[1].attack === 3,
+    "deathrattle buffAdjacent1 uses pre-death adjacency and does not wrongly buff field[0]");
+
   const gAoe = state({
     player: { field: [minion("captain", { attack: 5, health: 6, keywords: ["battlecry"], trigger: "aoeEnemy1" })] },
     enemy: { field: [minion("e1", { health: 2 }), minion("e2", { health: 1 })] },
@@ -603,20 +617,31 @@ function testP0EffectsAndSilence() {
     && gSummon.player.field.slice(-2).every((m) => m.attack === 1 && m.health === 1),
     "summonTwo1_1 summons two 1/1 tokens when there is room");
 
-  const gDiscount = state({
+  const gDiscountSameTurn = state({
     player: { hp: 20, mana: 10, manaMax: 10, hand: [spell("void", "nextSpellMinus1", { cost: 3 }), spell("heal", "heal5", { cost: 2 })] },
     enemy: { hp: 30 },
   });
-  const voidCast = Core.playCard(gDiscount, { side: "player", cardUid: "void" }, rngFactory());
-  const enemyHpAfterVoid = gDiscount.enemy.hp;
-  Core.advanceTurn(gDiscount, { phase: "endPlayer" }, rngFactory());
-  Core.advanceTurn(gDiscount, { phase: "startEnemy" }, rngFactory());
-  Core.advanceTurn(gDiscount, { phase: "endEnemy" }, rngFactory());
-  const healCast = Core.playCard(gDiscount, { side: "player", cardUid: "heal" }, rngFactory());
+  const voidCast = Core.playCard(gDiscountSameTurn, { side: "player", cardUid: "void" }, rngFactory());
+  const enemyHpAfterVoid = gDiscountSameTurn.enemy.hp;
+  const healCast = Core.playCard(gDiscountSameTurn, { side: "player", cardUid: "heal" }, rngFactory());
   assert(voidCast.ok && enemyHpAfterVoid === 28 && voidCast.events.some((e) => e.type === "nextSpellDiscount"),
     "nextSpellMinus1 damages hero and creates the next-spell discount");
-  assert(healCast.ok && gDiscount.player.mana === 9 && !gDiscount.player.nextSpellDiscount,
-    "nextSpellMinus1 persists across turns, discounts the next spell, then clears");
+  assert(healCast.ok && gDiscountSameTurn.player.mana === 6 && !gDiscountSameTurn.player.nextSpellDiscount,
+    "nextSpellMinus1 discounts the next spell in the same turn, then clears");
+
+  const gDiscountExpired = state({
+    player: { hp: 20, mana: 10, manaMax: 10, hand: [spell("voidExpire", "nextSpellMinus1", { cost: 3 }), spell("healExpire", "heal5", { cost: 2 })] },
+    enemy: { hp: 30 },
+  });
+  const voidExpire = Core.playCard(gDiscountExpired, { side: "player", cardUid: "voidExpire" }, rngFactory());
+  const endDiscount = Core.advanceTurn(gDiscountExpired, { phase: "endPlayer" }, rngFactory());
+  Core.advanceTurn(gDiscountExpired, { phase: "startEnemy" }, rngFactory());
+  Core.advanceTurn(gDiscountExpired, { phase: "endEnemy" }, rngFactory());
+  const healExpired = Core.playCard(gDiscountExpired, { side: "player", cardUid: "healExpire" }, rngFactory());
+  assert(voidExpire.ok && endDiscount.events.some((e) => e.type === "spellDiscountExpired" && e.side === "player"),
+    "nextSpellMinus1 expires at end of turn when unused");
+  assert(healExpired.ok && gDiscountExpired.player.mana === 8 && !gDiscountExpired.player.nextSpellDiscount,
+    "nextSpellMinus1 does not persist across turns");
 
   const target = minion("target", { health: 1, maxHealth: 1, attack: 2 });
   const taunt = minion("wall", { health: 6, maxHealth: 6, attack: 0, keywords: ["taunt", "divineshield"], shield: true });
@@ -644,6 +669,10 @@ function testP0EffectsAndSilence() {
   assert(silence.ok && silenced.attack === 5 && silenced.health === 4 && silenced.maxHealth === 7
     && silenced.keywords.length === 0 && !silenced.trigger && silenced.shield === false,
     "silenceOne silences instead of reducing attack or health like polymorph");
+  silenced.health = 0;
+  const silencedDeath = Core.cleanupField(gSilence, { side: "enemy" }, rngFactory());
+  assert(gSilence.enemy.field.length === 0 && !silencedDeath.events.some((e) => e.type === "deathrattle" || e.type === "minionSummoned"),
+    "silence removes deathrattle so a silenced minion does not trigger on death");
 
   const gScout = state({
     player: { field: [minion("scout", { attack: 2, health: 3, keywords: ["battlecry"], trigger: "silenceIfDamaged" })] },

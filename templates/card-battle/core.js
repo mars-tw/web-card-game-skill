@@ -905,7 +905,7 @@
     if (events) events.push({ type: "lifesteal", side: sourceSide.side, uid: source.uid, amount });
   }
 
-  function applyAbility(state, side, trigger, target, dyingCard, rng, events) {
+  function applyAbility(state, side, trigger, target, dyingCard, rng, events, options) {
     if (!trigger) return;
     if (events) events.push({ type: "ability", side: side.side, trigger, uid: dyingCard && dyingCard.uid, targetUid: target && target.uid });
     if (trigger === "healHero2") {
@@ -925,8 +925,19 @@
       for (const minion of [...foe.field]) applyDamageToMinion(minion, 1, null, events);
       cleanupBoth(state, rng, events);
     } else if (trigger === "buffAdjacent1") {
-      const index = side.field.indexOf(dyingCard);
-      const targets = [side.field[index - 1], side.field[index + 1]].filter(Boolean);
+      let targets = [];
+      if (options && Array.isArray(options.adjacentTargets)) {
+        targets = options.adjacentTargets.filter((minion) => minion && minion.health > 0 && side.field.includes(minion));
+      } else {
+        const index = side.field.indexOf(dyingCard);
+        // Deathrattles pass pre-death adjacent targets. If the source is no longer in field,
+        // do not fall through to field[-1]/field[0] and buff the wrong minion.
+        if (index < 0) {
+          if (events) events.push({ type: "buffAdjacentMiss", side: side.side, uid: dyingCard && dyingCard.uid });
+          return;
+        }
+        targets = [side.field[index - 1], side.field[index + 1]].filter(Boolean);
+      }
       for (const minion of targets) buffAttackOnly(minion, 1, side, events, "buffAdjacent1");
     } else if (trigger === "summonSkeleton") {
       summonCard(side, makeToken("骷髏", 2, 2, "☠️"), rng, events, "deathrattle");
@@ -948,14 +959,17 @@
 
   function cleanupSide(state, side, rng, events) {
     if (!side || !Array.isArray(side.field)) return;
-    const dying = side.field.filter((m) => m.health <= 0);
+    const dying = side.field
+      .map((minion, index, field) => ({ minion, adjacentTargets: [field[index - 1], field[index + 1]].filter(Boolean) }))
+      .filter((entry) => entry.minion.health <= 0);
     if (dying.length === 0) return;
     side.field = side.field.filter((m) => m.health > 0);
-    for (const minion of dying) {
+    for (const entry of dying) {
+      const minion = entry.minion;
       if (events) events.push({ type: "dying", side: side.side, uid: minion.uid, name: minion.name });
       if (hasKeyword(minion, "deathrattle") && minion.trigger) {
         if (events) events.push({ type: "deathrattle", side: side.side, uid: minion.uid, trigger: minion.trigger });
-        applyAbility(state, side, minion.trigger, null, minion, rng, events);
+        applyAbility(state, side, minion.trigger, null, minion, rng, events, { adjacentTargets: entry.adjacentTargets });
       }
     }
   }
@@ -1016,6 +1030,13 @@
       if (used > 0 && events) events.push({ type: "spellDiscount", side: side.side, uid: card.uid, amount: used });
     }
     return cost;
+  }
+
+  function clearTurnSpellDiscount(side, events) {
+    const amount = Math.max(0, Math.floor(Number(side && side.nextSpellDiscount) || 0));
+    if (!side || amount <= 0) return;
+    side.nextSpellDiscount = 0;
+    if (events) events.push({ type: "spellDiscountExpired", side: side.side, amount });
   }
 
   function applySpellEffect(state, sideKey, effect, target, rng, events, card) {
@@ -1294,6 +1315,7 @@
     const phase = action && action.phase;
     if (phase === "endPlayer") {
       burnMulligan(state, events);
+      clearTurnSpellDiscount(state.player, events);
       state.selected = null;
       state.pendingSpell = null;
       state.comboCount = 0;
@@ -1307,6 +1329,7 @@
       drawCardInternal(enemy, rng, events);
       resetAttack(enemy, events);
     } else if (phase === "endEnemy") {
+      clearTurnSpellDiscount(state.enemy, events);
       regenerateSide(state.enemy, events);
       state.turn = "player";
       state.player.manaMax = Math.min(MAX_MANA, state.player.manaMax + 1);
