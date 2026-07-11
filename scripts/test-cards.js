@@ -19,11 +19,11 @@ const R48_NEW_IDS = [
   "emberpup", "frostfangDire", "thunderRoc", "soulfrostRaven", "runicScrivener", "tidecallerAdept",
   "watchtowerBowman", "oathbannerHerald", "dawnArchbishop", "tacticalRequisition", "glaciarchWarden", "countessLongNight",
 ];
-const R53_P0_IDS = [
+const R54_P0_IDS = [
   "saltShieldSquire", "iceNeedle", "packHowler", "toxinViper", "graveScribe",
   "mirrorRime", "dualTalon", "voidTithe", "captainGreywake", "ladyAshenBell",
 ];
-const R53_SILENCE_IDS = ["silenceOne", "scoutInterrogator"];
+const R54_SILENCE_IDS = ["silenceOne", "scoutInterrogator"];
 
 let failed = 0;
 function assert(cond, msg) {
@@ -48,13 +48,13 @@ function strictlyDominatesTargetedDamage(a, b) {
 console.log("== 結構檢查 ==");
 assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 62, `卡池至少 62 張（實際 ${CARD_POOL.length}）`);
 assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 74, `CARD_POOL has at least 74 cards (actual ${CARD_POOL.length})`);
-assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 86, `CARD_POOL has at least 86 cards after R53 P0 (actual ${CARD_POOL.length})`);
+assert(Array.isArray(CARD_POOL) && CARD_POOL.length >= 86, `CARD_POOL has at least 86 cards after R54 P0 (actual ${CARD_POOL.length})`);
 assert(Object.keys(RARITY).length === 4, "稀有度有 4 級");
 assert(Object.keys(KEYWORDS).length >= 5, "關鍵字技能至少 5 種");
 assert(KEYWORDS.lifesteal?.label === "吸血" && KEYWORDS.rush?.label === "突襲", "新關鍵字吸血與突襲有繁中 label");
 assert(KEYWORDS.frenzy?.label === "狂怒" && KEYWORDS.spellpower?.label === "法強", "R47 關鍵字狂怒與法強有繁中 label");
-assert(KEYWORDS.silence?.label === "靜默" && /移除/.test(KEYWORDS.silence.desc), "R53 silence 關鍵字已註冊");
-assert(TIDE_CHANCE === 0.03, "R53 tideforged 機率為 3%");
+assert(KEYWORDS.silence?.label === "靜默" && /移除/.test(KEYWORDS.silence.desc), "R54 silence 關鍵字已註冊");
+assert(TIDE_CHANCE === 0.03, "R54 tideforged 機率為 3%");
 assert(AXIS_LABELS.aggro === "快攻" && AXIS_LABELS.control === "控制" && AXIS_LABELS.neutral === "中立", "軸線標籤完整");
 
 console.log("== 欄位完整性 ==");
@@ -110,14 +110,14 @@ assert(r48Cards.every((c) => typeof c.flavor === "string" && c.flavor.trim().len
 assert(r48Cards.every((c) => FACTIONS[c.faction]), "R48 faction ids all resolve");
 assert(Object.keys(FACTIONS).length === 4 && Object.keys(CARD_FACTION).length >= 74, "R48 factions cover the full card pool");
 
-console.log("== R53 P0 content expansion ==");
-const r53Cards = R53_P0_IDS.map((id) => getCardById(id));
-const r53SilenceCards = R53_SILENCE_IDS.map((id) => getCardById(id));
-assert(r53Cards.every(Boolean) && r53SilenceCards.every(Boolean), "R53 P0 10 cards plus 2 silence cards exist");
-assert(r53Cards.every((c) => c.image === null) && r53SilenceCards.every((c) => c.image === null), "R53 P0 images are null placeholders");
-assert(r53Cards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8)
-  && r53SilenceCards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8), "R53 flavor text is present");
-const expectedR53 = {
+console.log("== R54 P0 content expansion ==");
+const r54Cards = R54_P0_IDS.map((id) => getCardById(id));
+const r54SilenceCards = R54_SILENCE_IDS.map((id) => getCardById(id));
+assert(r54Cards.every(Boolean) && r54SilenceCards.every(Boolean), "R54 P0 10 cards plus 2 silence cards exist");
+assert(r54Cards.every((c) => c.image === null) && r54SilenceCards.every((c) => c.image === null), "R54 P0 images are null placeholders");
+assert(r54Cards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8)
+  && r54SilenceCards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8), "R54 flavor text is present");
+const expectedR54 = {
   saltShieldSquire: { cost: 1, attack: 0, health: 3, rarity: "common", type: CARD_TYPE.MINION, keywords: ["taunt"] },
   iceNeedle: { cost: 1, rarity: "common", type: CARD_TYPE.SPELL, effect: "damage2", baseDamage: 1, tauntBonusDamage: 1 },
   packHowler: { cost: 3, attack: 2, health: 3, rarity: "rare", type: CARD_TYPE.MINION, keywords: ["charge", "battlecry"], trigger: "buffAdjacent1" },
@@ -131,7 +131,7 @@ const expectedR53 = {
   silenceOne: { cost: 2, rarity: "epic", type: CARD_TYPE.SPELL, effect: "polymorph", silenceOnly: true, keywords: ["silence"] },
   scoutInterrogator: { cost: 3, attack: 2, health: 3, rarity: "rare", type: CARD_TYPE.MINION, keywords: ["battlecry"], trigger: "silenceIfDamaged" },
 };
-for (const [id, spec] of Object.entries(expectedR53)) {
+for (const [id, spec] of Object.entries(expectedR54)) {
   const card = getCardById(id);
   assert(!!card, `${id} exists`);
   if (!card) continue;
@@ -144,16 +144,16 @@ for (const [id, spec] of Object.entries(expectedR53)) {
   }
 }
 const p0NewCoreCodes = new Set();
-for (const id of [...R53_P0_IDS, ...R53_SILENCE_IDS]) {
+for (const id of [...R54_P0_IDS, ...R54_SILENCE_IDS]) {
   const card = getCardById(id);
   if (!card) continue;
   if (["buffAdjacent1", "aoeEnemy1", "summonTwo1_1", "nextSpellMinus1"].includes(card.trigger)) p0NewCoreCodes.add(card.trigger);
   if (["buffAdjacent1", "aoeEnemy1", "summonTwo1_1", "nextSpellMinus1"].includes(card.effect)) p0NewCoreCodes.add(card.effect);
 }
 assert([...p0NewCoreCodes].sort().join(",") === "aoeEnemy1,buffAdjacent1,nextSpellMinus1,summonTwo1_1",
-  `R53 adds exactly four core effect codes (${[...p0NewCoreCodes].sort().join(",")})`);
-assert(R53_P0_IDS.concat(R53_SILENCE_IDS).every((id) => FACTIONS[getCardById(id).faction]), "R53 faction ids all resolve");
-assert(R53_P0_IDS.concat(R53_SILENCE_IDS).every((id) => ["aggro", "control", "neutral"].includes(getCardById(id).axis)), "R53 axis ids all resolve");
+  `R54 adds exactly four core effect codes (${[...p0NewCoreCodes].sort().join(",")})`);
+assert(R54_P0_IDS.concat(R54_SILENCE_IDS).every((id) => FACTIONS[getCardById(id).faction]), "R54 faction ids all resolve");
+assert(R54_P0_IDS.concat(R54_SILENCE_IDS).every((id) => ["aggro", "control", "neutral"].includes(getCardById(id).axis)), "R54 axis ids all resolve");
 assert(getCardById("toxinViper").cost < getCardById("raptor").cost
   && getCardById("toxinViper").attack < getCardById("raptor").attack
   && !getCardById("toxinViper").keywords.includes("charge"), "toxinViper is not a strict replacement for raptor");

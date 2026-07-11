@@ -137,7 +137,7 @@
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r53_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r54_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
@@ -148,6 +148,7 @@
   let missionReturnFocus = null;
   let chronicleReturnFocus = null;
   let lastUnlockedChapterIds = null;
+  const ACTIVE_FX_SELECTOR = ".combat-ghost, .dmg-float, .hit-spark, .combo-float, .kw-pop, .confetti-piece, .burst-star";
   const GUIDE_STEPS = [
     { label: "STEP 1 / 3", title: "先出一張牌", copy: "點手牌中發亮的「迅捷狼」。它有衝鋒，登場後可以立刻攻擊。" },
     { label: "STEP 2 / 3", title: "選擇攻擊", copy: "先點你場上的迅捷狼，再點敵方英雄完成一次攻擊。" },
@@ -454,6 +455,7 @@
   function newGame() {
     stopGuide(false);
     document.body.classList.remove("defeat-fade");
+    clearTransientFx();
     const board = document.querySelector(".board");
     if (board) board.classList.remove("lethal-slow", "shake-screen");
     finishFx = { win: false, lethal: false, confetti: 0, defeatFade: false };
@@ -2154,6 +2156,36 @@
     return document.querySelector(`.card[data-uid="${uidOrId}"]`) || document.getElementById(uidOrId);
   }
 
+  function clearTransientFx() {
+    document.querySelectorAll(ACTIVE_FX_SELECTOR).forEach((el) => el.remove());
+  }
+
+  function cloneCardGhost(source, extraClass) {
+    if (!source || !source.classList || !source.classList.contains("card")) return null;
+    const r = source.getBoundingClientRect();
+    if (!r.width || !r.height) return null;
+    const ghost = source.cloneNode(true);
+    ghost.classList.remove("spawn", "selected", "targetable", "can-attack", "blocked", "guide-focus");
+    ghost.classList.add("combat-ghost");
+    if (extraClass) ghost.classList.add(extraClass);
+    ghost.style.position = "fixed";
+    ghost.style.left = r.left + "px";
+    ghost.style.top = r.top + "px";
+    ghost.style.width = r.width + "px";
+    ghost.style.height = r.height + "px";
+    ghost.style.margin = "0";
+    ghost.style.pointerEvents = "none";
+    ghost.style.zIndex = "180";
+    ghost.setAttribute("aria-hidden", "true");
+    document.body.appendChild(ghost);
+    return ghost;
+  }
+
+  function removeGhost(ghost, delay) {
+    if (!ghost) return;
+    setTimeout(() => ghost.remove(), delay);
+  }
+
   // 攻擊者朝目標衝刺（用 transform 位移做撞擊）
   function animateAttackToward(attackerUid, targetUidOrId) {
     const a = elFor(attackerUid), t = elFor(targetUidOrId);
@@ -2162,19 +2194,39 @@
       const ar = a.getBoundingClientRect(), tr = t.getBoundingClientRect();
       const dx = (tr.left + tr.width / 2) - (ar.left + ar.width / 2);
       const dy = (tr.top + tr.height / 2) - (ar.top + ar.height / 2);
+      const lungeMs = isLowPerf() ? 190 : 360;
+      const hitDelay = isLowPerf() ? 90 : 150;
+      const hitMs = isLowPerf() ? 180 : 320;
+      const attackGhost = cloneCardGhost(a, "lunge-to");
+      const targetGhost = cloneCardGhost(t);
+      if (attackGhost) {
+        attackGhost.style.setProperty("--lx", dx * 0.85 + "px");
+        attackGhost.style.setProperty("--ly", dy * 0.85 + "px");
+        removeGhost(attackGhost, lungeMs + 40);
+      }
       // 位移走全程（CP1-12，原 0.5 只走一半沒撞擊感）
       a.style.setProperty("--lx", dx * 0.85 + "px");
       a.style.setProperty("--ly", dy * 0.85 + "px");
       a.classList.add("lunge-to");
-      setTimeout(() => { a.classList.remove("lunge-to"); a.style.removeProperty("--lx"); a.style.removeProperty("--ly"); }, isLowPerf() ? 190 : 360);
+      setTimeout(() => { a.classList.remove("lunge-to"); a.style.removeProperty("--lx"); a.style.removeProperty("--ly"); }, lungeMs);
       // 命中：受擊震動 + 閃白 + 火花粒子 + 螢幕震
       setTimeout(() => {
-        t.classList.add("hit-shake", "hit-flash");
+        const liveTarget = elFor(targetUidOrId);
+        const hitEl = targetGhost || liveTarget || t;
+        hitEl.classList.add("hit-shake", "hit-flash");
         spawnSparks(tr.left + tr.width / 2, tr.top + tr.height / 2);
-        setTimeout(() => t.classList.remove("hit-shake", "hit-flash"), isLowPerf() ? 180 : 320);
-      }, isLowPerf() ? 90 : 150);
+        if (liveTarget && liveTarget !== hitEl) liveTarget.classList.add("hit-shake", "hit-flash");
+        setTimeout(() => {
+          hitEl.classList.remove("hit-shake", "hit-flash");
+          if (liveTarget) liveTarget.classList.remove("hit-shake", "hit-flash");
+        }, hitMs);
+        removeGhost(targetGhost, hitMs + 60);
+      }, hitDelay);
     } else {
-      a.classList.add("attacking"); setTimeout(() => a.classList.remove("attacking"), isLowPerf() ? 160 : 300);
+      const attackMs = isLowPerf() ? 160 : 300;
+      const attackGhost = cloneCardGhost(a, "attacking");
+      removeGhost(attackGhost, attackMs + 40);
+      a.classList.add("attacking"); setTimeout(() => a.classList.remove("attacking"), attackMs);
     }
   }
 
@@ -2227,7 +2279,14 @@
   }
   function flashKeyword(id, label) { flashKeyword2(id, label); }
 
-  function markDying(uid) { const el = elFor(uid); if (el) el.classList.add("dying"); }
+  function markDying(uid) {
+    const el = elFor(uid);
+    if (!el) return;
+    const deathMs = isLowPerf() ? 260 : 560;
+    const ghost = cloneCardGhost(el, "dying");
+    el.classList.add("dying");
+    removeGhost(ghost, deathMs + 80);
+  }
   function screenShake() {
     const board = document.querySelector(".board");
     if (!board) return;
@@ -2864,8 +2923,10 @@
     setTimeout(() => { if (game === gRef) ov.classList.add("show"); }, 500);
   }
   function burstStars() {
+    if (isLowPerf() || prefersReducedMotion()) return;
     for (let i = 0; i < 30; i++) {
       const c = document.createElement("div");
+      c.className = "burst-star";
       c.textContent = ["✨", "⭐", "💫", "🌟", "🎉"][i % 5];
       c.style.cssText = `position:fixed;left:50%;top:45%;font-size:26px;pointer-events:none;z-index:200;transition:all 1.3s ease-out;`;
       document.body.appendChild(c);
@@ -2985,6 +3046,7 @@
   window.__test = {
     game: () => game,
     setup(playerField, enemyField) {
+      clearTransientFx();
       game.player.field = (playerField || []).map((id) => prepMinion(getCardById(id)));
       game.enemy.field = (enemyField || []).map((id) => prepMinion(getCardById(id)));
       game.player.mana = game.player.manaMax = 10;
@@ -3028,7 +3090,17 @@
     textSize: () => ({ value: currentTextSize(), attr: document.documentElement.dataset.textSize, select: document.getElementById("textSizeSel")?.value || "" }),
     setAudioMuted: (muted) => setAudioMuted(muted),
     audio: () => ({ muted: audioMuted(), unlocked: audioUnlocked, button: document.getElementById("audioToggleBtn")?.textContent || "" }),
-    effects: () => ({ finishFx: Object.assign({}, finishFx), confetti: document.querySelectorAll(".confetti-piece").length, lethalSlow: document.querySelector(".board")?.classList.contains("lethal-slow") || false, defeatFade: document.body.classList.contains("defeat-fade"), damagePops: document.querySelectorAll(".dmg-float").length, dying: document.querySelectorAll(".card.dying").length }),
+    effects: () => ({
+      finishFx: Object.assign({}, finishFx),
+      confetti: document.querySelectorAll(".confetti-piece").length,
+      lethalSlow: document.querySelector(".board")?.classList.contains("lethal-slow") || false,
+      defeatFade: document.body.classList.contains("defeat-fade"),
+      damagePops: document.querySelectorAll(".dmg-float").length,
+      dying: document.querySelectorAll(".card.dying").length,
+      ghosts: document.querySelectorAll(".combat-ghost").length,
+      lunge: document.querySelectorAll(".combat-ghost.lunge-to, .card.lunge-to").length,
+      hitFlash: document.querySelectorAll(".combat-ghost.hit-flash, .card.hit-flash").length,
+    }),
     markDying: (uid) => { markDying(uid); return document.querySelectorAll(".card.dying").length; },
     swUpdateGuard: () => ({ key: SW_AUTO_RELOAD_KEY, windowMs: SW_AUTO_RELOAD_WINDOW_MS, early: shouldAutoReloadForSwUpdate(), late: shouldAutoReloadForSwUpdate(swPageLoadedAt + SW_AUTO_RELOAD_WINDOW_MS + 1) }),
     hint: () => showHint(),

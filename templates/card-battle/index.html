@@ -6,9 +6,9 @@
 <title>卡牌對戰 · Card Battle</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r53-v1";
+    const CACHE_VERSION = "card-battle-r54-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r53_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r54_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -187,6 +187,8 @@
     background: repeating-linear-gradient(135deg, rgba(255,255,255,0) 0 7px, rgba(255,255,255,.34) 8px 10px, rgba(255,255,255,0) 11px 18px);
     mix-blend-mode: screen; animation: dissolveSweep .52s ease forwards;
   }
+  .card.combat-ghost { pointer-events:none !important; z-index:180; }
+  .card.combat-ghost .card-info-btn { display:none; }
   .card.attacking { animation: lunge .3s ease; }
   .card.lunge-to { animation: lungeTo .36s ease; z-index: 30; }
   .card.hit-shake { animation: hitShake .3s; }
@@ -887,9 +889,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r53-v1"></script>
-  <script src="core.js?v=card-battle-r53-v1"></script>
-  <script src="battle.js?v=card-battle-r53-v1"></script>
+  <script src="cards.js?v=card-battle-r54-v1"></script>
+  <script src="core.js?v=card-battle-r54-v1"></script>
+  <script src="battle.js?v=card-battle-r54-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {

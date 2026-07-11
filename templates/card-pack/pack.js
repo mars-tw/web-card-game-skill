@@ -22,6 +22,11 @@
   const Core = window.CardCore;
   if (!Core) throw new Error("CardCore 未載入");
 
+  function prefersReducedMotion() {
+    try { return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+    catch { return false; }
+  }
+
   // collection: { collectKey: count }，collectKey 由 cards.js 提供（含 #foil）
   let collection = loadCollection();
   let deckState = loadDeck();
@@ -148,12 +153,12 @@
   }
 
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r53-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r54-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r53_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r54_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
@@ -544,6 +549,7 @@
 
   // 開傳說/閃卡：全螢幕金色 vignette flash（CP1-13）
   function legendFlash() {
+    if (prefersReducedMotion()) return;
     const f = document.createElement("div");
     f.className = "legend-flash";
     document.body.appendChild(f);
@@ -1353,6 +1359,7 @@
     }
   }
   function burstConfetti() {
+    if (prefersReducedMotion()) return;
     for (let i = 0; i < 28; i++) {
       const c = document.createElement("div");
       c.textContent = ["✨", "⭐", "💫", "🌟", "🎉"][i % 5];
@@ -1589,6 +1596,7 @@
     stats.bestStreak = 0;
     stats.telemetry = { games: [], cardPlays: {} };
     saveStats(stats);
+    try { localStorage.removeItem("card_win_streak_v1"); } catch {}
     renderRecordPanel();
     return stats;
   }

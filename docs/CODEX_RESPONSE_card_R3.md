@@ -1,6 +1,6 @@
 # Codex Response - card-battle R3
 
-版本：card-battle-r53-v1  
+版本：card-battle-r54-v1  
 結論：必修項已採納並修正；非必修項依風險分批處理。未執行 git commit / git push。
 
 ## 必修決議
@@ -45,9 +45,9 @@
 
 ## 版本同步
 
-- Runtime cache: `sw.js` `CACHE_VERSION = "card-battle-r53-v1"`。
-- Shell / battle / pack HTML 與 script query 都使用 `card-battle-r53-v1`。
-- SW auto reload key 同步為 `card_sw_auto_reload_r53_v1`。
+- Runtime cache: `sw.js` `CACHE_VERSION = "card-battle-r54-v1"`。
+- Shell / battle / pack HTML 與 script query 都使用 `card-battle-r54-v1`。
+- SW auto reload key 同步為 `card_sw_auto_reload_r54_v1`。
 - `package.json` / `package-lock.json` 版本同步到 `0.4.5`。
 - runtime/test grep：`index.html templates sw.js package.json package-lock.json scripts` 無 `r51` 命中。
 
