@@ -18,6 +18,7 @@
   const PITY_LIMIT = 20;
   const SAVE_BACKUP_KEY = "card_save_backup_v1";
   const TEXT_SIZE_KEY = "card_text_size_v1";
+  const AUDIO_MUTE_KEY = "card_audio_muted_v1";
   const Core = window.CardCore;
   if (!Core) throw new Error("CardCore 未載入");
 
@@ -31,6 +32,8 @@
   let lastRecordCopy = "";
   let lastSaveCopy = "";
   let missionReturnFocus = null;
+  let audioCtx = null;
+  let audioUnlocked = false;
 
   function loadCollection() {
     try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || {}; }
@@ -80,13 +83,77 @@
     return next;
   }
 
+  function audioMuted() {
+    try { return localStorage.getItem(AUDIO_MUTE_KEY) === "1"; }
+    catch { return false; }
+  }
+
+  function syncAudioButton() {
+    const btn = document.getElementById("packAudioToggleBtn");
+    if (!btn) return;
+    const muted = audioMuted();
+    btn.classList.toggle("is-muted", muted);
+    btn.textContent = muted ? "M" : "SFX";
+    btn.title = muted ? "Audio muted" : (audioUnlocked ? "Audio on" : "Audio unlocks on first gesture");
+    btn.setAttribute("aria-pressed", muted ? "true" : "false");
+  }
+
+  function ensureAudio() {
+    if (audioMuted()) { syncAudioButton(); return null; }
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    if (!audioCtx) audioCtx = new Ctx();
+    if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+    audioUnlocked = true;
+    syncAudioButton();
+    return audioCtx;
+  }
+
+  function setAudioMuted(muted) {
+    try { localStorage.setItem(AUDIO_MUTE_KEY, muted ? "1" : "0"); } catch {}
+    if (!muted) ensureAudio();
+    syncAudioButton();
+    return audioMuted();
+  }
+
+  function playTone(freq, duration, type, gain, delay, endFreq) {
+    if (!audioUnlocked || audioMuted()) return;
+    const ctx = audioCtx;
+    if (!ctx) return;
+    const now = ctx.currentTime + (delay || 0);
+    const osc = ctx.createOscillator();
+    const amp = ctx.createGain();
+    osc.type = type || "sine";
+    osc.frequency.setValueAtTime(freq, now);
+    if (endFreq) osc.frequency.exponentialRampToValueAtTime(Math.max(20, endFreq), now + duration);
+    amp.gain.setValueAtTime(0.0001, now);
+    amp.gain.exponentialRampToValueAtTime(gain || .04, now + .012);
+    amp.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+    osc.connect(amp).connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + duration + .025);
+  }
+
+  function playSound(kind) {
+    if (!audioUnlocked || audioMuted()) return;
+    if (kind === "pack") { playTone(150, .16, "sawtooth", .04, 0, 70); playTone(330, .1, "triangle", .035, .12); }
+    else if (kind === "flip") { playTone(520, .055, "triangle", .03, 0, 740); }
+    else if (kind === "rare") { playTone(420, .12, "sine", .04); playTone(840, .16, "triangle", .035, .1); playTone(1260, .24, "sine", .025, .22); }
+  }
+
+  function installAudioUnlock() {
+    const unlock = () => ensureAudio();
+    ["pointerdown", "keydown"].forEach((eventName) => document.addEventListener(eventName, unlock, { once: true, passive: true }));
+    syncAudioButton();
+  }
+
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r52-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r53-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r52_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r53_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
@@ -403,6 +470,7 @@
     updateCoinDisplay();
 
     const pack = document.getElementById("pack");
+    playSound("pack");
     pack.classList.add("opening");
     pack.style.pointerEvents = "none";
 
@@ -458,6 +526,8 @@
         const cls = isHigh ? "legend-pull"
                   : (card.rarity === "epic" || card.rarity === "rare") ? "rare-pull" : "flip-in";
         el.classList.add(cls);
+        if (card.tide) el.classList.add("tide-pull");
+        playSound(isHigh || card.rarity === "epic" || card.rarity === "rare" ? "rare" : "flip");
         if (i === last) el.classList.add("finale"); // 壓軸卡額外光效
         if (isHigh) { burstConfetti(); legendFlash(); } // 開傳說/閃卡 → 全螢幕金光
       }, t);
@@ -495,6 +565,7 @@
     }).join("");
     el.innerHTML = `
       <div class="beam"></div>
+      <div class="tide-wave"></div>
       <div class="cost">${card.cost}</div>
       <div class="stars">${"★".repeat(r.stars)}</div>
       ${card._dup ? '<div class="dup-tag">重複</div>' : ''}
@@ -1311,8 +1382,11 @@
   // ===== 綁定 =====
   installAccessibilityLabels();
   applyTextSize(currentTextSize());
+  installAudioUnlock();
   readCacheVersion();
   document.getElementById("pack").onclick = openPack;
+  const packAudioToggleBtn = document.getElementById("packAudioToggleBtn");
+  if (packAudioToggleBtn) packAudioToggleBtn.onclick = () => setAudioMuted(!audioMuted());
   document.getElementById("againBtn").onclick = resetForNextPack;
   document.getElementById("toBattleBtn").onclick = goBattle;
   document.getElementById("goBattleTop").onclick = goBattle;
@@ -1376,6 +1450,7 @@
   });
   window.addEventListener("storage", (event) => {
     if (event.key === TEXT_SIZE_KEY) applyTextSize(currentTextSize());
+    if (event.key === AUDIO_MUTE_KEY) syncAudioButton();
   });
 
   // 更新金幣顯示（CP0-2）
@@ -1639,6 +1714,19 @@
     setTextSize: (size) => setTextSize(size),
     textSize: () => ({ value: currentTextSize(), attr: document.documentElement.dataset.textSize, select: document.getElementById("packTextSizeSel")?.value || "" }),
     pwaVersion: () => document.getElementById("packPwaVersion")?.textContent || "",
+    setAudioMuted: (muted) => setAudioMuted(muted),
+    audio: () => ({ muted: audioMuted(), unlocked: audioUnlocked, button: document.getElementById("packAudioToggleBtn")?.textContent || "" }),
+    revealEffects: () => ({
+      cards: document.querySelectorAll("#revealRow .card").length,
+      rare: document.querySelectorAll("#revealRow .rare-pull, #revealRow .legend-pull").length,
+      tide: document.querySelectorAll("#revealRow .tide-pull .tide-wave").length,
+    }),
+    revealTest: () => {
+      const cards = [cloneCard(getCardById("wolf")), cloneCard(getCardById("knight")), cloneCard(getCardById("mage")), cloneCard(getCardById("golem")), cloneCard(getCardById("dragon"))].filter(Boolean);
+      if (cards[2]) cards[2].tide = true;
+      revealCards(cards);
+      return cards.length;
+    },
     readCacheVersion: () => readCacheVersion(),
     swUpdateGuard: () => ({ key: SW_AUTO_RELOAD_KEY, windowMs: SW_AUTO_RELOAD_WINDOW_MS, early: shouldAutoReloadForSwUpdate(), late: shouldAutoReloadForSwUpdate(swPageLoadedAt + SW_AUTO_RELOAD_WINDOW_MS + 1) }),
     clearRecord: () => clearRecordStats(),

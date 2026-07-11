@@ -134,11 +134,15 @@
   const GUIDE_KEY = "cb_guide_done_v1";
   const PERF_KEY = "card_perf_mode_v1";
   const TEXT_SIZE_KEY = "card_text_size_v1";
+  const AUDIO_MUTE_KEY = "card_audio_muted_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r52_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r53_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
+  let audioCtx = null;
+  let audioUnlocked = false;
+  let finishFx = { win: false, lethal: false, confetti: 0, defeatFade: false };
   const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0, reason: "自動觀察中", history: [] };
   let detailReturnFocus = null;
   let missionReturnFocus = null;
@@ -149,6 +153,77 @@
     { label: "STEP 2 / 3", title: "選擇攻擊", copy: "先點你場上的迅捷狼，再點敵方英雄完成一次攻擊。" },
     { label: "STEP 3 / 3", title: "結束回合", copy: "攻擊後點「結束回合」，讓對手行動。之後就照這個節奏出牌、攻擊、結束回合。" },
   ];
+
+  function prefersReducedMotion() {
+    try { return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+    catch { return false; }
+  }
+
+  function audioMuted() {
+    try { return localStorage.getItem(AUDIO_MUTE_KEY) === "1"; }
+    catch { return false; }
+  }
+
+  function syncAudioButton() {
+    const btn = document.getElementById("audioToggleBtn");
+    if (!btn) return;
+    const muted = audioMuted();
+    btn.classList.toggle("is-muted", muted);
+    btn.textContent = muted ? "M" : "SFX";
+    btn.title = muted ? "Audio muted" : (audioUnlocked ? "Audio on" : "Audio unlocks on first gesture");
+    btn.setAttribute("aria-pressed", muted ? "true" : "false");
+  }
+
+  function ensureAudio() {
+    if (audioMuted()) { syncAudioButton(); return null; }
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    if (!audioCtx) audioCtx = new Ctx();
+    if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+    audioUnlocked = true;
+    syncAudioButton();
+    return audioCtx;
+  }
+
+  function setAudioMuted(muted) {
+    try { localStorage.setItem(AUDIO_MUTE_KEY, muted ? "1" : "0"); } catch {}
+    if (!muted) ensureAudio();
+    syncAudioButton();
+    return audioMuted();
+  }
+
+  function playTone(freq, duration, type, gain, delay, endFreq) {
+    if (!audioUnlocked || audioMuted()) return;
+    const ctx = audioCtx;
+    if (!ctx) return;
+    const now = ctx.currentTime + (delay || 0);
+    const osc = ctx.createOscillator();
+    const amp = ctx.createGain();
+    osc.type = type || "sine";
+    osc.frequency.setValueAtTime(freq, now);
+    if (endFreq) osc.frequency.exponentialRampToValueAtTime(Math.max(20, endFreq), now + duration);
+    amp.gain.setValueAtTime(0.0001, now);
+    amp.gain.exponentialRampToValueAtTime(gain || 0.045, now + 0.012);
+    amp.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+    osc.connect(amp).connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + duration + 0.025);
+  }
+
+  function playSound(kind) {
+    if (!audioUnlocked || audioMuted()) return;
+    if (kind === "play") { playTone(440, .06, "triangle", .035); playTone(660, .08, "triangle", .026, .055); }
+    else if (kind === "attack") { playTone(190, .11, "sawtooth", .045, 0, 92); }
+    else if (kind === "hurt") { playTone(120, .08, "square", .035, 0, 70); }
+    else if (kind === "lethal") { playTone(220, .18, "sawtooth", .05); playTone(440, .16, "triangle", .04, .12); playTone(880, .28, "sine", .034, .24); }
+    else if (kind === "death") { playTone(180, .22, "triangle", .038, 0, 48); }
+  }
+
+  function installAudioUnlock() {
+    const unlock = () => ensureAudio();
+    ["pointerdown", "keydown"].forEach((eventName) => document.addEventListener(eventName, unlock, { once: true, passive: true }));
+    syncAudioButton();
+  }
 
   function currentPerfMode() {
     let mode = "auto";
@@ -378,6 +453,10 @@
   // ===== 初始化 =====
   function newGame() {
     stopGuide(false);
+    document.body.classList.remove("defeat-fade");
+    const board = document.querySelector(".board");
+    if (board) board.classList.remove("lethal-slow", "shake-screen");
+    finishFx = { win: false, lethal: false, confetti: 0, defeatFade: false };
     const diffKey = currentDifficulty();
     const D = DIFFICULTY[diffKey];
     const playerDeck = buildDeck(true);
@@ -422,7 +501,7 @@
     for (let i = 0; i < D.enemyDraw; i++) drawCard(game.enemy);
     assertOpeningDeckTotal("player", game.player);
     assertOpeningDeckTotal("enemy", game.enemy);
-    document.getElementById("overlay").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show", "win", "lose");
     document.getElementById("log").innerHTML = "";
     log(`⚔️ 對戰開始！難度：${D.label}；對手：${opponent.emoji} ${opponent.name}。`, "me");
     render();
@@ -917,6 +996,7 @@
         animateAttackToward(attacker.uid, "enemyHero");
         const result = Core.resolveHeroAttack(game, { attackerSide: "player", attackerUid: attacker.uid, defenderSide: "enemy" }, rng);
         handleCoreResult(result);
+        if (result.ok) playSound("attack");
         if (result.ok) log(`${attacker.name} 攻擊敵方英雄，造成 ${attacker.attack} 點傷害！`, "me");
         else showCoreFailure(result);
         if (result.ok) advanceGuide("attack");
@@ -1173,6 +1253,7 @@
       defenderUid: defender.uid,
     }, rng);
     handleCoreResult(result);
+    if (result.ok) playSound("attack");
     if (result.ok) log(`${attacker.name} 與 ${defender.name} 交戰！`, attackerSide.side === "player" ? "me" : "ai");
     else showCoreFailure(result);
     if (result.ok && attackerSide.side === "player") advanceGuide("attack");
@@ -1572,6 +1653,7 @@
             animateAttackToward(atk.uid, "playerHero");
             const result = Core.resolveHeroAttack(game, { attackerSide: "enemy", attackerUid: atk.uid, defenderSide: "player" }, rng);
             handleCoreResult(result);
+            if (result.ok) playSound("attack");
             if (result.ok) log(`對手的 ${atk.name} 攻擊你的英雄，造成 ${atk.attack} 點傷害！`, "ai");
             else showCoreFailure(result);
           } else {
@@ -1607,7 +1689,9 @@
     game.over = true;
     game.selected = null;
     game.pendingSpell = null;
-    showOverlay(game.enemy.hp <= 0 ? "🏆 勝利！" : "💀 落敗…", game.enemy.hp <= 0);
+    const win = game.enemy.hp <= 0;
+    triggerFinishEffect(win);
+    showOverlay(win ? "Victory!" : "Defeat", win);
     return true;
   }
 
@@ -1915,6 +1999,8 @@
       } else if (event.type === "damage") {
         flashCard(event.uid, "damaged");
         floatDamage(event.uid, event.amount);
+        playSound("hurt");
+        if ((event.amount || 0) >= 4) screenShake();
       } else if (event.type === "poison") {
         flashKeyword2(event.uid, "劇毒！");
         flashCard(event.uid, "poisoned");
@@ -1944,16 +2030,20 @@
         flashKeyword2(event.uid, "變形！");
       } else if (event.type === "dying") {
         markDying(event.uid);
+        playSound("death");
       } else if (event.type === "deathrattle") {
         flashKeyword2(event.uid, "亡語");
       } else if (event.type === "battlecry") {
         flashKeyword2(event.uid, "戰吼");
       } else if (event.type === "spellCast") {
+        playSound("play");
         const sideObj = event.side === "enemy" ? game.enemy : game.player;
         const sp = spellDamage(event.effect) ? Core.spellPower(sideObj) : 0;
         if (sp > 0) log(`法強 +${sp} 強化了${event.side === "enemy" ? "對手" : "你的"}法術。`, event.side === "enemy" ? "ai" : "me");
       } else if (event.type === "heroDamage") {
         floatDamage(event.defenderSide === "enemy" ? "enemyHero" : "playerHero", event.amount);
+        playSound("hurt");
+        if ((event.amount || 0) >= 4) screenShake();
       } else if (event.type === "fatigue") {
         const heroId = event.side === "enemy" ? "enemyHero" : "playerHero";
         floatDamage(heroId, event.amount);
@@ -1966,6 +2056,8 @@
       } else if (event.type === "regen") {
         flashKeyword2(event.uid, "回復");
         flashCard(event.uid, "regen");
+      } else if (event.type === "minionSummoned" && event.reason === "play") {
+        playSound("play");
       } else if (event.type === "minionSummoned" && event.reason === "deathrattle") {
         logDeathrattleSummon(event);
       }
@@ -2077,7 +2169,7 @@
       setTimeout(() => { a.classList.remove("lunge-to"); a.style.removeProperty("--lx"); a.style.removeProperty("--ly"); }, isLowPerf() ? 190 : 360);
       // 命中：受擊震動 + 閃白 + 火花粒子 + 螢幕震
       setTimeout(() => {
-        t.classList.add("hit-shake", "hit-flash"); screenShake();
+        t.classList.add("hit-shake", "hit-flash");
         spawnSparks(tr.left + tr.width / 2, tr.top + tr.height / 2);
         setTimeout(() => t.classList.remove("hit-shake", "hit-flash"), isLowPerf() ? 180 : 320);
       }, isLowPerf() ? 90 : 150);
@@ -2139,8 +2231,42 @@
   function screenShake() {
     const board = document.querySelector(".board");
     if (!board) return;
-    if (isLowPerf()) return;
+    if (isLowPerf() || prefersReducedMotion()) return;
     board.classList.add("shake-screen"); setTimeout(() => board.classList.remove("shake-screen"), 260);
+  }
+
+  function triggerFinishEffect(win) {
+    finishFx = { win: !!win, lethal: true, confetti: 0, defeatFade: !win };
+    playSound("lethal");
+    const board = document.querySelector(".board");
+    if (board && !prefersReducedMotion()) {
+      board.classList.remove("lethal-slow");
+      void board.offsetWidth;
+      board.classList.add("lethal-slow");
+      setTimeout(() => board.classList.remove("lethal-slow"), 720);
+    }
+    if (!win) document.body.classList.add("defeat-fade");
+    return finishFx;
+  }
+
+  function burstConfetti() {
+    if (isLowPerf() || prefersReducedMotion()) return 0;
+    const colors = ["#facc15", "#fb7185", "#38bdf8", "#4ade80", "#c084fc", "#f97316"];
+    const count = 46;
+    finishFx.confetti += count;
+    for (let i = 0; i < count; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti-piece";
+      c.style.left = (8 + Math.random() * 84) + "vw";
+      c.style.top = (-8 - Math.random() * 10) + "px";
+      c.style.setProperty("--confetti-color", colors[i % colors.length]);
+      c.style.setProperty("--cx", (Math.random() * 160 - 80) + "px");
+      c.style.setProperty("--cy", (160 + Math.random() * 260) + "px");
+      c.style.setProperty("--cr", (180 + Math.random() * 460) + "deg");
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 1700);
+    }
+    return count;
   }
 
   // 戰績 + 金幣經濟（CP0-2）：閉合「打贏→賺金→開包→變強」迴圈。
@@ -2708,6 +2834,7 @@
     recordGameTelemetry(s, win);
     s.dda = Core.nextDdaState(s.dda, s, win ? "win" : "loss");
     saveStats(s);
+    try { localStorage.setItem("card_win_streak_v1", JSON.stringify({ current: s.streak || 0, best: s.bestStreak || 0 })); } catch {}
     const ddaInfo = Core.ddaProfile(s.dda);
     if (win) {
       progressQuest({ type: "win", amount: 1 });
@@ -2732,7 +2859,7 @@
     updateQuestCtas();
     refreshChronicle();
     updateChronicleBadge();
-    if (win) burstStars();
+    if (win) { burstStars(); burstConfetti(); }
     const gRef = game;
     setTimeout(() => { if (game === gRef) ov.classList.add("show"); }, 500);
   }
@@ -2757,6 +2884,7 @@
   installSwAutoReload();
   installAccessibilityLabels();
   applyTextSize(currentTextSize());
+  installAudioUnlock();
   document.getElementById("endTurnBtn").onclick = endTurn;
   const hintBtn = document.getElementById("hintBtn");
   if (hintBtn) hintBtn.onclick = showHint;
@@ -2768,6 +2896,8 @@
   if (perfModeSel) perfModeSel.onchange = () => setPerfMode(perfModeSel.value);
   const textSizeSel = document.getElementById("textSizeSel");
   if (textSizeSel) textSizeSel.onchange = () => setTextSize(textSizeSel.value);
+  const audioToggleBtn = document.getElementById("audioToggleBtn");
+  if (audioToggleBtn) audioToggleBtn.onclick = () => setAudioMuted(!audioMuted());
   document.getElementById("restartBtn").onclick = newGame;
   document.getElementById("overlayPackBtn").onclick = goPack;
   document.getElementById("overlayQuestBtn").onclick = claimAllQuestsUi;
@@ -2848,6 +2978,7 @@
       renderChronicle();
     }
     if (e.key === TEXT_SIZE_KEY) applyTextSize(currentTextSize());
+    if (e.key === AUDIO_MUTE_KEY) syncAudioButton();
   });
 
   // 測試掛鉤：讓自動化測試能建立確定性場景並驗證技能（不影響正常遊玩）
@@ -2895,6 +3026,10 @@
     forceFps: (fps) => applyPerfEstimate(fps),
     setTextSize: (size) => setTextSize(size),
     textSize: () => ({ value: currentTextSize(), attr: document.documentElement.dataset.textSize, select: document.getElementById("textSizeSel")?.value || "" }),
+    setAudioMuted: (muted) => setAudioMuted(muted),
+    audio: () => ({ muted: audioMuted(), unlocked: audioUnlocked, button: document.getElementById("audioToggleBtn")?.textContent || "" }),
+    effects: () => ({ finishFx: Object.assign({}, finishFx), confetti: document.querySelectorAll(".confetti-piece").length, lethalSlow: document.querySelector(".board")?.classList.contains("lethal-slow") || false, defeatFade: document.body.classList.contains("defeat-fade"), damagePops: document.querySelectorAll(".dmg-float").length, dying: document.querySelectorAll(".card.dying").length }),
+    markDying: (uid) => { markDying(uid); return document.querySelectorAll(".card.dying").length; },
     swUpdateGuard: () => ({ key: SW_AUTO_RELOAD_KEY, windowMs: SW_AUTO_RELOAD_WINDOW_MS, early: shouldAutoReloadForSwUpdate(), late: shouldAutoReloadForSwUpdate(swPageLoadedAt + SW_AUTO_RELOAD_WINDOW_MS + 1) }),
     hint: () => showHint(),
     lastHint: () => game && game.lastHint,
