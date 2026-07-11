@@ -137,7 +137,7 @@
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r54_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r55_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
@@ -158,6 +158,19 @@
   function prefersReducedMotion() {
     try { return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
     catch { return false; }
+  }
+
+  function setHandDrawerOpen(open) {
+    const drawer = document.getElementById("handDrawer");
+    const toggle = document.getElementById("handDrawerToggle");
+    if (!drawer || !toggle) return;
+    const next = !!open;
+    drawer.classList.toggle("open", next);
+    toggle.setAttribute("aria-expanded", String(next));
+    const count = game && game.player ? game.player.hand.length : 0;
+    toggle.lastChild.textContent = next ? " · 點此收合" : " · 點此展開";
+    const countEl = document.getElementById("handCount");
+    if (countEl) countEl.textContent = String(count);
   }
 
   function audioMuted() {
@@ -544,8 +557,10 @@
     clearGuideFocus();
     let el = null;
     if (guide.step === 0) {
+      setHandDrawerOpen(true);
       el = document.querySelector('.hand .card[data-card-id="wolf"]') || document.querySelector(".hand .card.playable");
     } else if (guide.step === 1) {
+      setHandDrawerOpen(false);
       el = guide.selectedAttacker ? document.getElementById("enemyHero") : document.querySelector("#playerField .card.can-attack");
     } else if (guide.step === 2) {
       el = document.getElementById("endTurnBtn");
@@ -906,6 +921,7 @@
       render();
       return;
     }
+    setHandDrawerOpen(false);
     const pending = result.events.find((e) => e.type === "spellPending");
     if (pending) {
       flash(pending.need === "friendlyMinion" ? "選擇一個友方隨從" : "選擇一個敵方隨從");
@@ -1725,6 +1741,8 @@
       el.onclick = () => playFromHand(card.uid);
       hand.appendChild(el);
     });
+    const handCount = document.getElementById("handCount");
+    if (handCount) handCount.textContent = String(game.player.hand.length);
 
     const enemyHero = document.getElementById("enemyHero");
     const selectedMinion = game.selected ? game.player.field.find((m) => m.uid === game.selected) : null;
@@ -2188,6 +2206,7 @@
 
   // 攻擊者朝目標衝刺（用 transform 位移做撞擊）
   function animateAttackToward(attackerUid, targetUidOrId) {
+    if (prefersReducedMotion()) return;
     const a = elFor(attackerUid), t = elFor(targetUidOrId);
     if (!a) return;
     if (t) {
@@ -2232,6 +2251,7 @@
 
   // 傷害數字分級（CP1-12）：≤2 小白、3~5 中金、≥6 大紅金
   function floatDamage(uidOrId, amount) {
+    if (prefersReducedMotion()) return;
     const el = elFor(uidOrId); if (!el) return;
     if (isLowPerf() && amount <= 2) return;
     const r = el.getBoundingClientRect();
@@ -2245,6 +2265,7 @@
   }
   // CP2-8 連擊回饋文字
   function flashCombo(x, y, n) {
+    if (prefersReducedMotion()) return;
     const d = document.createElement("div");
     d.className = "combo-float"; d.textContent = `🔥 ${n} 連擊!`;
     d.style.left = x + "px"; d.style.top = (y - 10) + "px";
@@ -2253,6 +2274,7 @@
   }
   // 命中火花粒子（CP1-12）
   function spawnSparks(x, y) {
+    if (prefersReducedMotion()) return;
     const count = isLowPerf() ? 2 : 6;
     for (let i = 0; i < count; i++) {
       const s = document.createElement("div");
@@ -2267,9 +2289,11 @@
   }
 
   function flashCard(uid, cls) {
+    if (prefersReducedMotion()) return;
     const el = elFor(uid); if (el && cls) { el.classList.add(cls); setTimeout(() => el.classList.remove(cls), 400); }
   }
   function flashKeyword2(uid, label) {
+    if (prefersReducedMotion()) return;
     const el = elFor(uid); if (!el) return;
     const r = el.getBoundingClientRect();
     const b = document.createElement("div");
@@ -2282,6 +2306,7 @@
   function markDying(uid) {
     const el = elFor(uid);
     if (!el) return;
+    if (prefersReducedMotion()) return;
     const deathMs = isLowPerf() ? 260 : 560;
     const ghost = cloneCardGhost(el, "dying");
     el.classList.add("dying");
@@ -2959,6 +2984,11 @@
   if (textSizeSel) textSizeSel.onchange = () => setTextSize(textSizeSel.value);
   const audioToggleBtn = document.getElementById("audioToggleBtn");
   if (audioToggleBtn) audioToggleBtn.onclick = () => setAudioMuted(!audioMuted());
+  const handDrawerToggle = document.getElementById("handDrawerToggle");
+  if (handDrawerToggle) handDrawerToggle.onclick = () => {
+    const drawer = document.getElementById("handDrawer");
+    setHandDrawerOpen(!drawer?.classList.contains("open"));
+  };
   document.getElementById("restartBtn").onclick = newGame;
   document.getElementById("overlayPackBtn").onclick = goPack;
   document.getElementById("overlayQuestBtn").onclick = claimAllQuestsUi;
@@ -2998,6 +3028,7 @@
     if (document.getElementById("chronicleModal")?.classList.contains("show")) { closeChronicle(); return; }
     if (document.getElementById("missionDrawer")?.classList.contains("show")) { closeMissionDrawer(); return; }
     if (typeof window.__kwCodexOpen === "function" && window.__kwCodexOpen()) window.__closeKwCodex();
+    else if (document.getElementById("handDrawer")?.classList.contains("open")) setHandDrawerOpen(false);
   });
   const missionDrawerBtn = document.getElementById("missionDrawerBtn");
   if (missionDrawerBtn) missionDrawerBtn.onclick = openMissionDrawer;

@@ -1,5 +1,5 @@
 /* =========================================================================
- * test-rwd-matrix.js — R46 RWD 九視口矩陣守門（真瀏覽器）
+ * test-rwd-matrix.js — R55 RWD 十視口矩陣守門（真瀏覽器）
  *
  * 驗收標準（每頁 × 每視口都必須成立）：
  *   1. 所有可互動元素（button/select/input/textarea/a[href]/[role=button]/[onclick]）
@@ -30,6 +30,7 @@ const VIEWPORTS = [
   { w: 768, h: 1024, kind: "tablet" },
   { w: 390, h: 844, kind: "mobile" },
   { w: 360, h: 640, kind: "mobile" },
+  { w: 320, h: 568, kind: "mobile-short" },
   { w: 844, h: 390, kind: "landscape" },
 ];
 
@@ -78,7 +79,10 @@ async function auditPage(page) {
       while (anc && anc !== document.body) {
         const acs = getComputedStyle(anc);
         if (acs.display === "none" || acs.visibility === "hidden" || +acs.opacity === 0) { hidden = true; break; }
-        if (!scrollHost && /(auto|scroll)/.test(acs.overflowY) && anc.scrollHeight > anc.clientHeight + 4) scrollHost = anc;
+        if (!scrollHost && (
+          (/(auto|scroll)/.test(acs.overflowY) && anc.scrollHeight > anc.clientHeight + 4)
+          || (/(auto|scroll)/.test(acs.overflowX) && anc.scrollWidth > anc.clientWidth + 4)
+        )) scrollHost = anc;
         anc = anc.parentElement;
       }
       if (hidden) continue;
@@ -120,11 +124,18 @@ async function run() {
   let failures = 0;
   let checks = 0;
 
+  const safeAreaFiles = ["index.html", "templates/index.html", "templates/card-battle/index.html", "templates/card-pack/index.html"];
+  const safeAreaText = safeAreaFiles.map((file) => fs.readFileSync(path.join(ROOT, file), "utf8"));
+  if (!safeAreaText.every((text) => /viewport-fit=cover/.test(text))
+    || !safeAreaText.slice(1).every((text) => /env\(safe-area-inset-bottom/.test(text))) {
+    throw new Error("viewport-fit=cover / safe-area-inset-bottom 未同步到全模板");
+  }
+
   try {
     for (const pg of PAGES) {
       console.log(`\n== ${pg.name} ==`);
       for (const vp of VIEWPORTS) {
-        const isTouch = vp.kind === "mobile" || vp.kind === "landscape";
+        const isTouch = vp.kind === "mobile" || vp.kind === "mobile-short" || vp.kind === "landscape";
         const ctx = await browser.newContext({
           viewport: { width: vp.w, height: vp.h },
           hasTouch: isTouch,
@@ -143,6 +154,43 @@ async function run() {
         await page.waitForTimeout(300);
 
         const res = await auditPage(page);
+        if (pg.name === "shell" && (vp.kind === "mobile" || vp.kind === "mobile-short")) {
+          const battleFrame = page.frames().find((frame) => /card-battle\/index\.html/.test(frame.url()));
+          if (battleFrame) {
+            const child = await auditPage(battleFrame);
+            res.violations.push(...child.violations.map((v) => ({ ...v, label: `iframe ${v.label}` })));
+            res.overflowX = Math.max(res.overflowX, child.overflowX);
+          }
+        }
+        if (pg.name === "card-battle" && (vp.kind === "mobile" || vp.kind === "mobile-short")) {
+          const mobileFlow = await page.evaluate(() => {
+            const fields = [...document.querySelectorAll(".battlefield")];
+            const combinedHeight = fields.reduce((sum, el) => sum + el.getBoundingClientRect().height, 0);
+            const drawer = document.getElementById("handDrawer");
+            const toggle = document.getElementById("handDrawerToggle");
+            toggle.click();
+            const open = drawer.classList.contains("open") && toggle.getAttribute("aria-expanded") === "true";
+            toggle.click();
+            const closed = !drawer.classList.contains("open") && toggle.getAttribute("aria-expanded") === "false";
+            window.__test.setup(["wolf"], ["wolf"]);
+            const attacker = document.querySelector("#playerField .card");
+            const target = document.querySelector("#enemyField .card");
+            const before = window.__test.game().enemy.field[0].health;
+            const visible = [attacker, target].every((el) => {
+              const r = el.getBoundingClientRect();
+              return r.top >= 0 && r.bottom <= innerHeight;
+            });
+            attacker.click();
+            const selected = attacker.classList.contains("selected") || !!window.__test.game().selected;
+            target.click();
+            const attacked = window.__test.game().enemy.field[0]?.health < before || window.__test.game().enemy.field.length === 0;
+            return { combinedHeight, viewportHeight: innerHeight, open, closed, visible, selected, attacked };
+          });
+          if (mobileFlow.combinedHeight + 1 < mobileFlow.viewportHeight * .5
+            || !mobileFlow.open || !mobileFlow.closed || !mobileFlow.visible || !mobileFlow.selected || !mobileFlow.attacked) {
+            res.violations.push({ label: "手機攻擊同屏／手牌抽屜／50dvh", status: "FLOW", top: 0, bottom: 0, left: 0, right: 0 });
+          }
+        }
         const bad = res.violations.length > 0 || res.pageScrollY > 8 || res.overflowX > 2;
         checks++;
         if (bad) {
@@ -166,7 +214,7 @@ async function run() {
     console.error(`\n❌ RWD 矩陣守門失敗：${failures}/${checks} 個 頁面×視口 有違規`);
     process.exit(1);
   }
-  console.log(`\n✅ RWD 九視口矩陣守門通過（${checks} 個 頁面×視口 全數零違規）`);
+  console.log(`\n✅ RWD 十視口矩陣守門通過（${checks} 個 頁面×視口 全數零違規）`);
 }
 
 run().catch((err) => { console.error(err); process.exit(1); });

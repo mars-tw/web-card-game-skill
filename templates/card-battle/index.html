@@ -2,13 +2,13 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>卡牌對戰 · Card Battle</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r54-v1";
+    const CACHE_VERSION = "card-battle-r55-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r54_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r55_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -274,6 +274,8 @@
     background: rgba(0,0,0,.18); border: 1px solid rgba(255,255,255,.08);
     border-radius: 14px; padding: 4px 10px;
   }
+  .hand-drawer { display: contents; }
+  .hand-drawer-toggle { display: none; }
   .target-status.active { color: #facc15; border-color: rgba(250,204,21,.35); background: rgba(250,204,21,.08); }
 
   .controls { display: flex; gap: 12px; align-items: center; justify-content: center; padding: 6px;
@@ -438,11 +440,11 @@
     border: 1px solid rgba(255,255,255,.12); border-radius: 18px; padding: 24px 26px; max-width: 440px; width: 100%;
     box-shadow: 0 12px 40px rgba(0,0,0,.5); max-height: 90vh; overflow-y: auto; }
   .chronicle-card { max-width: 900px; padding: 18px; }
-  .guide-panel { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); max-width: 520px; width: min(520px, calc(100vw - 28px)); pointer-events: auto; }
+  .guide-panel { position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); max-width: 520px; width: min(520px, calc(100vw - 28px)); pointer-events: none; }
   .guide-panel h2, .kw-codex-card h2, .chronicle-card h2 { color: var(--accent, #f59e0b); font-size: 23px; margin-bottom: 14px; text-align: center; }
   .guide-step-label { font-size: 12px; color: #facc15; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
   .guide-copy { font-size: 14px; line-height: 1.5; color: var(--ink); margin-bottom: 14px; }
-  .guide-actions { display: flex; gap: 8px; }
+  .guide-actions { display: flex; gap: 8px; pointer-events: auto; }
   .guide-actions button, .kw-codex-card button { width: 100%; background: linear-gradient(180deg,#f59e0b,#d97706);
     color: #1a1206; border: none; padding: 13px; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; }
   .guide-actions button.secondary { background: #2a3645; color: var(--ink); }
@@ -487,7 +489,7 @@
   .faction-legend h3 { font-size:15px; margin-bottom:8px; }
   .faction-legend p { color:#dbeafe; line-height:1.75; font-size:14px; user-select:text; }
   .mission-drawer { position:fixed; inset:0; z-index:135; display:none; align-items:flex-end; justify-content:center;
-    background:rgba(6,10,14,.7); padding:12px; }
+    background:rgba(6,10,14,.7); padding:12px 12px calc(12px + env(safe-area-inset-bottom, 0px)); }
   .mission-drawer.show { display:flex; }
   .mission-card { width:min(720px,96vw); max-height:86vh; overflow-y:auto; border-radius:16px 16px 10px 10px;
     background:linear-gradient(180deg,#1a2230,#0f1620); border:1px solid rgba(255,255,255,.14);
@@ -560,7 +562,10 @@
       transition-duration: 0ms !important;
       scroll-behavior: auto !important;
     }
-    .confetti-piece, .hit-spark { display: none !important; }
+    .confetti-piece, .hit-spark, .combat-ghost, .dmg-float, .combo-float, .kw-pop,
+    .burst-star { display: none !important; }
+    .card.legend-idle, .card.foil::after, .card .shield-ring,
+    .hero.targetable, .card.targetable { animation: none !important; }
   }
   /* 矮視口壓縮階層：卡片縮小＋面板收斂，讓 app-shell 一屏裝得下 */
   @media (max-height: 900px) and (min-width: 701px) {
@@ -610,41 +615,52 @@
   @media (max-width: 700px) {
     :root {
       --card-w: 92px; --card-h: 132px;
-      --mobile-controls-h: 62px;
-      --mobile-hand-h: 150px;
-      --mobile-quest-h: 110px;
-      --mobile-log-h: 38px;
-      --mobile-target-h: 30px;
+      --mobile-hand-peek: 46px;
     }
     header { padding: 6px; font-size: 14px; letter-spacing: 1px; }
-    .board { gap: 5px; padding: 6px 8px calc(var(--mobile-controls-h) + var(--mobile-hand-h) + var(--mobile-quest-h) + var(--mobile-log-h) + var(--mobile-target-h) + 20px); }
+    .board { gap: 5px; padding: 6px 8px calc(var(--mobile-hand-peek) + env(safe-area-inset-bottom, 0px) + 8px); }
     .hero-row { padding: 6px 10px; border-radius: 10px; }
     .hero .avatar { font-size: 24px; }
     .hero .name { font-size: 14px; }
     .hp-badge, .mana-badge { font-size: 13px; padding: 2px 8px; }
-    .battlefield { flex: 0 0 auto; min-height: calc(var(--card-h) + 10px); max-height: none; overflow-y: visible; gap: 5px; padding: 5px; }
+    .battlefield { gap: 5px; padding: 5px; }
     .quest-item { grid-template-columns: minmax(0,1fr) auto; }
     .series-footer { margin: 0; padding: 8px 10px 4px; }
-    .hand {
-      position: fixed; left: 0; bottom: var(--mobile-controls-h); z-index: 70; width: 100vw; max-width: 100vw;
-      height: var(--mobile-hand-h); min-height: var(--mobile-hand-h); max-height: var(--mobile-hand-h);
-      justify-content: flex-start; flex-wrap: wrap; overflow-y: auto; overflow-x: hidden;
-      align-items: flex-start; align-content: flex-start;
-      background: rgba(8,10,14,.92); border-top: 1px solid rgba(255,255,255,.08);
-      border-bottom: 1px solid rgba(255,255,255,.08); padding: 8px 10px;
+    .hand-drawer {
+      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
+      height: calc(var(--mobile-hand-peek) + env(safe-area-inset-bottom, 0px));
+      flex-direction: column; overflow: hidden; background: rgba(8,10,14,.97);
+      border-top: 1px solid rgba(255,255,255,.12); box-shadow: 0 -8px 22px rgba(0,0,0,.38);
+      padding-bottom: env(safe-area-inset-bottom, 0px); transition: height .18s ease;
     }
-    .card-info-btn { width:36px; height:36px; top:20px; right:3px; }
+    .hand-drawer.open { height: min(174px, calc(42dvh + env(safe-area-inset-bottom, 0px))); }
+    .hand-drawer:not(.open) .hand { visibility: hidden; pointer-events: none; }
+    .hand-drawer-toggle {
+      display: block; flex: 0 0 38px; min-height: 38px; width: calc(100% - 108px);
+      border: 0; border-radius: 0; background: transparent; color: var(--ink);
+      font: 800 13px/1 inherit; text-align: left; padding: 0 12px; touch-action: manipulation;
+    }
+    .hand {
+      flex: 1 1 auto; min-height: 0; max-height: none; width: 100%; justify-content: flex-start;
+      flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain;
+      scroll-snap-type: x proximity; align-items: flex-start; padding: 4px 112px 8px 10px;
+      background: transparent; border: 0; touch-action: pan-x;
+    }
+    .hand .card { --card-w: 82px; --card-h: 116px; scroll-snap-align: start; }
+    .card-info-btn { width:44px; height:44px; top:16px; right:1px; }
+    .card, .hero, button, select, label, [role="button"] { touch-action: manipulation; }
+    .card:hover { transform: none; }
+    .card.selected { transform: translateY(-3px) scale(1.02); }
+    .card .cardname { font-size: max(10px, calc(11px * var(--text-scale))); }
+    .card .cardtext { font-size: max(10px, calc(9px * var(--text-scale))); }
     .controls {
-      position: fixed; left: 0; bottom: 0; z-index: 75; width: 100vw; max-width: 100vw;
-      height: var(--mobile-controls-h);
-      overflow: hidden; justify-content: space-between; flex-wrap: nowrap; gap: 8px;
-      background: rgba(8,10,14,.96); border-top: 1px solid rgba(255,255,255,.1);
-      padding: 8px 10px; border-radius: 0;
+      position: static; width: 100%; max-width: 100%; min-height: 44px;
+      overflow: visible; flex-wrap: nowrap; gap: 8px; padding: 4px; border-radius: 10px;
     }
     .controls-scroll {
       min-width: 0; flex: 1 1 auto; display: flex; align-items: center; gap: 8px;
-      flex-wrap: wrap; overflow-y: auto; overflow-x: hidden; max-height: 100%;
-      align-content: flex-start; justify-content: flex-start; padding-right: 2px;
+      flex-wrap: nowrap; overflow-y: hidden; overflow-x: auto; max-height: 48px;
+      align-content: center; justify-content: flex-start; padding: 2px;
       scrollbar-width: thin;
     }
     .controls .diff-pick { flex: 0 0 auto; order: 3; }
@@ -660,23 +676,19 @@
     .text-size-toggle { order: 10; flex:0 0 auto; padding-inline:9px; }
     .perf-diag { max-width: 128px; }
     .perf-history { max-width: 118px; }
-    #endTurnBtn { flex: 0 0 auto; min-width: 112px; position: relative; z-index: 2; padding-inline: 16px; }
+    #endTurnBtn {
+      position: fixed; right: 7px; bottom: calc(5px + env(safe-area-inset-bottom, 0px)); z-index: 82;
+      min-width: 96px; min-height: 38px; padding: 7px 10px; font-size: 12px; border-radius: 12px;
+    }
     .target-status {
-      position: fixed; left: 8px; right: 8px;
-      bottom: calc(var(--mobile-controls-h) + var(--mobile-hand-h) + var(--mobile-quest-h) + var(--mobile-log-h));
-      min-height: var(--mobile-target-h); z-index: 67; background: rgba(9,14,22,.94);
-      width: auto; padding-inline: 10px;
+      position: static; min-height: 24px; width: auto; padding: 3px 10px; font-size: 12px;
     }
     #log {
-      position: fixed; left: 8px; right: 8px;
-      bottom: calc(var(--mobile-controls-h) + var(--mobile-hand-h) + var(--mobile-quest-h));
-      z-index: 67; width: auto; height: var(--mobile-log-h); padding: 4px 10px;
+      position: static; width: auto; height: 34px; padding: 4px 10px;
       background: rgba(9,14,22,.9); border: 1px solid rgba(255,255,255,.08); border-radius: 10px;
     }
     .quest-panel {
-      position: fixed; left: 8px; right: 8px;
-      bottom: calc(var(--mobile-controls-h) + var(--mobile-hand-h));
-      z-index: 67; min-height: 0; max-height: var(--mobile-quest-h); overflow-y: auto;
+      position: static; min-height: 44px; max-height: 76px; overflow-y: auto;
       background: rgba(13,20,30,.94);
     }
     .quest-panel h2 { margin-bottom: 2px; }
@@ -699,9 +711,19 @@
     .mission-actions button { padding:8px 9px; }
     .kw-codex-card { max-height: 82vh; padding: 20px; }
     .kw-codex-card button { position: sticky; bottom: 0; }
-    .guide-panel { bottom: calc(var(--mobile-controls-h) + var(--mobile-hand-h) + 12px); padding: 16px; }
+    .guide-panel { bottom: calc(var(--mobile-hand-peek) + env(safe-area-inset-bottom, 0px) + 56px); padding: 16px; }
+    body:has(.hand-drawer.open) .guide-panel { bottom: calc(174px + env(safe-area-inset-bottom, 0px) + 8px); }
     .guide-panel h2 { font-size: 18px; margin-bottom: 8px; }
     .guide-copy { font-size: 13px; }
+  }
+  @media (max-width: 700px) and (orientation: portrait) {
+    header { padding-block: 3px; font-size: 12px; }
+    .board { overflow-y: auto; }
+    .hero-row { min-height: 38px; padding-block: 3px; }
+    .battlefield {
+      flex: 0 0 25dvh; min-height: 25dvh; max-height: 25dvh; overflow: auto;
+      align-items: flex-start; align-content: flex-start;
+    }
   }
 </style>
 </head>
@@ -731,7 +753,10 @@
 
     <div class="target-status" id="targetStatus" aria-live="polite">輪到你行動。</div>
     <div id="log" role="log" aria-live="polite" aria-atomic="false"></div>
-    <div class="hand" id="playerHand"></div>
+    <div class="hand-drawer" id="handDrawer">
+      <button class="hand-drawer-toggle" id="handDrawerToggle" type="button" aria-expanded="false" aria-controls="playerHand">🂠 手牌 <span id="handCount">0</span> · 點此展開</button>
+      <div class="hand" id="playerHand"></div>
+    </div>
     <div class="controls">
       <div class="controls-scroll">
         <label class="diff-pick">難度
@@ -889,9 +914,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r54-v1"></script>
-  <script src="core.js?v=card-battle-r54-v1"></script>
-  <script src="battle.js?v=card-battle-r54-v1"></script>
+  <script src="cards.js?v=card-battle-r55-v1"></script>
+  <script src="core.js?v=card-battle-r55-v1"></script>
+  <script src="battle.js?v=card-battle-r55-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {

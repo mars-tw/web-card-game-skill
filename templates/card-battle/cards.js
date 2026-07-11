@@ -192,7 +192,7 @@ const CARD_POOL = [
   { id: "glaciarchWarden", name: "冰獄看守", type: CARD_TYPE.MINION, rarity: "epic", cost: 6, attack: 3, health: 8, emoji: "🧊", image: "../../assets/cards/glaciarchWarden.png", keywords: ["taunt", "regenerate"], text: "嘲諷 + 回復：寒牢不讓任何人通過。", foil: false },
   { id: "countessLongNight", name: "長夜伯爵夫人", type: CARD_TYPE.MINION, rarity: "legendary", cost: 7, attack: 5, health: 7, emoji: "🌙", image: "../../assets/cards/countessLongNight.png", keywords: ["deathrattle", "lifesteal"], trigger: "summonSkeleton", text: "吸血。亡語：召喚一個骷髏(2/2)。", foil: false },
 
-  // ===== R54 P0 快贏內容擴充：10 張差分卡 + silence 2 張 =====
+  // ===== R55 快贏內容基線：10 張差分卡 + silence 2 張 =====
   { id: "saltShieldSquire", name: "鹽盾侍從", type: CARD_TYPE.MINION, rarity: "common", cost: 1, attack: 0, health: 3, emoji: "🛡️", image: null, keywords: ["taunt"], text: "嘲諷。便宜的前排，不負責收頭。", foil: false },
   { id: "iceNeedle", name: "冰針", type: CARD_TYPE.SPELL, rarity: "common", cost: 1, emoji: "❄️", image: null, text: "對一個敵方隨從造成 1 點傷害；若其有嘲諷，再造成 1 點。", effect: "damage2", baseDamage: 1, tauntBonusDamage: 1, foil: false },
   { id: "packHowler", name: "狼群嚎者", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 2, health: 3, emoji: "🐺", image: null, keywords: ["charge", "battlecry"], trigger: "buffAdjacent1", text: "衝鋒。戰吼：相鄰友方隨從攻擊 +1。", foil: false },

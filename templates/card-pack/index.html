@@ -2,13 +2,13 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>開卡包 · Card Pack</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r54-v1";
+    const CACHE_VERSION = "card-battle-r55-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r54_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r55_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -132,6 +132,8 @@
 
   .reveal-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; padding: 18px; min-height: var(--card-h);
     perspective: 1200px; } /* 3D 透視讓翻牌立體（CP1-13）*/
+  .reveal-skip { display:none; min-height:44px; margin:0 auto 8px; }
+  .reveal-skip.show { display:block; }
   /* 壓軸卡額外光效（CP1-13）*/
   .card.finale { animation: flipIn .6s ease forwards, finalePulse 1.6s ease .6s 1 !important; z-index: 5; }
   @keyframes finalePulse { 0%,100%{transform:scale(1)} 30%{transform:scale(1.14); box-shadow:0 0 40px var(--glow,gold),0 0 80px var(--glow,gold)} }
@@ -232,7 +234,7 @@
   /* 重複卡分解按鈕（CP2-7）——bottom:0 必須留在格子內，slot 有 overflow:hidden，
      負值會被裁掉一半，觸控裝置上只剩不到 10px 可點 */
   .slot .dismantle-btn { position:absolute; bottom:0; left:50%; transform:translateX(-50%);
-    font-size:9px; font-weight:700; padding:4px 6px; min-height:20px; border-radius:8px 8px 0 0; white-space:nowrap;
+    font-size:10px; font-weight:700; padding:6px; min-height:44px; min-width:44px; border-radius:8px 8px 0 0; white-space:nowrap;
     background:#facc15; color:#3a2a06; border:none; cursor:pointer; opacity:0; transition:opacity .15s; z-index:4; }
   .slot:hover .dismantle-btn { opacity:1; }
   @media (hover:none) { .slot .dismantle-btn { opacity:1; } } /* 觸控裝置常駐顯示 */
@@ -317,14 +319,14 @@
   .card .cardname, .deck-name { font-size: calc(13px * var(--text-scale)); }
   .record-value, .goal-progress, .mission-progress, .deck-meta, .deck-errors, .deck-save-msg { font-size: calc(12px * var(--text-scale)); }
   .mission-name, .goal-title, .record-title { font-size: calc(12px * var(--text-scale)); }
-  .mission-drawer-btn { position: fixed; bottom: 12px; left: 12px; z-index: 90; background: #1a2230;
+  .mission-drawer-btn { position: fixed; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); left: 12px; z-index: 90; background: #1a2230;
     color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
     font-size: 13px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
   .mission-badge { position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; border-radius:999px;
     background:#ef4444; color:#fff; display:none; align-items:center; justify-content:center; font-size:11px; padding:0 5px; }
   .mission-badge.show { display:flex; }
   .mission-drawer { position:fixed; inset:0; z-index:135; display:none; align-items:flex-end; justify-content:center;
-    background:rgba(6,10,14,.7); padding:12px; }
+    background:rgba(6,10,14,.7); padding:12px 12px calc(12px + env(safe-area-inset-bottom, 0px)); }
   .mission-drawer.show { display:flex; }
   .mission-card { width:min(720px,96vw); max-height:86vh; overflow-y:auto; border-radius:16px 16px 10px 10px;
     background:linear-gradient(180deg,#1a2230,#0f1620); border:1px solid rgba(255,255,255,.14);
@@ -353,6 +355,7 @@
   .series-footer a:hover { text-decoration:underline; }
 
   @media (max-width:700px) {
+    :root { --card-w: 112px; --card-h: 158px; }
     header { padding: 4px 8px; font-size: 16px; }
     .pack-main {
       grid-template-columns: minmax(0, 1fr);
@@ -382,6 +385,7 @@
     .mission-card { max-height:calc(100vh - 64px); padding:12px; }
     .mission-list { grid-template-columns:1fr; }
     .mission-actions button { padding:8px 9px; }
+    button, select, input, textarea, .pack, .card, .slot { touch-action:manipulation; }
   }
   @media (max-height: 760px) {
     header { padding: 3px 8px; font-size: 15px; }
@@ -416,7 +420,14 @@
       animation-duration:.001ms !important; animation-iteration-count:1 !important;
       transition-duration:0ms !important; scroll-behavior:auto !important;
     }
+    .card { opacity:1; }
+    .card.flip-in, .card.rare-pull, .card.legend-pull, .card.finale,
+    .pack, .pack::before, body::after { animation:none !important; }
+    .legend-flash, .card .beam, .card .tide-wave { display:none !important; }
   }
+  :root[data-perf="low"] .pack, :root[data-perf="low"] .pack::before,
+  :root[data-perf="low"] body::after { animation:none; }
+  :root[data-perf="low"] .card .beam, :root[data-perf="low"] .card .tide-wave { display:none; }
 </style>
 </head>
 <body>
@@ -483,6 +494,7 @@
     </div>
 
     <div class="reveal-row" id="revealRow"></div>
+    <button class="ghost reveal-skip" id="skipRevealBtn" type="button">全部翻開</button>
     <div class="summary" id="summary" aria-live="polite"></div>
 
     <div class="actions" id="actions" style="display:none;">
@@ -620,9 +632,9 @@
     <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
   </footer>
 
-  <script src="../card-battle/cards.js?v=card-battle-r54-v1"></script>
-  <script src="../card-battle/core.js?v=card-battle-r54-v1"></script>
-  <script src="pack.js?v=card-battle-r54-v1"></script>
+  <script src="../card-battle/cards.js?v=card-battle-r55-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-r55-v1"></script>
+  <script src="pack.js?v=card-battle-r55-v1"></script>
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);

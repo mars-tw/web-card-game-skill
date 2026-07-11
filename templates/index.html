@@ -2,15 +2,15 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="manifest" href="../manifest.webmanifest?v=card-battle-r54-v1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<link rel="manifest" href="../manifest.webmanifest?v=card-battle-r55-v1" />
 <meta name="theme-color" content="#f59e0b" />
 <title>卡牌遊戲 · Card Game</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r54-v1";
+    const CACHE_VERSION = "card-battle-r55-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r54_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r55_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -107,9 +107,9 @@
   }
   .frame.active { display: block; }
   .pwa-update {
-    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+    position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
     z-index: 20; display: none; align-items: center; gap: 10px;
-    max-width: calc(100vw - 24px); padding: 10px 12px; border-radius: 12px;
+    max-width: calc(100vw - 24px); padding: 10px 12px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); border-radius: 12px;
     background: rgba(15,23,42,.96); color: #e6edf3; border: 1px solid rgba(245,158,11,.45);
     box-shadow: 0 10px 30px rgba(0,0,0,.35); font-size: 13px; font-weight: 800;
   }
@@ -204,9 +204,9 @@
     }));
 
     const pwaState = { skippedForWebdriver: false, registered: false, updatePrompted: false, version: "", checking: false };
-    const CACHE_VERSION = window.__CARD_CACHE_VERSION || "card-battle-r54-v1";
+    const CACHE_VERSION = window.__CARD_CACHE_VERSION || "card-battle-r55-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-    const SW_AUTO_RELOAD_KEY = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r54_v1";
+    const SW_AUTO_RELOAD_KEY = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r55_v1";
     function swUrl() { return new URL(`../sw.js?v=${CACHE_VERSION}`, location.href).toString(); }
     async function readCacheVersion() {
       try {

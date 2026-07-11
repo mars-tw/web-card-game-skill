@@ -27,6 +27,13 @@
     catch { return false; }
   }
 
+  function isLowPerf() {
+    try {
+      return prefersReducedMotion() || navigator.connection?.saveData === true || (navigator.hardwareConcurrency || 8) <= 4;
+    } catch { return prefersReducedMotion(); }
+  }
+  if (isLowPerf()) document.documentElement.dataset.perf = "low";
+
   // collection: { collectKey: count }，collectKey 由 cards.js 提供（含 #foil）
   let collection = loadCollection();
   let deckState = loadDeck();
@@ -153,12 +160,12 @@
   }
 
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r54-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r55-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r54_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r55_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
@@ -483,7 +490,7 @@
     for (let i = 0; i < PACK_SIZE; i++) cards.push(rollCardByRarity());
     applyPityToCards(cards);
 
-    setTimeout(() => revealCards(cards), 600);
+    setTimeout(() => revealCards(cards), prefersReducedMotion() ? 0 : (isLowPerf() ? 180 : 600));
   }
 
   // 保底：重抽到至少 rare（但不像舊版那麼好抽）
@@ -504,6 +511,43 @@
     return { before: pityBefore, after: pityAfter, forced: pityForced, hasRarePlus };
   }
 
+  let activeReveal = null;
+
+  function revealOne(index) {
+    const state = activeReveal;
+    const item = state && state.items[index];
+    if (!item || item.revealed) return;
+    item.revealed = true;
+    const { card, el } = item;
+    const isHigh = card.foil || card.tide || card.rarity === "legendary";
+    const cls = isHigh ? "legend-pull"
+      : (card.rarity === "epic" || card.rarity === "rare") ? "rare-pull" : "flip-in";
+    el.classList.add(cls);
+    el.setAttribute("aria-label", `${card.name}，已翻開`);
+    if (card.tide) el.classList.add("tide-pull");
+    playSound(isHigh || card.rarity === "epic" || card.rarity === "rare" ? "rare" : "flip");
+    if (index === state.items.length - 1) el.classList.add("finale");
+    if (isHigh && !isLowPerf()) { burstConfetti(); legendFlash(); }
+    if (state.items.every((entry) => entry.revealed)) finishReveal();
+  }
+
+  function finishReveal() {
+    const state = activeReveal;
+    if (!state || state.finished) return;
+    state.finished = true;
+    state.timers.forEach(clearTimeout);
+    document.getElementById("skipRevealBtn")?.classList.remove("show");
+    document.getElementById("actions").style.display = "flex";
+    const sum = document.getElementById("summary");
+    sum.innerHTML = `本包：<span class="new">新收集 ${state.newCount}</span> · <span class="dup">重複 ${state.dupCount}</span>`;
+    renderCollection();
+  }
+
+  function skipReveal() {
+    if (!activeReveal) return;
+    activeReveal.items.forEach((_, index) => revealOne(index));
+  }
+
   function revealCards(cards) {
     const row = document.getElementById("revealRow");
     row.innerHTML = "";
@@ -513,6 +557,9 @@
     const last = cards.length - 1;
     let revealTime = 0;
     lastNewCards = [];
+    activeReveal = { items: [], timers: [], newCount: 0, dupCount: 0, finished: false };
+    const skipBtn = document.getElementById("skipRevealBtn");
+    if (skipBtn) skipBtn.classList.add("show");
     cards.forEach((card, i) => {
       const key = collectKey(card);
       const had = (collection[key] || 0) > 0;
@@ -521,30 +568,24 @@
       collection[key] = (collection[key] || 0) + 1;
 
       const el = renderRevealCard(card);
+      el.tabIndex = 0;
+      el.setAttribute("role", "button");
+      el.setAttribute("aria-label", `第 ${i + 1} 張卡，點擊翻開`);
       row.appendChild(el);
-      // 最後一張延遲加大製造壓軸懸念（CP1-13）
-      const gap = i === last ? 520 : 340;
+      activeReveal.items.push({ card, el, revealed: false });
+      el.addEventListener("click", () => revealOne(i));
+      el.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); revealOne(i); }
+      });
+      // 自動節奏保留，但每張都能直接點開，亦可一鍵全部翻開。
+      const gap = isLowPerf() ? 90 : (i === last ? 520 : 340);
       revealTime += gap;
-      const t = revealTime;
-      setTimeout(() => {
-        const isHigh = card.foil || card.tide || card.rarity === "legendary";
-        const cls = isHigh ? "legend-pull"
-                  : (card.rarity === "epic" || card.rarity === "rare") ? "rare-pull" : "flip-in";
-        el.classList.add(cls);
-        if (card.tide) el.classList.add("tide-pull");
-        playSound(isHigh || card.rarity === "epic" || card.rarity === "rare" ? "rare" : "flip");
-        if (i === last) el.classList.add("finale"); // 壓軸卡額外光效
-        if (isHigh) { burstConfetti(); legendFlash(); } // 開傳說/閃卡 → 全螢幕金光
-      }, t);
+      activeReveal.timers.push(setTimeout(() => revealOne(i), prefersReducedMotion() ? 0 : revealTime));
     });
 
     saveCollection();
-    setTimeout(() => {
-      document.getElementById("actions").style.display = "flex";
-      const sum = document.getElementById("summary");
-      sum.innerHTML = `本包：<span class="new">新收集 ${newCount}</span> · <span class="dup">重複 ${dupCount}</span>`;
-      renderCollection();
-    }, revealTime + 500);
+    activeReveal.newCount = newCount;
+    activeReveal.dupCount = dupCount;
   }
 
   // 開傳說/閃卡：全螢幕金色 vignette flash（CP1-13）
@@ -1376,6 +1417,9 @@
   }
 
   function resetForNextPack() {
+    if (activeReveal) activeReveal.timers.forEach(clearTimeout);
+    activeReveal = null;
+    document.getElementById("skipRevealBtn")?.classList.remove("show");
     document.getElementById("revealRow").innerHTML = "";
     document.getElementById("summary").innerHTML = "";
     document.getElementById("actions").style.display = "none";
@@ -1392,6 +1436,8 @@
   installAudioUnlock();
   readCacheVersion();
   document.getElementById("pack").onclick = openPack;
+  const skipRevealBtn = document.getElementById("skipRevealBtn");
+  if (skipRevealBtn) skipRevealBtn.onclick = skipReveal;
   const packAudioToggleBtn = document.getElementById("packAudioToggleBtn");
   if (packAudioToggleBtn) packAudioToggleBtn.onclick = () => setAudioMuted(!audioMuted());
   document.getElementById("againBtn").onclick = resetForNextPack;
