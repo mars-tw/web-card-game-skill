@@ -228,10 +228,10 @@ async function run() {
           shell: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(shellText) && /sessionStorage/.test(shellText) && /controllerchange/.test(shellText),
           battle: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(battleHtml) && /sessionStorage/.test(battleHtml) && /controllerchange/.test(battleHtml),
           pack: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(packHtml) && /sessionStorage/.test(packHtml) && /controllerchange/.test(packHtml),
-          versionedRefs: /cards\.js\?v=card-battle-r57-v1/.test(battleHtml)
-            && /battle\.js\?v=card-battle-r57-v1/.test(battleHtml)
-            && /pack\.js\?v=card-battle-r57-v1/.test(packHtml)
-            && /manifest\.webmanifest\?v=card-battle-r57-v1/.test(shellText),
+          versionedRefs: /cards\.js\?v=card-battle-r58-v1/.test(battleHtml)
+            && /battle\.js\?v=card-battle-r58-v1/.test(battleHtml)
+            && /pack\.js\?v=card-battle-r58-v1/.test(packHtml)
+            && /manifest\.webmanifest\?v=card-battle-r58-v1/.test(shellText),
         };
         return {
           manifestHref: manifestLink && manifestLink.getAttribute("href"),
@@ -245,7 +245,7 @@ async function run() {
           promptVisible: document.getElementById("pwaUpdateToast").classList.contains("show"),
         };
       });
-      assert(pwaCheck.manifestHref === "../manifest.webmanifest?v=card-battle-r57-v1"
+      assert(pwaCheck.manifestHref === "../manifest.webmanifest?v=card-battle-r58-v1"
         && pwaCheck.manifest.name === "卡牌對戰"
         && pwaCheck.manifest.icons.some((icon) => icon.sizes === "192x192")
         && pwaCheck.manifest.icons.some((icon) => icon.sizes === "512x512"),
@@ -253,7 +253,7 @@ async function run() {
       assert(/CACHE_VERSION/.test(pwaCheck.swText)
         && /networkFirst/.test(pwaCheck.swText)
         && /cacheFirst/.test(pwaCheck.swText)
-        && pwaCheck.swText.includes("card-battle-r57-v1")
+        && pwaCheck.swText.includes("card-battle-r58-v1")
         && pwaCheck.swText.includes("offline.html")
         && pwaCheck.swText.includes("versioned(\"sw.js\")")
         && pwaCheck.swText.includes("templates/card-battle")
@@ -261,13 +261,13 @@ async function run() {
         && pwaCheck.swText.includes("templates/card-battle/battle.js")
         && pwaCheck.swText.includes("templates/card-pack/pack.js")
         && pwaCheck.swText.includes("assets/cards/wolf.png")
-        && pwaCheck.version === "card-battle-r57-v1"
-        && pwaCheck.versionLabel.includes("card-battle-r57-v1")
-        && pwaCheck.checked.version === "card-battle-r57-v1",
+        && pwaCheck.version === "card-battle-r58-v1"
+        && pwaCheck.versionLabel.includes("card-battle-r58-v1")
+        && pwaCheck.checked.version === "card-battle-r58-v1",
         "Service worker 使用版本快取並涵蓋 battle/pack 子路徑");
       assert(/self\.skipWaiting\(\)/.test(pwaCheck.swText) && /self\.clients\.claim\(\)/.test(pwaCheck.swText),
         "Service worker install 會 skipWaiting，activate 會 clients.claim");
-      assert(pwaCheck.guard.windowMs === 15000 && pwaCheck.guard.key === "card_sw_auto_reload_r57_v1"
+      assert(pwaCheck.guard.windowMs === 15000 && pwaCheck.guard.key === "card_sw_auto_reload_r58_v1"
         && pwaCheck.guard.early === true && pwaCheck.guard.shell && pwaCheck.guard.battle && pwaCheck.guard.pack && pwaCheck.guard.versionedRefs,
         "入口 shell、battle、pack 都有 15 秒自動重載、sessionStorage 守衛與版本化本地資源");
       assert(pwaCheck.skipped === true && pwaCheck.promptVisible === true, "navigator.webdriver 會跳過 SW 註冊且更新提示可顯示");
@@ -302,7 +302,7 @@ async function run() {
     assert(boot.turn === "player", "開局輪到玩家");
     assert(boot.playerHand >= 3, `玩家起手 ≥3 張（${boot.playerHand}）`);
     const battleSwGuard = await page.evaluate(() => window.__test.swUpdateGuard());
-    assert(battleSwGuard.key === "card_sw_auto_reload_r57_v1" && battleSwGuard.windowMs === 15000 && battleSwGuard.late === false,
+    assert(battleSwGuard.key === "card_sw_auto_reload_r58_v1" && battleSwGuard.windowMs === 15000 && battleSwGuard.late === false,
       "對戰頁 SW 自動更新守衛超過 15 秒不會自動 reload");
 
     if (vp.w === 1280) {
@@ -324,6 +324,15 @@ async function run() {
         const foilLayers = (foilStyle.backgroundImage.match(/linear-gradient/g) || []).length;
         const foilOpacity = Number(foilStyle.opacity);
         const statusRing = getComputedStyle(legend).outlineStyle === "solid";
+        const playerAvatar = getComputedStyle(document.querySelector("#playerHero .avatar"));
+        const capture = window.__capture.pose("legendTauntFoil");
+        const captureLegend = document.querySelector("#playerField .card.rarity-legendary");
+        const captureFrame = getComputedStyle(captureLegend.querySelector(".frame-sheen"));
+        const captureFoil = getComputedStyle(captureLegend, "::after");
+        const captureOk = capture.ok && document.body.dataset.capturePose === "legendTauntFoil" && captureLegend.classList.contains("foil");
+        const captureFrozen = captureFrame.animationName === "none" && captureFoil.animationName === "none";
+        const poseNames = window.__capture.poses;
+        window.__capture.clear();
         T.game().player.hp = 7;
         T.setup(["dragon"], ["titan"]);
         return {
@@ -336,17 +345,25 @@ async function run() {
           manaGem: manaStyle.backgroundImage.includes("radial-gradient") && manaStyle.boxShadow.includes("inset"),
           critical: document.querySelector("#playerHp")?.closest(".hp-badge")?.classList.contains("critical") || false,
           statusRing,
+          avatarFrame: playerAvatar.backgroundImage.includes("radial-gradient") && playerAvatar.boxShadow.includes("inset") && playerAvatar.borderTopWidth === "2px",
+          captureOk,
+          captureFrozen,
+          poseNames,
         };
       });
-      assert(visualMaterials.frameMounted, "r57 visual: battle 傳說框 DOM 已掛載");
+      assert(visualMaterials.frameMounted, "r58 visual: battle 傳說框 DOM 已掛載");
       assert(visualMaterials.frameAnimation.includes("legendFrameSweep"),
-        `r57 visual: battle 傳說框掃光動畫生效（${visualMaterials.frameAnimation || "none"}）`);
+        `r58 visual: battle 傳說框掃光動畫生效（${visualMaterials.frameAnimation || "none"}）`);
       assert(visualMaterials.foilLayers >= 2,
-        `r57 visual: battle 閃卡使用雙層虹彩色散（${visualMaterials.foilLayers} layers）`);
+        `r58 visual: battle 閃卡使用雙層虹彩色散（${visualMaterials.foilLayers} layers）`);
       assert(visualMaterials.foilOpacity > .5,
-        `r57 visual: battle 閃卡色散保持可見（opacity ${visualMaterials.foilOpacity}）`);
+        `r58 visual: battle 閃卡色散保持可見（opacity ${visualMaterials.foilOpacity}）`);
       assert(visualMaterials.hpGem && visualMaterials.manaGem && visualMaterials.critical && visualMaterials.statusRing,
-        "r57 visual: 英雄血量/法力採立體寶石語言，低血與可攻擊狀態不覆蓋身份材質");
+        "r58 visual: 英雄血量/法力採立體寶石語言，低血與可攻擊狀態不覆蓋身份材質");
+      assert(visualMaterials.avatarFrame, "r58 visual: 英雄頭像有徑向底、雙圈描邊與 inset 工藝");
+      assert(visualMaterials.captureOk && visualMaterials.captureFrozen
+        && ["legendTauntFoil", "heroCritical", "fourRarityHand", "threeOpponents"].every((name) => visualMaterials.poseNames.includes(name)),
+        "r58 capture: 命名 battle pose 一鍵佈景並鎖定傳說/foil 靜幀");
       await page.evaluate(() => {
         const T = window.__test;
         T.setPerfMode("high");
@@ -1189,6 +1206,25 @@ async function run() {
     await page.goto(basePack);
     await page.waitForFunction(() => window.__deckTest && document.getElementById("deckCollectionList"));
     if (vp.w === 1280) {
+      const posterFrames = await page.evaluate(() => {
+        const names = window.__capture.frames;
+        const suspense = window.__capture.freezeReveal("suspense");
+        const suspenseCard = document.querySelector("#revealRow .card.suspense");
+        const suspenseFrozen = suspenseCard && getComputedStyle(suspenseCard).animationName === "none";
+        const legend = window.__capture.freezeReveal("legendPeak");
+        const legendCard = document.querySelector("#revealRow .card.rarity-legendary");
+        const legendFrozen = legendCard && getComputedStyle(legendCard).animationName === "none"
+          && Number(getComputedStyle(legendCard.querySelector(".beam")).opacity) > .7;
+        const foil = window.__capture.freezeReveal("foilPeak");
+        const foilCard = document.querySelector("#revealRow .card.foil");
+        const foilFrozen = foilCard && getComputedStyle(foilCard, "::after").animationName === "none";
+        return { names, suspense, legend, foil, suspenseFrozen, legendFrozen, foilFrozen };
+      });
+      assert(["suspense", "legendPeak", "foilPeak"].every((name) => posterFrames.names.includes(name))
+        && posterFrames.suspense.ok && posterFrames.legend.ok && posterFrames.foil.ok
+        && posterFrames.suspenseFrozen && posterFrames.legendFrozen && posterFrames.foilFrozen,
+        "r58 capture: pack 懸念、傳說與 foil 海報幀皆可命名鎖定");
+      await page.evaluate(() => window.__capture.clear());
       await page.evaluate(() => { window.__deckTest.setAudioMuted(true); window.__deckTest.revealTest(); });
       await page.locator("#revealRow .card").first().click();
       await page.locator("#skipRevealBtn").click();
@@ -1424,11 +1460,11 @@ async function run() {
     await page.waitForFunction(() => /mission/.test(document.activeElement?.id || ""));
     const packMissionFocus = await page.evaluate(() => document.activeElement?.id || "");
     assert(packR36.textState.attr === "large" && packR36.textState.select === "large"
-      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r57-v1"),
+      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r58-v1"),
       "開包戰績區顯示版本並可調整文字大小");
     assert(packR36.missionOpen && packR36.missionAria === "false" && /mission/.test(packMissionFocus),
       "開包任務抽屜開啟後焦點進入抽屜控制");
-    assert(packR36.swGuard.key === "card_sw_auto_reload_r57_v1" && packR36.swGuard.windowMs === 15000 && packR36.swGuard.late === false,
+    assert(packR36.swGuard.key === "card_sw_auto_reload_r58_v1" && packR36.swGuard.windowMs === 15000 && packR36.swGuard.late === false,
       "開包頁 SW 自動更新守衛超過 15 秒不會自動 reload");
     assert(packR36.summaryLive === "polite" && packR36.missionDailyLive === "polite"
       && packR36.badgeLive === "polite" && packR36.deckSaveLive === "polite",

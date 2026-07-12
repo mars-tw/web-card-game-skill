@@ -160,12 +160,12 @@
   }
 
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r57-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r58-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r57_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r58_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
@@ -535,7 +535,7 @@
     if (card.tide) el.classList.add("tide-pull");
     playSound(isHigh || card.rarity === "epic" || card.rarity === "rare" ? "rare" : "flip");
     if (index === state.items.length - 1) el.classList.add("finale");
-    if (isHigh && !isLowPerf()) { burstConfetti(); legendFlash(); }
+    if (isHigh && !isLowPerf() && !document.body.classList.contains("reveal-freeze")) { burstConfetti(); legendFlash(); }
     if (state.items.every((entry) => entry.revealed)) finishReveal();
   }
 
@@ -1796,6 +1796,41 @@
     swUpdateGuard: () => ({ key: SW_AUTO_RELOAD_KEY, windowMs: SW_AUTO_RELOAD_WINDOW_MS, early: shouldAutoReloadForSwUpdate(), late: shouldAutoReloadForSwUpdate(swPageLoadedAt + SW_AUTO_RELOAD_WINDOW_MS + 1) }),
     clearRecord: () => clearRecordStats(),
   };
+
+  const REVEAL_FRAMES = Object.freeze(["suspense", "legendPeak", "foilPeak"]);
+  function stopRevealTimers() {
+    if (activeReveal) {
+      activeReveal.timers.forEach(clearTimeout);
+      activeReveal.timers.length = 0;
+    }
+  }
+  function freezeReveal(name) {
+    if (!REVEAL_FRAMES.includes(name)) return { ok:false, name, available:[...REVEAL_FRAMES] };
+    stopRevealTimers();
+    document.body.classList.add("reveal-freeze");
+    document.body.dataset.revealFreeze = name;
+    const cards = ["knight", "mage", "golem", "dragon", "frostboundTyrant"].map((id) => cloneCard(getCardById(id))).filter(Boolean);
+    if (name === "foilPeak") cards.forEach((card, index) => { card.foil = index >= 2; });
+    revealCards(cards);
+    stopRevealTimers();
+    if (name !== "suspense") {
+      activeReveal.items.forEach((_, index) => revealOne(index));
+      stopRevealTimers();
+    }
+    return { ok:true, name, cards:document.querySelectorAll("#revealRow .card").length };
+  }
+  function clearRevealFreeze() {
+    stopRevealTimers();
+    document.body.classList.remove("reveal-freeze");
+    delete document.body.dataset.revealFreeze;
+    resetForNextPack();
+    return true;
+  }
+  window.__capture = Object.freeze({ frames:[...REVEAL_FRAMES], freezeReveal, clear:clearRevealFreeze });
+  window.__deckTest.freezeReveal = freezeReveal;
+  window.__deckTest.revealFrames = () => [...REVEAL_FRAMES];
+  const initialRevealFrame = new URLSearchParams(location.search).get("capture");
+  if (initialRevealFrame) freezeReveal(initialRevealFrame);
 
   // 對戰 iframe 打完仗寫入金幣時，這頁（另一個 window）會收到 storage 事件——即時刷新餘額，
   // 不然兩個 iframe 常駐不重載，切回來看到的是舊值

@@ -6,9 +6,9 @@
 <title>卡牌對戰 · Card Battle</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r57-v1";
+    const CACHE_VERSION = "card-battle-r58-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r57_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r58_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -120,15 +120,26 @@
 
   .hero-row {
     display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
-    background: color-mix(in srgb, var(--panel) 82%, transparent);
+    position:relative; overflow:hidden;
+    background:
+      linear-gradient(105deg,rgba(255,255,255,.07),transparent 34%),
+      radial-gradient(circle at 12% 50%,color-mix(in srgb,var(--accent) 13%,transparent),transparent 34%),
+      color-mix(in srgb, var(--panel) 88%, transparent);
     border-radius: 12px; padding: 8px 16px;
-    border: 1px solid var(--panel-border);
+    border: 1px solid color-mix(in srgb,var(--accent) 24%,var(--panel-border));
     backdrop-filter: blur(4px);
-    box-shadow: 0 2px 12px rgba(0,0,0,.35);
+    box-shadow:0 5px 16px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.08),inset 0 -10px 24px rgba(0,0,0,.16);
   }
   .hero { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: transform .15s; }
   .hero.targetable { animation: pulseTarget 1s infinite; cursor: crosshair; }
-  .hero .avatar { font-size: 32px; }
+  .hero .avatar {
+    width:44px; height:44px; flex:0 0 44px; display:grid; place-items:center; box-sizing:border-box;
+    font-size:28px; line-height:1; border-radius:50%; border:2px solid rgba(255,255,255,.6);
+    background:radial-gradient(circle at 32% 24%,#fef3c7 0 6%,#b45309 36%,#312e81 72%,#0f172a 100%);
+    box-shadow:0 0 0 2px rgba(9,13,24,.88),0 0 15px color-mix(in srgb,var(--accent) 44%,transparent),inset 0 2px 4px rgba(255,255,255,.42),inset 0 -7px 10px rgba(0,0,0,.48);
+    text-shadow:0 2px 3px rgba(0,0,0,.72);
+  }
+  #enemyHero .avatar { background:radial-gradient(circle at 32% 24%,#fff 0 4%,color-mix(in srgb,var(--opponent-tone) 82%,#94a3b8) 34%,#1e293b 73%,#090d18 100%); box-shadow:0 0 0 2px rgba(9,13,24,.88),0 0 15px color-mix(in srgb,var(--opponent-tone) 52%,transparent),inset 0 2px 4px rgba(255,255,255,.38),inset 0 -7px 10px rgba(0,0,0,.5); }
   .hero .name { font-weight: 600; }
   .hp-badge, .mana-badge {
     position:relative; isolation:isolate; overflow:hidden;
@@ -648,7 +659,7 @@
     header { padding: 3px; font-size: 13px; letter-spacing: 1px; }
     .board { gap: 5px; padding: 5px; }
     .hero-row { padding-block: 4px; }
-    .hero .avatar { font-size: 22px; }
+    .hero .avatar { width:34px; height:34px; flex-basis:34px; font-size:22px; }
     .hp-badge, .mana-badge { min-height:28px; font-size:13px; padding:3px 8px; }
     .battlefield { min-height: 44px; }
     .target-status { min-height: 20px; padding: 2px 8px; font-size: 12px; }
@@ -667,7 +678,7 @@
     header { padding: 2px; font-size: 12px; }
     .board { gap: 4px; padding: 4px; }
     .hero-row { padding-block: 2px; }
-    .hero .avatar { font-size: 18px; }
+    .hero .avatar { width:28px; height:28px; flex-basis:28px; font-size:18px; }
     .battlefield { min-height: 34px; align-items: flex-start; align-content: flex-start; }
     #log { height: 24px; }
     .hand { min-height: 26px; max-height: calc(var(--card-h) + 16px); padding: 3px;
@@ -686,7 +697,7 @@
     header { padding: 6px; font-size: 14px; letter-spacing: 1px; }
     .board { gap: 5px; padding: 6px 8px calc(var(--mobile-hand-peek) + env(safe-area-inset-bottom, 0px) + 8px); }
     .hero-row { padding: 6px 10px; border-radius: 10px; }
-    .hero .avatar { font-size: 24px; }
+    .hero .avatar { width:36px; height:36px; flex-basis:36px; font-size:24px; }
     .hero .name { font-size: 14px; }
     .hp-badge, .mana-badge { min-height:28px; font-size:13px; padding:3px 8px; }
     .battlefield { gap: 5px; padding: 5px; }
@@ -791,6 +802,11 @@
       align-items: flex-start; align-content: flex-start;
     }
   }
+  /* 命名展示盤：固定材質峰值，截圖不依賴動畫時序。 */
+  body.capture-pose *, body.capture-pose *::before, body.capture-pose *::after { animation:none !important; transition:none !important; }
+  body.capture-pose .card.rarity-legendary .frame-sheen { background-position:58% 50%; }
+  body.capture-pose .card.foil::after { background-position:46% 42%,62% 54%; opacity:.84; }
+  body.capture-pose .card.legend-idle { box-shadow:0 0 31px var(--glow),0 0 47px color-mix(in srgb,var(--glow) 72%,transparent),0 5px 13px rgba(0,0,0,.52); }
 </style>
 </head>
 <body>
@@ -980,9 +996,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r57-v1"></script>
-  <script src="core.js?v=card-battle-r57-v1"></script>
-  <script src="battle.js?v=card-battle-r57-v1"></script>
+  <script src="cards.js?v=card-battle-r58-v1"></script>
+  <script src="core.js?v=card-battle-r58-v1"></script>
+  <script src="battle.js?v=card-battle-r58-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {

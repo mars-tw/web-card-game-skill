@@ -138,7 +138,7 @@
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r57_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r58_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
@@ -3237,4 +3237,64 @@
     maxField: MAX_FIELD,
   };
   function prepMinion(c) { c.uid = "t" + Math.random().toString(36).slice(2, 8); c.maxHealth = c.health; if ((c.keywords || []).includes("divineshield")) c.shield = true; c.canAttack = true; return c; }
+
+  const CAPTURE_POSES = Object.freeze(["legendTauntFoil", "heroCritical", "fourRarityHand", "threeOpponents"]);
+  function captureCard(id, extras, fieldCard) {
+    const source = getCardById(id);
+    if (!source) throw new Error(`Capture card not found: ${id}`);
+    const card = Object.assign({}, source, extras || {});
+    card.uid = "capture-" + id;
+    if (fieldCard) {
+      card.maxHealth = card.health;
+      if ((card.keywords || []).includes("divineshield")) card.shield = true;
+      card.canAttack = true;
+    }
+    return card;
+  }
+  function applyCapturePose(name) {
+    if (!CAPTURE_POSES.includes(name)) return { ok:false, name, available:[...CAPTURE_POSES] };
+    clearTransientFx();
+    stopGuide(false);
+    document.body.classList.add("capture-pose");
+    document.body.dataset.capturePose = name;
+    game.turn = "player";
+    game.over = false;
+    game.selected = null;
+    game.player.hp = game.player.maxHp;
+    game.enemy.hp = game.enemy.maxHp;
+    game.player.mana = game.player.manaMax = 10;
+    game.player.field = [];
+    game.enemy.field = [];
+    game.player.hand = [];
+    if (name === "legendTauntFoil") {
+      game.player.field = [captureCard("titan", { foil:true }, true)];
+      game.enemy.field = [captureCard("frostboundTyrant", {}, true)];
+    } else if (name === "heroCritical") {
+      game.player.hp = 7;
+      game.player.field = [captureCard("dragon", { foil:true }, true)];
+      game.enemy.field = [captureCard("golem", {}, true), captureCard("knight", {}, true)];
+    } else if (name === "fourRarityHand") {
+      game.player.hand = [
+        captureCard("wolf"), captureCard("knight"), captureCard("golem"), captureCard("dragon", { foil:true }),
+      ];
+    } else {
+      game.enemy.field = [
+        captureCard("knight", {}, true), captureCard("arcaneWeaver", { foil:true }, true), captureCard("frostboundTyrant", {}, true),
+      ];
+      game.player.field = [captureCard("dawnArchbishop", {}, true)];
+    }
+    render();
+    return { ok:true, name, cards:document.querySelectorAll(".battlefield .card, .hand .card").length };
+  }
+  function clearCapturePose() {
+    document.body.classList.remove("capture-pose");
+    delete document.body.dataset.capturePose;
+    newGame();
+    return true;
+  }
+  window.__capture = Object.freeze({ poses:[...CAPTURE_POSES], pose:applyCapturePose, clear:clearCapturePose });
+  window.__test.pose = applyCapturePose;
+  window.__test.capturePoses = () => [...CAPTURE_POSES];
+  const initialCapturePose = new URLSearchParams(location.search).get("capture");
+  if (initialCapturePose) applyCapturePose(initialCapturePose);
 })();
