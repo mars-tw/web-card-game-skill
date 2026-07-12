@@ -160,12 +160,12 @@
   }
 
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r55-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r56-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r55_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r56_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
@@ -485,6 +485,13 @@
     playSound("pack");
     pack.classList.add("opening");
     pack.style.pointerEvents = "none";
+    if (!isLowPerf() && !prefersReducedMotion()) {
+      const burst = document.createElement("div");
+      burst.className = "pack-burst-flash";
+      burst.setAttribute("aria-hidden", "true");
+      document.body.appendChild(burst);
+      setTimeout(() => burst.remove(), 760);
+    }
 
     const cards = [];
     for (let i = 0; i < PACK_SIZE; i++) cards.push(rollCardByRarity());
@@ -522,6 +529,7 @@
     const isHigh = card.foil || card.tide || card.rarity === "legendary";
     const cls = isHigh ? "legend-pull"
       : (card.rarity === "epic" || card.rarity === "rare") ? "rare-pull" : "flip-in";
+    el.classList.remove("suspense");
     el.classList.add(cls);
     el.setAttribute("aria-label", `${card.name}，已翻開`);
     if (card.tide) el.classList.add("tide-pull");
@@ -600,7 +608,9 @@
   function renderRevealCard(card) {
     const r = RARITY[card.rarity] || RARITY.common;
     const el = document.createElement("div");
-    el.className = "card" + (card.type === CARD_TYPE.SPELL ? " spell" : "") + (card.foil ? " foil" : "") + (card.tide ? " tide" : "");
+    const factionClass = card.faction && FACTIONS[card.faction] ? " faction-" + card.faction : " faction-neutral";
+    const suspenseClass = isRarePlus(card) || card.foil || card.tide ? " suspense" : "";
+    el.className = "card rarity-" + card.rarity + factionClass + suspenseClass + (card.type === CARD_TYPE.SPELL ? " spell" : "") + (card.foil ? " foil" : "") + (card.tide ? " tide" : "");
     el.style.setProperty("--rarity", r.color);
     el.style.setProperty("--glow", r.glow);
     const art = card.image
@@ -611,6 +621,7 @@
       return def ? `<span class="kw" title="${def.label}">${def.icon}</span>` : "";
     }).join("");
     el.innerHTML = `
+      <div class="frame-sheen"></div>
       <div class="beam"></div>
       <div class="tide-wave"></div>
       <div class="cost">${card.cost}</div>

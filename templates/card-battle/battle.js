@@ -131,13 +131,14 @@
   };
 
   let game;
+  const pendingSummonFx = new Set();
   const GUIDE_KEY = "cb_guide_done_v1";
   const PERF_KEY = "card_perf_mode_v1";
   const TEXT_SIZE_KEY = "card_text_size_v1";
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r55_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r56_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
@@ -148,7 +149,7 @@
   let missionReturnFocus = null;
   let chronicleReturnFocus = null;
   let lastUnlockedChapterIds = null;
-  const ACTIVE_FX_SELECTOR = ".combat-ghost, .dmg-float, .hit-spark, .combo-float, .kw-pop, .confetti-piece, .burst-star";
+  const ACTIVE_FX_SELECTOR = ".combat-ghost, .dmg-float, .hit-spark, .combo-float, .kw-pop, .confetti-piece, .burst-star, .spell-flash";
   const GUIDE_STEPS = [
     { label: "STEP 1 / 3", title: "先出一張牌", copy: "點手牌中發亮的「迅捷狼」。它有衝鋒，登場後可以立刻攻擊。" },
     { label: "STEP 2 / 3", title: "選擇攻擊", copy: "先點你場上的迅捷狼，再點敵方英雄完成一次攻擊。" },
@@ -466,6 +467,7 @@
 
   // ===== 初始化 =====
   function newGame() {
+    pendingSummonFx.clear();
     stopGuide(false);
     document.body.classList.remove("defeat-fade");
     clearTransientFx();
@@ -1722,6 +1724,7 @@
     const enemyHeroInfo = document.getElementById("enemyHero");
     if (enemyHeroInfo) {
       const opponent = game.opponent || currentOpponent();
+      document.body.dataset.opponent = opponent.id;
       const avatar = enemyHeroInfo.querySelector(".avatar");
       const name = enemyHeroInfo.querySelector(".name");
       if (avatar) avatar.textContent = opponent.emoji;
@@ -1772,6 +1775,10 @@
     const enemyHasTaunt = hasTaunt(game.enemy.field);
     field.forEach((card) => {
       const c = renderCard(card);
+      if (pendingSummonFx.has(card.uid)) {
+        c.classList.add("landing");
+        pendingSummonFx.delete(card.uid);
+      }
       if (side === "player") {
         if (card.canAttack && game.turn === "player") c.classList.add("can-attack");
         if (game.selected === card.uid) c.classList.add("selected");
@@ -1792,7 +1799,8 @@
   function renderCard(card) {
     const r = RARITY[card.rarity] || RARITY.common;
     const el = document.createElement("div");
-    el.className = "card spawn rarity-" + card.rarity + (card.type === CARD_TYPE.SPELL ? " spell-card" : "") + (card.foil ? " foil" : "") + (card.tide ? " tide" : "") + (r.idle ? " legend-idle" : "");
+    const factionClass = card.faction && FACTIONS[card.faction] ? " faction-" + card.faction : " faction-neutral";
+    el.className = "card rarity-" + card.rarity + factionClass + (card.type === CARD_TYPE.SPELL ? " spell-card" : "") + (card.foil ? " foil" : "") + (card.tide ? " tide" : "") + (r.idle ? " legend-idle" : "");
     el.dataset.uid = card.uid;
     el.dataset.cardId = card.id;
     el.style.setProperty("--rarity", r.color);
@@ -1812,8 +1820,10 @@
     const stars = "★".repeat(r.stars);
 
     el.innerHTML = `
+      <div class="summon-impact"></div>
       <div class="cost">${card.cost}</div>
       ${card.shield ? '<div class="shield-ring"></div>' : ""}
+      ${(card.keywords || []).includes("taunt") ? '<div class="taunt-crest" title="嘲諷" aria-hidden="true">◆</div>' : ""}
       <div class="stars">${stars}</div>
       <div class="art">${art}</div>
       <div class="kwrow">${kwBadges}</div>
@@ -2007,6 +2017,9 @@
   function handleCoreResult(result) {
     if (!result || !Array.isArray(result.events)) return;
     for (const event of result.events) {
+      if (event.type === "minionSummoned") {
+        if (event.uid) pendingSummonFx.add(event.uid);
+      }
       if (event.type === "pendingCancelled") {
         flash("已取消指定。");
       } else if (event.type === "mulliganBurned") {
@@ -2057,6 +2070,7 @@
         flashKeyword2(event.uid, "戰吼");
       } else if (event.type === "spellCast") {
         playSound("play");
+        triggerSpellFlash(event.side);
         const sideObj = event.side === "enemy" ? game.enemy : game.player;
         const sp = spellDamage(event.effect) ? Core.spellPower(sideObj) : 0;
         if (sp > 0) log(`法強 +${sp} 強化了${event.side === "enemy" ? "對手" : "你的"}法術。`, event.side === "enemy" ? "ai" : "me");
@@ -2317,6 +2331,15 @@
     if (!board) return;
     if (isLowPerf() || prefersReducedMotion()) return;
     board.classList.add("shake-screen"); setTimeout(() => board.classList.remove("shake-screen"), 260);
+  }
+
+  function triggerSpellFlash(side) {
+    if (isLowPerf() || prefersReducedMotion()) return;
+    const flashEl = document.createElement("div");
+    flashEl.className = "spell-flash" + (side === "enemy" ? " enemy" : "");
+    flashEl.setAttribute("aria-hidden", "true");
+    document.body.appendChild(flashEl);
+    setTimeout(() => flashEl.remove(), 560);
   }
 
   function triggerFinishEffect(win) {

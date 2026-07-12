@@ -6,9 +6,9 @@
 <title>卡牌對戰 · Card Battle</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r55-v1";
+    const CACHE_VERSION = "card-battle-r56-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r55_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r56_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -79,7 +79,11 @@
     color: var(--ink); height: 100vh; height: 100dvh;
     display: flex; flex-direction: column; align-items: center;
     user-select: none; overflow: hidden; position: relative;
+    --opponent-tone: #3b82f6;
+    --opponent-tone-soft: rgba(59,130,246,.2);
   }
+  body[data-opponent="op_magister_vey"] { --opponent-tone:#a855f7; --opponent-tone-soft:rgba(168,85,247,.22); }
+  body[data-opponent="op_scarra"] { --opponent-tone:#f97316; --opponent-tone-soft:rgba(249,115,22,.23); }
   /* 背景圖層（依主題切換，--bg-img 由各主題設定）*/
   body::before {
     content: ""; position: fixed; inset: 0; z-index: -2;
@@ -92,7 +96,8 @@
     content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
     background:
       radial-gradient(40% 50% at 20% 30%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%),
-      radial-gradient(45% 55% at 80% 70%, color-mix(in srgb, var(--mana) 14%, transparent), transparent 70%),
+      radial-gradient(42% 52% at 78% 24%, var(--opponent-tone-soft), transparent 72%),
+      radial-gradient(45% 55% at 80% 70%, color-mix(in srgb, var(--opponent-tone) 16%, transparent), transparent 70%),
       radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.6));
     animation: ambientDrift 18s ease-in-out infinite alternate;
   }
@@ -149,26 +154,34 @@
     backdrop-filter: blur(1px); transition: background .2s, box-shadow .2s;
   }
   .battlefield.enemy {
-    border-color: color-mix(in srgb, var(--hp) 30%, var(--panel-border));
-    box-shadow: inset 0 2px 16px rgba(0,0,0,.5), inset 0 0 30px rgba(239,68,68,.06);
+    background:
+      radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--opponent-tone) 18%, transparent), transparent 62%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 38px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 38px),
+      linear-gradient(180deg, color-mix(in srgb, var(--opponent-tone) 9%, rgba(10,14,20,.62)), rgba(10,14,20,.38));
+    border-color: color-mix(in srgb, var(--opponent-tone) 52%, var(--panel-border));
+    box-shadow: inset 0 2px 16px rgba(0,0,0,.5), inset 0 0 38px color-mix(in srgb, var(--opponent-tone) 16%, transparent), 0 0 18px color-mix(in srgb, var(--opponent-tone) 8%, transparent);
   }
   .battlefield .empty-hint { color: var(--muted); font-size: 13px; opacity: .7; }
 
   /* ===== 卡片 ===== */
   .card {
     width: var(--card-w); height: var(--card-h); border-radius: 10px;
-    background: linear-gradient(160deg, #222d3d, #18222f);
-    border: 2px solid var(--rarity, #9aa5b1);
+    background: linear-gradient(160deg, #273446, #141c28) padding-box,
+      linear-gradient(135deg, #dce3e8, #697786 48%, #eef2f5 52%, #56616c) border-box;
+    border: 2px solid transparent;
     /* 稀有度色階：普通卡 glow-size:0 不發光，越稀有越亮（CP1-10）*/
     box-shadow: 0 0 var(--glow-size, 0) var(--glow, transparent), 0 4px 10px rgba(0,0,0,.45);
     position: relative; display: flex; flex-direction: column; padding: 5px;
     cursor: pointer; transition: transform .15s, box-shadow .2s; flex-shrink: 0;
   }
-  /* 史詩/傳說：金屬漸層邊框 */
-  .card.rarity-epic { border-image: linear-gradient(135deg, #c084fc, #a855f7, #7c3aed) 1; }
-  .card.rarity-legendary { border-image: linear-gradient(135deg, #fde047, #f59e0b, #fbbf24) 1; }
+  /* 四階框材質：銀鋼、藍晶、紫紋、金箔。 */
+  .card.rarity-common { background:linear-gradient(160deg,#263343,#151d28) padding-box,repeating-linear-gradient(105deg,#d7dde2 0 2px,#697583 2px 5px,#aab3bc 5px 7px) border-box; }
+  .card.rarity-rare { background:linear-gradient(160deg,#223148,#111b2d) padding-box,linear-gradient(135deg,#bfdbfe,#2563eb 35%,#60a5fa 58%,#172554) border-box; box-shadow:0 0 17px rgba(59,130,246,.58),0 5px 13px rgba(0,0,0,.5),inset 0 0 14px rgba(59,130,246,.08); }
+  .card.rarity-epic { background:linear-gradient(160deg,#30243e,#181425) padding-box,repeating-conic-gradient(from 35deg,#e9d5ff 0 7deg,#7e22ce 7deg 15deg,#c084fc 15deg 22deg,#4c1d95 22deg 30deg) border-box; box-shadow:0 0 21px rgba(168,85,247,.64),0 5px 13px rgba(0,0,0,.52),inset 0 0 18px rgba(192,132,252,.1); }
+  .card.rarity-legendary { background:linear-gradient(160deg,#342c1e,#1e170d) padding-box,linear-gradient(115deg,#78350f,#fde68a,#d97706,#fff7c2,#92400e,#fbbf24) border-box; background-size:100% 100%,240% 240%; animation:legendaryFoil 3.8s linear infinite; }
   /* 傳說：常駐呼吸光 */
-  .card.legend-idle { animation: legendIdle 2.2s ease-in-out infinite; }
+  .card.legend-idle { animation: legendaryFoil 3.8s linear infinite, legendIdle 2.2s ease-in-out infinite; }
   @keyframes legendIdle {
     0%,100% { box-shadow: 0 0 18px var(--glow), 0 4px 10px rgba(0,0,0,.45); }
     50% { box-shadow: 0 0 34px var(--glow), 0 0 50px var(--glow), 0 4px 10px rgba(0,0,0,.45); }
@@ -180,7 +193,10 @@
   .card.selected { outline: 3px solid var(--accent); transform: translateY(-8px) scale(1.05); z-index: 6; }
   .card.targetable { animation: pulseTarget 1s infinite; }
   .card.blocked { filter: grayscale(.7) brightness(.6); }
-  .card.spawn { animation: spawnIn .4s cubic-bezier(.2,1.3,.5,1); }
+  .card.spawn { animation: spawnIn .32s cubic-bezier(.2,1.15,.4,1); }
+  .card.landing { animation:minionLand .54s cubic-bezier(.12,.82,.2,1.12); }
+  .card .summon-impact { position:absolute; left:50%; bottom:-13px; width:118%; height:24px; border-radius:50%; pointer-events:none; z-index:-1; opacity:0; transform:translateX(-50%) scaleX(.2); background:radial-gradient(ellipse, color-mix(in srgb,var(--rarity) 55%,white), transparent 68%); }
+  .card.landing .summon-impact { animation:summonImpact .54s ease-out; }
   .card.dying { animation: dieOut .52s ease forwards; pointer-events: none; overflow: hidden; }
   .card.dying::after {
     content: ""; position: absolute; inset: -12%; pointer-events: none; z-index: 8;
@@ -215,11 +231,13 @@
   }
 
   .card .cost {
-    position: absolute; top: -8px; left: -8px; width: 28px; height: 28px; border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #60a5fa, #2563eb); color: #fff;
+    position:absolute; top:-9px; left:-9px; width:30px; height:32px;
+    clip-path:polygon(50% 0,88% 18%,100% 62%,50% 100%,0 62%,12% 18%);
+    background:radial-gradient(circle at 34% 24%,#dbeafe 0 7%,#60a5fa 18%,#2563eb 56%,#0b2f71 100%); color:#fff;
     display: flex; align-items: center; justify-content: center;
-    font-weight: 900; font-size: 15px; border: 2px solid #0d2c5e; z-index: 3;
-    box-shadow: 0 2px 6px rgba(0,0,0,.5), inset 0 1px 2px rgba(255,255,255,.4);
+    font-weight:950; font-size:15px; z-index:8;
+    filter:drop-shadow(0 3px 3px rgba(0,0,0,.7)) drop-shadow(0 0 3px #2563eb);
+    text-shadow:0 1px 2px #071b40;
   }
   .card-info-btn {
     position:absolute; top:22px; right:4px; z-index:20; width:34px; height:34px;
@@ -238,13 +256,30 @@
     box-shadow: 0 0 12px #fde047, inset 0 0 8px #fde047; pointer-events: none; z-index: 2;
     animation: shieldPulse 1.6s ease-in-out infinite;
   }
+  .card .taunt-crest {
+    position:absolute; right:-9px; top:43%; width:28px; height:34px; z-index:7; pointer-events:none;
+    display:flex; align-items:center; justify-content:center; color:#ecfeff; font-size:14px; font-weight:950;
+    clip-path:polygon(50% 0,94% 14%,88% 72%,50% 100%,12% 72%,6% 14%);
+    background:linear-gradient(145deg,#dbeafe 0 8%,#2563eb 23%,#0f3c81 62%,#93c5fd 100%);
+    filter:drop-shadow(0 3px 3px rgba(0,0,0,.65)) drop-shadow(0 0 5px rgba(96,165,250,.8));
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.5); animation:tauntGuard 2s ease-in-out infinite;
+  }
+  .card .taunt-crest::after { content:""; position:absolute; inset:5px; clip-path:inherit; border:1px solid rgba(219,234,254,.72); }
   .card .art {
     flex: 1; border-radius: 6px; margin-bottom: 3px; display: flex; align-items: center; justify-content: center;
-    font-size: 42px; background: radial-gradient(circle, rgba(255,255,255,.08), rgba(0,0,0,.2));
+    font-size: 42px;
+    background:radial-gradient(circle at 48% 38%,rgba(255,255,255,.17),transparent 28%),repeating-linear-gradient(125deg,transparent 0 10px,rgba(255,255,255,.045) 10px 12px),linear-gradient(145deg,var(--faction-hi,#526273),var(--faction-lo,#101722));
     overflow: hidden;
     /* 內陷框：讓卡面藝術區有立體感（CP1-11）*/
     box-shadow: inset 0 2px 6px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.08);
   }
+  .card.faction-wardens { --faction-hi:#315f91; --faction-lo:#0b2039; }
+  .card.faction-conclave { --faction-hi:#684094; --faction-lo:#20102f; }
+  .card.faction-wild { --faction-hi:#9a4e1b; --faction-lo:#2d1609; }
+  .card.faction-wintershadow { --faction-hi:#31577c; --faction-lo:#0c1328; }
+  .card.faction-conclave .art { background:radial-gradient(circle at 50% 48%,transparent 0 19%,rgba(216,180,254,.24) 20% 22%,transparent 23% 35%,rgba(168,85,247,.2) 36% 38%,transparent 39%),repeating-conic-gradient(from 20deg,rgba(255,255,255,.05) 0 8deg,transparent 8deg 24deg),linear-gradient(145deg,var(--faction-hi),var(--faction-lo)); }
+  .card.faction-wild .art { background:repeating-linear-gradient(118deg,transparent 0 16px,rgba(254,215,170,.13) 16px 19px,transparent 19px 27px),radial-gradient(circle at 70% 25%,rgba(251,146,60,.3),transparent 32%),linear-gradient(145deg,var(--faction-hi),var(--faction-lo)); }
+  .card.faction-wardens .art { background:linear-gradient(30deg,transparent 46%,rgba(191,219,254,.12) 47% 50%,transparent 51%),repeating-linear-gradient(135deg,transparent 0 14px,rgba(147,197,253,.08) 14px 16px),linear-gradient(145deg,var(--faction-hi),var(--faction-lo)); }
   .card .art img { width: 100%; height: 100%; object-fit: cover; }
   .card .kwrow { display: flex; gap: 2px; justify-content: center; min-height: 14px; }
   .card .kw { font-size: 11px; line-height: 1; filter: drop-shadow(0 0 2px rgba(0,0,0,.6)); cursor: help; }
@@ -257,9 +292,9 @@
   /* 寶石漸層的攻擊/血量徽章 + 高光（CP1-11）*/
   .card .atk, .card .hp { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center;
     justify-content: center; font-weight: 900; font-size: 13px; color: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,.5), inset 0 1px 2px rgba(255,255,255,.4); }
-  .card .atk { background: radial-gradient(circle at 35% 30%, #fbbf24, #d97706); }
-  .card .hp { background: radial-gradient(circle at 35% 30%, #f87171, #dc2626); }
+    box-shadow:0 3px 5px rgba(0,0,0,.58),inset 0 2px 2px rgba(255,255,255,.45),inset 0 -3px 5px rgba(0,0,0,.32); text-shadow:0 1px 2px rgba(0,0,0,.8); }
+  .card .atk { border-radius:32% 68% 38% 62%; transform:rotate(-4deg); background:radial-gradient(circle at 34% 24%,#fff4bd 0 6%,#fbbf24 22%,#d97706 62%,#713f12); }
+  .card .hp { border-radius:50% 50% 58% 58% / 45% 45% 70% 70%; background:radial-gradient(circle at 34% 24%,#fecaca 0 7%,#f87171 24%,#dc2626 62%,#7f1d1d); }
   .card .hp.hurt { background: radial-gradient(circle at 35% 30%, #ef4444, #991b1b); box-shadow: 0 0 8px #ef4444, inset 0 1px 2px rgba(255,255,255,.4); }
   .card.spell-card .stats, .card.spell-card .kwrow { display: none; }
 
@@ -521,8 +556,18 @@
   .series-footer a { color: var(--accent); text-decoration: none; font-weight: 800; margin: 0 6px; }
   .series-footer a:hover { text-decoration: underline; }
 
+  .spell-flash { position:fixed; inset:-12vmax; z-index:170; pointer-events:none; opacity:0; transform:scale(.72);
+    background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.92) 0 2%,var(--spell-core,rgba(96,165,250,.74)) 8%,transparent 31%),conic-gradient(from 20deg,transparent,var(--spell-ray,rgba(59,130,246,.28)),transparent 18%,transparent 42%,var(--spell-ray,rgba(59,130,246,.28)),transparent 61%);
+    mix-blend-mode:screen; animation:spellWash .48s cubic-bezier(.16,.72,.2,1); }
+  .spell-flash.enemy { --spell-core:rgba(248,113,113,.75); --spell-ray:rgba(168,85,247,.32); }
+
   /* ===== 動畫 ===== */
-  @keyframes spawnIn { 0% { transform: translateY(18px); opacity: 0; } 60% { transform: translateY(-4px); } 100% { transform: translateY(0); opacity: 1; } }
+  @keyframes spawnIn { 0% { transform: translateY(18px); opacity: 0; } 68% { transform: translateY(-3px); } 100% { transform: translateY(0); opacity: 1; } }
+  @keyframes minionLand { 0%{transform:translateY(-46px) scale(.88);opacity:0} 62%{transform:translateY(5px) scale(1.03);opacity:1} 80%{transform:translateY(-2px) scale(.99)} 100%{transform:translateY(0) scale(1);opacity:1} }
+  @keyframes summonImpact { 0%,42%{opacity:0;transform:translateX(-50%) scaleX(.15)} 62%{opacity:.9;transform:translateX(-50%) scaleX(1)} 100%{opacity:0;transform:translateX(-50%) scaleX(1.24)} }
+  @keyframes legendaryFoil { 0%{background-position:0 0,0% 50%} 100%{background-position:0 0,240% 50%} }
+  @keyframes tauntGuard { 0%,100%{transform:translateY(0) scale(1);opacity:.9} 50%{transform:translateY(-2px) scale(1.06);opacity:1} }
+  @keyframes spellWash { 0%{opacity:0;transform:scale(.72) rotate(-4deg)} 30%{opacity:1} 100%{opacity:0;transform:scale(1.08) rotate(3deg)} }
   @keyframes dieOut { 0% { transform: scale(1) rotate(0); filter: brightness(1); clip-path: inset(0 0 0 0); } 55% { transform: scale(1.04) rotate(2deg); filter: brightness(2.4) saturate(1.7); } 100% { transform: scale(.74) rotate(14deg); opacity: 0; filter: brightness(3) blur(5px); clip-path: inset(0 0 100% 0); } }
   @keyframes dissolveSweep { 0%{transform:translateY(70%);opacity:0} 45%{opacity:1} 100%{transform:translateY(-70%);opacity:0} }
   @keyframes lunge { 50% { transform: translateY(-14px) scale(1.1); } }
@@ -545,12 +590,18 @@
   @keyframes defeatFade { 0%{filter:none;opacity:1} 100%{filter:grayscale(1) brightness(.58);opacity:.56} }
   @keyframes confettiDrop { 0%{opacity:1;transform:translate3d(0,-12px,0) rotate(0deg)} 100%{opacity:0;transform:translate3d(var(--cx,0), var(--cy,190px),0) rotate(var(--cr,240deg))} }
   :root[data-perf="low"] .card.legend-idle,
+  :root[data-perf="low"] .card.rarity-legendary,
   :root[data-perf="low"] .hero.targetable,
   :root[data-perf="low"] .card.targetable { animation-duration: 1.8s !important; }
   :root[data-perf="low"] .card.spawn { animation-duration: .16s !important; }
   :root[data-perf="low"] .card.lunge-to,
   :root[data-perf="low"] .card.attacking { animation-duration: .18s !important; }
   :root[data-perf="low"] .hit-spark { display:none; }
+  :root[data-perf="low"] body::after,
+  :root[data-perf="low"] .card.foil::after,
+  :root[data-perf="low"] .card .taunt-crest { animation:none !important; }
+  :root[data-perf="low"] .spell-flash,
+  :root[data-perf="low"] .card .summon-impact { display:none !important; }
   :root[data-perf="low"] .dmg-float,
   :root[data-perf="low"] .kw-pop,
   :root[data-perf="low"] .combo-float,
@@ -563,8 +614,9 @@
       scroll-behavior: auto !important;
     }
     .confetti-piece, .hit-spark, .combat-ghost, .dmg-float, .combo-float, .kw-pop,
-    .burst-star { display: none !important; }
+    .burst-star, .spell-flash, .card .summon-impact { display: none !important; }
     .card.legend-idle, .card.foil::after, .card .shield-ring,
+    .card.rarity-legendary, .card .taunt-crest, body::after,
     .hero.targetable, .card.targetable { animation: none !important; }
   }
   /* 矮視口壓縮階層：卡片縮小＋面板收斂，讓 app-shell 一屏裝得下 */
@@ -914,9 +966,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r55-v1"></script>
-  <script src="core.js?v=card-battle-r55-v1"></script>
-  <script src="battle.js?v=card-battle-r55-v1"></script>
+  <script src="cards.js?v=card-battle-r56-v1"></script>
+  <script src="core.js?v=card-battle-r56-v1"></script>
+  <script src="battle.js?v=card-battle-r56-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {

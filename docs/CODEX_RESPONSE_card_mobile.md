@@ -1,6 +1,6 @@
 # Codex 回應：card mobile
 
-版本：`card-battle-r55-v1`
+版本：`card-battle-r56-v1`
 
 ## 修正
 
@@ -15,7 +15,7 @@
 
 - RWD 矩陣新增 **320×568**，共 10 視口／30 組；加驗 shell 內嵌 battle、safe-area 宣告、戰場 ≥50% 視高、手牌抽屜狀態，以及真點擊「攻擊者→目標」。
 - E2E 新增 reduced-motion 零 FX DOM、單張點翻／一鍵全翻；完整 E2E **連跑 2 次 PASS**。
-- 版本／SW／reload key／query／測試同步 r55；`rg 'r54|R54' --glob '!docs/**'`：**0 命中**（歷史審查文件保留原版本證據）。
+- 版本／SW／reload key／query／測試同步 r56；`rg 'r54|R54' --glob '!docs/**'`：**0 命中**（歷史審查文件保留原版本證據）。
 
 ## 驗證
 
