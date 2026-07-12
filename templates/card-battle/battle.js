@@ -138,7 +138,7 @@
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r56_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r57_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
@@ -1721,6 +1721,10 @@
     set("enemyHp", Math.max(0, game.enemy.hp));
     set("playerMana", game.player.mana);
     set("playerManaMax", game.player.manaMax);
+    const playerHpBadge = document.getElementById("playerHp")?.closest(".hp-badge");
+    const enemyHpBadge = document.getElementById("enemyHp")?.closest(".hp-badge");
+    if (playerHpBadge) playerHpBadge.classList.toggle("critical", game.player.hp <= Math.max(8, Math.ceil(game.player.maxHp * .25)));
+    if (enemyHpBadge) enemyHpBadge.classList.toggle("critical", game.enemy.hp <= Math.max(8, Math.ceil(game.enemy.maxHp * .25)));
     const enemyHeroInfo = document.getElementById("enemyHero");
     if (enemyHeroInfo) {
       const opponent = game.opponent || currentOpponent();
@@ -1821,6 +1825,7 @@
 
     el.innerHTML = `
       <div class="summon-impact"></div>
+      <div class="frame-sheen" aria-hidden="true"></div>
       <div class="cost">${card.cost}</div>
       ${card.shield ? '<div class="shield-ring"></div>' : ""}
       ${(card.keywords || []).includes("taunt") ? '<div class="taunt-crest" title="嘲諷" aria-hidden="true">◆</div>' : ""}

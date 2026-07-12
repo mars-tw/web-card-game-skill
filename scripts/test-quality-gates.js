@@ -499,6 +499,23 @@ function checkR48ArtConsistency() {
   assert(problems.length === 0, `R48 art cards are consistent across cards/art-config/sw (${R48_ARTED_IDS.length} cards)`);
 }
 
+function checkR57VisualMaterials() {
+  const battleHtml = read("templates/card-battle/index.html");
+  const battleJs = read("templates/card-battle/battle.js");
+  const packHtml = read("templates/card-pack/index.html");
+  const frameMounted = /class="frame-sheen" aria-hidden="true"/.test(battleJs);
+  const frameMask = [battleHtml, packHtml].every((text) => text.includes("mask-composite:exclude") && text.includes("legendFrameSweep"));
+  const foilDispersion = [battleHtml, packHtml].every((text) => /\.card\.foil::after[\s\S]{0,900}rgba\(103,232,249/.test(text)
+    && /\.card\.foil::after[\s\S]{0,900}rgba\(251,113,133/.test(text)
+    && /\.card\.foil::after[\s\S]{0,900}rgba\(52,211,153/.test(text));
+  const reducedMotion = battleHtml.includes('.card.rarity-legendary .frame-sheen, .card .taunt-crest')
+    && battleHtml.includes(':root[data-perf="low"] .card.rarity-legendary .frame-sheen')
+    && packHtml.includes('.card.rarity-legendary .frame-sheen, .card.foil::after');
+  assert(frameMounted && frameMask, "R57 battle/pack 傳說框掛載 mask 掃光");
+  assert(foilDispersion, "R57 battle/pack 閃卡使用青/紅/綠多停點雙層色散");
+  assert(reducedMotion, "R57 傳說框與閃卡掃光受 reduced-motion / low-perf 覆蓋");
+}
+
 console.log("== R40 文案品質守門 ==");
 checkCopyQuality();
 console.log("== R40 SW 快取完整性守門 ==");
@@ -506,6 +523,7 @@ checkVersionedHtmlRefs();
 checkSwCacheCompleteness();
 checkR47ArtConsistency();
 checkR48ArtConsistency();
+checkR57VisualMaterials();
 
 if (failed > 0) {
   console.error(`❌ ${failed} 項守門失敗`);

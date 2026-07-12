@@ -6,9 +6,9 @@
 <title>卡牌對戰 · Card Battle</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r56-v1";
+    const CACHE_VERSION = "card-battle-r57-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r56_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r57_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -131,10 +131,21 @@
   .hero .avatar { font-size: 32px; }
   .hero .name { font-weight: 600; }
   .hp-badge, .mana-badge {
-    display: inline-flex; align-items: center; gap: 4px; color: #fff;
-    font-weight: 700; padding: 2px 10px; border-radius: 20px; font-size: 15px;
+    position:relative; isolation:isolate; overflow:hidden;
+    display:inline-flex; align-items:center; justify-content:center; gap:5px; min-height:32px;
+    color:#fff; font-weight:900; padding:4px 12px; border:1px solid rgba(255,255,255,.44);
+    border-radius:13px 13px 16px 16px / 11px 11px 19px 19px; font-size:15px;
+    text-shadow:0 1px 2px rgba(0,0,0,.9);
+    box-shadow:0 4px 7px rgba(0,0,0,.5),inset 0 2px 2px rgba(255,255,255,.38),inset 0 -5px 8px rgba(0,0,0,.38);
   }
-  .hp-badge { background: var(--hp); } .mana-badge { background: var(--mana); }
+  .hp-badge::before, .mana-badge::before {
+    content:""; position:absolute; z-index:-1; inset:1px 9% 50%; border-radius:999px;
+    background:linear-gradient(180deg,rgba(255,255,255,.48),rgba(255,255,255,0)); opacity:.72;
+    pointer-events:none;
+  }
+  .hp-badge { background:radial-gradient(circle at 30% 18%,#fecaca 0 5%,#f87171 23%,#dc2626 61%,#6f101b 100%); }
+  .mana-badge { background:radial-gradient(circle at 30% 18%,#dbeafe 0 5%,#60a5fa 23%,#2563eb 61%,#082d73 100%); }
+  .hp-badge.critical { border-color:#fecaca; box-shadow:0 0 11px rgba(248,113,113,.72),0 4px 7px rgba(0,0,0,.5),inset 0 2px 2px rgba(255,255,255,.38),inset 0 -5px 8px rgba(0,0,0,.42); }
 
   .battlefield {
     /* flex-wrap：手機窄版面隨從多時換行，不然固定寬卡片會同時被左右裁切、點不到；
@@ -177,19 +188,21 @@
   }
   /* 四階框材質：銀鋼、藍晶、紫紋、金箔。 */
   .card.rarity-common { background:linear-gradient(160deg,#263343,#151d28) padding-box,repeating-linear-gradient(105deg,#d7dde2 0 2px,#697583 2px 5px,#aab3bc 5px 7px) border-box; }
-  .card.rarity-rare { background:linear-gradient(160deg,#223148,#111b2d) padding-box,linear-gradient(135deg,#bfdbfe,#2563eb 35%,#60a5fa 58%,#172554) border-box; box-shadow:0 0 17px rgba(59,130,246,.58),0 5px 13px rgba(0,0,0,.5),inset 0 0 14px rgba(59,130,246,.08); }
-  .card.rarity-epic { background:linear-gradient(160deg,#30243e,#181425) padding-box,repeating-conic-gradient(from 35deg,#e9d5ff 0 7deg,#7e22ce 7deg 15deg,#c084fc 15deg 22deg,#4c1d95 22deg 30deg) border-box; box-shadow:0 0 21px rgba(168,85,247,.64),0 5px 13px rgba(0,0,0,.52),inset 0 0 18px rgba(192,132,252,.1); }
-  .card.rarity-legendary { background:linear-gradient(160deg,#342c1e,#1e170d) padding-box,linear-gradient(115deg,#78350f,#fde68a,#d97706,#fff7c2,#92400e,#fbbf24) border-box; background-size:100% 100%,240% 240%; animation:legendaryFoil 3.8s linear infinite; }
+  .card.rarity-rare { border-width:3px; background:linear-gradient(160deg,#223148,#111b2d) padding-box,linear-gradient(135deg,#dbeafe,#1d4ed8 31%,#93c5fd 52%,#2563eb 69%,#172554) border-box; box-shadow:0 0 17px rgba(59,130,246,.58),0 5px 13px rgba(0,0,0,.5),inset 0 0 14px rgba(59,130,246,.08); }
+  .card.rarity-epic { border-width:3px; background:linear-gradient(160deg,#30243e,#181425) padding-box,repeating-conic-gradient(from 35deg,#f3e8ff 0 8deg,#7e22ce 8deg 16deg,#d8b4fe 16deg 24deg,#4c1d95 24deg 32deg) border-box; box-shadow:0 0 21px rgba(168,85,247,.64),0 5px 13px rgba(0,0,0,.52),inset 0 0 18px rgba(192,132,252,.1); }
+  .card.rarity-legendary { background:linear-gradient(160deg,#342c1e,#1e170d) padding-box,linear-gradient(115deg,#78350f,#fde68a,#d97706,#fff7c2,#92400e,#fbbf24) border-box; }
+  .card .frame-sheen { position:absolute; inset:-3px; border:3px solid transparent; border-radius:12px; pointer-events:none; z-index:6; opacity:0; }
+  .card.rarity-legendary .frame-sheen { opacity:1; background:linear-gradient(115deg,#78350f,#fde68a,#d97706,#fff7c2,#92400e,#fbbf24) border-box; background-size:240% 240%; -webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0); mask-composite:exclude; animation:legendFrameSweep 3.2s linear infinite; }
   /* 傳說：常駐呼吸光 */
-  .card.legend-idle { animation: legendaryFoil 3.8s linear infinite, legendIdle 2.2s ease-in-out infinite; }
+  .card.legend-idle { animation:legendIdle 2.2s ease-in-out infinite; }
   @keyframes legendIdle {
     0%,100% { box-shadow: 0 0 18px var(--glow), 0 4px 10px rgba(0,0,0,.45); }
     50% { box-shadow: 0 0 34px var(--glow), 0 0 50px var(--glow), 0 4px 10px rgba(0,0,0,.45); }
   }
   .card:hover { transform: translateY(-8px) scale(1.05); z-index: 5; }
-  .card.playable { box-shadow: 0 0 16px var(--glow), 0 0 0 2px var(--accent); }
+  .card.playable { outline:2px solid var(--accent); outline-offset:1px; }
   .card.disabled { filter: grayscale(.6) brightness(.7); cursor: not-allowed; }
-  .card.can-attack { box-shadow: 0 0 14px #22c55e, 0 0 0 1px #22c55e; }
+  .card.can-attack { outline:2px solid #22c55e; outline-offset:1px; box-shadow:0 0 var(--glow-size,0) var(--glow,transparent),0 5px 13px rgba(0,0,0,.5),inset 0 0 0 2px rgba(34,197,94,.55); }
   .card.selected { outline: 3px solid var(--accent); transform: translateY(-8px) scale(1.05); z-index: 6; }
   .card.targetable { animation: pulseTarget 1s infinite; }
   .card.blocked { filter: grayscale(.7) brightness(.6); }
@@ -217,9 +230,9 @@
   /* 閃卡 foil */
   .card.foil { border-width: 3px; }
   .card.foil::after {
-    content: ""; position: absolute; inset: 0; border-radius: 10px; pointer-events: none;
-    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.35) 50%, transparent 70%);
-    background-size: 250% 250%; animation: foilShine 2.5s linear infinite; mix-blend-mode: screen;
+    content:""; position:absolute; inset:0; border-radius:10px; pointer-events:none; z-index:5;
+    background:linear-gradient(118deg,transparent 18%,rgba(103,232,249,.2) 33%,rgba(255,255,255,.5) 43%,rgba(251,113,133,.22) 50%,rgba(196,181,253,.25) 57%,transparent 73%),linear-gradient(62deg,transparent 24%,rgba(250,204,21,.13) 38%,rgba(52,211,153,.16) 49%,rgba(96,165,250,.18) 61%,transparent 76%);
+    background-size:280% 280%,230% 230%; opacity:.78; animation:foilShine 3.1s linear infinite; mix-blend-mode:screen;
   }
   .card.tide { border-color:#38bdf8; box-shadow:0 0 18px rgba(56,189,248,.65), 0 4px 10px rgba(0,0,0,.45); }
   .card.tide::before {
@@ -280,6 +293,7 @@
   .card.faction-conclave .art { background:radial-gradient(circle at 50% 48%,transparent 0 19%,rgba(216,180,254,.24) 20% 22%,transparent 23% 35%,rgba(168,85,247,.2) 36% 38%,transparent 39%),repeating-conic-gradient(from 20deg,rgba(255,255,255,.05) 0 8deg,transparent 8deg 24deg),linear-gradient(145deg,var(--faction-hi),var(--faction-lo)); }
   .card.faction-wild .art { background:repeating-linear-gradient(118deg,transparent 0 16px,rgba(254,215,170,.13) 16px 19px,transparent 19px 27px),radial-gradient(circle at 70% 25%,rgba(251,146,60,.3),transparent 32%),linear-gradient(145deg,var(--faction-hi),var(--faction-lo)); }
   .card.faction-wardens .art { background:linear-gradient(30deg,transparent 46%,rgba(191,219,254,.12) 47% 50%,transparent 51%),repeating-linear-gradient(135deg,transparent 0 14px,rgba(147,197,253,.08) 14px 16px),linear-gradient(145deg,var(--faction-hi),var(--faction-lo)); }
+  .card.faction-wintershadow .art { background:radial-gradient(ellipse at 50% 115%,rgba(147,197,253,.2),transparent 46%),repeating-linear-gradient(155deg,transparent 0 13px,rgba(224,242,254,.11) 14px 15px,transparent 16px 27px),linear-gradient(32deg,transparent 44%,rgba(165,180,252,.12) 45% 48%,transparent 49%),linear-gradient(145deg,var(--faction-hi),var(--faction-lo)); }
   .card .art img { width: 100%; height: 100%; object-fit: cover; }
   .card .kwrow { display: flex; gap: 2px; justify-content: center; min-height: 14px; }
   .card .kw { font-size: 11px; line-height: 1; filter: drop-shadow(0 0 2px rgba(0,0,0,.6)); cursor: help; }
@@ -565,7 +579,7 @@
   @keyframes spawnIn { 0% { transform: translateY(18px); opacity: 0; } 68% { transform: translateY(-3px); } 100% { transform: translateY(0); opacity: 1; } }
   @keyframes minionLand { 0%{transform:translateY(-46px) scale(.88);opacity:0} 62%{transform:translateY(5px) scale(1.03);opacity:1} 80%{transform:translateY(-2px) scale(.99)} 100%{transform:translateY(0) scale(1);opacity:1} }
   @keyframes summonImpact { 0%,42%{opacity:0;transform:translateX(-50%) scaleX(.15)} 62%{opacity:.9;transform:translateX(-50%) scaleX(1)} 100%{opacity:0;transform:translateX(-50%) scaleX(1.24)} }
-  @keyframes legendaryFoil { 0%{background-position:0 0,0% 50%} 100%{background-position:0 0,240% 50%} }
+  @keyframes legendFrameSweep { 0%{background-position:0% 50%;opacity:.72} 50%{opacity:1} 100%{background-position:240% 50%;opacity:.78} }
   @keyframes tauntGuard { 0%,100%{transform:translateY(0) scale(1);opacity:.9} 50%{transform:translateY(-2px) scale(1.06);opacity:1} }
   @keyframes spellWash { 0%{opacity:0;transform:scale(.72) rotate(-4deg)} 30%{opacity:1} 100%{opacity:0;transform:scale(1.08) rotate(3deg)} }
   @keyframes dieOut { 0% { transform: scale(1) rotate(0); filter: brightness(1); clip-path: inset(0 0 0 0); } 55% { transform: scale(1.04) rotate(2deg); filter: brightness(2.4) saturate(1.7); } 100% { transform: scale(.74) rotate(14deg); opacity: 0; filter: brightness(3) blur(5px); clip-path: inset(0 0 100% 0); } }
@@ -579,7 +593,7 @@
   @keyframes poisonHit { 0%{filter:none} 40%{filter:hue-rotate(80deg) brightness(1.4) drop-shadow(0 0 14px #22c55e)} 100%{filter:saturate(.3) brightness(.7)} }
   @keyframes regenPulse { 0%,100%{filter:none} 50%{filter:brightness(1.4) drop-shadow(0 0 14px #f472b6)} }
   @keyframes shieldPulse { 0%,100%{opacity:.7} 50%{opacity:1} }
-  @keyframes foilShine { 0%{background-position:0% 0%} 100%{background-position:250% 250%} }
+  @keyframes foilShine { 0%{background-position:0% 0%,230% 0%;opacity:.58} 48%{opacity:.86} 100%{background-position:280% 280%,0% 230%;opacity:.62} }
   @keyframes screenShake { 0%,100%{transform:translate(0,0)} 25%{transform:translate(-4px,2px)} 50%{transform:translate(4px,-2px)} 75%{transform:translate(-2px,3px)} }
   @keyframes dmgFloat { 0%{transform:translate(-50%,0) scale(.6);opacity:0} 20%{transform:translate(-50%,-6px) scale(1.3);opacity:1} 100%{transform:translate(-50%,-40px) scale(1);opacity:0} }
   @keyframes kwPop { 0%{transform:translate(-50%,0) scale(.6);opacity:0} 25%{transform:translate(-50%,-10px) scale(1.1);opacity:1} 100%{transform:translate(-50%,-30px) scale(1);opacity:0} }
@@ -590,7 +604,6 @@
   @keyframes defeatFade { 0%{filter:none;opacity:1} 100%{filter:grayscale(1) brightness(.58);opacity:.56} }
   @keyframes confettiDrop { 0%{opacity:1;transform:translate3d(0,-12px,0) rotate(0deg)} 100%{opacity:0;transform:translate3d(var(--cx,0), var(--cy,190px),0) rotate(var(--cr,240deg))} }
   :root[data-perf="low"] .card.legend-idle,
-  :root[data-perf="low"] .card.rarity-legendary,
   :root[data-perf="low"] .hero.targetable,
   :root[data-perf="low"] .card.targetable { animation-duration: 1.8s !important; }
   :root[data-perf="low"] .card.spawn { animation-duration: .16s !important; }
@@ -599,6 +612,7 @@
   :root[data-perf="low"] .hit-spark { display:none; }
   :root[data-perf="low"] body::after,
   :root[data-perf="low"] .card.foil::after,
+  :root[data-perf="low"] .card.rarity-legendary .frame-sheen,
   :root[data-perf="low"] .card .taunt-crest { animation:none !important; }
   :root[data-perf="low"] .spell-flash,
   :root[data-perf="low"] .card .summon-impact { display:none !important; }
@@ -616,7 +630,7 @@
     .confetti-piece, .hit-spark, .combat-ghost, .dmg-float, .combo-float, .kw-pop,
     .burst-star, .spell-flash, .card .summon-impact { display: none !important; }
     .card.legend-idle, .card.foil::after, .card .shield-ring,
-    .card.rarity-legendary, .card .taunt-crest, body::after,
+    .card.rarity-legendary .frame-sheen, .card .taunt-crest, body::after,
     .hero.targetable, .card.targetable { animation: none !important; }
   }
   /* 矮視口壓縮階層：卡片縮小＋面板收斂，讓 app-shell 一屏裝得下 */
@@ -635,7 +649,7 @@
     .board { gap: 5px; padding: 5px; }
     .hero-row { padding-block: 4px; }
     .hero .avatar { font-size: 22px; }
-    .hp-badge, .mana-badge { font-size: 13px; padding: 2px 8px; }
+    .hp-badge, .mana-badge { min-height:28px; font-size:13px; padding:3px 8px; }
     .battlefield { min-height: 44px; }
     .target-status { min-height: 20px; padding: 2px 8px; font-size: 12px; }
     #log { height: 32px; }
@@ -674,7 +688,7 @@
     .hero-row { padding: 6px 10px; border-radius: 10px; }
     .hero .avatar { font-size: 24px; }
     .hero .name { font-size: 14px; }
-    .hp-badge, .mana-badge { font-size: 13px; padding: 2px 8px; }
+    .hp-badge, .mana-badge { min-height:28px; font-size:13px; padding:3px 8px; }
     .battlefield { gap: 5px; padding: 5px; }
     .quest-item { grid-template-columns: minmax(0,1fr) auto; }
     .series-footer { margin: 0; padding: 8px 10px 4px; }
@@ -966,9 +980,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r56-v1"></script>
-  <script src="core.js?v=card-battle-r56-v1"></script>
-  <script src="battle.js?v=card-battle-r56-v1"></script>
+  <script src="cards.js?v=card-battle-r57-v1"></script>
+  <script src="core.js?v=card-battle-r57-v1"></script>
+  <script src="battle.js?v=card-battle-r57-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {
