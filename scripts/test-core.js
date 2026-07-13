@@ -715,6 +715,7 @@ testFatigueWinConditionPressure();
 testBattlecryAutoTargetContract();
 testChroniclePureFunctions();
 testP0EffectsAndSilence();
+testHeroCardMechanics();
 testGoalsAndWeeklyQuests();
 
 console.log("");
@@ -753,4 +754,99 @@ function testGoalsAndWeeklyQuests() {
   const reset = Core.migrateGoals(weeklyClaim.state, "2026-W29");
   assert(reset.dateSeed === "2026-W29" && reset.weeklyQuest.progress === 0 && reset.weeklyQuest.claimed === false, "跨週會重置週任務進度與領取狀態");
   assert(reset.claimedMilestones.includes("unique_10") === weeklyClaim.state.claimedMilestones.includes("unique_10"), "跨週不清除里程碑領取紀錄");
+}
+
+function testHeroCardMechanics() {
+  const shieldNeighbor = minion("shieldNeighbor", { health: 2, maxHealth: 2 });
+  const halden = minion("halden", { health: 7, maxHealth: 7, keywords: ["taunt", "shieldwall"] });
+  const shieldState = state({ player: { field: [shieldNeighbor, halden] } });
+  const shieldHit = Core.applyDamage(shieldState, { targetUid: shieldNeighbor.uid, amount: 2 }, rngFactory());
+  assert(shieldNeighbor.health === 1 && halden.health === 6 && shieldHit.events.some((event) => event.type === "shieldwall"),
+    "列盾把相鄰友軍受到的 2 傷分成友軍 1、哈爾登 1");
+  halden.health = 0;
+  Core.cleanupField(shieldState, { side: "player" }, rngFactory());
+  Core.applyDamage(shieldState, { targetUid: shieldNeighbor.uid, amount: 2 }, rngFactory());
+  assert(shieldNeighbor.health === -1 && !shieldState.player.field.includes(halden), "列盾來源死亡離場後不再轉移傷害");
+
+  const vey = minion("vey", { attack: 2, health: 5, keywords: ["spellpower", "resonance"] });
+  const spellpowerAlly = minion("spellpowerAlly", { keywords: ["spellpower"] });
+  const spellVictim = minion("spellVictim", { health: 5, maxHealth: 5 });
+  const resonanceVictim = minion("resonanceVictim", { health: 7, maxHealth: 7 });
+  const resonanceState = state({
+    player: { field: [vey, spellpowerAlly] },
+    enemy: { field: [spellVictim, resonanceVictim] },
+  });
+  const resonance = Core.castSpellEffect(resonanceState, {
+    side: "player",
+    effect: "damage3",
+    targetUid: spellVictim.uid,
+    card: spell("heroBolt", "damage3"),
+  }, rngFactory());
+  assert(!resonanceState.enemy.field.includes(spellVictim) && resonanceVictim.health === 6,
+    "殘響在法強傷害法術結算後，對新的最低生命敵軍追加固定 1 傷");
+  assert(resonance.events.filter((event) => event.type === "resonance").length === 1
+    && resonance.events.some((event) => event.type === "damage" && event.uid === resonanceVictim.uid && event.amount === 1),
+  "殘響每個來源只觸發一次且不吃 +2 法強");
+
+  const scarra = minion("scarra", { attack: 3, health: 3, canAttack: true, keywords: ["charge", "bloodtrail", "windfury"] });
+  const packmate = minion("packmate", { attack: 2, health: 3 });
+  const bloodState = state({ player: { field: [scarra, packmate] } });
+  const firstTrail = Core.resolveHeroAttack(bloodState, { attackerSide: "player", attackerUid: scarra.uid, defenderSide: "enemy" }, rngFactory());
+  const secondTrail = Core.resolveHeroAttack(bloodState, { attackerSide: "player", attackerUid: scarra.uid, defenderSide: "enemy" }, rngFactory());
+  assert(firstTrail.ok && secondTrail.ok && packmate.attack === 3 && scarra.attack === 3,
+    "血跡打臉只讓其他友軍 +1，連擊同回合第二次不疊加");
+  Core.advanceTurn(bloodState, { phase: "endPlayer" }, rngFactory());
+  assert(packmate.attack === 2, "血跡的臨時攻擊在控制器回合結束時清除");
+
+  const isold = minion("isold", { attack: 4, health: 5, canAttack: true, keywords: ["lifesteal", "chillbind"] });
+  const chilled = minion("chilled", { attack: 0, health: 5, maxHealth: 5, shield: true, canAttack: true });
+  const chillState = state({ player: { field: [isold] }, enemy: { field: [chilled] } });
+  Core.resolveAttack(chillState, { attackerSide: "player", attackerUid: isold.uid, defenderUid: chilled.uid }, rngFactory());
+  assert(!chilled.shield && !chilled.cantAttackTurns, "寒噤攻擊被聖盾完全擋下時不上狀態");
+  isold.canAttack = true;
+  Core.resolveAttack(chillState, { attackerSide: "player", attackerUid: isold.uid, defenderUid: chilled.uid }, rngFactory());
+  assert(chilled.health === 1 && chilled.cantAttackTurns === 1, "寒噤在戰鬥實際造成傷害後標記下一回合禁攻");
+  Core.advanceTurn(chillState, { phase: "endPlayer" }, rngFactory());
+  Core.advanceTurn(chillState, { phase: "startEnemy" }, rngFactory());
+  assert(chilled.canAttack === false && chilled.cantAttackTurns === 0, "寒噤目標下一個控制器回合無法攻擊");
+  Core.advanceTurn(chillState, { phase: "endEnemy" }, rngFactory());
+  Core.advanceTurn(chillState, { phase: "endPlayer" }, rngFactory());
+  Core.advanceTurn(chillState, { phase: "startEnemy" }, rngFactory());
+  assert(chilled.canAttack === true, "寒噤跳過一回合後恢復攻擊");
+
+  const rune = minion("rune", { attack: 3, health: 6, canAttack: true, keywords: ["taunt", "sunder"] });
+  const shieldedTwoTwo = minion("shieldedTwoTwo", { attack: 2, health: 2, maxHealth: 2, shield: true });
+  const sunderState = state({ player: { field: [rune] }, enemy: { field: [shieldedTwoTwo] } });
+  const sunder = Core.resolveAttack(sunderState, { attackerSide: "player", attackerUid: rune.uid, defenderUid: shieldedTwoTwo.uid }, rngFactory());
+  assert(!sunderState.enemy.field.includes(shieldedTwoTwo) && sunder.events.some((event) => event.type === "sunder"),
+    "裂甲先破聖盾再以完整 3 攻消滅 2/2，而非只破盾");
+
+  const moenSingle = minion("moenSingle", { faction: "neutral", keywords: ["battlecry", "attune"], trigger: "attuneFlexible" });
+  const wardensTarget = minion("wardensTarget", { attack: 2, health: 2, maxHealth: 2, faction: "wardens" });
+  const attuneSingleState = state({ player: { field: [wardensTarget, moenSingle] } });
+  Core.triggerAbility(attuneSingleState, { side: "player", trigger: "attuneFlexible", sourceUid: moenSingle.uid, targetUid: wardensTarget.uid }, rngFactory());
+  assert(wardensTarget.attack === 3 && wardensTarget.health === 3 && wardensTarget.maxHealth === 3,
+    "調印在單一非中立陣營場面給目標 +1/+1");
+
+  const moenMulti = minion("moenMulti", { faction: "neutral", keywords: ["battlecry", "attune"], trigger: "attuneFlexible" });
+  const multiTarget = minion("multiTarget", { attack: 2, health: 2, maxHealth: 2, faction: "wardens" });
+  const wildAlly = minion("wildAlly", { faction: "wild" });
+  const attuneMultiState = state({ player: { field: [multiTarget, wildAlly, moenMulti] } });
+  Core.triggerAbility(attuneMultiState, { side: "player", trigger: "attuneFlexible", sourceUid: moenMulti.uid, targetUid: multiTarget.uid }, rngFactory());
+  assert(multiTarget.attack === 4 && multiTarget.health === 4 && multiTarget.maxHealth === 4,
+    "調印只計非中立陣營，wardens + wild 時提升為 +2/+2");
+
+  const pendingMoen = minion("pendingMoen", { cost: 0, faction: "neutral", keywords: ["battlecry", "attune"], trigger: "attuneFlexible" });
+  const pendingTarget = minion("pendingTarget", { attack: 1, health: 2, maxHealth: 2, faction: "wardens" });
+  const pendingState = state({ player: { mana: 1, hand: [pendingMoen], field: [pendingTarget] } });
+  const pendingPlay = Core.playCard(pendingState, { side: "player", cardUid: pendingMoen.uid }, rngFactory());
+  const blockedEnd = Core.advanceTurn(pendingState, { phase: "endPlayer" }, rngFactory());
+  const pendingResolve = Core.resolveTarget(pendingState, { side: "player", targetUid: pendingTarget.uid }, rngFactory());
+  assert(pendingPlay.ok && pendingState.turn === "player" && !blockedEnd.ok && blockedEnd.reason === "pendingBattlecry"
+    && pendingResolve.ok && !pendingState.pendingBattlecry && pendingTarget.attack === 2,
+    "調印待指定期間不能跳過回合，選定友軍後才完成戰吼");
+
+  const mutedHero = minion("mutedHero", { keywords: ["shieldwall", "resonance", "bloodtrail", "chillbind", "sunder", "attune"] });
+  Core.silenceMinion(mutedHero, []);
+  assert(mutedHero.keywords.length === 0, "靜默可一次移除六種角色專屬關鍵字");
 }

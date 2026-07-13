@@ -1,5 +1,5 @@
 /* =========================================================================
- * test-rwd-matrix.js — R59 RWD 十視口矩陣守門（真瀏覽器）
+ * test-rwd-matrix.js — R60 RWD 十視口矩陣守門（真瀏覽器）
  *
  * 驗收標準（每頁 × 每視口都必須成立）：
  *   1. 所有可互動元素（button/select/input/textarea/a[href]/[role=button]/[onclick]）

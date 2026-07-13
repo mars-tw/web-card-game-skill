@@ -46,9 +46,11 @@
       deckIds: Object.freeze([
         "saltShieldSquire", "saltShieldSquire", "footman", "footman", "bulwarkMonk", "bulwarkMonk",
         "knight", "knight", "guardian", "guardian", "bannerGuard", "bannerGuard",
-        "oathbannerHerald", "oathbannerHerald", "captainGreywake", "highArchivist",
+        "oathbannerHerald", "oathbannerHerald", "captainGreywake", "heroSerHalden",
         "mirrorRime", "mirrorRime", "shieldUp", "shieldUp",
       ]),
+      heroCardId: "heroSerHalden",
+      easyReplacementId: "highArchivist",
       tauntBias: 0.9,
       faceBias: 0.18,
     }),
@@ -59,10 +61,12 @@
       archetype: "spellburst",
       deckIds: Object.freeze([
         "arcaneApprentice", "arcaneApprentice", "tidecallerAdept", "tidecallerAdept",
-        "frostChanneler", "frostChanneler", "mage", "mage", "arcaneWeaver", "arcaneWeaver",
+        "frostChanneler", "frostChanneler", "mage", "heroMagisterVey", "arcaneWeaver", "arcaneWeaver",
         "firebolt", "firebolt", "iceNeedle", "iceNeedle", "emberVolley", "emberVolley",
         "flameBurst", "flameBurst", "voidTithe", "voidTithe",
       ]),
+      heroCardId: "heroMagisterVey",
+      easyReplacementId: "mage",
       tauntBias: 0.35,
       faceBias: 0.56,
     }),
@@ -74,9 +78,11 @@
       deckIds: Object.freeze([
         "emberpup", "emberpup", "wolf", "wolf", "alleySkirmisher", "alleySkirmisher",
         "sparkSquire", "sparkSquire", "frontScout", "frontScout", "packHowler", "packHowler",
-        "dualTalon", "dualTalon", "dawnRider", "dawnRider", "firebolt", "firebolt",
+        "dualTalon", "heroScarra", "dawnRider", "dawnRider", "firebolt", "firebolt",
         "emberVolley", "emberVolley",
       ]),
+      heroCardId: "heroScarra",
+      easyReplacementId: "dualTalon",
       tauntBias: 0.15,
       faceBias: 0.9,
     }),
@@ -128,6 +134,7 @@
     rebirth:        (g, side, target, source) => triggerAbilityUi(g, side, "rebirth", target, source),
     drawCard1:      (g, side, target, source) => triggerAbilityUi(g, side, "drawCard1", target, source),
     silenceIfDamaged: (g, side, target, source) => triggerAbilityUi(g, side, "silenceIfDamaged", target, source),
+    attuneFlexible: (g, side, target, source) => triggerAbilityUi(g, side, "attuneFlexible", target, source),
   };
 
   let game;
@@ -138,7 +145,7 @@
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r59_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r60_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
@@ -509,6 +516,7 @@
       enemy:  { side: "enemy",  hp: D.enemyHp, maxHp: D.enemyHp, mana: 0, manaMax: 0, fatigue: 0, deck: enemyDeck, hand: [], field: [] },
       selected: null,
       pendingSpell: null,
+      pendingBattlecry: null,
       over: false,
     };
     game.player.opp = game.enemy; game.enemy.opp = game.player;
@@ -521,6 +529,9 @@
     document.getElementById("overlay").classList.remove("show", "win", "lose");
     document.getElementById("log").innerHTML = "";
     log(`⚔️ 對戰開始！難度：${D.label}；對手：${opponent.emoji} ${opponent.name}。`, "me");
+    if (opponent.heroCardId && playerDeckIds.includes(opponent.heroCardId)) {
+      log(`「${opponent.name}對上了……另一個${opponent.name}。」`, "me");
+    }
     render();
     syncDdaToggle();
     syncAiThoughtToggle();
@@ -791,9 +802,13 @@
     }, Object.create(null));
   }
 
-  function buildOpponentDeck(opponent) {
+  function buildOpponentDeck(opponent, diffKey) {
     const picked = opponent || currentOpponent();
     const ids = Array.isArray(picked.deckIds) ? [...picked.deckIds] : [];
+    if (diffKey === "easy" && picked.heroCardId && picked.easyReplacementId) {
+      const heroIndex = ids.indexOf(picked.heroCardId);
+      if (heroIndex >= 0) ids[heroIndex] = picked.easyReplacementId;
+    }
     const validation = Core.validateDeck(ids, collectionForDeckIds(ids), CARD_POOL);
     if (!validation.ok) {
       throw new Error(`AI opponent deck invalid: ${picked.id} ${validation.errors.join(" | ")}`);
@@ -805,7 +820,7 @@
 
   function buildAiDeck(diffKey, playerArchetype, opponent) {
     const picked = opponent || currentOpponent();
-    const deck = buildOpponentDeck(picked);
+    const deck = buildOpponentDeck(picked, diffKey);
     return {
       deck,
       source: "opponent",
@@ -924,9 +939,9 @@
       return;
     }
     setHandDrawerOpen(false);
-    const pending = result.events.find((e) => e.type === "spellPending");
-    if (pending) {
-      flash(pending.need === "friendlyMinion" ? "選擇一個友方隨從" : "選擇一個敵方隨從");
+    const spellPending = result.events.find((e) => e.type === "spellPending");
+    if (spellPending) {
+      flash(spellPending.need === "friendlyMinion" ? "選擇一個友方隨從" : "選擇一個敵方隨從");
       render();
       return;
     }
@@ -936,6 +951,12 @@
     } else if (result.card && result.card.type === CARD_TYPE.SPELL) {
       trackCardUse(result.card);
       logSpellEffect(result.card, result.target, "player");
+    }
+    const battlecryPending = result.events.find((e) => e.type === "battlecryPending");
+    if (battlecryPending) {
+      flash("調印：選擇一個友方隨從");
+      render();
+      return;
     }
     render(); checkWin();
     advanceGuide("play");
@@ -971,7 +992,8 @@
     const target = game.enemy.field.find((m) => m.uid === uid);
     if (!target) return;
 
-    if (game.pendingSpell) {
+    if (game.pendingSpell || game.pendingBattlecry) {
+      if (game.pendingBattlecry) { flash("調印需指定友方隨從。"); return; }
       if (game.pendingSpell.need !== "enemyMinion") { flash("此法術需指定友方隨從。"); return; }
       resolvePendingSpell(target); return;
     }
@@ -985,15 +1007,20 @@
   }
 
   function clickFriendlyMinionAsTarget(target) {
+    if (game.pendingBattlecry && game.pendingBattlecry.need === "friendlyMinion") { resolvePendingSpell(target); return true; }
     if (game.pendingSpell && game.pendingSpell.need === "friendlyMinion") { resolvePendingSpell(target); return true; }
     return false;
   }
 
   function resolvePendingSpell(target) {
+    const resolvingBattlecry = !!game.pendingBattlecry;
     const result = Core.resolveTarget(game, { side: "player", targetUid: target && target.uid }, rng);
     handleCoreResult(result);
     if (!result.ok) showCoreFailure(result);
-    else if (result.card) {
+    else if (resolvingBattlecry && result.card) {
+      const amount = result.events.find((event) => event.type === "attune")?.amount || 1;
+      log(`${result.card.name}調印 ${result.target?.name || "友方隨從"}，獲得 +${amount}/+${amount}。`, "me");
+    } else if (result.card) {
       trackCardUse(result.card);
       logSpellEffect(result.card, result.target, "player");
     }
@@ -1002,7 +1029,7 @@
 
   function clickEnemyHero() {
     if (game.turn !== "player" || game.over) return;
-    if (game.pendingSpell) { flash("此法術需指定隨從。"); return; }
+    if (game.pendingSpell || game.pendingBattlecry) { flash(game.pendingBattlecry ? "調印需指定友方隨從。" : "此法術需指定隨從。"); return; }
     if (game.selected) {
       if (hasTaunt(game.enemy.field)) { flash("敵方有嘲諷，不能直接攻擊英雄！"); return; }
       const attacker = game.player.field.find((m) => m.uid === game.selected);
@@ -1030,7 +1057,7 @@
     if (game.turn !== "player" || game.over) return;
     const m = game.player.field.find((x) => x.uid === uid);
     if (!m) return;
-    if (game.pendingSpell && clickFriendlyMinionAsTarget(m)) return;
+    if ((game.pendingSpell || game.pendingBattlecry) && clickFriendlyMinionAsTarget(m)) return;
     if (!m.canAttack) { flash("這個隨從本回合無法攻擊。"); return; }
     game.selected = game.selected === uid ? null : uid;
     render();
@@ -1039,9 +1066,14 @@
 
   function cancelTargeting(message) {
     if (!game) return;
-    const hadTargeting = !!(game.selected || game.pendingSpell);
+    if (game.pendingBattlecry) {
+      flash("調印戰吼需指定一個友方隨從。");
+      return;
+    }
+    const hadTargeting = !!(game.selected || game.pendingSpell || game.pendingBattlecry);
     game.selected = null;
     game.pendingSpell = null;
+    game.pendingBattlecry = null;
     if (message && hadTargeting) flash(message);
     if (hadTargeting) render();
   }
@@ -1050,6 +1082,7 @@
     if (!game) return "載入中。";
     if (game.over) return "對戰已結束。";
     if (game.turn !== "player") return "對手行動中。";
+    if (game.pendingBattlecry) return "調印：請選擇友方隨從";
     if (game.pendingSpell) {
       return game.pendingSpell.need === "friendlyMinion" ? "請選擇友方隨從" : "請選擇敵方隨從";
     }
@@ -1066,7 +1099,7 @@
     const el = document.getElementById("targetStatus");
     if (!el) return;
     el.textContent = targetStatusText();
-    el.classList.toggle("active", !!(game && (game.selected || game.pendingSpell || game.turn !== "player")));
+    el.classList.toggle("active", !!(game && (game.selected || game.pendingSpell || game.pendingBattlecry || game.turn !== "player")));
   }
 
   function targetPoolForPlayerSpell(card) {
@@ -1329,6 +1362,10 @@
   // ===== AI 回合 =====
   function endTurn() {
     if (game.turn !== "player" || game.over) return;
+    if (game.pendingBattlecry) {
+      flash("請先完成調印戰吼。");
+      return;
+    }
     const result = Core.advanceTurn(game, { phase: "endPlayer" }, rng);
     handleCoreResult(result);
     render();
@@ -1615,7 +1652,17 @@
         if (game.over) break;
         if (card.type === CARD_TYPE.MINION) {
           if (ai.field.length >= MAX_FIELD) continue; // 場滿：跳過隨從，讓 AI 還有機會出法術
-          const result = Core.playCard(game, { side: "enemy", cardUid: card.uid, burnMulligan: false, trackCombo: false }, rng);
+          const attuneTarget = card.trigger === "attuneFlexible"
+            ? ([...ai.field].sort((a, b) => minionThreatScore(b) - minionThreatScore(a))[0] || card)
+            : null;
+          const result = Core.playCard(game, {
+            side: "enemy",
+            cardUid: card.uid,
+            targetUid: attuneTarget && attuneTarget.uid,
+            deferBattlecry: false,
+            burnMulligan: false,
+            trackCombo: false,
+          }, rng);
           if (!result.ok) continue;
           handleCoreResult(result);
           if (game.over) { acted = false; break; }
@@ -1784,7 +1831,7 @@
       if (side === "player") {
         if (card.canAttack && game.turn === "player") c.classList.add("can-attack");
         if (game.selected === card.uid) c.classList.add("selected");
-        if (game.pendingSpell && game.pendingSpell.need === "friendlyMinion") c.classList.add("targetable");
+        if ((game.pendingSpell && game.pendingSpell.need === "friendlyMinion") || (game.pendingBattlecry && game.pendingBattlecry.need === "friendlyMinion")) c.classList.add("targetable");
         c.onclick = (event) => { event.stopPropagation(); selectMyMinion(card.uid); };
       } else {
         const spellTargetable = game.pendingSpell && game.pendingSpell.need === "enemyMinion";
@@ -2052,7 +2099,7 @@
       } else if (event.type === "shieldGain") {
         flashCard(event.uid, "shield-gain");
       } else if (event.type === "buffTarget") {
-        flashKeyword2(event.uid, "+2/+2");
+        flashKeyword2(event.uid, `+${event.attack}/+${event.health}`);
         flashCard(event.uid, "shield-gain");
       } else if (event.type === "buffAdjacent1") {
         flashKeyword2(event.uid, "+1 攻");
@@ -2071,6 +2118,20 @@
         flashKeyword2(event.uid, "亡語");
       } else if (event.type === "battlecry") {
         flashKeyword2(event.uid, "戰吼");
+      } else if (event.type === "shieldwall") {
+        flashKeyword2(event.sourceUid, "列盾 -1");
+      } else if (event.type === "resonance") {
+        flashKeyword2(event.sourceUid, "殘響");
+      } else if (event.type === "bloodtrail") {
+        flashKeyword2(event.sourceUid, "血跡");
+      } else if (event.type === "bloodtrailBuff") {
+        flashKeyword2(event.uid, "+1 攻");
+      } else if (event.type === "chillbind") {
+        flashKeyword2(event.targetUid, "寒噤");
+      } else if (event.type === "sunder") {
+        flashKeyword2(event.sourceUid, "裂甲");
+      } else if (event.type === "attune") {
+        flashKeyword2(event.uid, `調印 +${event.amount}/+${event.amount}`);
       } else if (event.type === "spellCast") {
         playSound("play");
         triggerSpellFlash(event.side);

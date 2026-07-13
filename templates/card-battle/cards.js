@@ -22,6 +22,15 @@ const RARITY = {
 // 抽卡變成閃卡(foil)的機率（疊在稀有度之上，更稀有）。
 const FOIL_CHANCE = 0.08;
 const TIDE_CHANCE = 0.03;
+const HERO_LEGEND_BIAS = 0.28;
+const HERO_SET_IDS = Object.freeze([
+  "heroSerHalden",
+  "heroMagisterVey",
+  "heroScarra",
+  "heroIsoldLongdusk",
+  "heroRuneFrostfang",
+  "heroMoenTidearbiter",
+]);
 
 // 重複卡分解金幣值。卡包頁與 Node 測試共用，避免經濟 gate 測到複製常數。
 const DISMANTLE_VALUE = { common: 2, rare: 8, epic: 25, legendary: 80 };
@@ -57,6 +66,13 @@ const FACTIONS = Object.freeze({
     color: "#60a5fa",
     legend: "凜冬暗影以絕望為食，卻從不急著吞下獵物。霜縛暴君把整個冬天鎖進胸腔，血月女王便在圍城的夢裡倒酒；他們帶來的不是死亡本身，而是讓人相信春天從未存在過的漫長夜色。",
   }),
+  neutral: Object.freeze({
+    id: "neutral",
+    name: "潮間中立",
+    emoji: "⚖️",
+    color: "#94a3b8",
+    legend: "不屬四旗，只屬下一次談判的桌面。",
+  }),
 });
 
 /* 關鍵字技能定義（顯示用；實際規則在 core.js）：
@@ -87,6 +103,12 @@ const KEYWORDS = {
   frenzy:       { label: "狂怒", icon: "🔥", desc: "首次受傷存活後，攻擊 +2。" },
   spellpower:   { label: "法強", icon: "✨", desc: "在場時你的傷害法術 +1（可疊加）。" },
   silence:      { label: "靜默", icon: "🤫", desc: "移除隨從的關鍵字、聖盾與觸發效果（包含亡語），但保留攻擊與生命。" },
+  shieldwall:   { label: "列盾", icon: "🧱", desc: "相鄰友軍受傷時，替其承受其中 1 點傷害。" },
+  resonance:    { label: "殘響", icon: "🔔", desc: "傷害法術結算後，對生命最低的敵方隨從造成固定 1 點傷害。" },
+  bloodtrail:   { label: "血跡", icon: "🩸", desc: "每回合首次傷害敵方英雄後，其他友軍本回合攻擊 +1。" },
+  chillbind:    { label: "寒噤", icon: "🥶", desc: "攻擊傷害敵方隨從後，使其下一個控制器回合無法攻擊。" },
+  sunder:       { label: "裂甲", icon: "⚒️", desc: "攻擊敵方隨從時先移除聖盾，再造成完整傷害。" },
+  attune:       { label: "調印", icon: "🔏", desc: "戰吼強化友軍；兩個不同非中立陣營在場時效果提高。" },
 };
 
 /**
@@ -205,6 +227,14 @@ const CARD_POOL = [
   { id: "ladyAshenBell", name: "灰鐘女士", type: CARD_TYPE.MINION, rarity: "legendary", cost: 5, attack: 3, health: 5, emoji: "🔔", image: null, keywords: ["deathrattle", "lifesteal"], trigger: "summonTwo1_1", text: "吸血。亡語：召喚兩個 1/1 灰鈴侍從。", foil: false },
   { id: "silenceOne", name: "封口咒", type: CARD_TYPE.SPELL, rarity: "epic", cost: 2, emoji: "🤫", image: null, keywords: ["silence"], text: "使一個敵方隨從靜默，移除關鍵字、聖盾與亡語。保留攻擊與生命。", effect: "polymorph", silenceOnly: true, foil: false },
   { id: "scoutInterrogator", name: "斥候訊問", type: CARD_TYPE.MINION, rarity: "rare", cost: 3, attack: 2, health: 3, emoji: "🕵️", image: null, keywords: ["battlecry"], trigger: "silenceIfDamaged", text: "戰吼：使一個已受傷的敵方隨從靜默。", foil: false },
+
+  // ===== R60 對座六影：具名角色傳說 =====
+  { id: "heroSerHalden", name: "哈爾登隊長", type: CARD_TYPE.MINION, rarity: "legendary", cost: 6, attack: 4, health: 8, emoji: "🛡️", image: null, keywords: ["taunt", "shieldwall"], text: "嘲諷。列盾：相鄰友方隨從受到傷害時，本體改承受其中 1 點。", foil: false, set: "hero_shadows_v1", heroTag: true, opponentId: "op_ser_halden", maxCopies: 1 },
+  { id: "heroMagisterVey", name: "維伊魔導師", type: CARD_TYPE.MINION, rarity: "legendary", cost: 5, attack: 2, health: 5, emoji: "🔮", image: null, keywords: ["spellpower", "resonance"], text: "法強。殘響：傷害法術結算後，對生命最低的敵方隨從造成固定 1 點傷害。", foil: false, set: "hero_shadows_v1", heroTag: true, opponentId: "op_magister_vey", maxCopies: 1 },
+  { id: "heroScarra", name: "斯卡拉狼首", type: CARD_TYPE.MINION, rarity: "legendary", cost: 4, attack: 3, health: 3, emoji: "🐺", image: null, keywords: ["charge", "bloodtrail"], text: "衝鋒。血跡：本體每回合首次傷害敵方英雄後，其他友方隨從本回合攻擊 +1。", foil: false, set: "hero_shadows_v1", heroTag: true, opponentId: "op_scarra", maxCopies: 1 },
+  { id: "heroIsoldLongdusk", name: "伊索德·長暮", type: CARD_TYPE.MINION, rarity: "legendary", cost: 6, attack: 5, health: 7, emoji: "🌙", image: null, keywords: ["lifesteal", "chillbind"], text: "吸血。寒噤：本體攻擊敵方隨從並造成傷害後，使其下一個控制器回合無法攻擊。", foil: false, set: "hero_shadows_v1", heroTag: true, maxCopies: 1 },
+  { id: "heroRuneFrostfang", name: "霜牙百夫長·魯恩", type: CARD_TYPE.MINION, rarity: "legendary", cost: 5, attack: 3, health: 6, emoji: "🧊", image: null, keywords: ["taunt", "sunder"], text: "嘲諷。裂甲：本體攻擊敵方隨從時，先移除其聖盾，再造成傷害。", foil: false, set: "hero_shadows_v1", heroTag: true, maxCopies: 1 },
+  { id: "heroMoenTidearbiter", name: "潮間仲裁者·茉恩", type: CARD_TYPE.MINION, rarity: "legendary", cost: 4, attack: 2, health: 3, emoji: "⚖️", image: null, keywords: ["battlecry", "attune"], trigger: "attuneFlexible", needsTarget: "friendlyMinion", text: "戰吼—調印：使一個友方隨從 +1/+1；若場上有至少兩個不同非中立陣營，改為 +2/+2。", foil: false, set: "hero_shadows_v1", heroTag: true, maxCopies: 1 },
 ];
 
 const AXIS_LABELS = Object.freeze({ aggro: "快攻", control: "控制", neutral: "中立" });
@@ -231,6 +261,8 @@ const CARD_AXIS = Object.freeze({
   saltShieldSquire: "control", iceNeedle: "aggro", packHowler: "aggro", toxinViper: "aggro", graveScribe: "control",
   mirrorRime: "control", dualTalon: "aggro", voidTithe: "control", captainGreywake: "control", ladyAshenBell: "control",
   silenceOne: "control", scoutInterrogator: "control",
+  heroSerHalden: "control", heroMagisterVey: "control", heroScarra: "aggro",
+  heroIsoldLongdusk: "control", heroRuneFrostfang: "control", heroMoenTidearbiter: "neutral",
 });
 const CARD_FLAVOR = Object.freeze({
   footman: "城門下的第一面盾，總是比晨鐘更早醒來。",
@@ -319,6 +351,12 @@ const CARD_FLAVOR = Object.freeze({
   ladyAshenBell: "灰鐘女士的鐘聲落下後，侍從才真正開始工作。",
   silenceOne: "封口咒不改寫肉身，只把那些吵鬧的奇蹟一一熄掉。",
   scoutInterrogator: "斥候訊問擅長找到裂口，然後讓那裂口失去聲音。",
+  heroSerHalden: "他把盾橫在門栓前，好讓別人還有時間喊出自己的名字。",
+  heroMagisterVey: "他從不高聲施咒——回聲會替他把句子說完。",
+  heroScarra: "第一口血落下後，整條山脊才聽懂方向。",
+  heroIsoldLongdusk: "她不偷走黎明，只是把夜晚折得剛好夠長。",
+  heroRuneFrostfang: "盾上的霜紋記得所有曾經亮起的聖光。",
+  heroMoenTidearbiter: "她不選旗幟，只選下一張還能讓人坐下的桌子。",
 });
 
 const CARD_FACTION = Object.freeze({
@@ -343,6 +381,8 @@ const CARD_FACTION = Object.freeze({
   skyJudicator: "wintershadow", bloodmoonQueen: "wintershadow", frostboundTyrant: "wintershadow",
   soulfrostRaven: "wintershadow", glaciarchWarden: "wintershadow", countessLongNight: "wintershadow",
   voidTithe: "wintershadow", ladyAshenBell: "wintershadow",
+  heroSerHalden: "wardens", heroMagisterVey: "conclave", heroScarra: "wild",
+  heroIsoldLongdusk: "wintershadow", heroRuneFrostfang: "wintershadow", heroMoenTidearbiter: "neutral",
 });
 
 for (const card of CARD_POOL) {
@@ -381,7 +421,10 @@ function rollCardByRarity() {
     if (roll < r.weight) { picked = key; break; }
     roll -= r.weight;
   }
-  const pool = CARD_POOL.filter((c) => c.rarity === picked);
+  let pool = CARD_POOL.filter((c) => c.rarity === picked);
+  if (picked === "legendary" && Math.random() < HERO_LEGEND_BIAS) {
+    pool = HERO_SET_IDS.map((id) => CARD_POOL.find((card) => card.id === id)).filter(Boolean);
+  }
   const card = cloneCard(pool[Math.floor(Math.random() * pool.length)]);
   card.tide = Math.random() < TIDE_CHANCE;
   card.foil = !card.tide && Math.random() < FOIL_CHANCE; // 閃卡
@@ -396,8 +439,8 @@ function collectKey(card) {
 
 // 讓瀏覽器與 Node 兩種載入都可用。
 if (typeof window !== "undefined") {
-  Object.assign(window, { RARITY, FOIL_CHANCE, TIDE_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, FACTIONS, CARD_POOL, AXIS_LABELS, CARD_FACTION, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel, factionLabel });
+  Object.assign(window, { RARITY, FOIL_CHANCE, TIDE_CHANCE, HERO_LEGEND_BIAS, HERO_SET_IDS, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, FACTIONS, CARD_POOL, AXIS_LABELS, CARD_FACTION, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel, factionLabel });
 }
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { RARITY, FOIL_CHANCE, TIDE_CHANCE, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, FACTIONS, CARD_POOL, AXIS_LABELS, CARD_FACTION, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel, factionLabel };
+  module.exports = { RARITY, FOIL_CHANCE, TIDE_CHANCE, HERO_LEGEND_BIAS, HERO_SET_IDS, DISMANTLE_VALUE, CARD_TYPE, KEYWORDS, FACTIONS, CARD_POOL, AXIS_LABELS, CARD_FACTION, getCardById, cloneCard, rollCardByRarity, collectKey, cardAxisLabel, factionLabel };
 }

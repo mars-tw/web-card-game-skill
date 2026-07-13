@@ -499,7 +499,7 @@ function checkR48ArtConsistency() {
   assert(problems.length === 0, `R48 art cards are consistent across cards/art-config/sw (${R48_ARTED_IDS.length} cards)`);
 }
 
-function checkR59PresentationPipeline() {
+function checkR60PresentationPipeline() {
   const battleHtml = read("templates/card-battle/index.html");
   const battleJs = read("templates/card-battle/battle.js");
   const packHtml = read("templates/card-pack/index.html");
@@ -520,12 +520,12 @@ function checkR59PresentationPipeline() {
   const fallbackArt = [battleHtml, packHtml].every((text) => text.includes(".art.art-fallback")
     && text.includes("--faction-mark") && text.includes(".art-fallback .art-glyph"))
     && [battleJs, read("templates/card-pack/pack.js")].every((text) => text.includes('" art-fallback"') && text.includes('class="art-glyph"'));
-  assert(frameMounted && frameMask, "R59 battle/pack 傳說框掛載 mask 掃光");
-  assert(foilDispersion, "R59 battle/pack 閃卡使用青/紅/綠多停點雙層色散");
-  assert(reducedMotion, "R59 傳說框與閃卡掃光受 reduced-motion / low-perf 覆蓋");
-  assert(battlePoses && packFrames, "R59 命名展示盤、手機手牌與三對手色場可重現");
-  assert(heroProduct, "R59 英雄頭像框與資源徽章使用同一商品化材質語言");
-  assert(fallbackArt, "R59 battle/pack 無圖卡使用四陣營紋理 fallback");
+  assert(frameMounted && frameMask, "R60 battle/pack 傳說框掛載 mask 掃光");
+  assert(foilDispersion, "R60 battle/pack 閃卡使用青/紅/綠多停點雙層色散");
+  assert(reducedMotion, "R60 傳說框與閃卡掃光受 reduced-motion / low-perf 覆蓋");
+  assert(battlePoses && packFrames, "R60 命名展示盤、手機手牌與三對手色場可重現");
+  assert(heroProduct, "R60 英雄頭像框與資源徽章使用同一商品化材質語言");
+  assert(fallbackArt, "R60 battle/pack 無圖卡使用四陣營紋理 fallback");
 }
 
 console.log("== R40 文案品質守門 ==");
@@ -535,7 +535,7 @@ checkVersionedHtmlRefs();
 checkSwCacheCompleteness();
 checkR47ArtConsistency();
 checkR48ArtConsistency();
-checkR59PresentationPipeline();
+checkR60PresentationPipeline();
 
 if (failed > 0) {
   console.error(`❌ ${failed} 項守門失敗`);

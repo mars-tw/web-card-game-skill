@@ -830,6 +830,13 @@
     if (events) events.push({ type: eventType || "buffAttack", side: side && side.side, uid: minion.uid, attack });
   }
 
+  function sideForMinion(state, minion) {
+    if (!state || !minion) return null;
+    if (state.player && Array.isArray(state.player.field) && state.player.field.includes(minion)) return state.player;
+    if (state.enemy && Array.isArray(state.enemy.field) && state.enemy.field.includes(minion)) return state.enemy;
+    return null;
+  }
+
   function summonCard(side, card, rng, events, reason) {
     if (!side || !card) return false;
     if (side.field.length >= MAX_FIELD) {
@@ -878,16 +885,35 @@
     return gain;
   }
 
-  function applyDamageToMinion(minion, amount, source, events) {
+  function applyDamageToMinion(state, minion, amount, source, events, options) {
     if (!minion || amount <= 0) return 0;
     if (minion.shield) {
       minion.shield = false;
       if (events) events.push({ type: "shieldBreak", uid: minion.uid });
       return 0;
     }
-    minion.health -= amount;
-    if (events) events.push({ type: "damage", uid: minion.uid, amount });
-    if (source && hasKeyword(source, "poison") && amount > 0 && minion.health > 0) {
+
+    let applied = amount;
+    let transferred = 0;
+    if (!(options && options.skipShieldwall)) {
+      const side = sideForMinion(state, minion);
+      const index = side && side.field.indexOf(minion);
+      const wall = index >= 0
+        ? [side.field[index - 1], side.field[index + 1]].find((candidate) => (
+          candidate && candidate !== minion && candidate.health > 0 && hasKeyword(candidate, "shieldwall")
+        ))
+        : null;
+      if (wall) {
+        applied = Math.max(0, amount - 1);
+        transferred = applyDamageToMinion(state, wall, 1, null, events, { skipShieldwall: true });
+        if (events) events.push({ type: "shieldwall", side: side.side, sourceUid: wall.uid, targetUid: minion.uid, amount: 1 });
+      }
+    }
+
+    if (applied <= 0) return transferred;
+    minion.health -= applied;
+    if (events) events.push({ type: "damage", uid: minion.uid, amount: applied });
+    if (source && hasKeyword(source, "poison") && applied > 0 && minion.health > 0) {
       minion.health = 0;
       if (events) events.push({ type: "poison", uid: minion.uid });
     }
@@ -896,7 +922,7 @@
       minion._frenzyDone = true;
       if (events) events.push({ type: "frenzy", uid: minion.uid });
     }
-    return amount;
+    return applied + transferred;
   }
 
   function applyLifesteal(source, sourceSide, amount, events) {
@@ -912,17 +938,17 @@
       healHero(side, 2, events);
     } else if (trigger === "damageAny1") {
       if (target) {
-        const dealt = applyDamageToMinion(target, 1, null, events);
+        const dealt = applyDamageToMinion(state, target, 1, null, events);
         applyLifesteal(dyingCard, side, dealt, events);
         cleanupBoth(state, rng, events);
       }
     } else if (trigger === "aoeEnemy2") {
       const foe = getOpponent(state, side);
-      for (const minion of [...foe.field]) applyDamageToMinion(minion, 2, null, events);
+      for (const minion of [...foe.field]) applyDamageToMinion(state, minion, 2, null, events);
       cleanupBoth(state, rng, events);
     } else if (trigger === "aoeEnemy1") {
       const foe = getOpponent(state, side);
-      for (const minion of [...foe.field]) applyDamageToMinion(minion, 1, null, events);
+      for (const minion of [...foe.field]) applyDamageToMinion(state, minion, 1, null, events);
       cleanupBoth(state, rng, events);
     } else if (trigger === "buffAdjacent1") {
       let targets = [];
@@ -954,6 +980,14 @@
         .filter((minion) => minion.health > 0 && minion.health < (minion.maxHealth == null ? minion.health : minion.maxHealth))
         .sort((a, b) => ((b.attack || 0) * 3 + (b.health || 0)) - ((a.attack || 0) * 3 + (a.health || 0)))[0] || null;
       if (damaged) silenceMinion(damaged, events);
+    } else if (trigger === "attuneFlexible") {
+      const chosen = target && side.field.includes(target) && target.health > 0 ? target : dyingCard;
+      const factions = new Set(side.field
+        .filter((minion) => minion && minion.health > 0 && minion.faction && minion.faction !== "neutral")
+        .map((minion) => minion.faction));
+      const amount = factions.size >= 2 ? 2 : 1;
+      buffMinion(chosen, amount, amount, side, events);
+      if (events) events.push({ type: "attune", side: side.side, uid: chosen && chosen.uid, sourceUid: dyingCard && dyingCard.uid, amount, factions: factions.size });
     }
   }
 
@@ -1010,8 +1044,31 @@
     const sp = spellPower(side);
     let damage = targetedDamageAmount(effect, card);
     if (card && card.tauntBonusDamage && hasKeyword(target, "taunt")) damage += Number(card.tauntBonusDamage) || 0;
-    applyDamageToMinion(target, damage + sp, null, events);
+    applyDamageToMinion(state, target, damage + sp, null, events);
     cleanupBoth(state, rng, events);
+  }
+
+  function triggerResonanceAfterSpell(state, sideKey, eventStart, rng, events) {
+    const spellEvents = events.slice(eventStart);
+    const dealtDamage = spellEvents.some((event) => (
+      (event.type === "damage" || event.type === "heroDamage") && Number(event.amount) > 0
+    ));
+    if (!dealtDamage) return;
+
+    const side = getSide(state, sideKey);
+    const sources = side.field.filter((minion) => minion.health > 0 && hasKeyword(minion, "resonance"));
+    for (const source of sources) {
+      if (!side.field.includes(source) || source.health <= 0 || !hasKeyword(source, "resonance")) continue;
+      const foe = getOpponent(state, sideKey);
+      const target = foe.field
+        .map((minion, index) => ({ minion, index }))
+        .filter((entry) => entry.minion.health > 0)
+        .sort((a, b) => a.minion.health - b.minion.health || a.index - b.index)[0]?.minion || null;
+      if (!target) continue;
+      if (events) events.push({ type: "resonance", side: side.side, sourceUid: source.uid, targetUid: target.uid, amount: 1 });
+      applyDamageToMinion(state, target, 1, null, events);
+      cleanupBoth(state, rng, events);
+    }
   }
 
   function spellCost(side, card) {
@@ -1043,6 +1100,7 @@
     const side = getSide(state, sideKey);
     const foe = getOpponent(state, sideKey);
     const sp = spellPower(side);
+    const eventStart = events.length;
     if (effect === "damage2") {
       applyTargetedDamage(state, sideKey, effect, target, card, rng, events);
     } else if (effect === "damage3") {
@@ -1054,10 +1112,10 @@
     } else if (effect === "heal5") {
       healHero(side, 5, events);
     } else if (effect === "aoe1") {
-      for (const minion of [...foe.field]) applyDamageToMinion(minion, 1 + sp, null, events);
+      for (const minion of [...foe.field]) applyDamageToMinion(state, minion, 1 + sp, null, events);
       cleanupBoth(state, rng, events);
     } else if (effect === "aoe2") {
-      for (const minion of [...foe.field]) applyDamageToMinion(minion, 2 + sp, null, events);
+      for (const minion of [...foe.field]) applyDamageToMinion(state, minion, 2 + sp, null, events);
       cleanupBoth(state, rng, events);
     } else if (effect === "mana2") {
       side.mana += 2;
@@ -1079,6 +1137,7 @@
       side.nextSpellDiscount = Math.max(1, Math.floor(Number(side.nextSpellDiscount) || 0));
       if (events) events.push({ type: "nextSpellDiscount", side: side.side, amount: 1 });
     }
+    triggerResonanceAfterSpell(state, sideKey, eventStart, rng, events);
   }
 
   function burnMulligan(state, events) {
@@ -1096,10 +1155,16 @@
     return side.hand.splice(index, 1)[0];
   }
 
-  function pickBattlecryTarget(state, sideKey, trigger) {
+  function pickBattlecryTarget(state, sideKey, trigger, source) {
     if (trigger === "damageAny1") {
       const foe = getOpponent(state, sideKey);
       return [...foe.field].sort((a, b) => a.health - b.health)[0] || null;
+    }
+    if (trigger === "attuneFlexible") {
+      const side = getSide(state, sideKey);
+      return [...side.field]
+        .filter((minion) => minion.health > 0)
+        .sort((a, b) => ((b.attack || 0) * 3 + (b.health || 0)) - ((a.attack || 0) * 3 + (a.health || 0)))[0] || source || null;
     }
     return null;
   }
@@ -1111,6 +1176,7 @@
     if (!action || !action.cardUid) return fail("missingCardUid", events);
     if (state.over && !action.ignoreOver) return fail("gameOver", events);
     if (state.turn && state.turn !== sideKey && !action.ignoreTurn) return fail("notYourTurn", events);
+    if (state.pendingBattlecry) return fail("pendingBattlecry", events);
 
     if (state.pendingSpell && action.handlePending !== false) {
       const wasSame = state.pendingSpell.uid === action.cardUid;
@@ -1158,7 +1224,13 @@
     }
 
     if (hasKeyword(card, "battlecry") && card.trigger) {
-      const target = pickBattlecryTarget(state, sideKey, card.trigger);
+      let target = action.targetUid ? side.field.find((minion) => minion.uid === action.targetUid) || null : null;
+      if (card.trigger === "attuneFlexible" && !target && action.deferBattlecry !== false) {
+        state.pendingBattlecry = { sourceUid: card.uid, trigger: card.trigger, side: sideKey, need: "friendlyMinion" };
+        events.push({ type: "battlecryPending", side: side.side, uid: card.uid, trigger: card.trigger, need: "friendlyMinion" });
+        return ok(events, { card });
+      }
+      if (!target) target = pickBattlecryTarget(state, sideKey, card.trigger, card);
       events.push({ type: "battlecry", side: side.side, uid: card.uid, trigger: card.trigger, targetUid: target && target.uid });
       applyAbility(state, side, card.trigger, target, card, rng, events);
     }
@@ -1171,6 +1243,23 @@
       const defender = getSide(state, action.defenderSide || opponentKey(action.attackerSide || "player"));
       const target = defender.field.find((m) => m.uid === action.targetUid) || null;
       return isLegalTarget(defender, target) ? ok(events, { target }) : fail("illegalTarget", events, { target });
+    }
+
+    const pendingBattlecry = state.pendingBattlecry;
+    if (pendingBattlecry) {
+      const sideKey = pendingBattlecry.side || (action && action.side) || "player";
+      const side = getSide(state, sideKey);
+      const source = side.field.find((minion) => minion.uid === pendingBattlecry.sourceUid) || null;
+      const target = side.field.find((minion) => minion.uid === (action && action.targetUid)) || null;
+      if (!source) {
+        state.pendingBattlecry = null;
+        return fail("sourceNotFound", events);
+      }
+      if (!target) return fail("targetNotFound", events, { card: source, need: pendingBattlecry.need });
+      state.pendingBattlecry = null;
+      events.push({ type: "battlecry", side: side.side, uid: source.uid, trigger: pendingBattlecry.trigger, targetUid: target.uid });
+      applyAbility(state, side, pendingBattlecry.trigger, target, source, rng, events);
+      return ok(events, { card: source, target, battlecry: true });
     }
 
     const pending = state.pendingSpell;
@@ -1218,6 +1307,30 @@
     }
   }
 
+  function triggerBloodtrail(side, source, events) {
+    if (!side || !source || source._bloodtrailUsed || !hasKeyword(source, "bloodtrail")) return;
+    source._bloodtrailUsed = true;
+    for (const minion of side.field) {
+      if (minion === source || minion.health <= 0) continue;
+      minion.attack += 1;
+      minion._bloodtrailBonus = Math.max(0, Number(minion._bloodtrailBonus) || 0) + 1;
+      if (events) events.push({ type: "bloodtrailBuff", side: side.side, sourceUid: source.uid, uid: minion.uid, attack: 1 });
+    }
+    if (events) events.push({ type: "bloodtrail", side: side.side, sourceUid: source.uid });
+  }
+
+  function clearBloodtrailBonuses(side, events) {
+    if (!side || !Array.isArray(side.field)) return;
+    for (const minion of side.field) {
+      const bonus = Math.max(0, Number(minion._bloodtrailBonus) || 0);
+      if (bonus > 0) {
+        minion.attack = Math.max(0, minion.attack - bonus);
+        delete minion._bloodtrailBonus;
+        if (events) events.push({ type: "bloodtrailExpired", side: side.side, uid: minion.uid, attack: bonus });
+      }
+    }
+  }
+
   function resolveAttack(state, action, rng) {
     const events = [];
     const attackerSideKey = action && action.attackerSide ? action.attackerSide : "player";
@@ -1226,14 +1339,25 @@
     const attacker = attackerSide.field.find((m) => m.uid === action.attackerUid) || null;
     const defender = defenderSide.field.find((m) => m.uid === action.defenderUid) || null;
     if (!attacker || !defender) return fail("targetNotFound", events, { attacker, defender });
-    if (!action.ignoreCanAttack && !attacker.canAttack) return fail("cannotAttack", events, { attacker, defender });
+    if (!action.ignoreCanAttack && (!attacker.canAttack || attacker._cantAttackThisTurn)) return fail("cannotAttack", events, { attacker, defender });
     if (!action.ignoreTaunt && !isLegalTarget(defenderSide, defender)) return fail("illegalTarget", events, { attacker, defender });
 
     events.push({ type: "attack", attackerSide: attackerSide.side, attackerUid: attacker.uid, defenderUid: defender.uid });
-    const attackDamage = applyDamageToMinion(defender, attacker.attack, attacker, events);
+    if (hasKeyword(attacker, "sunder") && defender.shield) {
+      defender.shield = false;
+      events.push({ type: "shieldBreak", uid: defender.uid });
+      events.push({ type: "sunder", side: attackerSide.side, sourceUid: attacker.uid, targetUid: defender.uid });
+    }
+    const hitEventStart = events.length;
+    const attackDamage = applyDamageToMinion(state, defender, attacker.attack, attacker, events);
     applyLifesteal(attacker, attackerSide, attackDamage, events);
+    const damagedDefender = events.slice(hitEventStart).some((event) => event.type === "damage" && event.uid === defender.uid && event.amount > 0);
+    if (damagedDefender && hasKeyword(attacker, "chillbind")) {
+      defender.cantAttackTurns = Math.max(1, Math.floor(Number(defender.cantAttackTurns) || 0));
+      events.push({ type: "chillbind", side: attackerSide.side, sourceUid: attacker.uid, targetUid: defender.uid, turns: 1 });
+    }
     if (defender.attack > 0) {
-      const counterDamage = applyDamageToMinion(attacker, defender.attack, defender, events);
+      const counterDamage = applyDamageToMinion(state, attacker, defender.attack, defender, events);
       applyLifesteal(defender, defenderSide, counterDamage, events);
     }
     spendAttack(attacker, events);
@@ -1249,7 +1373,7 @@
     const defenderSide = getSide(state, defenderSideKey);
     const attacker = attackerSide.field.find((m) => m.uid === action.attackerUid) || null;
     if (!attacker) return fail("targetNotFound", events, { attacker });
-    if (!action.ignoreCanAttack && !attacker.canAttack) return fail("cannotAttack", events, { attacker });
+    if (!action.ignoreCanAttack && (!attacker.canAttack || attacker._cantAttackThisTurn)) return fail("cannotAttack", events, { attacker });
     if (!action.ignoreRush && attacker.justPlayed && hasKeyword(attacker, "rush") && !hasKeyword(attacker, "charge")) {
       return fail("rushBlocksHero", events, { attacker });
     }
@@ -1257,6 +1381,7 @@
     defenderSide.hp -= attacker.attack;
     events.push({ type: "heroDamage", attackerSide: attackerSide.side, defenderSide: defenderSide.side, attackerUid: attacker.uid, amount: attacker.attack });
     applyLifesteal(attacker, attackerSide, attacker.attack, events);
+    if (attacker.attack > 0) triggerBloodtrail(attackerSide, attacker, events);
     spendAttack(attacker, events);
     return ok(events, { attacker });
   }
@@ -1288,9 +1413,19 @@
 
   function resetAttack(side, events) {
     for (const minion of side.field) {
-      minion.canAttack = true;
+      const cantAttackTurns = Math.max(0, Math.floor(Number(minion.cantAttackTurns) || 0));
+      if (cantAttackTurns > 0) {
+        minion.cantAttackTurns = cantAttackTurns - 1;
+        minion.canAttack = false;
+        minion._cantAttackThisTurn = true;
+        if (events) events.push({ type: "chillbindSkip", side: side.side, uid: minion.uid });
+      } else {
+        minion.canAttack = true;
+        delete minion._cantAttackThisTurn;
+      }
       minion.justPlayed = false;
       minion._windUsed = false;
+      delete minion._bloodtrailUsed;
       if (events) events.push({ type: "attackReady", side: side.side, uid: minion.uid });
     }
   }
@@ -1314,11 +1449,13 @@
     const events = [];
     const phase = action && action.phase;
     if (phase === "endPlayer") {
+      if (state.pendingBattlecry) return fail("pendingBattlecry", events);
       burnMulligan(state, events);
       clearTurnSpellDiscount(state.player, events);
       state.selected = null;
       state.pendingSpell = null;
       state.comboCount = 0;
+      clearBloodtrailBonuses(state.player, events);
       regenerateSide(state.player, events);
       state.turn = "enemy";
       events.push({ type: "turnChanged", turn: "enemy" });
@@ -1330,7 +1467,9 @@
       resetAttack(enemy, events);
     } else if (phase === "endEnemy") {
       clearTurnSpellDiscount(state.enemy, events);
+      clearBloodtrailBonuses(state.enemy, events);
       regenerateSide(state.enemy, events);
+      state.pendingBattlecry = null;
       state.turn = "player";
       state.player.manaMax = Math.min(MAX_MANA, state.player.manaMax + 1);
       state.player.mana = state.player.manaMax;
@@ -1368,7 +1507,7 @@
     const target = findMinion(state, action && action.targetUid);
     const source = action && action.sourceUid ? findMinion(state, action.sourceUid) : null;
     if (!target) return fail("targetNotFound", events);
-    applyDamageToMinion(target, action.amount || 0, source, events);
+    applyDamageToMinion(state, target, action.amount || 0, source, events);
     if (action && action.cleanup) cleanupBoth(state, rng, events);
     return ok(events, { target, source });
   }
@@ -1381,7 +1520,7 @@
   function aoe(state, action, rng) {
     const events = [];
     const side = getSide(state, action && action.side);
-    for (const minion of [...side.field]) applyDamageToMinion(minion, action.amount || 0, null, events);
+    for (const minion of [...side.field]) applyDamageToMinion(state, minion, action.amount || 0, null, events);
     cleanupBoth(state, rng, events);
     return ok(events);
   }

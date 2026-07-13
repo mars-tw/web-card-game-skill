@@ -6,9 +6,9 @@
 <title>開卡包 · Card Pack</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r59-v1";
+    const CACHE_VERSION = "card-battle-r60-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r59_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r60_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -243,7 +243,7 @@
   .collection { padding:12px; }
   .collection h2 { font-size:16px; margin-bottom:10px; color:var(--muted); display:flex; justify-content:space-between; align-items:center; }
   .collection-meta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end; font-size:12px; }
-  .collection-tools { display:grid; grid-template-columns:minmax(150px,1.2fr) repeat(5,minmax(96px,.6fr)); gap:8px; margin-bottom:10px; }
+  .collection-tools { display:grid; grid-template-columns:minmax(150px,1.2fr) repeat(6,minmax(96px,.6fr)); gap:8px; margin-bottom:10px; }
   .collection-tools input, .collection-tools select { min-width:0; border:1px solid rgba(255,255,255,.12); border-radius:8px;
     background:rgba(8,12,18,.84); color:var(--ink); padding:9px 10px; font:inherit; font-size:13px; }
   .collection .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(74px,1fr)); gap:8px; }
@@ -534,6 +534,7 @@
         <div class="pack-icon">🎁</div>
         <div class="pack-label">神祕卡包</div>
         <div class="pack-hint">點擊開啟（5 張）</div>
+        <div class="pack-hint" id="heroPityProgress">角色保底：0/35</div>
       </div>
     </div>
 
@@ -633,6 +634,14 @@
         <option value="control">控制</option>
         <option value="neutral">中立</option>
       </select>
+      <select id="collectionFactionFilter" aria-label="陣營篩選">
+        <option value="all">全部陣營</option>
+        <option value="wardens">白潮守軍</option>
+        <option value="conclave">奧術結社</option>
+        <option value="wild">荒野獸群</option>
+        <option value="wintershadow">凜冬暗影</option>
+        <option value="neutral">潮間中立</option>
+      </select>
       <select id="collectionKeywordFilter" aria-label="關鍵字篩選">
         <option value="all">全部關鍵字</option>
         <option value="taunt">嘲諷</option>
@@ -646,6 +655,12 @@
         <option value="poison">劇毒</option>
         <option value="regenerate">回復</option>
         <option value="silence">靜默</option>
+        <option value="shieldwall">列盾</option>
+        <option value="resonance">殘響</option>
+        <option value="bloodtrail">血跡</option>
+        <option value="chillbind">寒噤</option>
+        <option value="sunder">裂甲</option>
+        <option value="attune">調印</option>
       </select>
       <select id="collectionRarityFilter" aria-label="稀有度篩選">
         <option value="all">全部稀有度</option>
@@ -676,9 +691,9 @@
     <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
   </footer>
 
-  <script src="../card-battle/cards.js?v=card-battle-r59-v1"></script>
-  <script src="../card-battle/core.js?v=card-battle-r59-v1"></script>
-  <script src="pack.js?v=card-battle-r59-v1"></script>
+  <script src="../card-battle/cards.js?v=card-battle-r60-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-r60-v1"></script>
+  <script src="pack.js?v=card-battle-r60-v1"></script>
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);

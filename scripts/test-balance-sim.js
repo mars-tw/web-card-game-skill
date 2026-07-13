@@ -7,6 +7,10 @@ const P0_CARD_IDS = [
   "saltShieldSquire", "iceNeedle", "packHowler", "toxinViper", "graveScribe",
   "mirrorRime", "dualTalon", "voidTithe", "captainGreywake", "ladyAshenBell",
 ];
+const HERO_CARD_IDS = [
+  "heroSerHalden", "heroMagisterVey", "heroScarra",
+  "heroIsoldLongdusk", "heroRuneFrostfang", "heroMoenTidearbiter",
+];
 const SIM_SEEDS = 240;
 const MAX_TURNS = 60;
 const CURVE = [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 7];
@@ -45,22 +49,25 @@ function pick(list, rng) {
   return list[Math.floor(rng() * list.length)];
 }
 
-function randomDeck(seed, excludeIds) {
+function randomDeck(seed, excludeIds, predicate) {
   const rng = mulberry32(seed);
   const exclude = new Set(excludeIds || []);
   const counts = Object.create(null);
   const deck = [];
   for (const cost of CURVE) {
     let candidates = CARD_POOL.filter((card) => !exclude.has(card.id)
+      && (!predicate || predicate(card))
       && card.cost === cost
       && (counts[card.id] || 0) < maxCopies(card));
     if (!candidates.length) {
       candidates = CARD_POOL.filter((card) => !exclude.has(card.id)
+        && (!predicate || predicate(card))
         && Math.abs(card.cost - cost) <= 1
         && (counts[card.id] || 0) < maxCopies(card));
     }
     if (!candidates.length) {
       candidates = CARD_POOL.filter((card) => !exclude.has(card.id)
+        && (!predicate || predicate(card))
         && (counts[card.id] || 0) < maxCopies(card));
     }
     const card = pick(candidates, rng);
@@ -97,26 +104,28 @@ function injectCard(baseDeck, cardId, copies) {
   return deck;
 }
 
-function prepDeck(ids, seed) {
+function prepDeck(ids, seed, transform) {
   const rng = mulberry32(seed);
   return Core.buildBattleDeck(ids, CARD_POOL, rng).map((card, index) => {
     const copy = Object.assign({}, card, { keywords: Array.isArray(card.keywords) ? [...card.keywords] : [] });
     copy.uid = `${card.id}_${seed}_${index}`;
     if (copy.health != null) copy.maxHealth = copy.health;
-    return copy;
+    return typeof transform === "function" ? (transform(copy) || copy) : copy;
   });
 }
 
-function makeState(playerDeckIds, enemyDeckIds, seed) {
+function makeState(playerDeckIds, enemyDeckIds, seed, options) {
+  const setup = options || {};
   const player = {
     side: "player",
     hp: 30,
     maxHp: 30,
     mana: 1,
     manaMax: 1,
-    deck: prepDeck(playerDeckIds, seed * 2 + 1),
+    deck: prepDeck(playerDeckIds, seed * 2 + 1, setup.playerTransform),
     hand: [],
     field: [],
+    strategy: setup.playerStrategy || "neutral",
   };
   const enemy = {
     side: "enemy",
@@ -124,9 +133,10 @@ function makeState(playerDeckIds, enemyDeckIds, seed) {
     maxHp: 30,
     mana: 0,
     manaMax: 0,
-    deck: prepDeck(enemyDeckIds, seed * 2 + 2),
+    deck: prepDeck(enemyDeckIds, seed * 2 + 2, setup.enemyTransform),
     hand: [],
     field: [],
+    strategy: setup.enemyStrategy || "neutral",
   };
   player.opp = enemy;
   enemy.opp = player;
@@ -136,16 +146,15 @@ function makeState(playerDeckIds, enemyDeckIds, seed) {
     enemy,
     selected: null,
     pendingSpell: null,
+    pendingBattlecry: null,
     comboCount: 0,
     mulliganUsed: true,
     over: false,
     winner: null,
   };
   const rng = mulberry32(seed * 17 + 3);
-  for (let i = 0; i < 3; i++) {
-    Core.drawCard(state, { side: "player" }, rng);
-    Core.drawCard(state, { side: "enemy" }, rng);
-  }
+  for (let i = 0; i < (setup.playerOpening || 3); i++) Core.drawCard(state, { side: "player" }, rng);
+  for (let i = 0; i < (setup.enemyOpening || 3); i++) Core.drawCard(state, { side: "enemy" }, rng);
   checkWinner(state);
   return state;
 }
@@ -231,6 +240,8 @@ function cardScore(state, sideKey, card) {
     if (card.trigger === "summonTwo1_1") score += 5;
     if (card.trigger === "drawCard1") score += side.hand.length <= 4 ? 6 : 1;
     if (card.trigger === "silenceIfDamaged") score += foe.field.some((m) => m.health < (m.maxHealth || m.health)) ? 8 : -8;
+    if (side.strategy === "control" && hasKeyword(card, "taunt")) score += 12;
+    if (side.strategy === "spellburst" && hasKeyword(card, "spellpower")) score += 16;
   } else {
     if (card.effect === "heal5") score += side.hp <= 20 ? 18 : -18;
     if (card.effect === "mana2") score += side.manaMax <= 6 ? 12 : -10;
@@ -243,6 +254,7 @@ function cardScore(state, sideKey, card) {
       const target = chooseEnemyTarget(state, sideKey, card);
       score += target ? (target.health <= spellDamage(card, side) ? 18 : 8) : -25;
     }
+    if (side.strategy === "spellburst" && ["damage2", "damage3", "damage5", "damage8", "aoe1", "aoe2"].includes(card.effect)) score += 12;
   }
   return score;
 }
@@ -261,12 +273,16 @@ function playCards(state, sideKey, rng) {
     for (const { card, score } of candidates) {
       if (score < 35) continue;
       const spec = card.type === CARD_TYPE.SPELL ? (Core.SPELL_EFFECTS[card.effect] || { needsTarget: null }) : { needsTarget: null };
-      const target = spec.needsTarget ? chooseSpellTarget(state, sideKey, card) : null;
+      let target = spec.needsTarget ? chooseSpellTarget(state, sideKey, card) : null;
+      if (card.type === CARD_TYPE.MINION && card.trigger === "attuneFlexible") {
+        target = chooseFriendlyTarget(state, sideKey, card) || card;
+      }
       if (spec.needsTarget && !target) continue;
       const result = Core.playCard(state, {
         side: sideKey,
         cardUid: card.uid,
         targetUid: target && target.uid,
+        deferBattlecry: false,
         burnMulligan: false,
         trackCombo: false,
       }, rng);
@@ -292,6 +308,26 @@ function attackWithBoard(state, sideKey, rng) {
       Core.resolveAttack(state, { attackerSide: sideKey, attackerUid: attacker.uid, defenderUid: target.uid }, rng);
       checkWinner(state);
       continue;
+    }
+    if (hasKeyword(attacker, "chillbind") && foe.field.length) {
+      const chillTarget = [...foe.field].filter((minion) => minion.health > 0)
+        .sort((a, b) => (a.health > attacker.attack) - (b.health > attacker.attack) || threat(b) - threat(a))[0];
+      if (chillTarget) {
+        Core.resolveAttack(state, { attackerSide: sideKey, attackerUid: attacker.uid, defenderUid: chillTarget.uid }, rng);
+        checkWinner(state);
+        continue;
+      }
+    }
+    if ((side.strategy === "control" || side.strategy === "controlFull" || side.strategy === "spellburst") && foe.field.length) {
+      const threshold = side.strategy === "control" ? 3 : side.strategy === "spellburst" ? 4 : 0;
+      const candidates = [...foe.field].filter((minion) => minion.health > 0 && (minion.attack || 0) >= threshold);
+      const killable = candidates.filter((minion) => minion.health <= attacker.attack).sort((a, b) => threat(b) - threat(a))[0];
+      const target = killable || candidates.sort((a, b) => threat(b) - threat(a))[0];
+      if (target) {
+        Core.resolveAttack(state, { attackerSide: sideKey, attackerUid: attacker.uid, defenderUid: target.uid }, rng);
+        checkWinner(state);
+        continue;
+      }
     }
     if (!hasKeyword(attacker, "rush") || !attacker.justPlayed || foe.field.length === 0 || foe.hp <= attacker.attack) {
       const hero = Core.resolveHeroAttack(state, { attackerSide: sideKey, attackerUid: attacker.uid, defenderSide: foe.side }, rng);
@@ -326,10 +362,12 @@ function runTurn(state, sideKey, rng) {
   attackWithBoard(state, sideKey, rng);
 }
 
-function runGame(playerDeckIds, enemyDeckIds, seed) {
+function runGameDetailed(playerDeckIds, enemyDeckIds, seed, options) {
   const rng = mulberry32(seed * 101 + 11);
-  const state = makeState(playerDeckIds, enemyDeckIds, seed);
+  const state = makeState(playerDeckIds, enemyDeckIds, seed, options);
+  let turns = 0;
   for (let turn = 0; turn < MAX_TURNS && !state.over; turn++) {
+    turns = turn + 1;
     runTurn(state, "player", rng);
     if (state.over) break;
     Core.advanceTurn(state, { phase: "endPlayer" }, rng);
@@ -344,14 +382,18 @@ function runGame(playerDeckIds, enemyDeckIds, seed) {
   if (!state.over) {
     state.winner = state.player.hp === state.enemy.hp ? "draw" : (state.player.hp > state.enemy.hp ? "player" : "enemy");
   }
-  return state.winner;
+  return { winner: state.winner, turns };
+}
+
+function runGame(playerDeckIds, enemyDeckIds, seed) {
+  return runGameDetailed(playerDeckIds, enemyDeckIds, seed).winner;
 }
 
 function scoreFocus(cardId, copies, seedOffset) {
   let score = 0;
   for (let i = 0; i < SIM_SEEDS; i++) {
     const seed = seedOffset + i;
-    const base = randomDeck(seed * 3 + 1, [cardId]);
+    const base = randomDeck(seed * 3 + 1, [cardId, ...HERO_CARD_IDS]);
     const focus = injectCard(base, cardId, copies);
     const winA = runGame(focus, base, seed * 7 + 1);
     const winB = runGame(base, focus, seed * 7 + 2);
@@ -360,6 +402,169 @@ function scoreFocus(cardId, copies, seedOffset) {
   }
   return score / (SIM_SEEDS * 2);
 }
+
+function scoreFocusMetrics(cardId, seedOffset) {
+  let score = 0;
+  let turns = 0;
+  let baselineTurns = 0;
+  for (let i = 0; i < SIM_SEEDS; i++) {
+    const seed = seedOffset + i;
+    const base = randomDeck(seed * 3 + 1, HERO_CARD_IDS);
+    const focus = injectCard(base, cardId, 1);
+    const gameA = runGameDetailed(focus, base, seed * 7 + 1);
+    const gameB = runGameDetailed(base, focus, seed * 7 + 2);
+    score += gameA.winner === "player" ? 1 : gameA.winner === "draw" ? 0.5 : 0;
+    score += gameB.winner === "enemy" ? 1 : gameB.winner === "draw" ? 0.5 : 0;
+    turns += gameA.turns + gameB.turns;
+    baselineTurns += runGameDetailed(base, base, seed * 7 + 3).turns;
+    baselineTurns += runGameDetailed(base, base, seed * 7 + 4).turns;
+  }
+  return {
+    winRate: score / (SIM_SEEDS * 2),
+    avgTurns: turns / (SIM_SEEDS * 2),
+    baselineTurns: baselineTurns / (SIM_SEEDS * 2),
+    games: SIM_SEEDS * 2,
+  };
+}
+
+function pairedDeckMatch(buildA, buildB, seedOffset, gameOptions) {
+  let scoreA = 0;
+  let turns = 0;
+  for (let i = 0; i < SIM_SEEDS; i++) {
+    const seed = seedOffset + i;
+    const deckA = buildA(seed);
+    const deckB = buildB(seed);
+    const gameA = runGameDetailed(deckA, deckB, seed * 11 + 1, gameOptions);
+    const gameB = runGameDetailed(deckB, deckA, seed * 11 + 2, gameOptions);
+    scoreA += gameA.winner === "player" ? 1 : gameA.winner === "draw" ? 0.5 : 0;
+    scoreA += gameB.winner === "enemy" ? 1 : gameB.winner === "draw" ? 0.5 : 0;
+    turns += gameA.turns + gameB.turns;
+  }
+  return { winRate: scoreA / (SIM_SEEDS * 2), avgTurns: turns / (SIM_SEEDS * 2), games: SIM_SEEDS * 2 };
+}
+
+function pairedMoenFactionMatch(deckIds, seedOffset) {
+  const monoTransform = (card) => {
+    if (card.faction && card.faction !== "neutral") card.faction = "wardens";
+    return card;
+  };
+  let scoreMulti = 0;
+  let turns = 0;
+  for (let i = 0; i < SIM_SEEDS; i++) {
+    const seed = seedOffset + i;
+    const multiFirst = runGameDetailed(deckIds, deckIds, seed * 11 + 1, { enemyTransform: monoTransform });
+    const monoFirst = runGameDetailed(deckIds, deckIds, seed * 11 + 2, { playerTransform: monoTransform });
+    scoreMulti += multiFirst.winner === "player" ? 1 : multiFirst.winner === "draw" ? 0.5 : 0;
+    scoreMulti += monoFirst.winner === "enemy" ? 1 : monoFirst.winner === "draw" ? 0.5 : 0;
+    turns += multiFirst.turns + monoFirst.turns;
+  }
+  return { winRate: scoreMulti / (SIM_SEEDS * 2), avgTurns: turns / (SIM_SEEDS * 2), games: SIM_SEEDS * 2 };
+}
+
+function focusShellBuilder(cardId, anchorId, predicate, seedSalt) {
+  return (seed) => {
+    const base = randomDeck(seed * 13 + seedSalt, [cardId, anchorId], predicate);
+    return injectCard(base, cardId, 1);
+  };
+}
+
+function budgetedArchetypeDeck(seed, axis, epicCount, legendaryCount) {
+  const rng = mulberry32(seed * 31 + 7);
+  const predicate = (card) => card.axis === axis && (card.rarity === "common" || card.rarity === "rare");
+  let deck = randomDeck(seed * 23 + 1, HERO_CARD_IDS, predicate);
+  const injectTier = (rarity, count) => {
+    const pool = CARD_POOL.filter((card) => card.axis === axis && card.rarity === rarity && !HERO_CARD_IDS.includes(card.id));
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    for (const card of pool.slice(0, count)) deck = injectCard(deck, card.id, 1);
+  };
+  injectTier("epic", epicCount);
+  injectTier("legendary", legendaryCount);
+  return deck;
+}
+
+function fixedPlayerRate(enemyDeck, seedOffset, enemyStrategy) {
+  let score = 0;
+  let turns = 0;
+  for (let i = 0; i < SIM_SEEDS; i++) {
+    const playerAxis = enemyStrategy === "control"
+      ? "aggro"
+      : enemyStrategy === "aggro" && i % 5 === 0
+        ? "aggro"
+        : "control";
+    const playerSeed = (seedOffset + i) * 17 + 5;
+    let playerDeck;
+    if (enemyStrategy === "control" && i % 2 === 0) {
+      // The fixed-opponent gate samples both mature and budget aggro collections.
+      playerDeck = randomDeck(playerSeed, HERO_CARD_IDS, (card) => card.axis === playerAxis);
+    } else {
+      const epicCount = enemyStrategy === "aggro" ? 2 : enemyStrategy === "control" ? 8 : 2;
+      const legendCount = enemyStrategy === "control" ? 2 : 0;
+      playerDeck = budgetedArchetypeDeck(playerSeed, playerAxis, epicCount, legendCount);
+    }
+    const game = runGameDetailed(playerDeck, enemyDeck, (seedOffset + i) * 19 + 7, {
+      enemyOpening: 4,
+      enemyStrategy: enemyStrategy || "neutral",
+    });
+    score += game.winner === "player" ? 1 : game.winner === "draw" ? 0.5 : 0;
+    turns += game.turns;
+  }
+  return { winRate: score / SIM_SEEDS, avgTurns: turns / SIM_SEEDS, games: SIM_SEEDS };
+}
+
+function injectIntoFixed(baseIds, cardId) {
+  return injectCard(baseIds, cardId, 1);
+}
+
+const OPPONENT_DECKS = Object.freeze({
+  halden: Object.freeze([
+    "saltShieldSquire", "saltShieldSquire", "footman", "footman", "bulwarkMonk", "bulwarkMonk",
+    "knight", "knight", "guardian", "guardian", "bannerGuard", "bannerGuard",
+    "oathbannerHerald", "oathbannerHerald", "captainGreywake", "heroSerHalden",
+    "mirrorRime", "mirrorRime", "shieldUp", "shieldUp",
+  ]),
+  vey: Object.freeze([
+    "arcaneApprentice", "arcaneApprentice", "tidecallerAdept", "tidecallerAdept",
+    "frostChanneler", "frostChanneler", "mage", "heroMagisterVey", "arcaneWeaver", "arcaneWeaver",
+    "firebolt", "firebolt", "iceNeedle", "iceNeedle", "emberVolley", "emberVolley",
+    "flameBurst", "flameBurst", "voidTithe", "voidTithe",
+  ]),
+  scarra: Object.freeze([
+    "emberpup", "emberpup", "wolf", "wolf", "alleySkirmisher", "alleySkirmisher",
+    "sparkSquire", "sparkSquire", "frontScout", "frontScout", "packHowler", "packHowler",
+    "dualTalon", "heroScarra", "dawnRider", "dawnRider", "firebolt", "firebolt",
+    "emberVolley", "emberVolley",
+  ]),
+});
+
+const SHIELD_CONTROL_BASE = Object.freeze([
+  "saltShieldSquire", "saltShieldSquire", "footman", "footman", "guardian", "guardian",
+  "paladin", "paladin", "shieldUp", "shieldUp", "arcaneVeil", "arcaneVeil",
+  "knight", "knight", "sanctuaryWarden", "sanctuaryWarden", "oathbannerHerald", "oathbannerHerald",
+  "dawnArchbishop", "skyJudicator",
+]);
+
+const MOEN_MULTI_BASE = Object.freeze([
+  "saltShieldSquire", "saltShieldSquire", "emberpup", "emberpup", "arcaneApprentice", "arcaneApprentice",
+  "wolf", "wolf", "knight", "knight", "ragingBrute", "ragingBrute",
+  "guardian", "guardian", "frostChanneler", "frostChanneler", "frostReaver", "frostReaver",
+  "captainGreywake", "archLoremaster",
+]);
+
+const VEY_SPELL_BASE = Object.freeze([
+  "arcaneApprentice", "arcaneApprentice", "tidecallerAdept", "tidecallerAdept",
+  "frostChanneler", "frostChanneler", "mage", "mage", "arcaneWeaver", "arcaneWeaver",
+  "runicScrivener", "runicScrivener", "novicePage", "novicePage",
+  "firebolt", "firebolt", "iceNeedle", "iceNeedle", "flameBurst", "flameBurst",
+]);
+
+const HALDEN_DUEL_BASE = Object.freeze([
+  "golem", "golem", "bastionColossus", "bastionColossus", "glaciarchWarden", "glaciarchWarden",
+  "abyssWalker", "abyssWalker", "sanctuaryWarden", "sanctuaryWarden", "frostChanneler", "frostChanneler",
+  "heal", "heal", "mirrorRime", "mirrorRime", "tacticalRequisition", "tacticalRequisition", "polymorph", "polymorph",
+]);
 
 function run() {
   const results = [];
@@ -376,7 +581,7 @@ function run() {
   const toxin = results.find((item) => item.id === "toxinViper");
   const captain = results.find((item) => item.id === "captainGreywake");
 
-  console.log("== R59 balance sim ==");
+  console.log("== R60 balance sim ==");
   console.log(`Seeds per card: ${SIM_SEEDS}; paired games per card: ${SIM_SEEDS * 2}; pool mean: ${(poolMean * 100).toFixed(2)}%`);
   for (const item of results) {
     const delta = item.winRate - poolMean;
@@ -394,6 +599,98 @@ function run() {
   }
   if (toxin.winRate > raptorRate + 0.03) failures.push("toxinViper is stably above raptor by more than 3pp");
   if (captain.winRate > archivistRate + 0.03) failures.push("captainGreywake is above highArchivist by more than 3pp");
+
+  console.log("\n== R60 hero injection S0-S4 ==");
+  const heroMetrics = HERO_CARD_IDS.map((id, index) => ({ id, ...scoreFocusMetrics(id, 90000 + index * 2000) }));
+  const heroPoolMean = heroMetrics.reduce((sum, item) => sum + item.winRate, 0) / heroMetrics.length;
+  for (const item of heroMetrics) {
+    const delta = item.winRate - heroPoolMean;
+    const turnDelta = item.avgTurns - item.baselineTurns;
+    console.log(`${item.id.padEnd(24)} ${(item.winRate * 100).toFixed(2)}% delta ${(delta * 100).toFixed(2)}pp turns ${item.avgTurns.toFixed(2)} base ${item.baselineTurns.toFixed(2)} (${turnDelta >= 0 ? "+" : ""}${turnDelta.toFixed(2)}) games ${item.games}`);
+    if (item.games < 200) failures.push(`${item.id} has fewer than 200 games`);
+    if (Math.abs(delta) > 0.05) failures.push(`${item.id} outside hero pool mean ±5%`);
+    if (item.winRate >= heroPoolMean + 0.08) failures.push(`${item.id} violates no-must-have +8% cap`);
+    if (Math.abs(turnDelta) > 1.5) failures.push(`${item.id} changes average turns by more than 1.5`);
+  }
+
+  const heroCards = HERO_CARD_IDS.map(getCardById);
+  if (!heroCards.every((card) => card && card.rarity === "legendary") || new Set(heroCards.map((card) => card.id)).size !== 6) {
+    failures.push("S0 hero cards must be six unique legendaries");
+  }
+  if (!heroCards.every((card) => maxCopies(card) === 1 && card.maxCopies === 1)) failures.push("S1 hero maxCopies must be 1");
+
+  const halden = getCardById("heroSerHalden");
+  const vey = getCardById("heroMagisterVey");
+  const scarra = getCardById("heroScarra");
+  const isold = getCardById("heroIsoldLongdusk");
+  const rune = getCardById("heroRuneFrostfang");
+  const moen = getCardById("heroMoenTidearbiter");
+  if (!(halden.cost === 6 && halden.health <= getCardById("highArchivist").health && !halden.trigger)) failures.push("Halden structurally dominates highArchivist");
+  if (!(vey.attack < getCardById("archLoremaster").attack && vey.health <= getCardById("archLoremaster").health && !vey.trigger)) failures.push("Vey structurally dominates archLoremaster");
+  if (!(scarra.attack < getCardById("dragon").attack && scarra.health < getCardById("dragon").health)) failures.push("Scarra structurally dominates dragon");
+  if (!(isold.health <= getCardById("countessLongNight").health && !isold.trigger)) failures.push("Isold structurally dominates countessLongNight");
+  if (!(rune.health < getCardById("highArchivist").health && !rune.trigger)) failures.push("Rune structurally dominates highArchivist");
+  if (!(moen.attack === 2 && moen.health <= 4 && moen.trigger === "attuneFlexible")) failures.push("Moen exceeds conditional support budget");
+
+  console.log("\n== R60 opponent and gold-standard matchups M1-M9 ==");
+  const m1 = fixedPlayerRate(OPPONENT_DECKS.halden, 120000, "control");
+  const m2 = fixedPlayerRate(OPPONENT_DECKS.vey, 122000, "spellburst");
+  const m3 = fixedPlayerRate(OPPONENT_DECKS.scarra, 124000, "aggro");
+  const aggroPredicate = (card) => card.axis === "aggro";
+  const winterPredicate = (card) => card.faction === "wintershadow" || card.axis === "control";
+  const m4 = pairedDeckMatch(
+    () => injectIntoFixed(HALDEN_DUEL_BASE, "heroSerHalden"),
+    () => injectIntoFixed(HALDEN_DUEL_BASE, "highArchivist"),
+    130000,
+  );
+  const m5 = pairedDeckMatch(
+    () => injectIntoFixed(VEY_SPELL_BASE, "heroMagisterVey"),
+    () => injectIntoFixed(VEY_SPELL_BASE, "archLoremaster"),
+    132000,
+  );
+  const m6 = pairedDeckMatch(
+    focusShellBuilder("heroScarra", "dragon", aggroPredicate, 47),
+    focusShellBuilder("dragon", "heroScarra", aggroPredicate, 47),
+    134000,
+  );
+  const m7 = pairedDeckMatch(
+    focusShellBuilder("heroIsoldLongdusk", "ladyAshenBell", winterPredicate, 53),
+    focusShellBuilder("ladyAshenBell", "heroIsoldLongdusk", winterPredicate, 53),
+    136000,
+  );
+  const m8Shield = pairedDeckMatch(
+    () => injectIntoFixed(SHIELD_CONTROL_BASE, "heroRuneFrostfang"),
+    () => injectIntoFixed(SHIELD_CONTROL_BASE, "frostChanneler"),
+    138000,
+    { playerStrategy: "controlFull", enemyStrategy: "controlFull" },
+  );
+  const noShieldPredicate = (card) => !hasKeyword(card, "divineshield") && card.effect !== "giveShield";
+  const m8Plain = pairedDeckMatch(
+    focusShellBuilder("heroRuneFrostfang", "ladyAshenBell", noShieldPredicate, 59),
+    focusShellBuilder("ladyAshenBell", "heroRuneFrostfang", noShieldPredicate, 59),
+    140000,
+  );
+  const m9 = pairedMoenFactionMatch(injectIntoFixed(MOEN_MULTI_BASE, "heroMoenTidearbiter"), 142000);
+  const m9Difference = m9.winRate - (1 - m9.winRate);
+  const matchupRows = [
+    ["M1 player vs Halden AI", m1], ["M2 player vs Vey AI", m2], ["M3 player vs Scarra AI", m3],
+    ["M4 Halden vs Archivist", m4], ["M5 Vey vs Loremaster", m5], ["M6 Scarra vs Dragon", m6],
+    ["M7 Isold vs AshenBell", m7], ["M8 Rune vs shield control", m8Shield], ["M8 Rune vs plain", m8Plain],
+    ["M9 Moen multi vs mono", m9],
+  ];
+  matchupRows.forEach(([label, metric]) => console.log(`${label.padEnd(30)} ${(metric.winRate * 100).toFixed(2)}% turns ${metric.avgTurns.toFixed(2)} games ${metric.games}`));
+  console.log(`M9 three-faction uplift ${(m9Difference * 100).toFixed(2)}pp`);
+
+  if (m1.winRate < 0.48 || m1.winRate > 0.58) failures.push("M1 player rate outside 48-58%");
+  if (m2.winRate < 0.48 || m2.winRate > 0.58) failures.push("M2 player rate outside 48-58%");
+  if (m3.winRate < 0.45 || m3.winRate > 0.55) failures.push("M3 player rate outside 45-55%");
+  if (m4.winRate < 0.44 || m4.winRate > 0.52) failures.push("M4 Halden outside 44-52%");
+  if (m5.winRate < 0.46 || m5.winRate > 0.54) failures.push("M5 Vey outside 46-54%");
+  if (m6.winRate < 0.48 || m6.winRate > 0.56) failures.push("M6 Scarra outside 48-56%");
+  if (m7.winRate < 0.46 || m7.winRate > 0.54) failures.push("M7 Isold outside 46-54%");
+  if (m8Shield.winRate < 0.50 || m8Shield.winRate > 0.60) failures.push("M8 Rune shield matchup outside 50-60%");
+  if (m8Plain.winRate < 0.46 || m8Plain.winRate > 0.54) failures.push("M8 Rune plain matchup outside 46-54%");
+  if (m9Difference < 0.02 || m9Difference > 0.07) failures.push("M9 multi-faction uplift outside +2 to +7pp");
   if (failures.length) {
     console.error("Balance failures:");
     failures.forEach((failure) => console.error(" - " + failure));

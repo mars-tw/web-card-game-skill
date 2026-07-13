@@ -1,6 +1,6 @@
 # Card R6 修復回報
 
-版本：`card-battle-r59-v1`
+版本：`card-battle-r60-v1`
 
 ## 三刀
 
@@ -10,7 +10,7 @@
 
 ## 同步與守門
 
-- cache、SW reload key、manifest／script query、測試標籤全同步 r59。
+- cache、SW reload key、manifest／script query、測試標籤全同步 r60。
 - active source／tests／config（排除歷史 `docs/`）舊 r58 字串 grep：**0**。
 - `templates/card-battle/core.js`：**diff 0**。
 - `npm test`：**PASS**（cards、core **116/116**、quality gates、balance-sim）。

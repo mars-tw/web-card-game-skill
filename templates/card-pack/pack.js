@@ -16,6 +16,8 @@
   const GOAL_KEY = "card_goals_v1";
   const PITY_KEY = "card_pack_pity_v1";
   const PITY_LIMIT = 20;
+  const HERO_PITY_KEY = "card_pack_hero_pity_v1";
+  const HERO_PITY_LIMIT = 35;
   const SAVE_BACKUP_KEY = "card_save_backup_v1";
   const TEXT_SIZE_KEY = "card_text_size_v1";
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
@@ -39,7 +41,7 @@
   let deckState = loadDeck();
   let lastNewCards = [];
   let deckFilters = { search: "", cost: "all", rarity: "all" };
-  let collectionFilters = { search: "", axis: "all", keyword: "all", rarity: "all", ownership: "all", sort: "cost" };
+  let collectionFilters = { search: "", axis: "all", faction: "all", keyword: "all", rarity: "all", ownership: "all", sort: "cost" };
   let recordFilters = { difficulty: "all" };
   let lastRecordCopy = "";
   let lastSaveCopy = "";
@@ -160,12 +162,12 @@
   }
 
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r59-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r60-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r59_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r60_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
@@ -256,7 +258,7 @@
       const el = document.getElementById(id);
       if (el && !el.getAttribute("aria-label")) el.setAttribute("aria-label", label);
     });
-    ["recordDifficultyFilter", "packTextSizeSel", "deckSearch", "deckCostFilter", "deckRarityFilter", "collectionSearch", "collectionAxisFilter", "collectionKeywordFilter", "collectionRarityFilter", "collectionOwnershipFilter", "collectionSort", "saveImportText"]
+    ["recordDifficultyFilter", "packTextSizeSel", "deckSearch", "deckCostFilter", "deckRarityFilter", "collectionSearch", "collectionAxisFilter", "collectionFactionFilter", "collectionKeywordFilter", "collectionRarityFilter", "collectionOwnershipFilter", "collectionSort", "saveImportText"]
       .forEach((id) => {
         const el = document.getElementById(id);
         if (el && !el.getAttribute("aria-label")) el.setAttribute("aria-label", id);
@@ -460,6 +462,41 @@
     try { localStorage.setItem(PITY_KEY, String(Math.max(0, Math.floor(Number(value) || 0)))); } catch {}
   }
 
+  function loadHeroPity() {
+    try {
+      const value = Math.floor(Number(localStorage.getItem(HERO_PITY_KEY)) || 0);
+      return Math.max(0, value);
+    } catch {
+      return 0;
+    }
+  }
+
+  function saveHeroPity(value) {
+    try { localStorage.setItem(HERO_PITY_KEY, String(Math.max(0, Math.floor(Number(value) || 0)))); } catch {}
+    updateHeroPityDisplay();
+  }
+
+  function updateHeroPityDisplay() {
+    const el = document.getElementById("heroPityProgress");
+    if (el) el.textContent = `角色保底：${Math.min(loadHeroPity(), HERO_PITY_LIMIT)}/${HERO_PITY_LIMIT}`;
+  }
+
+  function isHeroLegend(card) {
+    return !!card && card.rarity === "legendary" && card.heroTag === true;
+  }
+
+  function rollHeroPityCard() {
+    const ids = Array.isArray(window.HERO_SET_IDS) ? window.HERO_SET_IDS : [];
+    const missing = ids.filter((id) => totalOwned(id) <= 0);
+    const pool = missing.length ? missing : ids;
+    const id = pool[Math.floor(Math.random() * pool.length)];
+    const card = getCardById(id);
+    if (!card) return rollAtLeastRare();
+    card.tide = Math.random() < TIDE_CHANCE;
+    card.foil = !card.tide && Math.random() < FOIL_CHANCE;
+    return card;
+  }
+
   function isRarePlus(card) {
     return !!card && card.rarity !== "common";
   }
@@ -509,13 +546,41 @@
 
   function applyPityToCards(cards) {
     const pityBefore = loadPity();
+    const heroPityBefore = loadHeroPity();
     const naturalRarePlus = cards.some(isRarePlus);
+    const naturalHero = cards.some(isHeroLegend);
     const pityForced = !naturalRarePlus && pityBefore >= PITY_LIMIT - 1;
     if (pityForced) cards[PACK_SIZE - 1] = rollAtLeastRare();
+    const heroPityForced = !naturalHero && heroPityBefore >= HERO_PITY_LIMIT - 1;
+    if (heroPityForced) {
+      let replaceIndex = -1;
+      for (let i = cards.length - 1; i >= 0; i--) {
+        if (isRarePlus(cards[i]) && cards[i].rarity !== "legendary") { replaceIndex = i; break; }
+      }
+      if (replaceIndex < 0) {
+        for (let i = cards.length - 1; i >= 0; i--) {
+          if (cards[i].rarity !== "legendary") { replaceIndex = i; break; }
+        }
+      }
+      if (replaceIndex < 0) replaceIndex = cards.length - 1;
+      cards[replaceIndex] = rollHeroPityCard();
+    }
     const hasRarePlus = cards.some(isRarePlus);
+    const hasHero = cards.some(isHeroLegend);
     const pityAfter = hasRarePlus ? 0 : pityBefore + 1;
+    const heroPityAfter = hasHero ? 0 : heroPityBefore + 1;
     savePity(pityAfter);
-    return { before: pityBefore, after: pityAfter, forced: pityForced, hasRarePlus };
+    saveHeroPity(heroPityAfter);
+    return {
+      before: pityBefore,
+      after: pityAfter,
+      forced: pityForced,
+      hasRarePlus,
+      heroBefore: heroPityBefore,
+      heroAfter: heroPityAfter,
+      heroForced: heroPityForced,
+      hasHero,
+    };
   }
 
   let activeReveal = null;
@@ -547,7 +612,8 @@
     document.getElementById("skipRevealBtn")?.classList.remove("show");
     document.getElementById("actions").style.display = "flex";
     const sum = document.getElementById("summary");
-    sum.innerHTML = `本包：<span class="new">新收集 ${state.newCount}</span> · <span class="dup">重複 ${state.dupCount}</span>`;
+    const heroCount = state.items.filter((entry) => entry.card.heroTag).length;
+    sum.innerHTML = `本包：<span class="new">新收集 ${state.newCount}</span> · <span class="dup">重複 ${state.dupCount}</span>${heroCount ? ` · <span class="new">角色 ${heroCount}</span>` : ""}`;
     renderCollection();
   }
 
@@ -562,6 +628,7 @@
     document.getElementById("packStage").style.display = "none";
 
     let newCount = 0, dupCount = 0;
+    const firstOpponentHeroes = [];
     const last = cards.length - 1;
     let revealTime = 0;
     lastNewCards = [];
@@ -569,11 +636,13 @@
     const skipBtn = document.getElementById("skipRevealBtn");
     if (skipBtn) skipBtn.classList.add("show");
     cards.forEach((card, i) => {
+      const firstOwnedHero = card.heroTag && card.opponentId && totalOwned(card.id) === 0;
       const key = collectKey(card);
       const had = (collection[key] || 0) > 0;
       if (had) { dupCount++; card._dup = true; }
       else { newCount++; card._dup = false; lastNewCards.push(cloneCard(card)); }
       collection[key] = (collection[key] || 0) + 1;
+      if (firstOwnedHero) firstOpponentHeroes.push(card.name);
 
       const el = renderRevealCard(card);
       el.tabIndex = 0;
@@ -592,6 +661,9 @@
     });
 
     saveCollection();
+    if (firstOpponentHeroes.length) {
+      recoveryToast(`已可將${firstOpponentHeroes.join("、")}編入牌組；對戰可鏡像角色。`);
+    }
     activeReveal.newCount = newCount;
     activeReveal.dupCount = dupCount;
   }
@@ -631,7 +703,7 @@
       <div class="art${card.image ? "" : " art-fallback"}"${card.image ? "" : ` aria-label="${card.name}・${FACTIONS[card.faction]?.name || "中立"}佔位圖"`}>${art}</div>
       <div class="kwrow">${kw}</div>
       <div class="cardname">${card.name}</div>
-      <div class="rarity-tag">${r.label}</div>
+      <div class="rarity-tag">${r.label}${card.heroTag ? " · 角色" : ""}</div>
       <div class="stats">
         <div class="atk">${card.attack ?? ""}</div>
         <div class="hp">${card.health ?? ""}</div>
@@ -675,6 +747,7 @@
       slot.dataset.variant = variant.kind;
       slot.dataset.rarity = card.rarity;
       slot.dataset.axis = card.axis || "neutral";
+      slot.dataset.faction = card.faction || "wardens";
       slot.dataset.cost = String(card.cost);
       slot.dataset.owned = isOwned ? "1" : "0";
       slot.dataset.name = card.name;
@@ -1022,10 +1095,11 @@
   }
 
   function cardMatchesQuery(card, filters, owned) {
-    const query = Object.assign({ search: "", cost: "all", rarity: "all", axis: "all", keyword: "all", ownership: "all" }, filters || {});
+    const query = Object.assign({ search: "", cost: "all", rarity: "all", axis: "all", faction: "all", keyword: "all", ownership: "all" }, filters || {});
     if (!costMatches(card, query.cost)) return false;
     if (query.rarity !== "all" && card.rarity !== query.rarity) return false;
     if (query.axis !== "all" && card.axis !== query.axis) return false;
+    if (query.faction !== "all" && card.faction !== query.faction) return false;
     if (query.keyword !== "all" && !(card.keywords || []).includes(query.keyword)) return false;
     if (typeof owned === "boolean" && !ownershipMatches(query.ownership, owned)) return false;
     const q = normalizeSearch(query.search);
@@ -1481,12 +1555,14 @@
   if (deckRarityFilter) deckRarityFilter.onchange = () => { deckFilters.rarity = deckRarityFilter.value; renderDeckEditor(); };
   const collectionSearch = document.getElementById("collectionSearch");
   const collectionAxisFilter = document.getElementById("collectionAxisFilter");
+  const collectionFactionFilter = document.getElementById("collectionFactionFilter");
   const collectionKeywordFilter = document.getElementById("collectionKeywordFilter");
   const collectionRarityFilter = document.getElementById("collectionRarityFilter");
   const collectionOwnershipFilter = document.getElementById("collectionOwnershipFilter");
   const collectionSort = document.getElementById("collectionSort");
   if (collectionSearch) collectionSearch.oninput = () => { collectionFilters.search = collectionSearch.value; renderCollection(); };
   if (collectionAxisFilter) collectionAxisFilter.onchange = () => { collectionFilters.axis = collectionAxisFilter.value; renderCollection(); };
+  if (collectionFactionFilter) collectionFactionFilter.onchange = () => { collectionFilters.faction = collectionFactionFilter.value; renderCollection(); };
   if (collectionKeywordFilter) collectionKeywordFilter.onchange = () => { collectionFilters.keyword = collectionKeywordFilter.value; renderCollection(); };
   if (collectionRarityFilter) collectionRarityFilter.onchange = () => { collectionFilters.rarity = collectionRarityFilter.value; renderCollection(); };
   if (collectionOwnershipFilter) collectionOwnershipFilter.onchange = () => { collectionFilters.ownership = collectionOwnershipFilter.value; renderCollection(); };
@@ -1661,6 +1737,7 @@
   installErrorRecovery();
   renderCollection();
   updateCoinDisplay();
+  updateHeroPityDisplay();
   renderRecordPanel();
 
   window.__deckTest = {
@@ -1686,6 +1763,7 @@
       collectionFilters = Object.assign({}, collectionFilters, next || {});
       if (collectionSearch) collectionSearch.value = collectionFilters.search || "";
       if (collectionAxisFilter) collectionAxisFilter.value = collectionFilters.axis || "all";
+      if (collectionFactionFilter) collectionFactionFilter.value = collectionFilters.faction || "all";
       if (collectionKeywordFilter) collectionKeywordFilter.value = collectionFilters.keyword || "all";
       if (collectionRarityFilter) collectionRarityFilter.value = collectionFilters.rarity || "all";
       if (collectionOwnershipFilter) collectionOwnershipFilter.value = collectionFilters.ownership || "all";
@@ -1700,14 +1778,20 @@
       variant: el.dataset.variant || "normal",
       rarity: el.dataset.rarity,
       axis: el.dataset.axis,
+      faction: el.dataset.faction,
       cost: Number(el.dataset.cost),
       owned: el.dataset.owned === "1",
       name: el.dataset.name,
     })),
     pity: () => loadPity(),
+    heroPity: () => loadHeroPity(),
     setPity(value) {
       savePity(value);
       return loadPity();
+    },
+    setHeroPity(value) {
+      saveHeroPity(value);
+      return loadHeroPity();
     },
     testPack(cards) {
       revealCards((cards || []).map(cloneCard));

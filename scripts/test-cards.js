@@ -6,7 +6,7 @@
 
 const path = require("path");
 const cards = require(path.join(__dirname, "..", "templates", "card-battle", "cards.js"));
-const { CARD_POOL, RARITY, KEYWORDS, CARD_TYPE, DISMANTLE_VALUE, AXIS_LABELS, FACTIONS, CARD_FACTION, TIDE_CHANCE, rollCardByRarity, getCardById, collectKey, cardAxisLabel, factionLabel } = cards;
+const { CARD_POOL, RARITY, KEYWORDS, CARD_TYPE, DISMANTLE_VALUE, AXIS_LABELS, FACTIONS, CARD_FACTION, TIDE_CHANCE, HERO_LEGEND_BIAS, HERO_SET_IDS, rollCardByRarity, getCardById, collectKey, cardAxisLabel, factionLabel } = cards;
 const R16_NEW_IDS = [
   "sparkSquire", "alleySkirmisher", "emberVolley", "bulwarkMonk", "dawnRider",
   "battleDrummer", "sanctuaryWarden", "tidebinderHex", "bastionColossus", "highArchivist",
@@ -24,6 +24,10 @@ const CONTENT_BASELINE_IDS = [
   "mirrorRime", "dualTalon", "voidTithe", "captainGreywake", "ladyAshenBell",
 ];
 const SILENCE_BASELINE_IDS = ["silenceOne", "scoutInterrogator"];
+const HERO_CARD_IDS = [
+  "heroSerHalden", "heroMagisterVey", "heroScarra",
+  "heroIsoldLongdusk", "heroRuneFrostfang", "heroMoenTidearbiter",
+];
 
 let failed = 0;
 function assert(cond, msg) {
@@ -54,6 +58,8 @@ assert(Object.keys(KEYWORDS).length >= 5, "關鍵字技能至少 5 種");
 assert(KEYWORDS.lifesteal?.label === "吸血" && KEYWORDS.rush?.label === "突襲", "新關鍵字吸血與突襲有繁中 label");
 assert(KEYWORDS.frenzy?.label === "狂怒" && KEYWORDS.spellpower?.label === "法強", "R47 關鍵字狂怒與法強有繁中 label");
 assert(KEYWORDS.silence?.label === "靜默" && /移除/.test(KEYWORDS.silence.desc), "silence 關鍵字已註冊");
+assert(["shieldwall", "resonance", "bloodtrail", "chillbind", "sunder", "attune"].every((id) => KEYWORDS[id]?.label),
+  "R60 六種角色專屬關鍵字皆有繁中定義");
 assert(TIDE_CHANCE === 0.03, "tideforged 機率為 3%");
 assert(AXIS_LABELS.aggro === "快攻" && AXIS_LABELS.control === "控制" && AXIS_LABELS.neutral === "中立", "軸線標籤完整");
 
@@ -108,7 +114,35 @@ assert(r48Axis.aggro === 6 && r48Axis.control === 6, `R48 axis split is 6/6 (act
 assert(r48Costs.includes(1) && r48Costs.includes(7), "R48 cost curve includes 1 and 7");
 assert(r48Cards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8), "R48 flavor text is present");
 assert(r48Cards.every((c) => FACTIONS[c.faction]), "R48 faction ids all resolve");
-assert(Object.keys(FACTIONS).length === 4 && Object.keys(CARD_FACTION).length >= 74, "R48 factions cover the full card pool");
+assert(Object.keys(FACTIONS).length === 5 && FACTIONS.neutral?.name === "潮間中立" && Object.keys(CARD_FACTION).length >= 80,
+  "R60 五陣營含正式潮間中立並覆蓋卡池");
+
+console.log("== R60 對座六影 ==");
+const heroCards = HERO_CARD_IDS.map((id) => getCardById(id));
+assert(CARD_POOL.length === 92, `R60 卡池為 92 張（實際 ${CARD_POOL.length}）`);
+assert(heroCards.every(Boolean) && new Set(heroCards.map((card) => card.id)).size === 6, "六張具名角色卡 id 齊全且唯一");
+assert(heroCards.every((card) => card.rarity === "legendary" && card.type === CARD_TYPE.MINION && card.maxCopies === 1),
+  "六張角色皆為傳說隨從且 maxCopies=1");
+assert(heroCards.every((card) => card.heroTag === true && card.set === "hero_shadows_v1" && card.image === null),
+  "六張角色共用 hero_shadows_v1、heroTag 與可後補圖契約");
+assert(getCardById("heroSerHalden").opponentId === "op_ser_halden"
+  && getCardById("heroMagisterVey").opponentId === "op_magister_vey"
+  && getCardById("heroScarra").opponentId === "op_scarra", "三位既有 AI 角色卡連回正確 opponentId");
+assert(getCardById("heroMoenTidearbiter").faction === "neutral"
+  && getCardById("heroIsoldLongdusk").faction === "wintershadow"
+  && getCardById("heroRuneFrostfang").faction === "wintershadow", "茉恩正式中立，伊索德與魯恩補入凜冬暗影");
+assert(HERO_LEGEND_BIAS === 0.28 && [...HERO_SET_IDS].join(",") === HERO_CARD_IDS.join(","),
+  "傳說子池角色偏向固定為 28%，且只含六張角色");
+const originalRandom = Math.random;
+let forcedRolls = [0.999, 0.1, 0, 0.99, 0.99];
+Math.random = () => forcedRolls.shift() ?? 0.99;
+const forcedHero = rollCardByRarity();
+forcedRolls = [0.999, 0.9, 0, 0.99, 0.99];
+const ordinaryLegend = rollCardByRarity();
+Math.random = originalRandom;
+assert(forcedHero.rarity === "legendary" && forcedHero.heroTag === true
+  && ordinaryLegend.rarity === "legendary" && ordinaryLegend.heroTag !== true,
+  "傳說 roll 先套 28% 角色子池，未命中時仍從完整傳說池抽取");
 
 console.log("== Current content baseline ==");
 const baselineCards = CONTENT_BASELINE_IDS.map((id) => getCardById(id));
