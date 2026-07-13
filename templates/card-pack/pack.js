@@ -160,12 +160,12 @@
   }
 
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r58-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r59-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r58_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r59_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
@@ -615,7 +615,7 @@
     el.style.setProperty("--glow", r.glow);
     const art = card.image
       ? `<img src="${card.image}" alt="${card.name}" onerror="this.replaceWith(document.createTextNode('${card.emoji}'))">`
-      : card.emoji;
+      : `<span class="art-glyph" aria-hidden="true">${card.emoji}</span>`;
     const kw = (card.keywords || []).map((k) => {
       const def = (typeof KEYWORDS !== "undefined") ? KEYWORDS[k] : null;
       return def ? `<span class="kw" title="${def.label}">${def.icon}</span>` : "";
@@ -628,7 +628,7 @@
       <div class="stars">${"★".repeat(r.stars)}</div>
       ${card._dup ? '<div class="dup-tag">重複</div>' : ''}
       ${card._dup ? '' : '<div class="new-card-tag">本包新卡</div>'}
-      <div class="art">${art}</div>
+      <div class="art${card.image ? "" : " art-fallback"}"${card.image ? "" : ` aria-label="${card.name}・${FACTIONS[card.faction]?.name || "中立"}佔位圖"`}>${art}</div>
       <div class="kwrow">${kw}</div>
       <div class="cardname">${card.name}</div>
       <div class="rarity-tag">${r.label}</div>

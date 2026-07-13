@@ -499,7 +499,7 @@ function checkR48ArtConsistency() {
   assert(problems.length === 0, `R48 art cards are consistent across cards/art-config/sw (${R48_ARTED_IDS.length} cards)`);
 }
 
-function checkR58CapturePipeline() {
+function checkR59PresentationPipeline() {
   const battleHtml = read("templates/card-battle/index.html");
   const battleJs = read("templates/card-battle/battle.js");
   const packHtml = read("templates/card-pack/index.html");
@@ -511,16 +511,21 @@ function checkR58CapturePipeline() {
   const reducedMotion = battleHtml.includes('.card.rarity-legendary .frame-sheen, .card .taunt-crest')
     && battleHtml.includes(':root[data-perf="low"] .card.rarity-legendary .frame-sheen')
     && packHtml.includes('.card.rarity-legendary .frame-sheen, .card.foil::after');
-  const battlePoses = /CAPTURE_POSES[\s\S]{0,300}legendTauntFoil[\s\S]{0,300}heroCritical[\s\S]{0,300}fourRarityHand[\s\S]{0,300}threeOpponents/.test(battleJs)
-    && battleJs.includes('window.__capture = Object.freeze({ poses:');
+  const battlePoses = /CAPTURE_POSES[\s\S]{0,500}legendTauntFoil[\s\S]{0,500}heroCritical[\s\S]{0,500}fourRarityHand[\s\S]{0,500}enemyTripleField[\s\S]{0,500}opponentHalden[\s\S]{0,500}opponentVey[\s\S]{0,500}opponentScarra/.test(battleJs)
+    && battleJs.includes('window.__capture = Object.freeze({ poses:')
+    && battleJs.includes('setHandDrawerOpen(true);');
   const packFrames = /REVEAL_FRAMES[\s\S]{0,200}suspense[\s\S]{0,200}legendPeak[\s\S]{0,200}foilPeak/.test(read("templates/card-pack/pack.js"))
     && packHtml.includes("body.reveal-freeze") && packHtml.includes("animation:none !important");
   const heroProduct = battleHtml.includes("#enemyHero .avatar") && /\.hero \.avatar[\s\S]{0,700}radial-gradient[\s\S]{0,700}inset/.test(battleHtml);
-  assert(frameMounted && frameMask, "R58 battle/pack 傳說框掛載 mask 掃光");
-  assert(foilDispersion, "R58 battle/pack 閃卡使用青/紅/綠多停點雙層色散");
-  assert(reducedMotion, "R58 傳說框與閃卡掃光受 reduced-motion / low-perf 覆蓋");
-  assert(battlePoses && packFrames, "R58 命名展示盤與開包海報幀可重現且可凍結");
-  assert(heroProduct, "R58 英雄頭像框與資源徽章使用同一商品化材質語言");
+  const fallbackArt = [battleHtml, packHtml].every((text) => text.includes(".art.art-fallback")
+    && text.includes("--faction-mark") && text.includes(".art-fallback .art-glyph"))
+    && [battleJs, read("templates/card-pack/pack.js")].every((text) => text.includes('" art-fallback"') && text.includes('class="art-glyph"'));
+  assert(frameMounted && frameMask, "R59 battle/pack 傳說框掛載 mask 掃光");
+  assert(foilDispersion, "R59 battle/pack 閃卡使用青/紅/綠多停點雙層色散");
+  assert(reducedMotion, "R59 傳說框與閃卡掃光受 reduced-motion / low-perf 覆蓋");
+  assert(battlePoses && packFrames, "R59 命名展示盤、手機手牌與三對手色場可重現");
+  assert(heroProduct, "R59 英雄頭像框與資源徽章使用同一商品化材質語言");
+  assert(fallbackArt, "R59 battle/pack 無圖卡使用四陣營紋理 fallback");
 }
 
 console.log("== R40 文案品質守門 ==");
@@ -530,7 +535,7 @@ checkVersionedHtmlRefs();
 checkSwCacheCompleteness();
 checkR47ArtConsistency();
 checkR48ArtConsistency();
-checkR58CapturePipeline();
+checkR59PresentationPipeline();
 
 if (failed > 0) {
   console.error(`❌ ${failed} 項守門失敗`);

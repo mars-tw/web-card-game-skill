@@ -6,9 +6,9 @@
 <title>開卡包 · Card Pack</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r58-v1";
+    const CACHE_VERSION = "card-battle-r59-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r58_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r59_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -179,14 +179,19 @@
 
   .card .art { flex:1; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:52px;
     background:radial-gradient(circle at 48% 38%,rgba(255,255,255,.17),transparent 28%),repeating-linear-gradient(125deg,transparent 0 10px,rgba(255,255,255,.045) 10px 12px),linear-gradient(145deg,var(--faction-hi,#526273),var(--faction-lo,#101722)); overflow:hidden; box-shadow:inset 0 2px 7px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,255,255,.09); }
-  .card.faction-wardens { --faction-hi:#315f91; --faction-lo:#0b2039; }
-  .card.faction-conclave { --faction-hi:#684094; --faction-lo:#20102f; }
-  .card.faction-wild { --faction-hi:#9a4e1b; --faction-lo:#2d1609; }
-  .card.faction-wintershadow { --faction-hi:#31577c; --faction-lo:#0c1328; }
+  .card.faction-neutral { --faction-accent:#94a3b8; --faction-mark:"◇"; }
+  .card.faction-wardens { --faction-hi:#315f91; --faction-lo:#0b2039; --faction-accent:#93c5fd; --faction-mark:"⚜"; }
+  .card.faction-conclave { --faction-hi:#684094; --faction-lo:#20102f; --faction-accent:#d8b4fe; --faction-mark:"✦"; }
+  .card.faction-wild { --faction-hi:#9a4e1b; --faction-lo:#2d1609; --faction-accent:#fdba74; --faction-mark:"◆"; }
+  .card.faction-wintershadow { --faction-hi:#31577c; --faction-lo:#0c1328; --faction-accent:#bae6fd; --faction-mark:"❄"; }
   .card.faction-conclave .art { background:radial-gradient(circle at 50% 48%,transparent 0 19%,rgba(216,180,254,.24) 20% 22%,transparent 23% 35%,rgba(168,85,247,.2) 36% 38%,transparent 39%),repeating-conic-gradient(from 20deg,rgba(255,255,255,.05) 0 8deg,transparent 8deg 24deg),linear-gradient(145deg,var(--faction-hi),var(--faction-lo)); }
   .card.faction-wild .art { background:repeating-linear-gradient(118deg,transparent 0 16px,rgba(254,215,170,.13) 16px 19px,transparent 19px 27px),radial-gradient(circle at 70% 25%,rgba(251,146,60,.3),transparent 32%),linear-gradient(145deg,var(--faction-hi),var(--faction-lo)); }
   .card.faction-wardens .art { background:linear-gradient(30deg,transparent 46%,rgba(191,219,254,.12) 47% 50%,transparent 51%),repeating-linear-gradient(135deg,transparent 0 14px,rgba(147,197,253,.08) 14px 16px),linear-gradient(145deg,var(--faction-hi),var(--faction-lo)); }
   .card.faction-wintershadow .art { background:radial-gradient(ellipse at 50% 115%,rgba(147,197,253,.2),transparent 46%),repeating-linear-gradient(155deg,transparent 0 13px,rgba(224,242,254,.11) 14px 15px,transparent 16px 27px),linear-gradient(32deg,transparent 44%,rgba(165,180,252,.12) 45% 48%,transparent 49%),linear-gradient(145deg,var(--faction-hi),var(--faction-lo)); }
+  .card .art.art-fallback { position:relative; isolation:isolate; color:#fff; box-shadow:inset 0 2px 8px rgba(0,0,0,.78),inset 0 0 0 1px color-mix(in srgb,var(--faction-accent,#94a3b8) 34%,transparent),0 0 12px color-mix(in srgb,var(--faction-accent,#94a3b8) 18%,transparent); }
+  .card .art.art-fallback::before { content:var(--faction-mark,"◇"); position:absolute; right:-8px; bottom:-22px; z-index:-1; color:var(--faction-accent,#94a3b8); font:900 78px/1 Georgia,serif; opacity:.14; transform:rotate(-12deg); text-shadow:0 0 18px currentColor; }
+  .card .art.art-fallback::after { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--faction-accent,#94a3b8) 25%,transparent),transparent 38%),linear-gradient(180deg,rgba(255,255,255,.07),transparent 38%,rgba(0,0,0,.28)); }
+  .card .art-fallback .art-glyph { display:grid; place-items:center; width:62%; aspect-ratio:1; border:1px solid color-mix(in srgb,var(--faction-accent,#94a3b8) 58%,transparent); border-radius:50%; background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.2),rgba(7,12,20,.5) 66%); box-shadow:0 7px 15px rgba(0,0,0,.42),inset 0 0 13px color-mix(in srgb,var(--faction-accent,#94a3b8) 24%,transparent); text-shadow:0 3px 8px rgba(0,0,0,.72); }
   .card .art img { width:100%; height:100%; object-fit:cover; }
   .card .cost { position:absolute; top:-10px; left:-10px; width:32px; height:34px; clip-path:polygon(50% 0,88% 18%,100% 62%,50% 100%,0 62%,12% 18%);
     background:radial-gradient(circle at 34% 24%,#dbeafe 0 7%,#60a5fa 18%,#2563eb 56%,#0b2f71 100%); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:950; z-index:8; filter:drop-shadow(0 3px 3px rgba(0,0,0,.7)) drop-shadow(0 0 4px #2563eb); text-shadow:0 1px 2px #071b40; }
@@ -671,9 +676,9 @@
     <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
   </footer>
 
-  <script src="../card-battle/cards.js?v=card-battle-r58-v1"></script>
-  <script src="../card-battle/core.js?v=card-battle-r58-v1"></script>
-  <script src="pack.js?v=card-battle-r58-v1"></script>
+  <script src="../card-battle/cards.js?v=card-battle-r59-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-r59-v1"></script>
+  <script src="pack.js?v=card-battle-r59-v1"></script>
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);

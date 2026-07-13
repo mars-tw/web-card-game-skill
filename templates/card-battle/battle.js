@@ -138,7 +138,7 @@
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r58_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r59_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
@@ -1659,13 +1659,11 @@
         if (playerTaunts.length) {
           const t = maybeDdaSecondBest(playerTaunts.sort((a, b) => a.health - b.health || minionThreatScore(b) - minionThreatScore(a)))[0];
           logAiThought(aiAttackReason(atk, t, { forcedTaunt: true, lethal }));
-          animateAttackToward(atk.uid, t.uid);
           resolveAttack(ai, atk, t);
         } else {
           const threat = chooseAiAttackTarget(atk, lethal);
           if (threat) {
             logAiThought(aiAttackReason(atk, threat, { lethal }));
-            animateAttackToward(atk.uid, threat.uid);
             resolveAttack(ai, atk, threat);
           }
           else if (canAttackHeroNow(atk)) {
@@ -1813,7 +1811,7 @@
 
     const art = card.image
       ? `<img src="${card.image}" alt="${card.name}" onerror="this.replaceWith(document.createTextNode('${card.emoji}'))">`
-      : card.emoji;
+      : `<span class="art-glyph" aria-hidden="true">${card.emoji}</span>`;
 
     // 技能徽章
     const kwBadges = (card.keywords || []).map((k) => {
@@ -1830,7 +1828,7 @@
       ${card.shield ? '<div class="shield-ring"></div>' : ""}
       ${(card.keywords || []).includes("taunt") ? '<div class="taunt-crest" title="嘲諷" aria-hidden="true">◆</div>' : ""}
       <div class="stars">${stars}</div>
-      <div class="art">${art}</div>
+      <div class="art${card.image ? "" : " art-fallback"}"${card.image ? "" : ` aria-label="${card.name}・${FACTIONS[card.faction]?.name || "中立"}佔位圖"`}>${art}</div>
       <div class="kwrow">${kwBadges}</div>
       <div class="cardname">${card.name}${card.foil ? " ✦" : ""}${card.tide ? " ≋" : ""}</div>
       <div class="cardtext">${card.text || ""}</div>
@@ -3238,7 +3236,16 @@
   };
   function prepMinion(c) { c.uid = "t" + Math.random().toString(36).slice(2, 8); c.maxHealth = c.health; if ((c.keywords || []).includes("divineshield")) c.shield = true; c.canAttack = true; return c; }
 
-  const CAPTURE_POSES = Object.freeze(["legendTauntFoil", "heroCritical", "fourRarityHand", "threeOpponents"]);
+  const CAPTURE_POSES = Object.freeze([
+    "legendTauntFoil", "heroCritical", "fourRarityHand", "enemyTripleField",
+    "opponentHalden", "opponentVey", "opponentScarra",
+  ]);
+  const CAPTURE_ALIASES = Object.freeze({ threeOpponents:"enemyTripleField" });
+  const CAPTURE_OPPONENTS = Object.freeze({
+    opponentHalden:"op_ser_halden",
+    opponentVey:"op_magister_vey",
+    opponentScarra:"op_scarra",
+  });
   function captureCard(id, extras, fieldCard) {
     const source = getCardById(id);
     if (!source) throw new Error(`Capture card not found: ${id}`);
@@ -3252,7 +3259,9 @@
     return card;
   }
   function applyCapturePose(name) {
-    if (!CAPTURE_POSES.includes(name)) return { ok:false, name, available:[...CAPTURE_POSES] };
+    const requestedName = name;
+    name = CAPTURE_ALIASES[name] || name;
+    if (!CAPTURE_POSES.includes(name)) return { ok:false, name:requestedName, available:[...CAPTURE_POSES] };
     clearTransientFx();
     stopGuide(false);
     document.body.classList.add("capture-pose");
@@ -3266,6 +3275,7 @@
     game.player.field = [];
     game.enemy.field = [];
     game.player.hand = [];
+    setHandDrawerOpen(false);
     if (name === "legendTauntFoil") {
       game.player.field = [captureCard("titan", { foil:true }, true)];
       game.enemy.field = [captureCard("frostboundTyrant", {}, true)];
@@ -3277,18 +3287,31 @@
       game.player.hand = [
         captureCard("wolf"), captureCard("knight"), captureCard("golem"), captureCard("dragon", { foil:true }),
       ];
-    } else {
+      setHandDrawerOpen(true);
+    } else if (name === "enemyTripleField") {
       game.enemy.field = [
         captureCard("knight", {}, true), captureCard("arcaneWeaver", { foil:true }, true), captureCard("frostboundTyrant", {}, true),
       ];
       game.player.field = [captureCard("dawnArchbishop", {}, true)];
+    } else {
+      const opponent = OPPONENTS[CAPTURE_OPPONENTS[name]];
+      game.opponent = opponent;
+      game.opponentId = opponent.id;
+      game.opponentName = opponent.name;
+      game.opponentEmoji = opponent.emoji;
+      game.enemy.field = [captureCard(
+        name === "opponentHalden" ? "knight" : name === "opponentVey" ? "arcaneWeaver" : "packHowler",
+        { foil:name === "opponentVey" }, true,
+      )];
+      game.player.field = [captureCard("dawnArchbishop", {}, true)];
     }
     render();
-    return { ok:true, name, cards:document.querySelectorAll(".battlefield .card, .hand .card").length };
+    return { ok:true, name, requestedName, opponent:document.body.dataset.opponent || "", cards:document.querySelectorAll(".battlefield .card, .hand .card").length };
   }
   function clearCapturePose() {
     document.body.classList.remove("capture-pose");
     delete document.body.dataset.capturePose;
+    setHandDrawerOpen(false);
     newGame();
     return true;
   }

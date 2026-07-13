@@ -376,7 +376,7 @@ function run() {
   const toxin = results.find((item) => item.id === "toxinViper");
   const captain = results.find((item) => item.id === "captainGreywake");
 
-  console.log("== R58 balance sim ==");
+  console.log("== R59 balance sim ==");
   console.log(`Seeds per card: ${SIM_SEEDS}; paired games per card: ${SIM_SEEDS * 2}; pool mean: ${(poolMean * 100).toFixed(2)}%`);
   for (const item of results) {
     const delta = item.winRate - poolMean;
