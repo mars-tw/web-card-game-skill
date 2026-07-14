@@ -59,6 +59,12 @@
     { "id": "dawnArchbishop", "prompt": "radiant archbishop in white-gold vestments, dawn-light halo, warding staff, divine-shield aura" },
     { "id": "frostfangDire", "prompt": "massive frost-furred dire wolf mid-lunge, glowing ember scars, icy breath" },
     { "id": "glaciarchWarden", "prompt": "towering glacial warden-jailer in blue ice armor, frozen greatshield" },
-    { "id": "countessLongNight", "prompt": "elegant pale countess of long night in dark-violet gown, crimson lifesteal wisps, spectral shade" }
+    { "id": "countessLongNight", "prompt": "elegant pale countess of long night in dark-violet gown, crimson lifesteal wisps, spectral shade" },
+    { "id": "heroSerHalden", "prompt": "battle-scarred human captain holding a wide tower shield horizontally across his chest, white-tide tabard, battered steel armor, night rampart behind, determined eyes, blue-gold cold light, single subject centered" },
+    { "id": "heroMagisterVey", "prompt": "calm magister in ornate purple-gold arcane robes, floating spellbook, soft echo afterimages of hand sigils, scholarly examiner vibe, violet and gold light, dark archive hall, single subject centered" },
+    { "id": "heroScarra", "prompt": "feral woman wolf-chieftain mid-charge, wolf-head pelt mantle, amber eyes, wilderness ridge at night, ember and restrained blood-trail accents, aggressive pose, single subject centered" },
+    { "id": "heroIsoldLongdusk", "prompt": "elegant pale woman of the long dusk, indigo-violet gown, silver crescent diadem, frost mist freezing a gesture mid-air, serene and melancholy, cold moonlight, single subject centered" },
+    { "id": "heroRuneFrostfang", "prompt": "frost-armored centurion with glacial tower shield engraved with abstract frostfang relief, golden divine-shield film cracking under ice edge, disciplined jailer-warden, blue ice light, single subject centered" },
+    { "id": "heroMoenTidearbiter", "prompt": "neutral tide arbiter woman with balanced scales and a glowing attunement seal, travel cloak, belt charms of salt ink fang and frost-bell, slate-blue silver palette, diplomatic calm, dark moody background, single subject centered" }
   ]
 }

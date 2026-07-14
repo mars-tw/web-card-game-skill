@@ -1,6 +1,6 @@
 # 設計規格：具名角色傳說卡擴充包「對座六影」
 
-> **產品**：card-battle-r60（vanilla JS PWA 卡牌對戰）  
+> **產品**：card-battle-r61（vanilla JS PWA 卡牌對戰）
 > **狀態**：僅規劃，不改碼  
 > **目標檔案（實作時）**：`templates/card-battle/cards.js`、`core.js`、`battle.js`、`templates/card-pack/pack.js`、平衡 sim  
 > **文件語言**：繁體中文（台灣）；id／關鍵字英文代號保留原文  

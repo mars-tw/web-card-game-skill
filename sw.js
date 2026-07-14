@@ -1,4 +1,4 @@
-const CACHE_VERSION = "card-battle-r60-v1";
+const CACHE_VERSION = "card-battle-r61-v1";
 const ASSET_CACHE = `${CACHE_VERSION}-assets`;
 const HTML_CACHE = `${CACHE_VERSION}-html`;
 
@@ -44,6 +44,12 @@ const CORE_ASSETS = [
   "assets/cards/griffin.png",
   "assets/cards/guardian.png",
   "assets/cards/heal.png",
+  "assets/cards/heroIsoldLongdusk.png",
+  "assets/cards/heroMagisterVey.png",
+  "assets/cards/heroMoenTidearbiter.png",
+  "assets/cards/heroRuneFrostfang.png",
+  "assets/cards/heroScarra.png",
+  "assets/cards/heroSerHalden.png",
   "assets/cards/knight.png",
   "assets/cards/lich.png",
   "assets/cards/lightning.png",

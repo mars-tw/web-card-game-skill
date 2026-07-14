@@ -59,7 +59,7 @@ assert(KEYWORDS.lifesteal?.label === "吸血" && KEYWORDS.rush?.label === "突�
 assert(KEYWORDS.frenzy?.label === "狂怒" && KEYWORDS.spellpower?.label === "法強", "R47 關鍵字狂怒與法強有繁中 label");
 assert(KEYWORDS.silence?.label === "靜默" && /移除/.test(KEYWORDS.silence.desc), "silence 關鍵字已註冊");
 assert(["shieldwall", "resonance", "bloodtrail", "chillbind", "sunder", "attune"].every((id) => KEYWORDS[id]?.label),
-  "R60 六種角色專屬關鍵字皆有繁中定義");
+  "R61 六種角色專屬關鍵字皆有繁中定義");
 assert(TIDE_CHANCE === 0.03, "tideforged 機率為 3%");
 assert(AXIS_LABELS.aggro === "快攻" && AXIS_LABELS.control === "控制" && AXIS_LABELS.neutral === "中立", "軸線標籤完整");
 
@@ -115,16 +115,17 @@ assert(r48Costs.includes(1) && r48Costs.includes(7), "R48 cost curve includes 1 
 assert(r48Cards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8), "R48 flavor text is present");
 assert(r48Cards.every((c) => FACTIONS[c.faction]), "R48 faction ids all resolve");
 assert(Object.keys(FACTIONS).length === 5 && FACTIONS.neutral?.name === "潮間中立" && Object.keys(CARD_FACTION).length >= 80,
-  "R60 五陣營含正式潮間中立並覆蓋卡池");
+  "R61 五陣營含正式潮間中立並覆蓋卡池");
 
-console.log("== R60 對座六影 ==");
+console.log("== R61 對座六影立繪 ==");
 const heroCards = HERO_CARD_IDS.map((id) => getCardById(id));
-assert(CARD_POOL.length === 92, `R60 卡池為 92 張（實際 ${CARD_POOL.length}）`);
+assert(CARD_POOL.length === 92, `R61 卡池為 92 張（實際 ${CARD_POOL.length}）`);
 assert(heroCards.every(Boolean) && new Set(heroCards.map((card) => card.id)).size === 6, "六張具名角色卡 id 齊全且唯一");
 assert(heroCards.every((card) => card.rarity === "legendary" && card.type === CARD_TYPE.MINION && card.maxCopies === 1),
   "六張角色皆為傳說隨從且 maxCopies=1");
-assert(heroCards.every((card) => card.heroTag === true && card.set === "hero_shadows_v1" && card.image === null),
-  "六張角色共用 hero_shadows_v1、heroTag 與可後補圖契約");
+assert(heroCards.every((card) => card.heroTag === true && card.set === "hero_shadows_v1"
+  && card.image === `../../assets/cards/${card.id}.png`),
+  "六張角色共用 hero_shadows_v1、heroTag 並接上專屬立繪");
 assert(getCardById("heroSerHalden").opponentId === "op_ser_halden"
   && getCardById("heroMagisterVey").opponentId === "op_magister_vey"
   && getCardById("heroScarra").opponentId === "op_scarra", "三位既有 AI 角色卡連回正確 opponentId");

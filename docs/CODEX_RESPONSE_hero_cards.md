@@ -1,6 +1,6 @@
 # CODEX 回應：對座六影角色卡
 
-版本：`card-battle-r60-v1`
+版本：`card-battle-r61-v1`
 
 ## 完成
 
@@ -10,7 +10,7 @@
 - 傳說總權重維持 2；命中傳說後以 28% 進角色子池，未命中仍走完整傳說池；foil／tide 互斥不變。
 - 新增 `card_pack_hero_pity_v1`：第 35 包保證角色傳說、優先未擁有；可與第 20 包 rare+ pity 共用同一卡並同時歸零；UI 顯示 `x/35`。
 - 三位 AI 的 normal／hard 固定牌組各帶自己的角色卡；easy 換回原卡。玩家帶同角色對戰時自動加入鏡像敘事，不另做開關。
-- 版本、SW cache/reload key、資源 query 與測試標籤均同步 r60；舊版版本字串 grep 為 0。
+- 版本、SW cache/reload key、資源 query 與測試標籤均同步 r61；舊版版本字串 grep 為 0。
 
 ## 與設計案差異
 

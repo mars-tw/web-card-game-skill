@@ -13,6 +13,9 @@ const R47_NEW_IDS = [
 const R48_ARTED_IDS = [
   "oathbannerHerald", "dawnArchbishop", "frostfangDire", "glaciarchWarden", "countessLongNight",
 ];
+const R61_HERO_ART_IDS = [
+  "heroSerHalden", "heroMagisterVey", "heroScarra", "heroIsoldLongdusk", "heroRuneFrostfang", "heroMoenTidearbiter",
+];
 let failed = 0;
 
 function assert(condition, message) {
@@ -499,7 +502,36 @@ function checkR48ArtConsistency() {
   assert(problems.length === 0, `R48 art cards are consistent across cards/art-config/sw (${R48_ARTED_IDS.length} cards)`);
 }
 
-function checkR60PresentationPipeline() {
+function checkR61HeroArtConsistency() {
+  const cards = require(abs("templates/card-battle/cards.js"));
+  const byId = Object.fromEntries(cards.CARD_POOL.map((card) => [card.id, card]));
+  const artConfig = JSON.parse(read("art-config.json"));
+  const prompts = new Map((artConfig.cards || []).map((card) => [card.id, card.prompt]));
+  const cached = parseCachedAssets().cached;
+  const problems = [];
+  for (const id of R61_HERO_ART_IDS) {
+    const rel = `assets/cards/${id}.png`;
+    const expectedImage = `../../${rel}`;
+    const card = byId[id];
+    if (!card) problems.push(`${id} missing in CARD_POOL`);
+    else if (card.image !== expectedImage) problems.push(`${id} cards.js image ${card.image} !== ${expectedImage}`);
+    if (!prompts.get(id)?.trim()) problems.push(`${id} missing prompt in art-config.json`);
+    if (!fs.existsSync(abs(rel))) problems.push(`${id} missing PNG file`);
+    else {
+      const info = pngInfo(rel);
+      const bytes = fs.statSync(abs(rel)).size;
+      if (!info.isPng || info.width !== 1024 || info.height !== 1024 || ![2, 3].includes(info.colorType)) {
+        problems.push(`${id} PNG expected 1024x1024 RGB/indexed, got ${info.width}x${info.height} colorType ${info.colorType}`);
+      }
+      if (bytes >= 150000) problems.push(`${id} PNG expected <150000 bytes, got ${bytes}`);
+    }
+    if (!cached.has(rel)) problems.push(`${id} missing from sw.js CORE_ASSETS`);
+  }
+  problems.forEach((problem) => console.error("    r61 hero art gate: " + problem));
+  assert(problems.length === 0, `R61 六張角色立繪與 cards/art-config/sw/壓縮規格一致（${R61_HERO_ART_IDS.length} 張）`);
+}
+
+function checkR61PresentationPipeline() {
   const battleHtml = read("templates/card-battle/index.html");
   const battleJs = read("templates/card-battle/battle.js");
   const packHtml = read("templates/card-pack/index.html");
@@ -520,12 +552,12 @@ function checkR60PresentationPipeline() {
   const fallbackArt = [battleHtml, packHtml].every((text) => text.includes(".art.art-fallback")
     && text.includes("--faction-mark") && text.includes(".art-fallback .art-glyph"))
     && [battleJs, read("templates/card-pack/pack.js")].every((text) => text.includes('" art-fallback"') && text.includes('class="art-glyph"'));
-  assert(frameMounted && frameMask, "R60 battle/pack 傳說框掛載 mask 掃光");
-  assert(foilDispersion, "R60 battle/pack 閃卡使用青/紅/綠多停點雙層色散");
-  assert(reducedMotion, "R60 傳說框與閃卡掃光受 reduced-motion / low-perf 覆蓋");
-  assert(battlePoses && packFrames, "R60 命名展示盤、手機手牌與三對手色場可重現");
-  assert(heroProduct, "R60 英雄頭像框與資源徽章使用同一商品化材質語言");
-  assert(fallbackArt, "R60 battle/pack 無圖卡使用四陣營紋理 fallback");
+  assert(frameMounted && frameMask, "R61 battle/pack 傳說框掛載 mask 掃光");
+  assert(foilDispersion, "R61 battle/pack 閃卡使用青/紅/綠多停點雙層色散");
+  assert(reducedMotion, "R61 傳說框與閃卡掃光受 reduced-motion / low-perf 覆蓋");
+  assert(battlePoses && packFrames, "R61 命名展示盤、手機手牌與三對手色場可重現");
+  assert(heroProduct, "R61 英雄頭像框與資源徽章使用同一商品化材質語言");
+  assert(fallbackArt, "R61 battle/pack 無圖卡使用四陣營紋理 fallback");
 }
 
 console.log("== R40 文案品質守門 ==");
@@ -535,7 +567,8 @@ checkVersionedHtmlRefs();
 checkSwCacheCompleteness();
 checkR47ArtConsistency();
 checkR48ArtConsistency();
-checkR60PresentationPipeline();
+checkR61HeroArtConsistency();
+checkR61PresentationPipeline();
 
 if (failed > 0) {
   console.error(`❌ ${failed} 項守門失敗`);

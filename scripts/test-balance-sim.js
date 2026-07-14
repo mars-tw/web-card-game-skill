@@ -581,7 +581,7 @@ function run() {
   const toxin = results.find((item) => item.id === "toxinViper");
   const captain = results.find((item) => item.id === "captainGreywake");
 
-  console.log("== R60 balance sim ==");
+  console.log("== R61 balance sim ==");
   console.log(`Seeds per card: ${SIM_SEEDS}; paired games per card: ${SIM_SEEDS * 2}; pool mean: ${(poolMean * 100).toFixed(2)}%`);
   for (const item of results) {
     const delta = item.winRate - poolMean;
@@ -600,7 +600,7 @@ function run() {
   if (toxin.winRate > raptorRate + 0.03) failures.push("toxinViper is stably above raptor by more than 3pp");
   if (captain.winRate > archivistRate + 0.03) failures.push("captainGreywake is above highArchivist by more than 3pp");
 
-  console.log("\n== R60 hero injection S0-S4 ==");
+  console.log("\n== R61 hero injection S0-S4 ==");
   const heroMetrics = HERO_CARD_IDS.map((id, index) => ({ id, ...scoreFocusMetrics(id, 90000 + index * 2000) }));
   const heroPoolMean = heroMetrics.reduce((sum, item) => sum + item.winRate, 0) / heroMetrics.length;
   for (const item of heroMetrics) {
@@ -632,7 +632,7 @@ function run() {
   if (!(rune.health < getCardById("highArchivist").health && !rune.trigger)) failures.push("Rune structurally dominates highArchivist");
   if (!(moen.attack === 2 && moen.health <= 4 && moen.trigger === "attuneFlexible")) failures.push("Moen exceeds conditional support budget");
 
-  console.log("\n== R60 opponent and gold-standard matchups M1-M9 ==");
+  console.log("\n== R61 opponent and gold-standard matchups M1-M9 ==");
   const m1 = fixedPlayerRate(OPPONENT_DECKS.halden, 120000, "control");
   const m2 = fixedPlayerRate(OPPONENT_DECKS.vey, 122000, "spellburst");
   const m3 = fixedPlayerRate(OPPONENT_DECKS.scarra, 124000, "aggro");
