@@ -3,12 +3,16 @@
 mcps/
 terminals/
 
-# 測試截圖
+# 測試輸出（README 文件截圖放在 docs/screenshots，需納入版控）
 *-test.png
 *-preview.png
 *-v2.png
 final-integration.png
 all-cards-wall.png
+playwright-report/
+test-results/
+blob-report/
+coverage/
 
 # 作業系統雜物
 .DS_Store
@@ -26,9 +30,15 @@ desktop.ini
 
 # 環境機密（萬一誤放）
 .env
+.env.*
+!.env.example
 *.key
+*.pem
+*.p12
+*.pfx
 
 # npm（playwright devDependency 用）
 node_modules/
-package-lock.json
 tmp/
+temp/
+.cache/

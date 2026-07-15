@@ -4,14 +4,16 @@
 
 ## 開發環境
 
-零依賴，只需要：
-- 任何瀏覽器
-- Python 3（或任何能起 HTTP server 的工具）跑本地預覽
-- Node.js（選用，跑測試用）
+遊戲執行期零依賴；本地開發需要：
+
+- 任何現代瀏覽器
+- Python 3（或任何能啟動靜態 HTTP server 的工具）
+- Node.js 20+ 與 npm（執行測試）
 
 ```bash
-# 在 repo 根目錄起 server
-python -m http.server 8000
+# 在 repo 根目錄安裝開發依賴並啟動 server
+npm install
+npm start
 # 開 http://localhost:8000/templates/index.html
 ```
 
@@ -19,10 +21,13 @@ python -m http.server 8000
 
 ## 本地測試
 
-提 PR 前請先跑卡牌邏輯測試（CI 也會跑同一份）：
+提 PR 前請先跑完整規則測試（CI 也會執行相同守門）：
 
 ```bash
-node scripts/test-cards.js
+npm test
+npx playwright install chromium # 首次執行瀏覽器測試前
+npm run test:e2e
+npm run test:rwd
 ```
 
 互動測試：在瀏覽器 console 用 `window.__test` 掛鉤建立確定性場景：
