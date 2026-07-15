@@ -3,18 +3,18 @@
 | 項目 | 內容 |
 |---|---|
 | 文件 | `docs/GROK_ASSET_AUDIT.md` |
-| 審核日 | 2026-07-14 |
-| 版本錨點 | `card-battle-r61-v1`（對座六影角色卡立繪已入庫） |
+| 審核日 | 2026-07-14；R63 數字更新 2026-07-15 |
+| 版本錨點 | `card-battle-r63-v1`（R63 已補 P0-B 傳說、Scarra 與 AI 高曝光卡圖） |
 | 範圍 | 卡圖覆蓋、`image:null` 佔位、角色卡立繪、卡框管線、P0–P2 重繪／補圖清單與規格 |
-| 原則 | **只審不改**（不改 `cards.js`、不生圖、不動 CSS） |
+| 原則 | 原始稽核為**只審不改**；R63 僅更新卡圖覆蓋數字與補圖狀態 |
 | 資料源 | `templates/card-battle/cards.js`、`art-config.json`、`assets/cards/`、`assets/frames/`、`battle.js` AI 牌組、既有 V3／R6 視覺收官結論 |
 
 ---
 
 ## 0. 一句結論
 
-**是：`image:null` 佔位是目前產品觀感的最大短板。**  
-CSS 稀有度框／foil／嘲諷 crest 與 `art-fallback` 已達可宣傳旗艦幀水準；但卡池 **92 張中 51 張（約 55%）無卡圖**，且 **6 張角色傳說全數 null**。玩家實戰／開包角色保底／三位 AI 固定牌組，會反覆把「金框＋emoji 圓座」並排放在有圖旗艦旁——材料愈好，內容洞愈刺眼。
+**R63 後：`image:null` 仍是長尾短板，但 P0 傳說與 AI 首戰缺口已清掉。**
+CSS 稀有度框／foil／嘲諷 crest 與 `art-fallback` 已達可宣傳旗艦幀水準；R63 後卡池 **92 張中 25 張（約 27%）無卡圖**，**6 張角色傳說皆已有立繪**，且 **20 張傳說 null=0**。剩餘缺口集中在低曝光 common/rare 與部分 epic 長尾。
 
 **卡框本身不是最大短板。** 執行期卡框由 CSS 畫（稀有度邊框、`frame-sheen`、foil、陣營 art 漸層）；`assets/frames/` 僅 `.gitkeep`，與 `art-generation.md`「卡圖不要畫框」契約一致。角色卡缺的是**立繪本體**，不是另一套 PNG 框圖。
 
@@ -26,12 +26,12 @@ CSS 稀有度框／foil／嘲諷 crest 與 `art-fallback` 已達可宣傳旗艦�
 
 | 指標 | 數量 | 備註 |
 |---|---:|---|
-| 卡池 `CARD_POOL` | **92** | r61（含 6 角色） |
-| 有 `image` 路徑 | **41** | 44.6% |
-| `image: null` | **51** | 55.4% |
-| `assets/cards/*.png` | **41** | 與有路徑卡 **1:1 對齊**，無斷檔、無孤兒檔 |
-| `art-config.json` 條目 | **41** | 與有圖卡對齊；**51 張 null 全無 prompt** |
-| 角色卡 `heroTag` | **6** | **6／6 皆 null** |
+| 卡池 `CARD_POOL` | **92** | R63（含 6 角色） |
+| 有 `image` 路徑 | **67** | 72.8% |
+| `image: null` | **25** | 27.2% |
+| `assets/cards/*.png` | **67** | 與有路徑卡 **1:1 對齊**，無斷檔、無孤兒檔 |
+| `art-config.json` 條目 | **67** | 與有圖卡對齊；R63 新增 20 張 prompt |
+| 角色卡 `heroTag` | **6** | **6／6 皆有圖** |
 | 缺圖檔但有路徑 | **0** | 無 404 路徑風險（在根目錄 server 前提下） |
 | `assets/frames/` | **空** | 僅 `.gitkeep`；執行期不依賴 |
 
@@ -39,33 +39,27 @@ CSS 稀有度框／foil／嘲諷 crest 與 `art-fallback` 已達可宣傳旗艦�
 
 | 稀有度 | null | 總數 | null 率 | 觀感風險 |
 |---|---:|---:|---:|---|
-| common | 14 | 25 | 56% | 手牌長尾；開包高頻 |
-| rare | 14 | 24 | 58% | 中段構築常見 |
-| epic | 12 | 23 | 52% | 紫框＋emoji 落差大 |
-| legendary | **11** | 20 | **55%** | **金框／foil／idle 同框時落差最大** |
+| common | 5 | 25 | 20% | 手牌長尾；開包高頻 |
+| rare | 11 | 24 | 46% | 中段構築常見 |
+| epic | 9 | 23 | 39% | 紫框＋emoji 仍有落差 |
+| legendary | **0** | 20 | **0%** | **R63 已清掉金框 emoji 落差** |
 
-傳說 null 清單（11）：
+傳說 null 清單：**0**。R63 已補齊下列 5 張非角色傳說，6 張角色傳說已在 R61 入庫：
 
 | id | 名稱 | 備註 |
 |---|---|---|
-| `bloodmoonQueen` | 血月女王 | 非角色傳說 |
-| `skyJudicator` | 天穹裁決者 | 非角色傳說 |
-| `highArchivist` | 至高典藏師 | 非角色；Halden easy 替換卡 |
-| `captainGreywake` | 灰潮船長 | **Halden AI 牌組** |
-| `ladyAshenBell` | 灰鐘女士 | 非角色傳說 |
-| `heroSerHalden` | 哈爾登隊長 | **角色＋AI 本體** |
-| `heroMagisterVey` | 維伊魔導師 | **角色＋AI 本體** |
-| `heroScarra` | 斯卡拉狼首 | **角色＋AI 本體** |
-| `heroIsoldLongdusk` | 伊索德·長暮 | 角色 |
-| `heroRuneFrostfang` | 霜牙百夫長·魯恩 | 角色 |
-| `heroMoenTidearbiter` | 潮間仲裁者·茉恩 | 角色 |
+| `bloodmoonQueen` | 血月女王 | R63 補圖 |
+| `skyJudicator` | 天穹裁決者 | R63 補圖 |
+| `highArchivist` | 至高典藏師 | R63 補圖；Halden easy 替換卡 |
+| `captainGreywake` | 灰潮船長 | R63 補圖；Halden AI 牌組 |
+| `ladyAshenBell` | 灰鐘女士 | R63 補圖 |
 
 ### 1.3 依類型
 
 | 類型 | null | 總數 |
 |---|---:|---:|
-| MINION | 39 | 70 |
-| SPELL | 12 | 22 |
+| MINION | 17 | 70 |
+| SPELL | 8 | 22 |
 
 隨從缺圖影響場上可讀性；法術缺圖影響手牌／開包，但法術可用「效果構圖」較快補。
 
@@ -80,7 +74,7 @@ CSS 稀有度框／foil／嘲諷 crest 與 `art-fallback` 已達可宣傳旗艦�
 | 陣營可讀色調 | **大致 OK**：荒野焰紅、凜冬紫霧、白潮金白各有辨識 |
 | 已知風險（非本輪重點） | AI 生成常見：臉部微不穩、盔甲紋樣過密在 78–124px 寬卡面會糊；屬 P2 精修 |
 
-**既有 41 張整體達「可商用小品旗艦」門檻；問題在覆蓋率與角色包零立繪，不是旗艦要整批重畫。**
+**既有與 R63 新增的 67 張整體達「可商用小品旗艦」門檻；目前問題在剩餘長尾覆蓋率，不是旗艦要整批重畫。**
 
 ---
 
@@ -90,73 +84,73 @@ CSS 稀有度框／foil／嘲諷 crest 與 `art-fallback` 已達可宣傳旗艦�
 
 | 候選短板 | 是否最大 | 理由 |
 |---|---|---|
-| **`image:null` 內容覆蓋** | **是（P0 級產品地板）** | 55% 卡池無圖；角色 6 全 null；AI 固定牌組大量 null；與金／紫框同框時對比最刺 |
+| **`image:null` 內容覆蓋** | **仍是長尾短板；P0 已清** | R63 後 27% 卡池無圖；角色 6 全有圖；三個 AI 固定牌組 unique null=0；傳說 null=0 |
 | CSS 卡框／foil 材質 | 否 | V3／R6 已收官；邊際收益低於補圖 |
 | `art-fallback` 品質 | 否（緩解、非根因） | R6 已有陣營漸層＋徽印＋glyph 圓座；比裸 emoji 好，仍非立繪 |
 | `assets/frames/` 空目錄 | 否 | 設計即 CSS 框；空目錄不是 bug |
-| 既有 41 張風格不齊 | 次要 | 旗艦可接受；全面重繪 ROI 低於先補 null |
+| 既有 67 張風格不齊 | 次要 | 旗艦可接受；全面重繪 ROI 低於先補剩餘 null |
 
 與歷史審查對齊：
 
-- `GROK_REVIEW_card_V3.md`：剩餘缺口 #1＝內容美術覆蓋  
-- `GROK_REVIEW_card_R6.md`：R6-V3＝約 45 null vs 41 有圖  
-- 本輪更新：**null 升至 51**（+6 角色），缺口**擴大**而非縮小  
-- `CODEX_RESPONSE_hero_cards.md` 明示：角色卡圖依規格 `image: null`，**未擴張美術範圍**
+- `GROK_REVIEW_card_V3.md`：剩餘缺口 #1＝內容美術覆蓋
+- `GROK_REVIEW_card_R6.md`：R6-V3＝約 45 null vs 41 有圖
+- R61 補 6 張角色；R63 再補 20 張高優先卡圖，現為 **25 null vs 67 有圖**
+- `CODEX_RESPONSE_hero_cards.md` 的角色缺圖狀態已由 R61 清償；R63 清償傳說與 AI 高曝光缺口
 
-### 2.2 為何角色 null 比一般 null 更痛
+### 2.2 為何角色／傳說 null 比一般 null 更痛
 
-1. **產品臉**：開包 pity 35 包保底角色；金柱＋角色標籤下開出 emoji  
-2. **AI 鏡像**：normal／hard 固定帶 `heroSerHalden`／`heroMagisterVey`／`heroScarra`  
-3. **傳說框同框**：`rarity-legendary` + `frame-sheen` + 可選 foil，框愈華麗，卡心空洞愈明顯  
-4. **敘事身分**：設計文案／flavor 已完整，視覺仍是通用 glyph
+1. **產品臉**：開包 pity 35 包保底角色；R61 已改為角色立繪。
+2. **AI 鏡像**：normal／hard 固定帶 `heroSerHalden`／`heroMagisterVey`／`heroScarra`；R63 後固定牌組 unique null=0。
+3. **傳說框同框**：`rarity-legendary` + `frame-sheen` + 可選 foil，框愈華麗，卡心空洞愈明顯；R63 後傳說 null=0。
+4. **敘事身分**：設計文案／flavor 已完整；剩餘 25 張長尾仍需逐步補卡心立繪。
 
 ### 2.3 卡框需求（立繪 × 框）
 
 | 層 | 現況 | 角色卡需求 |
 |---|---|---|
 | **執行期卡框** | CSS：四階稀有度邊框、傳說 `frame-sheen`、foil `::after`、嘲諷 crest、陣營 `--faction-*` | **沿用**；角色**不需**獨立 PNG 框即可上線 |
-| **卡心立繪** | `img` + `object-fit: cover`；null → `art-fallback` + emoji glyph | **必須補** 6 張角色立繪 |
+| **卡心立繪** | `img` + `object-fit: cover`；null → `art-fallback` + emoji glyph | 角色已補；剩餘 25 張長尾依曝光度續補 |
 | **陣營色** | `faction-wardens/conclave/wild/wintershadow/neutral` | 立繪色盤應與陣營 accent 呼應，避免 CSS 框與圖打架 |
 | **靜態框素材** | `assets/frames/` 空 | **P2 可選**：商店海報／Key art 合成用；非戰鬥必要 |
 
 **規格鐵律（與 `art-config` / `art-generation.md` 一致）：**
 
-- 立繪輸出：**1024×1024 PNG**，路徑 `assets/cards/<id>.png`  
-- Prompt 後綴：`no text, no card frame, no border, square composition`  
-- 卡框**只由 CSS**負責；美術**禁止**畫金色卡邊、費用珠、攻擊／血量數字  
+- 立繪輸出：**1024×1024 PNG**，路徑 `assets/cards/<id>.png`
+- Prompt 後綴：`no text, no card frame, no border, square composition`
+- 卡框**只由 CSS**負責；美術**禁止**畫金色卡邊、費用珠、攻擊／血量數字
 
 ---
 
 ## 3. 實戰曝光：AI 牌組 null 密度
 
-三位對手固定 20 卡（normal／hard 帶角色卡）中，null 曝露如下（unique 計）：
+三位對手固定 20 卡（normal／hard 帶角色卡）中，R63 後 null 曝露如下（unique 計）：
 
 ### 3.1 哈爾登 `op_ser_halden`（control）
 
 | 狀態 | 卡 |
 |---|---|
-| 有圖 | `footman`, `knight`, `guardian`, `oathbannerHerald`, `shieldUp` |
-| **null** | `saltShieldSquire`, `bulwarkMonk`, `bannerGuard`, `captainGreywake`, **`heroSerHalden`**, `mirrorRime` |
+| 有圖 | `saltShieldSquire`, `footman`, `bulwarkMonk`, `knight`, `guardian`, `bannerGuard`, `oathbannerHerald`, `captainGreywake`, `heroSerHalden`, `mirrorRime`, `shieldUp` |
+| **null** | **0** |
 
-控制場常堆嘲諷牆 → **多隻 null 肉盾並排**，白潮主場觀感偏「漸層＋emoji」。
+控制場常堆嘲諷牆；R63 後白潮主場不再出現固定牌組 emoji 牆。
 
 ### 3.2 維伊 `op_magister_vey`（spellburst）
 
 | 狀態 | 卡 |
 |---|---|
-| 有圖 | `arcaneApprentice`, `frostChanneler`, `mage`, `arcaneWeaver`, `firebolt`, `flameBurst` |
-| **null** | `tidecallerAdept`, **`heroMagisterVey`**, `iceNeedle`, `emberVolley`, `voidTithe` |
+| 有圖 | `arcaneApprentice`, `tidecallerAdept`, `frostChanneler`, `mage`, `heroMagisterVey`, `arcaneWeaver`, `firebolt`, `iceNeedle`, `emberVolley`, `flameBurst`, `voidTithe` |
+| **null** | **0** |
 
-結社核心隨從多已有圖；缺在**角色本體**與幾張高頻法術／法強小體。
+結社核心隨從、角色本體與高頻法術／法強小體在 R63 後皆已接圖。
 
-### 3.3 斯卡拉 `op_scarra`（aggro）— **最差**
+### 3.3 斯卡拉 `op_scarra`（aggro）— R63 已清償首戰缺口
 
 | 狀態 | 卡 |
 |---|---|
-| 有圖 | `wolf`, `firebolt`（幾乎僅此） |
-| **null** | `emberpup`, `alleySkirmisher`, `sparkSquire`, `frontScout`, `packHowler`, `dualTalon`, **`heroScarra`**, `dawnRider`, `emberVolley` |
+| 有圖 | `emberpup`, `wolf`, `alleySkirmisher`, `sparkSquire`, `frontScout`, `packHowler`, `dualTalon`, `heroScarra`, `dawnRider`, `firebolt`, `emberVolley` |
+| **null** | **0** |
 
-快攻曲線幾乎整列 emoji → **實戰觀感地板由此對手拉最低**。
+快攻曲線在 R63 後全部有圖；對上 Scarra 的第一印象不再是整列 emoji。
 
 ---
 
@@ -176,20 +170,20 @@ CSS 稀有度框／foil／嘲諷 crest 與 `art-fallback` 已達可宣傳旗艦�
 
 ### 4.1 法術卡附加
 
-- 主體為**效果／符號**，加 `no creature`（或明確「無人物」）  
+- 主體為**效果／符號**，加 `no creature`（或明確「無人物」）
 - 避免複雜可讀符文文字（生成器常吐偽字）
 
 ### 4.2 隨從／角色附加
 
-- 可讀剪影：縮到 80px 寬仍知「盾／法杖／狼／月」  
+- 可讀剪影：縮到 80px 寬仍知「盾／法杖／狼／月」
 - 關鍵字气质：嘲諷偏正面穩姿；衝鋒偏動態前傾；吸血可暗紅霧；聖盾可金白邊光（**光效可畫在立繪內**，勿畫 UI 環）
 
 ---
 
 ## 5. 六張角色卡立繪規格（完整）
 
-> 共用輸出：`assets/cards/hero*.png`，`image` 接線同上。  
-> 稀有度：一律 **legendary** → 實戰必帶金框；立繪需撐得起 `frame-sheen`。  
+> 共用輸出：`assets/cards/hero*.png`，`image` 接線同上。
+> 稀有度：一律 **legendary** → 實戰必帶金框；立繪需撐得起 `frame-sheen`。
 > 建議優先級：**P0 全 6 張**（勿只做三位 AI 而擱置凜冬／中立）。
 
 ### 5.0 角色立繪共同標準（高於一般隨從）
@@ -291,25 +285,25 @@ CSS 稀有度框／foil／嘲諷 crest 與 `art-fallback` 已達可宣傳旗艦�
 
 ## 6. P0–P2 重繪／補圖清單
 
-> 「重繪」在本報告＝**補齊 null 或必要時重產**；既有 41 張預設**不進 P0 重畫**。  
+> 「重繪」在本報告＝**補齊 null 或必要時重產**；既有／R63 已有圖 67 張預設**不進重畫**。
 > 數量為建議產線批次，可依人力切 sprint。
 
-### 6.1 P0 — 立刻影響產品臉與實戰地板（建議 21 張）
+### 6.1 P0 — 立刻影響產品臉與實戰地板（R63 已清償）
 
 **完成定義：** 檔案入 `assets/cards/` + `art-config` prompt + `cards.js` `image` 路徑；開包／戰鬥／圖鑑可見實圖。
 
-#### A. 角色立繪（6）— 最高優先
+#### A. 角色立繪（6）— R61 已完成
 
 | # | id | 名稱 | 原因 |
 |---|---|---|---|
 | 1 | `heroSerHalden` | 哈爾登隊長 | 預設對手＋角色 pity 臉 |
 | 2 | `heroMagisterVey` | 維伊魔導師 | 同上 |
-| 3 | `heroScarra` | 斯卡拉狼首 | 同上；且牌組幾乎全 null |
+| 3 | `heroScarra` | 斯卡拉狼首 | 同上；R63 後 Scarra 牌組 null=0 |
 | 4 | `heroIsoldLongdusk` | 伊索德·長暮 | 角色包完整交付 |
 | 5 | `heroRuneFrostfang` | 霜牙百夫長·魯恩 | 同上 |
 | 6 | `heroMoenTidearbiter` | 潮間仲裁者·茉恩 | 中立門面；圖鑑篩選「角色」 |
 
-#### B. 其餘 null 傳說（5）— 金框同框落差
+#### B. 其餘 null 傳說（5）— R63 已完成
 
 | # | id | 名稱 |
 |---|---|---|
@@ -319,7 +313,7 @@ CSS 稀有度框／foil／嘲諷 crest 與 `art-fallback` 已達可宣傳旗艦�
 | 10 | `captainGreywake` | 灰潮船長（Halden 牌組） |
 | 11 | `ladyAshenBell` | 灰鐘女士 |
 
-#### C. AI 高曝光 null（10）— 關閉實戰「emoji 牆」
+#### C. AI 高曝光 null（10）— R63 已完成
 
 | # | id | 名稱 | 主要曝光 |
 |---|---|---|---|
@@ -334,7 +328,7 @@ CSS 稀有度框／foil／嘲諷 crest 與 `art-fallback` 已達可宣傳旗艦�
 | 20 | `emberpup` | 餘燼幼犬 | Scarra ×2 |
 | 21 | `dualTalon` | 雙爪獵手 | Scarra 終局隨從 |
 
-> Scarra 其餘 null（`alleySkirmisher` 等）進 P1，避免 P0 膨脹；但若只做一批 **強烈建議把 6.2 的 Scarra 曲線一併做完**。
+> R63 同步補完 Scarra 其餘曲線（`alleySkirmisher`、`sparkSquire`、`frontScout`、`packHowler`、`dawnRider`），因此 `op_scarra` 固定牌組 null=0。
 
 **P0 建議 prompt 補錄（非角色、精簡）：**
 
@@ -360,30 +354,25 @@ CSS 稀有度框／foil／嘲諷 crest 與 `art-fallback` 已達可宣傳旗艦�
 
 ### 6.2 P1 — 實戰長尾與開包中頻（建議 18 張）
 
-優先：**Scarra 曲線補完** + 其餘 epic null + 高辨識 rare。
+R63 已完成 **Scarra 曲線補完**；下一批優先：其餘 epic null + 高辨識 rare。
 
 | # | id | 名稱 | 稀有 | 理由 |
 |---|---|---|---|---|
-| 1 | `alleySkirmisher` | 巷戰斥候 | C | Scarra |
-| 2 | `sparkSquire` | 火花侍從 | C | Scarra |
-| 3 | `frontScout` | 前線斥候 | C | Scarra |
-| 4 | `packHowler` | 狼群嚎者 | R | Scarra |
-| 5 | `dawnRider` | 晨鋒騎手 | R | Scarra |
-| 6 | `abyssWalker` | 深淵行者 | E | 史詩肉盾 |
-| 7 | `stormGriffin` | 暴風獅鷲 | E | 史詩飛兵 |
-| 8 | `duskWitch` | 暮光女巫 | E | 史詩 |
-| 9 | `bastionColossus` | 棱堡巨像 | E | 史詩牆 |
-| 10 | `starfall` | 星界崩落 | E | 法術 |
-| 11 | `forbiddenHex` | 禁咒變形 | E | 法術 |
-| 12 | `tidebinderHex` | 縛潮咒印 | E | 法術 |
-| 13 | `tacticalRequisition` | 戰術徵調 | E | 法術 |
-| 14 | `silenceOne` | 封口咒 | E | 法術 |
-| 15 | `thunderRoc` | 雷翼巨鵬 | R | 連擊飛兵 |
-| 16 | `toxinViper` | 毒涎蝰 | R | 劇毒工具 |
-| 17 | `graveScribe` | 墓碑抄寫員 | R | 亡語抽牌 |
-| 18 | `scoutInterrogator` | 斥候訊問 | R | 靜默戰吼 |
+| 1 | `abyssWalker` | 深淵行者 | E | 史詩肉盾 |
+| 2 | `stormGriffin` | 暴風獅鷲 | E | 史詩飛兵 |
+| 3 | `duskWitch` | 暮光女巫 | E | 史詩 |
+| 4 | `bastionColossus` | 棱堡巨像 | E | 史詩牆 |
+| 5 | `starfall` | 星界崩落 | E | 法術 |
+| 6 | `forbiddenHex` | 禁咒變形 | E | 法術 |
+| 7 | `tidebinderHex` | 縛潮咒印 | E | 法術 |
+| 8 | `tacticalRequisition` | 戰術徵調 | E | 法術 |
+| 9 | `silenceOne` | 封口咒 | E | 法術 |
+| 10 | `thunderRoc` | 雷翼巨鵬 | R | 連擊飛兵 |
+| 11 | `toxinViper` | 毒涎蝰 | R | 劇毒工具 |
+| 12 | `graveScribe` | 墓碑抄寫員 | R | 亡語抽牌 |
+| 13 | `scoutInterrogator` | 斥候訊問 | R | 靜默戰吼 |
 
-P1 完成後：epic null 清零；Scarra 牌組可接近「全有圖」。
+P1 完成後：epic null 清零；Scarra 牌組已在 R63 全有圖。
 
 ---
 
@@ -427,7 +416,7 @@ P1 完成後：epic null 清零；Scarra 牌組可接近「全有圖」。
 | 可選：`assets/frames/rarity-*.png` | P2 | 僅合成海報；執行期可忽略 |
 | 禁止：在立繪內畫卡框 | — | 與產線契約衝突，且會雙框 |
 
-**角色卡「框」的正確期待：**  
+**角色卡「框」的正確期待：**
 玩家感知的「角色傳說框」＝ **金框 CSS + 高辨識立繪**；不是再做一條 frame 資產管線。
 
 ---
@@ -455,13 +444,13 @@ P1 完成後：epic null 清零；Scarra 牌組可接近「全有圖」。
 
 ## 9. 驗收清單（補圖後給實作方）
 
-- [ ] 6 角色：`image` 非 null，檔案存在，開包金柱下為立繪  
-- [ ] 11 傳說：無 `image:null`（或明示豁免清單）  
-- [ ] Halden／Vey／Scarra 固定牌組 null 張數顯著下降（P0 後 Scarra 仍可能殘 P1）  
-- [ ] 任意卡縮圖 78px 寬可辨主體  
-- [ ] 無卡面文字／無內嵌卡框  
-- [ ] `art-config` 與 `cards.js` id 同步  
-- [ ] 未改 core 規則、未為角色單獨提高 foil 率  
+- [x] 6 角色：`image` 非 null，檔案存在，開包金柱下為立繪
+- [x] 20 傳說：無 `image:null`
+- [x] Halden／Vey／Scarra 固定牌組 null=0
+- [ ] 任意卡縮圖 78px 寬可辨主體
+- [ ] 無卡面文字／無內嵌卡框
+- [ ] `art-config` 與 `cards.js` id 同步
+- [ ] 未改 core 規則、未為角色單獨提高 foil 率
 
 ---
 
@@ -469,30 +458,28 @@ P1 完成後：epic null 清零；Scarra 牌組可接近「全有圖」。
 
 | 維度 | 分數 | 說明 |
 |---|---:|---|
-| 旗艦有圖品質 | **7.5–8.0** | 41 張可撐宣傳 capture |
+| 旗艦有圖品質 | **7.5–8.0** | 67 張可撐宣傳 capture |
 | 卡框／材質系統 | **8.0+** | CSS 收官，非本輪瓶頸 |
 | null fallback | **6.5** | 陣營紋理及格，仍非內容 |
-| **全庫覆蓋率** | **4.5** | 55% null |
-| **角色包美術完成度** | **1.0** | 機制 100%，立繪 0% |
-| **實戰觀感地板** | **4.0** | Scarra 場尤低 |
+| **全庫覆蓋率** | **7.0** | 27% null，剩餘長尾待補 |
+| **角色包美術完成度** | **8.0** | 6/6 角色有立繪 |
+| **實戰觀感地板** | **7.0** | 三個 AI 固定牌組 null=0 |
 | **綜合（素材健康度）** | **5.0** | 材料強、內容洞大 |
 
-**給製作決策的一句話：**  
-下一輪最高 ROI 不是再打磨框，而是 **P0：6 角色立繪 + 5 傳說 + AI 高曝光 10 張**；做完後產品從「機制完整的 emoji 角色包」變成「可開包炫耀的對座六影」。
+**給製作決策的一句話：**
+R63 已清掉最高刺痛點：**5 張傳說 null、Scarra 快攻牌組、Halden/Vey 高曝光 AI 卡**。下一輪最高 ROI 是剩餘 **25 張長尾 null**，優先補 epic 與常見 rare，而不是再打磨卡框。
 
 ---
 
-## 附錄 A — 全庫 null 一覽（51）
+## 附錄 A — 全庫 null 一覽（25）
 
 | rarity | type | cost | id | name |
 |---|---|---:|---|---|
 | common | minion | 1 | mooncat | 月光貓 |
-| common | minion | 2 | frontScout | 前線斥候 |
 | common | minion | 3 | groveHerbalist | 林地藥師 |
 | common | spell | 2 | holyGlimmer | 聖光閃耀 |
 | rare | minion | 2 | duskwrightBat | 暮影蝠 |
 | rare | minion | 3 | linebreaker | 破陣槍兵 |
-| rare | minion | 4 | bannerGuard | 戰旗守衛 |
 | rare | spell | 3 | thunderClap | 雷霆震擊 |
 | rare | spell | 1 | arcaneVeil | 秘能護幕 |
 | epic | minion | 5 | abyssWalker | 深淵行者 |
@@ -500,47 +487,23 @@ P1 完成後：epic null 清零；Scarra 牌組可接近「全有圖」。
 | epic | minion | 5 | duskWitch | 暮光女巫 |
 | epic | spell | 5 | starfall | 星界崩落 |
 | epic | spell | 5 | forbiddenHex | 禁咒變形 |
-| legendary | minion | 7 | bloodmoonQueen | 血月女王 |
-| legendary | minion | 9 | skyJudicator | 天穹裁決者 |
-| common | minion | 1 | sparkSquire | 火花侍從 |
-| common | minion | 2 | alleySkirmisher | 巷戰斥候 |
-| common | spell | 1 | emberVolley | 餘燼齊射 |
-| common | minion | 3 | bulwarkMonk | 壁壘武僧 |
-| rare | minion | 3 | dawnRider | 晨鋒騎手 |
 | rare | minion | 2 | battleDrummer | 戰鼓手 |
 | rare | minion | 4 | sanctuaryWarden | 聖所看守 |
 | epic | spell | 4 | tidebinderHex | 縛潮咒印 |
 | epic | minion | 6 | bastionColossus | 棱堡巨像 |
-| legendary | minion | 6 | highArchivist | 至高典藏師 |
-| common | minion | 1 | emberpup | 餘燼幼犬 |
 | rare | minion | 4 | thunderRoc | 雷翼巨鵬 |
 | rare | minion | 3 | soulfrostRaven | 魂霜渡鴉 |
 | common | minion | 2 | runicScrivener | 符文抄寫員 |
-| common | minion | 2 | tidecallerAdept | 喚潮學徒 |
 | common | minion | 2 | watchtowerBowman | 望塔弓手 |
 | epic | spell | 3 | tacticalRequisition | 戰術徵調 |
-| common | minion | 1 | saltShieldSquire | 鹽盾侍從 |
-| common | spell | 1 | iceNeedle | 冰針 |
-| rare | minion | 3 | packHowler | 狼群嚎者 |
 | rare | minion | 3 | toxinViper | 毒涎蝰 |
 | rare | minion | 3 | graveScribe | 墓碑抄寫員 |
-| epic | spell | 2 | mirrorRime | 鏡霜 |
-| epic | minion | 4 | dualTalon | 雙爪獵手 |
-| epic | spell | 3 | voidTithe | 虛空什一稅 |
-| legendary | minion | 6 | captainGreywake | 灰潮船長 |
-| legendary | minion | 5 | ladyAshenBell | 灰鐘女士 |
 | epic | spell | 2 | silenceOne | 封口咒 |
 | rare | minion | 3 | scoutInterrogator | 斥候訊問 |
-| legendary | minion | 6 | heroSerHalden | 哈爾登隊長 |
-| legendary | minion | 5 | heroMagisterVey | 維伊魔導師 |
-| legendary | minion | 4 | heroScarra | 斯卡拉狼首 |
-| legendary | minion | 6 | heroIsoldLongdusk | 伊索德·長暮 |
-| legendary | minion | 5 | heroRuneFrostfang | 霜牙百夫長·魯恩 |
-| legendary | minion | 4 | heroMoenTidearbiter | 潮間仲裁者·茉恩 |
 
-## 附錄 B — 有圖完整清單（41）
+## 附錄 B — 有圖完整清單（67）
 
-`footman`, `archer`, `wolf`, `cleric`, `knight`, `mage`, `raptor`, `guardian`, `golem`, `griffin`, `lich`, `paladin`, `dragon`, `phoenix`, `titan`, `archmage`, `firebolt`, `heal`, `shieldUp`, `manaSurge`, `frost`, `lightning`, `polymorph`, `meteor`, `frenzyCub`, `frostBiter`, `arcaneApprentice`, `novicePage`, `ragingBrute`, `frostChanneler`, `arcaneInfusion`, `frostReaver`, `arcaneWeaver`, `flameBurst`, `archLoremaster`, `frostboundTyrant`, `frostfangDire`, `oathbannerHerald`, `dawnArchbishop`, `glaciarchWarden`, `countessLongNight`
+`footman`, `archer`, `wolf`, `cleric`, `knight`, `mage`, `raptor`, `guardian`, `golem`, `griffin`, `lich`, `paladin`, `dragon`, `phoenix`, `titan`, `archmage`, `firebolt`, `heal`, `shieldUp`, `manaSurge`, `frost`, `lightning`, `polymorph`, `meteor`, `frontScout`, `bannerGuard`, `bloodmoonQueen`, `skyJudicator`, `sparkSquire`, `alleySkirmisher`, `emberVolley`, `bulwarkMonk`, `dawnRider`, `highArchivist`, `frenzyCub`, `frostBiter`, `arcaneApprentice`, `novicePage`, `ragingBrute`, `frostChanneler`, `arcaneInfusion`, `frostReaver`, `arcaneWeaver`, `flameBurst`, `archLoremaster`, `frostboundTyrant`, `emberpup`, `frostfangDire`, `tidecallerAdept`, `oathbannerHerald`, `dawnArchbishop`, `glaciarchWarden`, `countessLongNight`, `saltShieldSquire`, `iceNeedle`, `packHowler`, `mirrorRime`, `dualTalon`, `voidTithe`, `captainGreywake`, `ladyAshenBell`, `heroSerHalden`, `heroMagisterVey`, `heroScarra`, `heroIsoldLongdusk`, `heroRuneFrostfang`, `heroMoenTidearbiter`
 
 ---
 

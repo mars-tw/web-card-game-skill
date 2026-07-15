@@ -5,6 +5,7 @@
  * ========================================================================= */
 
 const path = require("path");
+const fs = require("fs");
 const cards = require(path.join(__dirname, "..", "templates", "card-battle", "cards.js"));
 const { CARD_POOL, RARITY, KEYWORDS, CARD_TYPE, DISMANTLE_VALUE, AXIS_LABELS, FACTIONS, CARD_FACTION, TIDE_CHANCE, HERO_LEGEND_BIAS, HERO_SET_IDS, rollCardByRarity, getCardById, collectKey, cardAxisLabel, factionLabel } = cards;
 const R16_NEW_IDS = [
@@ -24,6 +25,12 @@ const CONTENT_BASELINE_IDS = [
   "mirrorRime", "dualTalon", "voidTithe", "captainGreywake", "ladyAshenBell",
 ];
 const SILENCE_BASELINE_IDS = ["silenceOne", "scoutInterrogator"];
+const R63_ART_IDS = [
+  "bloodmoonQueen", "skyJudicator", "highArchivist", "captainGreywake", "ladyAshenBell",
+  "emberpup", "alleySkirmisher", "sparkSquire", "frontScout", "packHowler",
+  "dualTalon", "dawnRider", "emberVolley", "saltShieldSquire", "bulwarkMonk",
+  "bannerGuard", "mirrorRime", "tidecallerAdept", "iceNeedle", "voidTithe",
+];
 const HERO_CARD_IDS = [
   "heroSerHalden", "heroMagisterVey", "heroScarra",
   "heroIsoldLongdusk", "heroRuneFrostfang", "heroMoenTidearbiter",
@@ -149,7 +156,14 @@ console.log("== Current content baseline ==");
 const baselineCards = CONTENT_BASELINE_IDS.map((id) => getCardById(id));
 const silenceCards = SILENCE_BASELINE_IDS.map((id) => getCardById(id));
 assert(baselineCards.every(Boolean) && silenceCards.every(Boolean), "baseline 10 cards plus 2 silence cards exist");
-assert(baselineCards.every((c) => c.image === null) && silenceCards.every((c) => c.image === null), "baseline images are null placeholders");
+const baselineNullCards = [...CONTENT_BASELINE_IDS, ...SILENCE_BASELINE_IDS]
+  .filter((id) => !R63_ART_IDS.includes(id))
+  .map((id) => getCardById(id));
+const r63ArtCards = R63_ART_IDS.map((id) => getCardById(id));
+assert(baselineNullCards.every((c) => c && c.image === null), "remaining baseline long-tail images stay explicit null placeholders");
+assert(r63ArtCards.every((c) => c && c.image === `../../assets/cards/${c.id}.png`
+  && fs.existsSync(path.join(__dirname, "..", "assets", "cards", `${c.id}.png`))),
+  "R63 priority art cards are wired to existing PNG assets");
 assert(baselineCards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8)
   && silenceCards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8), "baseline flavor text is present");
 const expectedBaseline = {
