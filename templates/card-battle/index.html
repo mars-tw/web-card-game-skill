@@ -6,9 +6,9 @@
 <title>卡牌對戰 · Card Battle</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r63-v1";
+    const CACHE_VERSION = "card-battle-r64-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r63_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r64_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -42,6 +42,22 @@
       .catch(() => {});
   })();
 </script>
+<script>
+  (() => {
+    const forced = new URLSearchParams(location.search).get("control");
+    const primaryPointer = window.matchMedia ? window.matchMedia("(pointer: coarse)") : null;
+    const detect = () => {
+      const mode = forced === "touch" || forced === "desktop"
+        ? forced
+        : (primaryPointer && primaryPointer.matches ? "touch" : "desktop");
+      document.documentElement.dataset.controlMode = mode;
+      window.__controlMode = mode;
+    };
+    detect();
+    if (primaryPointer && primaryPointer.addEventListener) primaryPointer.addEventListener("change", detect);
+    else if (primaryPointer && primaryPointer.addListener) primaryPointer.addListener(detect);
+  })();
+</script>
 <style>
   /* ===== 主題變數（由入口頁注入 data-theme 覆寫）===== */
   :root {
@@ -50,6 +66,7 @@
     --ink: #e6edf3; --muted: #8b98a8;
     --mana: #3b82f6; --hp: #ef4444; --accent: #f59e0b;
     --card-w: clamp(124px, 7.2vw, 152px); --card-h: calc(var(--card-w) * 1.42); --text-scale: 1;
+    --desktop-command-dock-h: 64px;
     --bg-img: url("../../assets/backgrounds/dark.png");
   }
   :root[data-theme="fantasy"] {
@@ -113,7 +130,8 @@
 
   /* app-shell：頁面本身不捲動，區域各自內捲 */
   .board { width: clamp(980px, 92vw, 1600px); flex: 1; min-height: 0; overflow-y: auto;
-    display: flex; flex-direction: column; gap: 7px; padding: 7px; }
+    display: flex; flex-direction: column; gap: 7px;
+    padding: 7px 7px calc(var(--desktop-command-dock-h) + env(safe-area-inset-bottom, 0px) + 8px); }
   .board.shake-screen { animation: screenShake .26s; }
   .board.lethal-slow { animation: lethalSlow .62s cubic-bezier(.12,.8,.18,1); filter: saturate(1.35) contrast(1.08); }
   body.defeat-fade .board { animation: defeatFade .7s ease forwards; }
@@ -130,10 +148,12 @@
     backdrop-filter: blur(4px);
     box-shadow:0 5px 16px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.08),inset 0 -10px 24px rgba(0,0,0,.16);
   }
+  .player-hero-row { z-index:75; overflow:visible; }
   .hero { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: transform .15s; }
   .player-hero-scene { display:flex; align-items:center; gap:8px; min-width:0; }
   .scene-hint-btn {
-    width:38px; height:38px; flex:0 0 38px; border-radius:50%; border:1px solid rgba(250,204,21,.44);
+    width:44px; height:44px; flex:0 0 44px; border-radius:50%; border:1px solid rgba(250,204,21,.44);
+    position:relative; z-index:75;
     display:grid; place-items:center; background:rgba(250,204,21,.12); color:#fef3c7;
     font-size:18px; font-weight:900; cursor:pointer; box-shadow:0 0 14px rgba(250,204,21,.22), inset 0 1px 0 rgba(255,255,255,.18);
   }
@@ -231,7 +251,7 @@
     box-shadow:0 8px 18px rgba(0,0,0,.44); pointer-events:auto;
   }
   .target-action-popover button {
-    min-width:42px; min-height:30px; border:0; border-radius:8px; padding:5px 8px;
+    min-width:44px; min-height:44px; border:0; border-radius:8px; padding:7px 9px;
     font-size:12px; font-weight:900; cursor:pointer;
   }
   .target-action-popover .confirm { background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; }
@@ -363,9 +383,9 @@
   .hand-drawer-toggle { display: none; }
   .target-status.active { color: #facc15; border-color: rgba(250,204,21,.35); background: rgba(250,204,21,.08); }
 
-  .settings-hud { position:fixed; top:8px; right:12px; z-index:96; display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
+  .settings-hud { position:fixed; top:max(8px, env(safe-area-inset-top, 0px)); right:12px; z-index:96; display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
   .settings-toggle {
-    width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.18);
+    width:44px; height:44px; border-radius:50%; border:1px solid rgba(255,255,255,.18);
     background:rgba(26,34,48,.92); color:var(--ink); font-size:20px; font-weight:900;
     cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.38); backdrop-filter:blur(6px);
   }
@@ -382,9 +402,11 @@
   .settings-panel .perf-toggle { display:grid; grid-template-columns:auto auto; gap:6px 10px; }
   .settings-panel .perf-diag, .settings-panel .perf-history { grid-column:1 / -1; max-width:none; white-space:normal; }
 
-  .controls { display: flex; gap: 12px; align-items: center; justify-content: center; padding: 6px;
-    flex-shrink: 0; position: sticky; bottom: 0; z-index: 30; border-radius: 12px;
-    background: color-mix(in srgb, var(--bg2) 72%, transparent); backdrop-filter: blur(4px); }
+  .controls { display: flex; gap: 10px; align-items: center; justify-content: center; padding: 6px;
+    position: fixed; left:50%; bottom:max(6px, env(safe-area-inset-bottom, 0px)); transform:translateX(-50%);
+    width:min(1180px, calc(100vw - 24px)); min-height:56px; z-index:82; border-radius: 14px;
+    background: color-mix(in srgb, var(--bg2) 88%, transparent); border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 -7px 24px rgba(0,0,0,.36); backdrop-filter: blur(8px); }
   .primary-actions { display:flex; align-items:center; gap:8px; min-width:0; }
   .desktop-quick-actions { display:flex; align-items:center; gap:8px; min-width:0; }
   .controls-scroll {
@@ -395,7 +417,7 @@
     box-shadow:0 14px 34px rgba(0,0,0,.52); min-width:0;
   }
   .controls.more-open .controls-scroll { display:grid; }
-  .controls .controls-scroll button { width:100%; min-height:40px; padding:8px 10px; border-radius:10px; font-size:12px; white-space:normal; }
+  .controls .controls-scroll button { width:100%; min-height:44px; padding:8px 10px; border-radius:10px; font-size:12px; white-space:normal; }
   .diff-pick { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted);
     background: color-mix(in srgb, var(--panel) 82%, transparent); padding: 6px 12px; border-radius: 20px;
     border: 1px solid var(--panel-border); backdrop-filter: blur(4px); }
@@ -422,18 +444,18 @@
   .audio-toggle-btn.is-muted { color: var(--muted); filter: grayscale(1) brightness(.82); }
   button.end-turn {
     background: linear-gradient(180deg, var(--accent), #d97706); color: #1a1206; font-weight: 800; font-size: 15px;
-    border: none; padding: 11px 26px; border-radius: 24px; cursor: pointer;
+    min-height:44px; border: none; padding: 11px 26px; border-radius: 24px; cursor: pointer;
     box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 40%, transparent); transition: transform .1s;
   }
   button.end-turn:hover { transform: scale(1.05); }
   .more-actions-btn {
-    display:grid; place-items:center; min-width:44px; width:44px; height:40px;
+    display:grid; place-items:center; min-width:44px; width:44px; height:44px;
     border:1px solid rgba(255,255,255,.14); border-radius:12px; background:#1a2230;
     color:var(--ink); font-size:22px; font-weight:900; box-shadow:0 3px 10px rgba(0,0,0,.34); cursor:pointer;
   }
   /* 起手重抽（CP2-6）*/
   button.mulligan-btn { background: linear-gradient(180deg, #38bdf8, #0ea5e9); color: #04263a; font-weight: 800;
-    font-size: 14px; border: none; padding: 11px 20px; border-radius: 24px; cursor: pointer;
+    min-height:44px; font-size: 14px; border: none; padding: 11px 20px; border-radius: 24px; cursor: pointer;
     box-shadow: 0 4px 12px rgba(56,189,248,.4); transition: transform .1s; margin-right: 8px; }
   button.mulligan-btn:hover { transform: scale(1.05); }
   button.end-turn:disabled { filter: grayscale(1) brightness(.6); cursor: not-allowed; }
@@ -511,9 +533,10 @@
   .card-detail-card { width:min(420px,94vw); max-height:88vh; overflow-y:auto; border-radius:16px;
     background:linear-gradient(180deg,#1a2230,#0f1620); border:1px solid rgba(255,255,255,.14);
     box-shadow:0 18px 48px rgba(0,0,0,.58); padding:14px; animation:overlayPop .22s ease; }
-  .card-detail-head { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
+  .card-detail-head { position:sticky; top:0; z-index:3; display:flex; justify-content:space-between; align-items:center; gap:10px;
+    margin-bottom:10px; padding-bottom:8px; background:linear-gradient(180deg,#1a2230 78%,rgba(26,34,48,.94)); }
   .card-detail-title { min-width:0; font-size:20px; font-weight:900; color:var(--accent); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .card-detail-close { width:34px; height:34px; border-radius:50%; border:1px solid rgba(255,255,255,.16);
+  .card-detail-close { width:44px; height:44px; flex:0 0 44px; border-radius:50%; border:1px solid rgba(255,255,255,.16);
     color:var(--ink); background:#2a3645; font-weight:900; cursor:pointer; }
   .card-detail-art { aspect-ratio:5/4; border-radius:12px; display:flex; align-items:center; justify-content:center;
     font-size:72px; overflow:hidden; background:radial-gradient(circle,rgba(255,255,255,.1),rgba(0,0,0,.22));
@@ -552,19 +575,21 @@
   /* 新手導引 + 關鍵字圖鑑（CP0-15）*/
   .battle-guide, .kw-codex, .chronicle-modal { position: fixed; inset: 0; background: rgba(6,10,14,.92); display: none;
     align-items: center; justify-content: center; z-index: 110; padding: 16px; }
+  .battle-guide { z-index:130; }
   .battle-guide.show, .kw-codex.show, .chronicle-modal.show { display: flex; }
   .battle-guide.show { background: rgba(6,10,14,.48); align-items: flex-start; justify-content: center; pointer-events: none; }
   .guide-panel, .kw-codex-card, .chronicle-card { background: linear-gradient(180deg, #1a2230, #0f1620);
     border: 1px solid rgba(255,255,255,.12); border-radius: 18px; padding: 24px 26px; max-width: 440px; width: 100%;
     box-shadow: 0 12px 40px rgba(0,0,0,.5); max-height: 90vh; overflow-y: auto; }
   .chronicle-card { max-width: 900px; padding: 18px; }
-  .guide-panel { position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); max-width: 520px; width: min(520px, calc(100vw - 28px)); pointer-events: none; }
+  .guide-panel { position: fixed; left: 50%; bottom: calc(var(--desktop-command-dock-h) + env(safe-area-inset-bottom, 0px) + 12px); transform: translateX(-50%); max-width: 520px; width: min(520px, calc(100vw - 28px)); pointer-events: none; }
   .guide-panel h2, .kw-codex-card h2, .chronicle-card h2 { color: var(--accent, #f59e0b); font-size: 23px; margin-bottom: 14px; text-align: center; }
   .guide-step-label { font-size: 12px; color: #facc15; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
   .guide-copy { font-size: 14px; line-height: 1.5; color: var(--ink); margin-bottom: 14px; }
   .guide-actions { display: flex; gap: 8px; pointer-events: auto; }
   .guide-actions button, .kw-codex-card button { width: 100%; background: linear-gradient(180deg,#f59e0b,#d97706);
-    color: #1a1206; border: none; padding: 13px; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; }
+    min-height:44px; color: #1a1206; border: none; padding: 13px; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; }
+  #kwCodexClose { position:sticky; bottom:0; z-index:3; box-shadow:0 -8px 16px rgba(15,22,32,.9); }
   .guide-actions button.secondary { background: #2a3645; color: var(--ink); }
   .guide-focus { outline: 4px solid #facc15 !important; box-shadow: 0 0 0 8px rgba(250,204,21,.22), 0 0 32px rgba(250,204,21,.8) !important; z-index: 120 !important; position: relative; }
   .kw-codex-btn { position: static; background: #1a2230;
@@ -585,7 +610,7 @@
   .chronicle-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; position:sticky; top:0; z-index:3;
     background:linear-gradient(180deg,#1a2230,#151c28); padding-bottom:10px; }
   .chronicle-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
-  .chronicle-tab, .chronicle-close { border:none; border-radius:10px; padding:8px 11px; font-weight:900; cursor:pointer;
+  .chronicle-tab, .chronicle-close { min-height:44px; border:none; border-radius:10px; padding:8px 11px; font-weight:900; cursor:pointer;
     background:#2a3645; color:var(--ink); }
   .chronicle-tab.active, .chronicle-close { background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; }
   .chronicle-panel { display:none; }
@@ -616,7 +641,7 @@
     display:flex; align-items:center; justify-content:space-between; gap:8px; padding-bottom:10px; margin-bottom:10px; }
   .mission-title { font-size:18px; font-weight:900; color:var(--accent); }
   .mission-actions { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-  .mission-actions button { border:none; border-radius:10px; padding:8px 10px; font-weight:900; cursor:pointer; }
+  .mission-actions button { min-height:44px; border:none; border-radius:10px; padding:8px 10px; font-weight:900; cursor:pointer; }
   .mission-claim-all { background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; }
   .mission-close { background:#2a3645; color:var(--ink); }
   .mission-section { margin-top:10px; }
@@ -720,6 +745,7 @@
     .hero .avatar { width:34px; height:34px; flex-basis:34px; font-size:22px; }
     .hp-badge, .mana-badge { min-height:28px; font-size:13px; padding:3px 8px; }
     .battlefield { min-height: 44px; }
+    .target-action-popover { top:4px; bottom:auto; }
     .target-status { min-height: 20px; padding: 2px 8px; font-size: 12px; }
     #log { height: 32px; }
     .hand { max-height: calc(var(--card-h) + 20px); }
@@ -750,7 +776,7 @@
   @media (max-width: 1024px) and (min-width: 701px) {
     .board { width:100%; }
   }
-  @media (max-width: 700px) {
+  @media (max-width: 700px), (max-height: 500px), (pointer: coarse) {
     :root {
       --card-w: 92px; --card-h: 132px;
       --command-dock-h: 62px;
@@ -761,7 +787,7 @@
     .hero-row { padding: 6px 10px; border-radius: 10px; }
     .hero .avatar { width:36px; height:36px; flex-basis:36px; font-size:24px; }
     .hero .name { font-size: 14px; }
-    .scene-hint-btn { width:34px; height:34px; flex-basis:34px; font-size:16px; }
+    .scene-hint-btn { width:44px; height:44px; flex-basis:44px; font-size:16px; }
     .hp-badge, .mana-badge { min-height:28px; font-size:13px; padding:3px 8px; }
     .battlefield { gap: 5px; padding: 5px; }
     .quest-item { grid-template-columns: minmax(0,1fr) auto; }
@@ -774,7 +800,7 @@
       border-top: 1px solid rgba(255,255,255,.12); box-shadow: 0 -8px 22px rgba(0,0,0,.38);
       transition: height .18s ease;
     }
-    .hand-drawer.open { height: var(--mobile-hand-open); pointer-events:auto; }
+    .hand-drawer.open { height:min(var(--mobile-hand-open), calc(100dvh - var(--command-dock-h) - env(safe-area-inset-bottom, 0px) - 8px)); pointer-events:auto; }
     .hand-drawer:not(.open) .hand { visibility: hidden; pointer-events: none; }
     .hand-drawer-toggle {
       display: flex; align-items:center; justify-content:center; gap:5px;
@@ -799,6 +825,7 @@
     .card .cardtext { font-size: max(10px, calc(9px * var(--text-scale))); }
     .controls {
       position: fixed; left: 8px; right: 8px; bottom: 0; width:auto; max-width:none;
+      transform:none;
       min-height: calc(var(--command-dock-h) + env(safe-area-inset-bottom, 0px));
       display:grid; grid-template-columns:minmax(0,1fr) minmax(112px,.85fr) 48px;
       align-items:start; gap:8px; padding:7px 8px calc(7px + env(safe-area-inset-bottom, 0px));
@@ -816,7 +843,7 @@
       box-shadow:0 14px 34px rgba(0,0,0,.52);
     }
     .controls.more-open .controls-scroll { display:grid; }
-    .controls .controls-scroll button { width:100%; min-height:40px; padding:8px 10px; border-radius:10px; font-size:12px; white-space:normal; }
+    .controls .controls-scroll button { width:100%; min-height:44px; padding:8px 10px; border-radius:10px; font-size:12px; white-space:normal; }
     .more-actions-btn {
       display:grid; place-items:center; min-width:0; width:48px; height:44px; border:1px solid rgba(255,255,255,.14);
       border-radius:12px; background:#1a2230; color:var(--ink); font-size:22px; font-weight:900;
@@ -868,6 +895,44 @@
       flex: 1 1 24dvh; min-height: 22dvh; max-height: none; overflow: auto;
       align-items: flex-start; align-content: flex-start;
     }
+  }
+  @media (max-height: 500px) {
+    :root[data-control-mode="touch"] { --card-w:66px; --card-h:86px; --mobile-hand-open:min(132px, 38dvh); }
+    :root[data-control-mode="touch"] header { display:none; }
+    :root[data-control-mode="touch"] .board { gap:3px; padding-top:3px; }
+    :root[data-control-mode="touch"] .hero-row { min-height:32px; padding:2px 8px; }
+    :root[data-control-mode="touch"] .hero .avatar { width:28px; height:28px; flex-basis:28px; font-size:18px; }
+    :root[data-control-mode="touch"] .hero .name { font-size:12px; }
+    :root[data-control-mode="touch"] .scene-hint-btn { width:44px; height:44px; flex-basis:44px; }
+    :root[data-control-mode="touch"] .battlefield { min-height:66px; max-height:none; gap:3px; padding:3px; align-items:flex-start; align-content:flex-start; }
+    :root[data-control-mode="touch"] .card .cardtext,
+    :root[data-control-mode="touch"] .card .kwrow { display:none; }
+    :root[data-control-mode="touch"] .target-action-popover { top:4px; bottom:auto; }
+    :root[data-control-mode="touch"] #log,
+    :root[data-control-mode="touch"] .quest-panel,
+    :root[data-control-mode="touch"] .series-footer { display:none; }
+    :root[data-control-mode="touch"] .target-status { min-height:20px; padding-block:1px; }
+  }
+  /* 控制型態以主指標能力為準；非觸控桌機即使窄窗也不渲染手機專屬把手／更多鈕。 */
+  :root[data-control-mode="desktop"] .hand-drawer { display:contents; position:static; height:auto; pointer-events:auto; }
+  :root[data-control-mode="desktop"] .hand-drawer .hand { visibility:visible; pointer-events:auto; }
+  :root[data-control-mode="desktop"] .hand-drawer-toggle,
+  :root[data-control-mode="desktop"] .more-actions-btn { display:none; }
+  :root[data-control-mode="desktop"] .desktop-quick-actions { display:flex; }
+  :root[data-control-mode="desktop"] .controls {
+    position:fixed; left:50%; right:auto; bottom:max(6px, env(safe-area-inset-bottom, 0px)); transform:translateX(-50%);
+    width:min(1180px, calc(100vw - 24px)); min-height:56px; display:flex; align-items:center; gap:8px;
+    padding:6px; border-radius:14px; overflow:visible;
+  }
+  :root[data-control-mode="desktop"] .controls-scroll,
+  :root[data-control-mode="desktop"] .controls.more-open .controls-scroll {
+    display:flex; position:static; width:auto; max-height:none; overflow:visible; grid-template-columns:none;
+    align-items:center; gap:6px; padding:0; border:0; border-radius:0; background:transparent; box-shadow:none;
+  }
+  :root[data-control-mode="desktop"] .controls-scroll #newGameBtn,
+  :root[data-control-mode="desktop"] .controls-scroll #toPackBtn { display:none; }
+  :root[data-control-mode="desktop"] .controls .controls-scroll button {
+    width:auto; min-width:44px; min-height:44px; margin:0; padding:7px 10px; border-radius:12px; white-space:nowrap;
   }
   /* 命名展示盤：固定材質峰值，截圖不依賴動畫時序。 */
   body.capture-pose *, body.capture-pose *::before, body.capture-pose *::after { animation:none !important; transition:none !important; }
@@ -935,7 +1000,7 @@
     <div class="battlefield enemy" id="enemyField"></div>
     <div class="battlefield" id="playerField"></div>
 
-    <div class="hero-row">
+    <div class="hero-row player-hero-row">
       <div class="player-hero-scene">
         <div class="hero" id="playerHero">
           <span class="avatar">🦸</span><span class="name">你</span>
@@ -1080,9 +1145,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r63-v1"></script>
-  <script src="core.js?v=card-battle-r63-v1"></script>
-  <script src="battle.js?v=card-battle-r63-v1"></script>
+  <script src="cards.js?v=card-battle-r64-v1"></script>
+  <script src="core.js?v=card-battle-r64-v1"></script>
+  <script src="battle.js?v=card-battle-r64-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {

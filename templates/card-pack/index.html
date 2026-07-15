@@ -6,9 +6,9 @@
 <title>開卡包 · Card Pack</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r63-v1";
+    const CACHE_VERSION = "card-battle-r64-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r63_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r64_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -380,7 +380,7 @@
     display:flex; align-items:center; justify-content:space-between; gap:8px; padding-bottom:10px; margin-bottom:10px; }
   .mission-title { font-size:18px; font-weight:900; color:var(--accent); }
   .mission-actions { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-  .mission-actions button { border:none; border-radius:10px; padding:8px 10px; font-weight:900; cursor:pointer; }
+  .mission-actions button { min-width:44px; min-height:44px; border:none; border-radius:10px; padding:8px 10px; font-weight:900; cursor:pointer; }
   .mission-claim-all { background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; }
   .mission-close { background:#2a3645; color:var(--ink); }
   .mission-section { margin-top:10px; }
@@ -457,6 +457,8 @@
     .pack .pack-label { font-size: 14px; }
     .series-footer { padding: 2px 8px 4px; font-size: 11px; }
     .mission-card { max-height: calc(100vh - 40px); overflow-y: auto; }
+    .collection-tools .filter-panel { max-height:142px; overflow-y:auto; }
+    #collectionSort { flex-wrap:wrap; overflow-x:visible; }
   }
   @media (max-height: 560px) {
     header { padding: 2px 8px; font-size: 13px; }
@@ -813,9 +815,9 @@
       else mq.addListener(applyCompactFilters);
     })();
   </script>
-  <script src="../card-battle/cards.js?v=card-battle-r63-v1"></script>
-  <script src="../card-battle/core.js?v=card-battle-r63-v1"></script>
-  <script src="pack.js?v=card-battle-r63-v1"></script>
+  <script src="../card-battle/cards.js?v=card-battle-r64-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-r64-v1"></script>
+  <script src="pack.js?v=card-battle-r64-v1"></script>
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);

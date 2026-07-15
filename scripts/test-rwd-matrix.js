@@ -1,5 +1,5 @@
 /* =========================================================================
- * test-rwd-matrix.js — R62 RWD 十視口矩陣守門（真瀏覽器）
+ * test-rwd-matrix.js — R64 RWD 十視口矩陣守門（真瀏覽器）
  *
  * 驗收標準（每頁 × 每視口都必須成立）：
  *   1. 所有可互動元素（button/select/input/textarea/a[href]/[role=button]/[onclick]）
@@ -23,11 +23,11 @@ const MIME = {
 
 const VIEWPORTS = [
   { w: 1920, h: 1080, kind: "desktop" },
-  { w: 1366, h: 700, kind: "desktop" },
-  { w: 1280, h: 720, kind: "desktop" },
+  { w: 1440, h: 780, kind: "desktop" },
+  { w: 1366, h: 600, kind: "desktop" },
+  { w: 1280, h: 640, kind: "desktop" },
   { w: 1024, h: 768, kind: "desktop" },
   { w: 820, h: 1180, kind: "tablet" },
-  { w: 768, h: 1024, kind: "tablet" },
   { w: 390, h: 844, kind: "mobile" },
   { w: 360, h: 640, kind: "mobile" },
   { w: 320, h: 568, kind: "mobile-short" },
@@ -97,10 +97,14 @@ async function auditPage(page) {
         status = hostVisible ? "SCROLLABLE_OK" : "PAGE_SCROLL";
       } else status = (r.top >= ih || r.bottom <= 0) ? "PAGE_SCROLL" : "CLIPPED";
       if (status !== "OK" && status !== "SCROLLABLE_OK") {
+        const hostRect = scrollHost ? scrollHost.getBoundingClientRect() : null;
         violations.push({
           label, status,
           top: Math.round(r.top), bottom: Math.round(r.bottom),
           left: Math.round(r.left), right: Math.round(r.right),
+          scrollHost: scrollHost ? (scrollHost.id ? "#" + scrollHost.id : "." + String(scrollHost.className || scrollHost.tagName).trim().replace(/\s+/g, ".")) : "",
+          hostTop: hostRect ? Math.round(hostRect.top) : 0,
+          hostBottom: hostRect ? Math.round(hostRect.bottom) : 0,
         });
       }
     }
@@ -132,9 +136,11 @@ async function run() {
   }
 
   try {
-    for (const pg of PAGES) {
+    const pageFilter = process.argv[2] || "";
+    const viewportFilter = process.argv[3] || "";
+    for (const pg of PAGES.filter((item) => !pageFilter || item.name === pageFilter)) {
       console.log(`\n== ${pg.name} ==`);
-      for (const vp of VIEWPORTS) {
+      for (const vp of VIEWPORTS.filter((item) => !viewportFilter || `${item.w}x${item.h}` === viewportFilter)) {
         const isTouch = vp.kind === "mobile" || vp.kind === "mobile-short" || vp.kind === "landscape";
         const ctx = await browser.newContext({
           viewport: { width: vp.w, height: vp.h },
@@ -154,7 +160,7 @@ async function run() {
         await page.waitForTimeout(300);
 
         const res = await auditPage(page);
-        if (pg.name === "shell" && (vp.kind === "mobile" || vp.kind === "mobile-short")) {
+        if (pg.name === "shell" && isTouch) {
           const battleFrame = page.frames().find((frame) => /card-battle\/index\.html/.test(frame.url()));
           if (battleFrame) {
             const child = await auditPage(battleFrame);
@@ -162,7 +168,7 @@ async function run() {
             res.overflowX = Math.max(res.overflowX, child.overflowX);
           }
         }
-        if (pg.name === "card-battle" && (vp.kind === "mobile" || vp.kind === "mobile-short")) {
+        if (pg.name === "card-battle" && isTouch) {
           const mobileFlow = await page.evaluate(() => {
             const fields = [...document.querySelectorAll(".battlefield")];
             const combinedHeight = fields.reduce((sum, el) => sum + el.getBoundingClientRect().height, 0);
@@ -186,7 +192,8 @@ async function run() {
             const attacked = window.__test.game().enemy.field[0]?.health < before || window.__test.game().enemy.field.length === 0;
             return { combinedHeight, viewportHeight: innerHeight, open, closed, visible, selected, attacked };
           });
-          if (mobileFlow.combinedHeight + 1 < mobileFlow.viewportHeight * .42
+          const minBattlefieldRatio = vp.kind === "landscape" ? .32 : .42;
+          if (mobileFlow.combinedHeight + 1 < mobileFlow.viewportHeight * minBattlefieldRatio
             || !mobileFlow.open || !mobileFlow.closed || !mobileFlow.visible || !mobileFlow.selected || !mobileFlow.attacked) {
             res.violations.push({ label: "手機攻擊同屏／手牌抽屜／44dvh", status: "FLOW", top: 0, bottom: 0, left: 0, right: 0 });
           }
@@ -197,7 +204,8 @@ async function run() {
           failures++;
           console.error(`  ✗ ${vp.w}x${vp.h} 違規 ${res.violations.length}、頁捲 ${res.pageScrollY}px、水平溢出 ${res.overflowX}px（稽核 ${res.audited} 元素）`);
           for (const v of res.violations.slice(0, 12)) {
-            console.error(`      ${v.status} ${v.label} top=${v.top} bottom=${v.bottom} left=${v.left} right=${v.right}`);
+            console.error(`      ${v.status} ${v.label} top=${v.top} bottom=${v.bottom} left=${v.left} right=${v.right}`
+              + (v.scrollHost ? ` host=${v.scrollHost}(${v.hostTop}-${v.hostBottom})` : ""));
           }
         } else {
           console.log(`  ✓ ${vp.w}x${vp.h} 零違規（頁捲 ${res.pageScrollY}px、水平溢出 ${res.overflowX}px、稽核 ${res.audited} 元素）`);
