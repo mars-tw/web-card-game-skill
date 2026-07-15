@@ -35,3 +35,11 @@
 - `npm run test:e2e`：通過。
 - 秘密掃描：通過，零命中（排除 `.git` / `node_modules`）。
 - 版本：`0.4.6`，快取版本 `card-battle-r62-v1`，SW reload key `card_sw_auto_reload_r62_v1`。
+
+## R62 RWD regression fix
+
+- 修正 pack 頁收藏篩選 chip 在 390/360/320 與 844x390 視口把內容推到 fold 外的迴歸。
+- 390px 手機改為單列固定高度橫向捲動 chip 軌道；<=360px 與 <=400px 高度 landscape 預設收合篩選，保留可展開面板。
+- 補 tablet battle board 寬度限制，避免 RWD 閘在 820/768 視口出現水平溢出。
+- 版本 bump：`0.4.7`；PWA cache key 維持 `card-battle-r62-v1`。
+- 驗證：`npm run test:rwd` 全矩陣通過，30 個頁面×視口零違規、頁捲 0、水平溢出 0。

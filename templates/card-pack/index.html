@@ -250,6 +250,7 @@
   .filter-panel summary { cursor:pointer; list-style:none; padding:8px 10px; color:#facc15; font-size:12px; font-weight:900; }
   .filter-panel summary::-webkit-details-marker { display:none; }
   .filter-panel[open] summary { border-bottom:1px solid rgba(255,255,255,.08); }
+  .filter-panel:not([open]) .filter-chip-board { display:none; }
   .filter-chip-board { display:flex; flex-direction:column; gap:8px; padding:8px; }
   .filter-line { display:grid; grid-template-columns:54px minmax(0,1fr); gap:8px; align-items:center; min-width:0; }
   .filter-line-label { color:var(--muted); font-size:12px; font-weight:900; }
@@ -463,6 +464,44 @@
     .pack .pack-icon { font-size: 30px; }
     .pack .pack-hint { display: none; }
     .series-footer { padding: 1px 8px 3px; font-size: 10px; }
+  }
+  @media (max-width: 390px), (max-height: 400px) {
+    .collection-tools { grid-template-columns:1fr; gap:4px; margin-bottom:6px; }
+    .collection-tools input { grid-column:1; min-height:30px; padding:5px 8px; font-size:12px; }
+    .collection-tools .filter-panel summary { padding:5px 8px; }
+    .collection-tools .filter-chip-board {
+      display:flex;
+      flex-direction:row;
+      align-items:center;
+      gap:8px;
+      height:40px;
+      max-height:40px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      padding:5px 6px;
+      scrollbar-width:thin;
+      overscroll-behavior-inline:contain;
+    }
+    .collection-tools .filter-line {
+      flex:0 0 auto;
+      display:flex;
+      align-items:center;
+      gap:5px;
+      min-width:max-content;
+    }
+    .collection-tools .filter-line-label {
+      flex:0 0 auto;
+      font-size:10px;
+      line-height:1;
+      white-space:nowrap;
+    }
+    .collection-tools .filter-chip-row {
+      flex:0 0 auto;
+      overflow:visible;
+      gap:4px;
+      padding:0;
+    }
+    .collection-tools .filter-chip { min-height:24px; padding:3px 7px; font-size:11px; }
   }
 
   @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
@@ -754,6 +793,26 @@
     <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
   </footer>
 
+  <script>
+    (() => {
+      const mq = window.matchMedia("(max-width: 360px), (max-height: 400px)");
+      const applyCompactFilters = () => {
+        const panel = document.querySelector("#collectionTools .filter-panel");
+        if (!panel) return;
+        if (mq.matches) {
+          panel.removeAttribute("open");
+          panel.dataset.compactDefault = "1";
+        } else if (panel.dataset.compactDefault === "1") {
+          panel.setAttribute("open", "");
+          delete panel.dataset.compactDefault;
+        }
+      };
+      if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", applyCompactFilters, { once: true });
+      else applyCompactFilters();
+      if (mq.addEventListener) mq.addEventListener("change", applyCompactFilters);
+      else mq.addListener(applyCompactFilters);
+    })();
+  </script>
   <script src="../card-battle/cards.js?v=card-battle-r62-v1"></script>
   <script src="../card-battle/core.js?v=card-battle-r62-v1"></script>
   <script src="pack.js?v=card-battle-r62-v1"></script>
