@@ -138,6 +138,7 @@
   };
 
   let game;
+  let pendingTargetUid = null;
   const pendingSummonFx = new Set();
   const GUIDE_KEY = "cb_guide_done_v1";
   const PERF_KEY = "card_perf_mode_v1";
@@ -145,7 +146,7 @@
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r61_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r62_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
@@ -176,9 +177,29 @@
     drawer.classList.toggle("open", next);
     toggle.setAttribute("aria-expanded", String(next));
     const count = game && game.player ? game.player.hand.length : 0;
-    toggle.lastChild.textContent = next ? " · 點此收合" : " · 點此展開";
+    const stateEl = document.getElementById("handDrawerState");
+    if (stateEl) stateEl.textContent = next ? "收合" : "展開";
     const countEl = document.getElementById("handCount");
     if (countEl) countEl.textContent = String(count);
+  }
+
+  function setSettingsOpen(open) {
+    const panel = document.getElementById("settingsPanel");
+    const btn = document.getElementById("settingsToggleBtn");
+    if (!panel || !btn) return;
+    const next = !!open;
+    panel.classList.toggle("show", next);
+    panel.setAttribute("aria-hidden", next ? "false" : "true");
+    btn.setAttribute("aria-expanded", String(next));
+  }
+
+  function setMoreActionsOpen(open) {
+    const dock = document.getElementById("commandDock");
+    const btn = document.getElementById("moreActionsBtn");
+    if (!dock || !btn) return;
+    const next = !!open;
+    dock.classList.toggle("more-open", next);
+    btn.setAttribute("aria-expanded", String(next));
   }
 
   function audioMuted() {
@@ -434,6 +455,8 @@
       chronicleChaptersTab: "顯示編年史章節",
       chronicleFactionsTab: "顯示陣營傳說",
       cardDetailClose: "關閉卡牌詳情",
+      settingsToggleBtn: "開啟設定",
+      moreActionsBtn: "更多行動",
     };
     Object.entries(labels).forEach(([id, label]) => {
       const el = document.getElementById(id);
@@ -475,6 +498,7 @@
   // ===== 初始化 =====
   function newGame() {
     pendingSummonFx.clear();
+    pendingTargetUid = null;
     stopGuide(false);
     document.body.classList.remove("defeat-fade");
     clearTransientFx();
@@ -933,12 +957,13 @@
     const result = Core.playCard(game, { side: "player", cardUid: uid }, rng);
     handleCoreResult(result);
     if (!result.ok) {
-      if (result.reason === "pendingCancelledSame") { render(); return; }
+      if (result.reason === "pendingCancelledSame") { pendingTargetUid = null; render(); return; }
       showCoreFailure(result);
       render();
       return;
     }
     setHandDrawerOpen(false);
+    pendingTargetUid = null;
     const spellPending = result.events.find((e) => e.type === "spellPending");
     if (spellPending) {
       flash(spellPending.need === "friendlyMinion" ? "選擇一個友方隨從" : "選擇一個敵方隨從");
@@ -987,6 +1012,37 @@
     }
   }
 
+  function hasPendingTargetChoice() {
+    return !!(game && (game.pendingSpell || game.pendingBattlecry));
+  }
+
+  function selectPendingTarget(uid) {
+    if (!hasPendingTargetChoice()) return false;
+    pendingTargetUid = uid || null;
+    render();
+    return true;
+  }
+
+  function cancelPendingTargetChoice() {
+    if (!pendingTargetUid) return false;
+    pendingTargetUid = null;
+    render();
+    return true;
+  }
+
+  function confirmPendingTarget(uid) {
+    if (!hasPendingTargetChoice()) return false;
+    const target = [...game.player.field, ...game.enemy.field].find((m) => m.uid === uid);
+    if (!target) {
+      pendingTargetUid = null;
+      render();
+      return false;
+    }
+    pendingTargetUid = null;
+    resolvePendingSpell(target);
+    return true;
+  }
+
   function clickEnemyMinion(uid) {
     if (game.turn !== "player" || game.over) return;
     const target = game.enemy.field.find((m) => m.uid === uid);
@@ -995,7 +1051,7 @@
     if (game.pendingSpell || game.pendingBattlecry) {
       if (game.pendingBattlecry) { flash("調印需指定友方隨從。"); return; }
       if (game.pendingSpell.need !== "enemyMinion") { flash("此法術需指定友方隨從。"); return; }
-      resolvePendingSpell(target); return;
+      selectPendingTarget(target.uid); return;
     }
     if (game.selected) {
       if (!isLegalTarget(game.enemy, target)) { flash("必須先攻擊嘲諷隨從！"); return; }
@@ -1007,8 +1063,8 @@
   }
 
   function clickFriendlyMinionAsTarget(target) {
-    if (game.pendingBattlecry && game.pendingBattlecry.need === "friendlyMinion") { resolvePendingSpell(target); return true; }
-    if (game.pendingSpell && game.pendingSpell.need === "friendlyMinion") { resolvePendingSpell(target); return true; }
+    if (game.pendingBattlecry && game.pendingBattlecry.need === "friendlyMinion") { selectPendingTarget(target.uid); return true; }
+    if (game.pendingSpell && game.pendingSpell.need === "friendlyMinion") { selectPendingTarget(target.uid); return true; }
     return false;
   }
 
@@ -1024,6 +1080,7 @@
       trackCardUse(result.card);
       logSpellEffect(result.card, result.target, "player");
     }
+    pendingTargetUid = null;
     render(); checkWin();
   }
 
@@ -1066,6 +1123,7 @@
 
   function cancelTargeting(message) {
     if (!game) return;
+    if (cancelPendingTargetChoice()) return;
     if (game.pendingBattlecry) {
       flash("調印戰吼需指定一個友方隨從。");
       return;
@@ -1074,6 +1132,7 @@
     game.selected = null;
     game.pendingSpell = null;
     game.pendingBattlecry = null;
+    pendingTargetUid = null;
     if (message && hadTargeting) flash(message);
     if (hadTargeting) render();
   }
@@ -1082,6 +1141,10 @@
     if (!game) return "載入中。";
     if (game.over) return "對戰已結束。";
     if (game.turn !== "player") return "對手行動中。";
+    if (pendingTargetUid && (game.pendingSpell || game.pendingBattlecry)) {
+      const target = [...game.player.field, ...game.enemy.field].find((m) => m.uid === pendingTargetUid);
+      return target ? `確認 ${target.name} 或取消` : "請重新選擇目標";
+    }
     if (game.pendingBattlecry) return "調印：請選擇友方隨從";
     if (game.pendingSpell) {
       return game.pendingSpell.need === "friendlyMinion" ? "請選擇友方隨從" : "請選擇敵方隨從";
@@ -1808,6 +1871,24 @@
     focusGuideTarget();
   }
 
+  function appendTargetActions(cardEl, uid) {
+    if (!cardEl || pendingTargetUid !== uid) return;
+    const pop = document.createElement("div");
+    pop.className = "target-action-popover";
+    pop.innerHTML = '<button class="confirm" type="button">確認</button><button class="cancel" type="button">取消</button>';
+    pop.querySelector(".confirm").onclick = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      confirmPendingTarget(uid);
+    };
+    pop.querySelector(".cancel").onclick = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      cancelPendingTargetChoice();
+    };
+    cardEl.appendChild(pop);
+  }
+
   function renderField(elId, field, side) {
     const el = document.getElementById(elId);
     el.innerHTML = "";
@@ -1832,14 +1913,17 @@
         if (card.canAttack && game.turn === "player") c.classList.add("can-attack");
         if (game.selected === card.uid) c.classList.add("selected");
         if ((game.pendingSpell && game.pendingSpell.need === "friendlyMinion") || (game.pendingBattlecry && game.pendingBattlecry.need === "friendlyMinion")) c.classList.add("targetable");
+        if (pendingTargetUid === card.uid) c.classList.add("target-queued");
         c.onclick = (event) => { event.stopPropagation(); selectMyMinion(card.uid); };
       } else {
         const spellTargetable = game.pendingSpell && game.pendingSpell.need === "enemyMinion";
         const attackTargetable = game.selected && isLegalTarget(game.enemy, card);
         if (spellTargetable || attackTargetable) c.classList.add("targetable");
+        if (pendingTargetUid === card.uid) c.classList.add("target-queued");
         if (game.selected && enemyHasTaunt && !(card.keywords || []).includes("taunt")) c.classList.add("blocked");
         c.onclick = (event) => { event.stopPropagation(); clickEnemyMinion(card.uid); };
       }
+      appendTargetActions(c, card.uid);
       el.appendChild(c);
     });
   }
@@ -3071,6 +3155,25 @@
   if (textSizeSel) textSizeSel.onchange = () => setTextSize(textSizeSel.value);
   const audioToggleBtn = document.getElementById("audioToggleBtn");
   if (audioToggleBtn) audioToggleBtn.onclick = () => setAudioMuted(!audioMuted());
+  const settingsToggleBtn = document.getElementById("settingsToggleBtn");
+  if (settingsToggleBtn) settingsToggleBtn.onclick = (event) => {
+    event.stopPropagation();
+    setMoreActionsOpen(false);
+    setSettingsOpen(settingsToggleBtn.getAttribute("aria-expanded") !== "true");
+  };
+  const moreActionsBtn = document.getElementById("moreActionsBtn");
+  if (moreActionsBtn) moreActionsBtn.onclick = (event) => {
+    event.stopPropagation();
+    setSettingsOpen(false);
+    setMoreActionsOpen(moreActionsBtn.getAttribute("aria-expanded") !== "true");
+  };
+  const settingsPanel = document.getElementById("settingsPanel");
+  if (settingsPanel) settingsPanel.addEventListener("click", (event) => event.stopPropagation());
+  const dockMorePanel = document.getElementById("dockMorePanel");
+  if (dockMorePanel) dockMorePanel.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (event.target.closest("button")) setTimeout(() => setMoreActionsOpen(false), 0);
+  });
   const handDrawerToggle = document.getElementById("handDrawerToggle");
   if (handDrawerToggle) handDrawerToggle.onclick = () => {
     const drawer = document.getElementById("handDrawer");
@@ -3084,13 +3187,21 @@
   const boardEl = document.querySelector(".board");
   if (boardEl) {
     boardEl.addEventListener("click", (event) => {
-      if (event.target.closest(".card, .hero, button, select, label, .quest-panel, .controls, .hand")) return;
+      if (event.target.closest(".card, .hero, button, select, label, .quest-panel, .controls, .hand, .settings-hud")) return;
       cancelTargeting("已取消選取。");
+      setMoreActionsOpen(false);
+      setSettingsOpen(false);
     });
   }
   // 對戰中重開（牌庫會重新讀最新收藏——開完新卡包回來按這顆就能用到新卡）
   const ngBtn = document.getElementById("newGameBtn");
   if (ngBtn) ngBtn.onclick = newGame;
+  const newGameQuickBtn = document.getElementById("newGameQuickBtn");
+  if (newGameQuickBtn) newGameQuickBtn.onclick = newGame;
+  const toPackBtn = document.getElementById("toPackBtn");
+  if (toPackBtn) toPackBtn.onclick = goPack;
+  const toPackQuickBtn = document.getElementById("toPackQuickBtn");
+  if (toPackQuickBtn) toPackQuickBtn.onclick = goPack;
   startPerfMonitor();
   newGame();
   maybeStartGuide();
@@ -3114,8 +3225,10 @@
     if (document.getElementById("cardDetail")?.classList.contains("show")) { closeCardDetail(); return; }
     if (document.getElementById("chronicleModal")?.classList.contains("show")) { closeChronicle(); return; }
     if (document.getElementById("missionDrawer")?.classList.contains("show")) { closeMissionDrawer(); return; }
-    if (typeof window.__kwCodexOpen === "function" && window.__kwCodexOpen()) window.__closeKwCodex();
-    else if (document.getElementById("handDrawer")?.classList.contains("open")) setHandDrawerOpen(false);
+    if (typeof window.__kwCodexOpen === "function" && window.__kwCodexOpen()) { window.__closeKwCodex(); return; }
+    if (document.getElementById("settingsPanel")?.classList.contains("show")) { setSettingsOpen(false); return; }
+    if (document.getElementById("commandDock")?.classList.contains("more-open")) { setMoreActionsOpen(false); return; }
+    if (document.getElementById("handDrawer")?.classList.contains("open")) setHandDrawerOpen(false);
   });
   const missionDrawerBtn = document.getElementById("missionDrawerBtn");
   if (missionDrawerBtn) missionDrawerBtn.onclick = openMissionDrawer;
@@ -3165,6 +3278,10 @@
     game: () => game,
     setup(playerField, enemyField) {
       clearTransientFx();
+      pendingTargetUid = null;
+      game.selected = null;
+      game.pendingSpell = null;
+      game.pendingBattlecry = null;
       game.player.field = (playerField || []).map((id) => prepMinion(getCardById(id)));
       game.enemy.field = (enemyField || []).map((id) => prepMinion(getCardById(id)));
       game.player.mana = game.player.manaMax = 10;

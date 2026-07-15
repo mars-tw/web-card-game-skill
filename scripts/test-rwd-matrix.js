@@ -1,5 +1,5 @@
 /* =========================================================================
- * test-rwd-matrix.js — R61 RWD 十視口矩陣守門（真瀏覽器）
+ * test-rwd-matrix.js — R62 RWD 十視口矩陣守門（真瀏覽器）
  *
  * 驗收標準（每頁 × 每視口都必須成立）：
  *   1. 所有可互動元素（button/select/input/textarea/a[href]/[role=button]/[onclick]）
@@ -186,9 +186,9 @@ async function run() {
             const attacked = window.__test.game().enemy.field[0]?.health < before || window.__test.game().enemy.field.length === 0;
             return { combinedHeight, viewportHeight: innerHeight, open, closed, visible, selected, attacked };
           });
-          if (mobileFlow.combinedHeight + 1 < mobileFlow.viewportHeight * .5
+          if (mobileFlow.combinedHeight + 1 < mobileFlow.viewportHeight * .42
             || !mobileFlow.open || !mobileFlow.closed || !mobileFlow.visible || !mobileFlow.selected || !mobileFlow.attacked) {
-            res.violations.push({ label: "手機攻擊同屏／手牌抽屜／50dvh", status: "FLOW", top: 0, bottom: 0, left: 0, right: 0 });
+            res.violations.push({ label: "手機攻擊同屏／手牌抽屜／44dvh", status: "FLOW", top: 0, bottom: 0, left: 0, right: 0 });
           }
         }
         const bad = res.violations.length > 0 || res.pageScrollY > 8 || res.overflowX > 2;

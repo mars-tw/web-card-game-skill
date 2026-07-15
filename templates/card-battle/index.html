@@ -6,9 +6,9 @@
 <title>卡牌對戰 · Card Battle</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r61-v1";
+    const CACHE_VERSION = "card-battle-r62-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r61_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r62_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -49,7 +49,7 @@
     --panel: #1a2230; --panel-border: #2a3645;
     --ink: #e6edf3; --muted: #8b98a8;
     --mana: #3b82f6; --hp: #ef4444; --accent: #f59e0b;
-    --card-w: 124px; --card-h: 176px; --text-scale: 1;
+    --card-w: clamp(124px, 7.2vw, 152px); --card-h: calc(var(--card-w) * 1.42); --text-scale: 1;
     --bg-img: url("../../assets/backgrounds/dark.png");
   }
   :root[data-theme="fantasy"] {
@@ -112,7 +112,7 @@
   }
 
   /* app-shell：頁面本身不捲動，區域各自內捲 */
-  .board { width: min(980px, 97vw); flex: 1; min-height: 0; overflow-y: auto;
+  .board { width: clamp(980px, 92vw, 1600px); flex: 1; min-height: 0; overflow-y: auto;
     display: flex; flex-direction: column; gap: 7px; padding: 7px; }
   .board.shake-screen { animation: screenShake .26s; }
   .board.lethal-slow { animation: lethalSlow .62s cubic-bezier(.12,.8,.18,1); filter: saturate(1.35) contrast(1.08); }
@@ -131,6 +131,13 @@
     box-shadow:0 5px 16px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.08),inset 0 -10px 24px rgba(0,0,0,.16);
   }
   .hero { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: transform .15s; }
+  .player-hero-scene { display:flex; align-items:center; gap:8px; min-width:0; }
+  .scene-hint-btn {
+    width:38px; height:38px; flex:0 0 38px; border-radius:50%; border:1px solid rgba(250,204,21,.44);
+    display:grid; place-items:center; background:rgba(250,204,21,.12); color:#fef3c7;
+    font-size:18px; font-weight:900; cursor:pointer; box-shadow:0 0 14px rgba(250,204,21,.22), inset 0 1px 0 rgba(255,255,255,.18);
+  }
+  .scene-hint-btn:disabled { filter:grayscale(1) brightness(.62); cursor:not-allowed; box-shadow:none; }
   .hero.targetable { animation: pulseTarget 1s infinite; cursor: crosshair; }
   .hero .avatar {
     width:44px; height:44px; flex:0 0 44px; display:grid; place-items:center; box-sizing:border-box;
@@ -216,6 +223,19 @@
   .card.can-attack { outline:2px solid #22c55e; outline-offset:1px; box-shadow:0 0 var(--glow-size,0) var(--glow,transparent),0 5px 13px rgba(0,0,0,.5),inset 0 0 0 2px rgba(34,197,94,.55); }
   .card.selected { outline: 3px solid var(--accent); transform: translateY(-8px) scale(1.05); z-index: 6; }
   .card.targetable { animation: pulseTarget 1s infinite; }
+  .card.target-queued { outline:3px solid #facc15; box-shadow:0 0 18px rgba(250,204,21,.55),0 5px 13px rgba(0,0,0,.5); z-index:12; }
+  .target-action-popover {
+    position:absolute; left:50%; bottom:8px; transform:translateX(-50%);
+    z-index:24; display:flex; gap:5px; padding:5px; border-radius:10px;
+    background:rgba(8,12,18,.92); border:1px solid rgba(250,204,21,.38);
+    box-shadow:0 8px 18px rgba(0,0,0,.44); pointer-events:auto;
+  }
+  .target-action-popover button {
+    min-width:42px; min-height:30px; border:0; border-radius:8px; padding:5px 8px;
+    font-size:12px; font-weight:900; cursor:pointer;
+  }
+  .target-action-popover .confirm { background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; }
+  .target-action-popover .cancel { background:#2a3645; color:var(--ink); }
   .card.blocked { filter: grayscale(.7) brightness(.6); }
   .card.spawn { animation: spawnIn .32s cubic-bezier(.2,1.15,.4,1); }
   .card.landing { animation:minionLand .54s cubic-bezier(.12,.82,.2,1.12); }
@@ -343,11 +363,39 @@
   .hand-drawer-toggle { display: none; }
   .target-status.active { color: #facc15; border-color: rgba(250,204,21,.35); background: rgba(250,204,21,.08); }
 
+  .settings-hud { position:fixed; top:8px; right:12px; z-index:96; display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
+  .settings-toggle {
+    width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.18);
+    background:rgba(26,34,48,.92); color:var(--ink); font-size:20px; font-weight:900;
+    cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.38); backdrop-filter:blur(6px);
+  }
+  .settings-panel {
+    display:none; width:min(360px, calc(100vw - 24px)); max-height:min(70vh, 560px); overflow:auto;
+    padding:12px; border-radius:12px; background:rgba(13,17,23,.96);
+    border:1px solid rgba(255,255,255,.14); box-shadow:0 16px 38px rgba(0,0,0,.5);
+  }
+  .settings-panel.show { display:grid; gap:10px; }
+  .settings-panel .diff-pick, .settings-panel .dda-toggle, .settings-panel .ai-thought-toggle,
+  .settings-panel .perf-toggle, .settings-panel .text-size-toggle {
+    width:100%; justify-content:space-between; border-radius:10px; padding:8px 10px; white-space:normal;
+  }
+  .settings-panel .perf-toggle { display:grid; grid-template-columns:auto auto; gap:6px 10px; }
+  .settings-panel .perf-diag, .settings-panel .perf-history { grid-column:1 / -1; max-width:none; white-space:normal; }
+
   .controls { display: flex; gap: 12px; align-items: center; justify-content: center; padding: 6px;
     flex-shrink: 0; position: sticky; bottom: 0; z-index: 30; border-radius: 12px;
     background: color-mix(in srgb, var(--bg2) 72%, transparent); backdrop-filter: blur(4px); }
-  .controls-scroll { display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap;
-    max-height: 128px; overflow-y: auto; min-width: 0; }
+  .primary-actions { display:flex; align-items:center; gap:8px; min-width:0; }
+  .desktop-quick-actions { display:flex; align-items:center; gap:8px; min-width:0; }
+  .controls-scroll {
+    display:none; position:absolute; right:6px; bottom:calc(100% + 8px);
+    width:min(360px, calc(100vw - 24px)); max-height:min(56vh, 420px); overflow:auto;
+    grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; padding:10px;
+    border-radius:14px; background:rgba(13,17,23,.97); border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 14px 34px rgba(0,0,0,.52); min-width:0;
+  }
+  .controls.more-open .controls-scroll { display:grid; }
+  .controls .controls-scroll button { width:100%; min-height:40px; padding:8px 10px; border-radius:10px; font-size:12px; white-space:normal; }
   .diff-pick { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted);
     background: color-mix(in srgb, var(--panel) 82%, transparent); padding: 6px 12px; border-radius: 20px;
     border: 1px solid var(--panel-border); backdrop-filter: blur(4px); }
@@ -378,6 +426,11 @@
     box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 40%, transparent); transition: transform .1s;
   }
   button.end-turn:hover { transform: scale(1.05); }
+  .more-actions-btn {
+    display:grid; place-items:center; min-width:44px; width:44px; height:40px;
+    border:1px solid rgba(255,255,255,.14); border-radius:12px; background:#1a2230;
+    color:var(--ink); font-size:22px; font-weight:900; box-shadow:0 3px 10px rgba(0,0,0,.34); cursor:pointer;
+  }
   /* 起手重抽（CP2-6）*/
   button.mulligan-btn { background: linear-gradient(180deg, #38bdf8, #0ea5e9); color: #04263a; font-weight: 800;
     font-size: 14px; border: none; padding: 11px 20px; border-radius: 24px; cursor: pointer;
@@ -514,13 +567,13 @@
     color: #1a1206; border: none; padding: 13px; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; }
   .guide-actions button.secondary { background: #2a3645; color: var(--ink); }
   .guide-focus { outline: 4px solid #facc15 !important; box-shadow: 0 0 0 8px rgba(250,204,21,.22), 0 0 32px rgba(250,204,21,.8) !important; z-index: 120 !important; position: relative; }
-  .kw-codex-btn { position: fixed; top: 8px; bottom: auto; right: 12px; z-index: 60; background: #1a2230;
+  .kw-codex-btn { position: static; background: #1a2230;
     color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
     font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
-  .chronicle-btn { position: fixed; top: 8px; bottom: auto; right: 126px; z-index: 60; background: #1a2230;
+  .chronicle-btn { position: relative; background: #1a2230;
     color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
     font-size: 13px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
-  .mission-drawer-btn { position: fixed; top: 8px; bottom: auto; left: 12px; z-index: 90; background: #1a2230;
+  .mission-drawer-btn { position: relative; background: #1a2230;
     color: #e6edf3; border: 1px solid rgba(255,255,255,.15); padding: 8px 14px; border-radius: 20px;
     font-size: 13px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
   .mission-badge { position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; border-radius:999px;
@@ -657,7 +710,7 @@
     .hero-row { padding-block: 5px; }
     #log { height: 40px; }
     .quest-panel { max-height: 108px; }
-    .controls-scroll { max-height: 88px; }
+    .controls-scroll { max-height: none; }
   }
   @media (max-height: 760px) and (min-width: 701px) {
     :root { --card-w: 88px; --card-h: 124px; }
@@ -671,7 +724,7 @@
     #log { height: 32px; }
     .hand { max-height: calc(var(--card-h) + 20px); }
     .controls { padding: 3px; gap: 8px; }
-    .controls-scroll { max-height: 46px; gap: 8px; }
+    .controls-scroll { max-height: none; gap: 8px; }
     button.end-turn { padding: 8px 18px; font-size: 14px; }
     button.mulligan-btn { padding: 8px 12px; font-size: 12px; }
     .quest-panel { max-height: 84px; padding: 5px 8px; }
@@ -688,7 +741,7 @@
     #log { height: 24px; }
     .hand { min-height: 26px; max-height: calc(var(--card-h) + 16px); padding: 3px;
       align-items: flex-start; align-content: flex-start; }
-    .controls-scroll { max-height: 42px; }
+    .controls-scroll { max-height: none; }
     button.end-turn { padding: 7px 14px; font-size: 13px; }
     .quest-panel { max-height: 52px; min-height: 30px; padding: 4px 8px; }
     .quest-list { gap: 4px; }
@@ -697,35 +750,41 @@
   @media (max-width: 700px) {
     :root {
       --card-w: 92px; --card-h: 132px;
-      --mobile-hand-peek: 46px;
+      --command-dock-h: 62px;
+      --mobile-hand-open: min(188px, 36dvh);
     }
     header { padding: 6px; font-size: 14px; letter-spacing: 1px; }
-    .board { gap: 5px; padding: 6px 8px calc(var(--mobile-hand-peek) + env(safe-area-inset-bottom, 0px) + 8px); }
+    .board { gap: 5px; padding: 6px 8px calc(var(--command-dock-h) + env(safe-area-inset-bottom, 0px) + 10px); width:100%; }
     .hero-row { padding: 6px 10px; border-radius: 10px; }
     .hero .avatar { width:36px; height:36px; flex-basis:36px; font-size:24px; }
     .hero .name { font-size: 14px; }
+    .scene-hint-btn { width:34px; height:34px; flex-basis:34px; font-size:16px; }
     .hp-badge, .mana-badge { min-height:28px; font-size:13px; padding:3px 8px; }
     .battlefield { gap: 5px; padding: 5px; }
     .quest-item { grid-template-columns: minmax(0,1fr) auto; }
     .series-footer { margin: 0; padding: 8px 10px 4px; }
     .hand-drawer {
-      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
-      height: calc(var(--mobile-hand-peek) + env(safe-area-inset-bottom, 0px));
+      display: flex; position: fixed; left: 0; right: 0;
+      bottom: calc(var(--command-dock-h) + env(safe-area-inset-bottom, 0px)); z-index: 70;
+      height: 0; pointer-events:none;
       flex-direction: column; overflow: hidden; background: rgba(8,10,14,.97);
       border-top: 1px solid rgba(255,255,255,.12); box-shadow: 0 -8px 22px rgba(0,0,0,.38);
-      padding-bottom: env(safe-area-inset-bottom, 0px); transition: height .18s ease;
+      transition: height .18s ease;
     }
-    .hand-drawer.open { height: min(174px, calc(42dvh + env(safe-area-inset-bottom, 0px))); }
+    .hand-drawer.open { height: var(--mobile-hand-open); pointer-events:auto; }
     .hand-drawer:not(.open) .hand { visibility: hidden; pointer-events: none; }
     .hand-drawer-toggle {
-      display: block; flex: 0 0 38px; min-height: 38px; width: calc(100% - 108px);
-      border: 0; border-radius: 0; background: transparent; color: var(--ink);
-      font: 800 13px/1 inherit; text-align: left; padding: 0 12px; touch-action: manipulation;
+      display: flex; align-items:center; justify-content:center; gap:5px;
+      min-width:0; min-height:44px; border:1px solid rgba(255,255,255,.14); border-radius:12px;
+      background:rgba(26,34,48,.92); color: var(--ink);
+      font: 900 12px/1 inherit; text-align: center; padding: 0 8px; touch-action: manipulation;
     }
+    .hand-drawer-toggle strong { color:#facc15; font-size:15px; }
+    .hand-drawer-toggle .hand-state { color:var(--muted); font-size:11px; }
     .hand {
       flex: 1 1 auto; min-height: 0; max-height: none; width: 100%; justify-content: flex-start;
       flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain;
-      scroll-snap-type: x proximity; align-items: flex-start; padding: 4px 112px 8px 10px;
+      scroll-snap-type: x proximity; align-items: flex-start; padding: 8px 10px 10px;
       background: transparent; border: 0; touch-action: pan-x;
     }
     .hand .card { --card-w: 82px; --card-h: 116px; scroll-snap-align: start; }
@@ -736,31 +795,33 @@
     .card .cardname { font-size: max(10px, calc(11px * var(--text-scale))); }
     .card .cardtext { font-size: max(10px, calc(9px * var(--text-scale))); }
     .controls {
-      position: static; width: 100%; max-width: 100%; min-height: 44px;
-      overflow: visible; flex-wrap: nowrap; gap: 8px; padding: 4px; border-radius: 10px;
+      position: fixed; left: 8px; right: 8px; bottom: 0; width:auto; max-width:none;
+      min-height: calc(var(--command-dock-h) + env(safe-area-inset-bottom, 0px));
+      display:grid; grid-template-columns:minmax(0,1fr) minmax(112px,.85fr) 48px;
+      align-items:start; gap:8px; padding:7px 8px calc(7px + env(safe-area-inset-bottom, 0px));
+      border-radius:16px 16px 0 0; z-index:82; overflow:visible;
+      background:rgba(8,12,18,.94); border:1px solid rgba(255,255,255,.14); border-bottom:0;
+      box-shadow:0 -10px 30px rgba(0,0,0,.46); backdrop-filter:blur(10px);
     }
+    .primary-actions { min-width:0; display:flex; gap:6px; }
+    .desktop-quick-actions { display:none; }
     .controls-scroll {
-      min-width: 0; flex: 1 1 auto; display: flex; align-items: center; gap: 8px;
-      flex-wrap: nowrap; overflow-y: hidden; overflow-x: auto; max-height: 48px;
-      align-content: center; justify-content: flex-start; padding: 2px;
-      scrollbar-width: thin;
+      display:none; position:absolute; right:0; bottom:calc(100% + 8px);
+      width:min(310px, calc(100vw - 16px)); max-height:min(56dvh, 420px); overflow:auto;
+      grid-template-columns:repeat(2, minmax(0, 1fr)); gap:8px; padding:10px;
+      border-radius:14px; background:rgba(13,17,23,.97); border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 14px 34px rgba(0,0,0,.52);
     }
-    .controls .diff-pick { flex: 0 0 auto; order: 3; }
-    .controls button { flex: 0 0 auto; white-space: nowrap; }
-    #hintBtn { order: 1; }
-    #mulliganBtn { order: 2; }
-    #newGameBtn { order: 4; }
-    #toPackBtn { order: 5; }
-    #guideReplayBtn { order: 6; }
-    .dda-toggle { order: 7; flex:0 0 auto; padding-inline:9px; }
-    .ai-thought-toggle { order: 8; flex:0 0 auto; padding-inline:9px; }
-    .perf-toggle { order: 9; flex:0 0 auto; padding-inline:9px; }
-    .text-size-toggle { order: 10; flex:0 0 auto; padding-inline:9px; }
-    .perf-diag { max-width: 128px; }
-    .perf-history { max-width: 118px; }
-    #endTurnBtn {
-      position: fixed; right: 7px; bottom: calc(5px + env(safe-area-inset-bottom, 0px)); z-index: 82;
-      min-width: 96px; min-height: 38px; padding: 7px 10px; font-size: 12px; border-radius: 12px;
+    .controls.more-open .controls-scroll { display:grid; }
+    .controls .controls-scroll button { width:100%; min-height:40px; padding:8px 10px; border-radius:10px; font-size:12px; white-space:normal; }
+    .more-actions-btn {
+      display:grid; place-items:center; min-width:0; width:48px; height:44px; border:1px solid rgba(255,255,255,.14);
+      border-radius:12px; background:#1a2230; color:var(--ink); font-size:22px; font-weight:900;
+      box-shadow:0 3px 10px rgba(0,0,0,.34); cursor:pointer;
+    }
+    #endTurnBtn, #mulliganBtn {
+      position: static; min-width:0; min-height:44px; padding:7px 8px; font-size:12px; border-radius:12px; margin-right:0;
+      white-space:normal; line-height:1.15;
     }
     .target-status {
       position: static; min-height: 24px; width: auto; padding: 3px 10px; font-size: 12px;
@@ -777,9 +838,7 @@
     /* 任務清單改直向堆疊：由 quest-panel 垂直內捲，不再橫向裁切 */
     .quest-list { display: flex; flex-direction: column; overflow: visible; gap: 6px; padding-bottom: 2px; }
     .quest-item { flex: 0 0 auto; min-height: 44px; padding: 6px; }
-    .kw-codex-btn { top: 8px; bottom: auto; right: 10px; z-index: 90; }
-    .chronicle-btn { top: 8px; bottom: auto; right: 118px; z-index: 90; padding-inline:10px; }
-    .mission-drawer-btn { top: 8px; bottom: auto; left: 10px; z-index: 90; }
+    .kw-codex-btn, .chronicle-btn, .mission-drawer-btn { padding-inline:10px; box-shadow:none; }
     .chronicle-modal { align-items:flex-start; padding:50px 8px 8px; }
     .chronicle-card { max-height:calc(100vh - 64px); padding:12px; border-radius:14px; }
     .chronicle-head { align-items:flex-start; }
@@ -793,8 +852,8 @@
     .mission-actions button { padding:8px 9px; }
     .kw-codex-card { max-height: 82vh; padding: 20px; }
     .kw-codex-card button { position: sticky; bottom: 0; }
-    .guide-panel { bottom: calc(var(--mobile-hand-peek) + env(safe-area-inset-bottom, 0px) + 56px); padding: 16px; }
-    body:has(.hand-drawer.open) .guide-panel { bottom: calc(174px + env(safe-area-inset-bottom, 0px) + 8px); }
+    .guide-panel { bottom: calc(var(--command-dock-h) + env(safe-area-inset-bottom, 0px) + 12px); padding: 16px; }
+    body:has(.hand-drawer.open) .guide-panel { bottom: calc(var(--command-dock-h) + var(--mobile-hand-open) + env(safe-area-inset-bottom, 0px) + 8px); }
     .guide-panel h2 { font-size: 18px; margin-bottom: 8px; }
     .guide-copy { font-size: 13px; }
   }
@@ -803,7 +862,7 @@
     .board { overflow-y: auto; }
     .hero-row { min-height: 38px; padding-block: 3px; }
     .battlefield {
-      flex: 0 0 25dvh; min-height: 25dvh; max-height: 25dvh; overflow: auto;
+      flex: 1 1 24dvh; min-height: 22dvh; max-height: none; overflow: auto;
       align-items: flex-start; align-content: flex-start;
     }
   }
@@ -817,6 +876,51 @@
 <body>
   <header>⚔️ 卡牌對戰 · CARD BATTLE ⚔️</header>
 
+  <div class="settings-hud">
+    <button class="settings-toggle" id="settingsToggleBtn" type="button" aria-label="開啟設定" aria-expanded="false" aria-controls="settingsPanel">⚙</button>
+    <div class="settings-panel" id="settingsPanel" aria-hidden="true">
+      <label class="diff-pick">難度
+        <select id="difficultySel" aria-label="選擇難度">
+          <option value="easy" selected>簡單</option>
+          <option value="normal">普通</option>
+          <option value="hard">困難</option>
+        </select>
+      </label>
+      <label class="diff-pick">對手
+        <select id="opponentSel" aria-label="選擇對手">
+          <option value="op_ser_halden">🛡️ 哈爾登隊長</option>
+          <option value="op_magister_vey">🔮 維伊魔導師</option>
+          <option value="op_scarra">🐺 斯卡拉狼首</option>
+        </select>
+      </label>
+      <label class="dda-toggle" title="依近期勝敗小幅調整 AI。可完全關閉。">
+        <input id="ddaToggle" type="checkbox" checked />
+        <span>動態調節</span>
+      </label>
+      <label class="ai-thought-toggle" title="在戰鬥紀錄顯示 AI 出牌與攻擊理由。">
+        <input id="aiThoughtToggle" type="checkbox" />
+        <span>AI 思路</span>
+      </label>
+      <label class="perf-toggle" title="自動依 FPS 調整動畫密度，也可鎖定高/低。">效能
+        <select id="perfModeSel">
+          <option value="auto">自動</option>
+          <option value="high">高</option>
+          <option value="low">低</option>
+        </select>
+        <span class="perf-diag" id="perfDiag" aria-live="polite">FPS -- · 高動畫 · 自動觀察中</span>
+        <span class="perf-history" id="perfHistory" aria-live="polite">紀錄 --</span>
+      </label>
+      <label class="text-size-toggle">文字
+        <select id="textSizeSel" aria-label="文字大小">
+          <option value="small">小</option>
+          <option value="medium" selected>中</option>
+          <option value="large">大</option>
+        </select>
+      </label>
+      <button class="audio-toggle-btn" id="audioToggleBtn" type="button" title="Audio on/off" aria-label="Audio on/off">SFX</button>
+    </div>
+  </div>
+
   <div class="board">
     <div class="hero-row">
       <div class="hero" id="enemyHero">
@@ -829,8 +933,11 @@
     <div class="battlefield" id="playerField"></div>
 
     <div class="hero-row">
-      <div class="hero" id="playerHero">
-        <span class="avatar">🦸</span><span class="name">你</span>
+      <div class="player-hero-scene">
+        <div class="hero" id="playerHero">
+          <span class="avatar">🦸</span><span class="name">你</span>
+        </div>
+        <button class="scene-hint-btn" id="hintBtn" type="button" title="本回合提示最佳一步" aria-label="取得本回合提示">💡</button>
       </div>
       <div style="display:flex; gap:8px;">
         <span class="mana-badge">💧 <span id="playerMana">1</span>/<span id="playerManaMax">1</span></span>
@@ -841,57 +948,29 @@
     <div class="target-status" id="targetStatus" aria-live="polite">輪到你行動。</div>
     <div id="log" role="log" aria-live="polite" aria-atomic="false"></div>
     <div class="hand-drawer" id="handDrawer">
-      <button class="hand-drawer-toggle" id="handDrawerToggle" type="button" aria-expanded="false" aria-controls="playerHand">🂠 手牌 <span id="handCount">0</span> · 點此展開</button>
       <div class="hand" id="playerHand"></div>
     </div>
-    <div class="controls">
-      <div class="controls-scroll">
-        <label class="diff-pick">難度
-          <select id="difficultySel" aria-label="選擇難度">
-            <option value="easy" selected>簡單</option>
-            <option value="normal">普通</option>
-            <option value="hard">困難</option>
-          </select>
-        </label>
-        <label class="diff-pick">對手
-          <select id="opponentSel" aria-label="選擇對手">
-            <option value="op_ser_halden">🛡️ 哈爾登隊長</option>
-            <option value="op_magister_vey">🔮 維伊魔導師</option>
-            <option value="op_scarra">🐺 斯卡拉狼首</option>
-          </select>
-        </label>
+    <div class="controls" id="commandDock">
+      <div class="primary-actions">
         <button class="mulligan-btn" id="mulliganBtn" style="display:none">🔄 重抽起手牌</button>
-        <button class="mulligan-btn" id="hintBtn" title="本回合提示最佳一步">💡 提示</button>
+        <button class="end-turn" id="endTurnBtn">結束回合 ▶</button>
+      </div>
+      <div class="desktop-quick-actions" aria-label="主要遊戲行動">
+        <button class="mulligan-btn" id="newGameQuickBtn" type="button">重新開始</button>
+        <button class="mulligan-btn" id="toPackQuickBtn" type="button">卡包 / 牌組</button>
+      </div>
+      <button class="hand-drawer-toggle" id="handDrawerToggle" type="button" aria-expanded="false" aria-controls="playerHand">
+        <span>🂠 手牌</span><strong id="handCount">0</strong><span class="hand-state" id="handDrawerState">展開</span>
+      </button>
+      <button class="more-actions-btn" id="moreActionsBtn" type="button" aria-label="更多行動" aria-expanded="false" aria-controls="dockMorePanel">⋯</button>
+      <div class="controls-scroll" id="dockMorePanel">
         <button class="mulligan-btn" id="newGameBtn" title="重開一局（會帶入最新收藏的牌組）">🔁 重新開始</button>
         <button class="mulligan-btn" id="toPackBtn" title="前往卡包與牌組編輯器">🃏 卡包／牌組</button>
         <button class="mulligan-btn" id="guideReplayBtn" title="重看三步導引">🧭 導引</button>
-        <label class="dda-toggle" title="依近期勝敗小幅調整 AI。可完全關閉。">
-          <input id="ddaToggle" type="checkbox" checked />
-          <span>動態調節</span>
-        </label>
-        <label class="ai-thought-toggle" title="在戰鬥紀錄顯示 AI 出牌與攻擊理由。">
-          <input id="aiThoughtToggle" type="checkbox" />
-          <span>AI 思路</span>
-        </label>
-        <label class="perf-toggle" title="自動依 FPS 調整動畫密度，也可鎖定高/低。">效能
-          <select id="perfModeSel">
-            <option value="auto">自動</option>
-            <option value="high">高</option>
-            <option value="low">低</option>
-          </select>
-          <span class="perf-diag" id="perfDiag" aria-live="polite">FPS -- · 高動畫 · 自動觀察中</span>
-          <span class="perf-history" id="perfHistory" aria-live="polite">紀錄 --</span>
-        </label>
-        <label class="text-size-toggle">文字
-          <select id="textSizeSel" aria-label="文字大小">
-            <option value="small">小</option>
-            <option value="medium" selected>中</option>
-            <option value="large">大</option>
-          </select>
-        </label>
-        <button class="audio-toggle-btn" id="audioToggleBtn" type="button" title="Audio on/off" aria-label="Audio on/off">SFX</button>
+        <button class="mission-drawer-btn" id="missionDrawerBtn">任務<span class="mission-badge" id="missionBadge" aria-live="polite">0</span></button>
+        <button class="kw-codex-btn" id="kwCodexBtn">📖 關鍵字</button>
+        <button class="chronicle-btn" id="chronicleBtn">📜 編年史<span class="chronicle-badge" id="chronicleBadge" aria-live="polite">0</span></button>
       </div>
-      <button class="end-turn" id="endTurnBtn">結束回合 ▶</button>
     </div>
 
     <section class="quest-panel" id="questPanel">
@@ -931,9 +1010,6 @@
   </div>
 
   <!-- 關鍵字圖鑑（CP0-15 觸控友善）-->
-  <button class="mission-drawer-btn" id="missionDrawerBtn">任務<span class="mission-badge" id="missionBadge" aria-live="polite">0</span></button>
-  <button class="kw-codex-btn" id="kwCodexBtn">📖 關鍵字</button>
-  <button class="chronicle-btn" id="chronicleBtn">📜 編年史<span class="chronicle-badge" id="chronicleBadge" aria-live="polite">0</span></button>
   <div class="kw-codex" id="kwCodex">
     <div class="kw-codex-card">
       <h2>📖 關鍵字圖鑑</h2>
@@ -1001,9 +1077,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r61-v1"></script>
-  <script src="core.js?v=card-battle-r61-v1"></script>
-  <script src="battle.js?v=card-battle-r61-v1"></script>
+  <script src="cards.js?v=card-battle-r62-v1"></script>
+  <script src="core.js?v=card-battle-r62-v1"></script>
+  <script src="battle.js?v=card-battle-r62-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {

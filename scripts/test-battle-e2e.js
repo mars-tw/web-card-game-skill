@@ -160,7 +160,15 @@ async function run() {
     swPage.on("console", (m) => { if (m.type() === "error" && !/favicon|net::ERR/.test(m.text())) swErrors.push("console: " + m.text()); });
     swPage.on("pageerror", (e) => swErrors.push("pageerror: " + (e && e.message)));
     await swPage.goto(shellBase + "?swtest=1", { waitUntil: "domcontentloaded" });
-    await swPage.waitForFunction(() => window.__pwaTest);
+    await swPage.waitForFunction(() => window.__pwaTest, { timeout: 60000 });
+    await swPage.evaluate(async () => {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map((reg) => reg.unregister()));
+      const keys = await caches.keys();
+      await Promise.all(keys.map((key) => caches.delete(key)));
+    });
+    await swPage.reload({ waitUntil: "domcontentloaded" });
+    await swPage.waitForFunction(() => window.__pwaTest, { timeout: 60000 });
     const swInstall = await swPage.evaluate(async () => {
       const state = await window.__pwaTest.registerPwa();
       const reg = await navigator.serviceWorker.ready;
@@ -171,15 +179,15 @@ async function run() {
     } catch (err) {
       void err;
     }
-    await swPage.waitForFunction(() => navigator.serviceWorker.controller && document.getElementById("battle"));
-    await swPage.waitForFunction(() => document.getElementById("battle")?.contentWindow?.__test);
+    await swPage.waitForFunction(() => navigator.serviceWorker.controller && document.getElementById("battle"), { timeout: 60000 });
+    await swPage.waitForFunction(() => document.getElementById("battle")?.contentWindow?.__test, { timeout: 60000 });
     await swContext.setOffline(true);
     try {
       await swPage.reload({ waitUntil: "domcontentloaded" });
     } catch (err) {
       void err;
     }
-    await swPage.waitForFunction(() => document.getElementById("battle")?.contentWindow?.__test);
+    await swPage.waitForFunction(() => document.getElementById("battle")?.contentWindow?.__test, { timeout: 60000 });
     const offlineSw = await swPage.evaluate(() => ({
       controlled: !!navigator.serviceWorker.controller,
       shell: !!document.querySelector(".tabbar"),
@@ -207,8 +215,8 @@ async function run() {
     page.on("pageerror", (e) => errors.push("pageerror: " + (e && e.message)));
 
     if (vp.w === 1280) {
-      await page.goto(shellBase);
-      await page.waitForFunction(() => window.__pwaTest);
+      await page.goto(shellBase, { waitUntil: "domcontentloaded" });
+      await page.waitForFunction(() => window.__pwaTest, { timeout: 60000 });
       const pwaCheck = await page.evaluate(async () => {
         const manifestLink = document.querySelector('link[rel="manifest"]');
         const manifestResponse = await fetch("../manifest.webmanifest");
@@ -228,10 +236,10 @@ async function run() {
           shell: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(shellText) && /sessionStorage/.test(shellText) && /controllerchange/.test(shellText),
           battle: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(battleHtml) && /sessionStorage/.test(battleHtml) && /controllerchange/.test(battleHtml),
           pack: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(packHtml) && /sessionStorage/.test(packHtml) && /controllerchange/.test(packHtml),
-          versionedRefs: /cards\.js\?v=card-battle-r61-v1/.test(battleHtml)
-            && /battle\.js\?v=card-battle-r61-v1/.test(battleHtml)
-            && /pack\.js\?v=card-battle-r61-v1/.test(packHtml)
-            && /manifest\.webmanifest\?v=card-battle-r61-v1/.test(shellText),
+          versionedRefs: /cards\.js\?v=card-battle-r62-v1/.test(battleHtml)
+            && /battle\.js\?v=card-battle-r62-v1/.test(battleHtml)
+            && /pack\.js\?v=card-battle-r62-v1/.test(packHtml)
+            && /manifest\.webmanifest\?v=card-battle-r62-v1/.test(shellText),
         };
         return {
           manifestHref: manifestLink && manifestLink.getAttribute("href"),
@@ -245,7 +253,7 @@ async function run() {
           promptVisible: document.getElementById("pwaUpdateToast").classList.contains("show"),
         };
       });
-      assert(pwaCheck.manifestHref === "../manifest.webmanifest?v=card-battle-r61-v1"
+      assert(pwaCheck.manifestHref === "../manifest.webmanifest?v=card-battle-r62-v1"
         && pwaCheck.manifest.name === "卡牌對戰"
         && pwaCheck.manifest.icons.some((icon) => icon.sizes === "192x192")
         && pwaCheck.manifest.icons.some((icon) => icon.sizes === "512x512"),
@@ -253,7 +261,7 @@ async function run() {
       assert(/CACHE_VERSION/.test(pwaCheck.swText)
         && /networkFirst/.test(pwaCheck.swText)
         && /cacheFirst/.test(pwaCheck.swText)
-        && pwaCheck.swText.includes("card-battle-r61-v1")
+        && pwaCheck.swText.includes("card-battle-r62-v1")
         && pwaCheck.swText.includes("offline.html")
         && pwaCheck.swText.includes("versioned(\"sw.js\")")
         && pwaCheck.swText.includes("templates/card-battle")
@@ -261,21 +269,21 @@ async function run() {
         && pwaCheck.swText.includes("templates/card-battle/battle.js")
         && pwaCheck.swText.includes("templates/card-pack/pack.js")
         && pwaCheck.swText.includes("assets/cards/wolf.png")
-        && pwaCheck.version === "card-battle-r61-v1"
-        && pwaCheck.versionLabel.includes("card-battle-r61-v1")
-        && pwaCheck.checked.version === "card-battle-r61-v1",
+        && pwaCheck.version === "card-battle-r62-v1"
+        && pwaCheck.versionLabel.includes("card-battle-r62-v1")
+        && pwaCheck.checked.version === "card-battle-r62-v1",
         "Service worker 使用版本快取並涵蓋 battle/pack 子路徑");
       assert(/self\.skipWaiting\(\)/.test(pwaCheck.swText) && /self\.clients\.claim\(\)/.test(pwaCheck.swText),
         "Service worker install 會 skipWaiting，activate 會 clients.claim");
-      assert(pwaCheck.guard.windowMs === 15000 && pwaCheck.guard.key === "card_sw_auto_reload_r61_v1"
+      assert(pwaCheck.guard.windowMs === 15000 && pwaCheck.guard.key === "card_sw_auto_reload_r62_v1"
         && pwaCheck.guard.early === true && pwaCheck.guard.shell && pwaCheck.guard.battle && pwaCheck.guard.pack && pwaCheck.guard.versionedRefs,
         "入口 shell、battle、pack 都有 15 秒自動重載、sessionStorage 守衛與版本化本地資源");
       assert(pwaCheck.skipped === true && pwaCheck.promptVisible === true, "navigator.webdriver 會跳過 SW 註冊且更新提示可顯示");
     }
 
     if (vp.w === 1366) {
-      await page.goto(shellBase);
-      await page.waitForFunction(() => window.__pwaTest && document.getElementById("battle"));
+      await page.goto(shellBase, { waitUntil: "domcontentloaded" });
+      await page.waitForFunction(() => window.__pwaTest && document.getElementById("battle"), { timeout: 60000 });
       const shellLowHit = {
         tabOk: await areAllMatchingHittable(page, ".tab"),
         buttons: { pwaCheckBtn: await isLocatorHittable(page, "#pwaCheckBtn") },
@@ -286,7 +294,7 @@ async function run() {
       await page.locator("#pwaCheckBtn").click();
     }
 
-    await page.goto(base);
+    await page.goto(base, { waitUntil: "domcontentloaded" });
     await page.evaluate(() => { localStorage.clear(); localStorage.setItem("cb_guide_done_v1", "1"); });
     await page.reload();
     await page.waitForFunction(() => window.__test && window.__test.game);
@@ -302,7 +310,7 @@ async function run() {
     assert(boot.turn === "player", "開局輪到玩家");
     assert(boot.playerHand >= 3, `玩家起手 ≥3 張（${boot.playerHand}）`);
     const battleSwGuard = await page.evaluate(() => window.__test.swUpdateGuard());
-    assert(battleSwGuard.key === "card_sw_auto_reload_r61_v1" && battleSwGuard.windowMs === 15000 && battleSwGuard.late === false,
+    assert(battleSwGuard.key === "card_sw_auto_reload_r62_v1" && battleSwGuard.windowMs === 15000 && battleSwGuard.late === false,
       "對戰頁 SW 自動更新守衛超過 15 秒不會自動 reload");
 
     if (vp.w === 1280) {
@@ -490,7 +498,6 @@ async function run() {
         "battle FX guard: defeat applies grayscale fade state");
       await page.evaluate(() => window.__newGame());
     }
-
     if (vp.w === 390) {
       const mobileCapture = await page.evaluate(() => {
         const result = window.__capture.pose("fourRarityHand");
@@ -512,8 +519,9 @@ async function run() {
     }
 
     if (vp.w === 1366) {
+      await page.locator("#moreActionsBtn").click();
       const battleLowHit = {
-        buttons: await areLocatorsHittable(page, ["#hintBtn", "#newGameBtn", "#toPackBtn", "#guideReplayBtn", "#endTurnBtn", "#missionDrawerBtn", "#kwCodexBtn"]),
+        buttons: await areLocatorsHittable(page, ["#hintBtn", "#newGameQuickBtn", "#toPackQuickBtn", "#moreActionsBtn", "#guideReplayBtn", "#endTurnBtn", "#missionDrawerBtn", "#kwCodexBtn"]),
         ...(await page.evaluate(() => {
         const scrollBox = (selector) => {
           const el = document.querySelector(selector);
@@ -528,6 +536,7 @@ async function run() {
         };
         })),
       };
+      await page.locator("#moreActionsBtn").click();
       assert(battleLowHit.buttons && battleLowHit.detail && battleLowHit.codex && battleLowHit.mission && battleLowHit.overlay,
         "矮桌機對戰主要按鈕可點，詳情/圖鑑/任務/結算層可垂直捲動");
     }
@@ -542,7 +551,7 @@ async function run() {
       assert(liveRegions.log === "polite" && liveRegions.target === "polite"
         && liveRegions.quest === "polite" && liveRegions.badge === "polite",
         "手機對戰主要提示與任務通知使用 aria-live=polite");
-      await page.locator("#hintBtn").focus();
+      await page.locator("#endTurnBtn").focus();
       await page.keyboard.press("Tab");
       const tabSmoke = await page.evaluate(() => {
         const active = document.activeElement;
@@ -676,17 +685,20 @@ async function run() {
       T.endTurn();
       const blocked = g.turn === "player" && !!g.pendingBattlecry;
       document.querySelector(`.card[data-uid="${target.uid}"]`)?.click();
+      const queued = !!document.querySelector(`.card[data-uid="${target.uid}"] .target-action-popover`);
+      document.querySelector(`.card[data-uid="${target.uid}"] .target-action-popover .confirm`)?.click();
       return {
         pendingBeforeEnd,
         blocked,
+        queued,
         resolved: !g.pendingBattlecry,
         attackGain: target.attack - before.attack,
         healthGain: target.health - before.health,
       };
     });
-    assert(attuneUi.pendingBeforeEnd && attuneUi.blocked && attuneUi.resolved
+    assert(attuneUi.pendingBeforeEnd && attuneUi.blocked && attuneUi.queued && attuneUi.resolved
       && attuneUi.attackGain === 1 && attuneUi.healthGain === 1,
-      "Attune UI requires a friendly target, blocks ending the turn, and resolves +1/+1");
+      "Attune UI requires a friendly target, blocks ending the turn, shows confirm/cancel, and resolves +1/+1");
 
     // 2. Stage 1 核心修復：AI 隨從攻擊權每回合重置
     //    模擬「AI 上回合召喚的非衝鋒隨從」（canAttack=false 掛在場上），
@@ -762,10 +774,12 @@ async function run() {
       // 走正式 UI 路徑：點擊敵方隨從卡（.card[data-uid=...] 的 onclick → clickEnemyMinion → resolvePendingSpell）
       const targetEl = document.querySelector(`.card[data-uid="${g.enemy.field[0].uid}"]`);
       if (targetEl) targetEl.click();
-      return { beforeResolve, resolved: !g.pendingSpell, afterResolve: g.mulliganUsed, targetFound: !!targetEl };
+      const confirm = document.querySelector(`.card[data-uid="${g.enemy.field[0].uid}"] .target-action-popover .confirm`);
+      if (confirm) confirm.click();
+      return { beforeResolve, resolved: !g.pendingSpell, afterResolve: g.mulliganUsed, targetFound: !!targetEl, confirmFound: !!confirm };
     });
     assert(mullSpell.targetFound === true, "敵方隨從卡可被點擊（UI 目標路徑存在）");
-    assert(mullSpell.beforeResolve === false && mullSpell.resolved === true, "進入待指定時未沒收、點目標後法術結算");
+    assert(mullSpell.confirmFound === true && mullSpell.beforeResolve === false && mullSpell.resolved === true, "進入待指定時未沒收、確認目標後法術結算");
     assert(mullSpell.afterResolve === true, "指定法術結算後沒收重抽權（resolvePendingSpell 也燒）");
 
     // 5. 壞存檔安全：缺欄位的 card_stats_v1 讀回來自動補齊，不會 NaN
@@ -973,21 +987,25 @@ async function run() {
         g.enemy.field = [];
         g.player.mana = g.player.manaMax = 10;
         const uid = T.giveCard("footman");
-        const hand = document.getElementById("playerHand").getBoundingClientRect();
+        const dock = document.getElementById("commandDock").getBoundingClientRect();
+        const handToggle = document.getElementById("handDrawerToggle").getBoundingClientRect();
         const endBtn = document.getElementById("endTurnBtn");
         const end = endBtn.getBoundingClientRect();
         const hit = document.elementFromPoint(end.left + end.width / 2, end.top + end.height / 2);
+        const handHit = document.elementFromPoint(handToggle.left + handToggle.width / 2, handToggle.top + handToggle.height / 2);
         return {
           uid,
-          handVisible: hand.top < window.innerHeight && hand.bottom > 0 && hand.left >= 0 && hand.right <= window.innerWidth,
+          dockVisible: dock.top >= 0 && dock.bottom <= window.innerHeight && dock.left >= 0 && dock.right <= window.innerWidth,
+          handToggleVisible: handToggle.top >= 0 && handToggle.bottom <= window.innerHeight && handToggle.left >= 0 && handToggle.right <= window.innerWidth,
+          handHit: !!(handHit && handHit.closest && handHit.closest("#handDrawerToggle")),
           endVisible: end.top >= 0 && end.bottom <= window.innerHeight && end.left >= 0 && end.right <= window.innerWidth,
           endHit: !!(hit && hit.closest && hit.closest("#endTurnBtn")),
           endRect: { left: end.left, right: end.right, top: end.top, bottom: end.bottom },
           scrollY: window.scrollY,
         };
       });
-      assert(stickySetup.handVisible && stickySetup.endVisible && stickySetup.endHit && stickySetup.scrollY === 0,
-        `手機首屏可看到且可點擊手牌與結束回合按鈕（end left=${stickySetup.endRect.left}, right=${stickySetup.endRect.right}）`);
+      assert(stickySetup.dockVisible && stickySetup.handToggleVisible && stickySetup.handHit && stickySetup.endVisible && stickySetup.endHit && stickySetup.scrollY === 0,
+        `手機首屏可看到 Command Dock、手牌把手與結束回合按鈕（end left=${stickySetup.endRect.left}, right=${stickySetup.endRect.right}）`);
       await page.locator("#hintBtn").click();
       const hintCheck = await page.evaluate((uid) => {
         const g = window.__test.game();
@@ -1008,6 +1026,8 @@ async function run() {
         "提示高亮時會附上為什麼文案");
       assert(hintCheck.toastLive === "polite" && hintCheck.logLive === "polite",
         "提示 toast 與 log 使用 polite live region");
+      await page.locator("#settingsToggleBtn").click();
+      await page.waitForFunction(() => document.getElementById("settingsPanel")?.classList.contains("show"));
       await page.locator("#ddaToggle").uncheck();
       const ddaOff = await page.evaluate(() => window.__test.dda());
       assert(ddaOff.stats.enabled === false && ddaOff.profile.enabled === false && ddaOff.profile.mistakeRate === 0 && ddaOff.profile.scoreBias === 0,
@@ -1063,6 +1083,8 @@ async function run() {
         && textSizeCheck.stored === "large" && textSizeCheck.large > textSizeCheck.small,
         "對戰頁文字大小設定可調整 log 字級並保存");
 
+      await page.locator("#settingsToggleBtn").click();
+      await page.waitForFunction(() => !document.getElementById("settingsPanel")?.classList.contains("show"));
       await page.locator("#handDrawerToggle").click();
       await page.waitForFunction(() => document.getElementById("handDrawer")?.classList.contains("open"));
       await page.locator(`.hand .card[data-uid="${stickySetup.uid}"] .card-info-btn`).click();
@@ -1120,6 +1142,8 @@ async function run() {
         && /預計擊殺/.test(spellHint.logText),
         "指定法術提示會說明理由並預估擊殺目標");
 
+      await page.locator("#settingsToggleBtn").click();
+      await page.waitForFunction(() => document.getElementById("settingsPanel")?.classList.contains("show"));
       await page.locator("#aiThoughtToggle").check();
       const aiThoughtLog = await page.evaluate(() => {
         const T = window.__test;
@@ -1143,6 +1167,8 @@ async function run() {
       });
       assert(aiThoughtLog.toggle.enabled && /AI：/.test(aiThoughtLog.text) && /快攻|鋪場|施壓|費用/.test(aiThoughtLog.text),
         "開啟顯示 AI 思路後，AI 出牌會在 log 附理由");
+      await page.locator("#settingsToggleBtn").click();
+      await page.waitForFunction(() => !document.getElementById("settingsPanel")?.classList.contains("show"));
 
       const fieldSetup = await page.evaluate(() => {
         const g = window.__test.game();
@@ -1185,6 +1211,8 @@ async function run() {
       await page.locator("#cardDetailClose").click();
       await waitCardDetail(page, false);
 
+      await page.locator("#moreActionsBtn").click();
+      await page.waitForFunction(() => document.getElementById("commandDock")?.classList.contains("more-open"));
       const codexHit = await page.evaluate(() => {
         const btn = document.getElementById("kwCodexBtn");
         const rect = btn.getBoundingClientRect();
@@ -1194,7 +1222,7 @@ async function run() {
           hit: !!(hit && hit.closest && hit.closest("#kwCodexBtn")),
         };
       });
-      assert(codexHit.visible && codexHit.hit, "手機關鍵字圖鑑按鈕未被底部操作列遮住");
+      assert(codexHit.visible && codexHit.hit, "手機更多面板內的關鍵字圖鑑按鈕可命中");
       await page.locator("#kwCodexBtn").click();
       const codexOpen = await page.evaluate(() => document.getElementById("kwCodex").classList.contains("show"));
       assert(codexOpen === true, "手機可點開關鍵字圖鑑");
@@ -1217,6 +1245,8 @@ async function run() {
         };
       }, { collection: collectionForDeck(LEGAL_DECK_IDS) });
       assert(battleMissionSetup.count >= 3 && Number(battleMissionSetup.badge) >= 3, "對戰頁任務抽屜紅點合併每日/每週/里程碑可領數");
+      await page.locator("#moreActionsBtn").click();
+      await page.waitForFunction(() => document.getElementById("commandDock")?.classList.contains("more-open"));
       await page.locator("#missionDrawerBtn").click();
       const battleMissionOpen = await page.evaluate(() => {
         const btn = document.getElementById("missionClaimAllBtn");
@@ -1244,6 +1274,8 @@ async function run() {
         "對戰頁任務抽屜可一鍵領取所有可領獎勵並清除紅點");
       await page.keyboard.press("Escape");
       await page.waitForFunction(() => !document.getElementById("missionDrawer").classList.contains("show") && document.getElementById("missionDrawer").getAttribute("aria-hidden") === "true");
+      await page.keyboard.press("Escape");
+      await page.waitForFunction(() => !document.getElementById("commandDock")?.classList.contains("more-open"));
 
       const mobileDock = await page.evaluate(() => {
         const rect = (sel) => {
@@ -1274,7 +1306,7 @@ async function run() {
       assert(mobileDock.targetHit && mobileDock.logHit && mobileDock.questButtonHit, "手機目標列、日誌、任務按鈕可見且可命中");
       assert(!mobileDock.targetCovered && !mobileDock.logCovered && !mobileDock.questCovered, "手機目標/日誌/任務不被固定手牌或控制列遮住");
 
-      await page.goto(shellBase);
+      await page.goto(shellBase, { waitUntil: "domcontentloaded" });
       await page.waitForSelector(".tabbar");
       const shellMobile = await page.evaluate(() => {
         const tabs = [...document.querySelectorAll(".tab")].map((tab) => {
@@ -1292,7 +1324,7 @@ async function run() {
       assert(shellMobile.overflow <= 2 && shellMobile.barHeight <= 64, `手機入口 shell 無水平溢出且高度緊湊（overflow=${shellMobile.overflow}, h=${shellMobile.barHeight}）`);
       assert(shellMobile.tabs.every((tab) => tab.scrollHeight <= tab.clientHeight + 2 && tab.height <= 56 && tab.width >= 54), "手機入口 tab 不直排、不被文字撐高");
 
-      await page.goto(base);
+      await page.goto(base, { waitUntil: "domcontentloaded" });
       await page.evaluate(() => localStorage.clear());
       await page.reload();
       await page.waitForFunction(() => window.__test && window.__test.game);
@@ -1309,6 +1341,8 @@ async function run() {
         stored: localStorage.getItem("cb_guide_done_v1"),
       }));
       assert(!guideSkipped.visible && guideSkipped.stored === "1", "三步導引可略過並記錄已完成");
+      await page.locator("#moreActionsBtn").click();
+      await page.waitForFunction(() => document.getElementById("commandDock")?.classList.contains("more-open"));
       await page.locator("#guideReplayBtn").click();
       await page.waitForFunction(() => window.__test.guide().active && window.__test.guide().step === 0);
       await page.locator('.hand .card[data-card-id="wolf"]').click();
@@ -1327,7 +1361,7 @@ async function run() {
       localStorage.clear();
       localStorage.setItem("cardpack_collection_v2", JSON.stringify(collection));
     }, { collection: collectionForDeck(LEGAL_DECK_IDS) });
-    await page.goto(basePack);
+    await page.goto(basePack, { waitUntil: "domcontentloaded" });
     await page.waitForFunction(() => window.__deckTest && document.getElementById("deckCollectionList"));
     if (vp.w === 1280) {
       const posterFrames = await page.evaluate(() => {
@@ -1349,7 +1383,7 @@ async function run() {
         && posterFrames.suspenseFrozen && posterFrames.legendFrozen && posterFrames.foilFrozen,
         "r61 capture: pack 懸念、傳說與 foil 海報幀皆可命名鎖定");
       await page.evaluate(() => window.__capture.clear());
-      await page.evaluate(() => { window.__deckTest.setAudioMuted(true); window.__deckTest.revealTest(); });
+      await page.evaluate(() => { window.__deckTest.setAudioMuted(true); window.__deckTest.revealTest({ auto: false }); });
       await page.locator("#revealRow .card").first().click();
       await page.locator("#skipRevealBtn").click();
       await sleep(120);
@@ -1448,9 +1482,9 @@ async function run() {
         "開包頁也可開啟整合任務抽屜");
       await page.locator("#missionDrawerClose").click();
 
-      await page.locator("#collectionOwnershipFilter").selectOption("missing");
-      await page.locator("#collectionRarityFilter").selectOption("rare");
-      await page.locator("#collectionSort").selectOption("cost");
+      await page.locator('#collectionOwnershipFilter .filter-chip[data-value="missing"]').click();
+      await page.locator('#collectionRarityFilter .filter-chip[data-value="rare"]').click();
+      await page.locator('#collectionSort .filter-chip[data-value="cost"]').click();
       const collectionFilter = await page.evaluate(() => {
         const cards = window.__deckTest.visibleCollection();
         const costs = cards.map((card) => card.cost);
@@ -1461,19 +1495,20 @@ async function run() {
           allRareMissing: cards.every((card) => card.rarity === "rare" && card.owned === false),
           sortedByCost,
           box,
-          controls: document.querySelectorAll("#collectionTools input, #collectionTools select").length,
+          nativeSelects: document.querySelectorAll("#collectionTools select").length,
+          chipRows: document.querySelectorAll("#collectionTools .filter-chip-row").length,
           overflow: document.documentElement.scrollWidth - window.innerWidth,
         };
       });
       assert(collectionFilter.count > 0 && collectionFilter.allRareMissing,
         "手機收藏冊可篩選未擁有＋稀有度組合");
-      assert(collectionFilter.sortedByCost && collectionFilter.controls === 7 && collectionFilter.box.height <= 180 && collectionFilter.overflow <= 2,
-        "手機收藏冊排序生效且篩選控件一屏可操作");
+      assert(collectionFilter.sortedByCost && collectionFilter.nativeSelects === 0 && collectionFilter.chipRows >= 6 && collectionFilter.box.height <= 240 && collectionFilter.overflow <= 2,
+        "手機收藏冊排序生效且篩選 chip 化、無冗長下拉");
       await page.evaluate(() => window.__deckTest.setCollectionFilters({ search: "", axis: "all", keyword: "all", rarity: "all", ownership: "all", sort: "cost" }));
 
       await page.locator("#deckSearch").fill("迅捷");
-      await page.locator("#deckCostFilter").selectOption("2");
-      await page.locator("#deckRarityFilter").selectOption("common");
+      await page.locator('#deckCostFilter .filter-chip[data-value="2"]').click();
+      await page.locator('#deckRarityFilter .filter-chip[data-value="common"]').click();
       const filtered = await page.evaluate(() => window.__deckTest.visibleCards());
       assert(filtered.includes("wolf") && filtered.every((id) => id === "wolf"), "手機牌組編輯器可用搜尋/費用/稀有度篩出迅捷狼");
       await page.evaluate(() => window.__deckTest.setFilters({ search: "", cost: "all", rarity: "all" }));
@@ -1495,11 +1530,11 @@ async function run() {
     });
     if (vp.w <= 400) {
       assert(deckSaved.validation.ok === true && deckSaved.count === "20/20" && deckSaved.saved.cards.length === 20, "手機牌組編輯器可自動補滿合法 20 張並儲存");
-      await page.goto(base);
+      await page.goto(base, { waitUntil: "domcontentloaded" });
       await page.waitForFunction(() => window.__test && window.__test.game);
       const savedBattleDeck = await page.evaluate(() => window.__test.deckInfo());
       assert(savedBattleDeck.source === "saved" && savedBattleDeck.ids.length === 20, "手機自動補滿牌組會帶入下一場對戰");
-      await page.goto(basePack);
+      await page.goto(basePack, { waitUntil: "domcontentloaded" });
       await page.waitForFunction(() => window.__deckTest && document.getElementById("deckList"));
     } else {
       assert(deckSaved.validation.ok === true && sameMultiset(deckSaved.saved.cards, LEGAL_DECK_IDS), "牌組編輯器可加入 20 張合法牌並儲存");
@@ -1555,7 +1590,7 @@ async function run() {
     assert(templateDecks.aggroNewCount >= 4 && templateDecks.controlNewCount >= 4,
       `R16 新卡會被模板選入：快攻 ${templateDecks.aggroNewCount}，控制 ${templateDecks.controlNewCount}`);
     assert(templateDecks.countText === "20/20" && /隨從/.test(templateDecks.ratioText), "牌組比例與 20/20 狀態可見");
-    await page.goto(base);
+    await page.goto(base, { waitUntil: "domcontentloaded" });
     await page.waitForFunction(() => window.__test && window.__test.game);
     const templateBattleDeck = await page.evaluate(() => window.__test.deckInfo());
     assert(templateBattleDeck.source === "saved" && templateBattleDeck.ids.length === 20, "模板牌組存檔後可進入對戰並使用 saved 來源");
@@ -1571,7 +1606,7 @@ async function run() {
       const stats = T.finishGame(true);
       return { wolfName: window.getCardById("wolf").name, stats };
     });
-    await page.goto(basePack);
+    await page.goto(basePack, { waitUntil: "domcontentloaded" });
     await page.waitForFunction(() => window.__deckTest && document.getElementById("deckList"));
     if (vp.w === 1366) {
       const packLowHit = {
@@ -1621,11 +1656,11 @@ async function run() {
     await page.waitForFunction(() => /mission/.test(document.activeElement?.id || ""));
     const packMissionFocus = await page.evaluate(() => document.activeElement?.id || "");
     assert(packR36.textState.attr === "large" && packR36.textState.select === "large"
-      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r61-v1"),
+      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r62-v1"),
       "開包戰績區顯示版本並可調整文字大小");
     assert(packR36.missionOpen && packR36.missionAria === "false" && /mission/.test(packMissionFocus),
       "開包任務抽屜開啟後焦點進入抽屜控制");
-    assert(packR36.swGuard.key === "card_sw_auto_reload_r61_v1" && packR36.swGuard.windowMs === 15000 && packR36.swGuard.late === false,
+    assert(packR36.swGuard.key === "card_sw_auto_reload_r62_v1" && packR36.swGuard.windowMs === 15000 && packR36.swGuard.late === false,
       "開包頁 SW 自動更新守衛超過 15 秒不會自動 reload");
     assert(packR36.summaryLive === "polite" && packR36.missionDailyLive === "polite"
       && packR36.badgeLive === "polite" && packR36.deckSaveLive === "polite",

@@ -49,6 +49,29 @@
   let audioCtx = null;
   let audioUnlocked = false;
 
+  function setChipGroupValue(group, value) {
+    if (!group) return;
+    const next = String(value || "all");
+    group.dataset.value = next;
+    group.querySelectorAll(".filter-chip").forEach((btn) => {
+      const active = btn.dataset.value === next;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
+
+  function bindChipGroup(group, initialValue, onChange) {
+    if (!group) return;
+    setChipGroupValue(group, initialValue);
+    group.addEventListener("click", (event) => {
+      const btn = event.target.closest(".filter-chip");
+      if (!btn || !group.contains(btn)) return;
+      const value = btn.dataset.value || "all";
+      setChipGroupValue(group, value);
+      onChange(value);
+    });
+  }
+
   function loadCollection() {
     try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || {}; }
     catch { return {}; }
@@ -162,12 +185,12 @@
   }
 
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r61-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r62-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r61_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r62_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
@@ -622,7 +645,8 @@
     activeReveal.items.forEach((_, index) => revealOne(index));
   }
 
-  function revealCards(cards) {
+  function revealCards(cards, options) {
+    const autoReveal = !options || options.auto !== false;
     const row = document.getElementById("revealRow");
     row.innerHTML = "";
     document.getElementById("packStage").style.display = "none";
@@ -657,7 +681,9 @@
       // 自動節奏保留，但每張都能直接點開，亦可一鍵全部翻開。
       const gap = isLowPerf() ? 90 : (i === last ? 520 : 340);
       revealTime += gap;
-      activeReveal.timers.push(setTimeout(() => revealOne(i), prefersReducedMotion() ? 0 : revealTime));
+      if (autoReveal) {
+        activeReveal.timers.push(setTimeout(() => revealOne(i), prefersReducedMotion() ? 0 : revealTime));
+      }
     });
 
     saveCollection();
@@ -1551,8 +1577,8 @@
   const deckCostFilter = document.getElementById("deckCostFilter");
   const deckRarityFilter = document.getElementById("deckRarityFilter");
   if (deckSearch) deckSearch.oninput = () => { deckFilters.search = deckSearch.value; renderDeckEditor(); };
-  if (deckCostFilter) deckCostFilter.onchange = () => { deckFilters.cost = deckCostFilter.value; renderDeckEditor(); };
-  if (deckRarityFilter) deckRarityFilter.onchange = () => { deckFilters.rarity = deckRarityFilter.value; renderDeckEditor(); };
+  bindChipGroup(deckCostFilter, deckFilters.cost, (value) => { deckFilters.cost = value; renderDeckEditor(); });
+  bindChipGroup(deckRarityFilter, deckFilters.rarity, (value) => { deckFilters.rarity = value; renderDeckEditor(); });
   const collectionSearch = document.getElementById("collectionSearch");
   const collectionAxisFilter = document.getElementById("collectionAxisFilter");
   const collectionFactionFilter = document.getElementById("collectionFactionFilter");
@@ -1561,12 +1587,12 @@
   const collectionOwnershipFilter = document.getElementById("collectionOwnershipFilter");
   const collectionSort = document.getElementById("collectionSort");
   if (collectionSearch) collectionSearch.oninput = () => { collectionFilters.search = collectionSearch.value; renderCollection(); };
-  if (collectionAxisFilter) collectionAxisFilter.onchange = () => { collectionFilters.axis = collectionAxisFilter.value; renderCollection(); };
-  if (collectionFactionFilter) collectionFactionFilter.onchange = () => { collectionFilters.faction = collectionFactionFilter.value; renderCollection(); };
-  if (collectionKeywordFilter) collectionKeywordFilter.onchange = () => { collectionFilters.keyword = collectionKeywordFilter.value; renderCollection(); };
-  if (collectionRarityFilter) collectionRarityFilter.onchange = () => { collectionFilters.rarity = collectionRarityFilter.value; renderCollection(); };
-  if (collectionOwnershipFilter) collectionOwnershipFilter.onchange = () => { collectionFilters.ownership = collectionOwnershipFilter.value; renderCollection(); };
-  if (collectionSort) collectionSort.onchange = () => { collectionFilters.sort = collectionSort.value; renderCollection(); };
+  bindChipGroup(collectionAxisFilter, collectionFilters.axis, (value) => { collectionFilters.axis = value; renderCollection(); });
+  bindChipGroup(collectionFactionFilter, collectionFilters.faction, (value) => { collectionFilters.faction = value; renderCollection(); });
+  bindChipGroup(collectionKeywordFilter, collectionFilters.keyword, (value) => { collectionFilters.keyword = value; renderCollection(); });
+  bindChipGroup(collectionRarityFilter, collectionFilters.rarity, (value) => { collectionFilters.rarity = value; renderCollection(); });
+  bindChipGroup(collectionOwnershipFilter, collectionFilters.ownership, (value) => { collectionFilters.ownership = value; renderCollection(); });
+  bindChipGroup(collectionSort, collectionFilters.sort, (value) => { collectionFilters.sort = value; renderCollection(); });
   const recordDifficultyFilter = document.getElementById("recordDifficultyFilter");
   if (recordDifficultyFilter) recordDifficultyFilter.onchange = () => { recordFilters.difficulty = recordDifficultyFilter.value; renderRecordPanel(); };
   const copyRecordBtn = document.getElementById("copyRecordBtn");
@@ -1753,8 +1779,8 @@
     setFilters(next) {
       deckFilters = Object.assign({}, deckFilters, next || {});
       if (deckSearch) deckSearch.value = deckFilters.search || "";
-      if (deckCostFilter) deckCostFilter.value = deckFilters.cost || "all";
-      if (deckRarityFilter) deckRarityFilter.value = deckFilters.rarity || "all";
+      setChipGroupValue(deckCostFilter, deckFilters.cost || "all");
+      setChipGroupValue(deckRarityFilter, deckFilters.rarity || "all");
       renderDeckEditor();
       return Object.assign({}, deckFilters);
     },
@@ -1762,12 +1788,12 @@
     setCollectionFilters(next) {
       collectionFilters = Object.assign({}, collectionFilters, next || {});
       if (collectionSearch) collectionSearch.value = collectionFilters.search || "";
-      if (collectionAxisFilter) collectionAxisFilter.value = collectionFilters.axis || "all";
-      if (collectionFactionFilter) collectionFactionFilter.value = collectionFilters.faction || "all";
-      if (collectionKeywordFilter) collectionKeywordFilter.value = collectionFilters.keyword || "all";
-      if (collectionRarityFilter) collectionRarityFilter.value = collectionFilters.rarity || "all";
-      if (collectionOwnershipFilter) collectionOwnershipFilter.value = collectionFilters.ownership || "all";
-      if (collectionSort) collectionSort.value = collectionFilters.sort || "cost";
+      setChipGroupValue(collectionAxisFilter, collectionFilters.axis || "all");
+      setChipGroupValue(collectionFactionFilter, collectionFilters.faction || "all");
+      setChipGroupValue(collectionKeywordFilter, collectionFilters.keyword || "all");
+      setChipGroupValue(collectionRarityFilter, collectionFilters.rarity || "all");
+      setChipGroupValue(collectionOwnershipFilter, collectionFilters.ownership || "all");
+      setChipGroupValue(collectionSort, collectionFilters.sort || "cost");
       renderCollection();
       return Object.assign({}, collectionFilters);
     },
@@ -1870,10 +1896,10 @@
       rare: document.querySelectorAll("#revealRow .rare-pull, #revealRow .legend-pull").length,
       tide: document.querySelectorAll("#revealRow .tide-pull .tide-wave").length,
     }),
-    revealTest: () => {
+    revealTest: (options) => {
       const cards = [cloneCard(getCardById("wolf")), cloneCard(getCardById("knight")), cloneCard(getCardById("mage")), cloneCard(getCardById("golem")), cloneCard(getCardById("dragon"))].filter(Boolean);
       if (cards[2]) cards[2].tide = true;
-      revealCards(cards);
+      revealCards(cards, options);
       return cards.length;
     },
     readCacheVersion: () => readCacheVersion(),

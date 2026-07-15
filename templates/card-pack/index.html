@@ -6,9 +6,9 @@
 <title>開卡包 · Card Pack</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r61-v1";
+    const CACHE_VERSION = "card-battle-r62-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r61_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r62_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -45,7 +45,7 @@
 <style>
   :root {
     --bg1: #1a1430; --bg2: #0d1117; --ink: #e6edf3; --muted: #8b98a8; --accent: #f59e0b;
-    --card-w: 132px; --card-h: 186px; --text-scale: 1;
+    --card-w: clamp(132px, 7.6vw, 168px); --card-h: calc(var(--card-w) * 1.41); --text-scale: 1;
     --bg-img: url("../../assets/backgrounds/dark.png");
   }
   :root[data-theme="fantasy"] { --bg1:#2a1d10; --bg2:#160d05; --accent:#f0a830; --bg-img:url("../../assets/backgrounds/fantasy.png"); }
@@ -89,7 +89,7 @@
   .coin-bar span { font-size: 15px; font-weight: 900; }
   /* app-shell 主格線：所有區段同屏可見、各自垂直內捲 */
   .pack-main {
-    flex: 1 1 auto; min-height: 0; width: min(1280px, 100%);
+    flex: 1 1 auto; min-height: 0; width: min(100%, clamp(1180px, 94vw, 1720px));
     display: grid; gap: 8px; padding: 0 10px 8px;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) minmax(0, 1.25fr);
@@ -243,9 +243,24 @@
   .collection { padding:12px; }
   .collection h2 { font-size:16px; margin-bottom:10px; color:var(--muted); display:flex; justify-content:space-between; align-items:center; }
   .collection-meta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end; font-size:12px; }
-  .collection-tools { display:grid; grid-template-columns:minmax(150px,1.2fr) repeat(6,minmax(96px,.6fr)); gap:8px; margin-bottom:10px; }
+  .collection-tools { display:grid; grid-template-columns:minmax(170px,.85fr) minmax(0,2.2fr); gap:8px; margin-bottom:10px; align-items:start; }
   .collection-tools input, .collection-tools select { min-width:0; border:1px solid rgba(255,255,255,.12); border-radius:8px;
     background:rgba(8,12,18,.84); color:var(--ink); padding:9px 10px; font:inherit; font-size:13px; }
+  .filter-panel { min-width:0; border:1px solid rgba(255,255,255,.1); border-radius:8px; background:rgba(8,12,18,.42); }
+  .filter-panel summary { cursor:pointer; list-style:none; padding:8px 10px; color:#facc15; font-size:12px; font-weight:900; }
+  .filter-panel summary::-webkit-details-marker { display:none; }
+  .filter-panel[open] summary { border-bottom:1px solid rgba(255,255,255,.08); }
+  .filter-chip-board { display:flex; flex-direction:column; gap:8px; padding:8px; }
+  .filter-line { display:grid; grid-template-columns:54px minmax(0,1fr); gap:8px; align-items:center; min-width:0; }
+  .filter-line-label { color:var(--muted); font-size:12px; font-weight:900; }
+  .filter-chip-row { display:flex; gap:6px; overflow-x:auto; padding:1px 0 4px; scrollbar-width:thin; }
+  .filter-chip {
+    flex:0 0 auto; min-height:32px; border:1px solid rgba(255,255,255,.13); border-radius:999px;
+    padding:6px 10px; background:rgba(255,255,255,.05); color:var(--ink);
+    font-size:12px; font-weight:900; box-shadow:none; cursor:pointer; white-space:nowrap;
+  }
+  .filter-chip:hover { transform:none; }
+  .filter-chip.active { background:linear-gradient(180deg,#facc15,#d97706); color:#1a1206; border-color:rgba(250,204,21,.7); }
   .collection .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(74px,1fr)); gap:8px; }
   .slot { aspect-ratio:5/7; border-radius:8px; border:2px solid #2a3645; display:flex; flex-direction:column;
     align-items:center; justify-content:center; font-size:24px; background:#131a24; position:relative; overflow:hidden; }
@@ -280,9 +295,11 @@
   .deck-panel { background:rgba(13,17,23,.55); border:1px solid rgba(255,255,255,.12); border-radius:8px; padding:12px;
     min-width:0; min-height:0; max-height:100%; overflow-y:auto; }
   .deck-panel h3 { font-size:14px; color:var(--muted); margin-bottom:8px; display:flex; justify-content:space-between; gap:8px; }
-  .deck-tools { display:grid; grid-template-columns:minmax(120px,1fr) minmax(88px,.35fr) minmax(100px,.4fr); gap:8px; margin-bottom:10px; }
+  .deck-tools { display:grid; grid-template-columns:minmax(130px,.9fr) minmax(0,1.1fr); gap:8px; margin-bottom:10px; }
   .deck-tools input, .deck-tools select { min-width:0; border:1px solid rgba(255,255,255,.12); border-radius:8px;
     background:rgba(8,12,18,.84); color:var(--ink); padding:9px 10px; font:inherit; font-size:13px; }
+  .deck-tools .filter-chip-board { grid-column:2; padding:0; gap:6px; }
+  .deck-tools .filter-line { grid-template-columns:40px minmax(0,1fr); }
   .deck-filter-count { font-size:11px; color:var(--muted); }
   .deck-card-list { display:flex; flex-direction:column; gap:7px; padding-right:2px; }
   .deck-card-row { display:grid; grid-template-columns:34px minmax(0,1fr) auto; gap:8px; align-items:center;
@@ -393,11 +410,26 @@
     .pack { width: 132px; height: 184px; }
     .pack .pack-icon { font-size: 44px; }
     .collection h2 { align-items:flex-start; gap:8px; }
-    .collection-tools { grid-template-columns:1fr 1fr; }
-    .collection-tools input { grid-column:1 / -1; }
+    .collection-tools { grid-template-columns:1fr; gap:6px; }
+    .collection-tools input { grid-column:1; padding:7px 9px; min-height:34px; }
+    .collection-tools .filter-panel summary { padding:6px 8px; }
+    .collection-tools .filter-chip-board {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:6px;
+      padding:6px;
+    }
+    .collection-tools .filter-line {
+      grid-template-columns:minmax(0,1fr);
+      gap:3px;
+    }
+    .collection-tools .filter-line-label { font-size:10px; line-height:1; }
+    .collection-tools .filter-chip-row { gap:4px; padding:0 0 2px; }
+    .collection-tools .filter-chip { min-height:26px; padding:4px 7px; font-size:11px; }
+    .filter-line { grid-template-columns:46px minmax(0,1fr); }
     .deck-layout { grid-template-columns:1fr; grid-template-rows:minmax(0,1fr) minmax(0,1fr); }
-    .deck-tools { grid-template-columns:1fr 1fr; }
-    .deck-tools input { grid-column:1 / -1; }
+    .deck-tools { grid-template-columns:1fr; }
+    .deck-tools input, .deck-tools .filter-chip-board { grid-column:1; }
     .deck-card-row { grid-template-columns:32px minmax(0,1fr) auto; }
     .deck-head { align-items:flex-start; }
     .deck-actions { width:100%; }
@@ -589,21 +621,29 @@
         <h3><span>收藏清單</span><span id="deckFilterCount" class="deck-filter-count">全部卡牌</span></h3>
         <div class="deck-tools">
           <input id="deckSearch" type="search" placeholder="搜尋卡名、效果、關鍵字" autocomplete="off" />
-          <select id="deckCostFilter" aria-label="費用篩選">
-            <option value="all">全部費用</option>
-            <option value="0-1">0-1 費</option>
-            <option value="2">2 費</option>
-            <option value="3">3 費</option>
-            <option value="4">4 費</option>
-            <option value="5+">5+ 費</option>
-          </select>
-          <select id="deckRarityFilter" aria-label="稀有度篩選">
-            <option value="all">全部稀有度</option>
-            <option value="common">普通</option>
-            <option value="rare">稀有</option>
-            <option value="epic">史詩</option>
-            <option value="legendary">傳說</option>
-          </select>
+          <div class="filter-chip-board">
+            <div class="filter-line">
+              <span class="filter-line-label">費用</span>
+              <div class="filter-chip-row" id="deckCostFilter" role="group" aria-label="費用篩選">
+                <button class="filter-chip active" type="button" data-value="all">全部</button>
+                <button class="filter-chip" type="button" data-value="0-1">0-1</button>
+                <button class="filter-chip" type="button" data-value="2">2</button>
+                <button class="filter-chip" type="button" data-value="3">3</button>
+                <button class="filter-chip" type="button" data-value="4">4</button>
+                <button class="filter-chip" type="button" data-value="5+">5+</button>
+              </div>
+            </div>
+            <div class="filter-line">
+              <span class="filter-line-label">稀有</span>
+              <div class="filter-chip-row" id="deckRarityFilter" role="group" aria-label="稀有度篩選">
+                <button class="filter-chip active" type="button" data-value="all">全部</button>
+                <button class="filter-chip" type="button" data-value="common">普通</button>
+                <button class="filter-chip" type="button" data-value="rare">稀有</button>
+                <button class="filter-chip" type="button" data-value="epic">史詩</button>
+                <button class="filter-chip" type="button" data-value="legendary">傳說</button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="deck-card-list" id="deckCollectionList"></div>
       </div>
@@ -628,57 +668,80 @@
     </h2>
     <div class="collection-tools" id="collectionTools">
       <input id="collectionSearch" type="search" placeholder="搜尋收藏、效果、風味" autocomplete="off" />
-      <select id="collectionAxisFilter" aria-label="軸線篩選">
-        <option value="all">全部軸線</option>
-        <option value="aggro">快攻</option>
-        <option value="control">控制</option>
-        <option value="neutral">中立</option>
-      </select>
-      <select id="collectionFactionFilter" aria-label="陣營篩選">
-        <option value="all">全部陣營</option>
-        <option value="wardens">白潮守軍</option>
-        <option value="conclave">奧術結社</option>
-        <option value="wild">荒野獸群</option>
-        <option value="wintershadow">凜冬暗影</option>
-        <option value="neutral">潮間中立</option>
-      </select>
-      <select id="collectionKeywordFilter" aria-label="關鍵字篩選">
-        <option value="all">全部關鍵字</option>
-        <option value="taunt">嘲諷</option>
-        <option value="charge">衝鋒</option>
-        <option value="rush">突襲</option>
-        <option value="lifesteal">吸血</option>
-        <option value="battlecry">戰吼</option>
-        <option value="deathrattle">亡語</option>
-        <option value="divineshield">聖盾</option>
-        <option value="windfury">風怒</option>
-        <option value="poison">劇毒</option>
-        <option value="regenerate">回復</option>
-        <option value="silence">靜默</option>
-        <option value="shieldwall">列盾</option>
-        <option value="resonance">殘響</option>
-        <option value="bloodtrail">血跡</option>
-        <option value="chillbind">寒噤</option>
-        <option value="sunder">裂甲</option>
-        <option value="attune">調印</option>
-      </select>
-      <select id="collectionRarityFilter" aria-label="稀有度篩選">
-        <option value="all">全部稀有度</option>
-        <option value="common">普通</option>
-        <option value="rare">稀有</option>
-        <option value="epic">史詩</option>
-        <option value="legendary">傳說</option>
-      </select>
-      <select id="collectionOwnershipFilter" aria-label="擁有狀態篩選">
-        <option value="all">全部狀態</option>
-        <option value="owned">已擁有</option>
-        <option value="missing">未擁有</option>
-      </select>
-      <select id="collectionSort" aria-label="收藏排序">
-        <option value="cost">依費用</option>
-        <option value="rarity">依稀有度</option>
-        <option value="name">依名稱</option>
-      </select>
+      <details class="filter-panel" open>
+        <summary>篩選</summary>
+        <div class="filter-chip-board">
+          <div class="filter-line">
+            <span class="filter-line-label">軸線</span>
+            <div class="filter-chip-row" id="collectionAxisFilter" role="group" aria-label="軸線篩選">
+              <button class="filter-chip active" type="button" data-value="all">全部</button>
+              <button class="filter-chip" type="button" data-value="aggro">快攻</button>
+              <button class="filter-chip" type="button" data-value="control">控制</button>
+              <button class="filter-chip" type="button" data-value="neutral">中立</button>
+            </div>
+          </div>
+          <div class="filter-line">
+            <span class="filter-line-label">陣營</span>
+            <div class="filter-chip-row" id="collectionFactionFilter" role="group" aria-label="陣營篩選">
+              <button class="filter-chip active" type="button" data-value="all">全部</button>
+              <button class="filter-chip" type="button" data-value="wardens">🛡️ 白潮</button>
+              <button class="filter-chip" type="button" data-value="conclave">🔮 結社</button>
+              <button class="filter-chip" type="button" data-value="wild">🐺 荒野</button>
+              <button class="filter-chip" type="button" data-value="wintershadow">❄️ 凜冬</button>
+              <button class="filter-chip" type="button" data-value="neutral">◇ 中立</button>
+            </div>
+          </div>
+          <div class="filter-line">
+            <span class="filter-line-label">關鍵</span>
+            <div class="filter-chip-row" id="collectionKeywordFilter" role="group" aria-label="關鍵字篩選">
+              <button class="filter-chip active" type="button" data-value="all">全部</button>
+              <button class="filter-chip" type="button" data-value="taunt">嘲諷</button>
+              <button class="filter-chip" type="button" data-value="charge">衝鋒</button>
+              <button class="filter-chip" type="button" data-value="rush">突襲</button>
+              <button class="filter-chip" type="button" data-value="lifesteal">吸血</button>
+              <button class="filter-chip" type="button" data-value="battlecry">戰吼</button>
+              <button class="filter-chip" type="button" data-value="deathrattle">亡語</button>
+              <button class="filter-chip" type="button" data-value="divineshield">聖盾</button>
+              <button class="filter-chip" type="button" data-value="windfury">風怒</button>
+              <button class="filter-chip" type="button" data-value="poison">劇毒</button>
+              <button class="filter-chip" type="button" data-value="regenerate">回復</button>
+              <button class="filter-chip" type="button" data-value="silence">靜默</button>
+              <button class="filter-chip" type="button" data-value="shieldwall">列盾</button>
+              <button class="filter-chip" type="button" data-value="resonance">殘響</button>
+              <button class="filter-chip" type="button" data-value="bloodtrail">血跡</button>
+              <button class="filter-chip" type="button" data-value="chillbind">寒噤</button>
+              <button class="filter-chip" type="button" data-value="sunder">裂甲</button>
+              <button class="filter-chip" type="button" data-value="attune">調印</button>
+            </div>
+          </div>
+          <div class="filter-line">
+            <span class="filter-line-label">稀有</span>
+            <div class="filter-chip-row" id="collectionRarityFilter" role="group" aria-label="稀有度篩選">
+              <button class="filter-chip active" type="button" data-value="all">全部</button>
+              <button class="filter-chip" type="button" data-value="common">普通</button>
+              <button class="filter-chip" type="button" data-value="rare">稀有</button>
+              <button class="filter-chip" type="button" data-value="epic">史詩</button>
+              <button class="filter-chip" type="button" data-value="legendary">傳說</button>
+            </div>
+          </div>
+          <div class="filter-line">
+            <span class="filter-line-label">狀態</span>
+            <div class="filter-chip-row" id="collectionOwnershipFilter" role="group" aria-label="擁有狀態篩選">
+              <button class="filter-chip active" type="button" data-value="all">全部</button>
+              <button class="filter-chip" type="button" data-value="owned">已擁有</button>
+              <button class="filter-chip" type="button" data-value="missing">未擁有</button>
+            </div>
+          </div>
+          <div class="filter-line">
+            <span class="filter-line-label">排序</span>
+            <div class="filter-chip-row" id="collectionSort" role="group" aria-label="收藏排序">
+              <button class="filter-chip active" type="button" data-value="cost">費用</button>
+              <button class="filter-chip" type="button" data-value="rarity">稀有度</button>
+              <button class="filter-chip" type="button" data-value="name">名稱</button>
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
     <div class="grid" id="collectionGrid"></div>
   </div>
@@ -691,9 +754,9 @@
     <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
   </footer>
 
-  <script src="../card-battle/cards.js?v=card-battle-r61-v1"></script>
-  <script src="../card-battle/core.js?v=card-battle-r61-v1"></script>
-  <script src="pack.js?v=card-battle-r61-v1"></script>
+  <script src="../card-battle/cards.js?v=card-battle-r62-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-r62-v1"></script>
+  <script src="pack.js?v=card-battle-r62-v1"></script>
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);
