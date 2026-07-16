@@ -10,7 +10,7 @@
 
 **[立即線上遊玩](https://mars-tw.github.io/web-card-game-skill/)**
 
-目前版本：`0.4.10`／PWA revision `card-battle-r65-v1`。
+目前版本：`0.4.12`／PWA revision `card-battle-r66-v1`。
 
 ## 最新特色（R60–R61）
 

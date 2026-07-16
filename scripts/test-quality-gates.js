@@ -16,6 +16,13 @@ const R48_ARTED_IDS = [
 const R61_HERO_ART_IDS = [
   "heroSerHalden", "heroMagisterVey", "heroScarra", "heroIsoldLongdusk", "heroRuneFrostfang", "heroMoenTidearbiter",
 ];
+const R66_ART_IDS = [
+  "mooncat", "groveHerbalist", "holyGlimmer", "duskwrightBat", "linebreaker",
+  "thunderClap", "arcaneVeil", "abyssWalker", "stormGriffin", "duskWitch",
+  "starfall", "forbiddenHex", "battleDrummer", "sanctuaryWarden", "tidebinderHex",
+  "bastionColossus", "thunderRoc", "soulfrostRaven", "runicScrivener", "watchtowerBowman",
+  "tacticalRequisition", "toxinViper", "graveScribe", "silenceOne", "scoutInterrogator",
+];
 let failed = 0;
 
 function assert(condition, message) {
@@ -531,6 +538,46 @@ function checkR61HeroArtConsistency() {
   assert(problems.length === 0, `R61 六張角色立繪與 cards/art-config/sw/壓縮規格一致（${R61_HERO_ART_IDS.length} 張）`);
 }
 
+function checkR66ArtCompletion() {
+  const cards = require(abs("templates/card-battle/cards.js"));
+  const byId = Object.fromEntries(cards.CARD_POOL.map((card) => [card.id, card]));
+  const artConfig = JSON.parse(read("art-config.json"));
+  const prompts = new Map((artConfig.cards || []).map((card) => [card.id, card.prompt]));
+  const cached = parseCachedAssets().cached;
+  const problems = [];
+
+  const nullIds = cards.CARD_POOL.filter((card) => card.image == null).map((card) => card.id);
+  if (nullIds.length) problems.push(`image:null remains: ${nullIds.join(", ")}`);
+
+  for (const id of R66_ART_IDS) {
+    const rel = `assets/cards/${id}.png`;
+    const expectedImage = `../../${rel}`;
+    const card = byId[id];
+    if (!card) problems.push(`${id} missing in CARD_POOL`);
+    else if (card.image !== expectedImage) problems.push(`${id} cards.js image ${card.image} !== ${expectedImage}`);
+    if (!prompts.get(id)?.trim()) problems.push(`${id} missing prompt in art-config.json`);
+    if (!fs.existsSync(abs(rel))) problems.push(`${id} missing PNG file`);
+    else {
+      const info = pngInfo(rel);
+      if (!info.isPng || info.width !== 1024 || info.height !== 1024 || info.colorType !== 6) {
+        problems.push(`${id} PNG expected 1024x1024 RGBA, got ${info.width}x${info.height} colorType ${info.colorType}`);
+      }
+    }
+    if (!cached.has(rel)) problems.push(`${id} missing from sw.js CORE_ASSETS`);
+  }
+
+  for (const id of ["mage", "lich"]) {
+    const info = pngInfo(`assets/cards/${id}.png`);
+    if (!info.isPng || info.width !== 1024 || info.height !== 1024 || info.colorType !== 6) {
+      problems.push(`${id} repair expected true 1024x1024 RGBA PNG, got ${info.width}x${info.height} colorType ${info.colorType}`);
+    }
+  }
+
+  problems.forEach((problem) => console.error("    r66 art gate: " + problem));
+  assert(problems.length === 0,
+    `R66 art debt is zero and MIME/size/cache gates pass (${R66_ART_IDS.length} generated + 2 repaired)`);
+}
+
 function checkR61PresentationPipeline() {
   const battleHtml = read("templates/card-battle/index.html");
   const battleJs = read("templates/card-battle/battle.js");
@@ -568,6 +615,7 @@ checkSwCacheCompleteness();
 checkR47ArtConsistency();
 checkR48ArtConsistency();
 checkR61HeroArtConsistency();
+checkR66ArtCompletion();
 checkR61PresentationPipeline();
 
 if (failed > 0) {

@@ -1,0 +1,33 @@
+{
+  "captured_at": "2026-07-16",
+  "base_url": "http://127.0.0.1:41999",
+  "pack": {
+    "rendered_cards": 5,
+    "loaded_images": 5,
+    "art_fallbacks": 0,
+    "card_sources": [
+      "../../assets/cards/ladyAshenBell.png",
+      "../../assets/cards/lightning.png",
+      "../../assets/cards/polymorph.png",
+      "../../assets/cards/emberpup.png",
+      "../../assets/cards/alleySkirmisher.png"
+    ],
+    "screenshot": "docs/evidence/R66_art/pack_open_no_fallback.png"
+  },
+  "battle": {
+    "rendered_hand_cards": 4,
+    "loaded_images": 4,
+    "art_fallbacks_in_hand_and_fields": 0,
+    "card_ids": [
+      "soulfrostRaven",
+      "graveScribe",
+      "knight",
+      "wolf"
+    ],
+    "r66_cards_visible": [
+      "soulfrostRaven",
+      "graveScribe"
+    ],
+    "screenshot": "docs/evidence/R66_art/battle_no_fallback.png"
+  }
+}

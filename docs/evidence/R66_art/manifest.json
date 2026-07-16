@@ -1,0 +1,65 @@
+{
+  "release": "card R66",
+  "generated_at": "2026-07-16",
+  "model_slug": "gpt-image-2",
+  "generation_interface": "Codex built-in image_gen",
+  "prompt_version": "wave1-card-r66-v1.1",
+  "safearea_edit_prompt_version": "wave1-card-r66-safearea-edit-v1.0",
+  "prompt_file": "docs/evidence/R66_art/R66_PROMPTS.md",
+  "prompt_file_sha256": "fe4fe711780c7026c23ea422f40000257fd9978c23936a57862b96050bbe59e0",
+  "provenance": {
+    "source_count": 25,
+    "source_marker": "All accepted generated source PNGs contain a C2PA caBX assertion naming softwareAgent gpt-image version 2.0 and trainedAlgorithmicMedia.",
+    "runtime_transform": "Accepted source was fit to 1024x1024 and saved as opaque RGBA PNG; no frame or typography was added.",
+    "api_key_persisted": false
+  },
+  "counts": {
+    "generated": 25,
+    "repaired": 2,
+    "image_null_before": 25,
+    "image_null_after": 0,
+    "rarity": { "common": 5, "rare": 11, "epic": 9 },
+    "faction": { "wardens": 8, "conclave": 8, "wild": 5, "wintershadow": 4 }
+  },
+  "assets": [
+    { "id": "mooncat", "final_sha256": "15d073002697143a3436f947d284ce2765519d230b92fb64b44e9d1e041a3761", "source_sha256": "048e71510910cbb6ad468400101b0c06f8590d1682b36557d561a5a97ddc2508" },
+    { "id": "groveHerbalist", "final_sha256": "bdd60364c6e0014eeb0ce21bc8a0bbf2b87a8d460f2191d7937b08700d99331d", "source_sha256": "c1e1ae24837e3316e74ef13f27c6580e68a784c183d24ca3c7f76bb465d66992" },
+    { "id": "holyGlimmer", "final_sha256": "1bc2b79dafb1813909a05d6bf73db388b5e6ddcfeb3294005f64df506afe23de", "source_sha256": "0ecadf1b63c2ab386523af5abfe4727b4e25ca6eb8dcea2fbc43f9009184d80c" },
+    { "id": "duskwrightBat", "final_sha256": "7ff6f1b3b3312b967d6c98316c088dc5fbeae34e528a4a12927a8344fb3c7c6b", "source_sha256": "bf3bcd785260abcb5367ced7f82085834ed261d12ed46e76dfa5357163daf72a" },
+    { "id": "linebreaker", "final_sha256": "47e9f03afa2a67e6fc772c753df7a0d0801c6c7ecaa014ae3fe5611fdd84b3e3", "source_sha256": "e6fd305b2f5bc1a914ff0ea77e26c7f38d50f9f35747423d960632ecb94e92b6" },
+    { "id": "thunderClap", "final_sha256": "3818a29a990d2b7baefd57a5691021931e8fd029d9d2a01e8c116ec4662b794e", "source_sha256": "c367373346096babc5b12fcb871096ffb87cfeaee9f1f7fb255da655079ad25c" },
+    { "id": "arcaneVeil", "final_sha256": "3d4361a57a21862afe52125e9c4f8cc315a5098c2384f7912c9eb47d71ef4839", "source_sha256": "f38cfdd33383efc90923dba75fd87c154e080bd34abe3870fc96ec7ed2de3b61" },
+    { "id": "abyssWalker", "final_sha256": "a8ebef1a1c6025967f564c891464a77824a12bf43a850ee633ef822336970b13", "source_sha256": "8e99d26ff04aaf3e2a5e5fd379cb275dfa1ff1ec060f35cfb3e8fbb97299bdc8" },
+    { "id": "stormGriffin", "final_sha256": "eb211be23e538eb05fefff21880de1754527316af454a9b1da7996817428bbda", "source_sha256": "958d3bf2f9e0352c29332e9166b2ce7d910b77a733280a1bfba1b3bbefbc6aa3" },
+    { "id": "duskWitch", "final_sha256": "880a83f7be8c2fa5799a1b8733cb020586752a4b0438dc62418e5a79ed891c1e", "source_sha256": "49dc60178784bd3a0dc36489820bbc480fe0e760420610f3ab79827e032c8e60" },
+    { "id": "starfall", "final_sha256": "48769108a258c62a3c73cf6a0d1e108be5e43a78778194eaf0da9520be66e5ed", "source_sha256": "e184792ac5383def4262f00106924ad25f783089ad8d4b6a4257b17fd024eccc" },
+    { "id": "forbiddenHex", "final_sha256": "cacf225d3d2df9cdaa31ca7c173c0013ad0682e548f77f35fd287ea4cde94b34", "source_sha256": "adfe86ba1b8868d62f8ba96194989c391a44f700f91f1cc308d529d300d42520" },
+    { "id": "battleDrummer", "final_sha256": "23c57497103a338bfc7738c4279f05e8581b7f653a28dc3ae5726f737aa66969", "source_sha256": "7752be7efb10f7ff2e33ef9e30e7ad594861c5bab2eba38f35678559c777f41e" },
+    { "id": "sanctuaryWarden", "final_sha256": "db79e38c2f83099a81473c25e6efdf6d6647869e3f6d0aff1a46c48e3a0f9ab1", "source_sha256": "3b12d7af569f46749a1f55f12bb7589701a3b56f2df542792f424ee2686f55a8" },
+    { "id": "tidebinderHex", "final_sha256": "15788ed8360a73668f93fb292446cfd0e092331515dd4de0063e8554276efe6b", "source_sha256": "a856b083bafb05f42f6f0b94c9337509807bad24e2e622e52603b247155b2274" },
+    { "id": "bastionColossus", "final_sha256": "a1c672a44ed08b15e76b6c31bda32cfba8031848dcd16d68a87f1219b327ab02", "source_sha256": "8713a39616b5fbb7ae2c4408326a8558c669d6801741461e996fbe21f1361ce2" },
+    { "id": "thunderRoc", "final_sha256": "cbd28d396b3553530e61564fc0307e6091b3d025559f741021b51015b96a602c", "source_sha256": "379e783138ca5ab080291f7afc217cffe482d5e2a1ac8c20773c6c3eb59e1d8f" },
+    { "id": "soulfrostRaven", "final_sha256": "f1aee4b9eb61e34eee0c136aa35d855ef157ebfb18fa6ca4a62f9d8c0649fe10", "source_sha256": "6ed27b03db8270df6b6c8cb9a1f84e78ac4326159878370eedfdfe097e42829e" },
+    { "id": "runicScrivener", "final_sha256": "c73c7c89d665a998a8cc41370fd5efeaf87de144b6348312c8794ce411773b60", "source_sha256": "4112ce9835246bc754f9df0596d464a97eecc2770b8805941e22d3b9ba091b94" },
+    { "id": "watchtowerBowman", "final_sha256": "0ca863911723e9c3e12c350624633a108bac1acd929dbb0565675a6a0f2254a5", "source_sha256": "5f0828af4d8e47f34a463ec5bf899c489ce056046402d1ac0c1e1060e2a419c9" },
+    { "id": "tacticalRequisition", "final_sha256": "63a468ac2fc6a7e3e98f5136662c9a3cfa8f3e691d3cfb6210dbbc2890074532", "source_sha256": "5b12224bcbf108bbc3799f4b43ae8b4b51b7e0be8616dcbf1ddce97c397ef27e" },
+    { "id": "toxinViper", "final_sha256": "51cbd813bc0692213ffec5aedc7381e54f5cd7e7597d9251a5ccba44acd87df7", "source_sha256": "490c4b9422542499cca690eb529c41ebef065a098e19984ea41866a4fadaf220" },
+    { "id": "graveScribe", "final_sha256": "d7dd3066fa0eeb0ea0fcbca885e8fda52252697504d99e72e48ada1d84617dff", "source_sha256": "6fc1155a38ad1590ff569b1b7992adec0f8bb885be63a3f174c44d942cb67faf" },
+    { "id": "silenceOne", "final_sha256": "611d4e282c530b7afbfba94f84c9d1aeac54b544a3722a93b2533aea155e18a1", "source_sha256": "0e604c064afd14a6fd593e4c6319c4aaf1458c35f6336929240051b00f1c3f6f" },
+    { "id": "scoutInterrogator", "final_sha256": "bcedeb511735ee813b49e3b986af6f398b18532f0506ecef7ae4c4ceca993a14", "source_sha256": "69e6aa71c29daa8e91e702863739c56b673fb0dc5c140f5668661856fd96f233" }
+  ],
+  "repairs": [
+    {
+      "id": "mage",
+      "operation": "fit to 1024x1024 and encode RGBA PNG",
+      "original_sha256": "3222388734c9d162e3667cfdccb4129de04ba67ec3541cc6f03bec2686c8e527",
+      "final_sha256": "c27073f64edbd9bad9e6bda9a3894ecbea9eba32c2aaa347d9a7db85255fabb9"
+    },
+    {
+      "id": "lich",
+      "operation": "replace JPEG bytes under .png extension with true 1024x1024 RGBA PNG",
+      "original_sha256": "7c89087e279b3e506a816abfd0bfa5ef5beaf99776aa0a91bd24bd0fb998a82e",
+      "final_sha256": "9f99ab4aaabfd832c43a580398a2fe65f842e3b1557b10e9b04a869c30522866"
+    }
+  ]
+}

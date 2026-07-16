@@ -31,6 +31,13 @@ const R63_ART_IDS = [
   "dualTalon", "dawnRider", "emberVolley", "saltShieldSquire", "bulwarkMonk",
   "bannerGuard", "mirrorRime", "tidecallerAdept", "iceNeedle", "voidTithe",
 ];
+const R66_ART_IDS = [
+  "mooncat", "groveHerbalist", "holyGlimmer", "duskwrightBat", "linebreaker",
+  "thunderClap", "arcaneVeil", "abyssWalker", "stormGriffin", "duskWitch",
+  "starfall", "forbiddenHex", "battleDrummer", "sanctuaryWarden", "tidebinderHex",
+  "bastionColossus", "thunderRoc", "soulfrostRaven", "runicScrivener", "watchtowerBowman",
+  "tacticalRequisition", "toxinViper", "graveScribe", "silenceOne", "scoutInterrogator",
+];
 const HERO_CARD_IDS = [
   "heroSerHalden", "heroMagisterVey", "heroScarra",
   "heroIsoldLongdusk", "heroRuneFrostfang", "heroMoenTidearbiter",
@@ -156,14 +163,16 @@ console.log("== Current content baseline ==");
 const baselineCards = CONTENT_BASELINE_IDS.map((id) => getCardById(id));
 const silenceCards = SILENCE_BASELINE_IDS.map((id) => getCardById(id));
 assert(baselineCards.every(Boolean) && silenceCards.every(Boolean), "baseline 10 cards plus 2 silence cards exist");
-const baselineNullCards = [...CONTENT_BASELINE_IDS, ...SILENCE_BASELINE_IDS]
-  .filter((id) => !R63_ART_IDS.includes(id))
-  .map((id) => getCardById(id));
 const r63ArtCards = R63_ART_IDS.map((id) => getCardById(id));
-assert(baselineNullCards.every((c) => c && c.image === null), "remaining baseline long-tail images stay explicit null placeholders");
+const r66ArtCards = R66_ART_IDS.map((id) => getCardById(id));
 assert(r63ArtCards.every((c) => c && c.image === `../../assets/cards/${c.id}.png`
   && fs.existsSync(path.join(__dirname, "..", "assets", "cards", `${c.id}.png`))),
   "R63 priority art cards are wired to existing PNG assets");
+assert(r66ArtCards.every((c) => c && c.image === `../../assets/cards/${c.id}.png`
+  && fs.existsSync(path.join(__dirname, "..", "assets", "cards", `${c.id}.png`))),
+  "R66 long-tail art cards are wired to existing PNG assets");
+assert(CARD_POOL.every((c) => typeof c.image === "string" && c.image.endsWith(`${c.id}.png`)),
+  "R66 image:null is zero across the complete card pool");
 assert(baselineCards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8)
   && silenceCards.every((c) => typeof c.flavor === "string" && c.flavor.trim().length >= 8), "baseline flavor text is present");
 const expectedBaseline = {

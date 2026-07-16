@@ -1,0 +1,77 @@
+{
+  "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\skill\\assets\\cards\\thunderRoc.png",
+  "profile": "opaque",
+  "expected_size": [
+    1024,
+    1024
+  ],
+  "pass": true,
+  "metrics": {
+    "alpha_occupancy": 1.0,
+    "fully_opaque_fraction": 1.0,
+    "corner_alpha_max": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "corner_alpha_min": [
+      255,
+      255,
+      255,
+      255
+    ]
+  },
+  "checks": [
+    {
+      "name": "magic_bytes",
+      "pass": true,
+      "actual": "89504e470d0a1a0a",
+      "requirement": "89504e470d0a1a0a"
+    },
+    {
+      "name": "decoded_format",
+      "pass": true,
+      "actual": "PNG",
+      "requirement": "PNG"
+    },
+    {
+      "name": "dimensions",
+      "pass": true,
+      "actual": [
+        1024,
+        1024
+      ],
+      "requirement": "1024x1024"
+    },
+    {
+      "name": "rgba_mode",
+      "pass": true,
+      "actual": "RGBA",
+      "requirement": "RGBA"
+    },
+    {
+      "name": "four_corners_opaque",
+      "pass": true,
+      "actual": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "requirement": "card-art profile requires opaque corners (alpha >= 250)"
+    },
+    {
+      "name": "alpha_occupancy",
+      "pass": true,
+      "actual": 1.0,
+      "requirement": "opaque pixels >= 0.999 of canvas"
+    },
+    {
+      "name": "rgb_fringe",
+      "pass": true,
+      "actual": "not_applicable",
+      "requirement": "opaque art has no matte edge"
+    }
+  ]
+}
