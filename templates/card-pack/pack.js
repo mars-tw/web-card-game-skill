@@ -19,8 +19,10 @@
   const HERO_PITY_KEY = "card_pack_hero_pity_v1";
   const HERO_PITY_LIMIT = 35;
   const SAVE_BACKUP_KEY = "card_save_backup_v1";
+  const SAVE_STAGING_KEY = "card_save_staging_v1";
   const TEXT_SIZE_KEY = "card_text_size_v1";
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
+  const AUDIO_VOLUME_KEY = "card_audio_volume_v1";
   const Core = window.CardCore;
   if (!Core) throw new Error("CardCore 未載入");
 
@@ -76,8 +78,28 @@
     try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || {}; }
     catch { return {}; }
   }
+  function safeSetStorage(key, value) {
+    localStorage.setItem(key, value);
+    if (localStorage.getItem(key) !== value) throw new Error(`儲存驗證失敗：${key}`);
+  }
+
+  function safeRemoveStorage(key) {
+    localStorage.removeItem(key);
+    if (localStorage.getItem(key) !== null) throw new Error(`移除驗證失敗：${key}`);
+  }
+
+  function writeStorage(key, value, label) {
+    try {
+      safeSetStorage(key, value);
+      return true;
+    } catch (err) {
+      recoveryToast(`${label || "儲存"}失敗：瀏覽器儲存不可用，請先匯出存檔。`);
+      return false;
+    }
+  }
+
   function saveCollection() {
-    try { localStorage.setItem(SAVE_KEY, JSON.stringify(collection)); } catch {}
+    return writeStorage(SAVE_KEY, JSON.stringify(collection), "收藏儲存");
   }
 
   const PACK_COST = 100; // 開包成本（用對戰賺的金幣，CP0-2 經濟閉環）
@@ -87,7 +109,7 @@
     try { raw = JSON.parse(localStorage.getItem("card_stats_v1")); } catch {}
     return Core.migrateStats(raw);
   }
-  function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(Core.migrateStats(s))); } catch {} }
+  function saveStats(s) { return writeStorage("card_stats_v1", JSON.stringify(Core.migrateStats(s)), "戰績儲存"); }
 
   function recoveryToast(message) {
     const div = document.createElement("div");
@@ -116,13 +138,26 @@
 
   function setTextSize(size) {
     const next = applyTextSize(size);
-    try { localStorage.setItem(TEXT_SIZE_KEY, next); } catch {}
+    writeStorage(TEXT_SIZE_KEY, next, "文字設定儲存");
     return next;
   }
 
   function audioMuted() {
     try { return localStorage.getItem(AUDIO_MUTE_KEY) === "1"; }
     catch { return false; }
+  }
+
+  function audioVolume() {
+    try {
+      const raw = Number(localStorage.getItem(AUDIO_VOLUME_KEY));
+      return Number.isFinite(raw) ? Math.max(0, Math.min(1, raw)) : 0.75;
+    } catch { return 0.75; }
+  }
+
+  function syncAudioVolumeControl() {
+    const input = document.getElementById("packAudioVolumeRange");
+    if (!input) return;
+    input.value = String(Math.round(audioVolume() * 100));
   }
 
   function syncAudioButton() {
@@ -133,6 +168,7 @@
     btn.textContent = muted ? "M" : "SFX";
     btn.title = muted ? "Audio muted" : (audioUnlocked ? "Audio on" : "Audio unlocks on first gesture");
     btn.setAttribute("aria-pressed", muted ? "true" : "false");
+    syncAudioVolumeControl();
   }
 
   function ensureAudio() {
@@ -147,14 +183,24 @@
   }
 
   function setAudioMuted(muted) {
-    try { localStorage.setItem(AUDIO_MUTE_KEY, muted ? "1" : "0"); } catch {}
+    writeStorage(AUDIO_MUTE_KEY, muted ? "1" : "0", "音效設定儲存");
     if (!muted) ensureAudio();
     syncAudioButton();
     return audioMuted();
   }
 
+  function setAudioVolume(value) {
+    const next = Math.max(0, Math.min(1, Number(value) || 0));
+    writeStorage(AUDIO_VOLUME_KEY, String(next), "音量設定儲存");
+    if (next > 0 && !audioMuted()) ensureAudio();
+    syncAudioVolumeControl();
+    return audioVolume();
+  }
+
   function playTone(freq, duration, type, gain, delay, endFreq) {
     if (!audioUnlocked || audioMuted()) return;
+    const volume = audioVolume();
+    if (volume <= 0) return;
     const ctx = audioCtx;
     if (!ctx) return;
     const now = ctx.currentTime + (delay || 0);
@@ -164,7 +210,7 @@
     osc.frequency.setValueAtTime(freq, now);
     if (endFreq) osc.frequency.exponentialRampToValueAtTime(Math.max(20, endFreq), now + duration);
     amp.gain.setValueAtTime(0.0001, now);
-    amp.gain.exponentialRampToValueAtTime(gain || .04, now + .012);
+    amp.gain.exponentialRampToValueAtTime((gain || .04) * volume, now + .012);
     amp.gain.exponentialRampToValueAtTime(0.0001, now + duration);
     osc.connect(amp).connect(ctx.destination);
     osc.start(now);
@@ -176,6 +222,7 @@
     if (kind === "pack") { playTone(150, .16, "sawtooth", .04, 0, 70); playTone(330, .1, "triangle", .035, .12); }
     else if (kind === "flip") { playTone(520, .055, "triangle", .03, 0, 740); }
     else if (kind === "rare") { playTone(420, .12, "sine", .04); playTone(840, .16, "triangle", .035, .1); playTone(1260, .24, "sine", .025, .22); }
+    else if (kind === "ui") { playTone(520, .045, "triangle", .024); }
   }
 
   function installAudioUnlock() {
@@ -281,7 +328,7 @@
       const el = document.getElementById(id);
       if (el && !el.getAttribute("aria-label")) el.setAttribute("aria-label", label);
     });
-    ["recordDifficultyFilter", "packTextSizeSel", "deckSearch", "deckCostFilter", "deckRarityFilter", "collectionSearch", "collectionAxisFilter", "collectionFactionFilter", "collectionKeywordFilter", "collectionRarityFilter", "collectionOwnershipFilter", "collectionSort", "saveImportText"]
+    ["recordDifficultyFilter", "packTextSizeSel", "packAudioVolumeRange", "deckSearch", "deckCostFilter", "deckRarityFilter", "collectionSearch", "collectionAxisFilter", "collectionFactionFilter", "collectionKeywordFilter", "collectionRarityFilter", "collectionOwnershipFilter", "collectionSort", "saveImportText"]
       .forEach((id) => {
         const el = document.getElementById(id);
         if (el && !el.getAttribute("aria-label")) el.setAttribute("aria-label", id);
@@ -291,6 +338,16 @@
       drawer.setAttribute("role", "dialog");
       drawer.setAttribute("aria-modal", "true");
       drawer.setAttribute("aria-hidden", drawer.classList.contains("show") ? "false" : "true");
+    }
+    const pack = document.getElementById("pack");
+    if (pack) {
+      pack.setAttribute("role", "button");
+      pack.tabIndex = 0;
+      pack.onkeydown = (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        openPack();
+      };
     }
   }
 
@@ -347,7 +404,7 @@
       schema: "card-save-r32",
       exportedAt: new Date().toISOString(),
       stats: loadStats(),
-      collection: migrateCollectionInput(collection),
+      collection: migrateCollectionInput(loadCollection()),
       deck: loadDeck(),
       goals: loadGoals(),
       quests: loadQuests(),
@@ -366,13 +423,16 @@
     if (!plainObject(payload.stats) || !plainObject(payload.collection) || !plainObject(payload.deck) || !plainObject(payload.goals) || !plainObject(payload.quests)) {
       throw new Error("存檔缺少必要欄位");
     }
-    return {
+    const decoded = {
       stats: Core.migrateStats(payload.stats),
       collection: migrateCollectionInput(payload.collection),
       deck: Core.migrateDeck(payload.deck),
       goals: Core.migrateGoals(payload.goals, weekSeed()),
       quests: Core.migrateQuests(payload.quests, todaySeed()),
     };
+    const deckValidation = Core.validateDeck(decoded.deck.cards, decoded.collection, CARD_POOL);
+    if (!deckValidation.ok) throw new Error("存檔牌組不合法");
+    return decoded;
   }
 
   async function exportSaveBundle() {
@@ -389,19 +449,41 @@
     return code;
   }
 
+  function savePartsFromBundle(bundle) {
+    return {
+      "card_stats_v1": JSON.stringify(Core.migrateStats(bundle.stats)),
+      [SAVE_KEY]: JSON.stringify(migrateCollectionInput(bundle.collection)),
+      [DECK_KEY]: JSON.stringify(Core.migrateDeck(bundle.deck)),
+      [GOAL_KEY]: JSON.stringify(Core.migrateGoals(bundle.goals, weekSeed())),
+      [QUEST_KEY]: JSON.stringify(Core.migrateQuests(bundle.quests, todaySeed())),
+    };
+  }
+
+  function commitSaveParts(parts) {
+    Object.entries(parts).forEach(([key, value]) => safeSetStorage(key, value));
+  }
+
+  function restoreSaveParts(parts) {
+    Object.entries(parts).forEach(([key, value]) => safeSetStorage(key, value));
+  }
+
   function importSaveBundle(code, options) {
     const decoded = decodeSaveBundle(code);
+    const nextParts = savePartsFromBundle(decoded);
+    const previousBundle = buildSaveBundle();
+    const previousParts = savePartsFromBundle(previousBundle);
     let backup = "";
     try {
-      backup = encodeSaveBundle(buildSaveBundle());
-      localStorage.setItem(SAVE_BACKUP_KEY, backup);
-      localStorage.setItem("card_stats_v1", JSON.stringify(decoded.stats));
-      localStorage.setItem(SAVE_KEY, JSON.stringify(decoded.collection));
-      localStorage.setItem(DECK_KEY, JSON.stringify(decoded.deck));
-      localStorage.setItem(GOAL_KEY, JSON.stringify(decoded.goals));
-      localStorage.setItem(QUEST_KEY, JSON.stringify(decoded.quests));
+      backup = encodeSaveBundle(previousBundle);
+      safeSetStorage(SAVE_BACKUP_KEY, backup);
+      safeSetStorage(SAVE_STAGING_KEY, JSON.stringify({ schema: "card-save-stage-r65", parts: nextParts }));
+      const staged = JSON.parse(localStorage.getItem(SAVE_STAGING_KEY) || "{}");
+      if (!staged || staged.schema !== "card-save-stage-r65" || !plainObject(staged.parts)) throw new Error("staging 驗證失敗");
+      commitSaveParts(staged.parts);
+      try { safeRemoveStorage(SAVE_STAGING_KEY); } catch {}
     } catch (err) {
-      throw new Error("寫入存檔失敗");
+      try { restoreSaveParts(previousParts); } catch {}
+      throw new Error("寫入存檔失敗，已回復匯入前狀態");
     }
     collection = loadCollection();
     deckState = loadDeck();
@@ -441,7 +523,7 @@
     return Core.migrateQuests(raw, todaySeed());
   }
   function saveQuests(questState) {
-    try { localStorage.setItem(QUEST_KEY, JSON.stringify(Core.migrateQuests(questState, todaySeed()))); } catch {}
+    writeStorage(QUEST_KEY, JSON.stringify(Core.migrateQuests(questState, todaySeed())), "任務儲存");
   }
   function progressQuest(event) {
     saveQuests(Core.applyQuestProgress(loadQuests(), event));
@@ -453,7 +535,7 @@
     return Core.migrateGoals(raw, seed || weekSeed());
   }
   function saveGoals(goalState, seed) {
-    try { localStorage.setItem(GOAL_KEY, JSON.stringify(Core.migrateGoals(goalState, seed || weekSeed()))); } catch {}
+    writeStorage(GOAL_KEY, JSON.stringify(Core.migrateGoals(goalState, seed || weekSeed())), "目標儲存");
   }
   function progressWeeklyGoal(event) {
     saveGoals(Core.applyWeeklyQuestProgress(loadGoals(), event));
@@ -469,7 +551,7 @@
   function saveDeckState() {
     const migrated = Core.migrateDeck(deckState);
     deckState = migrated;
-    try { localStorage.setItem(DECK_KEY, JSON.stringify(migrated)); } catch {}
+    return writeStorage(DECK_KEY, JSON.stringify(migrated), "牌組儲存");
   }
 
   function loadPity() {
@@ -482,7 +564,7 @@
   }
 
   function savePity(value) {
-    try { localStorage.setItem(PITY_KEY, String(Math.max(0, Math.floor(Number(value) || 0)))); } catch {}
+    writeStorage(PITY_KEY, String(Math.max(0, Math.floor(Number(value) || 0))), "保底進度儲存");
   }
 
   function loadHeroPity() {
@@ -495,7 +577,7 @@
   }
 
   function saveHeroPity(value) {
-    try { localStorage.setItem(HERO_PITY_KEY, String(Math.max(0, Math.floor(Number(value) || 0)))); } catch {}
+    writeStorage(HERO_PITY_KEY, String(Math.max(0, Math.floor(Number(value) || 0))), "角色保底儲存");
     updateHeroPityDisplay();
   }
 
@@ -1492,7 +1574,11 @@
   function saveDeck() {
     const validation = Core.validateDeck(deckState.cards, collection, CARD_POOL);
     if (!validation.ok) { renderDeckEditor(); return false; }
-    saveDeckState();
+    if (!saveDeckState()) {
+      setDeckMessage("牌組儲存失敗，請先匯出存檔。");
+      renderDeckEditor();
+      return false;
+    }
     setDeckMessage("牌組已儲存。");
     renderDeckEditor();
     return true;
@@ -1551,6 +1637,11 @@
   if (skipRevealBtn) skipRevealBtn.onclick = skipReveal;
   const packAudioToggleBtn = document.getElementById("packAudioToggleBtn");
   if (packAudioToggleBtn) packAudioToggleBtn.onclick = () => setAudioMuted(!audioMuted());
+  const packAudioVolumeRange = document.getElementById("packAudioVolumeRange");
+  if (packAudioVolumeRange) {
+    syncAudioVolumeControl();
+    packAudioVolumeRange.oninput = () => setAudioVolume(Number(packAudioVolumeRange.value) / 100);
+  }
   document.getElementById("againBtn").onclick = resetForNextPack;
   document.getElementById("toBattleBtn").onclick = goBattle;
   document.getElementById("goBattleTop").onclick = goBattle;
@@ -1603,7 +1694,7 @@
   if (importSaveBtn) importSaveBtn.onclick = () => {
     const code = document.getElementById("saveImportText")?.value || "";
     try { importSaveBundle(code); }
-    catch (err) { recoveryToast("匯入失敗：存檔碼無效，未覆蓋現有存檔。"); }
+    catch (err) { recoveryToast(`匯入失敗：${err.message || "未覆蓋現有存檔。"}`); }
   };
   const clearRecordBtn = document.getElementById("clearRecordBtn");
   if (clearRecordBtn) clearRecordBtn.onclick = clearRecordStats;
@@ -1616,7 +1707,7 @@
   });
   window.addEventListener("storage", (event) => {
     if (event.key === TEXT_SIZE_KEY) applyTextSize(currentTextSize());
-    if (event.key === AUDIO_MUTE_KEY) syncAudioButton();
+    if (event.key === AUDIO_MUTE_KEY || event.key === AUDIO_VOLUME_KEY) syncAudioButton();
   });
 
   // 更新金幣顯示（CP0-2）
@@ -1755,7 +1846,7 @@
     stats.bestStreak = 0;
     stats.telemetry = { games: [], cardPlays: {} };
     saveStats(stats);
-    try { localStorage.removeItem("card_win_streak_v1"); } catch {}
+    try { safeRemoveStorage("card_win_streak_v1"); } catch {}
     renderRecordPanel();
     return stats;
   }
@@ -1890,7 +1981,8 @@
     textSize: () => ({ value: currentTextSize(), attr: document.documentElement.dataset.textSize, select: document.getElementById("packTextSizeSel")?.value || "" }),
     pwaVersion: () => document.getElementById("packPwaVersion")?.textContent || "",
     setAudioMuted: (muted) => setAudioMuted(muted),
-    audio: () => ({ muted: audioMuted(), unlocked: audioUnlocked, button: document.getElementById("packAudioToggleBtn")?.textContent || "" }),
+    setAudioVolume: (value) => setAudioVolume(value),
+    audio: () => ({ muted: audioMuted(), volume: audioVolume(), unlocked: audioUnlocked, button: document.getElementById("packAudioToggleBtn")?.textContent || "" }),
     revealEffects: () => ({
       cards: document.querySelectorAll("#revealRow .card").length,
       rare: document.querySelectorAll("#revealRow .rare-pull, #revealRow .legend-pull").length,

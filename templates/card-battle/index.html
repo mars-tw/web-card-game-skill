@@ -442,6 +442,7 @@
     background: color-mix(in srgb, var(--panel) 82%, transparent); color: var(--ink); font-size: 12px; font-weight: 900;
     cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
   .audio-toggle-btn.is-muted { color: var(--muted); filter: grayscale(1) brightness(.82); }
+  .settings-panel input[type="range"] { min-width: 94px; min-height: 32px; }
   button.end-turn {
     background: linear-gradient(180deg, var(--accent), #d97706); color: #1a1206; font-weight: 800; font-size: 15px;
     min-height:44px; border: none; padding: 11px 26px; border-radius: 24px; cursor: pointer;
@@ -986,6 +987,9 @@
         </select>
       </label>
       <button class="audio-toggle-btn" id="audioToggleBtn" type="button" title="Audio on/off" aria-label="Audio on/off">SFX</button>
+      <label class="text-size-toggle">音量
+        <input id="audioVolumeRange" type="range" min="0" max="100" step="5" value="75" aria-label="音效音量" />
+      </label>
     </div>
   </div>
 

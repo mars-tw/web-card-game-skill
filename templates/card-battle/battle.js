@@ -144,6 +144,7 @@
   const PERF_KEY = "card_perf_mode_v1";
   const TEXT_SIZE_KEY = "card_text_size_v1";
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
+  const AUDIO_VOLUME_KEY = "card_audio_volume_v1";
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
   const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r65_v1";
@@ -151,11 +152,13 @@
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
   let audioUnlocked = false;
+  let combatInFlight = false;
   let finishFx = { win: false, lethal: false, confetti: 0, defeatFade: false };
   const perfState = { mode: "auto", effective: "high", fps: 60, frames: 0, last: 0, reason: "自動觀察中", history: [] };
   let detailReturnFocus = null;
   let missionReturnFocus = null;
   let chronicleReturnFocus = null;
+  let questRenderKey = "";
   let lastUnlockedChapterIds = null;
   const ACTIVE_FX_SELECTOR = ".combat-ghost, .dmg-float, .hit-spark, .combo-float, .kw-pop, .confetti-piece, .burst-star, .spell-flash";
   const GUIDE_STEPS = [
@@ -207,6 +210,30 @@
     catch { return false; }
   }
 
+  function writeStorage(key, value, label) {
+    try {
+      localStorage.setItem(key, value);
+      if (localStorage.getItem(key) !== value) throw new Error("readback mismatch");
+      return true;
+    } catch (err) {
+      try { showToast(`${label || "儲存"}失敗：瀏覽器儲存不可用，請先到卡包頁匯出存檔。`); } catch {}
+      return false;
+    }
+  }
+
+  function audioVolume() {
+    try {
+      const raw = Number(localStorage.getItem(AUDIO_VOLUME_KEY));
+      return Number.isFinite(raw) ? Math.max(0, Math.min(1, raw)) : 0.75;
+    } catch { return 0.75; }
+  }
+
+  function syncAudioVolumeControl() {
+    const input = document.getElementById("audioVolumeRange");
+    if (!input) return;
+    input.value = String(Math.round(audioVolume() * 100));
+  }
+
   function syncAudioButton() {
     const btn = document.getElementById("audioToggleBtn");
     if (!btn) return;
@@ -215,6 +242,7 @@
     btn.textContent = muted ? "M" : "SFX";
     btn.title = muted ? "Audio muted" : (audioUnlocked ? "Audio on" : "Audio unlocks on first gesture");
     btn.setAttribute("aria-pressed", muted ? "true" : "false");
+    syncAudioVolumeControl();
   }
 
   function ensureAudio() {
@@ -229,14 +257,24 @@
   }
 
   function setAudioMuted(muted) {
-    try { localStorage.setItem(AUDIO_MUTE_KEY, muted ? "1" : "0"); } catch {}
+    writeStorage(AUDIO_MUTE_KEY, muted ? "1" : "0", "音效設定儲存");
     if (!muted) ensureAudio();
     syncAudioButton();
     return audioMuted();
   }
 
+  function setAudioVolume(value) {
+    const next = Math.max(0, Math.min(1, Number(value) || 0));
+    writeStorage(AUDIO_VOLUME_KEY, String(next), "音量設定儲存");
+    if (next > 0 && !audioMuted()) ensureAudio();
+    syncAudioVolumeControl();
+    return audioVolume();
+  }
+
   function playTone(freq, duration, type, gain, delay, endFreq) {
     if (!audioUnlocked || audioMuted()) return;
+    const volume = audioVolume();
+    if (volume <= 0) return;
     const ctx = audioCtx;
     if (!ctx) return;
     const now = ctx.currentTime + (delay || 0);
@@ -246,7 +284,7 @@
     osc.frequency.setValueAtTime(freq, now);
     if (endFreq) osc.frequency.exponentialRampToValueAtTime(Math.max(20, endFreq), now + duration);
     amp.gain.setValueAtTime(0.0001, now);
-    amp.gain.exponentialRampToValueAtTime(gain || 0.045, now + 0.012);
+    amp.gain.exponentialRampToValueAtTime((gain || 0.045) * volume, now + 0.012);
     amp.gain.exponentialRampToValueAtTime(0.0001, now + duration);
     osc.connect(amp).connect(ctx.destination);
     osc.start(now);
@@ -258,8 +296,11 @@
     if (kind === "play") { playTone(440, .06, "triangle", .035); playTone(660, .08, "triangle", .026, .055); }
     else if (kind === "attack") { playTone(190, .11, "sawtooth", .045, 0, 92); }
     else if (kind === "hurt") { playTone(120, .08, "square", .035, 0, 70); }
-    else if (kind === "lethal") { playTone(220, .18, "sawtooth", .05); playTone(440, .16, "triangle", .04, .12); playTone(880, .28, "sine", .034, .24); }
+    else if (kind === "win") { playTone(330, .12, "triangle", .038); playTone(660, .16, "sine", .032, .09); playTone(990, .24, "sine", .026, .22); }
+    else if (kind === "lose") { playTone(180, .2, "sawtooth", .042, 0, 80); playTone(92, .28, "triangle", .032, .14, 48); }
+    else if (kind === "lethal") { playSound("win"); }
     else if (kind === "death") { playTone(180, .22, "triangle", .038, 0, 48); }
+    else if (kind === "ui") { playTone(520, .045, "triangle", .024); }
   }
 
   function installAudioUnlock() {
@@ -276,7 +317,7 @@
 
   function setPerfMode(mode) {
     const next = ["auto", "high", "low"].includes(mode) ? mode : "auto";
-    try { localStorage.setItem(PERF_KEY, next); } catch {}
+    writeStorage(PERF_KEY, next, "效能設定儲存");
     applyPerfState(next, next === "low" ? "low" : "high", next === "auto" ? "自動觀察中" : next === "low" ? "手動鎖定低動畫" : "手動鎖定高動畫");
     flash(next === "auto" ? "效能模式：自動。" : next === "low" ? "效能模式：低動畫。" : "效能模式：高動畫。");
     return perfSnapshot();
@@ -391,7 +432,7 @@
 
   function setTextSize(size) {
     const next = applyTextSize(size);
-    try { localStorage.setItem(TEXT_SIZE_KEY, next); } catch {}
+    writeStorage(TEXT_SIZE_KEY, next, "文字設定儲存");
     return next;
   }
 
@@ -469,6 +510,7 @@
       difficultySel: "選擇難度",
       opponentSel: "選擇對手",
       textSizeSel: "文字大小",
+      audioVolumeRange: "音效音量",
     };
     Object.entries(controls).forEach(([id, label]) => {
       const el = document.getElementById(id);
@@ -497,6 +539,7 @@
 
   // ===== 初始化 =====
   function newGame() {
+    combatInFlight = false;
     pendingSummonFx.clear();
     pendingTargetUid = null;
     stopGuide(false);
@@ -571,8 +614,8 @@
 
   function markGuideSeen() {
     try {
-      localStorage.setItem(GUIDE_KEY, "1");
-      localStorage.setItem("cb_tutorial_seen", "1");
+      writeStorage(GUIDE_KEY, "1", "教學狀態儲存");
+      writeStorage("cb_tutorial_seen", "1", "教學狀態儲存");
     } catch {}
   }
 
@@ -623,6 +666,34 @@
     focusGuideTarget();
   }
 
+  function prepGuideCard(card) {
+    if (!card) return null;
+    if (!card.uid) card.uid = "guide" + Math.random().toString(36).slice(2, 8);
+    card.maxHealth = card.health;
+    return card;
+  }
+
+  function ensureGuideCardInHand(cardId) {
+    const handCard = game.player.hand.find((card) => card.id === cardId);
+    if (handCard) return prepGuideCard(handCard);
+    const deckIndex = game.player.deck.findIndex((card) => card.id === cardId);
+    if (deckIndex >= 0) {
+      const [card] = game.player.deck.splice(deckIndex, 1);
+      game.player.hand.unshift(prepGuideCard(card));
+      return card;
+    }
+    const source = getCardById(cardId);
+    if (!source) return null;
+    const replacement = prepGuideCard(cloneCard(source));
+    if (game.player.hand.length > 0) {
+      game.player.hand[0] = replacement;
+    } else if (game.player.deck.length > 0) {
+      game.player.deck.pop();
+      game.player.hand.unshift(replacement);
+    }
+    return replacement;
+  }
+
   function prepareGuideScenario() {
     if (!game) return;
     game.turn = "player";
@@ -632,14 +703,7 @@
     game.player.manaMax = Math.max(game.player.manaMax, 2);
     game.player.mana = Math.max(game.player.mana, 2);
     game.enemy.field = [];
-    if (!game.player.hand.some((card) => card.id === "wolf")) {
-      const wolf = getCardById("wolf");
-      if (wolf) {
-        wolf.uid = "guide" + Math.random().toString(36).slice(2, 8);
-        wolf.maxHealth = wolf.health;
-        game.player.hand.unshift(wolf);
-      }
-    }
+    ensureGuideCardInHand("wolf");
     render();
   }
 
@@ -662,16 +726,31 @@
     if (!hasSeenGuide()) startGuide(false);
   }
 
-  function advanceGuide(eventName) {
+  function advanceGuide(eventName, detail) {
     if (!guide.active) return;
     if (guide.step === 0 && eventName === "play") {
+      if (detail && detail.cardId && detail.cardId !== "wolf") {
+        flash("教學步驟需先打出迅捷狼。");
+        renderGuide();
+        return;
+      }
       guide.step = 1;
       guide.selectedAttacker = null;
       renderGuide();
     } else if (guide.step === 1 && eventName === "attackerSelected") {
+      if (detail && detail.attackerId && detail.attackerId !== "wolf") {
+        flash("教學步驟需選擇迅捷狼攻擊。");
+        renderGuide();
+        return;
+      }
       guide.selectedAttacker = game.selected;
       renderGuide();
     } else if (guide.step === 1 && eventName === "attack") {
+      if (detail && detail.attackerId && detail.attackerId !== "wolf") {
+        flash("教學步驟需用迅捷狼完成攻擊。");
+        renderGuide();
+        return;
+      }
       guide.step = 2;
       guide.selectedAttacker = null;
       renderGuide();
@@ -697,7 +776,8 @@
       for (let i = 0; i < drawCount; i++) drawCard(game.player);
       btn.style.display = "none";
       log("🔄 重抽起手牌！", "me");
-      render();
+      if (guide.active) prepareGuideScenario();
+      else render();
     };
   }
 
@@ -953,7 +1033,7 @@
 
   // ===== 玩家出牌 =====
   function playFromHand(uid) {
-    if (game.turn !== "player" || game.over) return;
+    if (game.turn !== "player" || game.over || combatInFlight) return;
     const result = Core.playCard(game, { side: "player", cardUid: uid }, rng);
     handleCoreResult(result);
     if (!result.ok) {
@@ -984,7 +1064,7 @@
       return;
     }
     render(); checkWin();
-    advanceGuide("play");
+    advanceGuide("play", { cardId: result.card && result.card.id });
   }
 
   // ===== 攻擊：嘲諷限制 =====
@@ -1044,7 +1124,7 @@
   }
 
   function clickEnemyMinion(uid) {
-    if (game.turn !== "player" || game.over) return;
+    if (game.turn !== "player" || game.over || combatInFlight) return;
     const target = game.enemy.field.find((m) => m.uid === uid);
     if (!target) return;
 
@@ -1057,8 +1137,6 @@
       if (!isLegalTarget(game.enemy, target)) { flash("必須先攻擊嘲諷隨從！"); return; }
       const attacker = game.player.field.find((m) => m.uid === game.selected);
       if (attacker) resolveAttack(game.player, attacker, target);
-      game.selected = null;
-      render(); checkWin();
     }
   }
 
@@ -1085,40 +1163,26 @@
   }
 
   function clickEnemyHero() {
-    if (game.turn !== "player" || game.over) return;
+    if (game.turn !== "player" || game.over || combatInFlight) return;
     if (game.pendingSpell || game.pendingBattlecry) { flash(game.pendingBattlecry ? "調印需指定友方隨從。" : "此法術需指定隨從。"); return; }
     if (game.selected) {
       if (hasTaunt(game.enemy.field)) { flash("敵方有嘲諷，不能直接攻擊英雄！"); return; }
       const attacker = game.player.field.find((m) => m.uid === game.selected);
       if (attacker) {
-        if (isRushHeroLocked(attacker)) {
-          flash("突襲隨從登場當回合只能攻擊隨從！");
-          game.selected = null;
-          render();
-          return;
-        }
-        animateAttackToward(attacker.uid, "enemyHero");
-        const result = Core.resolveHeroAttack(game, { attackerSide: "player", attackerUid: attacker.uid, defenderSide: "enemy" }, rng);
-        handleCoreResult(result);
-        if (result.ok) playSound("attack");
-        if (result.ok) log(`${attacker.name} 攻擊敵方英雄，造成 ${attacker.attack} 點傷害！`, "me");
-        else showCoreFailure(result);
-        if (result.ok) advanceGuide("attack");
+        resolveHeroAttackUi(game.player, attacker, game.enemy);
       }
-      game.selected = null;
-      render(); checkWin();
     }
   }
 
   function selectMyMinion(uid) {
-    if (game.turn !== "player" || game.over) return;
+    if (game.turn !== "player" || game.over || combatInFlight) return;
     const m = game.player.field.find((x) => x.uid === uid);
     if (!m) return;
     if ((game.pendingSpell || game.pendingBattlecry) && clickFriendlyMinionAsTarget(m)) return;
     if (!m.canAttack) { flash("這個隨從本回合無法攻擊。"); return; }
     game.selected = game.selected === uid ? null : uid;
     render();
-    if (game.selected === uid) advanceGuide("attackerSelected");
+    if (game.selected === uid) advanceGuide("attackerSelected", { attackerId: m.id });
   }
 
   function cancelTargeting(message) {
@@ -1135,6 +1199,32 @@
     pendingTargetUid = null;
     if (message && hadTargeting) flash(message);
     if (hadTargeting) render();
+  }
+
+  function bindKeyboardAction(el, label, action, options) {
+    if (!el || typeof action !== "function") return;
+    el.setAttribute("role", "button");
+    el.tabIndex = options && options.disabled ? -1 : 0;
+    el.setAttribute("aria-label", label || "可操作項目");
+    if (options && options.disabled) el.setAttribute("aria-disabled", "true");
+    else el.removeAttribute("aria-disabled");
+    if (options && Object.prototype.hasOwnProperty.call(options, "pressed")) {
+      el.setAttribute("aria-pressed", options.pressed ? "true" : "false");
+    } else {
+      el.removeAttribute("aria-pressed");
+    }
+    el.onkeydown = (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      action(event);
+    };
+  }
+
+  function cardAriaLabel(card, context) {
+    const parts = [context, card.name, `${card.cost} 費`];
+    if (card.type === CARD_TYPE.MINION) parts.push(`${card.attack || 0} 攻 ${card.health || 0} 血`);
+    if (card.text) parts.push(card.text);
+    return parts.filter(Boolean).join("，");
   }
 
   function targetStatusText() {
@@ -1361,18 +1451,93 @@
   }
 
   // ===== 戰鬥結算（含聖盾、劇毒、連擊）=====
+  function coreFailure(reason, extra) {
+    return Object.assign({ ok: false, reason, events: [] }, extra || {});
+  }
+
+  function validateMinionAttack(attackerSide, attacker, defender) {
+    const defenderSide = attackerSide && attackerSide.opp ? attackerSide.opp : (attackerSide.side === "player" ? game.enemy : game.player);
+    if (!attacker || !defender) return coreFailure("targetNotFound", { attacker, defender });
+    if (!attacker.canAttack || attacker._cantAttackThisTurn) return coreFailure("cannotAttack", { attacker, defender });
+    if (!isLegalTarget(defenderSide, defender)) return coreFailure("illegalTarget", { attacker, defender });
+    return { ok: true, defenderSide };
+  }
+
+  function validateHeroAttack(attackerSide, attacker, defenderSide) {
+    if (!attacker) return coreFailure("targetNotFound", { attacker });
+    if (!attacker.canAttack || attacker._cantAttackThisTurn) return coreFailure("cannotAttack", { attacker });
+    if (isRushHeroLocked(attacker)) return coreFailure("rushBlocksHero", { attacker });
+    if (hasTaunt(defenderSide.field)) return coreFailure("tauntBlocksHero", { attacker });
+    return { ok: true };
+  }
+
   function resolveAttack(attackerSide, attacker, defender) {
-    animateAttackToward(attacker.uid, defender.uid);
-    const result = Core.resolveAttack(game, {
-      attackerSide: attackerSide.side,
-      attackerUid: attacker.uid,
-      defenderUid: defender.uid,
-    }, rng);
-    handleCoreResult(result);
-    if (result.ok) playSound("attack");
-    if (result.ok) log(`${attacker.name} 與 ${defender.name} 交戰！`, attackerSide.side === "player" ? "me" : "ai");
-    else showCoreFailure(result);
-    if (result.ok && attackerSide.side === "player") advanceGuide("attack");
+    if (combatInFlight) return Promise.resolve(coreFailure("cannotAttack"));
+    const preflight = validateMinionAttack(attackerSide, attacker, defender);
+    if (!preflight.ok) {
+      showCoreFailure(preflight);
+      return Promise.resolve(preflight);
+    }
+    combatInFlight = true;
+    const attackerName = attacker.name;
+    const defenderName = defender.name;
+    const attackerUid = attacker.uid;
+    const defenderUid = defender.uid;
+    const sideKey = attackerSide.side;
+    return animateAttackToward(attackerUid, defenderUid, () => {
+      const result = Core.resolveAttack(game, { attackerSide: sideKey, attackerUid, defenderUid }, rng);
+      handleCoreResult(result);
+      if (result.ok) playSound("attack");
+      if (result.ok) log(`${attackerName} 與 ${defenderName} 交戰！`, sideKey === "player" ? "me" : "ai");
+      else showCoreFailure(result);
+      if (result.ok && sideKey === "player") advanceGuide("attack", { attackerId: attacker.id, defenderId: defender.id });
+      return result;
+    }).then((result) => {
+      combatInFlight = false;
+      game.selected = null;
+      render(); checkWin();
+      return result || coreFailure("targetNotFound");
+    }).catch((err) => {
+      combatInFlight = false;
+      throw err;
+    });
+  }
+
+  function resolveHeroAttackUi(attackerSide, attacker, defenderSide) {
+    if (combatInFlight) return Promise.resolve(coreFailure("cannotAttack"));
+    const preflight = validateHeroAttack(attackerSide, attacker, defenderSide);
+    if (!preflight.ok) {
+      showCoreFailure(preflight);
+      return Promise.resolve(preflight);
+    }
+    combatInFlight = true;
+    const attackerName = attacker.name;
+    const attack = attacker.attack;
+    const attackerUid = attacker.uid;
+    const sideKey = attackerSide.side;
+    const defenderSideKey = defenderSide.side;
+    const heroId = defenderSideKey === "enemy" ? "enemyHero" : "playerHero";
+    return animateAttackToward(attackerUid, heroId, () => {
+      const result = Core.resolveHeroAttack(game, { attackerSide: sideKey, attackerUid, defenderSide: defenderSideKey }, rng);
+      handleCoreResult(result);
+      if (result.ok) playSound("attack");
+      if (result.ok) {
+        const who = defenderSideKey === "enemy" ? "敵方英雄" : "你的英雄";
+        log(`${sideKey === "enemy" ? "對手的 " : ""}${attackerName} 攻擊${who}，造成 ${attack} 點傷害！`, sideKey === "player" ? "me" : "ai");
+      } else {
+        showCoreFailure(result);
+      }
+      if (result.ok && sideKey === "player") advanceGuide("attack", { attackerId: attacker.id, hero: defenderSideKey });
+      return result;
+    }).then((result) => {
+      combatInFlight = false;
+      game.selected = null;
+      render(); checkWin();
+      return result || coreFailure("targetNotFound");
+    }).catch((err) => {
+      combatInFlight = false;
+      throw err;
+    });
   }
 
   // 對隨從造成傷害（含聖盾、劇毒、跳字；亡語在 cleanup 觸發）
@@ -1424,7 +1589,7 @@
 
   // ===== AI 回合 =====
   function endTurn() {
-    if (game.turn !== "player" || game.over) return;
+    if (game.turn !== "player" || game.over || combatInFlight) return;
     if (game.pendingBattlecry) {
       flash("請先完成調印戰吼。");
       return;
@@ -1475,7 +1640,7 @@
   }
 
   function setAiThoughtEnabled(enabled) {
-    try { localStorage.setItem("card_ai_thoughts_v1", enabled ? "1" : "0"); } catch {}
+    writeStorage("card_ai_thoughts_v1", enabled ? "1" : "0", "AI 思路設定儲存");
     syncAiThoughtToggle();
     flash(enabled ? "已開啟 AI 思路。" : "已關閉 AI 思路。");
     return aiThoughtEnabled();
@@ -1765,34 +1930,40 @@
         if (game.over || i >= queue.length) { endAiTurn(); return; }
         const atk = queue[i++];
         if (!ai.field.includes(atk) || !atk.canAttack) { step(); return; }
+        const afterAttack = (attackPromise) => {
+          Promise.resolve(attackPromise).then(() => {
+            if (game !== gRef) return;
+            // 連擊（windfury）：第一擊後 canAttack 仍為 true，把它排回佇列吃第二擊。
+            if (ai.field.includes(atk) && atk.canAttack && atk._windUsed) queue.push(atk);
+            render(); checkWin();
+            setTimeout(step, 620);
+          }).catch((err) => {
+            combatInFlight = false;
+            console.error(err);
+            setTimeout(step, 620);
+          });
+        };
         const playerTaunts = game.player.field.filter((m) => (m.keywords || []).includes("taunt"));
         if (playerTaunts.length) {
           const t = maybeDdaSecondBest(playerTaunts.sort((a, b) => a.health - b.health || minionThreatScore(b) - minionThreatScore(a)))[0];
           logAiThought(aiAttackReason(atk, t, { forcedTaunt: true, lethal }));
-          resolveAttack(ai, atk, t);
+          afterAttack(resolveAttack(ai, atk, t));
+          return;
         } else {
           const threat = chooseAiAttackTarget(atk, lethal);
           if (threat) {
             logAiThought(aiAttackReason(atk, threat, { lethal }));
-            resolveAttack(ai, atk, threat);
+            afterAttack(resolveAttack(ai, atk, threat));
+            return;
           }
           else if (canAttackHeroNow(atk)) {
             logAiThought(aiAttackReason(atk, null, { hero: true, lethal }));
-            animateAttackToward(atk.uid, "playerHero");
-            const result = Core.resolveHeroAttack(game, { attackerSide: "enemy", attackerUid: atk.uid, defenderSide: "player" }, rng);
-            handleCoreResult(result);
-            if (result.ok) playSound("attack");
-            if (result.ok) log(`對手的 ${atk.name} 攻擊你的英雄，造成 ${atk.attack} 點傷害！`, "ai");
-            else showCoreFailure(result);
+            afterAttack(resolveHeroAttackUi(ai, atk, game.player));
+            return;
           } else {
             step(); return;
           }
         }
-        // 連擊（windfury）：第一擊後 canAttack 仍為 true，把它排回佇列吃第二擊
-        // （第二擊結束後 resolveAttack/打臉分支會把 canAttack 設回 false，不會無限迴圈）
-        if (ai.field.includes(atk) && atk.canAttack && atk._windUsed) queue.push(atk);
-        render(); checkWin();
-        setTimeout(step, 620);
       };
       step();
     }, 600);
@@ -1848,14 +2019,17 @@
     renderField("enemyField", game.enemy.field, "enemy");
 
     const hand = document.getElementById("playerHand");
-    hand.innerHTML = "";
+    const handFrag = document.createDocumentFragment();
     game.player.hand.forEach((card) => {
       const el = renderCard(card);
       if (playableCost(game.player, card) <= game.player.mana && game.turn === "player") el.classList.add("playable");
       else el.classList.add("disabled");
-      el.onclick = () => playFromHand(card.uid);
-      hand.appendChild(el);
+      const playAction = () => playFromHand(card.uid);
+      el.onclick = playAction;
+      bindKeyboardAction(el, cardAriaLabel(card, "手牌，可按 Enter 或 Space 出牌"), playAction);
+      handFrag.appendChild(el);
     });
+    hand.replaceChildren(handFrag);
     const handCount = document.getElementById("handCount");
     if (handCount) handCount.textContent = String(game.player.hand.length);
 
@@ -1863,6 +2037,13 @@
     const selectedMinion = game.selected ? game.player.field.find((m) => m.uid === game.selected) : null;
     enemyHero.classList.toggle("targetable", !!selectedMinion && game.turn === "player" && !hasTaunt(game.enemy.field) && !isRushHeroLocked(selectedMinion));
     enemyHero.onclick = clickEnemyHero;
+    bindKeyboardAction(enemyHero, `敵方英雄 ${game.enemy.hp}/${game.enemy.maxHp} 生命${selectedMinion ? "，可按 Enter 或 Space 攻擊" : ""}`, clickEnemyHero, { disabled: game.turn !== "player" || game.over });
+    const playerHero = document.getElementById("playerHero");
+    if (playerHero) {
+      playerHero.tabIndex = 0;
+      playerHero.setAttribute("role", "img");
+      playerHero.setAttribute("aria-label", `你的英雄 ${game.player.hp}/${game.player.maxHp} 生命`);
+    }
     updateTargetStatus();
 
     document.getElementById("endTurnBtn").disabled = game.turn !== "player" || game.over;
@@ -1891,7 +2072,6 @@
 
   function renderField(elId, field, side) {
     const el = document.getElementById(elId);
-    el.innerHTML = "";
     el.onclick = (event) => {
       if (event.target === el || event.target.classList.contains("empty-hint")) cancelTargeting("已取消選取。");
     };
@@ -1899,10 +2079,11 @@
       const hint = document.createElement("div");
       hint.className = "empty-hint";
       hint.textContent = side === "enemy" ? "（敵方戰場）" : "（你的隨從）";
-      el.appendChild(hint);
+      el.replaceChildren(hint);
       return;
     }
     const enemyHasTaunt = hasTaunt(game.enemy.field);
+    const frag = document.createDocumentFragment();
     field.forEach((card) => {
       const c = renderCard(card);
       if (pendingSummonFx.has(card.uid)) {
@@ -1914,18 +2095,23 @@
         if (game.selected === card.uid) c.classList.add("selected");
         if ((game.pendingSpell && game.pendingSpell.need === "friendlyMinion") || (game.pendingBattlecry && game.pendingBattlecry.need === "friendlyMinion")) c.classList.add("targetable");
         if (pendingTargetUid === card.uid) c.classList.add("target-queued");
-        c.onclick = (event) => { event.stopPropagation(); selectMyMinion(card.uid); };
+        const selectAction = (event) => { if (event) event.stopPropagation(); selectMyMinion(card.uid); };
+        c.onclick = selectAction;
+        bindKeyboardAction(c, cardAriaLabel(card, card.canAttack ? "你的場上卡，可按 Enter 或 Space 選為攻擊者" : "你的場上卡"), selectAction, { pressed: game.selected === card.uid });
       } else {
         const spellTargetable = game.pendingSpell && game.pendingSpell.need === "enemyMinion";
         const attackTargetable = game.selected && isLegalTarget(game.enemy, card);
         if (spellTargetable || attackTargetable) c.classList.add("targetable");
         if (pendingTargetUid === card.uid) c.classList.add("target-queued");
         if (game.selected && enemyHasTaunt && !(card.keywords || []).includes("taunt")) c.classList.add("blocked");
-        c.onclick = (event) => { event.stopPropagation(); clickEnemyMinion(card.uid); };
+        const targetAction = (event) => { if (event) event.stopPropagation(); clickEnemyMinion(card.uid); };
+        c.onclick = targetAction;
+        bindKeyboardAction(c, cardAriaLabel(card, spellTargetable || attackTargetable ? "敵方場上卡，可按 Enter 或 Space 指定" : "敵方場上卡"), targetAction);
       }
       appendTargetActions(c, card.uid);
-      el.appendChild(c);
+      frag.appendChild(c);
     });
+    el.replaceChildren(frag);
   }
 
   // 單張卡片 DOM（含技能徽章、聖盾、星級、閃卡）
@@ -2366,11 +2552,22 @@
     setTimeout(() => ghost.remove(), delay);
   }
 
-  // 攻擊者朝目標衝刺（用 transform 位移做撞擊）
-  function animateAttackToward(attackerUid, targetUidOrId) {
-    if (prefersReducedMotion()) return;
+  // 攻擊者朝目標衝刺；規則結算只能由 active impact callback 觸發。
+  function animateAttackToward(attackerUid, targetUidOrId, onImpact) {
+    let impacted = false;
+    const resolveImpact = () => {
+      if (impacted) return undefined;
+      impacted = true;
+      return typeof onImpact === "function" ? onImpact() : undefined;
+    };
+    if (prefersReducedMotion()) return Promise.resolve(resolveImpact());
     const a = elFor(attackerUid), t = elFor(targetUidOrId);
-    if (!a) return;
+    if (!a) return Promise.resolve(resolveImpact());
+    return new Promise((resolve, reject) => {
+      const finishImpact = () => {
+        try { resolve(resolveImpact()); }
+        catch (err) { reject(err); }
+      };
     if (t) {
       const ar = a.getBoundingClientRect(), tr = t.getBoundingClientRect();
       const dx = (tr.left + tr.width / 2) - (ar.left + ar.width / 2);
@@ -2397,6 +2594,7 @@
         hitEl.classList.add("hit-shake", "hit-flash");
         spawnSparks(tr.left + tr.width / 2, tr.top + tr.height / 2);
         if (liveTarget && liveTarget !== hitEl) liveTarget.classList.add("hit-shake", "hit-flash");
+        finishImpact();
         setTimeout(() => {
           hitEl.classList.remove("hit-shake", "hit-flash");
           if (liveTarget) liveTarget.classList.remove("hit-shake", "hit-flash");
@@ -2405,10 +2603,13 @@
       }, hitDelay);
     } else {
       const attackMs = isLowPerf() ? 160 : 300;
+      const hitDelay = isLowPerf() ? 80 : 130;
       const attackGhost = cloneCardGhost(a, "attacking");
       removeGhost(attackGhost, attackMs + 40);
       a.classList.add("attacking"); setTimeout(() => a.classList.remove("attacking"), attackMs);
+      setTimeout(finishImpact, hitDelay);
     }
+    });
   }
 
   // 傷害數字分級（CP1-12）：≤2 小白、3~5 中金、≥6 大紅金
@@ -2492,7 +2693,7 @@
 
   function triggerFinishEffect(win) {
     finishFx = { win: !!win, lethal: true, confetti: 0, defeatFade: !win };
-    playSound("lethal");
+    playSound(win ? "win" : "lose");
     const board = document.querySelector(".board");
     if (board && !prefersReducedMotion()) {
       board.classList.remove("lethal-slow");
@@ -2531,7 +2732,7 @@
     try { raw = JSON.parse(localStorage.getItem("card_stats_v1")); } catch {}
     return Core.migrateStats(raw);
   }
-  function saveStats(s) { try { localStorage.setItem("card_stats_v1", JSON.stringify(Core.migrateStats(s))); } catch {} }
+  function saveStats(s) { return writeStorage("card_stats_v1", JSON.stringify(Core.migrateStats(s)), "戰績儲存"); }
 
   function syncDdaToggle() {
     const toggle = document.getElementById("ddaToggle");
@@ -2617,7 +2818,7 @@
   }
 
   function saveQuests(questState) {
-    try { localStorage.setItem(QUEST_KEY, JSON.stringify(Core.migrateQuests(questState, todaySeed()))); } catch {}
+    writeStorage(QUEST_KEY, JSON.stringify(Core.migrateQuests(questState, todaySeed())), "任務儲存");
   }
 
   function progressQuest(event) {
@@ -2641,7 +2842,7 @@
   }
 
   function saveGoals(goalState, seed) {
-    try { localStorage.setItem(GOAL_KEY, JSON.stringify(Core.migrateGoals(goalState, seed || weekSeed()))); } catch {}
+    writeStorage(GOAL_KEY, JSON.stringify(Core.migrateGoals(goalState, seed || weekSeed())), "目標儲存");
   }
 
   function loadChronicle() {
@@ -2651,7 +2852,7 @@
   }
 
   function saveChronicle(chronicleState) {
-    try { localStorage.setItem(CHRONICLE_KEY, JSON.stringify(Core.migrateChronicle(chronicleState))); } catch {}
+    writeStorage(CHRONICLE_KEY, JSON.stringify(Core.migrateChronicle(chronicleState)), "編年史儲存");
   }
 
   function chapterFactionName(id) {
@@ -2764,8 +2965,8 @@
   function progressWeeklyGoal(event) {
     const next = Core.applyWeeklyQuestProgress(loadGoals(), event);
     saveGoals(next);
-    renderMissionDrawer();
-    updateMissionBadge();
+    if (document.getElementById("missionDrawer")?.classList.contains("show")) renderMissionDrawer();
+    else updateMissionBadge();
     return next;
   }
 
@@ -3045,26 +3246,32 @@
     const label = document.getElementById("questDateLabel");
     if (!panel || !list) return;
     const state = questState || loadQuests();
-    if (label) label.textContent = state.dateSeed;
-    list.innerHTML = "";
-    state.quests.forEach((quest) => {
-      const done = quest.progress >= quest.target;
-      const row = document.createElement("div");
-      row.className = "quest-item" + (done ? " done" : "") + (quest.claimed ? " claimed" : "");
-      row.innerHTML = `
-        <div>
-          <div class="quest-title" title="${quest.title}">${quest.title}</div>
-          <div class="quest-progress">${Math.min(quest.progress, quest.target)} / ${quest.target} · ${quest.reward} 金幣</div>
-        </div>
-        <button class="quest-claim" data-quest-id="${quest.id}">${quest.claimed ? "已領" : "領取"}</button>`;
-      const btn = row.querySelector("button");
-      btn.disabled = !done || quest.claimed;
-      btn.onclick = () => claimQuestUi(quest.id);
-      list.appendChild(row);
-    });
-    updateQuestCtas(state);
-    renderMissionDrawer();
-    updateMissionBadge();
+    const nextKey = `${state.dateSeed}|${state.quests.map((quest) => `${quest.id}:${quest.progress}/${quest.target}:${quest.claimed ? 1 : 0}`).join(";")}`;
+    const changed = nextKey !== questRenderKey;
+    if (changed) {
+      questRenderKey = nextKey;
+      if (label) label.textContent = state.dateSeed;
+      const frag = document.createDocumentFragment();
+      state.quests.forEach((quest) => {
+        const done = quest.progress >= quest.target;
+        const row = document.createElement("div");
+        row.className = "quest-item" + (done ? " done" : "") + (quest.claimed ? " claimed" : "");
+        row.innerHTML = `
+          <div>
+            <div class="quest-title" title="${quest.title}">${quest.title}</div>
+            <div class="quest-progress">${Math.min(quest.progress, quest.target)} / ${quest.target} · ${quest.reward} 金幣</div>
+          </div>
+          <button class="quest-claim" data-quest-id="${quest.id}">${quest.claimed ? "已領" : "領取"}</button>`;
+        const btn = row.querySelector("button");
+        btn.disabled = !done || quest.claimed;
+        btn.onclick = () => claimQuestUi(quest.id);
+        frag.appendChild(row);
+      });
+      list.replaceChildren(frag);
+      updateQuestCtas(state);
+    }
+    if (document.getElementById("missionDrawer")?.classList.contains("show")) renderMissionDrawer();
+    else if (changed) updateMissionBadge();
   }
 
   function showOverlay(title, win) {
@@ -3089,7 +3296,7 @@
     recordGameTelemetry(s, win);
     s.dda = Core.nextDdaState(s.dda, s, win ? "win" : "loss");
     saveStats(s);
-    try { localStorage.setItem("card_win_streak_v1", JSON.stringify({ current: s.streak || 0, best: s.bestStreak || 0 })); } catch {}
+    writeStorage("card_win_streak_v1", JSON.stringify({ current: s.streak || 0, best: s.bestStreak || 0 }), "連勝紀錄儲存");
     const ddaInfo = Core.ddaProfile(s.dda);
     if (win) {
       progressQuest({ type: "win", amount: 1 });
@@ -3155,6 +3362,11 @@
   if (textSizeSel) textSizeSel.onchange = () => setTextSize(textSizeSel.value);
   const audioToggleBtn = document.getElementById("audioToggleBtn");
   if (audioToggleBtn) audioToggleBtn.onclick = () => setAudioMuted(!audioMuted());
+  const audioVolumeRange = document.getElementById("audioVolumeRange");
+  if (audioVolumeRange) {
+    syncAudioVolumeControl();
+    audioVolumeRange.oninput = () => setAudioVolume(Number(audioVolumeRange.value) / 100);
+  }
   const settingsToggleBtn = document.getElementById("settingsToggleBtn");
   if (settingsToggleBtn) settingsToggleBtn.onclick = (event) => {
     event.stopPropagation();
@@ -3270,7 +3482,7 @@
       renderChronicle();
     }
     if (e.key === TEXT_SIZE_KEY) applyTextSize(currentTextSize());
-    if (e.key === AUDIO_MUTE_KEY) syncAudioButton();
+    if (e.key === AUDIO_MUTE_KEY || e.key === AUDIO_VOLUME_KEY) syncAudioButton();
   });
 
   // 測試掛鉤：讓自動化測試能建立確定性場景並驗證技能（不影響正常遊玩）
@@ -3299,8 +3511,8 @@
     attackMinion(attackerUid, defenderUid) {
       const a = game.player.field.find((m) => m.uid === attackerUid);
       const d = game.enemy.field.find((m) => m.uid === defenderUid);
-      if (a && d) resolveAttack(game.player, a, d);
-      render();
+      if (a && d) return resolveAttack(game.player, a, d);
+      return Promise.resolve(coreFailure("targetNotFound"));
     },
     // 觸發玩家回合結束的回復（不進 AI 回合）
     regenTest() { regenerateField(game.player); render(); },
@@ -3324,7 +3536,8 @@
     setTextSize: (size) => setTextSize(size),
     textSize: () => ({ value: currentTextSize(), attr: document.documentElement.dataset.textSize, select: document.getElementById("textSizeSel")?.value || "" }),
     setAudioMuted: (muted) => setAudioMuted(muted),
-    audio: () => ({ muted: audioMuted(), unlocked: audioUnlocked, button: document.getElementById("audioToggleBtn")?.textContent || "" }),
+    setAudioVolume: (value) => setAudioVolume(value),
+    audio: () => ({ muted: audioMuted(), volume: audioVolume(), unlocked: audioUnlocked, button: document.getElementById("audioToggleBtn")?.textContent || "" }),
     effects: () => ({
       finishFx: Object.assign({}, finishFx),
       confetti: document.querySelectorAll(".confetti-piece").length,
@@ -3389,7 +3602,7 @@
     })),
     setOpponent(id) {
       if (!OPPONENTS[id]) return currentOpponentId();
-      try { localStorage.setItem(OPPONENT_KEY, id); } catch {}
+      writeStorage(OPPONENT_KEY, id, "對手設定儲存");
       const sel = document.getElementById("opponentSel");
       if (sel) sel.value = id;
       newGame();

@@ -36,6 +36,13 @@ const R20_AGGRO_DECK_IDS = [
   "wolf", "wolf", "raptor", "raptor", "griffin", "griffin", "firebolt", "firebolt", "manaSurge", "manaSurge",
   "frontScout", "frontScout", "linebreaker", "linebreaker", "sparkSquire", "sparkSquire", "alleySkirmisher", "alleySkirmisher", "dawnRider", "dawnRider",
 ];
+const E2E_TIMEOUT_MS = 90000;
+
+function tunePageTimeouts(page) {
+  page.setDefaultTimeout(E2E_TIMEOUT_MS);
+  page.setDefaultNavigationTimeout(E2E_TIMEOUT_MS);
+  return page;
+}
 
 function countIds(ids) {
   return ids.reduce((acc, id) => {
@@ -155,7 +162,7 @@ async function run() {
 
   try {
     const swContext = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: "allow" });
-    const swPage = await swContext.newPage();
+    const swPage = tunePageTimeouts(await swContext.newPage());
     const swErrors = [];
     swPage.on("console", (m) => { if (m.type() === "error" && !/favicon|net::ERR/.test(m.text())) swErrors.push("console: " + m.text()); });
     swPage.on("pageerror", (e) => swErrors.push("pageerror: " + (e && e.message)));
@@ -215,7 +222,7 @@ async function run() {
       hasTouch: isTouch,
       isMobile: isTouch,
     });
-    const page = await viewportContext.newPage();
+    const page = tunePageTimeouts(await viewportContext.newPage());
     const errors = [];
     page.on("console", (m) => { if (m.type() === "error" && !/favicon|net::ERR/.test(m.text())) errors.push("console: " + m.text()); });
     page.on("pageerror", (e) => errors.push("pageerror: " + (e && e.message)));
@@ -424,14 +431,24 @@ async function run() {
         const T = window.__test;
         T.setPerfMode("high");
         T.setAudioMuted(true);
-        T.setup(["dragon"], ["titan"]);
+        T.setup(["wolf"], ["titan"]);
         const g = T.game();
         T.attackMinion(g.player.field[0].uid, g.enemy.field[0].uid);
       });
       await sleep(80);
-      const combatFx = await page.evaluate(() => window.__test.effects());
-      assert(combatFx.damagePops >= 1 && combatFx.lunge >= 1 && combatFx.lethalSlow === false,
-        "battle FX guard: render-surviving attack lunge and damage pop are emitted on the real attack path");
+      const preImpact = await page.evaluate(() => ({
+        fx: window.__test.effects(),
+        hp: window.__test.game().enemy.field[0]?.health,
+      }));
+      assert(preImpact.fx.damagePops === 0 && preImpact.fx.lunge >= 1 && preImpact.hp === 8,
+        "battle FX guard: impact 前仍只在攻擊前搖/衝刺，未扣血且無傷害字");
+      await sleep(120);
+      const combatFx = await page.evaluate(() => ({
+        fx: window.__test.effects(),
+        hp: window.__test.game().enemy.field[0]?.health,
+      }));
+      assert(combatFx.fx.damagePops >= 1 && combatFx.fx.hitFlash >= 1 && combatFx.fx.lethalSlow === false && combatFx.hp < 8,
+        "battle FX guard: active impact 後才扣血、顯示 hit flash 與傷害字");
       await page.evaluate(() => {
         const T = window.__test;
         T.setup(["dragon"], ["wolf"]);
@@ -439,10 +456,13 @@ async function run() {
         T.attackMinion(g.player.field[0].uid, g.enemy.field[0].uid);
       });
       await sleep(80);
+      const deathPreImpact = await page.evaluate(() => window.__test.effects());
+      assert(deathPreImpact.dying === 0 && deathPreImpact.lunge >= 1,
+        "battle FX guard: impact 前不標記死亡");
+      await sleep(140);
       const deathFx = await page.evaluate(() => window.__test.effects());
-      assert(deathFx.dying >= 1 && deathFx.lunge >= 1,
-        "battle FX guard: render-surviving death dissolve stays mounted after attack render");
-      await sleep(160);
+      assert(deathFx.dying >= 1,
+        "battle FX guard: impact 後死亡反應才掛載");
       const hitFx = await page.evaluate(() => window.__test.effects());
       assert(hitFx.hitFlash >= 1,
         "battle FX guard: render-surviving hit flash appears after attack render");
@@ -1337,14 +1357,31 @@ async function run() {
         step: window.__test.guide().step,
         visible: document.getElementById("battleGuide").classList.contains("show"),
         hasWolf: !!document.querySelector('.hand .card[data-card-id="wolf"]'),
+        totalCards: window.__test.game().player.hand.length + window.__test.game().player.deck.length + window.__test.game().player.field.length,
       }));
-      assert(guideAuto.active && guideAuto.step === 0 && guideAuto.visible && guideAuto.hasWolf, "清空存檔後首次對戰自動開啟三步導引");
+      assert(guideAuto.active && guideAuto.step === 0 && guideAuto.visible && guideAuto.hasWolf && guideAuto.totalCards === 20,
+        "清空存檔後首次對戰自動開啟三步導引，且不注入第 21 張牌");
       await page.locator("#guideSkipBtn").click();
       const guideSkipped = await page.evaluate(() => ({
         visible: document.getElementById("battleGuide").classList.contains("show"),
         stored: localStorage.getItem("cb_guide_done_v1"),
+        totalCards: window.__test.game().player.hand.length + window.__test.game().player.deck.length + window.__test.game().player.field.length,
       }));
-      assert(!guideSkipped.visible && guideSkipped.stored === "1", "三步導引可略過並記錄已完成");
+      assert(!guideSkipped.visible && guideSkipped.stored === "1" && guideSkipped.totalCards === 20,
+        "三步導引可略過並記錄已完成，且牌局仍維持 20 張資源");
+      await page.evaluate(() => localStorage.clear());
+      await page.reload();
+      await page.waitForFunction(() => window.__test && window.__test.guide().active);
+      await page.locator("#mulliganBtn").click();
+      const guideMulligan = await page.evaluate(() => ({
+        active: window.__test.guide().active,
+        step: window.__test.guide().step,
+        hasWolf: !!document.querySelector('.hand .card[data-card-id="wolf"]'),
+        totalCards: window.__test.game().player.hand.length + window.__test.game().player.deck.length + window.__test.game().player.field.length,
+      }));
+      assert(guideMulligan.active && guideMulligan.step === 0 && guideMulligan.hasWolf && guideMulligan.totalCards === 20,
+        "導引中重抽後重新定位示範卡，且不改變 20 張牌狀態");
+      await page.locator("#guideSkipBtn").click();
       await page.locator("#moreActionsBtn").click();
       await page.waitForFunction(() => document.getElementById("commandDock")?.classList.contains("more-open"));
       await page.locator("#guideReplayBtn").click();
@@ -1519,7 +1556,11 @@ async function run() {
       await page.locator("#autoFillDeckBtn").click();
     } else {
       for (const id of LEGAL_DECK_IDS) {
-        await page.locator(`button.deck-add-btn[data-card-id="${id}"]`).click();
+        await page.evaluate((cardId) => {
+          const btn = document.querySelector(`button.deck-add-btn[data-card-id="${cardId}"]`);
+          if (!btn) throw new Error(`deck add button not found: ${cardId}`);
+          btn.click();
+        }, id);
       }
     }
     await page.locator("#saveDeckBtn").click();
@@ -1746,12 +1787,50 @@ async function run() {
         const beforeReject = localStorage.getItem("card_stats_v1");
         try { T.importSave("not-a-valid-save", { reload: false }); }
         catch { badRejected = true; }
+        const unchangedAfterBad = localStorage.getItem("card_stats_v1") === beforeReject;
+        localStorage.setItem("card_stats_v1", JSON.stringify({ version: 3, wins: 9, losses: 1, coins: 9 }));
+        localStorage.setItem("cardpack_collection_v2", JSON.stringify({ wolf: 1 }));
+        localStorage.setItem("card_deck_v1", JSON.stringify({ version: 1, cards: [] }));
+        const beforeRollback = {
+          stats: localStorage.getItem("card_stats_v1"),
+          collection: localStorage.getItem("cardpack_collection_v2"),
+          deck: localStorage.getItem("card_deck_v1"),
+        };
+        const originalSetItem = Storage.prototype.setItem;
+        let failedOnce = false;
+        let rollbackRejected = false;
+        Storage.prototype.setItem = function patchedSetItem(key, value) {
+          if (key === "card_deck_v1" && !failedOnce) {
+            failedOnce = true;
+            throw new Error("simulated quota");
+          }
+          return originalSetItem.call(this, key, value);
+        };
+        try { T.importSave(saveCode, { reload: false }); }
+        catch { rollbackRejected = true; }
+        finally { Storage.prototype.setItem = originalSetItem; }
+        const afterRollback = {
+          stats: localStorage.getItem("card_stats_v1"),
+          collection: localStorage.getItem("cardpack_collection_v2"),
+          deck: localStorage.getItem("card_deck_v1"),
+        };
+        const afterRollbackParsed = {
+          stats: JSON.parse(afterRollback.stats || "{}"),
+          collection: JSON.parse(afterRollback.collection || "{}"),
+          deck: JSON.parse(afterRollback.deck || "{}"),
+        };
         return {
           codeLength: saveCode.length,
           textareaFilled: document.getElementById("saveImportText").value === saveCode,
           restored,
           badRejected,
-          unchangedAfterBad: localStorage.getItem("card_stats_v1") === beforeReject,
+          unchangedAfterBad,
+          rollbackRejected,
+          rollbackRestored: afterRollbackParsed.stats.wins === 9
+            && afterRollbackParsed.stats.coins === 9
+            && afterRollbackParsed.collection.wolf === 1
+            && Array.isArray(afterRollbackParsed.deck.cards)
+            && afterRollbackParsed.deck.cards.length === 0,
           changedFromBeforeBad: beforeBad !== beforeReject,
         };
       });
@@ -1765,6 +1844,7 @@ async function run() {
       && saveManager.changedFromBeforeBad,
       "存檔管家匯入會遷移還原資料並在匯入前自動備份");
     assert(saveManager.badRejected && saveManager.unchangedAfterBad, "壞存檔碼會拒絕且不覆蓋現有存檔");
+    assert(saveManager.rollbackRejected && saveManager.rollbackRestored, "匯入 commit 中途失敗會拒絕並 rollback 到匯入前狀態");
 
     const downgradeRecommendation = await page.evaluate(({ deckIds, collection }) => {
       const T = window.__deckTest;

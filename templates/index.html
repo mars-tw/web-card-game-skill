@@ -90,6 +90,7 @@
   .pwa-meta button { border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.05); color:#e6edf3;
     border-radius:8px; padding:6px 8px; font:inherit; font-weight:800; cursor:pointer; }
   .swatch {
+    appearance: none; padding: 0; background-clip: padding-box;
     width: 26px; height: 26px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;
     transition: transform .12s, border-color .12s;
   }
@@ -140,17 +141,17 @@
 </style>
 </head>
 <body>
-  <nav class="tabbar">
+  <nav class="tabbar" role="tablist" aria-label="主要模式">
     <span class="brand"><span class="brand-icon">🎴</span><span class="brand-text">卡牌遊戲</span></span>
-    <button class="tab active" data-target="battle"><span class="ico">⚔️</span>對戰</button>
-    <button class="tab" data-target="pack"><span class="ico">🎁</span>開卡包</button>
+    <button class="tab active" id="tabBattle" data-target="battle" role="tab" aria-selected="true" aria-controls="battle"><span class="ico">⚔️</span>對戰</button>
+    <button class="tab" id="tabPack" data-target="pack" role="tab" aria-selected="false" aria-controls="pack"><span class="ico">🎁</span>開卡包</button>
 
-    <div class="theme-picker">
-      <span class="lbl">主題</span>
-      <div class="swatch" data-theme="dark"    title="暗黑"></div>
-      <div class="swatch" data-theme="fantasy" title="奇幻"></div>
-      <div class="swatch" data-theme="cyber"   title="科幻"></div>
-      <div class="swatch" data-theme="forest"  title="森林"></div>
+    <div class="theme-picker" role="radiogroup" aria-label="主題">
+      <span class="lbl" aria-hidden="true">主題</span>
+      <button class="swatch" type="button" data-theme="dark"    title="暗黑" aria-label="主題：暗黑" aria-pressed="true"></button>
+      <button class="swatch" type="button" data-theme="fantasy" title="奇幻" aria-label="主題：奇幻" aria-pressed="false"></button>
+      <button class="swatch" type="button" data-theme="cyber"   title="科幻" aria-label="主題：科幻" aria-pressed="false"></button>
+      <button class="swatch" type="button" data-theme="forest"  title="森林" aria-label="主題：森林" aria-pressed="false"></button>
     </div>
     <div class="pwa-meta" aria-label="PWA 版本">
       <span id="pwaVersion">版本讀取中</span>
@@ -159,8 +160,8 @@
   </nav>
 
   <div class="stage">
-    <iframe id="battle" class="frame active" src="card-battle/index.html" title="卡牌對戰"></iframe>
-    <iframe id="pack"   class="frame"        src="card-pack/index.html"   title="開卡包"></iframe>
+    <iframe id="battle" class="frame active" src="card-battle/index.html" title="卡牌對戰" role="tabpanel" aria-labelledby="tabBattle"></iframe>
+    <iframe id="pack"   class="frame"        src="card-pack/index.html"   title="開卡包" role="tabpanel" aria-labelledby="tabPack"></iframe>
   </div>
   <div class="pwa-update" id="pwaUpdateToast">
     <span>新版本可用</span>
@@ -173,15 +174,35 @@
     const swatches = document.querySelectorAll(".swatch");
 
     function switchTab(target) {
-      tabs.forEach((t) => t.classList.toggle("active", t.dataset.target === target));
-      frames.forEach((f) => f.classList.toggle("active", f.id === target));
+      tabs.forEach((t) => {
+        const active = t.dataset.target === target;
+        t.classList.toggle("active", active);
+        t.setAttribute("aria-selected", active ? "true" : "false");
+        t.tabIndex = active ? 0 : -1;
+      });
+      frames.forEach((f) => {
+        const active = f.id === target;
+        f.classList.toggle("active", active);
+        f.setAttribute("aria-hidden", active ? "false" : "true");
+      });
     }
     tabs.forEach((tab) => tab.addEventListener("click", () => switchTab(tab.dataset.target)));
+    tabs.forEach((tab, index) => tab.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      const nextIndex = event.key === "ArrowRight" ? (index + 1) % tabs.length : (index - 1 + tabs.length) % tabs.length;
+      tabs[nextIndex].focus();
+      switchTab(tabs[nextIndex].dataset.target);
+    }));
 
     // 主題切換：套用到入口頁 + 廣播給兩個 iframe + 存 localStorage
     function applyTheme(theme) {
       document.documentElement.setAttribute("data-theme", theme === "dark" ? "" : theme);
-      swatches.forEach((s) => s.classList.toggle("active", s.dataset.theme === theme));
+      swatches.forEach((s) => {
+        const active = s.dataset.theme === theme;
+        s.classList.toggle("active", active);
+        s.setAttribute("aria-pressed", active ? "true" : "false");
+      });
       try { localStorage.setItem("cardgame_theme", theme === "dark" ? "" : theme); } catch {}
       frames.forEach((f) => {
         try { f.contentWindow.postMessage({ type: "setTheme", theme: theme === "dark" ? "" : theme }, "*"); } catch {}
@@ -198,7 +219,12 @@
     const saved = (() => { try { return localStorage.getItem("cardgame_theme") || "dark"; } catch { return "dark"; } })();
     const initial = saved || "dark";
     document.documentElement.setAttribute("data-theme", initial === "dark" ? "" : initial);
-    swatches.forEach((s) => s.classList.toggle("active", s.dataset.theme === (initial || "dark")));
+    swatches.forEach((s) => {
+      const active = s.dataset.theme === (initial || "dark");
+      s.classList.toggle("active", active);
+      s.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+    switchTab("battle");
     frames.forEach((f) => f.addEventListener("load", () => {
       try { f.contentWindow.postMessage({ type: "setTheme", theme: initial === "dark" ? "" : initial }, "*"); } catch {}
     }));

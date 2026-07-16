@@ -233,6 +233,8 @@
   button:disabled { filter:grayscale(1) brightness(.65); cursor:not-allowed; transform:none; }
   .audio-toggle-btn { min-width:42px; padding-inline:10px; border-radius:999px; }
   .audio-toggle-btn.is-muted { filter:grayscale(1) brightness(.75); color:var(--muted); }
+  .volume-field { display:inline-flex; align-items:center; gap:6px; min-height:44px; font-size:12px; color:var(--muted); }
+  .volume-field input { width:92px; min-height:32px; }
   .top-actions { display:flex; justify-content:center; gap:10px; padding:0; }
   .top-actions button { padding:6px 14px; font-size:13px; border-radius:16px; }
 
@@ -611,6 +613,9 @@
         <option value="medium" selected>中</option>
         <option value="large">大</option>
       </select>
+      <label class="volume-field">音量
+        <input id="packAudioVolumeRange" type="range" min="0" max="100" step="5" value="75" aria-label="音效音量" />
+      </label>
       <span class="version-pill" id="packPwaVersion">版本讀取中</span>
       <button class="ghost" id="packPwaCheckBtn" type="button">檢查更新</button>
     </div>

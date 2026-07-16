@@ -1,4 +1,4 @@
-/* R64：關鍵控制在各高度都必須可見、可命中、至少 44px，且彼此不重疊。 */
+/* R65：關鍵控制在各高度都必須可見、可命中、至少 44px，且彼此不重疊。 */
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
@@ -142,6 +142,30 @@ async function run() {
       page.on("console", (message) => { if (message.type() === "error" && !/favicon|net::ERR/.test(message.text())) errors.push(message.text()); });
       await page.addInitScript(() => { try { localStorage.setItem("cb_guide_done_v1", "1"); } catch {} });
       await page.goto(`http://127.0.0.1:${port}/templates/index.html`, { waitUntil: "domcontentloaded" });
+      const shellA11y = await page.evaluate(() => ({
+        tablist: document.querySelector(".tabbar")?.getAttribute("role"),
+        tabs: [...document.querySelectorAll(".tab")].map((tab) => ({ role: tab.getAttribute("role"), selected: tab.getAttribute("aria-selected"), controls: tab.getAttribute("aria-controls") })),
+        swatches: [...document.querySelectorAll(".swatch")].map((swatch) => ({ tag: swatch.tagName.toLowerCase(), label: swatch.getAttribute("aria-label"), pressed: swatch.getAttribute("aria-pressed") })),
+      }));
+      assert(shellA11y.tablist === "tablist"
+        && shellA11y.tabs.length === 2
+        && shellA11y.tabs.every((tab) => tab.role === "tab" && tab.controls)
+        && shellA11y.swatches.length === 4
+        && shellA11y.swatches.every((swatch) => swatch.tag === "button" && swatch.label && swatch.pressed !== null),
+        `${name}：入口分頁與主題選項具備 tab/radio 語意`);
+      await page.locator('.swatch[data-theme="cyber"]').focus();
+      await page.keyboard.press("Enter");
+      const themeKeyboard = await page.evaluate(() => ({
+        stored: localStorage.getItem("cardgame_theme"),
+        pressed: document.querySelector('.swatch[data-theme="cyber"]')?.getAttribute("aria-pressed"),
+      }));
+      assert(themeKeyboard.stored === "cyber" && themeKeyboard.pressed === "true", `${name}：主題選項可用鍵盤 Enter 切換`);
+      await page.locator('.tab[data-target="pack"]').focus();
+      await page.keyboard.press("Enter");
+      const packTabActive = await page.evaluate(() => document.getElementById("pack")?.classList.contains("active"));
+      assert(packTabActive, `${name}：入口 tab 可用鍵盤 Enter 切到卡包`);
+      await page.locator('.tab[data-target="battle"]').focus();
+      await page.keyboard.press("Enter");
       await page.waitForFunction(() => document.getElementById("battle")?.contentWindow?.__test, { timeout: 30000 });
       const frame = page.frames().find((candidate) => /card-battle\/index\.html/.test(candidate.url()));
       if (!frame) { assert(false, `${name}：找到對戰 iframe`); await context.close(); continue; }
@@ -200,6 +224,44 @@ async function run() {
 
       await frame.evaluate(() => {
         const T = window.__test;
+        T.setup([], []);
+        const g = T.game();
+        g.player.hand = [];
+        g.player.mana = g.player.manaMax = 10;
+        T.giveCard("wolf");
+      });
+      const handA11y = await frame.evaluate(() => {
+        const card = document.querySelector('#playerHand .card[data-card-id="wolf"]');
+        return { role: card?.getAttribute("role"), tabIndex: card?.tabIndex, label: card?.getAttribute("aria-label") || "" };
+      });
+      assert(handA11y.role === "button" && handA11y.tabIndex === 0 && /迅捷狼/.test(handA11y.label),
+        `${name}：手牌卡有語意、焦點與可讀名稱`);
+      if (viewport.touch) await frame.locator("#handDrawerToggle").click();
+      await frame.locator('#playerHand .card[data-card-id="wolf"]').focus();
+      await frame.locator('#playerHand .card[data-card-id="wolf"]').press("Enter");
+      await frame.waitForFunction(() => !!document.querySelector('#playerField .card[data-card-id="wolf"]'));
+      const fieldA11y = await frame.evaluate(() => {
+        const card = document.querySelector('#playerField .card[data-card-id="wolf"]');
+        const hero = document.getElementById("enemyHero");
+        return {
+          cardRole: card?.getAttribute("role"),
+          cardLabel: card?.getAttribute("aria-label") || "",
+          heroRole: hero?.getAttribute("role"),
+          heroLabel: hero?.getAttribute("aria-label") || "",
+        };
+      });
+      assert(fieldA11y.cardRole === "button" && /攻擊者/.test(fieldA11y.cardLabel)
+        && fieldA11y.heroRole === "button" && /敵方英雄/.test(fieldA11y.heroLabel),
+        `${name}：場上卡與英雄有語意和操作提示`);
+      await frame.locator('#playerField .card[data-card-id="wolf"]').focus();
+      await frame.locator('#playerField .card[data-card-id="wolf"]').press(" ");
+      await frame.locator("#enemyHero").focus();
+      await frame.locator("#enemyHero").press("Enter");
+      await frame.waitForFunction(() => window.__test.game().enemy.hp < window.__test.game().enemy.maxHp);
+      assert(true, `${name}：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄`);
+
+      await frame.evaluate(() => {
+        const T = window.__test;
         T.setup([], ["footman"]);
         const game = T.game();
         game.player.hand = [];
@@ -237,6 +299,26 @@ async function run() {
 
       const pageScroll = await frame.evaluate(() => ({ y: scrollY, overflow: document.documentElement.scrollHeight - innerHeight }));
       assert(pageScroll.y === 0 && pageScroll.overflow <= 8, `${name}：不需頁面捲動即可操作`);
+      await page.locator('.tab[data-target="pack"]').click();
+      const packFrame = page.frames().find((candidate) => /card-pack\/index\.html/.test(candidate.url()));
+      if (!packFrame) {
+        assert(false, `${name}：找到卡包 iframe`);
+      } else {
+        await packFrame.waitForFunction(() => window.__deckTest && document.getElementById("pack"));
+        await packFrame.evaluate(() => {
+          localStorage.setItem("card_stats_v1", JSON.stringify({ version: 3, wins: 0, losses: 0, streak: 0, lossStreak: 0, bestStreak: 0, coins: 200, packsOpened: 0 }));
+        });
+        const packA11y = await packFrame.evaluate(() => {
+          const pack = document.getElementById("pack");
+          return { role: pack?.getAttribute("role"), tabIndex: pack?.tabIndex, label: pack?.getAttribute("aria-label") || "" };
+        });
+        assert(packA11y.role === "button" && packA11y.tabIndex === 0 && /卡包/.test(packA11y.label),
+          `${name}：牌包本體有語意、焦點與可讀名稱`);
+        await packFrame.locator("#pack").focus();
+        await packFrame.locator("#pack").press("Enter");
+        await packFrame.waitForFunction(() => document.querySelectorAll("#revealRow .card").length === 5);
+        assert(true, `${name}：牌包可用鍵盤 Enter 開啟`);
+      }
       assert(errors.length === 0, `${name}：無 console/page error${errors.length ? `（${errors.slice(0, 2).join(" | ")}）` : ""}`);
       await context.close();
     }
@@ -246,10 +328,10 @@ async function run() {
   }
 
   if (failures) {
-    console.error(`\n❌ R64 控制可達性守門失敗：${failures} 項`);
+    console.error(`\n❌ R65 控制可達性守門失敗：${failures} 項`);
     process.exit(1);
   }
-  console.log("\n✅ R64 控制可達性守門通過");
+  console.log("\n✅ R65 控制可達性守門通過");
 }
 
 run().catch((error) => { console.error(error); process.exit(1); });

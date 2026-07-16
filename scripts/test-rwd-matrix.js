@@ -1,5 +1,5 @@
 /* =========================================================================
- * test-rwd-matrix.js — R64 RWD 十視口矩陣守門（真瀏覽器）
+ * test-rwd-matrix.js — R65 RWD 十視口矩陣守門（真瀏覽器）
  *
  * 驗收標準（每頁 × 每視口都必須成立）：
  *   1. 所有可互動元素（button/select/input/textarea/a[href]/[role=button]/[onclick]）
@@ -169,7 +169,7 @@ async function run() {
           }
         }
         if (pg.name === "card-battle" && isTouch) {
-          const mobileFlow = await page.evaluate(() => {
+          const mobileFlow = await page.evaluate(async () => {
             const fields = [...document.querySelectorAll(".battlefield")];
             const combinedHeight = fields.reduce((sum, el) => sum + el.getBoundingClientRect().height, 0);
             const drawer = document.getElementById("handDrawer");
@@ -189,6 +189,7 @@ async function run() {
             attacker.click();
             const selected = attacker.classList.contains("selected") || !!window.__test.game().selected;
             target.click();
+            await new Promise((resolve) => setTimeout(resolve, 240));
             const attacked = window.__test.game().enemy.field[0]?.health < before || window.__test.game().enemy.field.length === 0;
             return { combinedHeight, viewportHeight: innerHeight, open, closed, visible, selected, attacked };
           });
