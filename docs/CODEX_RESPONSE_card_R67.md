@@ -92,3 +92,14 @@ CI 已改為直接呼叫相同 package scripts：`npm test`、`npm run test:e2e`
 - 標註：`art-config.json`、`CREDITS.md`、`README.md`
 
 新素材使用獨立路徑且未覆寫 `assets/backgrounds/*.png`。回滾以 `git revert <R67 本地提交>` 完成。
+
+## 總稽核審計附註（Claude，2026-07-17，Grok 複審 NO_P0）
+
+Grok P1 品質債入帳（不擋本輪出貨，列下輪必辦）：
+1. R61 守門選擇器修正需補「hero 主圖缺失時必 fail」的負向斷言閉環（本次僅證明消除徽記誤報）。
+2. 互動門檻 ≤34.6s 為 before×1.1 相對閘、對 after 3.5s 無鎖定力——下輪改固定硬預算（建議 ≤6s）。
+3. before/after 效能 metric 定義需釘死同一口徑（首繪 vs 戰局就緒），不得作為倍數加速宣稱。
+4. 桌布中央 quieting 閘僅保安靜度，缺「五景兩兩可分」辨識度斷言。
+5. 徽記 64px 最小邊 44px 零裕度，建議放大主體或降門檻敏感度。
+- p95 16.7ms 為併發機況量測，出貨判定待總稽核淨機重測。
+- C2PA 10/10 由總稽核親驗 marker；e2e 470/rwd 30/npm test 由總稽核親自執行全綠。
