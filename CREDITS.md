@@ -8,6 +8,8 @@
 |---|---|
 | `assets/cards/*.png` | 卡牌立繪與法術圖皆為本專案以生成式 AI 製作；提示詞與清單集中在 [`art-config.json`](art-config.json)，生成流程見 [`references/art-generation.md`](references/art-generation.md)。R61 六張具名角色立繪使用 OpenAI `image_gen` 產出並統一風格；R66 再以 OpenAI `gpt-image-2` 完成 25 張長尾卡圖，經人工陣營辨識、安全區與偽文字檢查後轉製為 1024×1024 RGBA PNG，稽核紀錄與雜湊見 [`docs/evidence/R66_art/manifest.json`](docs/evidence/R66_art/manifest.json)。`mage.png` 與 `lich.png` 的 R66 變更僅為尺寸／格式修復，未重新生成內容。 |
 | `assets/backgrounds/*.png` | 本專案的 AI 生成主題背景；提示詞記錄於 `art-config.json`。 |
+| `assets/battlefields/*.webp` | R67 Wave 2 五戰場由 OpenAI 內建 `imagegen`（`gpt-image-2`）逐張生成；未使用外部搜尋圖或第三方素材。原始 C2PA master、提示詞、確定性 high／med／low 後製參數、逐檔 SHA-256 與量化 gate 見 [`docs/evidence/R67/`](docs/evidence/R67/)。 |
+| `assets/factions/*.png` | R67 Wave 2 五陣營徽記由 OpenAI 內建 `imagegen`（`gpt-image-2`）以色鍵底生成，再使用 imagegen skill 隨附的 `remove_chroma_key.py` 轉為 alpha PNG；C2PA master、alpha 參數、64px 辨識與綠邊 gate 見 [`docs/evidence/R67/`](docs/evidence/R67/)。 |
 | `assets/cover.png` | 本專案宣傳封面。repo 歷史未保存可核實的第三方素材來源或獨立授權檔，故不主張來自任何外部素材庫。 |
 | `assets/icons/icon-192.png`、`icon-512.png` | 本專案製作的 PWA 圖示；未使用外部 icon 套件。 |
 | `docs/screenshots/*.png` | 從本專案線上遊戲實機畫面擷取，僅用於文件說明。 |

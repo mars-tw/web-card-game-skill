@@ -4,11 +4,25 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>卡牌對戰 · Card Battle</title>
+<link id="r67BattlefieldPreload" rel="preload" as="image" href="../../assets/battlefields/white-tide-citadel-low.webp?v=50075ecc" fetchpriority="high" />
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r66-v1";
+    const candidate = document.getElementById("r67BattlefieldPreload");
+    if (!candidate) return;
+    const markPainted = () => requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (!performance.getEntriesByName("r67-visual-ready").length) {
+        performance.mark("r67-visual-ready", { detail: { source: "responsive-preload", url: candidate.href } });
+      }
+    }));
+    candidate.addEventListener("load", markPainted, { once: true });
+    if (performance.getEntriesByName(candidate.href, "resource").some((entry) => entry.responseEnd > 0)) markPainted();
+  })();
+</script>
+<script>
+  (() => {
+    const CACHE_VERSION = "card-battle-r67-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r66_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r67_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -67,25 +81,22 @@
     --mana: #3b82f6; --hp: #ef4444; --accent: #f59e0b;
     --card-w: clamp(124px, 7.2vw, 152px); --card-h: calc(var(--card-w) * 1.42); --text-scale: 1;
     --desktop-command-dock-h: 64px;
-    --bg-img: url("../../assets/backgrounds/dark.png");
+    --battlefield-image: url("../../assets/battlefields/white-tide-citadel-low.webp?v=50075ecc");
   }
   :root[data-theme="fantasy"] {
     --bg1: #2a1d10; --bg2: #160d05;
     --panel: #251a0f; --panel-border: #4a361c;
     --accent: #f0a830; --mana: #2f80ed;
-    --bg-img: url("../../assets/backgrounds/fantasy.png");
   }
   :root[data-theme="cyber"] {
     --bg1: #0a1626; --bg2: #04070f;
     --panel: #0d1b2e; --panel-border: #1b3a5c;
     --accent: #2dd4bf; --mana: #38bdf8; --hp: #f43f5e;
-    --bg-img: url("../../assets/backgrounds/cyber.png");
   }
   :root[data-theme="forest"] {
     --bg1: #14241a; --bg2: #07120c;
     --panel: #122019; --panel-border: #234a32;
     --accent: #84cc16; --mana: #22c55e;
-    --bg-img: url("../../assets/backgrounds/forest.png");
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -101,26 +112,26 @@
   }
   body[data-opponent="op_magister_vey"] { --opponent-tone:#a855f7; --opponent-tone-soft:rgba(168,85,247,.22); }
   body[data-opponent="op_scarra"] { --opponent-tone:#f97316; --opponent-tone-soft:rgba(249,115,22,.23); }
-  /* 背景圖層（依主題切換，--bg-img 由各主題設定）*/
+  /* R67 戰場圖層由 battle.js 依對局輪換與品質檔載入。 */
   body::before {
     content: ""; position: fixed; inset: 0; z-index: -2;
-    background-image: var(--bg-img, none);
+    background-image:
+      linear-gradient(rgba(4,10,16,.16),rgba(4,10,16,.28)),
+      var(--battlefield-image, none);
     background-size: cover; background-position: center;
-    opacity: .55; filter: saturate(1.1);
+    opacity: .82; filter: saturate(.92) brightness(.82);
+    transition: opacity .24s ease;
   }
+  body[data-battlefield-loading="true"]::before { opacity:.46; }
   /* 動態氛圍層：兩團緩慢飄移的光暈 + 暗角 */
   body::after {
     content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    contain: paint; opacity: .96;
     background:
       radial-gradient(40% 50% at 20% 30%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%),
       radial-gradient(42% 52% at 78% 24%, var(--opponent-tone-soft), transparent 72%),
       radial-gradient(45% 55% at 80% 70%, color-mix(in srgb, var(--opponent-tone) 16%, transparent), transparent 70%),
       radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.6));
-    animation: ambientDrift 18s ease-in-out infinite alternate;
-  }
-  @keyframes ambientDrift {
-    0%   { transform: translate(0, 0) scale(1); opacity: .9; }
-    100% { transform: translate(-2%, 2%) scale(1.06); opacity: 1; }
   }
   header {
     width: 100%; text-align: center; padding: 8px; font-weight: 700; flex-shrink: 0;
@@ -333,7 +344,7 @@
     flex: 1; border-radius: 6px; margin-bottom: 3px; display: flex; align-items: center; justify-content: center;
     font-size: 42px;
     background:radial-gradient(circle at 48% 38%,rgba(255,255,255,.17),transparent 28%),repeating-linear-gradient(125deg,transparent 0 10px,rgba(255,255,255,.045) 10px 12px),linear-gradient(145deg,var(--faction-hi,#526273),var(--faction-lo,#101722));
-    overflow: hidden;
+    overflow: hidden; position:relative;
     /* 內陷框：讓卡面藝術區有立體感（CP1-11）*/
     box-shadow: inset 0 2px 6px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.08);
   }
@@ -350,7 +361,12 @@
   .card .art.art-fallback::before { content:var(--faction-mark,"◇"); position:absolute; right:-8px; bottom:-22px; z-index:-1; color:var(--faction-accent,#94a3b8); font:900 78px/1 Georgia,serif; opacity:.14; transform:rotate(-12deg); text-shadow:0 0 18px currentColor; }
   .card .art.art-fallback::after { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--faction-accent,#94a3b8) 25%,transparent),transparent 38%),linear-gradient(180deg,rgba(255,255,255,.07),transparent 38%,rgba(0,0,0,.28)); }
   .card .art-fallback .art-glyph { display:grid; place-items:center; width:62%; aspect-ratio:1; border:1px solid color-mix(in srgb,var(--faction-accent,#94a3b8) 58%,transparent); border-radius:50%; background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.2),rgba(7,12,20,.5) 66%); box-shadow:0 7px 15px rgba(0,0,0,.42),inset 0 0 13px color-mix(in srgb,var(--faction-accent,#94a3b8) 24%,transparent); text-shadow:0 3px 8px rgba(0,0,0,.72); }
-  .card .art img { width: 100%; height: 100%; object-fit: cover; }
+  .card .art > img:not(.faction-emblem) { width: 100%; height: 100%; object-fit: cover; }
+  .card .art .faction-emblem {
+    position:absolute; right:3px; bottom:3px; z-index:4;
+    width:clamp(18px,20%,26px); height:clamp(18px,20%,26px); object-fit:contain;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.9)); pointer-events:none;
+  }
   .card .kwrow { display: flex; gap: 2px; justify-content: center; min-height: 14px; }
   .card .kw { font-size: 11px; line-height: 1; filter: drop-shadow(0 0 2px rgba(0,0,0,.6)); cursor: help; }
   /* 卡名底帶（CP1-11）*/
@@ -630,7 +646,8 @@
   .chapter-claim:disabled { background:#2a3645; color:var(--muted); cursor:default; filter:none; }
   .faction-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:10px; }
   .faction-legend { border:1px solid rgba(255,255,255,.1); border-radius:10px; padding:12px; background:rgba(255,255,255,.04); }
-  .faction-legend h3 { font-size:15px; margin-bottom:8px; }
+  .faction-legend h3 { font-size:15px; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+  .faction-legend h3 img { width:32px; height:32px; object-fit:contain; filter:drop-shadow(0 3px 5px rgba(0,0,0,.7)); }
   .faction-legend p { color:#dbeafe; line-height:1.75; font-size:14px; user-select:text; }
   .mission-drawer { position:fixed; inset:0; z-index:135; display:none; align-items:flex-end; justify-content:center;
     background:rgba(6,10,14,.7); padding:12px 12px calc(12px + env(safe-area-inset-bottom, 0px)); }
@@ -1149,9 +1166,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r66-v1"></script>
-  <script src="core.js?v=card-battle-r66-v1"></script>
-  <script src="battle.js?v=card-battle-r66-v1"></script>
+  <script src="cards.js?v=card-battle-r67-v1"></script>
+  <script src="core.js?v=card-battle-r67-v1"></script>
+  <script src="battle.js?v=card-battle-r67-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {

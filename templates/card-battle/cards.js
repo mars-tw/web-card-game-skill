@@ -43,6 +43,7 @@ const FACTIONS = Object.freeze({
     name: "白潮守軍",
     emoji: "⚜️",
     color: "#3b82f6",
+    emblem: "../../assets/factions/wardens.png?v=3fd3693f",
     legend: "白潮守軍在永冬邊緣築城，不以退路計算勇氣。他們相信城牆不是石頭，而是每一個仍願意留下的人；當霜鋒軍團敲響北門，守軍便把晨鐘、傷兵與最後一盞燈都藏進盾後，直到白潮再度拍上王城的階梯。",
   }),
   conclave: Object.freeze({
@@ -50,6 +51,7 @@ const FACTIONS = Object.freeze({
     name: "奧術結社",
     emoji: "🔮",
     color: "#a855f7",
+    emblem: "../../assets/factions/conclave.png?v=326f8a7e",
     legend: "奧術結社守著典藏塔，也守著世界仍可被理解的秩序。他們不把知識視為王冠，而視為天秤；每一本禁書都被鎖在星光與誓言之間，因為法術一旦只為勝利服務，下一個被犧牲的往往就是明日。",
   }),
   wild: Object.freeze({
@@ -57,6 +59,7 @@ const FACTIONS = Object.freeze({
     name: "荒野獸群",
     emoji: "🐾",
     color: "#f59e0b",
+    emblem: "../../assets/factions/wild.png?v=153b6fe6",
     legend: "荒野獸群不承認王城的疆界，也不接受典藏塔的註解。牠們從雷雨、林火與月下獵徑中學會自由，願意為一口熱血衝向寒冬；牠們不是白潮的臣民，卻常在城門將破時，從最不可能的山脊奔來。",
   }),
   wintershadow: Object.freeze({
@@ -64,6 +67,7 @@ const FACTIONS = Object.freeze({
     name: "凜冬暗影",
     emoji: "🌘",
     color: "#60a5fa",
+    emblem: "../../assets/factions/wintershadow.png?v=d878da4b",
     legend: "凜冬暗影以絕望為食，卻從不急著吞下獵物。霜縛暴君把整個冬天鎖進胸腔，血月女王便在圍城的夢裡倒酒；他們帶來的不是死亡本身，而是讓人相信春天從未存在過的漫長夜色。",
   }),
   neutral: Object.freeze({
@@ -71,6 +75,7 @@ const FACTIONS = Object.freeze({
     name: "潮間中立",
     emoji: "⚖️",
     color: "#94a3b8",
+    emblem: "../../assets/factions/neutral.png?v=4cf2322a",
     legend: "不屬四旗，只屬下一次談判的桌面。",
   }),
 });

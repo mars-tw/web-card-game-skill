@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<link rel="manifest" href="../manifest.webmanifest?v=card-battle-r66-v1" />
+<link rel="manifest" href="../manifest.webmanifest?v=card-battle-r67-v1" />
 <meta name="theme-color" content="#f59e0b" />
 <title>卡牌遊戲 · Card Game</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r66-v1";
+    const CACHE_VERSION = "card-battle-r67-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r66_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r67_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -70,6 +70,7 @@
     text-shadow: 0 0 12px color-mix(in srgb, var(--accent) 40%, transparent);
     margin-right: 12px; font-size: 16px; white-space: nowrap;
   }
+  .brand-icon { width:26px; height:26px; object-fit:contain; filter:drop-shadow(0 2px 4px rgba(0,0,0,.7)); }
   .tab {
     appearance: none; border: none; background: transparent; color: #8b98a8;
     font-size: 15px; font-weight: 700; padding: 10px 22px; border-radius: 10px 10px 0 0;
@@ -123,7 +124,7 @@
   @media (max-width: 700px) {
     .tabbar { gap: 6px; padding: 6px 8px; min-height: 56px; overflow: hidden; }
     .brand { margin-right: 0; font-size: 0; flex: 0 0 auto; }
-    .brand-icon { font-size: 22px; }
+    .brand-icon { width:24px; height:24px; }
     .brand-text { display: none; }
     .tab { min-width: 72px; padding: 8px 10px; border-radius: 12px; font-size: 12px; flex-direction: column; gap: 3px; line-height: 1.05; }
     .tab .ico { font-size: 18px; }
@@ -142,7 +143,7 @@
 </head>
 <body>
   <nav class="tabbar" role="tablist" aria-label="主要模式">
-    <span class="brand"><span class="brand-icon">🎴</span><span class="brand-text">卡牌遊戲</span></span>
+    <span class="brand"><img class="brand-icon" src="../assets/factions/neutral.png?v=4cf2322a" alt=""><span class="brand-text">卡牌遊戲</span></span>
     <button class="tab active" id="tabBattle" data-target="battle" role="tab" aria-selected="true" aria-controls="battle"><span class="ico">⚔️</span>對戰</button>
     <button class="tab" id="tabPack" data-target="pack" role="tab" aria-selected="false" aria-controls="pack"><span class="ico">🎁</span>開卡包</button>
 
@@ -230,9 +231,9 @@
     }));
 
     const pwaState = { skippedForWebdriver: false, registered: false, updatePrompted: false, version: "", checking: false };
-    const CACHE_VERSION = window.__CARD_CACHE_VERSION || "card-battle-r66-v1";
+    const CACHE_VERSION = window.__CARD_CACHE_VERSION || "card-battle-r67-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-    const SW_AUTO_RELOAD_KEY = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r66_v1";
+    const SW_AUTO_RELOAD_KEY = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r67_v1";
     function swUrl() { return new URL(`../sw.js?v=${CACHE_VERSION}`, location.href).toString(); }
     async function readCacheVersion() {
       try {

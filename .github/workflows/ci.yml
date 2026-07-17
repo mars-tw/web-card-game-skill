@@ -26,10 +26,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: 執行 cards.js 測試
-        run: node scripts/test-cards.js
-      - name: 執行 core.js 規則層測試
-        run: node scripts/test-core.js
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 安裝測試依賴
+        run: |
+          npm ci
+          python -m pip install Pillow
+      - name: 執行與本機相同的全量邏輯／素材 gate
+        run: npm test
       - name: 語法檢查所有 JS
         run: |
           for f in templates/card-battle/*.js templates/card-pack/*.js scripts/*.js; do node -c "$f" && echo "✓ $f"; done
@@ -46,10 +51,12 @@ jobs:
         run: |
           npm ci || npm install
           npx playwright install --with-deps chromium
-      - name: 跑對戰 Stage 1 E2E（AI 攻擊權/pendingSpell/Mulligan/壞存檔/場上上限/RWD）
-        run: node scripts/test-battle-e2e.js
+      - name: 跑與本機相同的對戰 E2E／控制／R67 視覺整合 gate
+        run: npm run test:e2e
       - name: RWD 九視口矩陣守門（shell/battle/pack 零違規）
-        run: node scripts/test-rwd-matrix.js
+        run: npm run test:rwd
+      - name: R67 Fast 3G／4x CPU 與 frame p95 gate
+        run: npm run test:r67:performance
 
   deploy:
     name: 部署 GitHub Pages

@@ -1,0 +1,96 @@
+{
+  "count": 10,
+  "passed": 10,
+  "assets": [
+    {
+      "file": "docs/evidence/R67/masters/battlefield-astral-conclave.png",
+      "sha256": "d06abed93b4bfe5c3491dea674cd7860de0bc014c269205e22ad7a6ad464e39e",
+      "caBX": true,
+      "softwareAgent": "gpt-image",
+      "version": "2.0",
+      "trainedAlgorithmicMedia": true,
+      "pass": true
+    },
+    {
+      "file": "docs/evidence/R67/masters/battlefield-longnight-necropolis.png",
+      "sha256": "66ed91815c7c043dece16eec24d3acc869554c60cf486b93830d9c328839e26e",
+      "caBX": true,
+      "softwareAgent": "gpt-image",
+      "version": "2.0",
+      "trainedAlgorithmicMedia": true,
+      "pass": true
+    },
+    {
+      "file": "docs/evidence/R67/masters/battlefield-thunderwild-pass.png",
+      "sha256": "31ca11d2a521f9bdffae66207fd1082ea293506eead2fab0552de11e2ff8436a",
+      "caBX": true,
+      "softwareAgent": "gpt-image",
+      "version": "2.0",
+      "trainedAlgorithmicMedia": true,
+      "pass": true
+    },
+    {
+      "file": "docs/evidence/R67/masters/battlefield-tidebreak-confluence.png",
+      "sha256": "c620ca1528333b2496607ac1f5fa659db79aa2739f9619db746f153e620a0f88",
+      "caBX": true,
+      "softwareAgent": "gpt-image",
+      "version": "2.0",
+      "trainedAlgorithmicMedia": true,
+      "pass": true
+    },
+    {
+      "file": "docs/evidence/R67/masters/battlefield-white-tide-citadel.png",
+      "sha256": "864f4f0375d9d5323c6820ea3724f6fb2430c58a6856dfebe1c73da2f7b256cd",
+      "caBX": true,
+      "softwareAgent": "gpt-image",
+      "version": "2.0",
+      "trainedAlgorithmicMedia": true,
+      "pass": true
+    },
+    {
+      "file": "docs/evidence/R67/masters/emblem-conclave-chroma.png",
+      "sha256": "a906141547a0174bcbb5ab33a3d61e883cf2e81d9f13e101f22557e528e9aa67",
+      "caBX": true,
+      "softwareAgent": "gpt-image",
+      "version": "2.0",
+      "trainedAlgorithmicMedia": true,
+      "pass": true
+    },
+    {
+      "file": "docs/evidence/R67/masters/emblem-neutral-chroma.png",
+      "sha256": "767ac9adea83f0d0f6a37b5dcc0c7ce08b3def27fb665fd700be50d63e24b86e",
+      "caBX": true,
+      "softwareAgent": "gpt-image",
+      "version": "2.0",
+      "trainedAlgorithmicMedia": true,
+      "pass": true
+    },
+    {
+      "file": "docs/evidence/R67/masters/emblem-wardens-chroma.png",
+      "sha256": "c6c3c7101aefec080d70c51d66bbf61b549222e96ea3eb5349d5f79869b5fc01",
+      "caBX": true,
+      "softwareAgent": "gpt-image",
+      "version": "2.0",
+      "trainedAlgorithmicMedia": true,
+      "pass": true
+    },
+    {
+      "file": "docs/evidence/R67/masters/emblem-wild-chroma.png",
+      "sha256": "43aa5b266938fdb592e3a7b02d68a62c997f79401d6a74d12790f91c669bd296",
+      "caBX": true,
+      "softwareAgent": "gpt-image",
+      "version": "2.0",
+      "trainedAlgorithmicMedia": true,
+      "pass": true
+    },
+    {
+      "file": "docs/evidence/R67/masters/emblem-wintershadow-chroma.png",
+      "sha256": "14d3dca49065f89bbb198c7bfb781d1e318dc245487b4a75bdb93826b171c88b",
+      "caBX": true,
+      "softwareAgent": "gpt-image",
+      "version": "2.0",
+      "trainedAlgorithmicMedia": true,
+      "pass": true
+    }
+  ]
+}

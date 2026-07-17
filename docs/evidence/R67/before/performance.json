@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-07-17T09:52:11.321Z",
+  "source": "git HEAD (R66)",
+  "profile": "Fast 3G (150ms RTT, 200KiB/s down) + 4x CPU throttle",
+  "concurrentMachine": true,
+  "trustNote": "Local p95 is concurrent-machine evidence; release decision requires clean-machine audit.",
+  "runs": [
+    {
+      "interactiveMs": 31479.4,
+      "visualReadyMs": 31098.9,
+      "domInteractiveMs": 3714.4,
+      "backgroundResponseEndMs": 31098.9,
+      "visualMarkPresent": false,
+      "backgroundResources": [
+        {
+          "name": "dark.png",
+          "bytes": 1281457,
+          "responseEndMs": 31098.9
+        }
+      ]
+    }
+  ],
+  "median": {
+    "interactiveMs": 31479.4,
+    "visualReadyMs": 31098.9
+  },
+  "frame": {
+    "skipped": true,
+    "reason": "interaction-only git HEAD baseline"
+  },
+  "assertions": {}
+}

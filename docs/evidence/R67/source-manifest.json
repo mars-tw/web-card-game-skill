@@ -1,0 +1,632 @@
+{
+  "release": "card R67",
+  "generatedAt": "2026-07-17",
+  "modelSlug": "gpt-image-2",
+  "generationInterface": "Codex built-in image_gen",
+  "promptFile": "docs/evidence/R67/R67_STYLE_BOARD_AND_PROMPTS.md",
+  "promptFileSha256": "4a39bb03263ab2d43dbbe52455b4b91d6e8fef07273a0fccf0de8971b88b6c53",
+  "masterPolicy": "C2PA masters are immutable and separate from runtime assets",
+  "budgets": {
+    "desktopAllRuntimeDecodedBytes": 58327040,
+    "desktopLimitBytes": 67108864,
+    "mobileLowPlusEmblemsDecodedBytes": 9175040,
+    "mobileLimitBytes": 33554432
+  },
+  "assets": [
+    {
+      "id": "white-tide-citadel",
+      "kind": "battlefield",
+      "faction": "wardens",
+      "modelSlug": "gpt-image-2",
+      "master": "docs/evidence/R67/masters/battlefield-white-tide-citadel.png",
+      "masterSha256": "864f4f0375d9d5323c6820ea3724f6fb2430c58a6856dfebe1c73da2f7b256cd",
+      "c2pa": {
+        "file": "docs/evidence/R67/masters/battlefield-white-tide-citadel.png",
+        "sha256": "864f4f0375d9d5323c6820ea3724f6fb2430c58a6856dfebe1c73da2f7b256cd",
+        "caBX": true,
+        "softwareAgent": "gpt-image",
+        "version": "2.0",
+        "trainedAlgorithmicMedia": true,
+        "pass": true
+      },
+      "postprocess": {
+        "pipeline": "Pillow deterministic center quieting then Lanczos tier resample and WebP encode",
+        "centerRegion": "rounded central 66% box, feathered 5.5% of short edge",
+        "centerGaussianBlurRadius": 2.2,
+        "centerContrast": 0.76,
+        "centerBrightness": 0.78,
+        "tiers": {
+          "high": {
+            "size": [
+              1536,
+              1024
+            ],
+            "quality": 82,
+            "method": 6
+          },
+          "med": {
+            "size": [
+              1152,
+              768
+            ],
+            "quality": 78,
+            "method": 6
+          },
+          "low": {
+            "size": [
+              768,
+              512
+            ],
+            "quality": 74,
+            "method": 6
+          }
+        }
+      },
+      "runtime": [
+        {
+          "tier": "high",
+          "path": "assets/battlefields/white-tide-citadel-high.webp",
+          "width": 1536,
+          "height": 1024,
+          "decodedBytes": 6291456,
+          "fileBytes": 96852,
+          "sha256": "f57dd49562692a3bed86f65fc105e51a218233c3a1d34aad5b2214fbd3fa7370",
+          "contentHashQuery": "?v=f57dd495"
+        },
+        {
+          "tier": "med",
+          "path": "assets/battlefields/white-tide-citadel-med.webp",
+          "width": 1152,
+          "height": 768,
+          "decodedBytes": 3538944,
+          "fileBytes": 46042,
+          "sha256": "7e3aa7a2339092900d34424f469136b5c34303e862deb8492784e7ff3e6f595d",
+          "contentHashQuery": "?v=7e3aa7a2"
+        },
+        {
+          "tier": "low",
+          "path": "assets/battlefields/white-tide-citadel-low.webp",
+          "width": 768,
+          "height": 512,
+          "decodedBytes": 1572864,
+          "fileBytes": 17804,
+          "sha256": "50075ecc1ef497639e49621d4274598447f78b0646b486592f1e5716cf8d163b",
+          "contentHashQuery": "?v=50075ecc"
+        }
+      ]
+    },
+    {
+      "id": "astral-conclave",
+      "kind": "battlefield",
+      "faction": "conclave",
+      "modelSlug": "gpt-image-2",
+      "master": "docs/evidence/R67/masters/battlefield-astral-conclave.png",
+      "masterSha256": "d06abed93b4bfe5c3491dea674cd7860de0bc014c269205e22ad7a6ad464e39e",
+      "c2pa": {
+        "file": "docs/evidence/R67/masters/battlefield-astral-conclave.png",
+        "sha256": "d06abed93b4bfe5c3491dea674cd7860de0bc014c269205e22ad7a6ad464e39e",
+        "caBX": true,
+        "softwareAgent": "gpt-image",
+        "version": "2.0",
+        "trainedAlgorithmicMedia": true,
+        "pass": true
+      },
+      "postprocess": {
+        "pipeline": "Pillow deterministic center quieting then Lanczos tier resample and WebP encode",
+        "centerRegion": "rounded central 66% box, feathered 5.5% of short edge",
+        "centerGaussianBlurRadius": 2.2,
+        "centerContrast": 0.76,
+        "centerBrightness": 0.78,
+        "tiers": {
+          "high": {
+            "size": [
+              1536,
+              1024
+            ],
+            "quality": 82,
+            "method": 6
+          },
+          "med": {
+            "size": [
+              1152,
+              768
+            ],
+            "quality": 78,
+            "method": 6
+          },
+          "low": {
+            "size": [
+              768,
+              512
+            ],
+            "quality": 74,
+            "method": 6
+          }
+        }
+      },
+      "runtime": [
+        {
+          "tier": "high",
+          "path": "assets/battlefields/astral-conclave-high.webp",
+          "width": 1536,
+          "height": 1024,
+          "decodedBytes": 6291456,
+          "fileBytes": 155530,
+          "sha256": "aa8b6fe49ae45499766cc2d26305cdfdad0a32cf0d34161976361dee88a41ab4",
+          "contentHashQuery": "?v=aa8b6fe4"
+        },
+        {
+          "tier": "med",
+          "path": "assets/battlefields/astral-conclave-med.webp",
+          "width": 1152,
+          "height": 768,
+          "decodedBytes": 3538944,
+          "fileBytes": 74992,
+          "sha256": "a391a7b243bf2f422378b6ab2d8b5a81eb2ac32203f79f89cbdf8b4b28cf5774",
+          "contentHashQuery": "?v=a391a7b2"
+        },
+        {
+          "tier": "low",
+          "path": "assets/battlefields/astral-conclave-low.webp",
+          "width": 768,
+          "height": 512,
+          "decodedBytes": 1572864,
+          "fileBytes": 28098,
+          "sha256": "fcf44103ee1f473a4db5959d9c744a04aea2e8c40d8a69afe0e8531744ed1e61",
+          "contentHashQuery": "?v=fcf44103"
+        }
+      ]
+    },
+    {
+      "id": "thunderwild-pass",
+      "kind": "battlefield",
+      "faction": "wild",
+      "modelSlug": "gpt-image-2",
+      "master": "docs/evidence/R67/masters/battlefield-thunderwild-pass.png",
+      "masterSha256": "31ca11d2a521f9bdffae66207fd1082ea293506eead2fab0552de11e2ff8436a",
+      "c2pa": {
+        "file": "docs/evidence/R67/masters/battlefield-thunderwild-pass.png",
+        "sha256": "31ca11d2a521f9bdffae66207fd1082ea293506eead2fab0552de11e2ff8436a",
+        "caBX": true,
+        "softwareAgent": "gpt-image",
+        "version": "2.0",
+        "trainedAlgorithmicMedia": true,
+        "pass": true
+      },
+      "postprocess": {
+        "pipeline": "Pillow deterministic center quieting then Lanczos tier resample and WebP encode",
+        "centerRegion": "rounded central 66% box, feathered 5.5% of short edge",
+        "centerGaussianBlurRadius": 2.2,
+        "centerContrast": 0.76,
+        "centerBrightness": 0.78,
+        "tiers": {
+          "high": {
+            "size": [
+              1536,
+              1024
+            ],
+            "quality": 82,
+            "method": 6
+          },
+          "med": {
+            "size": [
+              1152,
+              768
+            ],
+            "quality": 78,
+            "method": 6
+          },
+          "low": {
+            "size": [
+              768,
+              512
+            ],
+            "quality": 74,
+            "method": 6
+          }
+        }
+      },
+      "runtime": [
+        {
+          "tier": "high",
+          "path": "assets/battlefields/thunderwild-pass-high.webp",
+          "width": 1536,
+          "height": 1024,
+          "decodedBytes": 6291456,
+          "fileBytes": 95460,
+          "sha256": "c0693a23f14f2c56d8466d9054c7dd2caf4c91d369f859db3f596ef2629943f5",
+          "contentHashQuery": "?v=c0693a23"
+        },
+        {
+          "tier": "med",
+          "path": "assets/battlefields/thunderwild-pass-med.webp",
+          "width": 1152,
+          "height": 768,
+          "decodedBytes": 3538944,
+          "fileBytes": 47994,
+          "sha256": "47d3f827052422919c0d3c56b6a49441a9b6ba8622a74e2098ffbe11a0877fc7",
+          "contentHashQuery": "?v=47d3f827"
+        },
+        {
+          "tier": "low",
+          "path": "assets/battlefields/thunderwild-pass-low.webp",
+          "width": 768,
+          "height": 512,
+          "decodedBytes": 1572864,
+          "fileBytes": 18238,
+          "sha256": "5af6a31081b59af3f602b9d1dcae3cc022d4e8944139bf3fa34dc26f4166cfcc",
+          "contentHashQuery": "?v=5af6a310"
+        }
+      ]
+    },
+    {
+      "id": "longnight-necropolis",
+      "kind": "battlefield",
+      "faction": "wintershadow",
+      "modelSlug": "gpt-image-2",
+      "master": "docs/evidence/R67/masters/battlefield-longnight-necropolis.png",
+      "masterSha256": "66ed91815c7c043dece16eec24d3acc869554c60cf486b93830d9c328839e26e",
+      "c2pa": {
+        "file": "docs/evidence/R67/masters/battlefield-longnight-necropolis.png",
+        "sha256": "66ed91815c7c043dece16eec24d3acc869554c60cf486b93830d9c328839e26e",
+        "caBX": true,
+        "softwareAgent": "gpt-image",
+        "version": "2.0",
+        "trainedAlgorithmicMedia": true,
+        "pass": true
+      },
+      "postprocess": {
+        "pipeline": "Pillow deterministic center quieting then Lanczos tier resample and WebP encode",
+        "centerRegion": "rounded central 66% box, feathered 5.5% of short edge",
+        "centerGaussianBlurRadius": 2.2,
+        "centerContrast": 0.76,
+        "centerBrightness": 0.78,
+        "tiers": {
+          "high": {
+            "size": [
+              1536,
+              1024
+            ],
+            "quality": 82,
+            "method": 6
+          },
+          "med": {
+            "size": [
+              1152,
+              768
+            ],
+            "quality": 78,
+            "method": 6
+          },
+          "low": {
+            "size": [
+              768,
+              512
+            ],
+            "quality": 74,
+            "method": 6
+          }
+        }
+      },
+      "runtime": [
+        {
+          "tier": "high",
+          "path": "assets/battlefields/longnight-necropolis-high.webp",
+          "width": 1536,
+          "height": 1024,
+          "decodedBytes": 6291456,
+          "fileBytes": 96094,
+          "sha256": "4b7300c8304152989139c77c7518b20b6d250d4346ef9d97b11d4af3c7a5cb9b",
+          "contentHashQuery": "?v=4b7300c8"
+        },
+        {
+          "tier": "med",
+          "path": "assets/battlefields/longnight-necropolis-med.webp",
+          "width": 1152,
+          "height": 768,
+          "decodedBytes": 3538944,
+          "fileBytes": 47166,
+          "sha256": "9a48f27c6818ddc1cb7e8d882b58da26b4aecea522364c02db5ee48b9568e765",
+          "contentHashQuery": "?v=9a48f27c"
+        },
+        {
+          "tier": "low",
+          "path": "assets/battlefields/longnight-necropolis-low.webp",
+          "width": 768,
+          "height": 512,
+          "decodedBytes": 1572864,
+          "fileBytes": 18220,
+          "sha256": "927f8f26dfe831951c83d2a22e2716d362ad863d9984cea002a681b83b1d4e6e",
+          "contentHashQuery": "?v=927f8f26"
+        }
+      ]
+    },
+    {
+      "id": "tidebreak-confluence",
+      "kind": "battlefield",
+      "faction": "neutral",
+      "modelSlug": "gpt-image-2",
+      "master": "docs/evidence/R67/masters/battlefield-tidebreak-confluence.png",
+      "masterSha256": "c620ca1528333b2496607ac1f5fa659db79aa2739f9619db746f153e620a0f88",
+      "c2pa": {
+        "file": "docs/evidence/R67/masters/battlefield-tidebreak-confluence.png",
+        "sha256": "c620ca1528333b2496607ac1f5fa659db79aa2739f9619db746f153e620a0f88",
+        "caBX": true,
+        "softwareAgent": "gpt-image",
+        "version": "2.0",
+        "trainedAlgorithmicMedia": true,
+        "pass": true
+      },
+      "postprocess": {
+        "pipeline": "Pillow deterministic center quieting then Lanczos tier resample and WebP encode",
+        "centerRegion": "rounded central 66% box, feathered 5.5% of short edge",
+        "centerGaussianBlurRadius": 2.2,
+        "centerContrast": 0.76,
+        "centerBrightness": 0.78,
+        "tiers": {
+          "high": {
+            "size": [
+              1536,
+              1024
+            ],
+            "quality": 82,
+            "method": 6
+          },
+          "med": {
+            "size": [
+              1152,
+              768
+            ],
+            "quality": 78,
+            "method": 6
+          },
+          "low": {
+            "size": [
+              768,
+              512
+            ],
+            "quality": 74,
+            "method": 6
+          }
+        }
+      },
+      "runtime": [
+        {
+          "tier": "high",
+          "path": "assets/battlefields/tidebreak-confluence-high.webp",
+          "width": 1536,
+          "height": 1024,
+          "decodedBytes": 6291456,
+          "fileBytes": 159612,
+          "sha256": "ae55f8e78b28e87475590da246d9fefee6cbe732aa870adf980e487ba416d1a9",
+          "contentHashQuery": "?v=ae55f8e7"
+        },
+        {
+          "tier": "med",
+          "path": "assets/battlefields/tidebreak-confluence-med.webp",
+          "width": 1152,
+          "height": 768,
+          "decodedBytes": 3538944,
+          "fileBytes": 79776,
+          "sha256": "35c28764834bee74e438e779fc70eafffb66e2906083b74f376de34dedc8372e",
+          "contentHashQuery": "?v=35c28764"
+        },
+        {
+          "tier": "low",
+          "path": "assets/battlefields/tidebreak-confluence-low.webp",
+          "width": 768,
+          "height": 512,
+          "decodedBytes": 1572864,
+          "fileBytes": 31006,
+          "sha256": "bcaabe4e28c785f6647871c353cabb07a06c02636e9db592a420a94b1a60c2a0",
+          "contentHashQuery": "?v=bcaabe4e"
+        }
+      ]
+    },
+    {
+      "id": "wardens",
+      "kind": "faction-emblem",
+      "modelSlug": "gpt-image-2",
+      "master": "docs/evidence/R67/masters/emblem-wardens-chroma.png",
+      "masterSha256": "c6c3c7101aefec080d70c51d66bbf61b549222e96ea3eb5349d5f79869b5fc01",
+      "c2pa": {
+        "file": "docs/evidence/R67/masters/emblem-wardens-chroma.png",
+        "sha256": "c6c3c7101aefec080d70c51d66bbf61b549222e96ea3eb5349d5f79869b5fc01",
+        "caBX": true,
+        "softwareAgent": "gpt-image",
+        "version": "2.0",
+        "trainedAlgorithmicMedia": true,
+        "pass": true
+      },
+      "postprocess": {
+        "pipeline": "installed remove_chroma_key.py then alpha bbox crop and Lanczos fit",
+        "removeChromaKeyArgs": "--auto-key border --soft-matte --transparent-threshold 12 --opaque-threshold 220 --despill",
+        "alphaThresholdForBbox": 16,
+        "canvas": [
+          256,
+          256
+        ],
+        "maxSubject": [
+          232,
+          232
+        ]
+      },
+      "runtime": [
+        {
+          "tier": "all",
+          "path": "assets/factions/wardens.png",
+          "width": 256,
+          "height": 256,
+          "decodedBytes": 262144,
+          "fileBytes": 74246,
+          "sha256": "3fd3693fbf63e84ab80e264d42ff50e6962bafd75be545bb72b84021483b9767",
+          "contentHashQuery": "?v=3fd3693f"
+        }
+      ]
+    },
+    {
+      "id": "conclave",
+      "kind": "faction-emblem",
+      "modelSlug": "gpt-image-2",
+      "master": "docs/evidence/R67/masters/emblem-conclave-chroma.png",
+      "masterSha256": "a906141547a0174bcbb5ab33a3d61e883cf2e81d9f13e101f22557e528e9aa67",
+      "c2pa": {
+        "file": "docs/evidence/R67/masters/emblem-conclave-chroma.png",
+        "sha256": "a906141547a0174bcbb5ab33a3d61e883cf2e81d9f13e101f22557e528e9aa67",
+        "caBX": true,
+        "softwareAgent": "gpt-image",
+        "version": "2.0",
+        "trainedAlgorithmicMedia": true,
+        "pass": true
+      },
+      "postprocess": {
+        "pipeline": "installed remove_chroma_key.py then alpha bbox crop and Lanczos fit",
+        "removeChromaKeyArgs": "--auto-key border --soft-matte --transparent-threshold 12 --opaque-threshold 220 --despill",
+        "alphaThresholdForBbox": 16,
+        "canvas": [
+          256,
+          256
+        ],
+        "maxSubject": [
+          232,
+          232
+        ]
+      },
+      "runtime": [
+        {
+          "tier": "all",
+          "path": "assets/factions/conclave.png",
+          "width": 256,
+          "height": 256,
+          "decodedBytes": 262144,
+          "fileBytes": 83029,
+          "sha256": "326f8a7e9770e6e10701fbb1a238dd3616e4b2b0c5eaaf56bfa5202dce2f752d",
+          "contentHashQuery": "?v=326f8a7e"
+        }
+      ]
+    },
+    {
+      "id": "wild",
+      "kind": "faction-emblem",
+      "modelSlug": "gpt-image-2",
+      "master": "docs/evidence/R67/masters/emblem-wild-chroma.png",
+      "masterSha256": "43aa5b266938fdb592e3a7b02d68a62c997f79401d6a74d12790f91c669bd296",
+      "c2pa": {
+        "file": "docs/evidence/R67/masters/emblem-wild-chroma.png",
+        "sha256": "43aa5b266938fdb592e3a7b02d68a62c997f79401d6a74d12790f91c669bd296",
+        "caBX": true,
+        "softwareAgent": "gpt-image",
+        "version": "2.0",
+        "trainedAlgorithmicMedia": true,
+        "pass": true
+      },
+      "postprocess": {
+        "pipeline": "installed remove_chroma_key.py then alpha bbox crop and Lanczos fit",
+        "removeChromaKeyArgs": "--auto-key border --soft-matte --transparent-threshold 12 --opaque-threshold 220 --despill",
+        "alphaThresholdForBbox": 16,
+        "canvas": [
+          256,
+          256
+        ],
+        "maxSubject": [
+          232,
+          232
+        ]
+      },
+      "runtime": [
+        {
+          "tier": "all",
+          "path": "assets/factions/wild.png",
+          "width": 256,
+          "height": 256,
+          "decodedBytes": 262144,
+          "fileBytes": 61556,
+          "sha256": "153b6fe697d1eb351c7f0a6c0716c4e17c7952a677a65bc77a0fe49767ec8ea1",
+          "contentHashQuery": "?v=153b6fe6"
+        }
+      ]
+    },
+    {
+      "id": "wintershadow",
+      "kind": "faction-emblem",
+      "modelSlug": "gpt-image-2",
+      "master": "docs/evidence/R67/masters/emblem-wintershadow-chroma.png",
+      "masterSha256": "14d3dca49065f89bbb198c7bfb781d1e318dc245487b4a75bdb93826b171c88b",
+      "c2pa": {
+        "file": "docs/evidence/R67/masters/emblem-wintershadow-chroma.png",
+        "sha256": "14d3dca49065f89bbb198c7bfb781d1e318dc245487b4a75bdb93826b171c88b",
+        "caBX": true,
+        "softwareAgent": "gpt-image",
+        "version": "2.0",
+        "trainedAlgorithmicMedia": true,
+        "pass": true
+      },
+      "postprocess": {
+        "pipeline": "installed remove_chroma_key.py then alpha bbox crop and Lanczos fit",
+        "removeChromaKeyArgs": "--auto-key border --soft-matte --transparent-threshold 12 --opaque-threshold 220 --despill",
+        "alphaThresholdForBbox": 16,
+        "canvas": [
+          256,
+          256
+        ],
+        "maxSubject": [
+          232,
+          232
+        ]
+      },
+      "runtime": [
+        {
+          "tier": "all",
+          "path": "assets/factions/wintershadow.png",
+          "width": 256,
+          "height": 256,
+          "decodedBytes": 262144,
+          "fileBytes": 50695,
+          "sha256": "d878da4b59a4554db381cd7a722930e9aaac29f779bb34b1fa0b495a0768f645",
+          "contentHashQuery": "?v=d878da4b"
+        }
+      ]
+    },
+    {
+      "id": "neutral",
+      "kind": "faction-emblem",
+      "modelSlug": "gpt-image-2",
+      "master": "docs/evidence/R67/masters/emblem-neutral-chroma.png",
+      "masterSha256": "767ac9adea83f0d0f6a37b5dcc0c7ce08b3def27fb665fd700be50d63e24b86e",
+      "c2pa": {
+        "file": "docs/evidence/R67/masters/emblem-neutral-chroma.png",
+        "sha256": "767ac9adea83f0d0f6a37b5dcc0c7ce08b3def27fb665fd700be50d63e24b86e",
+        "caBX": true,
+        "softwareAgent": "gpt-image",
+        "version": "2.0",
+        "trainedAlgorithmicMedia": true,
+        "pass": true
+      },
+      "postprocess": {
+        "pipeline": "installed remove_chroma_key.py then alpha bbox crop and Lanczos fit",
+        "removeChromaKeyArgs": "--auto-key border --soft-matte --transparent-threshold 12 --opaque-threshold 220 --despill",
+        "alphaThresholdForBbox": 16,
+        "canvas": [
+          256,
+          256
+        ],
+        "maxSubject": [
+          232,
+          232
+        ]
+      },
+      "runtime": [
+        {
+          "tier": "all",
+          "path": "assets/factions/neutral.png",
+          "width": 256,
+          "height": 256,
+          "decodedBytes": 262144,
+          "fileBytes": 95157,
+          "sha256": "4cf2322a0e0daa99d0c551c230b35ec0ac98fbf13554d9943cfe0ef940706abe",
+          "contentHashQuery": "?v=4cf2322a"
+        }
+      ]
+    }
+  ]
+}

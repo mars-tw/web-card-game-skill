@@ -1,0 +1,851 @@
+{
+  "release": "card R67",
+  "thresholds": {
+    "contrast": 4.5,
+    "centralNoiseRms": 18,
+    "centralLuminanceStddev": 32,
+    "desktopDecodedMiB": 64,
+    "mobileDecodedMiB": 32
+  },
+  "c2pa": {
+    "count": 10,
+    "pass": true
+  },
+  "memory": {
+    "desktopAllRuntimeDecodedBytes": 58327040,
+    "desktopLimitBytes": 67108864,
+    "mobileLowPlusEmblemsDecodedBytes": 9175040,
+    "mobileLimitBytes": 33554432,
+    "pass": true
+  },
+  "battlefields": [
+    {
+      "id": "white-tide-citadel",
+      "tiers": [
+        {
+          "tier": "high",
+          "size": [
+            1536,
+            1024
+          ],
+          "noiseRms": 0.938,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.285,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.464,
+          "contrastLimit": 4.5,
+          "sha256": "f57dd49562692a3bed86f65fc105e51a218233c3a1d34aad5b2214fbd3fa7370",
+          "contentHashQuery": "?v=f57dd495",
+          "pass": true
+        },
+        {
+          "tier": "med",
+          "size": [
+            1152,
+            768
+          ],
+          "noiseRms": 0.948,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.244,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.461,
+          "contrastLimit": 4.5,
+          "sha256": "7e3aa7a2339092900d34424f469136b5c34303e862deb8492784e7ff3e6f595d",
+          "contentHashQuery": "?v=7e3aa7a2",
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "size": [
+            768,
+            512
+          ],
+          "noiseRms": 1.005,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.185,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.469,
+          "contrastLimit": 4.5,
+          "sha256": "50075ecc1ef497639e49621d4274598447f78b0646b486592f1e5716cf8d163b",
+          "contentHashQuery": "?v=50075ecc",
+          "pass": true
+        }
+      ],
+      "safeCrop": [
+        {
+          "viewport": [
+            1366,
+            768
+          ],
+          "safeBox": [
+            76.8,
+            123.39,
+            1459.2,
+            900.61
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "safeBox": [
+            555.07,
+            51.2,
+            980.93,
+            972.8
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            844,
+            390
+          ],
+          "safeBox": [
+            76.8,
+            192.61,
+            1459.2,
+            831.39
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "qualityConsistency": [
+        {
+          "tier": "med",
+          "rms": 2.935,
+          "limit": 8,
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "rms": 3.377,
+          "limit": 8,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "astral-conclave",
+      "tiers": [
+        {
+          "tier": "high",
+          "size": [
+            1536,
+            1024
+          ],
+          "noiseRms": 1.444,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.87,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.536,
+          "contrastLimit": 4.5,
+          "sha256": "aa8b6fe49ae45499766cc2d26305cdfdad0a32cf0d34161976361dee88a41ab4",
+          "contentHashQuery": "?v=aa8b6fe4",
+          "pass": true
+        },
+        {
+          "tier": "med",
+          "size": [
+            1152,
+            768
+          ],
+          "noiseRms": 1.448,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.819,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.535,
+          "contrastLimit": 4.5,
+          "sha256": "a391a7b243bf2f422378b6ab2d8b5a81eb2ac32203f79f89cbdf8b4b28cf5774",
+          "contentHashQuery": "?v=a391a7b2",
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "size": [
+            768,
+            512
+          ],
+          "noiseRms": 1.455,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.669,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.522,
+          "contrastLimit": 4.5,
+          "sha256": "fcf44103ee1f473a4db5959d9c744a04aea2e8c40d8a69afe0e8531744ed1e61",
+          "contentHashQuery": "?v=fcf44103",
+          "pass": true
+        }
+      ],
+      "safeCrop": [
+        {
+          "viewport": [
+            1366,
+            768
+          ],
+          "safeBox": [
+            76.8,
+            123.39,
+            1459.2,
+            900.61
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "safeBox": [
+            555.07,
+            51.2,
+            980.93,
+            972.8
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            844,
+            390
+          ],
+          "safeBox": [
+            76.8,
+            192.61,
+            1459.2,
+            831.39
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "qualityConsistency": [
+        {
+          "tier": "med",
+          "rms": 3.768,
+          "limit": 8,
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "rms": 4.348,
+          "limit": 8,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "thunderwild-pass",
+      "tiers": [
+        {
+          "tier": "high",
+          "size": [
+            1536,
+            1024
+          ],
+          "noiseRms": 0.721,
+          "noiseLimit": 18,
+          "luminanceStddev": 6.331,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.484,
+          "contrastLimit": 4.5,
+          "sha256": "c0693a23f14f2c56d8466d9054c7dd2caf4c91d369f859db3f596ef2629943f5",
+          "contentHashQuery": "?v=c0693a23",
+          "pass": true
+        },
+        {
+          "tier": "med",
+          "size": [
+            1152,
+            768
+          ],
+          "noiseRms": 0.751,
+          "noiseLimit": 18,
+          "luminanceStddev": 6.285,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.487,
+          "contrastLimit": 4.5,
+          "sha256": "47d3f827052422919c0d3c56b6a49441a9b6ba8622a74e2098ffbe11a0877fc7",
+          "contentHashQuery": "?v=47d3f827",
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "size": [
+            768,
+            512
+          ],
+          "noiseRms": 0.778,
+          "noiseLimit": 18,
+          "luminanceStddev": 6.201,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.486,
+          "contrastLimit": 4.5,
+          "sha256": "5af6a31081b59af3f602b9d1dcae3cc022d4e8944139bf3fa34dc26f4166cfcc",
+          "contentHashQuery": "?v=5af6a310",
+          "pass": true
+        }
+      ],
+      "safeCrop": [
+        {
+          "viewport": [
+            1366,
+            768
+          ],
+          "safeBox": [
+            76.8,
+            123.39,
+            1459.2,
+            900.61
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "safeBox": [
+            555.07,
+            51.2,
+            980.93,
+            972.8
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            844,
+            390
+          ],
+          "safeBox": [
+            76.8,
+            192.61,
+            1459.2,
+            831.39
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "qualityConsistency": [
+        {
+          "tier": "med",
+          "rms": 2.857,
+          "limit": 8,
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "rms": 3.325,
+          "limit": 8,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "longnight-necropolis",
+      "tiers": [
+        {
+          "tier": "high",
+          "size": [
+            1536,
+            1024
+          ],
+          "noiseRms": 0.854,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.734,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.492,
+          "contrastLimit": 4.5,
+          "sha256": "4b7300c8304152989139c77c7518b20b6d250d4346ef9d97b11d4af3c7a5cb9b",
+          "contentHashQuery": "?v=4b7300c8",
+          "pass": true
+        },
+        {
+          "tier": "med",
+          "size": [
+            1152,
+            768
+          ],
+          "noiseRms": 0.937,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.717,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.492,
+          "contrastLimit": 4.5,
+          "sha256": "9a48f27c6818ddc1cb7e8d882b58da26b4aecea522364c02db5ee48b9568e765",
+          "contentHashQuery": "?v=9a48f27c",
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "size": [
+            768,
+            512
+          ],
+          "noiseRms": 1.079,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.667,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.504,
+          "contrastLimit": 4.5,
+          "sha256": "927f8f26dfe831951c83d2a22e2716d362ad863d9984cea002a681b83b1d4e6e",
+          "contentHashQuery": "?v=927f8f26",
+          "pass": true
+        }
+      ],
+      "safeCrop": [
+        {
+          "viewport": [
+            1366,
+            768
+          ],
+          "safeBox": [
+            76.8,
+            123.39,
+            1459.2,
+            900.61
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "safeBox": [
+            555.07,
+            51.2,
+            980.93,
+            972.8
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            844,
+            390
+          ],
+          "safeBox": [
+            76.8,
+            192.61,
+            1459.2,
+            831.39
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "qualityConsistency": [
+        {
+          "tier": "med",
+          "rms": 2.981,
+          "limit": 8,
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "rms": 3.556,
+          "limit": 8,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "tidebreak-confluence",
+      "tiers": [
+        {
+          "tier": "high",
+          "size": [
+            1536,
+            1024
+          ],
+          "noiseRms": 1.471,
+          "noiseLimit": 18,
+          "luminanceStddev": 8.148,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.188,
+          "contrastLimit": 4.5,
+          "sha256": "ae55f8e78b28e87475590da246d9fefee6cbe732aa870adf980e487ba416d1a9",
+          "contentHashQuery": "?v=ae55f8e7",
+          "pass": true
+        },
+        {
+          "tier": "med",
+          "size": [
+            1152,
+            768
+          ],
+          "noiseRms": 1.519,
+          "noiseLimit": 18,
+          "luminanceStddev": 8.105,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.196,
+          "contrastLimit": 4.5,
+          "sha256": "35c28764834bee74e438e779fc70eafffb66e2906083b74f376de34dedc8372e",
+          "contentHashQuery": "?v=35c28764",
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "size": [
+            768,
+            512
+          ],
+          "noiseRms": 1.559,
+          "noiseLimit": 18,
+          "luminanceStddev": 8.052,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.201,
+          "contrastLimit": 4.5,
+          "sha256": "bcaabe4e28c785f6647871c353cabb07a06c02636e9db592a420a94b1a60c2a0",
+          "contentHashQuery": "?v=bcaabe4e",
+          "pass": true
+        }
+      ],
+      "safeCrop": [
+        {
+          "viewport": [
+            1366,
+            768
+          ],
+          "safeBox": [
+            76.8,
+            123.39,
+            1459.2,
+            900.61
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "safeBox": [
+            555.07,
+            51.2,
+            980.93,
+            972.8
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            844,
+            390
+          ],
+          "safeBox": [
+            76.8,
+            192.61,
+            1459.2,
+            831.39
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "qualityConsistency": [
+        {
+          "tier": "med",
+          "rms": 3.692,
+          "limit": 8,
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "rms": 4.204,
+          "limit": 8,
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "emblems": [
+    {
+      "id": "wardens",
+      "size": [
+        256,
+        256
+      ],
+      "thumbnailSize": [
+        64,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "occupancy": 0.519,
+      "occupancyRange": [
+        0.18,
+        0.78
+      ],
+      "subjectBbox64": [
+        8,
+        3,
+        56,
+        61
+      ],
+      "subjectBboxSize64": [
+        48,
+        58
+      ],
+      "opaquePixels64": 2126,
+      "components64": 1,
+      "greenFringeRatio": 0.0,
+      "sha256": "3fd3693fbf63e84ab80e264d42ff50e6962bafd75be545bb72b84021483b9767",
+      "contentHashQuery": "?v=3fd3693f",
+      "pass": true
+    },
+    {
+      "id": "conclave",
+      "size": [
+        256,
+        256
+      ],
+      "thumbnailSize": [
+        64,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "occupancy": 0.4072,
+      "occupancyRange": [
+        0.18,
+        0.78
+      ],
+      "subjectBbox64": [
+        3,
+        4,
+        61,
+        60
+      ],
+      "subjectBboxSize64": [
+        58,
+        56
+      ],
+      "opaquePixels64": 1668,
+      "components64": 1,
+      "greenFringeRatio": 0.0,
+      "sha256": "326f8a7e9770e6e10701fbb1a238dd3616e4b2b0c5eaaf56bfa5202dce2f752d",
+      "contentHashQuery": "?v=326f8a7e",
+      "pass": true
+    },
+    {
+      "id": "wild",
+      "size": [
+        256,
+        256
+      ],
+      "thumbnailSize": [
+        64,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "occupancy": 0.4404,
+      "occupancyRange": [
+        0.18,
+        0.78
+      ],
+      "subjectBbox64": [
+        8,
+        3,
+        56,
+        61
+      ],
+      "subjectBboxSize64": [
+        48,
+        58
+      ],
+      "opaquePixels64": 1804,
+      "components64": 1,
+      "greenFringeRatio": 0.0,
+      "sha256": "153b6fe697d1eb351c7f0a6c0716c4e17c7952a677a65bc77a0fe49767ec8ea1",
+      "contentHashQuery": "?v=153b6fe6",
+      "pass": true
+    },
+    {
+      "id": "wintershadow",
+      "size": [
+        256,
+        256
+      ],
+      "thumbnailSize": [
+        64,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "occupancy": 0.3225,
+      "occupancyRange": [
+        0.18,
+        0.78
+      ],
+      "subjectBbox64": [
+        10,
+        3,
+        54,
+        61
+      ],
+      "subjectBboxSize64": [
+        44,
+        58
+      ],
+      "opaquePixels64": 1321,
+      "components64": 1,
+      "greenFringeRatio": 0.0,
+      "sha256": "d878da4b59a4554db381cd7a722930e9aaac29f779bb34b1fa0b495a0768f645",
+      "contentHashQuery": "?v=d878da4b",
+      "pass": true
+    },
+    {
+      "id": "neutral",
+      "size": [
+        256,
+        256
+      ],
+      "thumbnailSize": [
+        64,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "occupancy": 0.6438,
+      "occupancyRange": [
+        0.18,
+        0.78
+      ],
+      "subjectBbox64": [
+        3,
+        3,
+        61,
+        61
+      ],
+      "subjectBboxSize64": [
+        58,
+        58
+      ],
+      "opaquePixels64": 2637,
+      "components64": 1,
+      "greenFringeRatio": 0.0,
+      "sha256": "4cf2322a0e0daa99d0c551c230b35ec0ac98fbf13554d9943cfe0ef940706abe",
+      "contentHashQuery": "?v=4cf2322a",
+      "pass": true
+    }
+  ],
+  "pass": true
+}

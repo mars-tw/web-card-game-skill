@@ -1,4 +1,4 @@
-const CACHE_VERSION = "card-battle-r66-v1";
+const CACHE_VERSION = "card-battle-r67-v1";
 const ASSET_CACHE = `${CACHE_VERSION}-assets`;
 const HTML_CACHE = `${CACHE_VERSION}-html`;
 
@@ -19,6 +19,26 @@ const CORE_ASSETS = [
   "assets/backgrounds/fantasy.png",
   "assets/backgrounds/cyber.png",
   "assets/backgrounds/forest.png",
+  "assets/battlefields/white-tide-citadel-high.webp?v=f57dd495",
+  "assets/battlefields/white-tide-citadel-med.webp?v=7e3aa7a2",
+  "assets/battlefields/white-tide-citadel-low.webp?v=50075ecc",
+  "assets/battlefields/astral-conclave-high.webp?v=aa8b6fe4",
+  "assets/battlefields/astral-conclave-med.webp?v=a391a7b2",
+  "assets/battlefields/astral-conclave-low.webp?v=fcf44103",
+  "assets/battlefields/thunderwild-pass-high.webp?v=c0693a23",
+  "assets/battlefields/thunderwild-pass-med.webp?v=47d3f827",
+  "assets/battlefields/thunderwild-pass-low.webp?v=5af6a310",
+  "assets/battlefields/longnight-necropolis-high.webp?v=4b7300c8",
+  "assets/battlefields/longnight-necropolis-med.webp?v=9a48f27c",
+  "assets/battlefields/longnight-necropolis-low.webp?v=927f8f26",
+  "assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7",
+  "assets/battlefields/tidebreak-confluence-med.webp?v=35c28764",
+  "assets/battlefields/tidebreak-confluence-low.webp?v=bcaabe4e",
+  "assets/factions/wardens.png?v=3fd3693f",
+  "assets/factions/conclave.png?v=326f8a7e",
+  "assets/factions/wild.png?v=153b6fe6",
+  "assets/factions/wintershadow.png?v=d878da4b",
+  "assets/factions/neutral.png?v=4cf2322a",
   "assets/cards/alleySkirmisher.png",
   "assets/cards/archer.png",
   "assets/cards/archmage.png",

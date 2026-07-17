@@ -145,9 +145,18 @@
   const TEXT_SIZE_KEY = "card_text_size_v1";
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
   const AUDIO_VOLUME_KEY = "card_audio_volume_v1";
+  const R67_BATTLEFIELDS = Object.freeze([
+    Object.freeze({ id: "white-tide-citadel", faction: "wardens", urls: Object.freeze({ high: "../../assets/battlefields/white-tide-citadel-high.webp?v=f57dd495", med: "../../assets/battlefields/white-tide-citadel-med.webp?v=7e3aa7a2", low: "../../assets/battlefields/white-tide-citadel-low.webp?v=50075ecc" }) }),
+    Object.freeze({ id: "astral-conclave", faction: "conclave", urls: Object.freeze({ high: "../../assets/battlefields/astral-conclave-high.webp?v=aa8b6fe4", med: "../../assets/battlefields/astral-conclave-med.webp?v=a391a7b2", low: "../../assets/battlefields/astral-conclave-low.webp?v=fcf44103" }) }),
+    Object.freeze({ id: "thunderwild-pass", faction: "wild", urls: Object.freeze({ high: "../../assets/battlefields/thunderwild-pass-high.webp?v=c0693a23", med: "../../assets/battlefields/thunderwild-pass-med.webp?v=47d3f827", low: "../../assets/battlefields/thunderwild-pass-low.webp?v=5af6a310" }) }),
+    Object.freeze({ id: "longnight-necropolis", faction: "wintershadow", urls: Object.freeze({ high: "../../assets/battlefields/longnight-necropolis-high.webp?v=4b7300c8", med: "../../assets/battlefields/longnight-necropolis-med.webp?v=9a48f27c", low: "../../assets/battlefields/longnight-necropolis-low.webp?v=927f8f26" }) }),
+    Object.freeze({ id: "tidebreak-confluence", faction: "neutral", urls: Object.freeze({ high: "../../assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7", med: "../../assets/battlefields/tidebreak-confluence-med.webp?v=35c28764", low: "../../assets/battlefields/tidebreak-confluence-low.webp?v=bcaabe4e" }) }),
+  ]);
+  let battlefieldCursor = -1;
+  let battlefieldLoadToken = 0;
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r66_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r67_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
@@ -371,6 +380,69 @@
     updatePerfDiagnostics();
     if (trackHistory && previousEffective !== perfState.effective) recordPerfHistory(perfState.reason);
     updatePerfHistory();
+    if (battlefieldCursor >= 0) applyBattlefieldScene({ advance: false });
+  }
+
+  function battlefieldTier(forcedTier) {
+    if (["low", "med", "high"].includes(forcedTier)) return forcedTier;
+    const constrainedDevice = Number(navigator.deviceMemory || 8) <= 4;
+    if (isLowPerf() || constrainedDevice || innerWidth <= 700) return "low";
+    if (innerWidth <= 1200) return "med";
+    return "high";
+  }
+
+  function applyBattlefieldScene(options) {
+    const config = options || {};
+    if (config.id) {
+      const forcedIndex = R67_BATTLEFIELDS.findIndex((scene) => scene.id === config.id);
+      if (forcedIndex >= 0) battlefieldCursor = forcedIndex;
+    } else if (config.advance !== false) {
+      battlefieldCursor = (battlefieldCursor + 1) % R67_BATTLEFIELDS.length;
+    } else if (battlefieldCursor < 0) {
+      battlefieldCursor = 0;
+    }
+    const scene = R67_BATTLEFIELDS[battlefieldCursor];
+    const tier = battlefieldTier(config.tier);
+    const requested = scene.urls[tier];
+    if (window.__r67VisualState && window.__r67VisualState.id === scene.id && window.__r67VisualState.tier === tier) {
+      return Promise.resolve(window.__r67VisualState);
+    }
+    const token = ++battlefieldLoadToken;
+    window.__r67VisualState = { id: scene.id, faction: scene.faction, tier, url: new URL(requested, location.href).href, loaded: false };
+    document.body.dataset.battlefieldLoading = "true";
+    const image = new Image();
+    image.decoding = "async";
+    image.fetchPriority = "high";
+    const ready = () => {
+      if (token !== battlefieldLoadToken) return false;
+      const absoluteUrl = new URL(requested, location.href).href;
+      document.documentElement.style.setProperty("--battlefield-image", `url("${absoluteUrl}")`);
+      document.body.dataset.battlefield = scene.id;
+      document.body.dataset.battlefieldTier = tier;
+      document.body.dataset.battlefieldLoading = "false";
+      window.__r67VisualState = { id: scene.id, faction: scene.faction, tier, url: absoluteUrl, loaded: true };
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (!performance.getEntriesByName("r67-visual-ready").length) {
+          performance.mark("r67-visual-ready", { detail: window.__r67VisualState });
+        }
+      }));
+      return true;
+    };
+    const failed = () => {
+      if (token !== battlefieldLoadToken) return false;
+      if (tier !== "low") return applyBattlefieldScene({ id: scene.id, tier: "low", advance: false });
+      document.body.dataset.battlefieldLoading = "error";
+      window.__r67VisualState = { id: scene.id, faction: scene.faction, tier, url: requested, loaded: false };
+      return false;
+    };
+    image.onload = () => { image.decode().catch(() => {}).finally(ready); };
+    image.onerror = failed;
+    image.src = requested;
+    return new Promise((resolve) => {
+      const finish = () => resolve(window.__r67VisualState || { id: scene.id, tier, loaded: false });
+      image.addEventListener("load", () => image.decode().catch(() => {}).finally(() => setTimeout(finish, 0)), { once: true });
+      image.addEventListener("error", () => setTimeout(finish, 0), { once: true });
+    });
   }
 
   function applyPerfEstimate(fps) {
@@ -539,6 +611,7 @@
 
   // ===== 初始化 =====
   function newGame() {
+    applyBattlefieldScene({ advance: true });
     combatInFlight = false;
     pendingSummonFx.clear();
     pendingTargetUid = null;
@@ -2129,6 +2202,10 @@
     const art = card.image
       ? `<img src="${card.image}" alt="${card.name}" onerror="this.replaceWith(document.createTextNode('${card.emoji}'))">`
       : `<span class="art-glyph" aria-hidden="true">${card.emoji}</span>`;
+    const factionInfo = FACTIONS[card.faction] || FACTIONS.neutral;
+    const factionEmblem = factionInfo && factionInfo.emblem
+      ? `<img class="faction-emblem" src="${factionInfo.emblem}" alt="" aria-hidden="true" onerror="this.remove()">`
+      : "";
 
     // 技能徽章
     const kwBadges = (card.keywords || []).map((k) => {
@@ -2145,7 +2222,7 @@
       ${card.shield ? '<div class="shield-ring"></div>' : ""}
       ${(card.keywords || []).includes("taunt") ? '<div class="taunt-crest" title="嘲諷" aria-hidden="true">◆</div>' : ""}
       <div class="stars">${stars}</div>
-      <div class="art${card.image ? "" : " art-fallback"}"${card.image ? "" : ` aria-label="${card.name}・${FACTIONS[card.faction]?.name || "中立"}佔位圖"`}>${art}</div>
+      <div class="art${card.image ? "" : " art-fallback"}"${card.image ? "" : ` aria-label="${card.name}・${FACTIONS[card.faction]?.name || "中立"}佔位圖"`}>${art}${factionEmblem}</div>
       <div class="kwrow">${kwBadges}</div>
       <div class="cardname">${card.name}${card.foil ? " ✦" : ""}${card.tide ? " ≋" : ""}</div>
       <div class="cardtext">${card.text || ""}</div>
@@ -2915,7 +2992,7 @@
       row.className = "faction-legend";
       row.dataset.factionId = faction.id;
       row.innerHTML = `
-        <h3 style="color:${faction.color || "#facc15"}">${faction.emoji || ""} ${faction.name}</h3>
+        <h3 style="color:${faction.color || "#facc15"}">${faction.emblem ? `<img src="${faction.emblem}" alt="" aria-hidden="true">` : (faction.emoji || "")}<span>${faction.name}</span></h3>
         <p>${faction.legend}</p>`;
       list.appendChild(row);
     });
@@ -3531,6 +3608,8 @@
     setAiThoughts: (enabled) => setAiThoughtEnabled(enabled),
     aiThoughts: () => ({ enabled: aiThoughtEnabled(), checked: !!document.getElementById("aiThoughtToggle")?.checked }),
     setPerfMode: (mode) => setPerfMode(mode),
+    battlefield: () => ({ ...(window.__r67VisualState || {}), cursor: battlefieldCursor, count: R67_BATTLEFIELDS.length }),
+    setBattlefield: (id, tier) => applyBattlefieldScene({ id, tier, advance: false }),
     perf: () => perfSnapshot(),
     forceFps: (fps) => applyPerfEstimate(fps),
     setTextSize: (size) => setTextSize(size),

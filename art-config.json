@@ -18,6 +18,14 @@
     { "id": "cyber",   "prompt": "a futuristic cyberpunk arena, neon teal and blue lights, holographic grid, dark tech" },
     { "id": "forest",  "prompt": "a mystical enchanted forest clearing, bioluminescent plants, green glow, misty" }
   ],
+  "wave2R67": {
+    "runtimeBattlefieldDir": "assets/battlefields",
+    "runtimeFactionDir": "assets/factions",
+    "model": "gpt-image-2",
+    "sourceManifest": "docs/evidence/R67/source-manifest.json",
+    "promptAndStyleBoard": "docs/evidence/R67/R67_STYLE_BOARD_AND_PROMPTS.md",
+    "masterPolicy": "docs/evidence/R67/masters are immutable C2PA originals; runtime assets are deterministic derivatives"
+  },
   "cards": [
     { "id": "footman",   "prompt": "a young human footman soldier holding a short sword, leather armor, shield raised" },
     { "id": "archer",    "prompt": "a nimble elven archer drawing a longbow, green cloak" },

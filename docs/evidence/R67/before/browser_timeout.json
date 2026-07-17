@@ -1,0 +1,10 @@
+{
+  "profile": "existing CI browser scripts and Fast 3G 4x CPU baseline",
+  "concurrentMachine": true,
+  "attempts": [
+    { "command": "npm run test:e2e", "outerTimeoutMs": 244066, "result": "TIMEOUT_BEFORE_ASSERTION_SUMMARY" },
+    { "command": "node scripts/test-r67-performance.js --out docs/evidence/R67/before/performance.json", "outerTimeoutMs": 364089, "result": "TIMEOUT" },
+    { "command": "node scripts/test-r67-performance.js --out docs/evidence/R67/before/performance.json", "outerTimeoutMs": 304291, "result": "TIMEOUT_AFTER_DECODE_CAP_ADDED" }
+  ],
+  "interpretation": "Raw failures retained. No threshold was widened; browser gates must be isolated and rerun after implementation."
+}

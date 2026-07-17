@@ -300,7 +300,7 @@ function normalizeRef(ref, baseFile) {
   if (rel.startsWith("..") || path.isAbsolute(rel)) return null;
   const normalized = toPosix(path.normalize(rel));
   if (normalized === "") return ".";
-  if (!/\.(?:html?|js|css|png|webmanifest|json)$/i.test(normalized)) return null;
+  if (!/\.(?:html?|js|css|png|webp|webmanifest|json)$/i.test(normalized)) return null;
   return normalized + queryPart;
 }
 
