@@ -879,7 +879,8 @@
       background: rgba(9,14,22,.9); border: 1px solid rgba(255,255,255,.08); border-radius: 10px;
     }
     .quest-panel {
-      position: static; min-height: 44px; max-height: 76px; overflow-y: auto;
+      /* R67.1：76px 在 390×740 造成欄總高溢出 4px、領取鈕遭視口裁切（老闆零捲動指示）——縮上限根治 */
+      position: static; min-height: 44px; max-height: 68px; overflow-y: auto;
       background: rgba(13,20,30,.94);
     }
     .quest-panel h2 { margin-bottom: 2px; }
