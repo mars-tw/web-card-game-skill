@@ -167,7 +167,7 @@
   let battlefieldLoadToken = 0;
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r67_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r69_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
@@ -3414,15 +3414,24 @@
     const lossEncourage = !win && s.lossStreak >= 2
       ? `<div class="hint">連敗 ${s.lossStreak} 場：已給敗場金幣，動態調節會依設定小幅放慢對手。</div>`
       : "";
-    // 顯示戰績
+    // 顯示戰績（R69 CT-1：三層資訊層次——本場戰報 chips → 獎勵主視覺 → 次要 meta 縮階）
     const stats = document.getElementById("resultStats");
     if (stats) {
+      const turnCount = game && game.turnCount ? game.turnCount : 1;
+      const playerHpLeft = game && game.player ? Math.max(0, game.player.hp) : 0;
       stats.innerHTML = `
+        <div class="result-report" role="group" aria-label="本場戰報">
+          <span class="report-chip">⏱ ${turnCount} 回合</span>
+          <span class="report-chip">❤️ 我方剩餘 ${playerHpLeft}</span>
+          <span class="report-chip">🎯 ${reward.label}</span>
+        </div>
         <div class="streak">${win && s.streak >= 2 ? `🔥 ${s.streak} 連勝！` : ""}</div>
-        <div>戰績：${s.wins} 勝 ${s.losses} 敗 · 最高連勝 ${s.bestStreak}</div>
         <div class="coin">${rewardLine}</div>
-        <div>難度獎勵：${reward.label}${win ? "勝場" : "敗場"} +${reward.amount} 金幣</div>
-        <div>動態調節：${ddaInfo.enabled ? ddaInfo.label : "關閉"}（依近期勝敗調整 AI）</div>
+        <div class="result-meta">
+          <div>戰績：${s.wins} 勝 ${s.losses} 敗 · 最高連勝 ${s.bestStreak}</div>
+          <div>難度獎勵：${reward.label}${win ? "勝場" : "敗場"} +${reward.amount} 金幣</div>
+          <div>動態調節：${ddaInfo.enabled ? ddaInfo.label : "關閉"}（依近期勝敗調整 AI）</div>
+        </div>
         ${lossEncourage}
         <div class="hint">💡 用金幣去「開卡包」抽更強的卡，組成你的牌組！</div>`;
     }

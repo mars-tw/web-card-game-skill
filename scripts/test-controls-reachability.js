@@ -192,8 +192,63 @@ async function run() {
         });
         assert(drawer.open && drawer.handBottom <= drawer.dockTop + 0.5,
           `${name}：手牌抽屜展開後停在 Command Dock 上方、不遮主行動`);
-        assertControlAudit(await controlAudit(frame, touchControls), `${name} 抽屜展開主控制`);
-        await frame.locator("#handDrawerToggle").click();
+        // R69：抽屜是底部面板、z 高於棋盤層（修 844×390 手牌 0/12 可點 P0）；
+        // 展開時允許蓋住棋盤層的 #hintBtn（橫向矮視口幾何重疊），收合即恢復——
+        // dock/設定等固定控制仍須全數可命中；抽屜收合狀態的全量 audit 在前面已跑。
+        assertControlAudit(await controlAudit(frame, touchControls.filter((selector) => selector !== "#hintBtn")),
+          `${name} 抽屜展開主控制`);
+
+        // R69 P0-1 負向斷言：抽屜展開後手牌逐卡＋詳鈕 elementFromPoint 必中自身、真實 click 可出牌。
+        // 844×390 曾因 .player-hero-row z-index:75 蓋住抽屜 z70 導致 12 個互動元素 0 命中。
+        await frame.evaluate(() => {
+          const T = window.__test;
+          T.setup([], []);
+          const g = T.game();
+          g.player.hand = [];
+          g.player.mana = g.player.manaMax = 10;
+          ["wolf", "knight", "golem", "dragon", "firebolt", "titan"].forEach((id) => T.giveCard(id));
+        });
+        const handHits = await frame.evaluate(() => {
+          const hand = document.getElementById("playerHand");
+          const cards = [...document.querySelectorAll("#playerHand .card")];
+          let ok = 0;
+          let infoTotal = 0;
+          let infoOk = 0;
+          const misses = [];
+          for (const card of cards) {
+            // 手牌橫捲：每張先捲到視野中央再打點（scrollIntoView 會被 scroll-snap
+            // proximity 彈回、卡半張在視口外——改用 delta 置中 scrollLeft）
+            const handRect = hand.getBoundingClientRect();
+            const beforeRect = card.getBoundingClientRect();
+            hand.scrollLeft += (beforeRect.left + beforeRect.width / 2) - (handRect.left + handRect.width / 2);
+            const rect = card.getBoundingClientRect();
+            const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            if (hit && (hit === card || card.contains(hit))) ok++;
+            else misses.push(hit ? `${hit.tagName.toLowerCase()}.${String(hit.className).trim().replace(/\s+/g, ".")}` : "none");
+            const btn = card.querySelector(".card-info-btn");
+            if (btn) {
+              infoTotal++;
+              const btnRect = btn.getBoundingClientRect();
+              const btnHit = document.elementFromPoint(btnRect.left + btnRect.width / 2, btnRect.top + btnRect.height / 2);
+              if (btnHit && (btnHit === btn || btn.contains(btnHit))) infoOk++;
+            }
+          }
+          return { total: cards.length, ok, infoTotal, infoOk, misses: misses.slice(0, 3) };
+        });
+        assert(handHits.total === 6 && handHits.ok === handHits.total && handHits.infoOk === handHits.infoTotal,
+          `${name}：抽屜展開手牌逐卡可命中 ${handHits.ok}/${handHits.total}、詳鈕 ${handHits.infoOk}/${handHits.infoTotal}`
+            + (handHits.misses.length ? `（蓋住者：${handHits.misses.join(", ")}）` : ""));
+        await frame.locator('#playerHand .card[data-card-id="wolf"]').click();
+        await frame.waitForFunction(() => !!document.querySelector('#playerField .card[data-card-id="wolf"]'));
+        assert(true, `${name}：真實 click 抽屜手牌可出牌`);
+        await frame.evaluate(() => {
+          const T = window.__test;
+          T.setup([], []);
+          T.game().player.hand = [];
+        });
+        if (await frame.evaluate(() => document.getElementById("handDrawer")?.classList.contains("open"))) {
+          await frame.locator("#handDrawerToggle").click();
+        }
 
         await frame.locator("#moreActionsBtn").click();
         assertControlAudit(await controlAudit(frame, [

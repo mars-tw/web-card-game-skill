@@ -3,7 +3,8 @@
  *
  * 驗收標準（每頁 × 每視口都必須成立）：
  *   1. 所有可互動元素（button/select/input/textarea/a[href]/[role=button]/[onclick]）
- *      必須「完整在視口內」，或位於一個「自身完整可見、overflow-y 可捲」的容器內。
+ *      必須「完整在視口內」，或位於可捲容器鏈內（R69 起：鏈上任一 overflow-y 可捲
+ *      容器完整可見即可達——如 pack 行動版單欄 .pack-main 捲動殼內的長清單）。
  *   2. 頁級捲動歸零：documentElement.scrollHeight <= innerHeight + 8。
  *   3. 水平溢出 <= 2px。
  *
@@ -75,25 +76,29 @@ async function auditPage(page) {
       if (+cs.opacity === 0) continue;
       let anc = el.parentElement;
       let hidden = false;
-      let scrollHost = null;
+      const scrollHosts = [];
       while (anc && anc !== document.body) {
         const acs = getComputedStyle(anc);
         if (acs.display === "none" || acs.visibility === "hidden" || +acs.opacity === 0) { hidden = true; break; }
-        if (!scrollHost && (
+        if (
           (/(auto|scroll)/.test(acs.overflowY) && anc.scrollHeight > anc.clientHeight + 4)
           || (/(auto|scroll)/.test(acs.overflowX) && anc.scrollWidth > anc.clientWidth + 4)
-        )) scrollHost = anc;
+        ) scrollHosts.push(anc);
         anc = anc.parentElement;
       }
       if (hidden) continue;
+      const scrollHost = scrollHosts[0] || null;
       const inVp = r.top >= -tol && r.left >= -tol && r.bottom <= ih + tol && r.right <= iw + tol;
       const label = (el.id ? "#" + el.id : "")
         || (el.getAttribute("aria-label") || el.textContent || el.className || el.tagName).toString().trim().slice(0, 28);
       let status;
       if (inVp) status = "OK";
-      else if (scrollHost) {
-        const hr = scrollHost.getBoundingClientRect();
-        const hostVisible = hr.top >= -tol && hr.bottom <= ih + tol && hr.left >= -tol && hr.right <= iw + tol;
+      else if (scrollHosts.length) {
+        // R69：捲動鏈可達——鏈上任一可捲容器完整可見即可（外層殼捲到位後再內捲）
+        const hostVisible = scrollHosts.some((host) => {
+          const hr = host.getBoundingClientRect();
+          return hr.top >= -tol && hr.bottom <= ih + tol && hr.left >= -tol && hr.right <= iw + tol;
+        });
         status = hostVisible ? "SCROLLABLE_OK" : "PAGE_SCROLL";
       } else status = (r.top >= ih || r.bottom <= 0) ? "PAGE_SCROLL" : "CLIPPED";
       if (status !== "OK" && status !== "SCROLLABLE_OK") {

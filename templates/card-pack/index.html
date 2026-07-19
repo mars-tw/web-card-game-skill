@@ -6,9 +6,9 @@
 <title>開卡包 · Card Pack</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r67-v1";
+    const CACHE_VERSION = "card-battle-r69-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r67_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r69_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -158,9 +158,11 @@
     position: relative; display: flex; flex-direction: column; padding: 8px;
     transform-style: preserve-3d; opacity: 0;
   }
-  .card.rarity-common { background:linear-gradient(160deg,#263343,#151d28) padding-box,repeating-linear-gradient(105deg,#d7dde2 0 2px,#697583 2px 5px,#aab3bc 5px 7px) border-box; }
-  .card.rarity-rare { background:linear-gradient(160deg,#223148,#111b2d) padding-box,linear-gradient(135deg,#bfdbfe,#2563eb 35%,#60a5fa 58%,#172554) border-box; }
-  .card.rarity-epic { background:linear-gradient(160deg,#30243e,#181425) padding-box,repeating-conic-gradient(from 35deg,#e9d5ff 0 7deg,#7e22ce 7deg 15deg,#c084fc 15deg 22deg,#4c1d95 22deg 30deg) border-box; }
+  /* R69 ART-1：稀有度視覺語言與對戰頁統一——邊框漸層字串一致、
+     光暈梯度同語言（common 無光 → rare 17px 藍 → epic 21px 紫 → legendary 金箔掃光） */
+  .card.rarity-common { background:linear-gradient(160deg,#263343,#151d28) padding-box,repeating-linear-gradient(105deg,#d7dde2 0 2px,#697583 2px 5px,#aab3bc 5px 7px) border-box; box-shadow:0 6px 16px rgba(0,0,0,.5); }
+  .card.rarity-rare { background:linear-gradient(160deg,#223148,#111b2d) padding-box,linear-gradient(135deg,#dbeafe,#1d4ed8 31%,#93c5fd 52%,#2563eb 69%,#172554) border-box; box-shadow:0 0 17px rgba(59,130,246,.58),0 6px 16px rgba(0,0,0,.5),inset 0 0 14px rgba(59,130,246,.08); }
+  .card.rarity-epic { background:linear-gradient(160deg,#30243e,#181425) padding-box,repeating-conic-gradient(from 35deg,#f3e8ff 0 8deg,#7e22ce 8deg 16deg,#d8b4fe 16deg 24deg,#4c1d95 24deg 32deg) border-box; box-shadow:0 0 21px rgba(168,85,247,.64),0 6px 16px rgba(0,0,0,.52),inset 0 0 18px rgba(192,132,252,.1); }
   .card.rarity-legendary { background:linear-gradient(160deg,#342c1e,#1e170d) padding-box,linear-gradient(115deg,#78350f,#fde68a,#d97706,#fff7c2,#92400e,#fbbf24) border-box; }
   .card .frame-sheen { position:absolute; inset:-3px; border:3px solid transparent; border-radius:12px; pointer-events:none; z-index:6; opacity:0; }
   .card.rarity-legendary .frame-sheen { opacity:1; background:linear-gradient(115deg,#78350f,#fde68a,#d97706,#fff7c2,#92400e,#fbbf24) border-box; background-size:240% 240%; -webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0); mask-composite:exclude; animation:legendFrameSweep 3.2s linear infinite; }
@@ -195,7 +197,11 @@
   .card .art.art-fallback::after { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--faction-accent,#94a3b8) 25%,transparent),transparent 38%),linear-gradient(180deg,rgba(255,255,255,.07),transparent 38%,rgba(0,0,0,.28)); }
   .card .art-fallback .art-glyph { display:grid; place-items:center; width:62%; aspect-ratio:1; border:1px solid color-mix(in srgb,var(--faction-accent,#94a3b8) 58%,transparent); border-radius:50%; background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.2),rgba(7,12,20,.5) 66%); box-shadow:0 7px 15px rgba(0,0,0,.42),inset 0 0 13px color-mix(in srgb,var(--faction-accent,#94a3b8) 24%,transparent); text-shadow:0 3px 8px rgba(0,0,0,.72); }
   .card .art > img:not(.faction-emblem) { width:100%; height:100%; object-fit:cover; }
-  .card .art .faction-emblem { position:absolute; right:4px; bottom:4px; z-index:4; width:28px; height:28px; object-fit:contain; filter:drop-shadow(0 2px 4px rgba(0,0,0,.9)); pointer-events:none; }
+  /* R69 ART-2：徽記補暗色底暈＋雙層描影，亮色卡面/64px 縮圖仍可辨陣營（與對戰頁同語言） */
+  .card .art .faction-emblem { position:absolute; right:4px; bottom:4px; z-index:4; width:28px; height:28px; object-fit:contain;
+    padding:2px; border-radius:50%;
+    background:radial-gradient(circle at 50% 46%, rgba(7,11,18,.78), rgba(7,11,18,.3) 62%, transparent 82%);
+    filter:drop-shadow(0 0 2px rgba(0,0,0,.95)) drop-shadow(0 2px 4px rgba(0,0,0,.9)); pointer-events:none; }
   .card .cost { position:absolute; top:-10px; left:-10px; width:32px; height:34px; clip-path:polygon(50% 0,88% 18%,100% 62%,50% 100%,0 62%,12% 18%);
     background:radial-gradient(circle at 34% 24%,#dbeafe 0 7%,#60a5fa 18%,#2563eb 56%,#0b2f71 100%); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:950; z-index:8; filter:drop-shadow(0 3px 3px rgba(0,0,0,.7)) drop-shadow(0 0 4px #2563eb); text-shadow:0 1px 2px #071b40; }
   .card .stars { position:absolute; top:-9px; right:6px; font-size:11px; color:var(--rarity); text-shadow:0 0 5px var(--glow); z-index:3; }
@@ -237,9 +243,9 @@
   .audio-toggle-btn { min-width:42px; padding-inline:10px; border-radius:999px; }
   .audio-toggle-btn.is-muted { filter:grayscale(1) brightness(.75); color:var(--muted); }
   .volume-field { display:inline-flex; align-items:center; gap:6px; min-height:44px; font-size:12px; color:var(--muted); }
-  .volume-field input { width:92px; min-height:32px; }
+  .volume-field input { width:92px; min-height:44px; }
   .top-actions { display:flex; justify-content:center; gap:10px; padding:0; }
-  .top-actions button { padding:6px 14px; font-size:13px; border-radius:16px; }
+  .top-actions button { padding:6px 14px; min-height:44px; font-size:13px; border-radius:16px; }
 
   .summary { font-size:13px; color:var(--muted); text-align:center; min-height:20px; }
   .summary .new { color:#4ade80; font-weight:700; } .summary .dup { color:#f59e0b; }
@@ -249,10 +255,10 @@
   .collection h2 { font-size:16px; margin-bottom:10px; color:var(--muted); display:flex; justify-content:space-between; align-items:center; }
   .collection-meta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end; font-size:12px; }
   .collection-tools { display:grid; grid-template-columns:minmax(170px,.85fr) minmax(0,2.2fr); gap:8px; margin-bottom:10px; align-items:start; }
-  .collection-tools input, .collection-tools select { min-width:0; border:1px solid rgba(255,255,255,.12); border-radius:8px;
+  .collection-tools input, .collection-tools select { min-width:0; min-height:44px; border:1px solid rgba(255,255,255,.12); border-radius:8px;
     background:rgba(8,12,18,.84); color:var(--ink); padding:9px 10px; font:inherit; font-size:13px; }
   .filter-panel { min-width:0; border:1px solid rgba(255,255,255,.1); border-radius:8px; background:rgba(8,12,18,.42); }
-  .filter-panel summary { cursor:pointer; list-style:none; padding:8px 10px; color:#facc15; font-size:12px; font-weight:900; }
+  .filter-panel summary { cursor:pointer; list-style:none; padding:8px 10px; min-height:44px; display:flex; align-items:center; color:#facc15; font-size:12px; font-weight:900; }
   .filter-panel summary::-webkit-details-marker { display:none; }
   .filter-panel[open] summary { border-bottom:1px solid rgba(255,255,255,.08); }
   .filter-panel:not([open]) .filter-chip-board { display:none; }
@@ -264,7 +270,11 @@
     flex:0 0 auto; min-height:32px; border:1px solid rgba(255,255,255,.13); border-radius:999px;
     padding:6px 10px; background:rgba(255,255,255,.05); color:var(--ink);
     font-size:12px; font-weight:900; box-shadow:none; cursor:pointer; white-space:nowrap;
+    position:relative;
   }
+  /* R69 P0-3：篩選 chip 視覺維持膠囊、偽元素把命中區垂直擴到 44px（不撐開版面） */
+  .filter-chip::after { content:""; position:absolute; left:-2px; right:-2px;
+    top:min(0px, calc((100% - 44px) / 2)); bottom:min(0px, calc((100% - 44px) / 2)); }
   .filter-chip .faction-filter-emblem { width:20px; height:20px; object-fit:contain; vertical-align:middle; filter:drop-shadow(0 1px 2px rgba(0,0,0,.7)); }
   .filter-chip:hover { transform:none; }
   .filter-chip.active { background:linear-gradient(180deg,#facc15,#d97706); color:#1a1206; border-color:rgba(250,204,21,.7); }
@@ -294,7 +304,7 @@
   .deck-head { flex-shrink:0; display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; flex-wrap:wrap; }
   .deck-head h2 { font-size:18px; color:var(--ink); }
   .deck-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-  .deck-actions button { padding:8px 14px; font-size:13px; border-radius:14px; }
+  .deck-actions button { padding:8px 14px; min-height:44px; font-size:13px; border-radius:14px; }
   .deck-count { color:#facc15; font-weight:900; min-width:54px; text-align:right; }
   /* 牌組雙欄各自內捲：deck-panel 是唯一的捲動層（清單不再另設高度） */
   .deck-layout { flex:1 1 auto; min-height:0; display:grid;
@@ -303,7 +313,7 @@
     min-width:0; min-height:0; max-height:100%; overflow-y:auto; }
   .deck-panel h3 { font-size:14px; color:var(--muted); margin-bottom:8px; display:flex; justify-content:space-between; gap:8px; }
   .deck-tools { display:grid; grid-template-columns:minmax(130px,.9fr) minmax(0,1.1fr); gap:8px; margin-bottom:10px; }
-  .deck-tools input, .deck-tools select { min-width:0; border:1px solid rgba(255,255,255,.12); border-radius:8px;
+  .deck-tools input, .deck-tools select { min-width:0; min-height:44px; border:1px solid rgba(255,255,255,.12); border-radius:8px;
     background:rgba(8,12,18,.84); color:var(--ink); padding:9px 10px; font:inherit; font-size:13px; }
   .deck-tools .filter-chip-board { grid-column:2; padding:0; gap:6px; }
   .deck-tools .filter-line { grid-template-columns:40px minmax(0,1fr); }
@@ -319,7 +329,7 @@
   .deck-art img { width:100%; height:100%; object-fit:cover; }
   .deck-name { font-size:13px; font-weight:800; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
   .deck-meta { font-size:11px; color:var(--muted); margin-top:2px; }
-  .deck-add-btn, .deck-remove-btn { min-width:42px; padding:7px 10px; border-radius:8px; font-size:13px; }
+  .deck-add-btn, .deck-remove-btn { min-width:44px; min-height:44px; padding:7px 10px; border-radius:8px; font-size:13px; }
   .deck-recommend { margin-top:10px; display:flex; flex-direction:column; gap:6px; font-size:12px; }
   .deck-recommend-card { border:1px solid rgba(250,204,21,.35); border-radius:8px; padding:8px;
     background:rgba(250,204,21,.08); display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:center; }
@@ -346,18 +356,18 @@
   .goal-item { border:1px solid rgba(255,255,255,.1); border-radius:8px; padding:8px; background:rgba(255,255,255,.04); min-width:0; }
   .goal-title { font-size:12px; font-weight:900; color:#facc15; margin-bottom:3px; }
   .goal-progress { font-size:11px; color:var(--muted); margin-bottom:7px; }
-  .goal-item button { width:100%; padding:7px 9px; border-radius:8px; font-size:12px; }
+  .goal-item button { width:100%; padding:7px 9px; min-height:44px; border-radius:8px; font-size:12px; }
   .goal-item.claimed { opacity:.62; }
   .weekly-goal { border-color:rgba(45,212,191,.38); background:rgba(45,212,191,.07); }
   .weekly-goal .goal-title { color:#5eead4; }
   .record-panel { padding:12px; }
   .record-head { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
   .record-head h2 { font-size:16px; color:var(--ink); }
-  .record-head button { padding:7px 10px; border-radius:8px; font-size:12px; }
+  .record-head button { padding:7px 10px; min-height:44px; border-radius:8px; font-size:12px; }
   .record-tools { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .pwa-save-tools { margin-top: 8px; }
   .record-tools select { background:rgba(15,23,42,.9); color:var(--ink); border:1px solid rgba(255,255,255,.14);
-    border-radius:8px; padding:7px 9px; font-size:12px; font-weight:800; }
+    border-radius:8px; padding:7px 9px; min-height:44px; font-size:12px; font-weight:800; }
   .version-pill { border:1px solid rgba(250,204,21,.28); border-radius:999px; padding:6px 9px; color:#facc15; font-size:12px; font-weight:900; background:rgba(250,204,21,.08); }
   .save-manager { margin-top:10px; display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:8px; align-items:center; }
   .save-manager textarea { min-height:38px; max-height:90px; resize:vertical; border-radius:8px; padding:8px;
@@ -397,7 +407,7 @@
   .mission-item.claimed { opacity:.6; }
   .mission-name { font-size:12px; font-weight:900; color:var(--ink); margin-bottom:4px; }
   .mission-progress { font-size:11px; color:var(--muted); margin-bottom:7px; }
-  .mission-item button { width:100%; border:none; border-radius:8px; padding:7px 9px; font-size:12px; font-weight:900;
+  .mission-item button { width:100%; border:none; border-radius:8px; padding:7px 9px; min-height:44px; font-size:12px; font-weight:900;
     background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; cursor:pointer; }
   .mission-item button:disabled, .mission-actions button:disabled { background:#2a3645; color:var(--muted); cursor:default; filter:none; }
   .series-footer { flex-shrink:0; width:min(960px,94vw); margin:0 auto; padding:4px 10px 6px;
@@ -418,7 +428,7 @@
     .pack .pack-icon { font-size: 44px; }
     .collection h2 { align-items:flex-start; gap:8px; }
     .collection-tools { grid-template-columns:1fr; gap:6px; }
-    .collection-tools input { grid-column:1; padding:7px 9px; min-height:34px; }
+    .collection-tools input { grid-column:1; padding:7px 9px; min-height:44px; }
     .collection-tools .filter-panel summary { padding:6px 8px; }
     .collection-tools .filter-chip-board {
       display:grid;
@@ -466,7 +476,7 @@
     .collection { padding:10px; }
     .collection h2 { margin-bottom:6px; }
     .collection-tools { gap:6px; margin-bottom:8px; }
-    .collection-tools input { padding:7px 9px; min-height:32px; font-size:12px; }
+    .collection-tools input { padding:7px 9px; min-height:44px; font-size:12px; }
     .collection-tools .filter-panel {
       max-height:136px;
       overflow-y:auto;
@@ -495,7 +505,7 @@
   }
   @media (max-width: 390px), (max-height: 400px) {
     .collection-tools { grid-template-columns:1fr; gap:4px; margin-bottom:6px; }
-    .collection-tools input { grid-column:1; min-height:30px; padding:5px 8px; font-size:12px; }
+    .collection-tools input { grid-column:1; min-height:44px; padding:5px 8px; font-size:12px; }
     .collection-tools .filter-panel summary { padding:5px 8px; }
     .collection-tools .filter-chip-board {
       display:flex;
@@ -530,6 +540,26 @@
       padding:0;
     }
     .collection-tools .filter-chip { min-height:24px; padding:3px 7px; font-size:11px; }
+  }
+
+  /* ===== R69 P0-2：行動與矮視口不再把全部區塊硬塞一屏 =====
+     原 grid 在 390×844 / 844×390 產生 89-175px 的迷你內窗＋三層巢狀捲、開包 CTA 初窗外。
+     改法：.pack-main 成為唯一頁級捲動欄（頁本身仍零捲動、無水平溢出），
+     區塊隨內容伸長；長清單（牌組雙欄、收藏冊格）內捲上限改 dvh 隨視口伸縮；
+     開包 reveal 卡尺寸同樣以 dvh 語言縮放，桌機 app-shell 格線不受影響。 */
+  @media (max-width: 700px), (max-height: 560px) {
+    .pack-main {
+      display: flex; flex-direction: column; overflow-y: auto;
+      overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+    }
+    .open-panel, .goal-panel, .record-panel, .deck-builder, .collection {
+      flex: 0 0 auto; max-height: none; overflow: visible;
+    }
+    .deck-layout { grid-template-rows: none; align-items: start; }
+    .deck-panel { max-height: 62dvh; }
+    .collection .grid { max-height: 64dvh; overflow-y: auto; overscroll-behavior: contain; }
+    .reveal-row { --card-w: clamp(84px, 20dvh, 112px); min-height: 0; padding: 12px; }
+    .open-panel { min-height: min(52dvh, 480px); justify-content: flex-start; }
   }
 
   @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
@@ -844,9 +874,9 @@
       else mq.addListener(applyCompactFilters);
     })();
   </script>
-  <script src="../card-battle/cards.js?v=card-battle-r67-v1"></script>
-  <script src="../card-battle/core.js?v=card-battle-r67-v1"></script>
-  <script src="pack.js?v=card-battle-r67-v1"></script>
+  <script src="../card-battle/cards.js?v=card-battle-r69-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-r69-v1"></script>
+  <script src="pack.js?v=card-battle-r69-v1"></script>
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);

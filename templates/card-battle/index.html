@@ -20,9 +20,9 @@
 </script>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r67-v1";
+    const CACHE_VERSION = "card-battle-r69-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r67_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r69_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -160,7 +160,10 @@
     box-shadow:0 5px 16px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.08),inset 0 -10px 24px rgba(0,0,0,.16);
   }
   .player-hero-row { z-index:75; overflow:visible; }
-  .hero { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: transform .15s; }
+  .hero { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: transform .15s; position: relative; }
+  /* R69 P0-3：英雄是攻擊目標，矮視口列高 <44px——用偽元素擴命中區、不動列高視覺 */
+  .hero::after { content:""; position:absolute; left:-6px; right:-6px;
+    top:min(0px, calc((100% - 44px) / 2)); bottom:min(0px, calc((100% - 44px) / 2)); }
   .player-hero-scene { display:flex; align-items:center; gap:8px; min-width:0; }
   .scene-hint-btn {
     width:44px; height:44px; flex:0 0 44px; border-radius:50%; border:1px solid rgba(250,204,21,.44);
@@ -204,10 +207,13 @@
     display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
     align-items: center; align-items: safe center; align-content: center; align-content: safe center;
     padding: 6px; border-radius: 12px;
-    /* 戰場棋盤質感：深色半透明 + 細格線紋理 + 內陰影，像放在真實戰場上 */
+    /* 戰場棋盤質感：深色半透明 + 細格線紋理 + 內陰影，像放在真實戰場上。
+       R69 ART-3：格線/內暈注入主題 accent（我方）與 opponent-tone（敵方），
+       與卡面陣營漸層、戰場圖同一套色彩語言，非中性白換色占位。 */
     background:
-      repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 38px),
-      repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 38px),
+      radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 58%),
+      repeating-linear-gradient(0deg, color-mix(in srgb, var(--accent) 22%, rgba(255,255,255,.035)) 0 1px, transparent 1px 38px),
+      repeating-linear-gradient(90deg, color-mix(in srgb, var(--accent) 22%, rgba(255,255,255,.035)) 0 1px, transparent 1px 38px),
       linear-gradient(180deg, rgba(10,14,20,.55), rgba(10,14,20,.35));
     border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--panel-border));
     box-shadow: inset 0 2px 16px rgba(0,0,0,.5), inset 0 0 30px color-mix(in srgb, var(--accent) 8%, transparent);
@@ -216,8 +222,8 @@
   .battlefield.enemy {
     background:
       radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--opponent-tone) 18%, transparent), transparent 62%),
-      repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 38px),
-      repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 38px),
+      repeating-linear-gradient(0deg, color-mix(in srgb, var(--opponent-tone) 24%, rgba(255,255,255,.035)) 0 1px, transparent 1px 38px),
+      repeating-linear-gradient(90deg, color-mix(in srgb, var(--opponent-tone) 24%, rgba(255,255,255,.035)) 0 1px, transparent 1px 38px),
       linear-gradient(180deg, color-mix(in srgb, var(--opponent-tone) 9%, rgba(10,14,20,.62)), rgba(10,14,20,.38));
     border-color: color-mix(in srgb, var(--opponent-tone) 52%, var(--panel-border));
     box-shadow: inset 0 2px 16px rgba(0,0,0,.5), inset 0 0 38px color-mix(in srgb, var(--opponent-tone) 16%, transparent), 0 0 18px color-mix(in srgb, var(--opponent-tone) 8%, transparent);
@@ -365,7 +371,10 @@
   .card .art .faction-emblem {
     position:absolute; right:3px; bottom:3px; z-index:4;
     width:clamp(18px,20%,26px); height:clamp(18px,20%,26px); object-fit:contain;
-    filter:drop-shadow(0 2px 3px rgba(0,0,0,.9)); pointer-events:none;
+    /* R69 ART-2：亮色卡面上徽記對比不足——補暗色底暈＋雙層描影，64px 縮圖仍可辨陣營 */
+    padding:2px; border-radius:50%;
+    background:radial-gradient(circle at 50% 46%, rgba(7,11,18,.78), rgba(7,11,18,.3) 62%, transparent 82%);
+    filter:drop-shadow(0 0 2px rgba(0,0,0,.95)) drop-shadow(0 2px 3px rgba(0,0,0,.9)); pointer-events:none;
   }
   .card .kwrow { display: flex; gap: 2px; justify-content: center; min-height: 14px; }
   .card .kw { font-size: 11px; line-height: 1; filter: drop-shadow(0 0 2px rgba(0,0,0,.6)); cursor: help; }
@@ -411,10 +420,14 @@
     border:1px solid rgba(255,255,255,.14); box-shadow:0 16px 38px rgba(0,0,0,.5);
   }
   .settings-panel.show { display:grid; gap:10px; }
+  /* R69 P0-3：設定面板 8 控件（select/checkbox/range）全 <44px——label/欄位撐 44px 命中區 */
   .settings-panel .diff-pick, .settings-panel .dda-toggle, .settings-panel .ai-thought-toggle,
   .settings-panel .perf-toggle, .settings-panel .text-size-toggle {
     width:100%; justify-content:space-between; border-radius:10px; padding:8px 10px; white-space:normal;
+    min-height:44px; align-items:center;
   }
+  .settings-panel select { min-height:44px; }
+  .settings-panel .audio-toggle-btn { min-height:44px; }
   .settings-panel .perf-toggle { display:grid; grid-template-columns:auto auto; gap:6px 10px; }
   .settings-panel .perf-diag, .settings-panel .perf-history { grid-column:1 / -1; max-width:none; white-space:normal; }
 
@@ -447,7 +460,7 @@
   .dda-toggle, .ai-thought-toggle, .perf-toggle, .text-size-toggle { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--muted);
     background: color-mix(in srgb, var(--panel) 82%, transparent); border:1px solid var(--panel-border);
     border-radius:20px; padding:6px 10px; white-space:nowrap; }
-  .dda-toggle input, .ai-thought-toggle input { width:16px; height:16px; accent-color:var(--accent); }
+  .dda-toggle input, .ai-thought-toggle input { width:22px; height:22px; accent-color:var(--accent); }
   .perf-toggle select, .text-size-toggle select { background:var(--panel); color:var(--ink); border:1px solid var(--panel-border);
     border-radius:10px; padding:3px 6px; font-family:inherit; font-weight:800; }
   .perf-diag, .perf-history { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -458,7 +471,7 @@
     background: color-mix(in srgb, var(--panel) 82%, transparent); color: var(--ink); font-size: 12px; font-weight: 900;
     cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
   .audio-toggle-btn.is-muted { color: var(--muted); filter: grayscale(1) brightness(.82); }
-  .settings-panel input[type="range"] { min-width: 94px; min-height: 32px; }
+  .settings-panel input[type="range"] { min-width: 94px; min-height: 44px; }
   button.end-turn.glow { box-shadow: 0 0 0 2px rgba(250,204,21,.55), 0 0 18px rgba(250,204,21,.5); animation: endTurnGlow 1.6s ease-in-out infinite; }
   @keyframes endTurnGlow { 0%,100% { box-shadow: 0 0 0 2px rgba(250,204,21,.35), 0 0 10px rgba(250,204,21,.3);} 50% { box-shadow: 0 0 0 3px rgba(250,204,21,.65), 0 0 22px rgba(250,204,21,.6);} }
   button.end-turn {
@@ -487,7 +500,8 @@
   }
   .quest-panel h2 { font-size: 13px; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
   .quest-head-actions { display: flex; align-items: center; gap: 8px; }
-  .quest-claim-all { border: none; border-radius: 8px; padding: 5px 8px; font-size: 12px; font-weight: 900;
+  /* R69 P0-3：戰鬥內領取鈕補 44px 命中區（視覺以 padding 撐、不放大字級） */
+  .quest-claim-all { border: none; border-radius: 8px; padding: 5px 10px; min-height: 44px; font-size: 12px; font-weight: 900;
     background: linear-gradient(180deg,#facc15,#eab308); color: #271a02; cursor: pointer; }
   .quest-claim-all:disabled { background: #2a3645; color: var(--muted); cursor: default; filter: none; }
   .quest-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
@@ -495,7 +509,7 @@
     background: rgba(255,255,255,.04); display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 6px; align-items: center; }
   .quest-title { font-size: 12px; font-weight: 800; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .quest-progress { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .quest-claim { border: none; border-radius: 8px; padding: 6px 8px; font-size: 12px; font-weight: 900;
+  .quest-claim { border: none; border-radius: 8px; padding: 6px 10px; min-height: 44px; min-width: 64px; font-size: 12px; font-weight: 900;
     background: linear-gradient(180deg,#facc15,#eab308); color: #271a02; cursor: pointer; }
   .quest-claim:disabled { background: #2a3645; color: var(--muted); cursor: default; filter: none; }
   .quest-item.done { border-color: rgba(250,204,21,.45); }
@@ -568,7 +582,8 @@
   .card-detail-flavor { color:#f8d58a; font-size:13px; line-height:1.7; font-style:italic;
     border-left:3px solid rgba(250,204,21,.45); padding-left:10px; margin:-2px 0 10px; }
   .card-detail-keywords { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
-  .detail-keyword { border:1px solid rgba(250,204,21,.35); border-radius:999px; padding:6px 9px;
+  .detail-keyword { border:1px solid rgba(250,204,21,.35); border-radius:999px; padding:6px 11px;
+    min-height:44px; display:inline-flex; align-items:center;
     background:rgba(250,204,21,.09); color:#facc15; font-size:12px; font-weight:900; cursor:pointer; }
   .detail-keyword-info { min-height:36px; color:var(--muted); font-size:12px; line-height:1.45;
     border-top:1px solid rgba(255,255,255,.08); padding-top:8px; }
@@ -589,7 +604,16 @@
   .overlay-epilogue { margin: 2px 0 8px; font-size: 14px; color: #cfe3f5; opacity: .92; font-style: italic; }
   .result-stats { display: flex; flex-direction: column; gap: 8px; align-items: center; font-size: 15px; color: var(--ink); }
   .result-stats .streak { font-size: 22px; font-weight: 900; color: #fb923c; text-shadow: 0 0 16px #f97316; }
-  .result-stats .coin { color: #facc15; font-weight: 800; font-size: 17px; }
+  .result-stats .streak:empty { display: none; }
+  /* R69 CT-1：結算三層資訊層次——①本場戰報 chips ②獎勵主視覺 ③次要 meta 縮階 */
+  .result-report { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .report-chip { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px;
+    border: 1px solid rgba(255,255,255,.16); border-radius: 999px; background: rgba(255,255,255,.06);
+    font-size: 13px; font-weight: 900; color: var(--ink); }
+  .result-stats .coin { color: #facc15; font-weight: 900; font-size: 20px; text-shadow: 0 0 14px rgba(250,204,21,.4); }
+  .result-meta { display: flex; flex-direction: column; gap: 3px; align-items: center;
+    font-size: 12px; color: var(--muted); line-height: 1.45;
+    border-top: 1px solid rgba(255,255,255,.1); padding-top: 8px; margin-top: 2px; }
   .result-stats .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
   /* 新手導引 + 關鍵字圖鑑（CP0-15）*/
@@ -644,7 +668,7 @@
   .chapter-epigraph { color:#fde68a; font-style:italic; line-height:1.7; margin-bottom:8px; }
   .chapter-body { display:flex; flex-direction:column; gap:8px; color:#dbeafe; line-height:1.78; font-size:14px; user-select:text; }
   .chapter-featured { margin-top:9px; color:#9fb0a4; font-size:12px; line-height:1.5; }
-  .chapter-claim { border:none; border-radius:10px; padding:8px 10px; font-size:12px; font-weight:900; cursor:pointer;
+  .chapter-claim { border:none; border-radius:10px; padding:8px 10px; min-height:44px; font-size:12px; font-weight:900; cursor:pointer;
     background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; flex-shrink:0; }
   .chapter-claim:disabled { background:#2a3645; color:var(--muted); cursor:default; filter:none; }
   .faction-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:10px; }
@@ -673,7 +697,7 @@
   .mission-item.claimed { opacity:.6; }
   .mission-name { font-size:12px; font-weight:900; color:var(--ink); margin-bottom:4px; }
   .mission-progress { font-size:11px; color:var(--muted); margin-bottom:7px; }
-  .mission-item button { width:100%; border:none; border-radius:8px; padding:7px 9px; font-size:12px; font-weight:900;
+  .mission-item button { width:100%; border:none; border-radius:8px; padding:7px 9px; min-height:44px; font-size:12px; font-weight:900;
     background:linear-gradient(180deg,#facc15,#eab308); color:#271a02; cursor:pointer; }
   .mission-item button:disabled, .mission-actions button:disabled { background:#2a3645; color:var(--muted); cursor:default; filter:none; }
   #kwCodexList { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
@@ -815,7 +839,10 @@
     .series-footer { margin: 0; padding: 8px 10px 4px; }
     .hand-drawer {
       display: flex; position: fixed; left: 0; right: 0;
-      bottom: calc(var(--command-dock-h) + env(safe-area-inset-bottom, 0px)); z-index: 70;
+      /* R69 P0-1：z 必須高於 .player-hero-row 的 75——844×390 橫向抽屜展開時
+         會與英雄列重疊，70 會被蓋住導致 12 個手牌互動元素全數不可點；
+         收合時 height:0 + pointer-events:none，不影響英雄列。仍低於 .controls 的 82。 */
+      bottom: calc(var(--command-dock-h) + env(safe-area-inset-bottom, 0px)); z-index: 76;
       height: 0; pointer-events:none;
       flex-direction: column; overflow: hidden; background: rgba(8,10,14,.97);
       border-top: 1px solid rgba(255,255,255,.12); box-shadow: 0 -8px 22px rgba(0,0,0,.38);
@@ -1176,9 +1203,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r67-v1"></script>
-  <script src="core.js?v=card-battle-r67-v1"></script>
-  <script src="battle.js?v=card-battle-r67-v1"></script>
+  <script src="cards.js?v=card-battle-r69-v1"></script>
+  <script src="core.js?v=card-battle-r69-v1"></script>
+  <script src="battle.js?v=card-battle-r69-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {
