@@ -1,6 +1,6 @@
 {
   "release": "card R67",
-  "generatedAt": "2026-07-19T05:17:41.122Z",
+  "generatedAt": "2026-07-19T08:34:25.026Z",
   "checks": [
     {
       "name": "five battlefield scenes load through the runtime API",
@@ -10,7 +10,7 @@
           "id": "white-tide-citadel",
           "faction": "wardens",
           "tier": "high",
-          "url": "http://127.0.0.1:58774/assets/battlefields/white-tide-citadel-high.webp?v=f57dd495",
+          "url": "http://127.0.0.1:57233/assets/battlefields/white-tide-citadel-high.webp?v=f57dd495",
           "loaded": true,
           "cursor": 0,
           "count": 5
@@ -19,7 +19,7 @@
           "id": "astral-conclave",
           "faction": "conclave",
           "tier": "high",
-          "url": "http://127.0.0.1:58774/assets/battlefields/astral-conclave-high.webp?v=aa8b6fe4",
+          "url": "http://127.0.0.1:57233/assets/battlefields/astral-conclave-high.webp?v=aa8b6fe4",
           "loaded": true,
           "cursor": 1,
           "count": 5
@@ -28,7 +28,7 @@
           "id": "thunderwild-pass",
           "faction": "wild",
           "tier": "high",
-          "url": "http://127.0.0.1:58774/assets/battlefields/thunderwild-pass-high.webp?v=c0693a23",
+          "url": "http://127.0.0.1:57233/assets/battlefields/thunderwild-pass-high.webp?v=c0693a23",
           "loaded": true,
           "cursor": 2,
           "count": 5
@@ -37,7 +37,7 @@
           "id": "longnight-necropolis",
           "faction": "wintershadow",
           "tier": "high",
-          "url": "http://127.0.0.1:58774/assets/battlefields/longnight-necropolis-high.webp?v=4b7300c8",
+          "url": "http://127.0.0.1:57233/assets/battlefields/longnight-necropolis-high.webp?v=4b7300c8",
           "loaded": true,
           "cursor": 3,
           "count": 5
@@ -46,7 +46,7 @@
           "id": "tidebreak-confluence",
           "faction": "neutral",
           "tier": "high",
-          "url": "http://127.0.0.1:58774/assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7",
+          "url": "http://127.0.0.1:57233/assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7",
           "loaded": true,
           "cursor": 4,
           "count": 5
@@ -72,7 +72,7 @@
           "id": "tidebreak-confluence",
           "faction": "neutral",
           "tier": "high",
-          "url": "http://127.0.0.1:58774/assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7",
+          "url": "http://127.0.0.1:57233/assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7",
           "loaded": true,
           "cursor": 4,
           "count": 5,
@@ -84,14 +84,14 @@
             "scrollWidth": 1366,
             "scene": "tidebreak-confluence",
             "tier": "high",
-            "cssImage": "url(\"http://127.0.0.1:58774/assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7\")"
+            "cssImage": "url(\"http://127.0.0.1:57233/assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7\")"
           }
         },
         {
           "id": "tidebreak-confluence",
           "faction": "neutral",
           "tier": "low",
-          "url": "http://127.0.0.1:58774/assets/battlefields/tidebreak-confluence-low.webp?v=bcaabe4e",
+          "url": "http://127.0.0.1:57233/assets/battlefields/tidebreak-confluence-low.webp?v=bcaabe4e",
           "loaded": true,
           "cursor": 4,
           "count": 5,
@@ -103,14 +103,14 @@
             "scrollWidth": 390,
             "scene": "tidebreak-confluence",
             "tier": "low",
-            "cssImage": "url(\"http://127.0.0.1:58774/assets/battlefields/tidebreak-confluence-low.webp?v=bcaabe4e\")"
+            "cssImage": "url(\"http://127.0.0.1:57233/assets/battlefields/tidebreak-confluence-low.webp?v=bcaabe4e\")"
           }
         },
         {
           "id": "tidebreak-confluence",
           "faction": "neutral",
           "tier": "med",
-          "url": "http://127.0.0.1:58774/assets/battlefields/tidebreak-confluence-med.webp?v=35c28764",
+          "url": "http://127.0.0.1:57233/assets/battlefields/tidebreak-confluence-med.webp?v=35c28764",
           "loaded": true,
           "cursor": 4,
           "count": 5,
@@ -122,7 +122,7 @@
             "scrollWidth": 844,
             "scene": "tidebreak-confluence",
             "tier": "med",
-            "cssImage": "url(\"http://127.0.0.1:58774/assets/battlefields/tidebreak-confluence-med.webp?v=35c28764\")"
+            "cssImage": "url(\"http://127.0.0.1:57233/assets/battlefields/tidebreak-confluence-med.webp?v=35c28764\")"
           }
         }
       ]
@@ -142,31 +142,31 @@
       "details": {
         "menu": [
           {
-            "src": "http://127.0.0.1:58774/assets/factions/wardens.png?v=3fd3693f",
+            "src": "http://127.0.0.1:57233/assets/factions/wardens.png?v=3fd3693f",
             "complete": true,
             "naturalWidth": 256,
             "naturalHeight": 256
           },
           {
-            "src": "http://127.0.0.1:58774/assets/factions/conclave.png?v=326f8a7e",
+            "src": "http://127.0.0.1:57233/assets/factions/conclave.png?v=326f8a7e",
             "complete": true,
             "naturalWidth": 256,
             "naturalHeight": 256
           },
           {
-            "src": "http://127.0.0.1:58774/assets/factions/wild.png?v=153b6fe6",
+            "src": "http://127.0.0.1:57233/assets/factions/wild.png?v=153b6fe6",
             "complete": true,
             "naturalWidth": 256,
             "naturalHeight": 256
           },
           {
-            "src": "http://127.0.0.1:58774/assets/factions/wintershadow.png?v=d878da4b",
+            "src": "http://127.0.0.1:57233/assets/factions/wintershadow.png?v=d878da4b",
             "complete": true,
             "naturalWidth": 256,
             "naturalHeight": 256
           },
           {
-            "src": "http://127.0.0.1:58774/assets/factions/neutral.png?v=4cf2322a",
+            "src": "http://127.0.0.1:57233/assets/factions/neutral.png?v=4cf2322a",
             "complete": true,
             "naturalWidth": 256,
             "naturalHeight": 256
@@ -174,31 +174,31 @@
         ],
         "cardFrames": [
           {
-            "src": "http://127.0.0.1:58774/assets/factions/wardens.png?v=3fd3693f",
+            "src": "http://127.0.0.1:57233/assets/factions/wardens.png?v=3fd3693f",
             "complete": true,
             "naturalWidth": 256,
             "naturalHeight": 256
           },
           {
-            "src": "http://127.0.0.1:58774/assets/factions/conclave.png?v=326f8a7e",
+            "src": "http://127.0.0.1:57233/assets/factions/conclave.png?v=326f8a7e",
             "complete": true,
             "naturalWidth": 256,
             "naturalHeight": 256
           },
           {
-            "src": "http://127.0.0.1:58774/assets/factions/wild.png?v=153b6fe6",
+            "src": "http://127.0.0.1:57233/assets/factions/wild.png?v=153b6fe6",
             "complete": true,
             "naturalWidth": 256,
             "naturalHeight": 256
           },
           {
-            "src": "http://127.0.0.1:58774/assets/factions/wintershadow.png?v=d878da4b",
+            "src": "http://127.0.0.1:57233/assets/factions/wintershadow.png?v=d878da4b",
             "complete": true,
             "naturalWidth": 256,
             "naturalHeight": 256
           },
           {
-            "src": "http://127.0.0.1:58774/assets/factions/neutral.png?v=4cf2322a",
+            "src": "http://127.0.0.1:57233/assets/factions/neutral.png?v=4cf2322a",
             "complete": true,
             "naturalWidth": 256,
             "naturalHeight": 256
@@ -215,14 +215,14 @@
       "name": "hashed battlefield responses were observed",
       "pass": true,
       "details": [
-        "http://127.0.0.1:58774/assets/battlefields/astral-conclave-high.webp?v=aa8b6fe4",
-        "http://127.0.0.1:58774/assets/battlefields/longnight-necropolis-high.webp?v=4b7300c8",
-        "http://127.0.0.1:58774/assets/battlefields/thunderwild-pass-high.webp?v=c0693a23",
-        "http://127.0.0.1:58774/assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7",
-        "http://127.0.0.1:58774/assets/battlefields/tidebreak-confluence-low.webp?v=bcaabe4e",
-        "http://127.0.0.1:58774/assets/battlefields/tidebreak-confluence-med.webp?v=35c28764",
-        "http://127.0.0.1:58774/assets/battlefields/white-tide-citadel-high.webp?v=f57dd495",
-        "http://127.0.0.1:58774/assets/battlefields/white-tide-citadel-low.webp?v=50075ecc"
+        "http://127.0.0.1:57233/assets/battlefields/astral-conclave-high.webp?v=aa8b6fe4",
+        "http://127.0.0.1:57233/assets/battlefields/longnight-necropolis-high.webp?v=4b7300c8",
+        "http://127.0.0.1:57233/assets/battlefields/thunderwild-pass-high.webp?v=c0693a23",
+        "http://127.0.0.1:57233/assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7",
+        "http://127.0.0.1:57233/assets/battlefields/tidebreak-confluence-low.webp?v=bcaabe4e",
+        "http://127.0.0.1:57233/assets/battlefields/tidebreak-confluence-med.webp?v=35c28764",
+        "http://127.0.0.1:57233/assets/battlefields/white-tide-citadel-high.webp?v=f57dd495",
+        "http://127.0.0.1:57233/assets/battlefields/white-tide-citadel-low.webp?v=50075ecc"
       ]
     }
   ],

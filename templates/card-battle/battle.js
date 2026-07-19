@@ -2105,6 +2105,7 @@
     renderField("enemyField", game.enemy.field, "enemy");
 
     const hand = document.getElementById("playerHand");
+    requestAnimationFrame(() => { hand.dataset.overflow = hand.scrollWidth > hand.clientWidth + 4 ? "true" : "false"; });
     const handFrag = document.createDocumentFragment();
     game.player.hand.forEach((card) => {
       const el = renderCard(card);

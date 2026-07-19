@@ -831,6 +831,11 @@
     }
     .hand-drawer-toggle strong { color:#facc15; font-size:15px; }
     .hand-drawer-toggle .hand-state { color:var(--muted); font-size:11px; }
+    /* R68.1（辯論裁決 D-02 精簡版）：手牌橫捲溢出時兩側漸隱提示（零文字噪音） */
+    .hand[data-overflow="true"] {
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+    }
     .hand {
       flex: 1 1 auto; min-height: 0; max-height: none; width: 100%; justify-content: flex-start;
       flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain;
