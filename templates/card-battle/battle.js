@@ -37,6 +37,12 @@
   };
   const OPPONENT_KEY = "cardgame_opponent";
   const DEFAULT_OPPONENT_ID = "op_ser_halden";
+  // R68（辯論裁決 B-01/B-02）：三位具名對手台詞包（每類 1 句起步）與勝敗結語
+  const OPPONENT_LINES = Object.freeze({
+    op_ser_halden: { intro: "盾在，門就在。上前吧——讓我看看你值不值得通過。", win: "城門緩緩敞開。哈爾登收盾致意：「今日的白潮，屬於你。」", lose: "哈爾登舉盾遮面：「回去練十年，門還會在這裡。」", heroPlay: "「白潮聽令——列陣！」", lethal: "「守住！最後一道浪頭！」" },
+    op_magister_vey: { intro: "殘響未落，下一句咒語已經寫好了。", win: "維伊闔上法典：「你的名字，值得寫進殘響。」", lose: "維伊輕笑：「你翻頁的速度，追不上我的詠唱。」", heroPlay: "「見證吧——這一頁由我執筆。」", lethal: "「墨已研好，就差你的句點。」" },
+    op_scarra: { intro: "狼群早到了。你，才是遲來的獵物。", win: "斯卡拉吹了聲口哨：「今晚放你走。下次沒這種運氣。」", lose: "狼嚎掠過戰場。斯卡拉丟下一句：「下次，跑快一點。」", heroPlay: "「撕開他們的前排！」", lethal: "「你的血線在發抖。狼群，收尾！」" },
+  });
   const OPPONENTS = Object.freeze({
     op_ser_halden: Object.freeze({
       id: "op_ser_halden",
@@ -152,6 +158,11 @@
     Object.freeze({ id: "longnight-necropolis", faction: "wintershadow", urls: Object.freeze({ high: "../../assets/battlefields/longnight-necropolis-high.webp?v=4b7300c8", med: "../../assets/battlefields/longnight-necropolis-med.webp?v=9a48f27c", low: "../../assets/battlefields/longnight-necropolis-low.webp?v=927f8f26" }) }),
     Object.freeze({ id: "tidebreak-confluence", faction: "neutral", urls: Object.freeze({ high: "../../assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7", med: "../../assets/battlefields/tidebreak-confluence-med.webp?v=35c28764", low: "../../assets/battlefields/tidebreak-confluence-low.webp?v=bcaabe4e" }) }),
   ]);
+  // R68（辯論裁決 B-03 縮幅）：五戰場中文名——R67 美術投資自此有名可稱
+  const BATTLEFIELD_NAMES = Object.freeze({
+    "white-tide-citadel": "白潮堡壘", "astral-conclave": "星輟議庭", "thunderwild-pass": "雷莽隘口",
+    "longnight-necropolis": "長夜陵城", "tidebreak-confluence": "碎潮匯流",
+  });
   let battlefieldCursor = -1;
   let battlefieldLoadToken = 0;
   const SW_BOOT = window.__CARD_SW_BOOT || {};
@@ -669,6 +680,8 @@
     document.getElementById("overlay").classList.remove("show", "win", "lose");
     document.getElementById("log").innerHTML = "";
     log(`⚔️ 對戰開始！難度：${D.label}；對手：${opponent.emoji} ${opponent.name}。`, "me");
+    { const op = OPPONENT_LINES[opponent.id]; if (op && op.intro) log(`${op.intro}`, "ai"); }
+    { const scene = R67_BATTLEFIELDS[battlefieldCursor]; const bn = scene && BATTLEFIELD_NAMES[scene.id]; if (bn) log(`戰場——${bn}`, "me"); }
     if (opponent.heroCardId && playerDeckIds.includes(opponent.heroCardId)) {
       log(`「${opponent.name}對上了……另一個${opponent.name}。」`, "me");
     }
@@ -2063,7 +2076,7 @@
     game.pendingSpell = null;
     const win = game.enemy.hp <= 0;
     triggerFinishEffect(win);
-    showOverlay(win ? "Victory!" : "Defeat", win);
+    showOverlay(win ? "勝利！" : "敗北", win);
     return true;
   }
 
@@ -2120,6 +2133,16 @@
     updateTargetStatus();
 
     document.getElementById("endTurnBtn").disabled = game.turn !== "player" || game.over;
+    // R68（C-02 精簡版）：無可行動時結束回合鈕發光引導（純資訊，零摩擦）
+    {
+      const btn = document.getElementById("endTurnBtn");
+      let hasActions = false;
+      if (game.turn === "player" && !game.over) {
+        hasActions = game.player.hand.some((c) => c.cost <= game.player.mana) ||
+          game.player.field.some((m) => m.canAttack && !m._cantAttackThisTurn);
+      }
+      btn.classList.toggle("glow", !btn.disabled && !hasActions);
+    }
     updateHintButton();
     renderQuests();
     focusGuideTarget();
@@ -3354,6 +3377,13 @@
   function showOverlay(title, win) {
     const ov = document.getElementById("overlay");
     document.getElementById("overlayTitle").textContent = title;
+    // R68：對手化結語（勝=玩家贏→對手 win 句）
+    const epi = document.getElementById("overlayEpilogue");
+    if (epi) {
+      const op = OPPONENT_LINES[game && game.opponentId] || null;
+      epi.textContent = op ? (win ? op.win : op.lose) : "";
+      epi.hidden = !op;
+    }
     ov.classList.toggle("win", win); ov.classList.toggle("lose", !win);
 
     // 更新戰績與金幣

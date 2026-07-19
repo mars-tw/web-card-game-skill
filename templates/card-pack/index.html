@@ -127,6 +127,8 @@
   .pack::after { content:""; position:absolute; inset:7%; opacity:0; pointer-events:none;
     background:linear-gradient(118deg,transparent 47%,rgba(255,255,255,.95) 48% 50%,transparent 51%),linear-gradient(66deg,transparent 49%,rgba(253,224,71,.88) 50% 52%,transparent 53%); filter:drop-shadow(0 0 8px #fde047); }
   .pack:hover { transform: scale(1.06) rotate(-2deg); }
+  .pack.opening-legendary { filter: drop-shadow(0 0 26px rgba(250,204,21,.85)); }
+  .pack.opening-epic { filter: drop-shadow(0 0 22px rgba(168,85,247,.8)); }
   .pack.opening { animation: packBurst .6s ease forwards; }
   .pack.opening::after { animation:packCrack .48s ease-out; }
   .pack .pack-icon { font-size: 64px; filter: drop-shadow(0 0 12px gold); z-index:1; }

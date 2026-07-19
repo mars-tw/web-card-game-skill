@@ -459,6 +459,8 @@
     cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
   .audio-toggle-btn.is-muted { color: var(--muted); filter: grayscale(1) brightness(.82); }
   .settings-panel input[type="range"] { min-width: 94px; min-height: 32px; }
+  button.end-turn.glow { box-shadow: 0 0 0 2px rgba(250,204,21,.55), 0 0 18px rgba(250,204,21,.5); animation: endTurnGlow 1.6s ease-in-out infinite; }
+  @keyframes endTurnGlow { 0%,100% { box-shadow: 0 0 0 2px rgba(250,204,21,.35), 0 0 10px rgba(250,204,21,.3);} 50% { box-shadow: 0 0 0 3px rgba(250,204,21,.65), 0 0 22px rgba(250,204,21,.6);} }
   button.end-turn {
     background: linear-gradient(180deg, var(--accent), #d97706); color: #1a1206; font-weight: 800; font-size: 15px;
     min-height:44px; border: none; padding: 11px 26px; border-radius: 24px; cursor: pointer;
@@ -584,6 +586,7 @@
   .overlay button.quest-cta { background: #2a3645; color: var(--muted); }
   .overlay button.quest-cta.ready { background: linear-gradient(180deg,#facc15,#eab308); color: #271a02; box-shadow: 0 0 18px rgba(250,204,21,.35); }
   .overlay button:disabled { filter: grayscale(1) brightness(.7); cursor: not-allowed; }
+  .overlay-epilogue { margin: 2px 0 8px; font-size: 14px; color: #cfe3f5; opacity: .92; font-style: italic; }
   .result-stats { display: flex; flex-direction: column; gap: 8px; align-items: center; font-size: 15px; color: var(--ink); }
   .result-stats .streak { font-size: 22px; font-weight: 900; color: #fb923c; text-shadow: 0 0 16px #f97316; }
   .result-stats .coin { color: #facc15; font-weight: 800; font-size: 17px; }
@@ -1078,6 +1081,7 @@
 
   <div class="overlay" id="overlay">
     <h1 id="overlayTitle">勝利！</h1>
+    <p id="overlayEpilogue" class="overlay-epilogue" hidden></p>
     <div class="result-stats" id="resultStats"></div>
     <div class="overlay-actions">
       <button id="restartBtn">再戰一場</button>

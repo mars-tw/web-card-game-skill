@@ -639,6 +639,14 @@
     for (let i = 0; i < PACK_SIZE; i++) cards.push(rollCardByRarity());
     applyPityToCards(cards);
 
+    // R68（辯論裁決 A-03）：展示順序 best-for-last——保底/資料層不動，僅排序展示陣列；
+    // finale 因綁「最後一張」自動改綁最稀有。撕包瞬間依本包最佳稀有度給粗粒度光暈預示（不劇透卡名）。
+    const rarityRank = { common: 0, rare: 1, epic: 2, legendary: 3 };
+    cards.sort((a, b) => (rarityRank[a.rarity] || 0) - (rarityRank[b.rarity] || 0) ||
+      ((a.foil || a.tide) ? 1 : 0) - ((b.foil || b.tide) ? 1 : 0));
+    const best = cards[cards.length - 1];
+    if (best && (rarityRank[best.rarity] || 0) >= 2) pack.classList.add(best.rarity === "legendary" ? "opening-legendary" : "opening-epic");
+
     setTimeout(() => revealCards(cards), prefersReducedMotion() ? 0 : (isLowPerf() ? 180 : 600));
   }
 
@@ -1627,7 +1635,7 @@
     const stage = document.getElementById("packStage");
     stage.style.display = "flex";
     const pack = document.getElementById("pack");
-    pack.classList.remove("opening");
+    pack.classList.remove("opening", "opening-legendary", "opening-epic");
     pack.style.pointerEvents = "auto";
   }
 
