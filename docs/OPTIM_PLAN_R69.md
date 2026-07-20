@@ -58,3 +58,20 @@
 - 秘密掃描 `sk-proj-…|sk-…40|xai-…20` 零命中（排除 .git/node_modules）。
 - 證據 before/after 三視口（390×844、844×390、1366×768）入 `docs/evidence/r69/`；歷史 evidence 不動。
 - 報告 `docs/CODEX_RESPONSE_R69.md`；main 分支繁中 commit，不 push。
+
+## E. R69.1 硬化（Grok 對抗複審裁決）
+
+| id | 內容 | 處置 |
+|---|---|---|
+| RWD-CHAIN-01（P0） | 捲動鏈幾何判定會假綠（近端 scrollport 被裁切時外殼可見仍 SCROLLABLE_OK） | **已修**：收緊為功能性驗證——scrollIntoView 後 elementFromPoint 中心命中自身才算過；幾何 some() 僅前置過濾。收緊後即揭發並修復 3 族真 bug：①820×1180 deck 工具兩欄格線把 chip 列壓到 15px ②1366×600/1280×640 collection chip 板兩欄壓縮窄過單顆 chip ③844×390 浮動任務鈕蓋住捲入的 #packTextSizeSel |
+| HIT-PSEUDO-01/HIT-CHIP-01 | 偽元素擴命中區無閉環守門 | **已修**：reachability 抽樣斷言（英雄＋收藏/牌組首 chip：外緣 44px 區內點命中宿主＋overflow 祖先裁切檢查）；產品側同步修 chip 列 padding、≤390w 條帶 48px、.hero-row overflow:visible |
+| Z-DRAWER-01 | z 階未文件化、抽屜 vs 結算層無守門 | **已修**：battle index.html z 階表註解＋「抽屜開啟時結算 overlay（z100）壓過抽屜（z76）」功能斷言 |
+| PACK-DVH-01 | dvh 高度無 px 下限，軟鍵盤壓縮可致不可用 | **已修**：deck-panel/收藏格 max(…dvh, 240px)、open-panel clamp(240px, 52dvh, 480px)；reveal 卡 clamp 原有 84px floor |
+
+## F. 殘留（R70 候選）
+
+- **ART-BOARD-01**：戰場格線 accent/opponent-tone 注入僅 CSS 層語言統一，未過 64px 縮圖亮度＋飽和雙閘量測；真正戰場圖×卡面同語言待生成產線（gpt-image-2/Blender MCP）恢復。
+- **ART-EMBLEM-01**：faction-emblem 對比為 CSS 底暈打光，PNG 本體未重製；建議把 64px 可辨識雙閘擴進 test-r67-visual-gates 靜態閘後再驗。
+- **VER-SW-01**：cache 版本字串仍散在 8 檔手動同步（含 e2e 測試硬編碼）；建議抽單一來源（建置期注入或 quality-gates 生成式比對），降低漏改風險。本輪 grep 歸零但流程性風險仍在。
+- **鍵盤場景未全驗**：PACK-DVH-01 的 px floor 為靜態防線；實機軟鍵盤（visualViewport 縮視口）下的互動流未跑真機驗證。
+- 機況 flake：1920×1080 shell swatch focus 冷啟偶發逾時（1/3，與 diff 無關）；`#log` 橫向無替代入口（掃描 P1）。

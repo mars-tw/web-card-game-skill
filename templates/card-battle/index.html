@@ -142,14 +142,18 @@
   /* app-shell：頁面本身不捲動，區域各自內捲 */
   .board { width: clamp(980px, 92vw, 1600px); flex: 1; min-height: 0; overflow-y: auto;
     display: flex; flex-direction: column; gap: 7px;
-    padding: 7px 7px calc(var(--desktop-command-dock-h) + env(safe-area-inset-bottom, 0px) + 8px); }
+    padding: 7px 7px calc(var(--desktop-command-dock-h) + env(safe-area-inset-bottom, 0px) + 8px);
+    /* R69.1：scrollIntoView／鍵盤焦點捲動時，目標須落在固定 command dock 之上 */
+    scroll-padding-bottom: calc(var(--desktop-command-dock-h) + env(safe-area-inset-bottom, 0px) + 12px); }
   .board.shake-screen { animation: screenShake .26s; }
   .board.lethal-slow { animation: lethalSlow .62s cubic-bezier(.12,.8,.18,1); filter: saturate(1.35) contrast(1.08); }
   body.defeat-fade .board { animation: defeatFade .7s ease forwards; }
 
   .hero-row {
     display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
-    position:relative; overflow:hidden;
+    /* R69.1 HIT-PSEUDO-01：overflow 改 visible——矮視口英雄 ::after 擴張的 44px
+       命中區會超出列框，hidden 會把敵方英雄的擴張區裁掉（列內無絕對定位裝飾，安全）。 */
+    position:relative; overflow:visible;
     background:
       linear-gradient(105deg,rgba(255,255,255,.07),transparent 34%),
       radial-gradient(circle at 12% 50%,color-mix(in srgb,var(--accent) 13%,transparent),transparent 34%),
@@ -159,8 +163,31 @@
     backdrop-filter: blur(4px);
     box-shadow:0 5px 16px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.08),inset 0 -10px 24px rgba(0,0,0,.16);
   }
+  /* ===== R69.1 Z-DRAWER-01：全頁 z 階表（動任何一層前先讀這裡）=====
+     -2/-1  body::before/::after       戰場圖層／動態氛圍光暈
+      auto  .board／.hero-row／.battlefield
+                                      主棋盤流；battlefield backdrop-filter 形成 z:auto/0 疊層
+      1-12  .card 內裝飾與狀態（hover 5／selected 6／target-queued 12）；.hero 2
+      20    .card-info-btn              卡上詳鈕（卡內 stacking context）
+      24    .target-action-popover      就地目標確認
+      30    .card.lunge-to              攻擊位移中的卡
+      40    .hint-highlight             提示高亮
+      75    .player-hero-row／.scene-hint-btn   我方英雄列（蓋棋盤層）
+      76    .hand-drawer（mobile）      手牌抽屜：開啟時蓋英雄列（P0-1），收合 height:0
+      82    .controls（command dock）   永遠壓過抽屜
+      96    .settings-hud               設定 HUD
+      100   .overlay                    勝敗結算：必須壓過抽屜（守門有斷言）
+      110   .kw-codex／.chronicle-modal
+      120   .guide-focus
+      130   .battle-guide／.card-detail
+      135   .mission-drawer
+      149+  .hit-spark 149／.dmg-float 150／.combo-float 151／.spell-flash 170／
+            .toast-stack 180／.combat-ghost 180／.legend-flash 200／.confetti 210
+     鐵律：抽屜(76) < dock(82) < 結算(100)；棋盤層一律 <76。 */
   .player-hero-row { z-index:75; overflow:visible; }
-  .hero { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: transform .15s; position: relative; }
+  /* z:2——.battlefield 的 backdrop-filter 會把它升為 z0 疊層、DOM 序在後蓋掉
+     英雄 ::after 擴張區；英雄需小幅高於棋盤面（仍遠低於抽屜 76）。 */
+  .hero { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: transform .15s; position: relative; z-index: 2; }
   /* R69 P0-3：英雄是攻擊目標，矮視口列高 <44px——用偽元素擴命中區、不動列高視覺 */
   .hero::after { content:""; position:absolute; left:-6px; right:-6px;
     top:min(0px, calc((100% - 44px) / 2)); bottom:min(0px, calc((100% - 44px) / 2)); }
@@ -828,7 +855,8 @@
       --mobile-hand-open: min(188px, 36dvh);
     }
     header { padding: 6px; font-size: 14px; letter-spacing: 1px; }
-    .board { gap: 5px; padding: 6px 8px calc(var(--command-dock-h) + env(safe-area-inset-bottom, 0px) + 10px); width:100%; }
+    .board { gap: 5px; padding: 6px 8px calc(var(--command-dock-h) + env(safe-area-inset-bottom, 0px) + 10px); width:100%;
+      scroll-padding-bottom: calc(var(--command-dock-h) + env(safe-area-inset-bottom, 0px) + 12px); }
     .hero-row { padding: 6px 10px; border-radius: 10px; }
     .hero .avatar { width:36px; height:36px; flex-basis:36px; font-size:24px; }
     .hero .name { font-size: 14px; }

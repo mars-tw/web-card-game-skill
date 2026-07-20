@@ -90,6 +90,38 @@ R69 三箭：掃描 P0 修正（橫向手牌 z 層級死鎖、開包迷你內窗
 - before/after_result_overlay_390x844（CT-1 結算層次）
 - 歷史 evidence（R63-R67）未動。
 
+## R69.1 硬化補丁（Grok 對抗複審一 P0＋三 P1）
+
+1. **RWD-CHAIN-01（P0）**：`test-rwd-matrix.js` 捲動鏈判定收緊為功能性驗證——
+   每個 SCROLLABLE_OK 候選實際 `scrollIntoView({block:'nearest'})` 後以 elementFromPoint
+   驗中心命中自身（label 包裹取冒泡等效），命不中判 `SCROLL_HIT_FAIL`；
+   幾何 some() 降級為前置過濾。**收緊後立即揭發 3 族真 bug（舊幾何判定全數假綠）並修復**：
+   - 820×1180：deck 工具兩欄格線把 chip 列壓到 **15px 寬**（cw15/sw247，chips 實捲也點不到）
+     → 701-1179 範圍 deck-tools 改單欄堆疊（置於 base 規則之後覆蓋）。
+   - 1366×600／1280×640：collection chip 板兩欄壓縮讓單列窄過一顆陣營 chip
+     → 移除 (≥701w ∧ ≤760h) 兩欄壓縮，回歸單欄 flex（filter-panel 已有 136px 內捲頂高）。
+   - 844×390：左下浮動任務鈕蓋住捲入的 `#packTextSizeSel` → 與 ≤700w 同步移到左上。
+2. **HIT-PSEUDO-01/HIT-CHIP-01**：偽元素擴命中區閉環——reachability 新增抽樣斷言
+   （#enemyHero/#playerHero＋收藏/牌組首 chip：視覺框外緣、44px 區內兩點命中宿主
+   ＋overflow 祖先裁切檢查）。產品側同步修：chip 列 padding-block 6/9px 讓擴張區
+   不被列捲動框裁掉、≤390w 條帶 40→48px、`.hero-row` overflow:hidden→visible
+   （矮視口敵方英雄擴張區曾被列框裁切；列內無絕對定位裝飾，安全）。
+3. **Z-DRAWER-01**：battle index.html 增全頁 z 階表註解（-2 背景 → 76 抽屜 → 82 dock
+   → 100 結算 → … → 210 confetti，鐵律「抽屜<dock<結算」）；reachability 新增
+   「抽屜開啟時結算 overlay（z100）壓過抽屜（z76）、手牌區打點命中 overlay 層」功能斷言。
+4. **PACK-DVH-01**：pack dvh 高度全數加 px 下限——deck-panel `max(62dvh,240px)`、
+   收藏格 `max(64dvh,240px)`、open-panel `clamp(240px,52dvh,480px)`（reveal 卡原有
+   84px floor）；軟鍵盤實機場景未全驗，記殘留。
+
+ART-BOARD-01／ART-EMBLEM-01／VER-SW-01 已記入 `docs/OPTIM_PLAN_R69.md` §F 殘留節。
+
+### R69.1 gate 重跑
+
+- `npm test`：PASS 131 / FAIL 0，quality、balance、R67 visual 全綠。
+- `npm run test:controls`：六視口全綠；偽元素外緣抽樣與 touch 抽屜上方結算層斷言均通過。
+- `npm run test:rwd`：30/30 頁面×視口零違規；頁捲、水平溢出均 0。
+- `npm run test:e2e`：Stage 5 E2E、內含 reachability、R67 browser 全綠。
+
 ## 殘留風險 / 缺件
 
 - menuscan 外部掃描的 `small` 清單以 getBoundingClientRect 量測：filter-chip／英雄採偽元素

@@ -241,6 +241,33 @@ async function run() {
         await frame.locator('#playerHand .card[data-card-id="wolf"]').click();
         await frame.waitForFunction(() => !!document.querySelector('#playerField .card[data-card-id="wolf"]'));
         assert(true, `${name}：真實 click 抽屜手牌可出牌`);
+
+        // R69.1 Z-DRAWER-01：抽屜開啟時，結算 overlay（z100）必須壓過抽屜（z76）——
+        // 打開 overlay 後在手牌區中心打點，命中不得落入抽屜層。
+        if (!(await frame.evaluate(() => document.getElementById("handDrawer")?.classList.contains("open")))) {
+          await frame.locator("#handDrawerToggle").click();
+        }
+        const overlayOverDrawer = await frame.evaluate(() => {
+          const overlay = document.getElementById("overlay");
+          const drawer = document.getElementById("handDrawer");
+          const hand = document.getElementById("playerHand");
+          overlay.classList.add("show", "win");
+          const handRect = hand.getBoundingClientRect();
+          const hit = document.elementFromPoint(handRect.left + handRect.width / 2, handRect.top + handRect.height / 2);
+          const result = {
+            open: drawer.classList.contains("open"),
+            overlayZ: parseInt(getComputedStyle(overlay).zIndex, 10) || 0,
+            drawerZ: parseInt(getComputedStyle(drawer).zIndex, 10) || 0,
+            hitInOverlay: !!(hit && overlay.contains(hit)),
+            hitInDrawer: !!(hit && drawer.contains(hit)),
+          };
+          overlay.classList.remove("show", "win");
+          return result;
+        });
+        assert(overlayOverDrawer.open && overlayOverDrawer.overlayZ > overlayOverDrawer.drawerZ
+          && overlayOverDrawer.hitInOverlay && !overlayOverDrawer.hitInDrawer,
+          `${name}：抽屜開啟時結算 overlay 壓過抽屜（z ${overlayOverDrawer.overlayZ}>${overlayOverDrawer.drawerZ}、手牌區命中 overlay 層）`);
+
         await frame.evaluate(() => {
           const T = window.__test;
           T.setup([], []);
@@ -262,6 +289,70 @@ async function run() {
         }));
         assert(mobileOnly.every((item) => item.display === "none" && item.width === 0),
           `${name}：非觸控桌機不顯示手機專屬手牌把手／更多控制`);
+      }
+
+      // R69.1 HIT-PSEUDO-01：偽元素擴命中區閉環抽樣——英雄（攻擊目標）在視覺框
+      // 「外緣但 44px 擴張區內」的點必須解析回宿主，且無 overflow 祖先把擴張區裁掉。
+      const pseudoHero = await frame.evaluate(() => {
+        window.__samplePseudoHit = (el) => {
+          // 抽樣規則：外緣點須命中宿主。overflow:hidden 祖先把點排除＝靜態裁切
+          // 缺陷（硬失敗）；捲動殼（auto/scroll）或視口邊界排除＝該側幾何上無從
+          // 擴張（螢幕外），豁免該側——但至少一側必須可用且命中。
+          if (!el) return { skip: false, ok: false, reason: "missing", detail: "硬失敗(missing)" };
+          const rect = el.getBoundingClientRect();
+          const style = getComputedStyle(el);
+          if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0
+            || rect.width < 1 || rect.height < 1) {
+            return { skip: false, ok: false, reason: "hidden", detail: "硬失敗(hidden)", height: Math.round(rect.height), pad: 0 };
+          }
+          if (rect.height >= 43.5) return { skip: true, reason: "tall-enough" };
+          // 取視覺框與 44px 外界之間的中點，保證點在框外、也嚴格落在 ::after 內。
+          const pad = Math.min(Math.max((44 - rect.height) / 4, 0.25), 6);
+          const points = [
+            [rect.left + rect.width / 2, rect.top - pad],
+            [rect.left + rect.width / 2, rect.bottom + pad],
+          ];
+          const evals = points.map(([x, y]) => {
+            if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) return { available: false, why: "viewport-edge" };
+            let anc = el.parentElement;
+            while (anc && anc !== document.body) {
+              const acs = getComputedStyle(anc);
+              const ar = anc.getBoundingClientRect();
+              const outsideX = x < ar.left - 0.5 || x > ar.right + 0.5;
+              const outsideY = y < ar.top - 0.5 || y > ar.bottom + 0.5;
+              const xHardClip = outsideX && /^(hidden|clip)$/.test(acs.overflowX);
+              const yHardClip = outsideY && /^(hidden|clip)$/.test(acs.overflowY);
+              const xScrollEdge = outsideX && /^(auto|scroll)$/.test(acs.overflowX);
+              const yScrollEdge = outsideY && /^(auto|scroll)$/.test(acs.overflowY);
+              if (xHardClip || yHardClip) {
+                const name = anc.id ? `#${anc.id}` : `.${String(anc.className).trim().replace(/\s+/g, ".").slice(0, 36)}`;
+                const axes = `${xHardClip ? "x" : ""}${yHardClip ? "y" : ""}`;
+                return { available: true, ok: false, hit: `hidden-clip-${axes}:${name}` };
+              }
+              if (xScrollEdge || yScrollEdge) {
+                const name = anc.id ? `#${anc.id}` : `.${String(anc.className).trim().replace(/\s+/g, ".").slice(0, 36)}`;
+                const axes = `${xScrollEdge ? "x" : ""}${yScrollEdge ? "y" : ""}`;
+                return { available: false, why: `scrollport-edge-${axes}:${name}` };
+              }
+              anc = anc.parentElement;
+            }
+            const hit = document.elementFromPoint(x, y);
+            const sameLabel = !!(hit && el.closest("label") && el.closest("label") === hit.closest("label"));
+            return { available: true, ok: !!(hit && (hit === el || el.contains(hit) || sameLabel)), hit: hit ? `${hit.tagName.toLowerCase()}.${String(hit.className).trim().replace(/\s+/g, ".").slice(0, 36)}` : "none" };
+          });
+          const usable = evals.filter((e) => e.available);
+          return {
+            skip: false,
+            ok: usable.length >= 1 && usable.every((e) => e.ok),
+            detail: evals.map((e) => (e.available ? `${e.ok ? "✓" : "✗"}${e.hit}` : `豁免(${e.why})`)).join("|"),
+            height: Math.round(rect.height), pad,
+          };
+        };
+        return { enemyHero: window.__samplePseudoHit(document.getElementById("enemyHero")), playerHero: window.__samplePseudoHit(document.getElementById("playerHero")) };
+      });
+      for (const [who, data] of Object.entries(pseudoHero)) {
+        if (data.skip) { assert(true, `${name}：${who} 免偽元素擴張抽樣（${data.reason}）`); continue; }
+        assert(data.ok, `${name}：${who} 偽元素擴命中閉環 h=${data.height} pad=${data.pad}（${data.detail}）`);
       }
 
       await frame.locator("#settingsToggleBtn").click();
@@ -373,6 +464,85 @@ async function run() {
         await packFrame.locator("#pack").press("Enter");
         await packFrame.waitForFunction(() => document.querySelectorAll("#revealRow .card").length === 5);
         assert(true, `${name}：牌包可用鍵盤 Enter 開啟`);
+
+        // R69.1 HIT-CHIP-01：filter-chip 偽元素擴命中區閉環抽樣——
+        // 視覺框外緣、44px 區內的點必須解析回 chip；且無 overflow 祖先把擴張區裁掉。
+        const chipSamples = await packFrame.evaluate(() => {
+          // 與 battle 側 __samplePseudoHit 同規則（pack 是另一個 frame，內聯一份）：
+          // hidden 祖先排除＝硬失敗；捲動殼/視口邊界排除＝豁免該側；至少一側可用且命中。
+          const sample = (el) => {
+            if (!el) return { skip: false, ok: false, reason: "missing", detail: "硬失敗(missing)" };
+            const rect = el.getBoundingClientRect();
+            const style = getComputedStyle(el);
+            if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0
+              || rect.width < 1 || rect.height < 1) {
+              return { skip: false, ok: false, reason: "hidden", detail: "硬失敗(hidden)", height: Math.round(rect.height), pad: 0 };
+            }
+            if (rect.height >= 43.5) return { skip: true, reason: "tall-enough" };
+            // 取視覺框與 44px 外界之間的中點，保證點在框外、也嚴格落在 ::after 內。
+            const pad = Math.min(Math.max((44 - rect.height) / 4, 0.25), 6);
+            const points = [
+              [rect.left + rect.width / 2, rect.top - pad],
+              [rect.left + rect.width / 2, rect.bottom + pad],
+            ];
+            const evals = points.map(([x, y]) => {
+              if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) return { available: false, why: "viewport-edge" };
+              let anc = el.parentElement;
+              while (anc && anc !== document.body) {
+                const acs = getComputedStyle(anc);
+                const ar = anc.getBoundingClientRect();
+                const outsideX = x < ar.left - 0.5 || x > ar.right + 0.5;
+                const outsideY = y < ar.top - 0.5 || y > ar.bottom + 0.5;
+                const xHardClip = outsideX && /^(hidden|clip)$/.test(acs.overflowX);
+                const yHardClip = outsideY && /^(hidden|clip)$/.test(acs.overflowY);
+                const xScrollEdge = outsideX && /^(auto|scroll)$/.test(acs.overflowX);
+                const yScrollEdge = outsideY && /^(auto|scroll)$/.test(acs.overflowY);
+                if (xHardClip || yHardClip) {
+                  const cname = anc.id ? `#${anc.id}` : `.${String(anc.className).trim().replace(/\s+/g, ".").slice(0, 36)}`;
+                  const axes = `${xHardClip ? "x" : ""}${yHardClip ? "y" : ""}`;
+                  return { available: true, ok: false, hit: `hidden-clip-${axes}:${cname}` };
+                }
+                if (xScrollEdge || yScrollEdge) {
+                  const cname = anc.id ? `#${anc.id}` : `.${String(anc.className).trim().replace(/\s+/g, ".").slice(0, 36)}`;
+                  const axes = `${xScrollEdge ? "x" : ""}${yScrollEdge ? "y" : ""}`;
+                  return { available: false, why: `scrollport-edge-${axes}:${cname}` };
+                }
+                anc = anc.parentElement;
+              }
+              const hit = document.elementFromPoint(x, y);
+              const sameLabel = !!(hit && el.closest("label") && el.closest("label") === hit.closest("label"));
+              return { available: true, ok: !!(hit && (hit === el || el.contains(hit) || sameLabel)), hit: hit ? `${hit.tagName.toLowerCase()}.${String(hit.className).trim().replace(/\s+/g, ".").slice(0, 36)}` : "none" };
+            });
+            const usable = evals.filter((e) => e.available);
+            return {
+              skip: false,
+              ok: usable.length >= 1 && usable.every((e) => e.ok),
+              detail: evals.map((e) => (e.available ? `${e.ok ? "✓" : "✗"}${e.hit}` : `豁免(${e.why})`)).join("|"),
+              height: Math.round(rect.height), pad,
+            };
+          };
+          const pick = (selector) => {
+            const el = document.querySelector(selector);
+            if (el) {
+              // 844×390 的收藏篩選預設收合；先走真實可展開狀態再抽樣。
+              // 若展開後仍不可見，sample 會依 hidden 硬失敗，不能用 skip 洗掉。
+              const details = el.closest("details");
+              if (details) details.open = true;
+              const row = el.closest(".filter-chip-row");
+              if (row) row.scrollLeft = 0;
+              el.scrollIntoView({ block: "center", inline: "nearest" });
+            }
+            return sample(el);
+          };
+          return {
+            collectionChip: pick("#collectionAxisFilter .filter-chip"),
+            deckChip: pick("#deckCostFilter .filter-chip"),
+          };
+        });
+        for (const [which, data] of Object.entries(chipSamples)) {
+          if (data.skip) { assert(true, `${name}：${which} 免偽元素擴張抽樣（${data.reason}）`); continue; }
+          assert(data.ok, `${name}：${which} 偽元素擴命中閉環 h=${data.height} pad=${data.pad}（${data.detail}）`);
+        }
       }
       assert(errors.length === 0, `${name}：無 console/page error${errors.length ? `（${errors.slice(0, 2).join(" | ")}）` : ""}`);
       await context.close();

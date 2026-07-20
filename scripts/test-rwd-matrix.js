@@ -3,8 +3,11 @@
  *
  * 驗收標準（每頁 × 每視口都必須成立）：
  *   1. 所有可互動元素（button/select/input/textarea/a[href]/[role=button]/[onclick]）
- *      必須「完整在視口內」，或位於可捲容器鏈內（R69 起：鏈上任一 overflow-y 可捲
- *      容器完整可見即可達——如 pack 行動版單欄 .pack-main 捲動殼內的長清單）。
+ *      必須「完整在視口內」，或可經捲動鏈「真實抵達」。
+ *      R69.1 RWD-CHAIN-01 收緊：幾何「鏈上任一可捲容器完整可見」只是前置過濾，
+ *      不能當結論——每個候選一律實際 scrollIntoView({block:'nearest'}) 後以
+ *      elementFromPoint 驗中心命中自身（含 label 包裹的冒泡等效），命不中判
+ *      SCROLL_HIT_FAIL。近端 scrollport 被裁切時，外殼可見也不會假綠。
  *   2. 頁級捲動歸零：documentElement.scrollHeight <= innerHeight + 8。
  *   3. 水平溢出 <= 2px。
  *
@@ -92,19 +95,39 @@ async function auditPage(page) {
       const label = (el.id ? "#" + el.id : "")
         || (el.getAttribute("aria-label") || el.textContent || el.className || el.tagName).toString().trim().slice(0, 28);
       let status;
+      let hitLabel = "";
       if (inVp) status = "OK";
       else if (scrollHosts.length) {
-        // R69：捲動鏈可達——鏈上任一可捲容器完整可見即可（外層殼捲到位後再內捲）
+        // R69.1 RWD-CHAIN-01：幾何鏈判定僅為「前置過濾」——鏈上任一可捲容器完整可見
+        // 才有資格進功能性驗證；結論一律由「實捲＋命中」決定，防近端 scrollport
+        // 被裁切時外殼可見的假綠。
         const hostVisible = scrollHosts.some((host) => {
           const hr = host.getBoundingClientRect();
           return hr.top >= -tol && hr.bottom <= ih + tol && hr.left >= -tol && hr.right <= iw + tol;
         });
-        status = hostVisible ? "SCROLLABLE_OK" : "PAGE_SCROLL";
+        if (!hostVisible) status = "PAGE_SCROLL";
+        else {
+          // 功能性驗證：scrollIntoView 會沿捲動鏈把元素真的帶進視野；
+          // 之後中心點 elementFromPoint 必須解析到自身/子孫，或（input 包在
+          // label 內時）解析到同一個 label 宿主——點該處會冒泡觸發同一控制。
+          el.scrollIntoView({ block: "nearest", inline: "nearest" });
+          const r2 = el.getBoundingClientRect();
+          const cx = r2.left + r2.width / 2;
+          const cy = r2.top + r2.height / 2;
+          const hit = (cx >= 0 && cx < iw && cy >= 0 && cy < ih) ? document.elementFromPoint(cx, cy) : null;
+          const sameLabel = !!(hit && el.closest("label") && el.closest("label") === hit.closest("label"));
+          const hitOk = !!(hit && (hit === el || el.contains(hit) || sameLabel));
+          if (hitOk) status = "SCROLLABLE_OK";
+          else {
+            status = "SCROLL_HIT_FAIL";
+            hitLabel = hit ? `${hit.tagName.toLowerCase()}${hit.id ? "#" + hit.id : ""}.${String(hit.className).trim().replace(/\s+/g, ".").slice(0, 40)}` : "none";
+          }
+        }
       } else status = (r.top >= ih || r.bottom <= 0) ? "PAGE_SCROLL" : "CLIPPED";
       if (status !== "OK" && status !== "SCROLLABLE_OK") {
         const hostRect = scrollHost ? scrollHost.getBoundingClientRect() : null;
         violations.push({
-          label, status,
+          label, status, hit: hitLabel,
           top: Math.round(r.top), bottom: Math.round(r.bottom),
           left: Math.round(r.left), right: Math.round(r.right),
           scrollHost: scrollHost ? (scrollHost.id ? "#" + scrollHost.id : "." + String(scrollHost.className || scrollHost.tagName).trim().replace(/\s+/g, ".")) : "",
@@ -211,7 +234,8 @@ async function run() {
           console.error(`  ✗ ${vp.w}x${vp.h} 違規 ${res.violations.length}、頁捲 ${res.pageScrollY}px、水平溢出 ${res.overflowX}px（稽核 ${res.audited} 元素）`);
           for (const v of res.violations.slice(0, 12)) {
             console.error(`      ${v.status} ${v.label} top=${v.top} bottom=${v.bottom} left=${v.left} right=${v.right}`
-              + (v.scrollHost ? ` host=${v.scrollHost}(${v.hostTop}-${v.hostBottom})` : ""));
+              + (v.scrollHost ? ` host=${v.scrollHost}(${v.hostTop}-${v.hostBottom})` : "")
+              + (v.hit ? ` hit=${v.hit}` : ""));
           }
         } else {
           console.log(`  ✓ ${vp.w}x${vp.h} 零違規（頁捲 ${res.pageScrollY}px、水平溢出 ${res.overflowX}px、稽核 ${res.audited} 元素）`);

@@ -265,7 +265,9 @@
   .filter-chip-board { display:flex; flex-direction:column; gap:8px; padding:8px; }
   .filter-line { display:grid; grid-template-columns:54px minmax(0,1fr); gap:8px; align-items:center; min-width:0; }
   .filter-line-label { color:var(--muted); font-size:12px; font-weight:900; }
-  .filter-chip-row { display:flex; gap:6px; overflow-x:auto; padding:1px 0 4px; scrollbar-width:thin; }
+  /* R69.1 HIT-CHIP-01：chip 列直向留 6px padding，讓 ::after 的 44px 擴張區
+     不被列自身的捲動裁切框（overflow-x:auto 連帶裁 y）切掉。 */
+  .filter-chip-row { display:flex; gap:6px; overflow-x:auto; padding:6px 0; scrollbar-width:thin; }
   .filter-chip {
     flex:0 0 auto; min-height:32px; border:1px solid rgba(255,255,255,.13); border-radius:999px;
     padding:6px 10px; background:rgba(255,255,255,.05); color:var(--ink);
@@ -441,7 +443,7 @@
       gap:3px;
     }
     .collection-tools .filter-line-label { font-size:10px; line-height:1; }
-    .collection-tools .filter-chip-row { gap:4px; padding:0 0 2px; }
+    .collection-tools .filter-chip-row { gap:4px; padding:9px 0; }
     .collection-tools .filter-chip { min-height:26px; padding:4px 7px; font-size:11px; }
     .filter-line { grid-template-columns:46px minmax(0,1fr); }
     .deck-layout { grid-template-columns:1fr; grid-template-rows:minmax(0,1fr) minmax(0,1fr); }
@@ -485,17 +487,13 @@
     .collection-tools .filter-panel summary { padding:6px 8px; }
     .collection-tools .filter-chip-board { gap:5px; padding:6px; }
     .collection-tools .filter-line { grid-template-columns:46px minmax(0,1fr); gap:5px; }
-    .collection-tools .filter-chip-row { flex-wrap:nowrap; gap:4px; padding:0 0 2px; overflow-x:auto; }
+    .collection-tools .filter-chip-row { flex-wrap:nowrap; gap:4px; padding:9px 0; overflow-x:auto; }
     .collection-tools .filter-chip { min-height:26px; padding:4px 7px; font-size:11px; }
     #collectionSort { flex-wrap:nowrap; overflow-x:auto; }
   }
-  @media (min-width: 701px) and (max-height: 760px) {
-    .collection-tools .filter-chip-board {
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      align-items:start;
-    }
-  }
+  /* R69.1（RWD-CHAIN-01 功能性守門揭發）：矮桌機（1366×600/1280×640）collection
+     面板本就窄，再把 chip 板切兩欄會讓單列窄過一顆陣營 chip——實捲也點不到。
+     移除兩欄壓縮，回歸單欄 flex（.filter-panel ≤760h 已有 136px 內捲頂高，不會爆版）。 */
   @media (max-height: 560px) {
     header { padding: 2px 8px; font-size: 13px; }
     .pack { width: 96px; height: 134px; }
@@ -512,8 +510,9 @@
       flex-direction:row;
       align-items:center;
       gap:8px;
-      height:40px;
-      max-height:40px;
+      /* R69.1：48px 才裝得下 24px chip 置中後上下各 ~10px 的偽元素擴張區 */
+      height:48px;
+      max-height:48px;
       overflow-x:auto;
       overflow-y:hidden;
       padding:5px 6px;
@@ -542,6 +541,14 @@
     .collection-tools .filter-chip { min-height:24px; padding:3px 7px; font-size:11px; }
   }
 
+  /* R69.1（RWD-CHAIN-01 功能性守門揭發）：平板寬度（701-1179）deck 面板窄，
+     搜尋＋chip 板兩欄格線會把 chip 列壓到 15px（小於一顆 chip、實捲也點不到）——
+     改單欄堆疊，chip 列取回整個面板寬。置於 base .deck-tools 之後才能覆蓋。 */
+  @media (max-width: 1179px) and (min-width: 701px) {
+    .deck-tools { grid-template-columns: 1fr; }
+    .deck-tools input, .deck-tools .filter-chip-board { grid-column: 1; }
+  }
+
   /* ===== R69 P0-2：行動與矮視口不再把全部區塊硬塞一屏 =====
      原 grid 在 390×844 / 844×390 產生 89-175px 的迷你內窗＋三層巢狀捲、開包 CTA 初窗外。
      改法：.pack-main 成為唯一頁級捲動欄（頁本身仍零捲動、無水平溢出），
@@ -556,10 +563,15 @@
       flex: 0 0 auto; max-height: none; overflow: visible;
     }
     .deck-layout { grid-template-rows: none; align-items: start; }
-    .deck-panel { max-height: 62dvh; }
-    .collection .grid { max-height: 64dvh; overflow-y: auto; overscroll-behavior: contain; }
+    /* R69.1 PACK-DVH-01：dvh 一律加 px 下限——軟鍵盤彈出時 dvh 驟縮，
+       沒有 floor 會把清單/開包窗壓到不可用（鍵盤場景詳殘留節，未全驗）。 */
+    .deck-panel { max-height: max(62dvh, 240px); }
+    .collection .grid { max-height: max(64dvh, 240px); overflow-y: auto; overscroll-behavior: contain; }
     .reveal-row { --card-w: clamp(84px, 20dvh, 112px); min-height: 0; padding: 12px; }
-    .open-panel { min-height: min(52dvh, 480px); justify-content: flex-start; }
+    .open-panel { min-height: clamp(240px, 52dvh, 480px); justify-content: flex-start; }
+    /* R69.1（功能性守門揭發）：844×390 橫向左下浮動任務鈕會蓋住捲進來的
+       bottom-left 控制（#packTextSizeSel）——與 ≤700w 同步移到左上。 */
+    .mission-drawer-btn { top: 8px; bottom: auto; left: 10px; }
   }
 
   @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
