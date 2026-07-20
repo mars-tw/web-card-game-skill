@@ -1,5 +1,5 @@
 /* =========================================================================
- * test-rwd-matrix.js — R65 RWD 十視口矩陣守門（真瀏覽器）
+ * test-rwd-matrix.js — R65/R70 RWD 十一視口矩陣守門（真瀏覽器）
  *
  * 驗收標準（每頁 × 每視口都必須成立）：
  *   1. 所有可互動元素（button/select/input/textarea/a[href]/[role=button]/[onclick]）
@@ -28,6 +28,7 @@ const MIME = {
 const VIEWPORTS = [
   { w: 1920, h: 1080, kind: "desktop" },
   { w: 1440, h: 780, kind: "desktop" },
+  { w: 1366, h: 768, kind: "desktop" },
   { w: 1366, h: 600, kind: "desktop" },
   { w: 1280, h: 640, kind: "desktop" },
   { w: 1024, h: 768, kind: "desktop" },
@@ -227,6 +228,47 @@ async function run() {
             res.violations.push({ label: "手機攻擊同屏／手牌抽屜／44dvh", status: "FLOW", top: 0, bottom: 0, left: 0, right: 0 });
           }
         }
+        if (pg.name === "card-pack" && new Set(["390x844", "844x390", "1366x768"]).has(`${vp.w}x${vp.h}`)) {
+          await page.evaluate(() => {
+            const panel = document.querySelector("#collectionTools .filter-panel");
+            if (panel) panel.open = true;
+            document.getElementById("collectionTools")?.scrollIntoView({ block: "center", inline: "nearest" });
+          });
+          const filterGeometry = await page.evaluate(() => {
+            const board = document.querySelector("#collectionTools .filter-chip-board");
+            const owned = document.querySelector('#collectionOwnershipFilter .filter-chip[data-value="owned"]');
+            if (!board || !owned) return { exists: false };
+            board.scrollLeft = 0;
+            const boardRect = board.getBoundingClientRect();
+            const ownedRect = owned.getBoundingClientRect();
+            return {
+              exists: true,
+              boardClientWidth: board.clientWidth,
+              boardScrollWidth: board.scrollWidth,
+              ownedInBoardX: ownedRect.left >= boardRect.left - 1 && ownedRect.right <= boardRect.right + 1,
+            };
+          });
+          let clicked = false;
+          try {
+            await page.locator('#collectionOwnershipFilter .filter-chip[data-value="owned"]').click();
+            clicked = await page.evaluate(() => {
+              const group = document.getElementById("collectionOwnershipFilter");
+              const owned = group?.querySelector('.filter-chip[data-value="owned"]');
+              return group?.dataset.value === "owned" && owned?.getAttribute("aria-pressed") === "true";
+            });
+          } catch {}
+          if (!filterGeometry.exists || filterGeometry.boardScrollWidth > filterGeometry.boardClientWidth + 2
+            || !filterGeometry.ownedInBoardX || !clicked) {
+            res.violations.push({
+              label: "R70 收藏篩選分組／已擁有真實點擊",
+              status: "FILTER_FLOW",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: Math.max(0, (filterGeometry.boardScrollWidth || 0) - (filterGeometry.boardClientWidth || 0)),
+            });
+          }
+        }
         const bad = res.violations.length > 0 || res.pageScrollY > 8 || res.overflowX > 2;
         checks++;
         if (bad) {
@@ -246,13 +288,14 @@ async function run() {
   } finally {
     await browser.close();
     server.close();
+    if (typeof server.closeAllConnections === "function") server.closeAllConnections();
   }
 
   if (failures > 0) {
     console.error(`\n❌ RWD 矩陣守門失敗：${failures}/${checks} 個 頁面×視口 有違規`);
     process.exit(1);
   }
-  console.log(`\n✅ RWD 十視口矩陣守門通過（${checks} 個 頁面×視口 全數零違規）`);
+  console.log(`\n✅ RWD 十一視口矩陣守門通過（${checks} 個 頁面×視口 全數零違規）`);
 }
 
 run().catch((err) => { console.error(err); process.exit(1); });

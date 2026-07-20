@@ -192,6 +192,22 @@ async function run() {
         });
         assert(drawer.open && drawer.handBottom <= drawer.dockTop + 0.5,
           `${name}：手牌抽屜展開後停在 Command Dock 上方、不遮主行動`);
+        const drawerHint = await frame.evaluate(() => {
+          const hint = document.getElementById("hintBtn");
+          const style = getComputedStyle(hint);
+          const rect = hint.getBoundingClientRect();
+          const displayed = style.display !== "none" && style.visibility !== "hidden" && Number(style.opacity) > 0
+            && rect.width > 0 && rect.height > 0;
+          const hit = displayed ? document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2) : null;
+          return {
+            displayed,
+            hitSelf: !!(hit && (hit === hint || hint.contains(hit))),
+            ariaHidden: hint.getAttribute("aria-hidden"),
+            tabIndex: hint.tabIndex,
+          };
+        });
+        assert(drawerHint.displayed ? drawerHint.hitSelf : (drawerHint.ariaHidden === "true" && drawerHint.tabIndex === -1),
+          `${name}：抽屜開啟時提示鈕可見即可點，否則明確隱藏並移出焦點序`);
         // R69：抽屜是底部面板、z 高於棋盤層（修 844×390 手牌 0/12 可點 P0）；
         // 展開時允許蓋住棋盤層的 #hintBtn（橫向矮視口幾何重疊），收合即恢復——
         // dock/設定等固定控制仍須全數可命中；抽屜收合狀態的全量 audit 在前面已跑。
@@ -241,6 +257,37 @@ async function run() {
         await frame.locator('#playerHand .card[data-card-id="wolf"]').click();
         await frame.waitForFunction(() => !!document.querySelector('#playerField .card[data-card-id="wolf"]'));
         assert(true, `${name}：真實 click 抽屜手牌可出牌`);
+
+        if (viewport.width === 844 && viewport.height === 390) {
+          await frame.evaluate(() => {
+            window.__test.closeDetail();
+            window.__test.setup(["wolf"], []);
+          });
+          const centerGeometry = await frame.locator('#playerField .card[data-card-id="wolf"]').evaluate((card) => {
+            const cardRect = card.getBoundingClientRect();
+            const infoRect = card.querySelector(".card-info-btn").getBoundingClientRect();
+            const x = cardRect.left + cardRect.width / 2;
+            const y = cardRect.top + cardRect.height / 2;
+            return {
+              cardWidth: cardRect.width,
+              cardHeight: cardRect.height,
+              centerInsideInfo: x >= infoRect.left && x <= infoRect.right && y >= infoRect.top && y <= infoRect.bottom,
+            };
+          });
+          const fieldCard = frame.locator('#playerField .card[data-card-id="wolf"]');
+          const fieldBox = await fieldCard.boundingBox();
+          await fieldCard.click({ position: { x: fieldBox.width / 2, y: fieldBox.height / 2 } });
+          const centerAction = await frame.evaluate(() => ({
+            selected: !!window.__test.game().selected,
+            detail: window.__test.detailOpen(),
+          }));
+          assert(!centerGeometry.centerInsideInfo && centerAction.selected && !centerAction.detail,
+            `${name}：66×86 場上卡中心真實 tap 選攻擊者，不誤開詳情`);
+          await frame.locator('#playerField .card[data-card-id="wolf"] .card-info-btn').click();
+          await frame.waitForFunction(() => window.__test.detailOpen());
+          assert(true, `${name}：右上 32×32 明確小區仍可真實開啟卡牌詳情`);
+          await frame.locator("#cardDetailClose").click();
+        }
 
         // R69.1 Z-DRAWER-01：抽屜開啟時，結算 overlay（z100）必須壓過抽屜（z76）——
         // 打開 overlay 後在手牌區中心打點，命中不得落入抽屜層。
@@ -460,6 +507,14 @@ async function run() {
         });
         assert(packA11y.role === "button" && packA11y.tabIndex === 0 && /卡包/.test(packA11y.label),
           `${name}：牌包本體有語意、焦點與可讀名稱`);
+        await packFrame.locator("#missionDrawerBtn").focus();
+        const packTabSequence = [];
+        for (let i = 0; i < 3; i++) {
+          await page.keyboard.press("Tab");
+          packTabSequence.push(await packFrame.evaluate(() => document.activeElement?.id || ""));
+        }
+        assert(packTabSequence[2] === "pack" && !packTabSequence.includes("copyRecordBtn") && !packTabSequence.includes("packPwaCheckBtn"),
+          `${name}：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（${packTabSequence.join(" → ")}）`);
         await packFrame.locator("#pack").focus();
         await packFrame.locator("#pack").press("Enter");
         await packFrame.waitForFunction(() => document.querySelectorAll("#revealRow .card").length === 5);
@@ -550,6 +605,7 @@ async function run() {
   } finally {
     await browser.close();
     server.close();
+    if (typeof server.closeAllConnections === "function") server.closeAllConnections();
   }
 
   if (failures) {

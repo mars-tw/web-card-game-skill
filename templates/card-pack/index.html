@@ -6,9 +6,9 @@
 <title>開卡包 · Card Pack</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r69-v1";
+    const CACHE_VERSION = "card-battle-r70-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r69_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r70_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -504,27 +504,24 @@
   @media (max-width: 390px), (max-height: 400px) {
     .collection-tools { grid-template-columns:1fr; gap:4px; margin-bottom:6px; }
     .collection-tools input { grid-column:1; min-height:44px; padding:5px 8px; font-size:12px; }
+    .collection-tools .filter-panel { max-height:min(184px, 35dvh); overflow-y:auto; overscroll-behavior:contain; }
     .collection-tools .filter-panel summary { padding:5px 8px; }
     .collection-tools .filter-chip-board {
-      display:flex;
-      flex-direction:row;
-      align-items:center;
-      gap:8px;
-      /* R69.1：48px 才裝得下 24px chip 置中後上下各 ~10px 的偽元素擴張區 */
-      height:48px;
-      max-height:48px;
-      overflow-x:auto;
-      overflow-y:hidden;
-      padding:5px 6px;
-      scrollbar-width:thin;
-      overscroll-behavior-inline:contain;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      align-items:start;
+      gap:6px;
+      height:auto;
+      max-height:none;
+      overflow:visible;
+      padding:6px;
     }
     .collection-tools .filter-line {
-      flex:0 0 auto;
-      display:flex;
-      align-items:center;
-      gap:5px;
-      min-width:max-content;
+      display:grid;
+      grid-template-columns:minmax(0,1fr);
+      align-items:start;
+      gap:3px;
+      min-width:0;
     }
     .collection-tools .filter-line-label {
       flex:0 0 auto;
@@ -533,12 +530,17 @@
       white-space:nowrap;
     }
     .collection-tools .filter-chip-row {
-      flex:0 0 auto;
+      min-width:0;
+      flex-wrap:wrap;
       overflow:visible;
-      gap:4px;
+      gap:6px;
       padding:0;
     }
-    .collection-tools .filter-chip { min-height:24px; padding:3px 7px; font-size:11px; }
+    .collection-tools .filter-chip { min-height:44px; padding:5px 8px; font-size:11px; }
+    /* R70 R1-B03：狀態/排序先呈現，關鍵字獨占一列；不再把六組塞成 1949px 單橫列。 */
+    .collection-tools .filter-line-status { order:-2; grid-column:1 / -1; }
+    .collection-tools .filter-line-sort { order:-1; grid-column:1 / -1; }
+    .collection-tools .filter-line-keyword { grid-column:1 / -1; }
   }
 
   /* R69.1（RWD-CHAIN-01 功能性守門揭發）：平板寬度（701-1179）deck 面板窄，
@@ -627,6 +629,26 @@
   </div>
 
   <main class="pack-main">
+  <section class="open-panel" id="openPanel">
+    <div class="pack-stage" id="packStage">
+      <div class="pack" id="pack">
+        <div class="pack-icon">🎁</div>
+        <div class="pack-label">神祕卡包</div>
+        <div class="pack-hint">點擊開啟（5 張）</div>
+        <div class="pack-hint" id="heroPityProgress">角色保底：0/35</div>
+      </div>
+    </div>
+
+    <div class="reveal-row" id="revealRow"></div>
+    <button class="ghost reveal-skip" id="skipRevealBtn" type="button">全部翻開</button>
+    <div class="summary" id="summary" aria-live="polite"></div>
+
+    <div class="actions" id="actions" style="display:none;">
+      <button id="againBtn">再開一包 🎁</button>
+      <button class="ghost" id="toBattleBtn">前往對戰 →</button>
+    </div>
+  </section>
+
   <section class="goal-panel" id="goalPanel">
     <div class="goal-head">
       <h2>長線目標</h2>
@@ -669,26 +691,6 @@
       <textarea id="saveImportText" placeholder="貼上 Base64 存檔碼"></textarea>
       <button class="ghost" id="exportSaveBtn">匯出存檔</button>
       <button class="ghost" id="importSaveBtn">匯入存檔</button>
-    </div>
-  </section>
-
-  <section class="open-panel" id="openPanel">
-    <div class="pack-stage" id="packStage">
-      <div class="pack" id="pack">
-        <div class="pack-icon">🎁</div>
-        <div class="pack-label">神祕卡包</div>
-        <div class="pack-hint">點擊開啟（5 張）</div>
-        <div class="pack-hint" id="heroPityProgress">角色保底：0/35</div>
-      </div>
-    </div>
-
-    <div class="reveal-row" id="revealRow"></div>
-    <button class="ghost reveal-skip" id="skipRevealBtn" type="button">全部翻開</button>
-    <div class="summary" id="summary" aria-live="polite"></div>
-
-    <div class="actions" id="actions" style="display:none;">
-      <button id="againBtn">再開一包 🎁</button>
-      <button class="ghost" id="toBattleBtn">前往對戰 →</button>
     </div>
   </section>
 
@@ -803,7 +805,7 @@
               <button class="filter-chip" type="button" data-value="neutral"><img class="faction-filter-emblem" src="../../assets/factions/neutral.png?v=4cf2322a" alt="">中立</button>
             </div>
           </div>
-          <div class="filter-line">
+          <div class="filter-line filter-line-keyword">
             <span class="filter-line-label">關鍵</span>
             <div class="filter-chip-row" id="collectionKeywordFilter" role="group" aria-label="關鍵字篩選">
               <button class="filter-chip active" type="button" data-value="all">全部</button>
@@ -836,7 +838,7 @@
               <button class="filter-chip" type="button" data-value="legendary">傳說</button>
             </div>
           </div>
-          <div class="filter-line">
+          <div class="filter-line filter-line-status">
             <span class="filter-line-label">狀態</span>
             <div class="filter-chip-row" id="collectionOwnershipFilter" role="group" aria-label="擁有狀態篩選">
               <button class="filter-chip active" type="button" data-value="all">全部</button>
@@ -844,7 +846,7 @@
               <button class="filter-chip" type="button" data-value="missing">未擁有</button>
             </div>
           </div>
-          <div class="filter-line">
+          <div class="filter-line filter-line-sort">
             <span class="filter-line-label">排序</span>
             <div class="filter-chip-row" id="collectionSort" role="group" aria-label="收藏排序">
               <button class="filter-chip active" type="button" data-value="cost">費用</button>
@@ -886,9 +888,9 @@
       else mq.addListener(applyCompactFilters);
     })();
   </script>
-  <script src="../card-battle/cards.js?v=card-battle-r69-v1"></script>
-  <script src="../card-battle/core.js?v=card-battle-r69-v1"></script>
-  <script src="pack.js?v=card-battle-r69-v1"></script>
+  <script src="../card-battle/cards.js?v=card-battle-r70-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-r70-v1"></script>
+  <script src="pack.js?v=card-battle-r70-v1"></script>
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);

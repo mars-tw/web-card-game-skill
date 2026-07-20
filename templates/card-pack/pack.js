@@ -23,6 +23,11 @@
   const TEXT_SIZE_KEY = "card_text_size_v1";
   const AUDIO_MUTE_KEY = "card_audio_muted_v1";
   const AUDIO_VOLUME_KEY = "card_audio_volume_v1";
+  // R70 R1-B06：新帳號先有 10 種普通卡各 2 張，可立即編輯、補滿並儲存合法 20 張牌組。
+  const STARTER_COLLECTION = Object.freeze({
+    footman: 2, archer: 2, wolf: 2, cleric: 2, firebolt: 2,
+    heal: 2, shieldUp: 2, mooncat: 2, frontScout: 2, groveHerbalist: 2,
+  });
   const Core = window.CardCore;
   if (!Core) throw new Error("CardCore 未載入");
 
@@ -75,8 +80,17 @@
   }
 
   function loadCollection() {
-    try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || {}; }
-    catch { return {}; }
+    const starter = () => Object.assign(Object.create(null), STARTER_COLLECTION);
+    let raw = null;
+    try { raw = localStorage.getItem(SAVE_KEY); }
+    catch { return starter(); }
+    if (raw !== null) {
+      try { return JSON.parse(raw) || {}; }
+      catch { return {}; }
+    }
+    const initial = starter();
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(initial)); } catch {}
+    return initial;
   }
   function safeSetStorage(key, value) {
     localStorage.setItem(key, value);
@@ -232,12 +246,12 @@
   }
 
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r69-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r70-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r69_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r70_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }

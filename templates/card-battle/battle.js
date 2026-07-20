@@ -167,7 +167,7 @@
   let battlefieldLoadToken = 0;
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r69_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r70_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
@@ -204,6 +204,14 @@
     if (stateEl) stateEl.textContent = next ? "收合" : "展開";
     const countEl = document.getElementById("handCount");
     if (countEl) countEl.textContent = String(count);
+    // R70 R1-B02：觸控抽屜會蓋過英雄列；提示鈕若仍顯示就必須可點，因此開啟時明確移出可見/焦點樹。
+    const hint = document.getElementById("hintBtn");
+    const coveredByTouchDrawer = next && window.__controlMode === "touch";
+    if (hint) {
+      hint.hidden = coveredByTouchDrawer;
+      hint.setAttribute("aria-hidden", coveredByTouchDrawer ? "true" : "false");
+      hint.tabIndex = coveredByTouchDrawer ? -1 : 0;
+    }
   }
 
   function setSettingsOpen(open) {
@@ -568,7 +576,7 @@
       overlayPackBtn: "前往開包",
       overlayQuestBtn: "領取每日任務",
       guideSkipBtn: "略過教學",
-      guideHintBtn: "聚焦教學目標",
+      guideHintBtn: "關閉教學提示",
       missionDrawerBtn: "開啟任務抽屜",
       missionClaimAllBtn: "領取所有可領任務",
       missionDrawerClose: "關閉任務抽屜",
@@ -3540,7 +3548,7 @@
   const guideSkipBtn = document.getElementById("guideSkipBtn");
   if (guideSkipBtn) guideSkipBtn.onclick = () => stopGuide(true);
   const guideHintBtn = document.getElementById("guideHintBtn");
-  if (guideHintBtn) guideHintBtn.onclick = () => focusGuideTarget();
+  if (guideHintBtn) guideHintBtn.onclick = () => stopGuide(true);
   const cardDetailClose = document.getElementById("cardDetailClose");
   if (cardDetailClose) cardDetailClose.onclick = closeCardDetail;
   const cardDetail = document.getElementById("cardDetail");

@@ -249,10 +249,10 @@ async function run() {
           shell: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(shellText) && /sessionStorage/.test(shellText) && /controllerchange/.test(shellText),
           battle: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(battleHtml) && /sessionStorage/.test(battleHtml) && /controllerchange/.test(battleHtml),
           pack: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(packHtml) && /sessionStorage/.test(packHtml) && /controllerchange/.test(packHtml),
-          versionedRefs: /cards\.js\?v=card-battle-r69-v1/.test(battleHtml)
-            && /battle\.js\?v=card-battle-r69-v1/.test(battleHtml)
-            && /pack\.js\?v=card-battle-r69-v1/.test(packHtml)
-            && /manifest\.webmanifest\?v=card-battle-r69-v1/.test(shellText),
+          versionedRefs: /cards\.js\?v=card-battle-r70-v1/.test(battleHtml)
+            && /battle\.js\?v=card-battle-r70-v1/.test(battleHtml)
+            && /pack\.js\?v=card-battle-r70-v1/.test(packHtml)
+            && /manifest\.webmanifest\?v=card-battle-r70-v1/.test(shellText),
         };
         return {
           manifestHref: manifestLink && manifestLink.getAttribute("href"),
@@ -266,7 +266,7 @@ async function run() {
           promptVisible: document.getElementById("pwaUpdateToast").classList.contains("show"),
         };
       });
-      assert(pwaCheck.manifestHref === "../manifest.webmanifest?v=card-battle-r69-v1"
+      assert(pwaCheck.manifestHref === "../manifest.webmanifest?v=card-battle-r70-v1"
         && pwaCheck.manifest.name === "卡牌對戰"
         && pwaCheck.manifest.icons.some((icon) => icon.sizes === "192x192")
         && pwaCheck.manifest.icons.some((icon) => icon.sizes === "512x512"),
@@ -274,7 +274,7 @@ async function run() {
       assert(/CACHE_VERSION/.test(pwaCheck.swText)
         && /networkFirst/.test(pwaCheck.swText)
         && /cacheFirst/.test(pwaCheck.swText)
-        && pwaCheck.swText.includes("card-battle-r69-v1")
+        && pwaCheck.swText.includes("card-battle-r70-v1")
         && pwaCheck.swText.includes("offline.html")
         && pwaCheck.swText.includes("versioned(\"sw.js\")")
         && pwaCheck.swText.includes("templates/card-battle")
@@ -282,13 +282,13 @@ async function run() {
         && pwaCheck.swText.includes("templates/card-battle/battle.js")
         && pwaCheck.swText.includes("templates/card-pack/pack.js")
         && pwaCheck.swText.includes("assets/cards/wolf.png")
-        && pwaCheck.version === "card-battle-r69-v1"
-        && pwaCheck.versionLabel.includes("card-battle-r69-v1")
-        && pwaCheck.checked.version === "card-battle-r69-v1",
+        && pwaCheck.version === "card-battle-r70-v1"
+        && pwaCheck.versionLabel.includes("card-battle-r70-v1")
+        && pwaCheck.checked.version === "card-battle-r70-v1",
         "Service worker 使用版本快取並涵蓋 battle/pack 子路徑");
       assert(/self\.skipWaiting\(\)/.test(pwaCheck.swText) && /self\.clients\.claim\(\)/.test(pwaCheck.swText),
         "Service worker install 會 skipWaiting，activate 會 clients.claim");
-      assert(pwaCheck.guard.windowMs === 15000 && pwaCheck.guard.key === "card_sw_auto_reload_r69_v1"
+      assert(pwaCheck.guard.windowMs === 15000 && pwaCheck.guard.key === "card_sw_auto_reload_r70_v1"
         && pwaCheck.guard.early === true && pwaCheck.guard.shell && pwaCheck.guard.battle && pwaCheck.guard.pack && pwaCheck.guard.versionedRefs,
         "入口 shell、battle、pack 都有 15 秒自動重載、sessionStorage 守衛與版本化本地資源");
       assert(pwaCheck.skipped === true && pwaCheck.promptVisible === true, "navigator.webdriver 會跳過 SW 註冊且更新提示可顯示");
@@ -323,7 +323,7 @@ async function run() {
     assert(boot.turn === "player", "開局輪到玩家");
     assert(boot.playerHand >= 3, `玩家起手 ≥3 張（${boot.playerHand}）`);
     const battleSwGuard = await page.evaluate(() => window.__test.swUpdateGuard());
-    assert(battleSwGuard.key === "card_sw_auto_reload_r69_v1" && battleSwGuard.windowMs === 15000 && battleSwGuard.late === false,
+    assert(battleSwGuard.key === "card_sw_auto_reload_r70_v1" && battleSwGuard.windowMs === 15000 && battleSwGuard.late === false,
       "對戰頁 SW 自動更新守衛超過 15 秒不會自動 reload");
 
     if (vp.w === 1280) {
@@ -1372,6 +1372,18 @@ async function run() {
       await page.evaluate(() => localStorage.clear());
       await page.reload();
       await page.waitForFunction(() => window.__test && window.__test.guide().active);
+      await page.locator("#guideHintBtn").click();
+      const guideAcknowledged = await page.evaluate(() => ({
+        visible: document.getElementById("battleGuide").classList.contains("show"),
+        active: window.__test.guide().active,
+        stored: localStorage.getItem("cb_guide_done_v1"),
+        totalCards: window.__test.game().player.hand.length + window.__test.game().player.deck.length + window.__test.game().player.field.length,
+      }));
+      assert(!guideAcknowledged.visible && !guideAcknowledged.active && guideAcknowledged.stored === "1" && guideAcknowledged.totalCards === 20,
+        "STEP 1「我知道了」會真正關閉導引並記錄已確認，且牌局仍維持 20 張資源");
+      await page.evaluate(() => localStorage.clear());
+      await page.reload();
+      await page.waitForFunction(() => window.__test && window.__test.guide().active);
       await page.locator("#mulliganBtn").click();
       const guideMulligan = await page.evaluate(() => ({
         active: window.__test.guide().active,
@@ -1395,6 +1407,31 @@ async function run() {
       await page.waitForFunction(() => !window.__test.guide().active);
       const guideDone = await page.evaluate(() => ({ stored: localStorage.getItem("cb_guide_done_v1"), turn: window.__test.game().turn }));
       assert(guideDone.stored === "1" && guideDone.turn === "enemy", "可依 UI 完成出牌→攻擊→結束回合三步導引");
+    }
+
+    if (vp.w === 1280) {
+      await page.evaluate(() => localStorage.clear());
+      await page.goto(basePack, { waitUntil: "domcontentloaded" });
+      await page.waitForFunction(() => window.__deckTest && document.getElementById("deckCollectionList"));
+      const freshStarter = await page.evaluate(() => {
+        const collection = JSON.parse(localStorage.getItem("cardpack_collection_v2") || "{}");
+        return {
+          unique: Object.keys(collection).length,
+          total: Object.values(collection).reduce((sum, count) => sum + Number(count || 0), 0),
+          initialDeckCount: window.__deckTest.deck().cards.length,
+        };
+      });
+      assert(freshStarter.unique === 10 && freshStarter.total === 20 && freshStarter.initialDeckCount === 0,
+        "新帳號取得 10 種基礎卡各 2 張，初始收藏可供合法 20 張牌組使用");
+      await page.locator("#autoFillDeckBtn").click();
+      await page.locator("#saveDeckBtn").click();
+      const freshDeck = await page.evaluate(() => ({
+        validation: window.__deckTest.validation(),
+        saved: JSON.parse(localStorage.getItem("card_deck_v1") || "{}"),
+        message: document.getElementById("deckSaveMsg").textContent,
+      }));
+      assert(freshDeck.validation.ok && freshDeck.saved.cards?.length === 20 && freshDeck.message === "牌組已儲存。",
+        "新帳號可用自動補滿並真實儲存合法自訂牌組，首輪自訂牌組任務可進行");
     }
 
     // Stage 3：卡包頁牌組編輯器可用真實點擊加入、儲存，重載後仍存在
@@ -1702,11 +1739,11 @@ async function run() {
     await page.waitForFunction(() => /mission/.test(document.activeElement?.id || ""));
     const packMissionFocus = await page.evaluate(() => document.activeElement?.id || "");
     assert(packR36.textState.attr === "large" && packR36.textState.select === "large"
-      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r69-v1"),
+      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-r70-v1"),
       "開包戰績區顯示版本並可調整文字大小");
     assert(packR36.missionOpen && packR36.missionAria === "false" && /mission/.test(packMissionFocus),
       "開包任務抽屜開啟後焦點進入抽屜控制");
-    assert(packR36.swGuard.key === "card_sw_auto_reload_r69_v1" && packR36.swGuard.windowMs === 15000 && packR36.swGuard.late === false,
+    assert(packR36.swGuard.key === "card_sw_auto_reload_r70_v1" && packR36.swGuard.windowMs === 15000 && packR36.swGuard.late === false,
       "開包頁 SW 自動更新守衛超過 15 秒不會自動 reload");
     assert(packR36.summaryLive === "polite" && packR36.missionDailyLive === "polite"
       && packR36.badgeLive === "polite" && packR36.deckSaveLive === "polite",
@@ -1912,6 +1949,7 @@ async function run() {
   } finally {
     await browser.close();
     server.close();
+    if (typeof server.closeAllConnections === "function") server.closeAllConnections();
   }
   if (failed > 0) { console.error("\n❌ " + failed + " 項失敗"); process.exit(1); }
   console.log("\n✅ 卡牌對戰 Stage 5 E2E 全部通過");

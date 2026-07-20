@@ -20,9 +20,9 @@
 </script>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r69-v1";
+    const CACHE_VERSION = "card-battle-r70-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r69_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r70_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -198,6 +198,7 @@
     display:grid; place-items:center; background:rgba(250,204,21,.12); color:#fef3c7;
     font-size:18px; font-weight:900; cursor:pointer; box-shadow:0 0 14px rgba(250,204,21,.22), inset 0 1px 0 rgba(255,255,255,.18);
   }
+  .scene-hint-btn[hidden] { display:none !important; }
   .scene-hint-btn:disabled { filter:grayscale(1) brightness(.62); cursor:not-allowed; box-shadow:none; }
   .hero.targetable { animation: pulseTarget 1s infinite; cursor: crosshair; }
   .hero .avatar {
@@ -898,7 +899,8 @@
       background: transparent; border: 0; touch-action: pan-x;
     }
     .hand .card { --card-w: 82px; --card-h: 116px; scroll-snap-align: start; }
-    .card-info-btn { width:44px; height:44px; top:16px; right:1px; }
+    /* R70 R1-B01：詳情是右上角明確次要區，不能覆蓋 66×86 場上卡的中心主動作。 */
+    .card-info-btn { width:32px; height:32px; top:0; right:0; border-radius:8px; font-size:11px; }
     .card, .hero, button, select, label, [role="button"] { touch-action: manipulation; }
     .card:hover { transform: none; }
     .card.selected { transform: translateY(-3px) scale(1.02); }
@@ -1231,9 +1233,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r69-v1"></script>
-  <script src="core.js?v=card-battle-r69-v1"></script>
-  <script src="battle.js?v=card-battle-r69-v1"></script>
+  <script src="cards.js?v=card-battle-r70-v1"></script>
+  <script src="core.js?v=card-battle-r70-v1"></script>
+  <script src="battle.js?v=card-battle-r70-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {
