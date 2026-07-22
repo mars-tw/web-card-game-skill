@@ -20,9 +20,9 @@
 </script>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r70-v1";
+    const CACHE_VERSION = "card-battle-r71-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r70_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r71_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -153,7 +153,9 @@
     display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
     /* R69.1 HIT-PSEUDO-01：overflow 改 visible——矮視口英雄 ::after 擴張的 44px
        命中區會超出列框，hidden 會把敵方英雄的擴張區裁掉（列內無絕對定位裝飾，安全）。 */
-    position:relative; overflow:visible;
+    /* R69.2：hero-row 自身有 backdrop-filter（會建 stacking context）；若維持 z:auto，
+       後方 battlefield 仍可吃掉英雄 ::after 的下外緣。列層抬到 2，player 列另維持 75。 */
+    position:relative; z-index:2; overflow:visible;
     background:
       linear-gradient(105deg,rgba(255,255,255,.07),transparent 34%),
       radial-gradient(circle at 12% 50%,color-mix(in srgb,var(--accent) 13%,transparent),transparent 34%),
@@ -165,9 +167,8 @@
   }
   /* ===== R69.1 Z-DRAWER-01：全頁 z 階表（動任何一層前先讀這裡）=====
      -2/-1  body::before/::after       戰場圖層／動態氛圍光暈
-      auto  .board／.hero-row／.battlefield
-                                      主棋盤流；battlefield backdrop-filter 形成 z:auto/0 疊層
-      1-12  .card 內裝飾與狀態（hover 5／selected 6／target-queued 12）；.hero 2
+      auto  .board／.battlefield       主棋盤流；battlefield backdrop-filter 形成疊層
+      1-12  .hero-row 2／.hero 2／卡片內裝飾與狀態（hover 5／selected 6／target-queued 12）
       20    .card-info-btn              卡上詳鈕（卡內 stacking context）
       24    .target-action-popover      就地目標確認
       30    .card.lunge-to              攻擊位移中的卡
@@ -189,7 +190,7 @@
      英雄 ::after 擴張區；英雄需小幅高於棋盤面（仍遠低於抽屜 76）。 */
   .hero { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: transform .15s; position: relative; z-index: 2; }
   /* R69 P0-3：英雄是攻擊目標，矮視口列高 <44px——用偽元素擴命中區、不動列高視覺 */
-  .hero::after { content:""; position:absolute; left:-6px; right:-6px;
+  .hero::after { content:""; position:absolute; z-index:1; pointer-events:auto; left:-6px; right:-6px;
     top:min(0px, calc((100% - 44px) / 2)); bottom:min(0px, calc((100% - 44px) / 2)); }
   .player-hero-scene { display:flex; align-items:center; gap:8px; min-width:0; }
   .scene-hint-btn {
@@ -804,7 +805,9 @@
   @media (max-height: 900px) and (min-width: 701px) {
     :root { --card-w: 104px; --card-h: 148px; }
     header { padding: 5px; font-size: 15px; }
-    .board { gap: 6px; padding: 6px; }
+    /* R69.2：矮桌機壓縮不得覆寫 command dock 的底部避讓，否則 footer 連結會在
+       幾何上留於 viewport、實際中心卻被固定 dock 蓋住。 */
+    .board { gap: 6px; padding: 6px 6px calc(var(--desktop-command-dock-h) + env(safe-area-inset-bottom, 0px) + 8px); }
     .hero-row { padding-block: 5px; }
     #log { height: 40px; }
     .quest-panel { max-height: 108px; }
@@ -813,7 +816,7 @@
   @media (max-height: 760px) and (min-width: 701px) {
     :root { --card-w: 88px; --card-h: 124px; }
     header { padding: 3px; font-size: 13px; letter-spacing: 1px; }
-    .board { gap: 5px; padding: 5px; }
+    .board { gap: 5px; padding: 5px 5px calc(var(--desktop-command-dock-h) + env(safe-area-inset-bottom, 0px) + 8px); }
     .hero-row { padding-block: 4px; }
     .hero .avatar { width:34px; height:34px; flex-basis:34px; font-size:22px; }
     .hp-badge, .mana-badge { min-height:28px; font-size:13px; padding:3px 8px; }
@@ -833,7 +836,7 @@
   @media (max-height: 560px) and (min-width: 701px) {
     :root { --card-w: 78px; --card-h: 108px; }
     header { padding: 2px; font-size: 12px; }
-    .board { gap: 4px; padding: 4px; }
+    .board { gap: 4px; padding: 4px 4px calc(var(--desktop-command-dock-h) + env(safe-area-inset-bottom, 0px) + 8px); }
     .hero-row { padding-block: 2px; }
     .hero .avatar { width:28px; height:28px; flex-basis:28px; font-size:18px; }
     .battlefield { min-height: 34px; align-items: flex-start; align-content: flex-start; }
@@ -983,7 +986,8 @@
   @media (max-height: 500px) {
     :root[data-control-mode="touch"] { --card-w:66px; --card-h:86px; --mobile-hand-open:min(132px, 38dvh); }
     :root[data-control-mode="touch"] header { display:none; }
-    :root[data-control-mode="touch"] .board { gap:3px; padding-top:3px; }
+    /* R69.2：28px 英雄的 44px hit box 需 8px 向外空間；3px 會把敵方英雄上緣裁出 viewport。 */
+    :root[data-control-mode="touch"] .board { gap:3px; padding-top:8px; }
     :root[data-control-mode="touch"] .hero-row { min-height:32px; padding:2px 8px; }
     :root[data-control-mode="touch"] .hero .avatar { width:28px; height:28px; flex-basis:28px; font-size:18px; }
     :root[data-control-mode="touch"] .hero .name { font-size:12px; }
@@ -1233,9 +1237,9 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r70-v1"></script>
-  <script src="core.js?v=card-battle-r70-v1"></script>
-  <script src="battle.js?v=card-battle-r70-v1"></script>
+  <script src="cards.js?v=card-battle-r71-v1"></script>
+  <script src="core.js?v=card-battle-r71-v1"></script>
+  <script src="battle.js?v=card-battle-r71-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {

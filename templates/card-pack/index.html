@@ -6,9 +6,9 @@
 <title>開卡包 · Card Pack</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r70-v1";
+    const CACHE_VERSION = "card-battle-r71-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r70_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r71_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -265,17 +265,18 @@
   .filter-chip-board { display:flex; flex-direction:column; gap:8px; padding:8px; }
   .filter-line { display:grid; grid-template-columns:54px minmax(0,1fr); gap:8px; align-items:center; min-width:0; }
   .filter-line-label { color:var(--muted); font-size:12px; font-weight:900; }
-  /* R69.1 HIT-CHIP-01：chip 列直向留 6px padding，讓 ::after 的 44px 擴張區
-     不被列自身的捲動裁切框（overflow-x:auto 連帶裁 y）切掉。 */
-  .filter-chip-row { display:flex; gap:6px; overflow-x:auto; padding:6px 0; scrollbar-width:thin; }
+  /* R69.2：四向都留 4px 以上 padding，讓首／末 chip 的 ::after 不被 scrollport 裁掉。 */
+  .filter-chip-row { display:flex; gap:8px; overflow-x:auto; padding:6px 4px; scrollbar-width:thin; }
   .filter-chip {
     flex:0 0 auto; min-height:32px; border:1px solid rgba(255,255,255,.13); border-radius:999px;
     padding:6px 10px; background:rgba(255,255,255,.05); color:var(--ink);
     font-size:12px; font-weight:900; box-shadow:none; cursor:pointer; white-space:nowrap;
-    position:relative;
+    position:relative; z-index:1;
   }
-  /* R69 P0-3：篩選 chip 視覺維持膠囊、偽元素把命中區垂直擴到 44px（不撐開版面） */
-  .filter-chip::after { content:""; position:absolute; left:-2px; right:-2px;
+  /* R69.2：膠囊視覺不變，::after 在寬／高任一短於 44px 時都對稱擴到 44px；
+     舊固定 ±2px 讓 38px 的矮桌機「全部」chip 只有 42px 寬，四向 gate 已抓到。 */
+  .filter-chip::after { content:""; position:absolute; z-index:1; pointer-events:auto;
+    left:min(-2px, calc((100% - 44px) / 2)); right:min(-2px, calc((100% - 44px) / 2));
     top:min(0px, calc((100% - 44px) / 2)); bottom:min(0px, calc((100% - 44px) / 2)); }
   .filter-chip .faction-filter-emblem { width:20px; height:20px; object-fit:contain; vertical-align:middle; filter:drop-shadow(0 1px 2px rgba(0,0,0,.7)); }
   .filter-chip:hover { transform:none; }
@@ -443,7 +444,7 @@
       gap:3px;
     }
     .collection-tools .filter-line-label { font-size:10px; line-height:1; }
-    .collection-tools .filter-chip-row { gap:4px; padding:9px 0; }
+    .collection-tools .filter-chip-row { gap:8px; padding:9px 4px; }
     .collection-tools .filter-chip { min-height:26px; padding:4px 7px; font-size:11px; }
     .filter-line { grid-template-columns:46px minmax(0,1fr); }
     .deck-layout { grid-template-columns:1fr; grid-template-rows:minmax(0,1fr) minmax(0,1fr); }
@@ -487,7 +488,7 @@
     .collection-tools .filter-panel summary { padding:6px 8px; }
     .collection-tools .filter-chip-board { gap:5px; padding:6px; }
     .collection-tools .filter-line { grid-template-columns:46px minmax(0,1fr); gap:5px; }
-    .collection-tools .filter-chip-row { flex-wrap:nowrap; gap:4px; padding:9px 0; overflow-x:auto; }
+    .collection-tools .filter-chip-row { flex-wrap:nowrap; gap:8px; padding:9px 4px; overflow-x:auto; }
     .collection-tools .filter-chip { min-height:26px; padding:4px 7px; font-size:11px; }
     #collectionSort { flex-wrap:nowrap; overflow-x:auto; }
   }
@@ -510,7 +511,7 @@
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       align-items:start;
-      gap:6px;
+      gap:8px;
       height:auto;
       max-height:none;
       overflow:visible;
@@ -534,7 +535,7 @@
       flex-wrap:wrap;
       overflow:visible;
       gap:6px;
-      padding:0;
+      padding:4px;
     }
     .collection-tools .filter-chip { min-height:44px; padding:5px 8px; font-size:11px; }
     /* R70 R1-B03：狀態/排序先呈現，關鍵字獨占一列；不再把六組塞成 1949px 單橫列。 */
@@ -888,9 +889,9 @@
       else mq.addListener(applyCompactFilters);
     })();
   </script>
-  <script src="../card-battle/cards.js?v=card-battle-r70-v1"></script>
-  <script src="../card-battle/core.js?v=card-battle-r70-v1"></script>
-  <script src="pack.js?v=card-battle-r70-v1"></script>
+  <script src="../card-battle/cards.js?v=card-battle-r71-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-r71-v1"></script>
+  <script src="pack.js?v=card-battle-r71-v1"></script>
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);

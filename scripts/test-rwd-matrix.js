@@ -4,10 +4,11 @@
  * 驗收標準（每頁 × 每視口都必須成立）：
  *   1. 所有可互動元素（button/select/input/textarea/a[href]/[role=button]/[onclick]）
  *      必須「完整在視口內」，或可經捲動鏈「真實抵達」。
- *      R69.1 RWD-CHAIN-01 收緊：幾何「鏈上任一可捲容器完整可見」只是前置過濾，
- *      不能當結論——每個候選一律實際 scrollIntoView({block:'nearest'}) 後以
- *      elementFromPoint 驗中心命中自身（含 label 包裹的冒泡等效），命不中判
- *      SCROLL_HIT_FAIL。近端 scrollport 被裁切時，外殼可見也不會假綠。
+ *      R69.2 守門再收緊：完整在 viewport 內也必須通過 elementFromPoint 中心命中；
+ *      viewport 外或在 viewport 內受遮擋的捲動鏈候選，不再先要求 scrollport 外殼完整
+ *      可見，而是一律 scrollIntoView({block:'center'}) 後驗中心命中。遮擋與半露
+ *      scrollport 都由真實
+ *      命中結果裁決，不再由幾何短路。
  *   2. 頁級捲動歸零：documentElement.scrollHeight <= innerHeight + 8。
  *   3. 水平溢出 <= 2px。
  *
@@ -97,40 +98,50 @@ async function auditPage(page) {
         || (el.getAttribute("aria-label") || el.textContent || el.className || el.tagName).toString().trim().slice(0, 28);
       let status;
       let hitLabel = "";
-      if (inVp) status = "OK";
-      else if (scrollHosts.length) {
-        // R69.1 RWD-CHAIN-01：幾何鏈判定僅為「前置過濾」——鏈上任一可捲容器完整可見
-        // 才有資格進功能性驗證；結論一律由「實捲＋命中」決定，防近端 scrollport
-        // 被裁切時外殼可見的假綠。
-        const hostVisible = scrollHosts.some((host) => {
-          const hr = host.getBoundingClientRect();
-          return hr.top >= -tol && hr.bottom <= ih + tol && hr.left >= -tol && hr.right <= iw + tol;
-        });
-        if (!hostVisible) status = "PAGE_SCROLL";
+      let testedRect = r;
+      const centerHit = (rect) => {
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const hit = (cx >= 0 && cx < iw && cy >= 0 && cy < ih) ? document.elementFromPoint(cx, cy) : null;
+        const sameLabel = !!(hit && el.closest("label") && el.closest("label") === hit.closest("label"));
+        return {
+          ok: !!(hit && (hit === el || el.contains(hit) || sameLabel)),
+          label: hit ? `${hit.tagName.toLowerCase()}${hit.id ? "#" + hit.id : ""}.${String(hit.className).trim().replace(/\s+/g, ".").slice(0, 40)}` : "none",
+        };
+      };
+      const scrollAndHit = () => {
+        // center 而非 nearest：nearest 對「幾何已在 viewport、但被 fixed/sticky 蓋住」
+        // 會合理地不捲，無法回答控制是否能透過實捲移離遮擋區；center 會驅動完整巢狀鏈。
+        el.scrollIntoView({ block: "center", inline: "center" });
+        testedRect = el.getBoundingClientRect();
+        return centerHit(testedRect);
+      };
+      if (inVp) {
+        // R69.2-02：幾何完整仍可能被 sticky／浮動鈕／透明攔截層遮住；不得直接放行。
+        let result = centerHit(r);
+        if (result.ok) status = "OK";
+        else if (scrollHosts.length) {
+          // 已抓到遮擋；若控制位於捲動鏈，必須再證明可實捲到不受遮擋的位置才放行。
+          result = scrollAndHit();
+          status = result.ok ? "SCROLLABLE_OK" : "VIEWPORT_SCROLL_HIT_FAIL";
+        } else status = "VIEWPORT_HIT_FAIL";
+        if (!result.ok) hitLabel = result.label;
+      } else if (scrollHosts.length) {
+        // R69.2-01：移除「scrollport 外殼完整可見」前置條件。半露的 scrollport 仍可能
+        // 經巢狀捲動真實抵達；一律實捲，再讓 elementFromPoint 決定可達性。
+        const result = scrollAndHit();
+        if (result.ok) status = "SCROLLABLE_OK";
         else {
-          // 功能性驗證：scrollIntoView 會沿捲動鏈把元素真的帶進視野；
-          // 之後中心點 elementFromPoint 必須解析到自身/子孫，或（input 包在
-          // label 內時）解析到同一個 label 宿主——點該處會冒泡觸發同一控制。
-          el.scrollIntoView({ block: "nearest", inline: "nearest" });
-          const r2 = el.getBoundingClientRect();
-          const cx = r2.left + r2.width / 2;
-          const cy = r2.top + r2.height / 2;
-          const hit = (cx >= 0 && cx < iw && cy >= 0 && cy < ih) ? document.elementFromPoint(cx, cy) : null;
-          const sameLabel = !!(hit && el.closest("label") && el.closest("label") === hit.closest("label"));
-          const hitOk = !!(hit && (hit === el || el.contains(hit) || sameLabel));
-          if (hitOk) status = "SCROLLABLE_OK";
-          else {
-            status = "SCROLL_HIT_FAIL";
-            hitLabel = hit ? `${hit.tagName.toLowerCase()}${hit.id ? "#" + hit.id : ""}.${String(hit.className).trim().replace(/\s+/g, ".").slice(0, 40)}` : "none";
-          }
+          status = "SCROLL_HIT_FAIL";
+          hitLabel = result.label;
         }
       } else status = (r.top >= ih || r.bottom <= 0) ? "PAGE_SCROLL" : "CLIPPED";
       if (status !== "OK" && status !== "SCROLLABLE_OK") {
         const hostRect = scrollHost ? scrollHost.getBoundingClientRect() : null;
         violations.push({
           label, status, hit: hitLabel,
-          top: Math.round(r.top), bottom: Math.round(r.bottom),
-          left: Math.round(r.left), right: Math.round(r.right),
+          top: Math.round(testedRect.top), bottom: Math.round(testedRect.bottom),
+          left: Math.round(testedRect.left), right: Math.round(testedRect.right),
           scrollHost: scrollHost ? (scrollHost.id ? "#" + scrollHost.id : "." + String(scrollHost.className || scrollHost.tagName).trim().replace(/\s+/g, ".")) : "",
           hostTop: hostRect ? Math.round(hostRect.top) : 0,
           hostBottom: hostRect ? Math.round(hostRect.bottom) : 0,

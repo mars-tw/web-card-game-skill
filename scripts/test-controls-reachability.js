@@ -24,6 +24,110 @@ function assert(condition, message) {
   else { console.error("  ✗ " + message); failures++; }
 }
 
+// R69.2-04/-07/-10：英雄與 pack chip 共用的唯一偽元素命中規則。
+// Locator.evaluate 會把這個函式序列化到各自 iframe，因此跨 frame 仍只有一份規則來源。
+function samplePseudoHitTarget(el) {
+  const MIN_TARGET = 44;
+  // CSS hit-testing excludes the far/right border at some fractional layouts; stay 1.5 CSS px
+  // inside the measured edge while separately requiring the full centred 44px geometry.
+  const EDGE_INSET = 1.5;
+  const fail = (reason, detail, extra = {}) => ({ ok: false, reason, detail, ...extra });
+  if (!el) return fail("missing", "硬失敗(missing)");
+
+  const rect = el.getBoundingClientRect();
+  const style = getComputedStyle(el);
+  if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0
+    || rect.width < 1 || rect.height < 1) {
+    return fail("hidden", "硬失敗(hidden)", { width: rect.width, height: rect.height });
+  }
+
+  const pseudoStyle = getComputedStyle(el, "::after");
+  const offset = (value) => {
+    const parsed = Number.parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  };
+  const left = offset(pseudoStyle.left);
+  const right = offset(pseudoStyle.right);
+  const top = offset(pseudoStyle.top);
+  const bottom = offset(pseudoStyle.bottom);
+  if (pseudoStyle.content === "none" || [left, right, top, bottom].some((value) => value === null)) {
+    return fail("pseudo-missing", `硬失敗(::after ${pseudoStyle.content || "none"}; offsets ${left}/${right}/${top}/${bottom})`,
+      { width: rect.width, height: rect.height });
+  }
+
+  const pseudo = {
+    left: rect.left + left,
+    right: rect.right - right,
+    top: rect.top + top,
+    bottom: rect.bottom - bottom,
+  };
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const required = {
+    left: cx - MIN_TARGET / 2,
+    right: cx + MIN_TARGET / 2,
+    top: cy - MIN_TARGET / 2,
+    bottom: cy + MIN_TARGET / 2,
+  };
+  const geometryOk = pseudo.left <= required.left + 0.5 && pseudo.right >= required.right - 0.5
+    && pseudo.top <= required.top + 0.5 && pseudo.bottom >= required.bottom - 0.5;
+
+  const points = [
+    // 真正的中心對齊 44px 外緣：短邊必須由 ::after 承接；高達 44px 也不再 skip。
+    { name: "44-left", x: required.left + EDGE_INSET, y: cy },
+    { name: "44-right", x: required.right - EDGE_INSET, y: cy },
+    { name: "44-top", x: cx, y: required.top + EDGE_INSET },
+    { name: "44-bottom", x: cx, y: required.bottom - EDGE_INSET },
+    // 四向偽元素實際外緣：防只測上下中線，也防 left/right 規則日後漂移或失效。
+    { name: "pseudo-left", x: pseudo.left + EDGE_INSET, y: cy },
+    { name: "pseudo-right", x: pseudo.right - EDGE_INSET, y: cy },
+    { name: "pseudo-top", x: cx, y: pseudo.top + EDGE_INSET },
+    { name: "pseudo-bottom", x: cx, y: pseudo.bottom - EDGE_INSET },
+  ];
+
+  const evals = points.map(({ name, x, y }) => {
+    if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) {
+      return { name, ok: false, hit: "viewport-clip" };
+    }
+    let anc = el.parentElement;
+    while (anc && anc !== document.body) {
+      const acs = getComputedStyle(anc);
+      const ar = anc.getBoundingClientRect();
+      const outsideX = x < ar.left - 0.5 || x > ar.right + 0.5;
+      const outsideY = y < ar.top - 0.5 || y > ar.bottom + 0.5;
+      const xClip = outsideX && acs.overflowX !== "visible";
+      const yClip = outsideY && acs.overflowY !== "visible";
+      if (xClip || yClip) {
+        const ancName = anc.id ? `#${anc.id}` : `.${String(anc.className).trim().replace(/\s+/g, ".").slice(0, 36)}`;
+        return { name, ok: false, hit: `ancestor-clip-${xClip ? "x" : ""}${yClip ? "y" : ""}:${ancName}` };
+      }
+      anc = anc.parentElement;
+    }
+    const hit = document.elementFromPoint(x, y);
+    const sameLabel = !!(hit && el.closest("label") && el.closest("label") === hit.closest("label"));
+    return {
+      name,
+      ok: !!(hit && (hit === el || el.contains(hit) || sameLabel)),
+      hit: hit ? `${hit.tagName.toLowerCase()}${hit.id ? `#${hit.id}` : ""}.${String(hit.className).trim().replace(/\s+/g, ".").slice(0, 36)}` : "none",
+    };
+  });
+  return {
+    ok: geometryOk && evals.every((entry) => entry.ok),
+    reason: geometryOk ? "sample" : "under-44-geometry",
+    detail: `${geometryOk ? "geometry≥44" : "geometry<44"};${evals.map((entry) => `${entry.name}:${entry.ok ? "✓" : "✗"}${entry.hit}`).join("|")}`,
+    width: rect.width,
+    height: rect.height,
+    pseudoWidth: pseudo.right - pseudo.left,
+    pseudoHeight: pseudo.bottom - pseudo.top,
+  };
+}
+
+async function samplePseudoHit(frame, selector) {
+  const locator = frame.locator(selector).first();
+  if (await locator.count() === 0) return { ok: false, reason: "missing", detail: "硬失敗(missing)" };
+  return locator.evaluate(samplePseudoHitTarget);
+}
+
 function startServer() {
   return new Promise((resolve) => {
     const server = http.createServer((req, res) => {
@@ -289,31 +393,68 @@ async function run() {
           await frame.locator("#cardDetailClose").click();
         }
 
-        // R69.1 Z-DRAWER-01：抽屜開啟時，結算 overlay（z100）必須壓過抽屜（z76）——
-        // 打開 overlay 後在手牌區中心打點，命中不得落入抽屜層。
+        // R69.2-05：由場上卡真實 click 選攻擊者、真實 click 英雄造成致死，等待產品流程
+        // 自行顯示結算；禁止再用 classList 合成 overlay。抽屜保持真實開啟，接著驗 z、
+        // computed pointer-events、elementFromPoint 與實際 pointerdown 都落在 overlay。
+        await frame.evaluate(() => {
+          const T = window.__test;
+          T.setup(["titan"], []);
+          const game = T.game();
+          game.turn = "player";
+          game.over = false;
+          game.enemy.hp = 1;
+          game.player.field[0].canAttack = true;
+          window.__rerenderBattle();
+        });
+        if (await frame.evaluate(() => document.getElementById("handDrawer")?.classList.contains("open"))) {
+          await frame.locator("#handDrawerToggle").click();
+        }
+        await frame.locator('#playerField .card[data-card-id="titan"]').click();
         if (!(await frame.evaluate(() => document.getElementById("handDrawer")?.classList.contains("open")))) {
           await frame.locator("#handDrawerToggle").click();
         }
+        await frame.locator("#enemyHero").click();
+        await frame.waitForFunction(() => window.__test.game().over && document.getElementById("overlay")?.classList.contains("show"));
         const overlayOverDrawer = await frame.evaluate(() => {
           const overlay = document.getElementById("overlay");
           const drawer = document.getElementById("handDrawer");
           const hand = document.getElementById("playerHand");
-          overlay.classList.add("show", "win");
           const handRect = hand.getBoundingClientRect();
           const hit = document.elementFromPoint(handRect.left + handRect.width / 2, handRect.top + handRect.height / 2);
-          const result = {
+          window.__zDrawerPointerProbe = { overlay: 0, drawer: 0, target: "" };
+          overlay.addEventListener("pointerdown", (event) => {
+            window.__zDrawerPointerProbe.overlay++;
+            window.__zDrawerPointerProbe.target = event.target.id || event.target.className || event.target.tagName;
+          }, { once: true });
+          drawer.addEventListener("pointerdown", () => { window.__zDrawerPointerProbe.drawer++; }, { once: true });
+          return {
+            settled: window.__test.game().over && window.__test.game().enemy.hp <= 0,
+            shown: overlay.classList.contains("show") && overlay.classList.contains("win"),
             open: drawer.classList.contains("open"),
             overlayZ: parseInt(getComputedStyle(overlay).zIndex, 10) || 0,
             drawerZ: parseInt(getComputedStyle(drawer).zIndex, 10) || 0,
+            overlayPointerEvents: getComputedStyle(overlay).pointerEvents,
+            hitPointerEvents: hit ? getComputedStyle(hit).pointerEvents : "none",
             hitInOverlay: !!(hit && overlay.contains(hit)),
             hitInDrawer: !!(hit && drawer.contains(hit)),
+            probePosition: {
+              x: handRect.left + handRect.width / 2,
+              y: handRect.top + handRect.height / 2,
+            },
           };
-          overlay.classList.remove("show", "win");
-          return result;
         });
-        assert(overlayOverDrawer.open && overlayOverDrawer.overlayZ > overlayOverDrawer.drawerZ
-          && overlayOverDrawer.hitInOverlay && !overlayOverDrawer.hitInDrawer,
-          `${name}：抽屜開啟時結算 overlay 壓過抽屜（z ${overlayOverDrawer.overlayZ}>${overlayOverDrawer.drawerZ}、手牌區命中 overlay 層）`);
+        await frame.locator("#overlay").click({ position: overlayOverDrawer.probePosition });
+        const pointerProbe = await frame.evaluate(() => window.__zDrawerPointerProbe);
+        assert(overlayOverDrawer.settled && overlayOverDrawer.shown && overlayOverDrawer.open
+          && overlayOverDrawer.overlayZ > overlayOverDrawer.drawerZ
+          && overlayOverDrawer.overlayPointerEvents !== "none" && overlayOverDrawer.hitPointerEvents !== "none"
+          && overlayOverDrawer.hitInOverlay && !overlayOverDrawer.hitInDrawer
+          && pointerProbe.overlay === 1 && pointerProbe.drawer === 0,
+          `${name}：真實致死結算壓過開啟抽屜且攔截 pointer（z ${overlayOverDrawer.overlayZ}>${overlayOverDrawer.drawerZ}、PE ${overlayOverDrawer.overlayPointerEvents}/${overlayOverDrawer.hitPointerEvents}、probe ${pointerProbe.overlay}/${pointerProbe.drawer}:${pointerProbe.target}）`);
+
+        // 用結算畫面真實 CTA 回復新局，避免直接拆 class 讓後續測試承接合成狀態。
+        await frame.locator("#restartBtn").click();
+        await frame.waitForFunction(() => !window.__test.game().over && !document.getElementById("overlay")?.classList.contains("show"));
 
         await frame.evaluate(() => {
           const T = window.__test;
@@ -338,68 +479,14 @@ async function run() {
           `${name}：非觸控桌機不顯示手機專屬手牌把手／更多控制`);
       }
 
-      // R69.1 HIT-PSEUDO-01：偽元素擴命中區閉環抽樣——英雄（攻擊目標）在視覺框
-      // 「外緣但 44px 擴張區內」的點必須解析回宿主，且無 overflow 祖先把擴張區裁掉。
-      const pseudoHero = await frame.evaluate(() => {
-        window.__samplePseudoHit = (el) => {
-          // 抽樣規則：外緣點須命中宿主。overflow:hidden 祖先把點排除＝靜態裁切
-          // 缺陷（硬失敗）；捲動殼（auto/scroll）或視口邊界排除＝該側幾何上無從
-          // 擴張（螢幕外），豁免該側——但至少一側必須可用且命中。
-          if (!el) return { skip: false, ok: false, reason: "missing", detail: "硬失敗(missing)" };
-          const rect = el.getBoundingClientRect();
-          const style = getComputedStyle(el);
-          if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0
-            || rect.width < 1 || rect.height < 1) {
-            return { skip: false, ok: false, reason: "hidden", detail: "硬失敗(hidden)", height: Math.round(rect.height), pad: 0 };
-          }
-          if (rect.height >= 43.5) return { skip: true, reason: "tall-enough" };
-          // 取視覺框與 44px 外界之間的中點，保證點在框外、也嚴格落在 ::after 內。
-          const pad = Math.min(Math.max((44 - rect.height) / 4, 0.25), 6);
-          const points = [
-            [rect.left + rect.width / 2, rect.top - pad],
-            [rect.left + rect.width / 2, rect.bottom + pad],
-          ];
-          const evals = points.map(([x, y]) => {
-            if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) return { available: false, why: "viewport-edge" };
-            let anc = el.parentElement;
-            while (anc && anc !== document.body) {
-              const acs = getComputedStyle(anc);
-              const ar = anc.getBoundingClientRect();
-              const outsideX = x < ar.left - 0.5 || x > ar.right + 0.5;
-              const outsideY = y < ar.top - 0.5 || y > ar.bottom + 0.5;
-              const xHardClip = outsideX && /^(hidden|clip)$/.test(acs.overflowX);
-              const yHardClip = outsideY && /^(hidden|clip)$/.test(acs.overflowY);
-              const xScrollEdge = outsideX && /^(auto|scroll)$/.test(acs.overflowX);
-              const yScrollEdge = outsideY && /^(auto|scroll)$/.test(acs.overflowY);
-              if (xHardClip || yHardClip) {
-                const name = anc.id ? `#${anc.id}` : `.${String(anc.className).trim().replace(/\s+/g, ".").slice(0, 36)}`;
-                const axes = `${xHardClip ? "x" : ""}${yHardClip ? "y" : ""}`;
-                return { available: true, ok: false, hit: `hidden-clip-${axes}:${name}` };
-              }
-              if (xScrollEdge || yScrollEdge) {
-                const name = anc.id ? `#${anc.id}` : `.${String(anc.className).trim().replace(/\s+/g, ".").slice(0, 36)}`;
-                const axes = `${xScrollEdge ? "x" : ""}${yScrollEdge ? "y" : ""}`;
-                return { available: false, why: `scrollport-edge-${axes}:${name}` };
-              }
-              anc = anc.parentElement;
-            }
-            const hit = document.elementFromPoint(x, y);
-            const sameLabel = !!(hit && el.closest("label") && el.closest("label") === hit.closest("label"));
-            return { available: true, ok: !!(hit && (hit === el || el.contains(hit) || sameLabel)), hit: hit ? `${hit.tagName.toLowerCase()}.${String(hit.className).trim().replace(/\s+/g, ".").slice(0, 36)}` : "none" };
-          });
-          const usable = evals.filter((e) => e.available);
-          return {
-            skip: false,
-            ok: usable.length >= 1 && usable.every((e) => e.ok),
-            detail: evals.map((e) => (e.available ? `${e.ok ? "✓" : "✗"}${e.hit}` : `豁免(${e.why})`)).join("|"),
-            height: Math.round(rect.height), pad,
-          };
-        };
-        return { enemyHero: window.__samplePseudoHit(document.getElementById("enemyHero")), playerHero: window.__samplePseudoHit(document.getElementById("playerHero")) };
-      });
+      // R69.2-04/-07/-10：英雄四向抽樣，包含 44px 真外緣與 ::after 實際外緣；
+      // 高達 43.5px 以上也必須驗水平命中，不再 assert(true) 灌水。
+      const pseudoHero = {
+        enemyHero: await samplePseudoHit(frame, "#enemyHero"),
+        playerHero: await samplePseudoHit(frame, "#playerHero"),
+      };
       for (const [who, data] of Object.entries(pseudoHero)) {
-        if (data.skip) { assert(true, `${name}：${who} 免偽元素擴張抽樣（${data.reason}）`); continue; }
-        assert(data.ok, `${name}：${who} 偽元素擴命中閉環 h=${data.height} pad=${data.pad}（${data.detail}）`);
+        assert(data.ok, `${name}：${who} 四向偽元素／44px 外緣命中 ${Math.round(data.width || 0)}x${Math.round(data.height || 0)} → ${Math.round(data.pseudoWidth || 0)}x${Math.round(data.pseudoHeight || 0)}（${data.detail}）`);
       }
 
       await frame.locator("#settingsToggleBtn").click();
@@ -520,83 +607,27 @@ async function run() {
         await packFrame.waitForFunction(() => document.querySelectorAll("#revealRow .card").length === 5);
         assert(true, `${name}：牌包可用鍵盤 Enter 開啟`);
 
-        // R69.1 HIT-CHIP-01：filter-chip 偽元素擴命中區閉環抽樣——
-        // 視覺框外緣、44px 區內的點必須解析回 chip；且無 overflow 祖先把擴張區裁掉。
-        const chipSamples = await packFrame.evaluate(() => {
-          // 與 battle 側 __samplePseudoHit 同規則（pack 是另一個 frame，內聯一份）：
-          // hidden 祖先排除＝硬失敗；捲動殼/視口邊界排除＝豁免該側；至少一側可用且命中。
-          const sample = (el) => {
-            if (!el) return { skip: false, ok: false, reason: "missing", detail: "硬失敗(missing)" };
-            const rect = el.getBoundingClientRect();
-            const style = getComputedStyle(el);
-            if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0
-              || rect.width < 1 || rect.height < 1) {
-              return { skip: false, ok: false, reason: "hidden", detail: "硬失敗(hidden)", height: Math.round(rect.height), pad: 0 };
-            }
-            if (rect.height >= 43.5) return { skip: true, reason: "tall-enough" };
-            // 取視覺框與 44px 外界之間的中點，保證點在框外、也嚴格落在 ::after 內。
-            const pad = Math.min(Math.max((44 - rect.height) / 4, 0.25), 6);
-            const points = [
-              [rect.left + rect.width / 2, rect.top - pad],
-              [rect.left + rect.width / 2, rect.bottom + pad],
-            ];
-            const evals = points.map(([x, y]) => {
-              if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) return { available: false, why: "viewport-edge" };
-              let anc = el.parentElement;
-              while (anc && anc !== document.body) {
-                const acs = getComputedStyle(anc);
-                const ar = anc.getBoundingClientRect();
-                const outsideX = x < ar.left - 0.5 || x > ar.right + 0.5;
-                const outsideY = y < ar.top - 0.5 || y > ar.bottom + 0.5;
-                const xHardClip = outsideX && /^(hidden|clip)$/.test(acs.overflowX);
-                const yHardClip = outsideY && /^(hidden|clip)$/.test(acs.overflowY);
-                const xScrollEdge = outsideX && /^(auto|scroll)$/.test(acs.overflowX);
-                const yScrollEdge = outsideY && /^(auto|scroll)$/.test(acs.overflowY);
-                if (xHardClip || yHardClip) {
-                  const cname = anc.id ? `#${anc.id}` : `.${String(anc.className).trim().replace(/\s+/g, ".").slice(0, 36)}`;
-                  const axes = `${xHardClip ? "x" : ""}${yHardClip ? "y" : ""}`;
-                  return { available: true, ok: false, hit: `hidden-clip-${axes}:${cname}` };
-                }
-                if (xScrollEdge || yScrollEdge) {
-                  const cname = anc.id ? `#${anc.id}` : `.${String(anc.className).trim().replace(/\s+/g, ".").slice(0, 36)}`;
-                  const axes = `${xScrollEdge ? "x" : ""}${yScrollEdge ? "y" : ""}`;
-                  return { available: false, why: `scrollport-edge-${axes}:${cname}` };
-                }
-                anc = anc.parentElement;
-              }
-              const hit = document.elementFromPoint(x, y);
-              const sameLabel = !!(hit && el.closest("label") && el.closest("label") === hit.closest("label"));
-              return { available: true, ok: !!(hit && (hit === el || el.contains(hit) || sameLabel)), hit: hit ? `${hit.tagName.toLowerCase()}.${String(hit.className).trim().replace(/\s+/g, ".").slice(0, 36)}` : "none" };
-            });
-            const usable = evals.filter((e) => e.available);
-            return {
-              skip: false,
-              ok: usable.length >= 1 && usable.every((e) => e.ok),
-              detail: evals.map((e) => (e.available ? `${e.ok ? "✓" : "✗"}${e.hit}` : `豁免(${e.why})`)).join("|"),
-              height: Math.round(rect.height), pad,
-            };
-          };
-          const pick = (selector) => {
-            const el = document.querySelector(selector);
-            if (el) {
-              // 844×390 的收藏篩選預設收合；先走真實可展開狀態再抽樣。
-              // 若展開後仍不可見，sample 會依 hidden 硬失敗，不能用 skip 洗掉。
+        // R69.2-04/-07/-10：pack 與 battle 共用 samplePseudoHitTarget；每顆 chip
+        // 先捲到真實可見位置，再驗四向 44px／::after 外緣，沒有高度豁免。
+        const chipSamples = {};
+        for (const [which, selector] of Object.entries({
+          collectionChip: "#collectionAxisFilter .filter-chip",
+          deckChip: "#deckCostFilter .filter-chip",
+        })) {
+          const locator = packFrame.locator(selector).first();
+          if (await locator.count()) {
+            await locator.evaluate((el) => {
               const details = el.closest("details");
               if (details) details.open = true;
               const row = el.closest(".filter-chip-row");
               if (row) row.scrollLeft = 0;
               el.scrollIntoView({ block: "center", inline: "nearest" });
-            }
-            return sample(el);
-          };
-          return {
-            collectionChip: pick("#collectionAxisFilter .filter-chip"),
-            deckChip: pick("#deckCostFilter .filter-chip"),
-          };
-        });
+            });
+          }
+          chipSamples[which] = await samplePseudoHit(packFrame, selector);
+        }
         for (const [which, data] of Object.entries(chipSamples)) {
-          if (data.skip) { assert(true, `${name}：${which} 免偽元素擴張抽樣（${data.reason}）`); continue; }
-          assert(data.ok, `${name}：${which} 偽元素擴命中閉環 h=${data.height} pad=${data.pad}（${data.detail}）`);
+          assert(data.ok, `${name}：${which} 四向偽元素／44px 外緣命中 ${Math.round(data.width || 0)}x${Math.round(data.height || 0)} → ${Math.round(data.pseudoWidth || 0)}x${Math.round(data.pseudoHeight || 0)}（${data.detail}）`);
         }
       }
       assert(errors.length === 0, `${name}：無 console/page error${errors.length ? `（${errors.slice(0, 2).join(" | ")}）` : ""}`);

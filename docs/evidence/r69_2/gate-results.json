@@ -1,0 +1,24 @@
+{
+  "round": "card R69.2",
+  "capturedAt": "2026-07-22T17:57:30.1515537+08:00",
+  "version": {
+    "package": "0.4.16",
+    "cache": "card-battle-r71-v1",
+    "reloadKey": "card_sw_auto_reload_r71_v1"
+  },
+  "gates": [
+    { "command": "npm test", "exitCode": 0, "pass": true, "core": { "pass": 131, "fail": 0 } },
+    { "command": "npm run test:controls", "exitCode": 0, "pass": true, "viewports": 6 },
+    { "command": "npm run test:rwd", "exitCode": 0, "pass": true, "pageViewportChecks": 33, "violations": 0 },
+    { "command": "npm run test:e2e", "exitCode": 0, "pass": true, "stage5": true, "serviceWorkerOffline": true, "r67Browser": true },
+    { "command": "git diff --check", "exitCode": 0, "pass": true },
+    { "command": "active old-version grep", "exitCode": 1, "pass": true, "matches": 0 },
+    { "command": "scoped secret-pattern scan", "exitCode": 1, "pass": true, "matches": 0 }
+  ],
+  "realProductDefectsFound": 3,
+  "notes": [
+    "Hero 44px edge was viewport-clipped and covered by the enemy battlefield at 844x390.",
+    "Filter chip hit geometry was under 44px horizontally or clipped/overlapped at pseudo edges.",
+    "Short-desktop media queries removed footer clearance above the fixed command dock."
+  ]
+}
