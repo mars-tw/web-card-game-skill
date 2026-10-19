@@ -1,60 +1,60 @@
 {
-  "generatedAt": "2026-07-17T10:36:40.201Z",
+  "generatedAt": "2026-07-17T12:43:07.439Z",
   "source": "working tree (R67)",
   "profile": "Fast 3G (150ms RTT, 200KiB/s down) + 4x CPU throttle",
   "concurrentMachine": true,
   "trustNote": "Local p95 is concurrent-machine evidence; release decision requires clean-machine audit.",
   "runs": [
     {
-      "interactiveMs": 3525.3,
-      "visualReadyMs": 659.6,
-      "domInteractiveMs": 3225.6,
-      "backgroundResponseEndMs": 547.2,
+      "interactiveMs": 3443.2,
+      "visualReadyMs": 950.4,
+      "domInteractiveMs": 3016.2,
+      "backgroundResponseEndMs": 539.1,
       "visualMarkPresent": true,
       "backgroundResources": [
         {
           "name": "white-tide-citadel-low.webp?v=50075ecc",
           "bytes": 18104,
-          "responseEndMs": 547.2
+          "responseEndMs": 539.1
         }
       ]
     },
     {
-      "interactiveMs": 3609.4,
-      "visualReadyMs": 657,
-      "domInteractiveMs": 3376,
-      "backgroundResponseEndMs": 535.7,
+      "interactiveMs": 2813.1,
+      "visualReadyMs": 698.9,
+      "domInteractiveMs": 2711.4,
+      "backgroundResponseEndMs": 552.5,
       "visualMarkPresent": true,
       "backgroundResources": [
         {
           "name": "white-tide-citadel-low.webp?v=50075ecc",
           "bytes": 18104,
-          "responseEndMs": 535.7
+          "responseEndMs": 552.5
         }
       ]
     },
     {
-      "interactiveMs": 2958.2,
-      "visualReadyMs": 863.3,
-      "domInteractiveMs": 2849.4,
-      "backgroundResponseEndMs": 552.4,
+      "interactiveMs": 2905.9,
+      "visualReadyMs": 690.4,
+      "domInteractiveMs": 2788.8,
+      "backgroundResponseEndMs": 537.4,
       "visualMarkPresent": true,
       "backgroundResources": [
         {
           "name": "white-tide-citadel-low.webp?v=50075ecc",
           "bytes": 18104,
-          "responseEndMs": 552.4
+          "responseEndMs": 537.4
         }
       ]
     }
   ],
   "median": {
-    "interactiveMs": 3525.3,
-    "visualReadyMs": 659.6
+    "interactiveMs": 2905.9,
+    "visualReadyMs": 698.9
   },
   "frame": {
     "samples": 175,
-    "p95Ms": 16.7
+    "p95Ms": 16.8
   },
   "assertions": {
     "visualReadyWithin3000ms": true,
