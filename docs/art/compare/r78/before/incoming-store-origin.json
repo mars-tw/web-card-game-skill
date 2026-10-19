@@ -1,0 +1,17 @@
+{
+  "status": "VERIFIED",
+  "baseCommit": "9347b4f",
+  "source": "Incoming official R77 store PNG bytes preserved before this round; current-run native viewport baselines also in this directory.",
+  "files": [
+    "battle-1290x2796.png",
+    "battle-2064x2752.png",
+    "harbor-1290x2796.png",
+    "harbor-2064x2752.png",
+    "tide-chart-1290x2796.png",
+    "tide-chart-2064x2752.png",
+    "trial-1290x2796.png",
+    "trial-2064x2752.png",
+    "victory-1290x2796.png",
+    "victory-2064x2752.png"
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "status": "VERIFIED",
+  "images": [
+    {
+      "path": "docs/content/r8/review-set/01-puzzle-fallen.png",
+      "source": "docs/content/r8/phone-puzzle-fallen-playing.png",
+      "sha256": "136a8d568985155c719ad91f068ee022bb429a6d69fca751ad7459de03aaf593",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/02-puzzle-spell.png",
+      "source": "docs/content/r8/phone-puzzle-spell-playing.png",
+      "sha256": "0cd6fbdf5bcde78a7c5933cfedf115821394f2c867cd6db68655dc3d71c01424",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/03-exchange-preview.png",
+      "source": "docs/content/r8/phone-exchange-preview.png",
+      "sha256": "a7a94e4de652c9c2e36f5f7ce52fce5e94803043040459eb3ed9e94e6a080579",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/04-exchange-cancelled.png",
+      "source": "docs/content/r8/phone-exchange-cancelled.png",
+      "sha256": "60b6f1cda06d225e32b7de98a6fe6f7e29dbb58e473564fd567ed3937a2628a5",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/05-exchange-confirmed.png",
+      "source": "docs/content/r8/phone-exchange-confirmed.png",
+      "sha256": "cf7f1b6cfccec45ae706433cffd7870c5a540780fcad7b0c39c80f235d605c42",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/06-forecast-held.png",
+      "source": "docs/content/r8/phone-forecast-held.png",
+      "sha256": "2069af623ddd00f69e0bcc9b04412afeea3857cffea01222d25369f631c5b6f1",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/07-forecast-applied-ebb.png",
+      "source": "docs/content/r8/phone-forecast-flood-to-ebb-applied.png",
+      "sha256": "9ef76581440a7dc62e32b99cf308f0d141bfe372787c68448c731e2d2a5a861c",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/08-forecast-flood-result.png",
+      "source": "docs/content/r8/phone-forecast-flood-after.png",
+      "sha256": "69b4fdcdab3de5faf2ffc6f06b792b7823143ff58675185b300cb6a6aec9b007",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/09-forecast-ebb-result.png",
+      "source": "docs/content/r8/phone-forecast-ebb-after.png",
+      "sha256": "6fbcbebdb3ff0d9c7c92d71c05551aad6b46d54e3fe2a71bcdcde7f5d0ad1e70",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/10-forecast-cast-reason.png",
+      "source": "docs/content/r8/phone-forecast-fourth.png",
+      "sha256": "6e9b91b9b306541250900edbc6b0fd0952e156c2d41cc8207cef41db47783ee9",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/11-moen-before.png",
+      "source": "docs/content/r8/phone-moen-preparing.png",
+      "sha256": "5c9c728f51218e31fc635a110ffe86e1079bc35193dd987f2e9fe00393b5f0aa",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/12-moen-impact.png",
+      "source": "docs/content/r8/phone-moen-impact.png",
+      "sha256": "18707feebf3ce065497cbe32634da27ee5d6a830bf88280b08289e3506f27dfe",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/13-moen-shield-broken.png",
+      "source": "docs/content/r8/phone-moen-shield-after.png",
+      "sha256": "c0a86d38789454dec5d22f40e97f734780c784f69af91a50ea4e43e694bd9948",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/14-moen-return-before.png",
+      "source": "docs/content/r8/phone-moen-return-heal-before.png",
+      "sha256": "920c8da0ede2622c5fbe39380b3b8f0a8f265a33757bda737cad2d0216abeca0",
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "docs/content/r8/review-set/15-moen-return-impact.png",
+      "source": "docs/content/r8/phone-moen-return-heal-impact.png",
+      "sha256": "7b276cfdcd667460dd5b3b885e3d21a0f42f6df28a7f626b0bcbbff4734173f5",
+      "size": [
+        390,
+        844
+      ]
+    }
+  ],
+  "distribution": [
+    5,
+    5,
+    5
+  ],
+  "rawScreenshots": 79
+}

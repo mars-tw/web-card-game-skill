@@ -1,0 +1,161 @@
+{
+  "status": "VERIFIED",
+  "distribution": {
+    "puzzles": 5,
+    "forecast": 5,
+    "moen": 5
+  },
+  "images": [
+    {
+      "file": "docs/content/r9/review-set/01-puzzle-spell-playing.png",
+      "source": "docs/content/r9/phone-puzzle-spell-playing.png",
+      "sha256": "bb73ae54db1a151d1dada7409df2d80d023b22d91332e44816dbf0400844e8c4",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "殘局：真實火焰箭手牌四邊完整；目標、限制、潮能分層"
+    },
+    {
+      "file": "docs/content/r9/review-set/02-puzzle-shield-playing.png",
+      "source": "docs/content/r9/phone-puzzle-shield-playing.png",
+      "sha256": "fb6fe561676723ee3436018f2c6196ba1cc001b13c1544dd8bc81573cf8f6a19",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "殘局：聖盾阻擋條件，首屏不洩漏完整解法"
+    },
+    {
+      "file": "docs/content/r9/review-set/03-puzzle-shelter-playing.png",
+      "source": "docs/content/r9/phone-puzzle-shelter-playing.png",
+      "sha256": "287a5d239fc30db65505b02f39ff2dd84524e5453e71e5481f9084ebe27997c4",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "殘局：保住弓手的勝利限制"
+    },
+    {
+      "file": "docs/content/r9/review-set/04-exchange-preview.png",
+      "source": "docs/content/r9/phone-exchange-preview.png",
+      "sha256": "0085686570c689b075a7a356ce19eb93ebdf2d68547ba770514ac8d25f02761f",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "殘局：確認前各卡真實血量預測與潮能"
+    },
+    {
+      "file": "docs/content/r9/review-set/05-exchange-live-result.png",
+      "source": "docs/content/r9/phone-exchange-live-result.png",
+      "sha256": "9ca59b7aded5b816b0b2a2ddf57208cee8aae29c81e7744db5517ef315d85eaf",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "殘局：實際確認後弓手1血、獅鷲4血；按裂潮提示完整"
+    },
+    {
+      "file": "docs/content/r9/review-set/06-forecast-fixed-held.png",
+      "source": "docs/content/r9/phone-forecast-fixed-held.png",
+      "sha256": "f975381ef6be7ce03cb7a600a61992d029353af279c55b15e8e1a7139fd36456",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "預報：按住預覽，固定面板與完整戰場"
+    },
+    {
+      "file": "docs/content/r9/review-set/07-forecast-unready-title.png",
+      "source": "docs/content/r9/phone-forecast-unready-title.png",
+      "sha256": "63ed03a4ca3fdbadb4abafc55fd3fb6c835dfc1c27aa7f3162dfb9927dc8fb32",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "預報：潮能未滿標題、單人對戰獨立一行"
+    },
+    {
+      "file": "docs/content/r9/review-set/08-forecast-reversed-flood-before.png",
+      "source": "docs/content/r9/phone-forecast-reversed-flood-before.png",
+      "sha256": "a1895705a2b3f65bf99d01b337dc849d48d902f090181400b4d81a48453b6d7a",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "預報：真正抵達被反轉的第三回合，尚未扣血"
+    },
+    {
+      "file": "docs/content/r9/review-set/09-forecast-reversed-flood-impact.png",
+      "source": "docs/content/r9/phone-forecast-reversed-flood-impact.png",
+      "sha256": "f272126e913b3931d845886c413a0b7840ed3dae67788ec4dfb8d9b711b24850",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "預報：接續上一格，英雄5→3與騎士4→3傷害收據"
+    },
+    {
+      "file": "docs/content/r9/review-set/10-forecast-second-ebb-shields.png",
+      "source": "docs/content/r9/phone-forecast-second-ebb-shields.png",
+      "sha256": "f413c2cafc6aaa9ee7923e6b47db1126353f3c2a5032c53d41229bf497d8cac9",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "預報：真正抵達反轉的第二回合，兩名友軍各聖盾×1"
+    },
+    {
+      "file": "docs/content/r9/review-set/11-moen-r9-before.png",
+      "source": "docs/content/r9/phone-moen-r9-before.png",
+      "sha256": "49f46d6510aded0fc287b53c964251d4fb39bc5b4f38b79d3b1f91814f97eb43",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "茉恩：治療前；1.5倍立繪不壓卡、單行敵名與退潮守約"
+    },
+    {
+      "file": "docs/content/r9/review-set/12-moen-r9-impact.png",
+      "source": "docs/content/r9/phone-moen-r9-impact.png",
+      "sha256": "b11dbaa004dc936ca511eb084a62a6cb798b92ff53cd7a9e3b083953e436d43d",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "茉恩：連續命中，英雄治療4→7與騎士聖盾×1分開"
+    },
+    {
+      "file": "docs/content/r9/review-set/13-moen-r9-broken.png",
+      "source": "docs/content/r9/phone-moen-r9-broken.png",
+      "sha256": "8ff7f102cf9bd2350a458bd2677047abec31311c0f1b676afbc01bb2c9902af9",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "茉恩：破盾後標籤消失、騎士仍4血，立繪不壓卡"
+    },
+    {
+      "file": "docs/content/r9/review-set/14-moen-return-wolf-spent.png",
+      "source": "docs/content/r9/phone-moen-return-wolf-spent.png",
+      "sha256": "522563bbef237c09624ea39cc05217ff9aa762d0b0fd50499bd08031beb734de",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "茉恩：狼已行動，提示明示下回合補刀"
+    },
+    {
+      "file": "docs/content/r9/review-set/15-moen-return-wolf-ready.png",
+      "source": "docs/content/r9/phone-moen-return-wolf-ready.png",
+      "sha256": "4af1c348285f87031319e119fe4a566ddca07463b69f619e6632a9f3e064b564",
+      "size": [
+        390,
+        844
+      ],
+      "proof": "茉恩：接續14同一場，追加治療3→5後狼恢復可行動，提示時機一致"
+    }
+  ],
+  "limit": "Not every supplementary proof fits 15 images; complete unselected proof inventory is separate."
+}

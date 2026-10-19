@@ -1,0 +1,3552 @@
+{
+  "status": "VERIFIED",
+  "checks": 99,
+  "geometry": [
+    {
+      "label": "forecast held",
+      "width": 390,
+      "height": 844,
+      "stage": null,
+      "stageHits": [],
+      "panel": {
+        "x": 8,
+        "y": 560,
+        "width": 374,
+        "height": 204,
+        "top": 560,
+        "right": 382,
+        "bottom": 764,
+        "left": 8
+      },
+      "panelWithDock": 0.32701421800947866,
+      "gap": 8,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 154,
+            "y": 183.5,
+            "width": 82,
+            "height": 108,
+            "top": 183.5,
+            "right": 236,
+            "bottom": 291.5,
+            "left": 154
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 110.5,
+            "y": 362.5,
+            "width": 82,
+            "height": 108,
+            "top": 362.5,
+            "right": 192.5,
+            "bottom": 470.5,
+            "left": 110.5
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 197.5,
+            "y": 362.5,
+            "width": 82,
+            "height": 108,
+            "top": 362.5,
+            "right": 279.5,
+            "bottom": 470.5,
+            "left": 197.5
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "哈爾登隊長",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "守城潮",
+          "height": 17,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          }
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 293,
+            "y": 569,
+            "width": 74,
+            "height": 44,
+            "top": 569,
+            "right": 367,
+            "bottom": 613,
+            "left": 293
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 17,
+            "y": 639,
+            "width": 114.65625,
+            "height": 64,
+            "top": 639,
+            "right": 131.65625,
+            "bottom": 703,
+            "left": 17
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 137.65625,
+            "y": 639,
+            "width": 114.671875,
+            "height": 64,
+            "top": 639,
+            "right": 252.328125,
+            "bottom": 703,
+            "left": 137.65625
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 258.328125,
+            "y": 639,
+            "width": 114.65625,
+            "height": 64,
+            "top": 639,
+            "right": 372.984375,
+            "bottom": 703,
+            "left": 258.328125
+          }
+        }
+      ]
+    },
+    {
+      "label": "forecast applied",
+      "width": 390,
+      "height": 844,
+      "stage": null,
+      "stageHits": [],
+      "panel": {
+        "x": 8,
+        "y": 560,
+        "width": 374,
+        "height": 204,
+        "top": 560,
+        "right": 382,
+        "bottom": 764,
+        "left": 8
+      },
+      "panelWithDock": 0.32701421800947866,
+      "gap": 8,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 154,
+            "y": 197,
+            "width": 82,
+            "height": 108,
+            "top": 197,
+            "right": 236,
+            "bottom": 305,
+            "left": 154
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 110.5,
+            "y": 367,
+            "width": 82,
+            "height": 108,
+            "top": 367,
+            "right": 192.5,
+            "bottom": 475,
+            "left": 110.5
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 197.5,
+            "y": 367,
+            "width": 82,
+            "height": 108,
+            "top": 367,
+            "right": 279.5,
+            "bottom": 475,
+            "left": 197.5
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "哈爾登隊長",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "守城潮",
+          "height": 17,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 76,
+            "width": 204,
+            "height": 44,
+            "top": 76,
+            "right": 222,
+            "bottom": 120,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 76,
+            "width": 44,
+            "height": 44,
+            "top": 76,
+            "right": 322,
+            "bottom": 120,
+            "left": 278
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 76,
+            "width": 44,
+            "height": 44,
+            "top": 76,
+            "right": 372,
+            "bottom": 120,
+            "left": 328
+          }
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 293,
+            "y": 569,
+            "width": 74,
+            "height": 44,
+            "top": 569,
+            "right": 367,
+            "bottom": 613,
+            "left": 293
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 17,
+            "y": 639,
+            "width": 114.65625,
+            "height": 64,
+            "top": 639,
+            "right": 131.65625,
+            "bottom": 703,
+            "left": 17
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 137.65625,
+            "y": 639,
+            "width": 114.671875,
+            "height": 64,
+            "top": 639,
+            "right": 252.328125,
+            "bottom": 703,
+            "left": 137.65625
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 258.328125,
+            "y": 639,
+            "width": 114.65625,
+            "height": 64,
+            "top": 639,
+            "right": 372.984375,
+            "bottom": 703,
+            "left": 258.328125
+          }
+        }
+      ]
+    },
+    {
+      "label": "moen preparation",
+      "width": 390,
+      "height": 844,
+      "stage": {
+        "x": 11,
+        "y": 359,
+        "width": 162,
+        "height": 168,
+        "top": 359,
+        "right": 173,
+        "bottom": 527,
+        "left": 11
+      },
+      "stageHits": [],
+      "panelWithDock": 0,
+      "gap": 0,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 269.5,
+            "y": 196.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 196.5,
+            "right": 352,
+            "bottom": 322.5,
+            "left": 269.5
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 22.5,
+            "y": 549.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 549.5,
+            "right": 105,
+            "bottom": 675.5,
+            "left": 22.5
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 110,
+            "y": 549.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 549.5,
+            "right": 192.5,
+            "bottom": 675.5,
+            "left": 110
+          }
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 197.5,
+            "y": 549.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 549.5,
+            "right": 280,
+            "bottom": 675.5,
+            "left": 197.5
+          }
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 285,
+            "y": 549.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 549.5,
+            "right": 367.5,
+            "bottom": 675.5,
+            "left": 285
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "茉恩",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "退潮守約",
+          "height": 17,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 78,
+            "width": 204,
+            "height": 44,
+            "top": 78,
+            "right": 222,
+            "bottom": 122,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 322,
+            "bottom": 122,
+            "left": 278
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 372,
+            "bottom": 122,
+            "left": 328
+          }
+        }
+      ]
+    },
+    {
+      "label": "moen healing impact",
+      "width": 390,
+      "height": 844,
+      "stage": {
+        "x": 11,
+        "y": 339,
+        "width": 162,
+        "height": 168,
+        "top": 339,
+        "right": 173,
+        "bottom": 507,
+        "left": 11
+      },
+      "stageHits": [],
+      "panelWithDock": 0,
+      "gap": 0,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 269.5,
+            "y": 181.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 181.5,
+            "right": 352,
+            "bottom": 307.5,
+            "left": 269.5
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 22.5,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 105,
+            "bottom": 670.5,
+            "left": 22.5
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 110,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 192.5,
+            "bottom": 670.5,
+            "left": 110
+          }
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 197.5,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 280,
+            "bottom": 670.5,
+            "left": 197.5
+          }
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 285,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 367.5,
+            "bottom": 670.5,
+            "left": 285
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "茉恩",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "退潮守約",
+          "height": 17,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 15.061721801757812,
+            "y": 779.3663940429688,
+            "width": 67.03280639648438,
+            "height": 45.2672119140625,
+            "top": 779.3663940429688,
+            "right": 82.09452819824219,
+            "bottom": 824.6336059570312,
+            "left": 15.061721801757812
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          }
+        }
+      ]
+    },
+    {
+      "label": "moen after shield break",
+      "width": 390,
+      "height": 844,
+      "stage": {
+        "x": 11,
+        "y": 349,
+        "width": 162,
+        "height": 168,
+        "top": 349,
+        "right": 173,
+        "bottom": 517,
+        "left": 11
+      },
+      "stageHits": [],
+      "panelWithDock": 0,
+      "gap": 0,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 269.5,
+            "y": 181.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 181.5,
+            "right": 352,
+            "bottom": 307.5,
+            "left": 269.5
+          }
+        },
+        {
+          "id": "0",
+          "rect": {
+            "x": 17.75,
+            "y": 541.5,
+            "width": 92,
+            "height": 132,
+            "top": 541.5,
+            "right": 109.75,
+            "bottom": 673.5,
+            "left": 17.75
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 114.75,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 197.25,
+            "bottom": 670.5,
+            "left": 114.75
+          }
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 202.25,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 284.75,
+            "bottom": 670.5,
+            "left": 202.25
+          }
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 289.75,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 372.25,
+            "bottom": 670.5,
+            "left": 289.75
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "茉恩",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "退潮守約",
+          "height": 17,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          }
+        }
+      ]
+    },
+    {
+      "label": "320x568 Moen",
+      "width": 320,
+      "height": 568,
+      "stage": {
+        "x": 170,
+        "y": 372,
+        "width": 108,
+        "height": 108,
+        "top": 372,
+        "right": 278,
+        "bottom": 480,
+        "left": 170
+      },
+      "stageHits": [],
+      "panelWithDock": 0,
+      "gap": 0,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 191,
+            "y": 200,
+            "width": 68,
+            "height": 100,
+            "top": 200,
+            "right": 259,
+            "bottom": 300,
+            "left": 191
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 10.25,
+            "y": 234,
+            "width": 68,
+            "height": 100,
+            "top": 234,
+            "right": 78.25,
+            "bottom": 334,
+            "left": 10.25
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 86.75,
+            "y": 234,
+            "width": 68,
+            "height": 100,
+            "top": 234,
+            "right": 154.75,
+            "bottom": 334,
+            "left": 86.75
+          }
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 10.25,
+            "y": 340,
+            "width": 68,
+            "height": 100,
+            "top": 340,
+            "right": 78.25,
+            "bottom": 440,
+            "left": 10.25
+          }
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 86.75,
+            "y": 340,
+            "width": 68,
+            "height": 100,
+            "top": 340,
+            "right": 154.75,
+            "bottom": 440,
+            "left": 86.75
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "茉恩",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "退潮守約",
+          "height": 0,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.37109375,
+            "y": 502.8999938964844,
+            "width": 68.4140625,
+            "height": 46.199981689453125,
+            "top": 502.8999938964844,
+            "right": 82.78515625,
+            "bottom": 549.0999755859375,
+            "left": 14.37109375
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 98,
+            "y": 504,
+            "width": 86,
+            "height": 44,
+            "top": 504,
+            "right": 184,
+            "bottom": 548,
+            "left": 98
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 190,
+            "y": 504,
+            "width": 64,
+            "height": 44,
+            "top": 504,
+            "right": 254,
+            "bottom": 548,
+            "left": 190
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 260,
+            "y": 504,
+            "width": 44,
+            "height": 44,
+            "top": 504,
+            "right": 304,
+            "bottom": 548,
+            "left": 260
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 78,
+            "width": 134,
+            "height": 44,
+            "top": 78,
+            "right": 152,
+            "bottom": 122,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 208,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 252,
+            "bottom": 122,
+            "left": 208
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 258,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 302,
+            "bottom": 122,
+            "left": 258
+          }
+        }
+      ]
+    },
+    {
+      "label": "320x568 compact forecast",
+      "width": 320,
+      "height": 568,
+      "stage": null,
+      "stageHits": [],
+      "panel": {
+        "x": 8,
+        "y": 362,
+        "width": 304,
+        "height": 126,
+        "top": 362,
+        "right": 312,
+        "bottom": 488,
+        "left": 8
+      },
+      "panelWithDock": 0.3485915492957746,
+      "gap": 8,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 203.5,
+            "y": 207,
+            "width": 68,
+            "height": 110,
+            "top": 207,
+            "right": 271.5,
+            "bottom": 317,
+            "left": 203.5
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 10.25,
+            "y": 207,
+            "width": 68,
+            "height": 110,
+            "top": 207,
+            "right": 78.25,
+            "bottom": 317,
+            "left": 10.25
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 86.75,
+            "y": 207,
+            "width": 68,
+            "height": 110,
+            "top": 207,
+            "right": 154.75,
+            "bottom": 317,
+            "left": 86.75
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "哈爾登隊長",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "守城潮",
+          "height": 0,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 504,
+            "width": 65.15625,
+            "height": 44,
+            "top": 504,
+            "right": 81.15625,
+            "bottom": 548,
+            "left": 16
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 98,
+            "y": 504,
+            "width": 86,
+            "height": 44,
+            "top": 504,
+            "right": 184,
+            "bottom": 548,
+            "left": 98
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 190,
+            "y": 504,
+            "width": 64,
+            "height": 44,
+            "top": 504,
+            "right": 254,
+            "bottom": 548,
+            "left": 190
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 260,
+            "y": 504,
+            "width": 44,
+            "height": 44,
+            "top": 504,
+            "right": 304,
+            "bottom": 548,
+            "left": 260
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 134,
+            "height": 44,
+            "top": 58,
+            "right": 152,
+            "bottom": 102,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 208,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 252,
+            "bottom": 102,
+            "left": 208
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 258,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 302,
+            "bottom": 102,
+            "left": 258
+          }
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 227,
+            "y": 367,
+            "width": 74,
+            "height": 44,
+            "top": 367,
+            "right": 301,
+            "bottom": 411,
+            "left": 227
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 13,
+            "y": 413,
+            "width": 94,
+            "height": 44,
+            "top": 413,
+            "right": 107,
+            "bottom": 457,
+            "left": 13
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 113,
+            "y": 413,
+            "width": 94,
+            "height": 44,
+            "top": 413,
+            "right": 207,
+            "bottom": 457,
+            "left": 113
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 213,
+            "y": 413,
+            "width": 94,
+            "height": 44,
+            "top": 413,
+            "right": 307,
+            "bottom": 457,
+            "left": 213
+          }
+        }
+      ]
+    },
+    {
+      "label": "360x640 Moen",
+      "width": 360,
+      "height": 640,
+      "stage": {
+        "x": 190,
+        "y": 444,
+        "width": 108,
+        "height": 108,
+        "top": 444,
+        "right": 298,
+        "bottom": 552,
+        "left": 190
+      },
+      "stageHits": [],
+      "panelWithDock": 0,
+      "gap": 0,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 216,
+            "y": 200,
+            "width": 78,
+            "height": 100,
+            "top": 200,
+            "right": 294,
+            "bottom": 300,
+            "left": 216
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 10.25,
+            "y": 270,
+            "width": 78,
+            "height": 100,
+            "top": 270,
+            "right": 88.25,
+            "bottom": 370,
+            "left": 10.25
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 96.75,
+            "y": 270,
+            "width": 78,
+            "height": 100,
+            "top": 270,
+            "right": 174.75,
+            "bottom": 370,
+            "left": 96.75
+          }
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 10.25,
+            "y": 376,
+            "width": 78,
+            "height": 100,
+            "top": 376,
+            "right": 88.25,
+            "bottom": 476,
+            "left": 10.25
+          }
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 96.75,
+            "y": 376,
+            "width": 78,
+            "height": 100,
+            "top": 376,
+            "right": 174.75,
+            "bottom": 476,
+            "left": 96.75
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "茉恩",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "退潮守約",
+          "height": 0,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.37109375,
+            "y": 574.9000244140625,
+            "width": 68.4140625,
+            "height": 46.199951171875,
+            "top": 574.9000244140625,
+            "right": 82.78515625,
+            "bottom": 621.0999755859375,
+            "left": 14.37109375
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 122,
+            "y": 576,
+            "width": 86,
+            "height": 44,
+            "top": 576,
+            "right": 208,
+            "bottom": 620,
+            "left": 122
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 214,
+            "y": 576,
+            "width": 80,
+            "height": 44,
+            "top": 576,
+            "right": 294,
+            "bottom": 620,
+            "left": 214
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 300,
+            "y": 576,
+            "width": 44,
+            "height": 44,
+            "top": 576,
+            "right": 344,
+            "bottom": 620,
+            "left": 300
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 78,
+            "width": 174,
+            "height": 44,
+            "top": 78,
+            "right": 192,
+            "bottom": 122,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 248,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 292,
+            "bottom": 122,
+            "left": 248
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 298,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 342,
+            "bottom": 122,
+            "left": 298
+          }
+        }
+      ]
+    },
+    {
+      "label": "360x640 compact forecast",
+      "width": 360,
+      "height": 640,
+      "stage": null,
+      "stageHits": [],
+      "panel": {
+        "x": 8,
+        "y": 434,
+        "width": 344,
+        "height": 126,
+        "top": 434,
+        "right": 352,
+        "bottom": 560,
+        "left": 8
+      },
+      "panelWithDock": 0.309375,
+      "gap": 8,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 228.5,
+            "y": 243,
+            "width": 78,
+            "height": 110,
+            "top": 243,
+            "right": 306.5,
+            "bottom": 353,
+            "left": 228.5
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 10.25,
+            "y": 243,
+            "width": 78,
+            "height": 110,
+            "top": 243,
+            "right": 88.25,
+            "bottom": 353,
+            "left": 10.25
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 96.75,
+            "y": 243,
+            "width": 78,
+            "height": 110,
+            "top": 243,
+            "right": 174.75,
+            "bottom": 353,
+            "left": 96.75
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "哈爾登隊長",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "守城潮",
+          "height": 0,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 576,
+            "width": 65.15625,
+            "height": 44,
+            "top": 576,
+            "right": 81.15625,
+            "bottom": 620,
+            "left": 16
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 122,
+            "y": 576,
+            "width": 86,
+            "height": 44,
+            "top": 576,
+            "right": 208,
+            "bottom": 620,
+            "left": 122
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 214,
+            "y": 576,
+            "width": 80,
+            "height": 44,
+            "top": 576,
+            "right": 294,
+            "bottom": 620,
+            "left": 214
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 300,
+            "y": 576,
+            "width": 44,
+            "height": 44,
+            "top": 576,
+            "right": 344,
+            "bottom": 620,
+            "left": 300
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 174,
+            "height": 44,
+            "top": 58,
+            "right": 192,
+            "bottom": 102,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 248,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 292,
+            "bottom": 102,
+            "left": 248
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 298,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 342,
+            "bottom": 102,
+            "left": 298
+          }
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 267,
+            "y": 439,
+            "width": 74,
+            "height": 44,
+            "top": 439,
+            "right": 341,
+            "bottom": 483,
+            "left": 267
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 13,
+            "y": 485,
+            "width": 107.328125,
+            "height": 44,
+            "top": 485,
+            "right": 120.328125,
+            "bottom": 529,
+            "left": 13
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 126.328125,
+            "y": 485,
+            "width": 107.328125,
+            "height": 44,
+            "top": 485,
+            "right": 233.65625,
+            "bottom": 529,
+            "left": 126.328125
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 239.65625,
+            "y": 485,
+            "width": 107.34375,
+            "height": 44,
+            "top": 485,
+            "right": 347,
+            "bottom": 529,
+            "left": 239.65625
+          }
+        }
+      ]
+    },
+    {
+      "label": "844x390 Moen",
+      "width": 844,
+      "height": 390,
+      "stage": {
+        "x": 362,
+        "y": 130,
+        "width": 120,
+        "height": 140,
+        "top": 130,
+        "right": 482,
+        "bottom": 270,
+        "left": 362
+      },
+      "stageHits": [],
+      "panelWithDock": 0,
+      "gap": 0,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 733,
+            "y": 146,
+            "width": 92,
+            "height": 140,
+            "top": 146,
+            "right": 825,
+            "bottom": 286,
+            "left": 733
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 46,
+            "y": 166,
+            "width": 68,
+            "height": 100,
+            "top": 166,
+            "right": 114,
+            "bottom": 266,
+            "left": 46
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 118,
+            "y": 166,
+            "width": 68,
+            "height": 100,
+            "top": 166,
+            "right": 186,
+            "bottom": 266,
+            "left": 118
+          }
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 190,
+            "y": 166,
+            "width": 68,
+            "height": 100,
+            "top": 166,
+            "right": 258,
+            "bottom": 266,
+            "left": 190
+          }
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 262,
+            "y": 166,
+            "width": 68,
+            "height": 100,
+            "top": 166,
+            "right": 330,
+            "bottom": 266,
+            "left": 262
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "茉恩",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "退潮守約",
+          "height": 0,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 324.8999938964844,
+            "width": 82.26092529296875,
+            "height": 46.20001220703125,
+            "top": 324.8999938964844,
+            "right": 96.30233383178711,
+            "bottom": 371.1000061035156,
+            "left": 14.04140853881836
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 390.875,
+            "y": 326,
+            "width": 86,
+            "height": 44,
+            "top": 326,
+            "right": 476.875,
+            "bottom": 370,
+            "left": 390.875
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 482.875,
+            "y": 326,
+            "width": 295.125,
+            "height": 44,
+            "top": 326,
+            "right": 778,
+            "bottom": 370,
+            "left": 482.875
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 784,
+            "y": 326,
+            "width": 48,
+            "height": 44,
+            "top": 326,
+            "right": 832,
+            "bottom": 370,
+            "left": 784
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 537,
+            "y": 7,
+            "width": 70,
+            "height": 44,
+            "top": 7,
+            "right": 607,
+            "bottom": 51,
+            "left": 537
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 613,
+            "y": 7,
+            "width": 70,
+            "height": 44,
+            "top": 7,
+            "right": 683,
+            "bottom": 51,
+            "left": 613
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 689,
+            "y": 7,
+            "width": 70,
+            "height": 44,
+            "top": 7,
+            "right": 759,
+            "bottom": 51,
+            "left": 689
+          }
+        }
+      ]
+    },
+    {
+      "label": "1032x1376 Moen",
+      "width": 1032,
+      "height": 1376,
+      "stage": {
+        "x": 11,
+        "y": 615,
+        "width": 162,
+        "height": 168,
+        "top": 615,
+        "right": 173,
+        "bottom": 783,
+        "left": 11
+      },
+      "stageHits": [],
+      "panelWithDock": 0,
+      "gap": 0,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 712.8125,
+            "y": 314.5,
+            "width": 105,
+            "height": 126,
+            "top": 314.5,
+            "right": 817.8125,
+            "bottom": 440.5,
+            "left": 712.8125
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 298.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 403.5,
+            "bottom": 1069.5,
+            "left": 298.5
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 408.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 513.5,
+            "bottom": 1069.5,
+            "left": 408.5
+          }
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 518.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 623.5,
+            "bottom": 1069.5,
+            "left": 518.5
+          }
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 628.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 733.5,
+            "bottom": 1069.5,
+            "left": 628.5
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "茉恩",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "退潮守約",
+          "height": 17,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 1310.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 1310.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 1357.0999755859375,
+            "left": 14.04140853881836
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 495.328125,
+            "y": 1312,
+            "width": 86,
+            "height": 44,
+            "top": 1312,
+            "right": 581.328125,
+            "bottom": 1356,
+            "left": 495.328125
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 587.328125,
+            "y": 1312,
+            "width": 378.671875,
+            "height": 44,
+            "top": 1312,
+            "right": 966,
+            "bottom": 1356,
+            "left": 587.328125
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 972,
+            "y": 1312,
+            "width": 48,
+            "height": 44,
+            "top": 1312,
+            "right": 1020,
+            "bottom": 1356,
+            "left": 972
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 590,
+            "height": 44,
+            "top": 58,
+            "right": 608,
+            "bottom": 102,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 664,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 708,
+            "bottom": 102,
+            "left": 664
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 758,
+            "bottom": 102,
+            "left": 714
+          }
+        }
+      ]
+    },
+    {
+      "label": "1376x1032 Moen",
+      "width": 1376,
+      "height": 1032,
+      "stage": {
+        "x": 11,
+        "y": 443,
+        "width": 162,
+        "height": 168,
+        "top": 443,
+        "right": 173,
+        "bottom": 611,
+        "left": 11
+      },
+      "stageHits": [],
+      "panelWithDock": 0,
+      "gap": 0,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 988,
+            "y": 228.5,
+            "width": 105,
+            "height": 126,
+            "top": 228.5,
+            "right": 1093,
+            "bottom": 354.5,
+            "left": 988
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 470.5,
+            "y": 685.5,
+            "width": 105,
+            "height": 126,
+            "top": 685.5,
+            "right": 575.5,
+            "bottom": 811.5,
+            "left": 470.5
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 580.5,
+            "y": 685.5,
+            "width": 105,
+            "height": 126,
+            "top": 685.5,
+            "right": 685.5,
+            "bottom": 811.5,
+            "left": 580.5
+          }
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 690.5,
+            "y": 685.5,
+            "width": 105,
+            "height": 126,
+            "top": 685.5,
+            "right": 795.5,
+            "bottom": 811.5,
+            "left": 690.5
+          }
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 800.5,
+            "y": 685.5,
+            "width": 105,
+            "height": 126,
+            "top": 685.5,
+            "right": 905.5,
+            "bottom": 811.5,
+            "left": 800.5
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "茉恩",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "退潮守約",
+          "height": 17,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 966.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 966.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 1013.0999755859375,
+            "left": 14.04140853881836
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 686.4375,
+            "y": 968,
+            "width": 86,
+            "height": 44,
+            "top": 968,
+            "right": 772.4375,
+            "bottom": 1012,
+            "left": 686.4375
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 778.4375,
+            "y": 968,
+            "width": 531.5625,
+            "height": 44,
+            "top": 968,
+            "right": 1310,
+            "bottom": 1012,
+            "left": 778.4375
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 1316,
+            "y": 968,
+            "width": 48,
+            "height": 44,
+            "top": 968,
+            "right": 1364,
+            "bottom": 1012,
+            "left": 1316
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 590,
+            "height": 44,
+            "top": 58,
+            "right": 608,
+            "bottom": 102,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 664,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 708,
+            "bottom": 102,
+            "left": 664
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 758,
+            "bottom": 102,
+            "left": 714
+          }
+        }
+      ]
+    },
+    {
+      "label": "430x932 Moen",
+      "width": 430,
+      "height": 932,
+      "stage": {
+        "x": 11,
+        "y": 413,
+        "width": 162,
+        "height": 168,
+        "top": 413,
+        "right": 173,
+        "bottom": 581,
+        "left": 11
+      },
+      "stageHits": [],
+      "panelWithDock": 0,
+      "gap": 0,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 299.5,
+            "y": 218.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 218.5,
+            "right": 392,
+            "bottom": 344.5,
+            "left": 299.5
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 22.5,
+            "y": 615.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 615.5,
+            "right": 115,
+            "bottom": 741.5,
+            "left": 22.5
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 120,
+            "y": 615.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 615.5,
+            "right": 212.5,
+            "bottom": 741.5,
+            "left": 120
+          }
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 217.5,
+            "y": 615.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 615.5,
+            "right": 310,
+            "bottom": 741.5,
+            "left": 217.5
+          }
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 315,
+            "y": 615.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 615.5,
+            "right": 407.5,
+            "bottom": 741.5,
+            "left": 315
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "茉恩",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "退潮守約",
+          "height": 17,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 866.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 866.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 913.0999755859375,
+            "left": 14.04140853881836
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 160.875,
+            "y": 868,
+            "width": 86,
+            "height": 44,
+            "top": 868,
+            "right": 246.875,
+            "bottom": 912,
+            "left": 160.875
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 252.875,
+            "y": 868,
+            "width": 111.109375,
+            "height": 44,
+            "top": 868,
+            "right": 363.984375,
+            "bottom": 912,
+            "left": 252.875
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 369.984375,
+            "y": 868,
+            "width": 48,
+            "height": 44,
+            "top": 868,
+            "right": 417.984375,
+            "bottom": 912,
+            "left": 369.984375
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 78,
+            "width": 244,
+            "height": 44,
+            "top": 78,
+            "right": 262,
+            "bottom": 122,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 318,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 362,
+            "bottom": 122,
+            "left": 318
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 368,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 412,
+            "bottom": 122,
+            "left": 368
+          }
+        }
+      ]
+    },
+    {
+      "label": "430x932 compact forecast",
+      "width": 430,
+      "height": 932,
+      "stage": null,
+      "stageHits": [],
+      "panel": {
+        "x": 8,
+        "y": 648,
+        "width": 414,
+        "height": 204,
+        "top": 648,
+        "right": 422,
+        "bottom": 852,
+        "left": 8
+      },
+      "panelWithDock": 0.296137339055794,
+      "gap": 8,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 174,
+            "y": 205.5,
+            "width": 82,
+            "height": 108,
+            "top": 205.5,
+            "right": 256,
+            "bottom": 313.5,
+            "left": 174
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 130.5,
+            "y": 428.5,
+            "width": 82,
+            "height": 108,
+            "top": 428.5,
+            "right": 212.5,
+            "bottom": 536.5,
+            "left": 130.5
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 217.5,
+            "y": 428.5,
+            "width": 82,
+            "height": 108,
+            "top": 428.5,
+            "right": 299.5,
+            "bottom": 536.5,
+            "left": 217.5
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "哈爾登隊長",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "守城潮",
+          "height": 17,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 868,
+            "width": 78.34375,
+            "height": 44,
+            "top": 868,
+            "right": 94.34375,
+            "bottom": 912,
+            "left": 16
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 160.875,
+            "y": 868,
+            "width": 86,
+            "height": 44,
+            "top": 868,
+            "right": 246.875,
+            "bottom": 912,
+            "left": 160.875
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 252.875,
+            "y": 868,
+            "width": 111.109375,
+            "height": 44,
+            "top": 868,
+            "right": 363.984375,
+            "bottom": 912,
+            "left": 252.875
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 369.984375,
+            "y": 868,
+            "width": 48,
+            "height": 44,
+            "top": 868,
+            "right": 417.984375,
+            "bottom": 912,
+            "left": 369.984375
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 244,
+            "height": 44,
+            "top": 58,
+            "right": 262,
+            "bottom": 102,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 318,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 362,
+            "bottom": 102,
+            "left": 318
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 368,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 412,
+            "bottom": 102,
+            "left": 368
+          }
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 333,
+            "y": 657,
+            "width": 74,
+            "height": 44,
+            "top": 657,
+            "right": 407,
+            "bottom": 701,
+            "left": 333
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 17,
+            "y": 727,
+            "width": 128,
+            "height": 64,
+            "top": 727,
+            "right": 145,
+            "bottom": 791,
+            "left": 17
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 151,
+            "y": 727,
+            "width": 128,
+            "height": 64,
+            "top": 727,
+            "right": 279,
+            "bottom": 791,
+            "left": 151
+          }
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 285,
+            "y": 727,
+            "width": 128,
+            "height": 64,
+            "top": 727,
+            "right": 413,
+            "bottom": 791,
+            "left": 285
+          }
+        }
+      ]
+    },
+    {
+      "label": "1032x1376 Moen",
+      "width": 1032,
+      "height": 1376,
+      "stage": {
+        "x": 11,
+        "y": 615,
+        "width": 162,
+        "height": 168,
+        "top": 615,
+        "right": 173,
+        "bottom": 783,
+        "left": 11
+      },
+      "stageHits": [],
+      "panelWithDock": 0,
+      "gap": 0,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 712.8125,
+            "y": 314.5,
+            "width": 105,
+            "height": 126,
+            "top": 314.5,
+            "right": 817.8125,
+            "bottom": 440.5,
+            "left": 712.8125
+          }
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 298.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 403.5,
+            "bottom": 1069.5,
+            "left": 298.5
+          }
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 408.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 513.5,
+            "bottom": 1069.5,
+            "left": 408.5
+          }
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 518.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 623.5,
+            "bottom": 1069.5,
+            "left": 518.5
+          }
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 628.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 733.5,
+            "bottom": 1069.5,
+            "left": 628.5
+          }
+        }
+      ],
+      "nameLines": [
+        {
+          "text": "茉恩",
+          "height": 20,
+          "lineHeight": 20
+        },
+        {
+          "text": "退潮守約",
+          "height": 17,
+          "lineHeight": 20
+        }
+      ],
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 1310.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 1310.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 1357.0999755859375,
+            "left": 14.04140853881836
+          }
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 495.328125,
+            "y": 1312,
+            "width": 86,
+            "height": 44,
+            "top": 1312,
+            "right": 581.328125,
+            "bottom": 1356,
+            "left": 495.328125
+          }
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 587.328125,
+            "y": 1312,
+            "width": 378.671875,
+            "height": 44,
+            "top": 1312,
+            "right": 966,
+            "bottom": 1356,
+            "left": 587.328125
+          }
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 972,
+            "y": 1312,
+            "width": 48,
+            "height": 44,
+            "top": 1312,
+            "right": 1020,
+            "bottom": 1356,
+            "left": 972
+          }
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 590,
+            "height": 44,
+            "top": 58,
+            "right": 608,
+            "bottom": 102,
+            "left": 18
+          }
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 664,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 708,
+            "bottom": 102,
+            "left": 664
+          }
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 758,
+            "bottom": 102,
+            "left": 714
+          }
+        }
+      ]
+    }
+  ],
+  "branches": [
+    {
+      "triggerBefore": {
+        "round": 2,
+        "content": {
+          "id": "moen",
+          "version": 1,
+          "enemyEbbUsed": true,
+          "harborBoss": false,
+          "returning": true
+        },
+        "enemyHp": 3,
+        "enemyTide": 1,
+        "enemy": [],
+        "player": [
+          {
+            "id": "knight",
+            "name": "鋼鐵騎士",
+            "type": "minion",
+            "rarity": "rare",
+            "cost": 3,
+            "attack": 3,
+            "health": 1,
+            "emoji": "🛡️",
+            "image": "../../assets/cards/knight.png",
+            "keywords": [
+              "taunt"
+            ],
+            "text": "攻守兼備的中堅。",
+            "foil": false,
+            "axis": "control",
+            "faction": "wardens",
+            "flavor": "白潮騎士守住的不是橋，而是城民仍能相信的明天。",
+            "uid": "content-player-1",
+            "maxHealth": 4,
+            "canAttack": false,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false,
+            "_r77SpentTurn": 2
+          },
+          {
+            "id": "wolf",
+            "name": "迅捷狼",
+            "type": "minion",
+            "rarity": "common",
+            "cost": 2,
+            "attack": 2,
+            "health": 2,
+            "emoji": "🐺",
+            "image": "../../assets/cards/wolf.png",
+            "keywords": [
+              "charge"
+            ],
+            "text": "登場即可撲咬。",
+            "foil": false,
+            "axis": "aggro",
+            "faction": "wild",
+            "flavor": "迅捷狼只認得兩種路：獵物的路與回家的路。",
+            "uid": "content-player-3",
+            "maxHealth": 2,
+            "canAttack": false,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false,
+            "_r77SpentTurn": 2
+          }
+        ]
+      },
+      "trigger": {
+        "round": 2,
+        "content": {
+          "id": "moen",
+          "version": 1,
+          "enemyEbbUsed": true,
+          "harborBoss": false,
+          "returning": true,
+          "returnResolved": true,
+          "returnTide": 2,
+          "returnHeal": true
+        },
+        "enemyHp": 5,
+        "enemyTide": 2,
+        "enemy": [],
+        "player": [
+          {
+            "id": "knight",
+            "name": "鋼鐵騎士",
+            "type": "minion",
+            "rarity": "rare",
+            "cost": 3,
+            "attack": 3,
+            "health": 1,
+            "emoji": "🛡️",
+            "image": "../../assets/cards/knight.png",
+            "keywords": [
+              "taunt"
+            ],
+            "text": "攻守兼備的中堅。",
+            "foil": false,
+            "axis": "control",
+            "faction": "wardens",
+            "flavor": "白潮騎士守住的不是橋，而是城民仍能相信的明天。",
+            "uid": "content-player-1",
+            "maxHealth": 4,
+            "canAttack": false,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false,
+            "_r77SpentTurn": 2
+          },
+          {
+            "id": "wolf",
+            "name": "迅捷狼",
+            "type": "minion",
+            "rarity": "common",
+            "cost": 2,
+            "attack": 2,
+            "health": 2,
+            "emoji": "🐺",
+            "image": "../../assets/cards/wolf.png",
+            "keywords": [
+              "charge"
+            ],
+            "text": "登場即可撲咬。",
+            "foil": false,
+            "axis": "aggro",
+            "faction": "wild",
+            "flavor": "迅捷狼只認得兩種路：獵物的路與回家的路。",
+            "uid": "content-player-3",
+            "maxHealth": 2,
+            "canAttack": false,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false,
+            "_r77SpentTurn": 2
+          }
+        ]
+      },
+      "preventBefore": {
+        "round": 2,
+        "content": {
+          "id": "moen",
+          "version": 1,
+          "enemyEbbUsed": true,
+          "harborBoss": false,
+          "returning": true
+        },
+        "enemyHp": 7,
+        "enemyTide": 0,
+        "enemy": [
+          {
+            "id": "knight",
+            "name": "鋼鐵騎士",
+            "type": "minion",
+            "rarity": "rare",
+            "cost": 3,
+            "attack": 3,
+            "health": 2,
+            "emoji": "🛡️",
+            "image": "../../assets/cards/knight.png",
+            "keywords": [
+              "taunt"
+            ],
+            "text": "攻守兼備的中堅。",
+            "foil": false,
+            "axis": "control",
+            "faction": "wardens",
+            "flavor": "白潮騎士守住的不是橋，而是城民仍能相信的明天。",
+            "uid": "content-enemy-0",
+            "maxHealth": 4,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false,
+            "_r3ShieldBroken": true
+          }
+        ],
+        "player": [
+          {
+            "id": "knight",
+            "name": "鋼鐵騎士",
+            "type": "minion",
+            "rarity": "rare",
+            "cost": 3,
+            "attack": 3,
+            "health": 4,
+            "emoji": "🛡️",
+            "image": "../../assets/cards/knight.png",
+            "keywords": [
+              "taunt"
+            ],
+            "text": "攻守兼備的中堅。",
+            "foil": false,
+            "axis": "control",
+            "faction": "wardens",
+            "flavor": "白潮騎士守住的不是橋，而是城民仍能相信的明天。",
+            "uid": "content-player-1",
+            "maxHealth": 4,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false
+          },
+          {
+            "id": "wolf",
+            "name": "迅捷狼",
+            "type": "minion",
+            "rarity": "common",
+            "cost": 2,
+            "attack": 2,
+            "health": 2,
+            "emoji": "🐺",
+            "image": "../../assets/cards/wolf.png",
+            "keywords": [
+              "charge"
+            ],
+            "text": "登場即可撲咬。",
+            "foil": false,
+            "axis": "aggro",
+            "faction": "wild",
+            "flavor": "迅捷狼只認得兩種路：獵物的路與回家的路。",
+            "uid": "content-player-3",
+            "maxHealth": 2,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false
+          }
+        ]
+      },
+      "prevent": {
+        "round": 3,
+        "content": {
+          "id": "moen",
+          "version": 1,
+          "enemyEbbUsed": true,
+          "harborBoss": false,
+          "returning": true,
+          "returnResolved": true,
+          "returnTide": 1,
+          "returnHeal": false
+        },
+        "enemyHp": 7,
+        "enemyTide": 2,
+        "enemy": [],
+        "player": [
+          {
+            "id": "knight",
+            "name": "鋼鐵騎士",
+            "type": "minion",
+            "rarity": "rare",
+            "cost": 3,
+            "attack": 3,
+            "health": 1,
+            "emoji": "🛡️",
+            "image": "../../assets/cards/knight.png",
+            "keywords": [
+              "taunt"
+            ],
+            "text": "攻守兼備的中堅。",
+            "foil": false,
+            "axis": "control",
+            "faction": "wardens",
+            "flavor": "白潮騎士守住的不是橋，而是城民仍能相信的明天。",
+            "uid": "content-player-1",
+            "maxHealth": 4,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false
+          },
+          {
+            "id": "wolf",
+            "name": "迅捷狼",
+            "type": "minion",
+            "rarity": "common",
+            "cost": 2,
+            "attack": 2,
+            "health": 2,
+            "emoji": "🐺",
+            "image": "../../assets/cards/wolf.png",
+            "keywords": [
+              "charge"
+            ],
+            "text": "登場即可撲咬。",
+            "foil": false,
+            "axis": "aggro",
+            "faction": "wild",
+            "flavor": "迅捷狼只認得兩種路：獵物的路與回家的路。",
+            "uid": "content-player-3",
+            "maxHealth": 2,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false
+          }
+        ]
+      }
+    }
+  ],
+  "poses": [
+    {
+      "before": {
+        "round": 2,
+        "content": {
+          "id": "moen",
+          "version": 1,
+          "enemyEbbUsed": true,
+          "harborBoss": false,
+          "returning": false
+        },
+        "enemyHp": 7,
+        "enemyTide": 0,
+        "enemy": [
+          {
+            "id": "knight",
+            "name": "鋼鐵騎士",
+            "type": "minion",
+            "rarity": "rare",
+            "cost": 3,
+            "attack": 3,
+            "health": 4,
+            "emoji": "🛡️",
+            "image": "../../assets/cards/knight.png",
+            "keywords": [
+              "taunt"
+            ],
+            "text": "攻守兼備的中堅。",
+            "foil": false,
+            "axis": "control",
+            "faction": "wardens",
+            "flavor": "白潮騎士守住的不是橋，而是城民仍能相信的明天。",
+            "uid": "content-enemy-0",
+            "maxHealth": 4,
+            "canAttack": true,
+            "shield": true,
+            "justPlayed": false,
+            "_windUsed": false
+          }
+        ],
+        "player": [
+          {
+            "id": "footman",
+            "name": "見習士兵",
+            "type": "minion",
+            "rarity": "common",
+            "cost": 1,
+            "attack": 1,
+            "health": 2,
+            "emoji": "🗡️",
+            "image": "../../assets/cards/footman.png",
+            "keywords": [
+              "taunt"
+            ],
+            "text": "前排肉盾。",
+            "foil": false,
+            "axis": "control",
+            "faction": "wardens",
+            "flavor": "城門下的第一面盾，總是比晨鐘更早醒來。",
+            "uid": "content-player-0",
+            "maxHealth": 2,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false
+          },
+          {
+            "id": "knight",
+            "name": "鋼鐵騎士",
+            "type": "minion",
+            "rarity": "rare",
+            "cost": 3,
+            "attack": 3,
+            "health": 4,
+            "emoji": "🛡️",
+            "image": "../../assets/cards/knight.png",
+            "keywords": [
+              "taunt"
+            ],
+            "text": "攻守兼備的中堅。",
+            "foil": false,
+            "axis": "control",
+            "faction": "wardens",
+            "flavor": "白潮騎士守住的不是橋，而是城民仍能相信的明天。",
+            "uid": "content-player-1",
+            "maxHealth": 4,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false
+          },
+          {
+            "id": "archer",
+            "name": "弓箭手",
+            "type": "minion",
+            "rarity": "common",
+            "cost": 2,
+            "attack": 2,
+            "health": 2,
+            "emoji": "🏹",
+            "image": "../../assets/cards/archer.png",
+            "keywords": [],
+            "text": "輸出穩定的萬用兵。",
+            "foil": false,
+            "axis": "neutral",
+            "faction": "wardens",
+            "flavor": "她的箭會先抵達，警告才跟著風聲傳來。",
+            "uid": "content-player-2",
+            "maxHealth": 2,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false
+          },
+          {
+            "id": "wolf",
+            "name": "迅捷狼",
+            "type": "minion",
+            "rarity": "common",
+            "cost": 2,
+            "attack": 2,
+            "health": 2,
+            "emoji": "🐺",
+            "image": "../../assets/cards/wolf.png",
+            "keywords": [
+              "charge"
+            ],
+            "text": "登場即可撲咬。",
+            "foil": false,
+            "axis": "aggro",
+            "faction": "wild",
+            "flavor": "迅捷狼只認得兩種路：獵物的路與回家的路。",
+            "uid": "content-player-3",
+            "maxHealth": 2,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false
+          }
+        ]
+      },
+      "impact": {
+        "round": 2,
+        "content": {
+          "id": "moen",
+          "version": 1,
+          "enemyEbbUsed": true,
+          "harborBoss": false,
+          "returning": false
+        },
+        "enemyHp": 7,
+        "enemyTide": 0,
+        "enemy": [
+          {
+            "id": "knight",
+            "name": "鋼鐵騎士",
+            "type": "minion",
+            "rarity": "rare",
+            "cost": 3,
+            "attack": 3,
+            "health": 4,
+            "emoji": "🛡️",
+            "image": "../../assets/cards/knight.png",
+            "keywords": [
+              "taunt"
+            ],
+            "text": "攻守兼備的中堅。",
+            "foil": false,
+            "axis": "control",
+            "faction": "wardens",
+            "flavor": "白潮騎士守住的不是橋，而是城民仍能相信的明天。",
+            "uid": "content-enemy-0",
+            "maxHealth": 4,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false,
+            "_r3ShieldBroken": true
+          }
+        ],
+        "player": [
+          {
+            "id": "knight",
+            "name": "鋼鐵騎士",
+            "type": "minion",
+            "rarity": "rare",
+            "cost": 3,
+            "attack": 3,
+            "health": 4,
+            "emoji": "🛡️",
+            "image": "../../assets/cards/knight.png",
+            "keywords": [
+              "taunt"
+            ],
+            "text": "攻守兼備的中堅。",
+            "foil": false,
+            "axis": "control",
+            "faction": "wardens",
+            "flavor": "白潮騎士守住的不是橋，而是城民仍能相信的明天。",
+            "uid": "content-player-1",
+            "maxHealth": 4,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false
+          },
+          {
+            "id": "archer",
+            "name": "弓箭手",
+            "type": "minion",
+            "rarity": "common",
+            "cost": 2,
+            "attack": 2,
+            "health": 2,
+            "emoji": "🏹",
+            "image": "../../assets/cards/archer.png",
+            "keywords": [],
+            "text": "輸出穩定的萬用兵。",
+            "foil": false,
+            "axis": "neutral",
+            "faction": "wardens",
+            "flavor": "她的箭會先抵達，警告才跟著風聲傳來。",
+            "uid": "content-player-2",
+            "maxHealth": 2,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false
+          },
+          {
+            "id": "wolf",
+            "name": "迅捷狼",
+            "type": "minion",
+            "rarity": "common",
+            "cost": 2,
+            "attack": 2,
+            "health": 2,
+            "emoji": "🐺",
+            "image": "../../assets/cards/wolf.png",
+            "keywords": [
+              "charge"
+            ],
+            "text": "登場即可撲咬。",
+            "foil": false,
+            "axis": "aggro",
+            "faction": "wild",
+            "flavor": "迅捷狼只認得兩種路：獵物的路與回家的路。",
+            "uid": "content-player-3",
+            "maxHealth": 2,
+            "canAttack": true,
+            "shield": false,
+            "justPlayed": false,
+            "_windUsed": false
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "method": "Real public input only, authoritative 359/360ms wave and 180ms pose impact; raw CDP captures at paused virtual time."
+}

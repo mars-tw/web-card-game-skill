@@ -1,0 +1,16 @@
+{
+  "status": "VERIFIED",
+  "finalCommandExitCodes": {
+    "static": 0,
+    "e2e": 0,
+    "rwd": 0,
+    "ci-performance": 0,
+    "frames": 0
+  },
+  "finalBrowserChecks": 149,
+  "retainedInitialFailure": {
+    "path": "docs/content/r4/failure.txt",
+    "sha256": "4593f60c3e74cfd0e4e1cd782a65f65f0b0b308d6937762916f049aa7fdd806b"
+  },
+  "note": "Initial diagnostic failures retained; final source has passing targeted and full regression receipts. Final stylesheet preload was followed by npm test and the unchanged CI performance gate."
+}

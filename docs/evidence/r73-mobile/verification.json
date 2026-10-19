@@ -1,0 +1,80 @@
+{
+  "round": "R73",
+  "version": "0.6.0",
+  "pwa": "card-battle-r73-v1",
+  "status": "VERIFIED",
+  "scope": "local implementation and automated validation only",
+  "baselineCommit": "8329eed5111024bdf0e9db4140733c05a737a41a",
+  "headlessOnly": true,
+  "logs": {
+    "npm-test": {
+      "exitCode": 0,
+      "checkmarkLines": 215,
+      "failureLines": 0
+    },
+    "e2e": {
+      "exitCode": 0,
+      "checkmarkLines": 684,
+      "failureLines": 0
+    },
+    "controls": {
+      "exitCode": 0,
+      "checkmarkLines": 230,
+      "failureLines": 0
+    },
+    "rwd": {
+      "exitCode": 0,
+      "checkmarkLines": 33,
+      "failureLines": 0
+    },
+    "r73": {
+      "exitCode": 0,
+      "checkmarkLines": 175,
+      "failureLines": 0
+    }
+  },
+  "unit": {
+    "core": 154,
+    "voyage": 48
+  },
+  "r67BrowserChecks": 7,
+  "rwdPageViewportCases": 33,
+  "fullE2ER73Cases": 123,
+  "finalSupplementalR73Cases": 127,
+  "performance": {
+    "measurementStatus": "EXECUTED",
+    "releaseGate": "BLOCKED",
+    "machine": "concurrent; reference only",
+    "p95Ms": 16.7,
+    "interactiveMedianMs": 4706.9,
+    "visualReadyMedianMs": 1358.1,
+    "throttledRuns": 3,
+    "cleanMachine": false,
+    "independentMobileP95": false
+  },
+  "independentConversationReview": {
+    "status": "BLOCKED",
+    "tool": "devspace.chatgpt_list_workers",
+    "error": "MCP -32603 Internal error"
+  },
+  "sourceSha256": {
+    "package.json": "c3c834a8eb24721087ad423bc4527da27ae75df4dadd78c96df26122fe6d1afd",
+    "package-lock.json": "179a1647dd7e034ac462a20a6cd5fb7eccea91d600fe77a06aaa79589662fe30",
+    "sw.js": "15d5e0d695eb7dc9e932e4a5b2fc7831107ac64e4450bfcb402f25f26eb95ca2",
+    "templates/card-battle/battle.js": "60d319f58e3fea2c5d9ad83acb1e3612ca60bb610e955a261afc3d973c94e511",
+    "templates/card-battle/index.html": "ebfce8802112a95f64104f88c4e99df49125adb0012a83ad17b8095efb39bbc1",
+    "templates/card-battle/voyage.js": "01480184862b1e6ac50aa03f3f51745925d484abf5063ada0be1ca7bc3bf77f8",
+    "templates/card-battle/r73-ui.js": "9f3a3af41e3475a9bed1cf64a6460ee6498e97ec4e9751ef58804b16b1aad0cf",
+    "templates/card-battle/r73-mobile.css": "1ab315d41d5f1cebb256aa07570738b82db25d991505ebbae4e8dc6c72629178",
+    "templates/card-pack/pack.js": "53cbc4fe17d85a9bc903b0be042634c18bb2291aea1a363725c29dd881ac381e",
+    "templates/card-pack/index.html": "44a963802cb94325afa18879bad8f90cf52982aecf69a547c09807a902a30985",
+    "scripts/test-r73-voyage.js": "7b301ae28411896c6d4b2f274b759c6b8864eb61d6115aad3ecc7c56009e5939",
+    "scripts/test-r73-mobile.js": "9e38b1576faf11ad4798534c3642c36adefd159be86a9463d5739c9bc318922a",
+    "scripts/test-controls-reachability.js": "29516ce662ca431155d0d400b48a83b0bc7c5136fa627eedb282f74775ce12c8",
+    "scripts/test-battle-e2e.js": "4278e55d2b3617c3335270238d848dd19ee12341680428c561bb96ac7ff0dec3",
+    "scripts/test-r67-performance.js": "ada46ea4c97ffe1d64ac1f24aa98700884f5393efffd67292e46815e70c7727d"
+  },
+  "syntaxFiles": 22,
+  "secretMatches": 0,
+  "oldVersionNonHistoricalMatches": 0
+}

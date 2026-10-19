@@ -131,7 +131,8 @@
     div.setAttribute("role", "status");
     div.setAttribute("aria-live", "polite");
     div.setAttribute("aria-atomic", "true");
-    div.style.cssText = "position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:220;background:rgba(15,23,42,.96);color:#fff;border:1px solid rgba(250,204,21,.35);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:900;box-shadow:0 8px 24px rgba(0,0,0,.35);pointer-events:none;";
+    div.className='save-status-message';
+    div.style.cssText = "position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);box-sizing:border-box;width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;z-index:9999;background:#201c3df7;color:#f2f1fa;border:1px solid #da8a6d;border-radius:3px;padding:18px;font-size:16px;line-height:1.7;font-weight:700;box-shadow:0 8px 24px #10152d99;pointer-events:none;";
     document.body.appendChild(div);
     setTimeout(() => div.remove(), 2600);
   }
@@ -179,8 +180,9 @@
     if (!btn) return;
     const muted = audioMuted();
     btn.classList.toggle("is-muted", muted);
-    btn.textContent = muted ? "M" : "SFX";
-    btn.title = muted ? "Audio muted" : (audioUnlocked ? "Audio on" : "Audio unlocks on first gesture");
+    btn.textContent = muted ? "靜音" : "音效";
+    btn.title = muted ? "音效已關閉" : (audioUnlocked ? "音效已開啟" : "操作後啟用音效");
+    btn.setAttribute("aria-label", muted ? "開啟音效" : "關閉音效");
     btn.setAttribute("aria-pressed", muted ? "true" : "false");
     syncAudioVolumeControl();
   }
@@ -246,12 +248,12 @@
   }
 
   function swUrl() {
-    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-r71-v1"}`, location.href).toString();
+    return new URL(`../../sw.js?v=${window.__CARD_CACHE_VERSION || "card-battle-content-r7-v1"}`, location.href).toString();
   }
 
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r71_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_content_r6_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   function hasAutoReloadedForSwUpdate() {
     try { return sessionStorage.getItem(SW_AUTO_RELOAD_KEY) === "1"; } catch { return true; }
@@ -413,6 +415,12 @@
     }, Object.create(null));
   }
 
+  function loadVoyageProgress() {
+    let raw;
+    try { raw = JSON.parse(localStorage.getItem(CardVoyage.KEY)); } catch {}
+    return CardVoyage.migrate(raw);
+  }
+
   function buildSaveBundle() {
     return {
       schema: "card-save-r32",
@@ -422,6 +430,9 @@
       deck: loadDeck(),
       goals: loadGoals(),
       quests: loadQuests(),
+      voyage: loadVoyageProgress(),
+      tideContent: CardTideContent.progress(localStorage.getItem(CardTideContent.KEY)),
+      tideSession: CardTideSession.decode(localStorage.getItem(CardTideSession.KEY), CARD_POOL) ? localStorage.getItem(CardTideSession.KEY) : null,
     };
   }
 
@@ -443,9 +454,15 @@
       deck: Core.migrateDeck(payload.deck),
       goals: Core.migrateGoals(payload.goals, weekSeed()),
       quests: Core.migrateQuests(payload.quests, todaySeed()),
+      voyage: payload.voyage === undefined ? loadVoyageProgress() : CardVoyage.migrate(payload.voyage),
+      tideContent: CardTideContent.progress(payload.tideContent === undefined ? localStorage.getItem(CardTideContent.KEY) : payload.tideContent),
+      tideSession: payload.tideSession === undefined ? localStorage.getItem(CardTideSession.KEY) : payload.tideSession,
     };
+    if(decoded.tideSession!==null&&!CardTideSession.decode(decoded.tideSession,CARD_POOL))throw new Error('研習檢查點損壞，未匯入任何資料');
     const deckValidation = Core.validateDeck(decoded.deck.cards, decoded.collection, CARD_POOL);
-    if (!deckValidation.ok) throw new Error("存檔牌組不合法");
+    // An unbuilt deck is the legitimate fresh-install state; populated decks must validate.
+    const unbuiltDeck=Array.isArray(payload.deck.cards)&&payload.deck.cards.length===0;
+    if (!deckValidation.ok && !unbuiltDeck) throw new Error("存檔牌組不合法");
     return decoded;
   }
 
@@ -470,15 +487,18 @@
       [DECK_KEY]: JSON.stringify(Core.migrateDeck(bundle.deck)),
       [GOAL_KEY]: JSON.stringify(Core.migrateGoals(bundle.goals, weekSeed())),
       [QUEST_KEY]: JSON.stringify(Core.migrateQuests(bundle.quests, todaySeed())),
+      [CardVoyage.KEY]: JSON.stringify(CardVoyage.migrate(bundle.voyage)),
+      [CardTideContent.KEY]: JSON.stringify(CardTideContent.progress(bundle.tideContent)),
+      [CardTideSession.KEY]: bundle.tideSession,
     };
   }
 
   function commitSaveParts(parts) {
-    Object.entries(parts).forEach(([key, value]) => safeSetStorage(key, value));
+    Object.entries(parts).forEach(([key, value]) => value === null ? safeRemoveStorage(key) : safeSetStorage(key, value));
   }
 
   function restoreSaveParts(parts) {
-    Object.entries(parts).forEach(([key, value]) => safeSetStorage(key, value));
+    Object.entries(parts).forEach(([key, value]) => value === null ? safeRemoveStorage(key) : safeSetStorage(key, value));
   }
 
   function importSaveBundle(code, options) {
@@ -816,7 +836,7 @@
     el.style.setProperty("--rarity", r.color);
     el.style.setProperty("--glow", r.glow);
     const art = card.image
-      ? `<img src="${card.image}" alt="${card.name}" onerror="this.replaceWith(document.createTextNode('${card.emoji}'))">`
+      ? `<img src="${cardArtSource(card)}" alt="${card.name}" onerror="this.replaceWith(document.createTextNode('${card.emoji}'))">`
       : `<span class="art-glyph" aria-hidden="true">${card.emoji}</span>`;
     const factionInfo = FACTIONS[card.faction] || FACTIONS.neutral;
     const factionEmblem = factionInfo && factionInfo.emblem
@@ -834,7 +854,7 @@
       <div class="stars">${"★".repeat(r.stars)}</div>
       ${card._dup ? '<div class="dup-tag">重複</div>' : ''}
       ${card._dup ? '' : '<div class="new-card-tag">本包新卡</div>'}
-      <div class="art${card.image ? "" : " art-fallback"}"${card.image ? "" : ` aria-label="${card.name}・${FACTIONS[card.faction]?.name || "中立"}佔位圖"`}>${art}${factionEmblem}</div>
+      <img class="r75-card-frame" src="../../assets/art/r79/frame.webp?v=r79-frame" alt="" aria-hidden="true"><div class="art${card.image ? "" : " art-fallback"}"${card.image ? "" : ` aria-label="${card.name}・${FACTIONS[card.faction]?.name || "中立"}佔位圖"`}>${art}${factionEmblem}</div>
       <div class="kwrow">${kw}</div>
       <div class="cardname">${card.name}</div>
       <div class="rarity-tag">${r.label}${card.heroTag ? " · 角色" : ""}</div>
@@ -888,7 +908,7 @@
       slot.style.setProperty("--rarity", r.color);
       slot.style.setProperty("--glow", r.glow);
       const icon = isOwned
-        ? (card.image ? `<img src="${card.image}" alt="">` : card.emoji)
+        ? (card.image ? `<img src="${cardArtSource(card)}" alt="">` : card.emoji)
         : "❓";
       // CP2-7 重複卡可分解成金幣（dup 出口）：保留 1 張，多的可分解
       const dupes = Math.max(0, count - 1);
@@ -1245,7 +1265,11 @@
   }
 
   function cardArt(card) {
-    return card.image ? `<img src="${card.image}" alt="">` : card.emoji;
+    return card.image ? `<img src="${cardArtSource(card)}" alt="">` : card.emoji;
+  }
+
+  function cardArtSource(card) {
+    return ({ footman:'../../assets/art/r75/footman.webp?v=c1f52344', archer:'../../assets/art/r75/archer.webp?v=66fff3e9', emberpup:'../../assets/art/r76/emberpup.webp?v=d5ccf1ed', wolf:'../../assets/art/r76/wolf.webp?v=b3a469e2', sparkSquire:'../../assets/art/r76/sparkSquire.webp?v=670a755a', alleySkirmisher:'../../assets/art/r76/alleySkirmisher.webp?v=eb357347', frontScout:'../../assets/art/r76/frontScout.webp?v=34058513', firebolt:'../../assets/art/r76/firebolt.webp?v=6583d849' })[card.id] || card.image;
   }
 
   function deckAddBlockReason(card, counts) {
@@ -1720,7 +1744,7 @@
   if (importSaveBtn) importSaveBtn.onclick = () => {
     const code = document.getElementById("saveImportText")?.value || "";
     try { importSaveBundle(code); }
-    catch (err) { recoveryToast(`匯入失敗：${err.message || "未覆蓋現有存檔。"}`); }
+    catch (err) { recoveryToast(String(err.message).startsWith('寫入存檔失敗')?'匯入失敗：目前無法寫入裝置儲存，請保留備份並重試。':'匯入失敗：存檔碼不完整或格式有誤，原存檔未變更。'); }
   };
   const clearRecordBtn = document.getElementById("clearRecordBtn");
   if (clearRecordBtn) clearRecordBtn.onclick = clearRecordStats;

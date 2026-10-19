@@ -1,0 +1,70 @@
+{
+  "round": "R80",
+  "date": "2026-10-18",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "model_note": "Built-in tool exposes no verifiable model slug; actual tool name recorded.",
+  "style_prefix": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism.",
+  "assets": [
+    {
+      "id": "soldier-archer-sheet",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset: production character continuity sheet, wide landscape. Reference1 is the young FEMALE trainee soldier, short tousled brown hair, blue wave tabard, bronze-and-pearl scallop shield and silver short sword. Reference2 is the adult MALE archer, swept silver hair, green sea cloak, bronze crescent longbow. Preserve both faces, ages, outfit colors and adult body proportions. TWO ROWS: upper row soldier front/side/back full body, lower row archer front/side/back full body. Small face and accessory closeups at right edge. Soldier original has bare head; SECOND INSTANCE adds a conspicuous coral-red diagonal headband with two short tails beside the temple, no other identity changes. Archer original has bare head; SECOND INSTANCE wears a conspicuous ivory sailcloth hood pulled over silver hair, green cloak unchanged. Show both alternative accessories in the closeups. Plain muted lavender background, clear separation, no letters, numbers, panels, card frame, UI or scenery. This is a static character reference, not animation.",
+      "references": [
+        "assets/art/r75/footman.webp",
+        "assets/art/r75/archer.webp"
+      ],
+      "transparent_requested": false,
+      "output_hint": "Generated images are saved to C:\\Users\\digimkt\\.codex\\generated_images\\01a14d5c-c9d9-79d2-9c13-0347a5116c86 as C:\\Users\\digimkt\\.codex\\generated_images\\01a14d5c-c9d9-79d2-9c13-0347a5116c86\\exec-7df898f8-a549-41fc-b231-c6102944c530.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "id": "footman-band",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Use case: identity-preserve. Asset: second instance card illustration, square1024x1024 RGB, no card frame or text. Reference1 is EDIT TARGET; reference2 is the approved front-side-back character sheet. Preserve the same young adult FEMALE soldier face, short tousled brown hair, silver armor, blue tabard, pearl scallop shield, sword, moonlight top-left, copper lantern bounce. ADD A VERY VISIBLE CORAL-RED CLOTH HEADBAND across her forehead with two short tails by her left temple. Slightly tighter chest-up framing so red headband is obvious in a 60px wide card. Keep sword raised and shield visible, same night harbor setting and matching painterly detail. Do not change gender, age, costume, weapons or palette. This is a static identity/accessory variation, not an attack animation. No lettering, borders, numbers, watermark.",
+      "references": [
+        "assets/art/r75/footman.webp",
+        "docs/art/character-sheets/soldier-archer-r80.png"
+      ],
+      "transparent_requested": false,
+      "output_hint": "Generated images are saved to C:\\Users\\digimkt\\.codex\\generated_images\\01a14d5c-c9d9-79d2-9c13-0347a5116c86 as C:\\Users\\digimkt\\.codex\\generated_images\\01a14d5c-c9d9-79d2-9c13-0347a5116c86\\exec-bd8c7adf-5ccb-4fc1-ab98-1a70a076248f.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "id": "archer-hood",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Use case: identity-preserve. Asset: second instance card illustration, square1024x1024 RGB, no card frame or text. Reference1 is EDIT TARGET; reference2 is the approved character continuity sheet. Preserve SAME stern adult male face, silver hair, green sea cloak, bronze crescent longbow, purple leather armor and moonlit coastal backdrop. ONLY change visible accessory: add a LARGE IVORY SAILCLOTH HOOD pulled over silver hair, ivory edge framing face and covering crown, as shown bottom-right of sheet. Keep green cloak below. Chest-up tighter framing so the big ivory hood is unmistakable beside the bareheaded original at60px. Bow still drawn diagonally toward viewer. Matching original gouache/oil rendering, moonlight from top-left, copper bounce lower-right. No letters, borders, numbers or watermark. Static individual identity variation, not animation.",
+      "references": [
+        "assets/art/r75/archer.webp",
+        "docs/art/character-sheets/soldier-archer-r80.png"
+      ],
+      "transparent_requested": false,
+      "output_hint": "Generated images are saved to C:\\Users\\digimkt\\.codex\\generated_images\\01a14d5c-c9d9-79d2-9c13-0347a5116c86 as C:\\Users\\digimkt\\.codex\\generated_images\\01a14d5c-c9d9-79d2-9c13-0347a5116c86\\exec-86c117dd-3489-4cfd-849e-a3b166e3f133.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "id": "wave",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset type: ONE directional wave VFX cutout, wide landscape1536x1024, TRUE transparent background. Use reference as an identity guide for ONE asymmetric moon-hook crest. Paint ONLY THE LEADING WALL: a wide very shallow raised wave ridge occupying the middle half of this transparent canvas, rising higher right-of-center with ONE sharp crescent crest curling toward UPPER LEFT. Crucial: water moves AWAY FROM VIEWER toward TOP OF CANVAS. Show BACK OF WAVE, its white foamy lip at TOP, six narrow VERTICAL trailing foam streaks dangling DOWN from bottom of ridge, NO water filling foreground. Outer silhouette must be a wide sharp wedge, not an ocean scene or cylinder. Bottom third of canvas is TRANSPARENT apart from six SHORT POINTED transparent foam streaks. Top quarter empty transparent. Bright pearl white high lip, indigo-violet translucent back slope, small copper highlights. NO closed ring, whirlpool, symmetric twin curls, scenery, cards, deck, horizon, text or border. The entire wave will move UP from a source line to enemy cards and stop above allies. High lip and short tails must read at 300px wide. Keep an isolated clean alpha edge.",
+      "references": [
+        "assets/art/r79/wave.webp"
+      ],
+      "transparent_requested": true,
+      "output_hint": "Generated images are saved to C:\\Users\\digimkt\\.codex\\generated_images\\01a14d5c-c9d9-79d2-9c13-0347a5116c86 as C:\\Users\\digimkt\\.codex\\generated_images\\01a14d5c-c9d9-79d2-9c13-0347a5116c86\\exec-6d881d62-84c7-4940-8df8-4a58798d8d8e.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "id": "logo",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Use case: precise-object-edit. Reference1 is EDIT TARGET logo. Preserve Chinese lettering exactly: 裂潮, small 卡牌, TIDEREND, pearl/copper typography, proportions and transparent background. Reference2 is the exact approved single moon-hook wave crest. Replace ONLY the top wave behind the lettering with the same asymmetrical hook curve as reference2, taller right of center, hook opening upper-left, six fine trailing streaks. Copy its shape closely; it is shared with the in-game wave and victory flag. No extra lettering, symbols, scene or new border. Landscape1536x1024 true transparent outside, tight usable silhouette with enough clear padding. Keep every glyph legible.",
+      "references": [
+        "assets/art/r79/logo.webp",
+        "docs/art/source/r80/wave.png"
+      ],
+      "transparent_requested": true,
+      "output_hint": "Generated images are saved to C:\\Users\\digimkt\\.codex\\generated_images\\01a14d5c-c9d9-79d2-9c13-0347a5116c86 as C:\\Users\\digimkt\\.codex\\generated_images\\01a14d5c-c9d9-79d2-9c13-0347a5116c86\\exec-74a4441b-a141-4b9f-b321-45f9d6661ff7.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "id": "victory-navigator",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Use case: precise-object-edit. Reference1 is EDIT TARGET: victorious adult East Asian female navigator waving a banner. Reference2 is the exact approved wave crest, reference3 locks her identity. Preserve her face, short dark hair, coral scarf, indigo coat, proportions, hands, entire pose, copper compass pole and dark indigo banner shape. CHANGE ONLY THE BANNER'S WHITE WAVE EMBLEM to match reference2's single asymmetric hook contour: broad shallow raised ridge, taller right-of-center, white hook curling upper-left, six short foam streaks trailing down, no circular vortex. Reproduce that same curve closely, adapted to flag cloth folds. No extra emblems or words. Portrait1024x1536 true transparent outside, full figure; feet may extend beyond frame as original. No scenery, lettering, panels or borders. Static victory artwork, not animation.",
+      "references": [
+        "assets/art/r79/victory-navigator.webp",
+        "docs/art/source/r80/wave.png",
+        "docs/art/character-sheets/navigator-r79.png"
+      ],
+      "transparent_requested": true,
+      "output_hint": "Generated images are saved to C:\\Users\\digimkt\\.codex\\generated_images\\01a14d5c-c9d9-79d2-9c13-0347a5116c86 as C:\\Users\\digimkt\\.codex\\generated_images\\01a14d5c-c9d9-79d2-9c13-0347a5116c86\\exec-ce6fb717-542b-40bf-8bf8-72faf727f06e.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    }
+  ]
+}

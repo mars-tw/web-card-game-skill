@@ -1,0 +1,30 @@
+{
+  "status": "VERIFIED",
+  "directory": "docs/evidence/content-r11",
+  "comparisons": [
+    {
+      "before": "phone-puzzle-spell-playing.png",
+      "after": "phone-puzzle-spell-playing.png",
+      "before_sha256": "20615f558bc9ea757120b5df24e2b2f80383c14aefd93f31fb6eeed76bc7f4ff",
+      "after_sha256": "56fc97c6def039d8dc643de5afb622a3ffe6fd0cb5dcae53fb20086c3a629c8f"
+    },
+    {
+      "before": "phone-forecast-cancelled.png",
+      "after": "phone-forecast-flood-cancelled.png",
+      "before_sha256": "03a292e5846813cb5603d8ae0a1bb18076d598cc845aee980257309ed462220d",
+      "after_sha256": "b38628d8ea40099eead661803346ad82b7156faa4cd83b5487d0c3d07071741a"
+    },
+    {
+      "before": "phone-moen-break-impact.png",
+      "after": "phone-moen-break-impact.png",
+      "before_sha256": "1857a09ddf9e79c71de73cf66030115c409a464eddc0c0b76c6af6687adbc1e7",
+      "after_sha256": "c2c07cd76a6e09cb072e0657fa141a03b94d796952d1114a2d31aaee938e1b9a"
+    },
+    {
+      "before": "phone-moen-completed.png",
+      "after": "phone-moen-return-prevented-completed.png",
+      "before_sha256": "1d951d5f87d0fd8072096c385991c2e89e82c1887775625130a947c14f5ce62b",
+      "after_sha256": "9e0fa0b3abaea83844433cec0e790c0357fa6512c329aa896885916cad389512"
+    }
+  ]
+}

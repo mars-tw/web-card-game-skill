@@ -1,0 +1,21 @@
+{
+  "status": "VERIFIED",
+  "images": [
+    {
+      "file": "docs/store/screenshots/content-r11-moen-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "6b944748ae1d4276f31d09603d05bfe240d5630d263704092b58319c6ef36b8d"
+    },
+    {
+      "file": "docs/store/screenshots/content-r11-moen-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "2f27e452a042a2a680e685d5e4f6ed93330b277c232cf2cfc6f732d8eed79458"
+    }
+  ]
+}

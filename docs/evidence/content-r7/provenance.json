@@ -1,0 +1,56 @@
+[
+  {
+    "path": "docs/evidence/content-r7/exchange-before.png",
+    "source": "docs/content/r6/phone-exchange-preview.png",
+    "sha256": "4507eb05ccc1c105dee11a996b666ec977d03c44c8fe96d8fd5962406f8dd71a",
+    "historical": true
+  },
+  {
+    "path": "docs/evidence/content-r7/exchange-after.png",
+    "source": "docs/content/r7/phone-exchange-preview.png",
+    "sha256": "4dbc3e6397f853f015c0ce1b5bf78578060fb5300c58c1891b7f5847db504a87",
+    "historical": false
+  },
+  {
+    "path": "docs/evidence/content-r7/forecast-before.png",
+    "source": "docs/content/r6/phone-forecast-applied.png",
+    "sha256": "2a7a4abdbaf42dad7a335d2d516b2e4f93aa3048e5fc9c700b101ad300613258",
+    "historical": true
+  },
+  {
+    "path": "docs/evidence/content-r7/forecast-after.png",
+    "source": "docs/content/r7/phone-forecast-flood-to-ebb-applied.png",
+    "sha256": "f3f93cce653686e9c1218132b0a6a4adbcf3e1565ff73f75e5556b4cd7eac375",
+    "historical": false
+  },
+  {
+    "path": "docs/evidence/content-r7/moen-before.png",
+    "source": "docs/content/r6/phone-moen-guarding.png",
+    "sha256": "6f001139908cfec8ff3c010d87fe324dd72fdb70ad8d4a6c2c96f6677384217a",
+    "historical": true
+  },
+  {
+    "path": "docs/evidence/content-r7/moen-after.png",
+    "source": "docs/content/r7/phone-moen-guarding.png",
+    "sha256": "09705ac484f32d84bb0793309db53900fe8ad8c3a37c942406ec027f3d4a152a",
+    "historical": false
+  },
+  {
+    "path": "docs/evidence/content-r7/layout-moen-844x390-1.png",
+    "source": "docs/content/r7/layout-moen-844x390-1.png",
+    "sha256": "18b71148677dcd0020982b540628370ffe1e44dabc64a106333ac0f25700ff94",
+    "historical": false
+  },
+  {
+    "path": "docs/evidence/content-r7/layout-moen-1032x1376-1.png",
+    "source": "docs/content/r7/layout-moen-1032x1376-1.png",
+    "sha256": "b765ef49f094cb14d26b34e97b86a90914628a6b7e7ada63549fc2463207d367",
+    "historical": false
+  },
+  {
+    "path": "docs/evidence/content-r7/layout-moen-1376x1032-1.png",
+    "source": "docs/content/r7/layout-moen-1376x1032-1.png",
+    "sha256": "fca5be878aec84781ee6d53b7d91989c4b4cc93ca2383d88b67eb8356bd0e82a",
+    "historical": false
+  }
+]

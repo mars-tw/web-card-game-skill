@@ -1,0 +1,615 @@
+{
+  "status": "VERIFIED",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "model_note": "The built-in tool does not expose the actual model slug. No gpt-image-2 claim is made.",
+  "generated_master_count": 10,
+  "license": "AI-generated for this project with the built-in OpenAI image tool; subject to service terms. No third-party art source used.",
+  "postprocess": "Pillow LANCZOS resize, atlas cell crop, WebP q82 default/q78 icons/q72 water/q70 low battlefield, method 6; alpha preserved. No painted additions. PNG card contracts retained.",
+  "assets": [
+    {
+      "id": "harbor",
+      "source": "docs/art/source/harbor.png",
+      "source_sha256": "3a6f5f7b07461b7e2c4b27d32b3b5c54f9273f1023183b8cb3f076fae3cdae33",
+      "source_bytes": 3007970,
+      "source_size": [
+        1024,
+        1536
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r75/harbor.webp",
+          "size": [
+            1024,
+            1536
+          ],
+          "bytes": 293118,
+          "sha256": "d9dd1889b089380bce9f72fb58cff4641fc454d8e3ca4730e000d1cc9a881273",
+          "quality": 82
+        },
+        {
+          "path": "assets/art/r75/tide-water.webp",
+          "size": [
+            640,
+            96
+          ],
+          "bytes": 11288,
+          "sha256": "b3afc1526b1f16123f2cb335345b5064d42816294585bdca39cd5f01c14e373a",
+          "quality": 72
+        }
+      ],
+      "color_metrics": {
+        "brightness": 0.3899,
+        "saturation": 0.3428,
+        "near_black_ratio": 0.0832,
+        "low_saturation_ratio": 0.0264,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      },
+      "source_color_metrics": {
+        "brightness": 0.3899,
+        "saturation": 0.3428,
+        "near_black_ratio": 0.0832,
+        "low_saturation_ratio": 0.0264,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      }
+    },
+    {
+      "id": "battlefield",
+      "source": "docs/art/source/battlefield.png",
+      "source_sha256": "e8c11d3945044aa40d495d9e64c89dac784931a8a62712727322b0427bda32f8",
+      "source_bytes": 2986420,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r75/battlefield.webp",
+          "size": [
+            1536,
+            1024
+          ],
+          "bytes": 308926,
+          "sha256": "90e1d16407aff5cb54a64157b49c7cb7a81ea66bc4785f5dc02382fc3694a6c9",
+          "quality": 82
+        },
+        {
+          "path": "assets/art/r75/battlefield-low.webp",
+          "size": [
+            960,
+            640
+          ],
+          "bytes": 103866,
+          "sha256": "0039aabbd95d0693538ecaf81fa265006dcab27865c57d5701c145c6d03459df",
+          "quality": 70
+        }
+      ],
+      "color_metrics": {
+        "brightness": 0.313,
+        "saturation": 0.427,
+        "near_black_ratio": 0.0244,
+        "low_saturation_ratio": 0.001,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      },
+      "source_color_metrics": {
+        "brightness": 0.2973,
+        "saturation": 0.424,
+        "near_black_ratio": 0.0273,
+        "low_saturation_ratio": 0.0006,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": false
+      },
+      "postprocess_note": "Exposure x1.06 to lift source V=0.2973 above 0.30; source untouched."
+    },
+    {
+      "id": "navigator",
+      "source": "docs/art/source/navigator.png",
+      "source_sha256": "fc85e1969f22e42d1239b911372cf9090f72223e6307b39eb0267074e0456b75",
+      "source_bytes": 2930057,
+      "source_size": [
+        1024,
+        1536
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r75/navigator.webp",
+          "size": [
+            576,
+            864
+          ],
+          "bytes": 151546,
+          "sha256": "5de288f6ed50146922631e62c31d5da6a31595a30011c5e36c8e8415202c647f",
+          "quality": 82
+        },
+        {
+          "path": "assets/art/r75/avatar.webp",
+          "size": [
+            96,
+            96
+          ],
+          "bytes": 6032,
+          "sha256": "1ccc6b61b67d3417068ebe7125ecedcb32177f80c7bfac857235b28568ac0a51",
+          "quality": 82
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.259,
+        "opaque_ratio": 0.7234,
+        "center": 252
+      },
+      "color_metrics": {
+        "brightness": 0.4032,
+        "saturation": 0.4034,
+        "near_black_ratio": 0.0365,
+        "low_saturation_ratio": 0.0223,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      },
+      "source_color_metrics": {
+        "brightness": 0.4032,
+        "saturation": 0.4034,
+        "near_black_ratio": 0.0365,
+        "low_saturation_ratio": 0.0223,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      },
+      "compressed_character_metrics": {
+        "brightness": 0.40085570150390254,
+        "saturation": 0.40191493818394436,
+        "near_black_ratio": 0.0343042071197411,
+        "low_saturation_ratio": 0.026132686084142393
+      }
+    },
+    {
+      "id": "footman",
+      "source": "docs/art/source/footman.png",
+      "source_sha256": "b7d7b58df53e03f677a421f16b9d15f10748cc133068427f5090fddc80961194",
+      "source_bytes": 2912577,
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r75/footman.webp",
+          "size": [
+            512,
+            512
+          ],
+          "bytes": 71334,
+          "sha256": "c1f52344ef738412a379a2ca6db51aaede5f40660ccb5e7230884f3c1e4293c8",
+          "quality": 82
+        },
+        {
+          "path": "assets/cards/footman.png",
+          "size": [
+            1024,
+            1024
+          ],
+          "bytes": 2173603,
+          "sha256": "8813ddbf88ac4d7a1ae74f1b65e859ecec0a692b2e8228569828d44c3b44f5be",
+          "note": "canonical PNG path retained for card-data tests; UI loads compressed WebP"
+        }
+      ],
+      "color_metrics": {
+        "brightness": 0.4935,
+        "saturation": 0.3493,
+        "near_black_ratio": 0.0049,
+        "low_saturation_ratio": 0.0579,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      },
+      "source_color_metrics": {
+        "brightness": 0.4935,
+        "saturation": 0.3493,
+        "near_black_ratio": 0.0049,
+        "low_saturation_ratio": 0.0579,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      },
+      "compressed_character_metrics": {
+        "brightness": 0.49331461588541664,
+        "saturation": 0.3459063846773145,
+        "near_black_ratio": 0.00439453125,
+        "low_saturation_ratio": 0.05938720703125
+      }
+    },
+    {
+      "id": "archer",
+      "source": "docs/art/source/archer.png",
+      "source_sha256": "847e88e556a132d97975776b31288a7b0e089fe84376989d3f507a202a91f264",
+      "source_bytes": 2905607,
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r75/archer.webp",
+          "size": [
+            512,
+            512
+          ],
+          "bytes": 68400,
+          "sha256": "66fff3e9c4def9b33966f4e5c0812e63cbf498ef474e61cf0f4e145b2a43ebcd",
+          "quality": 82
+        },
+        {
+          "path": "assets/cards/archer.png",
+          "size": [
+            1024,
+            1024
+          ],
+          "bytes": 2162365,
+          "sha256": "83ef49dc7c00fdd32aeb22d606d346d55cd92a044f749cc60db7ae0ef9b151c2",
+          "note": "canonical PNG path retained for card-data tests; UI loads compressed WebP"
+        }
+      ],
+      "color_metrics": {
+        "brightness": 0.3869,
+        "saturation": 0.3442,
+        "near_black_ratio": 0.0327,
+        "low_saturation_ratio": 0.0386,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      },
+      "source_color_metrics": {
+        "brightness": 0.3825,
+        "saturation": 0.321,
+        "near_black_ratio": 0.0327,
+        "low_saturation_ratio": 0.0479,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      },
+      "postprocess_note": "Color x1.08 keeps the compressed WebP above S=0.32; source untouched.",
+      "compressed_character_metrics": {
+        "brightness": 0.3871335497089461,
+        "saturation": 0.3414088732081429,
+        "near_black_ratio": 0.03118896484375,
+        "low_saturation_ratio": 0.044189453125
+      }
+    },
+    {
+      "id": "frame",
+      "source": "docs/art/source/frame.png",
+      "source_sha256": "4183bf4c6821d095d25c438022986c65ab3e2ea41df38c1111fc7e7d45047afd",
+      "source_bytes": 1498702,
+      "source_size": [
+        1024,
+        1536
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r75/frame.webp",
+          "size": [
+            256,
+            384
+          ],
+          "bytes": 23636,
+          "sha256": "91f750bda42e69b1fe0a57d7f46ec3a3dae4b7cf3b6fd2888294b69d96062b41",
+          "quality": 82
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.8687,
+        "opaque_ratio": 0.1163,
+        "center": 0
+      },
+      "color_metrics": {
+        "brightness": 0.6273,
+        "saturation": 0.4689,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.0874,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      },
+      "source_color_metrics": {
+        "brightness": 0.6273,
+        "saturation": 0.4689,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.0874,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      }
+    },
+    {
+      "id": "icons",
+      "source": "docs/art/source/icons.png",
+      "source_sha256": "61b736daba4188a4a95b4170d4970c1612230b9db9dc6718cffae131d3ce1598",
+      "source_bytes": 2517203,
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r75/icon-battle.webp",
+          "size": [
+            128,
+            120
+          ],
+          "bytes": 11648,
+          "sha256": "feb5f5ddc6f5338c3eda717a6e2ff95ebb63477aa35ad5b07dcf4b06a79404b7",
+          "quality": 78
+        },
+        {
+          "path": "assets/art/r75/icon-cards.webp",
+          "size": [
+            128,
+            115
+          ],
+          "bytes": 8608,
+          "sha256": "19c7ef486334ef082b33e336791d5a95e51c9271f174e68d32843f6cf56d1620",
+          "quality": 78
+        },
+        {
+          "path": "assets/art/r75/icon-compass.webp",
+          "size": [
+            107,
+            128
+          ],
+          "bytes": 7360,
+          "sha256": "ff08d7238946c74f9183d615b6e4b7c98ea40722a732b31788a9b7aa29ad8ded",
+          "quality": 78
+        },
+        {
+          "path": "assets/art/r75/icon-wave.webp",
+          "size": [
+            124,
+            128
+          ],
+          "bytes": 11156,
+          "sha256": "4e77cc82d2cf21c66ede6fc711f3cdd9e9818a8992de3a9153c4fe5487c7029d",
+          "quality": 78
+        },
+        {
+          "path": "assets/art/r75/icon-shield.webp",
+          "size": [
+            127,
+            128
+          ],
+          "bytes": 7190,
+          "sha256": "fd774099b5d1e561b657a44516ebe052dd60d4f2977710cfcf45b636ccbd6eb4",
+          "quality": 78
+        },
+        {
+          "path": "assets/art/r75/icon-voyage.webp",
+          "size": [
+            128,
+            119
+          ],
+          "bytes": 8006,
+          "sha256": "476f28fb5bb4baf0c0e02a58bf991b6ad80b713eee634350508300323d1f5aac",
+          "quality": 78
+        },
+        {
+          "path": "assets/art/r75/icon-lantern.webp",
+          "size": [
+            94,
+            128
+          ],
+          "bytes": 8466,
+          "sha256": "f3cf864f9e261e02a5e0447bad90d62e2afb46946b246139d56afb65fe1d135c",
+          "quality": 78
+        },
+        {
+          "path": "assets/art/r75/icon-coin.webp",
+          "size": [
+            128,
+            125
+          ],
+          "bytes": 8436,
+          "sha256": "ed0834c57e117d9bc49e7301f7e8ef42f4446718af09684b1939611bea7c5277",
+          "quality": 78
+        },
+        {
+          "path": "assets/art/r75/icon-settings.webp",
+          "size": [
+            128,
+            121
+          ],
+          "bytes": 8030,
+          "sha256": "3bea31076ef05f864eeb099f6a826da53545648d999801c74696a5db2dae7990",
+          "quality": 78
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          255
+        ],
+        "transparent_ratio": 0.4903,
+        "opaque_ratio": 0.4882,
+        "center": 252
+      },
+      "color_metrics": {
+        "brightness": 0.5528,
+        "saturation": 0.4615,
+        "near_black_ratio": 0.0077,
+        "low_saturation_ratio": 0.1099,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      },
+      "source_color_metrics": {
+        "brightness": 0.5528,
+        "saturation": 0.4615,
+        "near_black_ratio": 0.0077,
+        "low_saturation_ratio": 0.1099,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      }
+    },
+    {
+      "id": "logo",
+      "source": "docs/art/source/logo.png",
+      "source_sha256": "fa6340f224543be0570d09da99a9dabeed883a157ccec9d83114ffa3b403b6b1",
+      "source_bytes": 2273411,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r75/logo.webp",
+          "size": [
+            768,
+            512
+          ],
+          "bytes": 126698,
+          "sha256": "24f38df84858cf355868abfbef89bb3a6414db7dadee5b14cfa1bb706d0ad6da",
+          "quality": 82
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.6575,
+        "opaque_ratio": 0.3026,
+        "center": 4
+      },
+      "color_metrics": {
+        "brightness": 0.6738,
+        "saturation": 0.2605,
+        "near_black_ratio": 0.0027,
+        "low_saturation_ratio": 0.4444,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": false
+      },
+      "source_color_metrics": {
+        "brightness": 0.6738,
+        "saturation": 0.2605,
+        "near_black_ratio": 0.0027,
+        "low_saturation_ratio": 0.4444,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": false
+      }
+    },
+    {
+      "id": "app-icon",
+      "source": "docs/art/source/app-icon.png",
+      "source_sha256": "627921c83cd5c3577f80e174104501f1afc5c184b2ec6ff656c0ef8eb7917a70",
+      "source_bytes": 2995385,
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r75/app-icon.webp",
+          "size": [
+            512,
+            512
+          ],
+          "bytes": 65504,
+          "sha256": "4cd3b51a22e8d77799cfbdeda89df0f39df1c7d951e0adcd5969bec37fb1c91c",
+          "quality": 82
+        },
+        {
+          "path": "assets/art/r75/pwa-icon-192.png",
+          "size": [
+            192,
+            192
+          ],
+          "bytes": 82129,
+          "sha256": "eecec3006fc528b9156837bf2791a7c284e6dce90cdaa2a73adc5218f802aa39",
+          "runtime_original_path": "assets/icons/icon-192.png",
+          "note": "R75 exact bytes preserved here; live PWA icon superseded by R76."
+        },
+        {
+          "path": "assets/art/r75/pwa-icon-512.png",
+          "size": [
+            512,
+            512
+          ],
+          "bytes": 514914,
+          "sha256": "76dfd85c17dc6fbe521d88210c9a9f01d58b0f3170e04fc38b5f6dc447896167",
+          "runtime_original_path": "assets/icons/icon-512.png",
+          "note": "R75 exact bytes preserved here; live PWA icon superseded by R76."
+        }
+      ],
+      "color_metrics": {
+        "brightness": 0.485,
+        "saturation": 0.4804,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.163,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      },
+      "source_color_metrics": {
+        "brightness": 0.485,
+        "saturation": 0.4804,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.163,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      }
+    },
+    {
+      "id": "victory",
+      "source": "docs/art/source/victory.png",
+      "source_sha256": "dd381990bc9684a285d082389dbd5e871d4d1a541d7c50ee3a5ed5dbfc93dbe4",
+      "source_bytes": 2898862,
+      "source_size": [
+        1024,
+        1536
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r75/victory.webp",
+          "size": [
+            1024,
+            1536
+          ],
+          "bytes": 290350,
+          "sha256": "105b6c4d7ffa872b4d2923b689dd2391869161ed5d1171df1b2b58119d08347c",
+          "quality": 82
+        }
+      ],
+      "color_metrics": {
+        "brightness": 0.4678,
+        "saturation": 0.3657,
+        "near_black_ratio": 0.0562,
+        "low_saturation_ratio": 0.0022,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      },
+      "source_color_metrics": {
+        "brightness": 0.4678,
+        "saturation": 0.3657,
+        "near_black_ratio": 0.0562,
+        "low_saturation_ratio": 0.0022,
+        "definitions": "visible alpha>32; brightness HSV V; near-black V<0.10; low saturation S<0.12",
+        "double_gate_pass": true
+      }
+    }
+  ],
+  "runtime_bytes": 6532609,
+  "source_bytes": 26926194,
+  "quality_note": "Character double gates pass. White pearl logotype intentionally fails character saturation thresholds and is not a character. Background source exposure correction recorded.",
+  "prompt_version": "r75-20261016-v1",
+  "postprocess_version": "r75-3",
+  "reviewer": "Codex local self-review; no owner or independent model acceptance claimed",
+  "reference_image_hashes": [],
+  "alpha_policy": "Actual tool returned native RGBA PNG. Original native alpha and derived mask retained; no opaque-generation claim. Runtime alpha WebP follows this round compression requirement; RGBA PNG masters remain in source.",
+  "alpha_qa": "docs/art/ALPHA_QA.json",
+  "alpha_mask_bytes": 677471,
+  "rounds": {
+    "R75": "retained in this file",
+    "R76": "ASSET_MANIFEST_R76.json",
+    "R77": "ASSET_MANIFEST_R77.json",
+    "R78": "ASSET_MANIFEST_R78.json"
+  }
+}

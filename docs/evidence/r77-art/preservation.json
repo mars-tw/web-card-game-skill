@@ -1,0 +1,32 @@
+{
+  "status": "VERIFIED",
+  "incomingEvidenceChecked": 455,
+  "restored": [
+    "docs/evidence/r74-store/review-path.json",
+    "docs/evidence/r75-art/art-browser.json",
+    "docs/evidence/r75-art/foil-rarity-fixture-1032x1376.png",
+    "docs/evidence/r76-art/art-browser.json",
+    "docs/evidence/r76-art/frame-times.json",
+    "docs/evidence/r76-art/water-0-1032x1376.png",
+    "docs/evidence/r76-art/water-0-1366x600.png",
+    "docs/evidence/r76-art/water-0-320x568.png",
+    "docs/evidence/r76-art/water-0-390x844.png",
+    "docs/evidence/r76-art/water-0-844x390.png",
+    "docs/evidence/r76-art/water-6-1032x1376.png",
+    "docs/evidence/r76-art/water-6-1366x600.png",
+    "docs/evidence/r76-art/water-6-320x568.png",
+    "docs/evidence/r76-art/water-6-390x844.png",
+    "docs/evidence/r76-art/water-6-844x390.png",
+    "docs/evidence/R67/after/desktop-1366x768.png",
+    "docs/evidence/R67/after/landscape-844x390.png",
+    "docs/evidence/R67/after/mobile-390x844.png",
+    "docs/evidence/R67/gates/browser-integration.json",
+    "docs/evidence/r73-mobile/after/frost-battle-390x844.png",
+    "docs/evidence/r73-mobile/after/frost-battle-844x390.png",
+    "docs/evidence/r73-mobile/after/staged-result-390x844.png",
+    "docs/evidence/r73-mobile/after/staged-result-844x390.png",
+    "docs/evidence/r73-mobile/after/unlocked-deck-390x844.png",
+    "docs/evidence/r73-mobile/after/unlocked-deck-844x390.png"
+  ],
+  "note": "All incoming evidence bytes, including pre-existing dirty R67 JSON, restored. Store screenshots intentionally replaced by new official captures. No existing untracked files deleted."
+}

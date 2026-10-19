@@ -1,0 +1,643 @@
+{
+  "status": "VERIFIED",
+  "proofs": [
+    {
+      "width": 844,
+      "height": 390,
+      "proof": [
+        {
+          "uid": "content-enemy-0",
+          "name": "鋼鐵騎士",
+          "box": {
+            "x": 733,
+            "y": 146,
+            "width": 92,
+            "height": 140,
+            "top": 146,
+            "right": 825,
+            "bottom": 286,
+            "left": 733
+          },
+          "text": {
+            "x": 757.046875,
+            "y": 246,
+            "width": 43.890625,
+            "height": 15,
+            "top": 246,
+            "right": 800.9375,
+            "bottom": 261,
+            "left": 757.046875
+          },
+          "nameBounds": {
+            "x": 738,
+            "y": 246,
+            "width": 82,
+            "height": 15,
+            "top": 246,
+            "right": 820,
+            "bottom": 261,
+            "left": 738
+          },
+          "complete": true,
+          "nameFits": true
+        },
+        {
+          "uid": "content-player-0",
+          "name": "見習士兵",
+          "box": {
+            "x": 46,
+            "y": 166,
+            "width": 68,
+            "height": 100,
+            "top": 166,
+            "right": 114,
+            "bottom": 266,
+            "left": 46
+          },
+          "text": {
+            "x": 58.046875,
+            "y": 227,
+            "width": 43.890625,
+            "height": 15,
+            "top": 227,
+            "right": 101.9375,
+            "bottom": 242,
+            "left": 58.046875
+          },
+          "nameBounds": {
+            "x": 50,
+            "y": 227,
+            "width": 60,
+            "height": 15,
+            "top": 227,
+            "right": 110,
+            "bottom": 242,
+            "left": 50
+          },
+          "complete": true,
+          "nameFits": true
+        },
+        {
+          "uid": "content-player-1",
+          "name": "鋼鐵騎士",
+          "box": {
+            "x": 118,
+            "y": 166,
+            "width": 68,
+            "height": 100,
+            "top": 166,
+            "right": 186,
+            "bottom": 266,
+            "left": 118
+          },
+          "text": {
+            "x": 130.046875,
+            "y": 226,
+            "width": 43.890625,
+            "height": 15,
+            "top": 226,
+            "right": 173.9375,
+            "bottom": 241,
+            "left": 130.046875
+          },
+          "nameBounds": {
+            "x": 123,
+            "y": 226,
+            "width": 58,
+            "height": 15,
+            "top": 226,
+            "right": 181,
+            "bottom": 241,
+            "left": 123
+          },
+          "complete": true,
+          "nameFits": true
+        },
+        {
+          "uid": "content-player-2",
+          "name": "弓箭手",
+          "box": {
+            "x": 190,
+            "y": 166,
+            "width": 68,
+            "height": 100,
+            "top": 166,
+            "right": 258,
+            "bottom": 266,
+            "left": 190
+          },
+          "text": {
+            "x": 207.53125,
+            "y": 227,
+            "width": 32.921875,
+            "height": 15,
+            "top": 227,
+            "right": 240.453125,
+            "bottom": 242,
+            "left": 207.53125
+          },
+          "nameBounds": {
+            "x": 194,
+            "y": 227,
+            "width": 60,
+            "height": 15,
+            "top": 227,
+            "right": 254,
+            "bottom": 242,
+            "left": 194
+          },
+          "complete": true,
+          "nameFits": true
+        },
+        {
+          "uid": "content-player-3",
+          "name": "迅捷狼",
+          "box": {
+            "x": 262,
+            "y": 166,
+            "width": 68,
+            "height": 100,
+            "top": 166,
+            "right": 330,
+            "bottom": 266,
+            "left": 262
+          },
+          "text": {
+            "x": 279.53125,
+            "y": 227,
+            "width": 32.921875,
+            "height": 15,
+            "top": 227,
+            "right": 312.453125,
+            "bottom": 242,
+            "left": 279.53125
+          },
+          "nameBounds": {
+            "x": 266,
+            "y": 227,
+            "width": 60,
+            "height": 15,
+            "top": 227,
+            "right": 326,
+            "bottom": 242,
+            "left": 266
+          },
+          "complete": true,
+          "nameFits": true
+        }
+      ],
+      "faction": {
+        "rect": {
+          "x": 362,
+          "y": 130,
+          "width": 68.671875,
+          "height": 22,
+          "top": 130,
+          "right": 430.671875,
+          "bottom": 152,
+          "left": 362
+        },
+        "clear": true
+      }
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "expanded": [
+        {
+          "selector": "chooseFlood",
+          "rect": {
+            "x": 447.453125,
+            "y": 173,
+            "width": 186.765625,
+            "height": 58,
+            "top": 173,
+            "right": 634.21875,
+            "bottom": 231,
+            "left": 447.453125
+          },
+          "hit": true
+        },
+        {
+          "selector": "chooseEbb",
+          "rect": {
+            "x": 640.21875,
+            "y": 173,
+            "width": 186.78125,
+            "height": 58,
+            "top": 173,
+            "right": 827,
+            "bottom": 231,
+            "left": 640.21875
+          },
+          "hit": true
+        },
+        {
+          "selector": "tideChartFold",
+          "rect": {
+            "x": 753,
+            "y": 101,
+            "width": 74,
+            "height": 44,
+            "top": 101,
+            "right": 827,
+            "bottom": 145,
+            "left": 753
+          },
+          "hit": true
+        },
+        {
+          "selector": "tideChartClose",
+          "rect": {
+            "x": 447.453125,
+            "y": 239,
+            "width": 185.765625,
+            "height": 44,
+            "top": 239,
+            "right": 633.21875,
+            "bottom": 283,
+            "left": 447.453125
+          },
+          "hit": true
+        },
+        {
+          "selector": "tideChartCast",
+          "rect": {
+            "x": 641.21875,
+            "y": 239,
+            "width": 185.78125,
+            "height": 44,
+            "top": 239,
+            "right": 827,
+            "bottom": 283,
+            "left": 641.21875
+          },
+          "hit": true
+        }
+      ],
+      "compact": [
+        {
+          "selector": "foldFlood",
+          "rect": {
+            "x": 447.453125,
+            "y": 180,
+            "width": 185.765625,
+            "height": 44,
+            "top": 180,
+            "right": 633.21875,
+            "bottom": 224,
+            "left": 447.453125
+          },
+          "hit": true
+        },
+        {
+          "selector": "foldEbb",
+          "rect": {
+            "x": 641.21875,
+            "y": 180,
+            "width": 185.78125,
+            "height": 44,
+            "top": 180,
+            "right": 827,
+            "bottom": 224,
+            "left": 641.21875
+          },
+          "hit": true
+        },
+        {
+          "selector": "tideChartClose",
+          "rect": {
+            "x": 447.453125,
+            "y": 232,
+            "width": 379.546875,
+            "height": 44,
+            "top": 232,
+            "right": 827,
+            "bottom": 276,
+            "left": 447.453125
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "width": 1366,
+      "height": 600,
+      "proof": [
+        {
+          "uid": "content-enemy-0",
+          "name": "鋼鐵騎士",
+          "box": {
+            "x": 1255,
+            "y": 277,
+            "width": 92,
+            "height": 140,
+            "top": 277,
+            "right": 1347,
+            "bottom": 417,
+            "left": 1255
+          },
+          "text": {
+            "x": 1279,
+            "y": 377,
+            "width": 44,
+            "height": 15,
+            "top": 377,
+            "right": 1323,
+            "bottom": 392,
+            "left": 1279
+          },
+          "nameBounds": {
+            "x": 1260,
+            "y": 377,
+            "width": 82,
+            "height": 15,
+            "top": 377,
+            "right": 1342,
+            "bottom": 392,
+            "left": 1260
+          },
+          "complete": true,
+          "nameFits": true
+        },
+        {
+          "uid": "content-player-0",
+          "name": "見習士兵",
+          "box": {
+            "x": 307,
+            "y": 297,
+            "width": 68,
+            "height": 100,
+            "top": 297,
+            "right": 375,
+            "bottom": 397,
+            "left": 307
+          },
+          "text": {
+            "x": 319,
+            "y": 358,
+            "width": 44,
+            "height": 15,
+            "top": 358,
+            "right": 363,
+            "bottom": 373,
+            "left": 319
+          },
+          "nameBounds": {
+            "x": 311,
+            "y": 358,
+            "width": 60,
+            "height": 15,
+            "top": 358,
+            "right": 371,
+            "bottom": 373,
+            "left": 311
+          },
+          "complete": true,
+          "nameFits": true
+        },
+        {
+          "uid": "content-player-1",
+          "name": "鋼鐵騎士",
+          "box": {
+            "x": 379,
+            "y": 297,
+            "width": 68,
+            "height": 100,
+            "top": 297,
+            "right": 447,
+            "bottom": 397,
+            "left": 379
+          },
+          "text": {
+            "x": 391,
+            "y": 357,
+            "width": 44,
+            "height": 15,
+            "top": 357,
+            "right": 435,
+            "bottom": 372,
+            "left": 391
+          },
+          "nameBounds": {
+            "x": 384,
+            "y": 357,
+            "width": 58,
+            "height": 15,
+            "top": 357,
+            "right": 442,
+            "bottom": 372,
+            "left": 384
+          },
+          "complete": true,
+          "nameFits": true
+        },
+        {
+          "uid": "content-player-2",
+          "name": "弓箭手",
+          "box": {
+            "x": 451,
+            "y": 297,
+            "width": 68,
+            "height": 100,
+            "top": 297,
+            "right": 519,
+            "bottom": 397,
+            "left": 451
+          },
+          "text": {
+            "x": 468.5,
+            "y": 358,
+            "width": 33,
+            "height": 15,
+            "top": 358,
+            "right": 501.5,
+            "bottom": 373,
+            "left": 468.5
+          },
+          "nameBounds": {
+            "x": 455,
+            "y": 358,
+            "width": 60,
+            "height": 15,
+            "top": 358,
+            "right": 515,
+            "bottom": 373,
+            "left": 455
+          },
+          "complete": true,
+          "nameFits": true
+        },
+        {
+          "uid": "content-player-3",
+          "name": "迅捷狼",
+          "box": {
+            "x": 523,
+            "y": 297,
+            "width": 68,
+            "height": 100,
+            "top": 297,
+            "right": 591,
+            "bottom": 397,
+            "left": 523
+          },
+          "text": {
+            "x": 540.5,
+            "y": 358,
+            "width": 33,
+            "height": 15,
+            "top": 358,
+            "right": 573.5,
+            "bottom": 373,
+            "left": 540.5
+          },
+          "nameBounds": {
+            "x": 527,
+            "y": 358,
+            "width": 60,
+            "height": 15,
+            "top": 358,
+            "right": 587,
+            "bottom": 373,
+            "left": 527
+          },
+          "complete": true,
+          "nameFits": true
+        }
+      ],
+      "faction": {
+        "rect": {
+          "x": 623,
+          "y": 182,
+          "width": 68.671875,
+          "height": 22,
+          "top": 182,
+          "right": 691.671875,
+          "bottom": 204,
+          "left": 623
+        },
+        "clear": true
+      }
+    },
+    {
+      "width": 1366,
+      "height": 600,
+      "expanded": [
+        {
+          "selector": "chooseFlood",
+          "rect": {
+            "x": 713.671875,
+            "y": 278,
+            "width": 314.65625,
+            "height": 58,
+            "top": 278,
+            "right": 1028.328125,
+            "bottom": 336,
+            "left": 713.671875
+          },
+          "hit": true
+        },
+        {
+          "selector": "chooseEbb",
+          "rect": {
+            "x": 1034.328125,
+            "y": 278,
+            "width": 314.671875,
+            "height": 58,
+            "top": 278,
+            "right": 1349,
+            "bottom": 336,
+            "left": 1034.328125
+          },
+          "hit": true
+        },
+        {
+          "selector": "tideChartFold",
+          "rect": {
+            "x": 1275,
+            "y": 206,
+            "width": 74,
+            "height": 44,
+            "top": 206,
+            "right": 1349,
+            "bottom": 250,
+            "left": 1275
+          },
+          "hit": true
+        },
+        {
+          "selector": "tideChartClose",
+          "rect": {
+            "x": 713.671875,
+            "y": 344,
+            "width": 66,
+            "height": 44,
+            "top": 344,
+            "right": 779.671875,
+            "bottom": 388,
+            "left": 713.671875
+          },
+          "hit": true
+        },
+        {
+          "selector": "tideChartCast",
+          "rect": {
+            "x": 1255.75,
+            "y": 344,
+            "width": 93.25,
+            "height": 44,
+            "top": 344,
+            "right": 1349,
+            "bottom": 388,
+            "left": 1255.75
+          },
+          "hit": true
+        }
+      ],
+      "compact": [
+        {
+          "selector": "foldFlood",
+          "rect": {
+            "x": 713.671875,
+            "y": 285,
+            "width": 313.65625,
+            "height": 44,
+            "top": 285,
+            "right": 1027.328125,
+            "bottom": 329,
+            "left": 713.671875
+          },
+          "hit": true
+        },
+        {
+          "selector": "foldEbb",
+          "rect": {
+            "x": 1035.328125,
+            "y": 285,
+            "width": 313.671875,
+            "height": 44,
+            "top": 285,
+            "right": 1349,
+            "bottom": 329,
+            "left": 1035.328125
+          },
+          "hit": true
+        },
+        {
+          "selector": "tideChartClose",
+          "rect": {
+            "x": 713.671875,
+            "y": 337,
+            "width": 66,
+            "height": 44,
+            "top": 337,
+            "right": 779.671875,
+            "bottom": 381,
+            "left": 713.671875
+          },
+          "hit": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "status": "VERIFIED",
+  "method": "Native 390x844 DPR1 PNG byte copies, no collage or resizing.",
+  "allocation": {
+    "puzzles": 5,
+    "forecast": 5,
+    "moen": 5
+  },
+  "reason": "Equal allocation: reviewed puzzle details and all three exchange states; dual reversal and fourth-round proof; enemy healing/shield and real delay casualty. All six original boards and supplemental proofs remain in the parent folder.",
+  "images": [
+    {
+      "path": "docs/content/r7/review-set/01-puzzle-shelter.png",
+      "source": "docs/content/r7/phone-puzzle-shelter-playing.png",
+      "sha256": "a74852c938a9a146b1568638ae68707254b157fe7309bbd38f5393bf8ad58cde",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/02-puzzle-taunt.png",
+      "source": "docs/content/r7/phone-puzzle-taunt-playing.png",
+      "sha256": "e7beeb78dbce07a2f0c3f36a8d56ea288fbd42376c35a50db21383bf89f903f1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/03-cross-exchange.png",
+      "source": "docs/content/r7/phone-exchange-preview.png",
+      "sha256": "4dbc3e6397f853f015c0ce1b5bf78578060fb5300c58c1891b7f5847db504a87",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/04-cross-cancelled.png",
+      "source": "docs/content/r7/phone-exchange-cancelled.png",
+      "sha256": "c3f73acb130fea281d87742b22296beff2518d1f2904851760577bd87d6c626a",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/05-cross-confirmed.png",
+      "source": "docs/content/r7/phone-exchange-confirmed.png",
+      "sha256": "16ef00fe879dae2b6cb24258f8071486db93aea24fd5c45f5e24003f84e0aeb2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/06-forecast-held.png",
+      "source": "docs/content/r7/phone-forecast-held.png",
+      "sha256": "0a6466dd141d95e82ab9a764777a885114ae18d460797cbe574a98baa3723955",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/07-forecast-flood-to-ebb.png",
+      "source": "docs/content/r7/phone-forecast-flood-to-ebb-applied.png",
+      "sha256": "f3f93cce653686e9c1218132b0a6a4adbcf3e1565ff73f75e5556b4cd7eac375",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/08-forecast-ebb-to-flood.png",
+      "source": "docs/content/r7/phone-forecast-ebb-to-flood-applied.png",
+      "sha256": "5247dccf24e771b13c81149febcd2f078834a56222b22205901511cae14b2c8a",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/09-forecast-closed-playing.png",
+      "source": "docs/content/r7/phone-forecast-closed-playing.png",
+      "sha256": "6a279d575efbd4f5379d882774e22b868bc70d87b4e18c8a7f55626cb9f3d6b8",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/10-forecast-fourth.png",
+      "source": "docs/content/r7/phone-forecast-fourth.png",
+      "sha256": "506af2854f612e7ec9f1f22bd9abaddf6e665217d3d42a64aec23f931f973ab6",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/11-moen-healing-impact.png",
+      "source": "docs/content/r7/phone-moen-impact.png",
+      "sha256": "6beee970253d5795277b2c7a31b86f8e9f750e05769f617ee3a51f339ea24931",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/12-moen-shield-guarding.png",
+      "source": "docs/content/r7/phone-moen-guarding.png",
+      "sha256": "09705ac484f32d84bb0793309db53900fe8ad8c3a37c942406ec027f3d4a152a",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/13-moen-shield-broken.png",
+      "source": "docs/content/r7/phone-moen-shield-after.png",
+      "sha256": "0ec68fa1305173e5a371a5a4926d48eb13625ba19d9f772e474922304c510890",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/14-moen-delay-before.png",
+      "source": "docs/content/r7/phone-moen-delay-before.png",
+      "sha256": "dae96e8d9cab5d3ff7b4499d9e66a0fd2a973f27448e520b42116a9421f90580",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/content/r7/review-set/15-moen-delay-after.png",
+      "source": "docs/content/r7/phone-moen-delay-after.png",
+      "sha256": "70ed49b0bfc2831f00ff1cbcec072f25254e5fbe84205f0808171e6594556aba",
+      "width": 390,
+      "height": 844
+    }
+  ]
+}

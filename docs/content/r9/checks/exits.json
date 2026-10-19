@@ -1,0 +1,391 @@
+[
+  {
+    "name": "unit",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exit": 1,
+    "seconds": 1.5,
+    "log": "docs/content/r9/checks/unit.log"
+  },
+  {
+    "name": "r9",
+    "command": [
+      "node",
+      "scripts/test-content-r9-e2e.js"
+    ],
+    "exit": 0,
+    "seconds": 146.2,
+    "log": "docs/content/r9/checks/r9.log"
+  },
+  {
+    "name": "unit",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exit": 0,
+    "seconds": 7.4,
+    "log": "docs/content/r9/checks/unit-attempt2.log"
+  },
+  {
+    "name": "unit",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exit": 0,
+    "seconds": 7.6,
+    "log": "docs/content/r9/checks/unit-attempt3.log"
+  },
+  {
+    "name": "r9",
+    "command": [
+      "node",
+      "scripts/test-content-r9-e2e.js"
+    ],
+    "exit": 1,
+    "seconds": 126.1,
+    "log": "docs/content/r9/checks/r9-attempt2.log"
+  },
+  {
+    "name": "r8",
+    "command": [
+      "node",
+      "scripts/test-content-r8-e2e.js"
+    ],
+    "exit": 0,
+    "seconds": 146.2,
+    "log": "docs/content/r9/checks/r8.log"
+  },
+  {
+    "name": "r8-effects",
+    "command": [
+      "node",
+      "scripts/capture-content-r8-effects.js"
+    ],
+    "exit": 1,
+    "seconds": 7.2,
+    "log": "docs/content/r9/checks/r8-effects.log"
+  },
+  {
+    "name": "landscape",
+    "command": [
+      "node",
+      "scripts/capture-content-r8-landscape.js"
+    ],
+    "exit": 0,
+    "seconds": 31.1,
+    "log": "docs/content/r9/checks/landscape.log"
+  },
+  {
+    "name": "puzzle-readability",
+    "command": [
+      "node",
+      "scripts/capture-content-r8-puzzles.js"
+    ],
+    "exit": 0,
+    "seconds": 2.5,
+    "log": "docs/content/r9/checks/puzzle-readability.log"
+  },
+  {
+    "name": "forecast-effects",
+    "command": [
+      "node",
+      "scripts/capture-content-r8-forecast.js"
+    ],
+    "exit": 0,
+    "seconds": 20.4,
+    "log": "docs/content/r9/checks/forecast-effects.log"
+  },
+  {
+    "name": "timing",
+    "command": [
+      "node",
+      "scripts/test-content-r8-timing.js"
+    ],
+    "exit": 0,
+    "seconds": 10.6,
+    "log": "docs/content/r9/checks/timing.log"
+  },
+  {
+    "name": "legacy-e2e",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:e2e"
+    ],
+    "exit": 1,
+    "seconds": 60.5,
+    "log": "docs/content/r9/checks/legacy-e2e.log"
+  },
+  {
+    "name": "rwd",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:rwd"
+    ],
+    "exit": 0,
+    "seconds": 87.3,
+    "log": "docs/content/r9/checks/rwd.log"
+  },
+  {
+    "name": "r6",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:content:r6"
+    ],
+    "exit": 0,
+    "seconds": 122.4,
+    "log": "docs/content/r9/checks/r6.log"
+  },
+  {
+    "name": "r6-effects",
+    "command": [
+      "node",
+      "scripts/test-content-r6-effects.js"
+    ],
+    "exit": 0,
+    "seconds": 8.6,
+    "log": "docs/content/r9/checks/r6-effects.log"
+  },
+  {
+    "name": "r7",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:content:r7"
+    ],
+    "exit": 0,
+    "seconds": 149.1,
+    "log": "docs/content/r9/checks/r7.log"
+  },
+  {
+    "name": "r8-offline",
+    "command": [
+      "node",
+      "scripts/test-content-r8-offline.js"
+    ],
+    "exit": 0,
+    "seconds": 22.2,
+    "log": "docs/content/r9/checks/r8-offline.log"
+  },
+  {
+    "name": "frames",
+    "command": [
+      "node",
+      "scripts/measure-content-r8.js"
+    ],
+    "exit": 0,
+    "seconds": 30.9,
+    "log": "docs/content/r9/checks/frames.log"
+  },
+  {
+    "name": "r9-puzzles",
+    "command": [
+      "node",
+      "scripts/capture-content-r9-puzzles.js"
+    ],
+    "exit": 0,
+    "seconds": 2.7,
+    "log": "docs/content/r9/checks/r9-puzzles.log"
+  },
+  {
+    "name": "r9-acceptance",
+    "command": [
+      "node",
+      "scripts/test-content-r9-acceptance.js"
+    ],
+    "exit": 0,
+    "seconds": 116.7,
+    "log": "docs/content/r9/checks/r9-acceptance.log"
+  },
+  {
+    "name": "r9",
+    "command": [
+      "node",
+      "scripts/test-content-r9-e2e.js"
+    ],
+    "exit": 0,
+    "seconds": 145.4,
+    "log": "docs/content/r9/checks/r9-attempt3.log"
+  },
+  {
+    "name": "r8-effects",
+    "command": [
+      "node",
+      "scripts/capture-content-r8-effects.js"
+    ],
+    "exit": 0,
+    "seconds": 13.4,
+    "log": "docs/content/r9/checks/r8-effects-attempt2.log"
+  },
+  {
+    "name": "landscape",
+    "command": [
+      "node",
+      "scripts/capture-content-r8-landscape.js"
+    ],
+    "exit": 0,
+    "seconds": 30.6,
+    "log": "docs/content/r9/checks/landscape-attempt2.log"
+  },
+  {
+    "name": "unit",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exit": 0,
+    "seconds": 7.5,
+    "log": "docs/content/r9/checks/unit-attempt4.log"
+  },
+  {
+    "name": "legacy-e2e",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:e2e"
+    ],
+    "exit": 1,
+    "seconds": 332.9,
+    "log": "docs/content/r9/checks/legacy-e2e-attempt2.log"
+  },
+  {
+    "name": "ci-performance",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:r67:performance"
+    ],
+    "exit": 0,
+    "seconds": 30.7,
+    "log": "docs/content/r9/checks/ci-performance.log"
+  },
+  {
+    "name": "return-tide",
+    "command": [
+      "node",
+      "scripts/test-content-r9-return.js"
+    ],
+    "exit": 0,
+    "seconds": 48.1,
+    "log": "docs/content/r9/checks/return-tide.log"
+  },
+  {
+    "name": "r9-puzzles",
+    "command": [
+      "node",
+      "scripts/capture-content-r9-puzzles.js"
+    ],
+    "exit": 0,
+    "seconds": 2.3,
+    "log": "docs/content/r9/checks/r9-puzzles-attempt2.log"
+  },
+  {
+    "name": "r9-acceptance",
+    "command": [
+      "node",
+      "scripts/test-content-r9-acceptance.js"
+    ],
+    "exit": 0,
+    "seconds": 117.1,
+    "log": "docs/content/r9/checks/r9-acceptance-attempt2.log"
+  },
+  {
+    "name": "r9",
+    "command": [
+      "node",
+      "scripts/test-content-r9-e2e.js"
+    ],
+    "exit": 0,
+    "seconds": 147.3,
+    "log": "docs/content/r9/checks/r9-attempt4.log"
+  },
+  {
+    "name": "unit",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exit": 0,
+    "seconds": 7.2,
+    "log": "docs/content/r9/checks/unit-attempt5.log"
+  },
+  {
+    "name": "legacy-e2e",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:e2e"
+    ],
+    "exit": 1,
+    "seconds": 563.4,
+    "log": "docs/content/r9/checks/legacy-e2e-attempt3.log"
+  },
+  {
+    "name": "return-tide",
+    "command": [
+      "node",
+      "scripts/test-content-r9-return.js"
+    ],
+    "exit": 0,
+    "seconds": 48.6,
+    "log": "docs/content/r9/checks/return-tide-attempt2.log"
+  },
+  {
+    "name": "unit",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exit": 0,
+    "seconds": 7.7,
+    "log": "docs/content/r9/checks/unit-attempt6.log"
+  },
+  {
+    "name": "legacy-e2e",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:e2e"
+    ],
+    "exit": 0,
+    "seconds": 1092.5,
+    "log": "docs/content/r9/checks/legacy-e2e-attempt4.log"
+  },
+  {
+    "name": "frames",
+    "command": [
+      "node",
+      "scripts/measure-content-r8.js"
+    ],
+    "exit": 0,
+    "seconds": 30.5,
+    "log": "docs/content/r9/checks/frames-attempt2.log"
+  },
+  {
+    "name": "ci-performance",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:r67:performance"
+    ],
+    "exit": 0,
+    "seconds": 30.6,
+    "log": "docs/content/r9/checks/ci-performance-attempt2.log"
+  },
+  {
+    "name": "unit",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exit": 0,
+    "seconds": 9.0,
+    "log": "docs/content/r9/checks/unit-attempt7.log"
+  }
+]

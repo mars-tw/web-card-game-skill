@@ -1,0 +1,1925 @@
+
+> web-card-game-skill@0.16.0 test:e2e
+> node scripts/test-battle-e2e.js && node scripts/test-controls-reachability.js && node scripts/test-r67-browser.js && node scripts/test-r72-fun.js && node scripts/test-r73-mobile.js && node scripts/test-r74-review.js && node scripts/test-r74-ebb.js && node scripts/test-r75-art.js && node scripts/test-r76-art.js && node scripts/test-r77-tide.js && node scripts/test-r78-art.js && node scripts/test-r79-art.js && node scripts/test-r80-art.js && node scripts/test-content-r1-e2e.js && node scripts/test-content-r2-e2e.js && node scripts/test-content-r3-e2e.js
+
+  ✓ SW test 旗標下可在 webdriver 註冊 root scope
+  ✓ 真 SW 離線 reload 後 shell 與對戰頁仍可載入
+  ✓ 真 SW 離線測試無 console/pageerror
+
+== 視窗 桌面 1280x900 ==
+  ✓ PWA manifest 掛在入口 shell 且含 192/512 icon
+  ✓ Service worker 使用版本快取並涵蓋 battle/pack 子路徑
+  ✓ Service worker install 會 skipWaiting，activate 會 clients.claim
+  ✓ 入口 shell、battle、pack 都有 15 秒自動重載、sessionStorage 守衛與版本化本地資源
+  ✓ navigator.webdriver 會跳過 SW 註冊且更新提示可顯示
+  ✓ 開局輪到玩家
+  ✓ 玩家起手 ≥3 張（4）
+  ✓ 對戰頁 SW 自動更新守衛超過 15 秒不會自動 reload
+  ✓ r61 visual: battle 傳說框 DOM 已掛載
+  ✓ r61 visual: battle 傳說框掃光動畫生效（legendFrameSweep）
+  ✓ r61 visual: battle 閃卡使用雙層虹彩色散（2 layers）
+  ✓ r61 visual: battle 閃卡色散保持可見（opacity 0.58）
+  ✓ r61 visual: 英雄血量/法力採立體寶石語言，低血與可攻擊狀態不覆蓋身份材質
+  ✓ r61 visual: 英雄頭像有徑向底、雙圈描邊與 inset 工藝
+  ✓ r61 capture: 命名 battle pose 一鍵佈景、敵場正名並鎖定傳說/foil 靜幀
+  ✓ r61 capture: 三位對手各有可重現的藍／紫／橙色場與英雄身份
+  ✓ r66 art: 四陣營長尾卡皆使用專屬 PNG，無 emoji fallback
+  ✓ r61 hero art: 戰場六張角色卡皆載入專屬 PNG，無 emoji fallback
+  ✓ battle FX guard: impact 前仍只在攻擊前搖/衝刺，未扣血且無傷害字
+  ✓ battle FX guard: active impact 後才扣血、顯示 hit flash 與傷害字
+  ✓ battle FX guard: impact 前不標記死亡
+  ✓ battle FX guard: impact 後死亡反應才掛載
+  ✓ battle FX guard: render-surviving hit flash appears after attack render
+  ✓ battle FX guard: render-surviving combat animations are removed after their full duration
+  ✓ r61 AI FX guard: 單次隨從互毆只建立攻／受各一個 ghost（peak=2）
+  ✓ reduced-motion guard: combat ghost、傷害浮字與死亡動畫不建立 DOM
+  ✓ reduced-motion guard: 傳說框掃光與閃卡色散動畫停用
+  ✓ battle FX guard: lethal win slow state and confetti are emitted
+  ✓ battle FX guard: defeat applies grayscale fade state
+  ✓ 合法 card_deck_v1 會作為玩家對戰牌庫
+  ✓ 玩家牌庫 20 張皆來自儲存牌組
+  ✓ 開局抽牌後手牌加牌庫仍完整對應儲存牌組
+  ✓ 非法 card_deck_v1 會 fallback，不阻擋開局
+  ✓ fallback 玩家開局手牌加牌庫總張數為 DECK_SIZE
+  ✓ 具名 AI 對手表提供哈爾登、維伊、斯卡拉三人
+  ✓ 三個 AI 固定牌組都通過 validateDeck（[{"id":"op_ser_halden","len":20,"ok":true,"errors":[]},{"id":"op_magister_vey","len":20,"ok":true,"errors":[]},{"id":"op_scarra","len":20,"ok":true,"errors":[]}]）
+  ✓ 對手下拉選單預設哈爾登隊長
+  ✓ 預設 AI 使用哈爾登固定嘲諷控制牌組
+  ✓ AI hero mirror: easy uses the original replacement; normal/hard carry Vey's hero card
+  ✓ 切換斯卡拉後 localStorage、英雄顯示、快攻 faceBias 與固定牌組同步
+  ✓ 困難 AI 仍使用玩家指定的維伊固定法強爆發牌組與偏置
+  ✓ 困難 AI 牌堆來自具名對手模板卡池
+  ✓ 困難 AI 開局手牌加牌庫總張數為 DECK_SIZE
+  ✓ Attune UI requires a friendly target, blocks ending the turn, shows confirm/cancel, and resolves +1/+1
+  ✓ AI 回合有結束（沒有卡死）
+  ✓ AI 非衝鋒隨從下回合有攻擊（玩家 HP 30 → 28）
+  ✓ 點指定型法術後進入待指定狀態
+  ✓ 待指定期間點其他手牌 → 自動取消指定
+  ✓ 火焰箭留在手上、治療術已施放（手牌剩 firebolt）
+  ✓ 只扣治療術的 2 費（剩 8）
+  ✓ 騎士沒有被錯誤結算傷害
+  ✓ 開局顯示重抽按鈕
+  ✓ 法力不足的無效點擊不沒收重抽權
+  ✓ 結束回合後重抽權失效（只限第一回合）
+  ✓ 敵方隨從卡可被點擊（UI 目標路徑存在）
+  ✓ 進入待指定時未沒收、確認目標後法術結算
+  ✓ 指定法術結算後沒收重抽權（resolvePendingSpell 也燒）
+  ✓ 壞存檔欄位自動補齊，全部是數字
+  ✓ 保留舊值、補新欄位（wins=3 coins=0）
+  ✓ 每日任務完成後領取按鈕可用
+  ✓ 領取每日任務會增加金幣並標記已領（+25）
+  ✓ 難度獎勵分層符合 easy 50/15、normal 65/20、hard 85/30
+  ✓ 玩家自然戰敗後 0.8 秒內顯示結算（delay=100ms, hp=-7, over=true）
+  ✓ AI startEnemy 疲勞致死後不再出牌或產生殭屍召喚 log
+  ✓ 玩家 endEnemy 疲勞致死後不推進輪到你文案（turn=player, log=🛡️ 哈爾登隊長：對手召喚了 見習士兵。你牌庫已空，疲勞受到 1 點傷害。）
+  ✓ 結算 pending 計時器在重開後不會蓋住新局（elapsed=2316ms）
+  ✓ 滿場（7 隻）時出隨從被擋且不扣費
+  ✓ 亡語 token 在死者移除後補位（場上 7 隻，含骷髏）
+  ✓ 無水平溢出（0）
+  ✓ 新帳號取得 10 種基礎卡各 2 張，初始收藏可供合法 20 張牌組使用
+  ✓ 新帳號可用自動補滿並真實儲存合法自訂牌組，首輪自訂牌組任務可進行
+  ✓ r61 capture: pack 懸念、傳說與 foil 海報幀皆可命名鎖定
+  ✓ pack FX guard: 可點單張翻牌並一鍵全部翻開，rare+/tide 效果與後續操作同步完成
+  ✓ r61 hero art: 開包五張展示與收藏六張縮圖皆使用專屬 PNG
+  ✓ 收藏冊將普通、閃卡、潮鑄分槽顯示且 #tide 計入擁有數
+  ✓ 開包 pity 會累積未中 rare+，第 20 包強制 rare+ 後歸零
+  ✓ 35-pack hero pity composes with rare pity, resets both counters, and prefers an unowned hero
+  ✓ 牌組編輯器可加入 20 張合法牌並儲存
+  ✓ 儲存成功訊息顯示正確
+  ✓ 重載後牌組仍保留並維持合法
+  ✓ 快攻模板可一鍵建立合法 20 張並顯示費用曲線
+  ✓ 控制模板可一鍵建立合法 20 張並存檔
+  ✓ R16 新卡會被模板選入：快攻 5，控制 5
+  ✓ 牌組比例與 20/20 狀態可見
+  ✓ 模板牌組存檔後可進入對戰並使用 saved 來源
+  ✓ 開包戰績區顯示版本並可調整文字大小
+  ✓ 開包任務抽屜開啟後焦點進入抽屜控制
+  ✓ 開包頁 SW 自動更新守衛超過 15 秒不會自動 reload
+  ✓ 開包頁摘要、任務與牌組通知使用 aria-live=polite
+  ✓ 打完一場後戰績面板顯示勝率、平均回合與常用卡
+  ✓ 戰績面板可依難度篩選並依牌組軸線分組顯示
+  ✓ 戰績可複製目前篩選後的 JSON 文字
+  ✓ 存檔管家可匯出 stats/collection/deck/goals/quests Base64 並放入文字框
+  ✓ 存檔管家匯入會遷移還原資料並在匯入前自動備份
+  ✓ 壞存檔碼會拒絕且不覆蓋現有存檔
+  ✓ 匯入 commit 中途失敗會拒絕並 rollback 到匯入前狀態
+  ✓ 新卡分數不高於舊卡時不顯示推薦替換（new=9, old=10）
+  ✓ 收藏里程碑 UI 可一次性領取並發放金幣
+  ✓ 收藏里程碑重複領取不會再次加金幣
+  ✓ 週任務可完成領取且跨週重置
+  ✓ 里程碑總增發不超過三包價值
+  ✓ 無 console 錯誤 / pageerror
+
+== 視窗 矮桌機 1366x700 ==
+  ✓ 矮桌機 shell 分頁與檢查更新按鈕可達可點
+  ✓ 開局輪到玩家
+  ✓ 玩家起手 ≥3 張（4）
+  ✓ 對戰頁 SW 自動更新守衛超過 15 秒不會自動 reload
+  ✓ 矮桌機固定主列按鈕可點，詳情/圖鑑/任務/結算層可垂直捲動
+  ✓ 合法 card_deck_v1 會作為玩家對戰牌庫
+  ✓ 玩家牌庫 20 張皆來自儲存牌組
+  ✓ 開局抽牌後手牌加牌庫仍完整對應儲存牌組
+  ✓ 非法 card_deck_v1 會 fallback，不阻擋開局
+  ✓ fallback 玩家開局手牌加牌庫總張數為 DECK_SIZE
+  ✓ 具名 AI 對手表提供哈爾登、維伊、斯卡拉三人
+  ✓ 三個 AI 固定牌組都通過 validateDeck（[{"id":"op_ser_halden","len":20,"ok":true,"errors":[]},{"id":"op_magister_vey","len":20,"ok":true,"errors":[]},{"id":"op_scarra","len":20,"ok":true,"errors":[]}]）
+  ✓ 對手下拉選單預設哈爾登隊長
+  ✓ 預設 AI 使用哈爾登固定嘲諷控制牌組
+  ✓ AI hero mirror: easy uses the original replacement; normal/hard carry Vey's hero card
+  ✓ 切換斯卡拉後 localStorage、英雄顯示、快攻 faceBias 與固定牌組同步
+  ✓ 困難 AI 仍使用玩家指定的維伊固定法強爆發牌組與偏置
+  ✓ 困難 AI 牌堆來自具名對手模板卡池
+  ✓ 困難 AI 開局手牌加牌庫總張數為 DECK_SIZE
+  ✓ Attune UI requires a friendly target, blocks ending the turn, shows confirm/cancel, and resolves +1/+1
+  ✓ AI 回合有結束（沒有卡死）
+  ✓ AI 非衝鋒隨從下回合有攻擊（玩家 HP 30 → 28）
+  ✓ 點指定型法術後進入待指定狀態
+  ✓ 待指定期間點其他手牌 → 自動取消指定
+  ✓ 火焰箭留在手上、治療術已施放（手牌剩 firebolt）
+  ✓ 只扣治療術的 2 費（剩 8）
+  ✓ 騎士沒有被錯誤結算傷害
+  ✓ 開局顯示重抽按鈕
+  ✓ 法力不足的無效點擊不沒收重抽權
+  ✓ 結束回合後重抽權失效（只限第一回合）
+  ✓ 敵方隨從卡可被點擊（UI 目標路徑存在）
+  ✓ 進入待指定時未沒收、確認目標後法術結算
+  ✓ 指定法術結算後沒收重抽權（resolvePendingSpell 也燒）
+  ✓ 壞存檔欄位自動補齊，全部是數字
+  ✓ 保留舊值、補新欄位（wins=3 coins=0）
+  ✓ 每日任務完成後領取按鈕可用
+  ✓ 領取每日任務會增加金幣並標記已領（+25）
+  ✓ 難度獎勵分層符合 easy 50/15、normal 65/20、hard 85/30
+  ✓ 玩家自然戰敗後 0.8 秒內顯示結算（delay=155ms, hp=-7, over=true）
+  ✓ AI startEnemy 疲勞致死後不再出牌或產生殭屍召喚 log
+  ✓ 玩家 endEnemy 疲勞致死後不推進輪到你文案（turn=player, log=🛡️ 哈爾登隊長：對手召喚了 見習士兵。你牌庫已空，疲勞受到 1 點傷害。）
+  ✓ 結算 pending 計時器在重開後不會蓋住新局（elapsed=2318ms）
+  ✓ 滿場（7 隻）時出隨從被擋且不扣費
+  ✓ 亡語 token 在死者移除後補位（場上 7 隻，含骷髏）
+  ✓ 無水平溢出（0）
+  ✓ 收藏冊將普通、閃卡、潮鑄分槽顯示且 #tide 計入擁有數
+  ✓ 開包 pity 會累積未中 rare+，第 20 包強制 rare+ 後歸零
+  ✓ 35-pack hero pity composes with rare pity, resets both counters, and prefers an unowned hero
+  ✓ 牌組編輯器可加入 20 張合法牌並儲存
+  ✓ 儲存成功訊息顯示正確
+  ✓ 重載後牌組仍保留並維持合法
+  ✓ 快攻模板可一鍵建立合法 20 張並顯示費用曲線
+  ✓ 控制模板可一鍵建立合法 20 張並存檔
+  ✓ R16 新卡會被模板選入：快攻 5，控制 5
+  ✓ 牌組比例與 20/20 狀態可見
+  ✓ 模板牌組存檔後可進入對戰並使用 saved 來源
+  ✓ 矮桌機開包主要按鈕含檢查更新可點，目標/戰績/牌組/任務面板可垂直捲動
+  ✓ 開包戰績區顯示版本並可調整文字大小
+  ✓ 開包任務抽屜開啟後焦點進入抽屜控制
+  ✓ 開包頁 SW 自動更新守衛超過 15 秒不會自動 reload
+  ✓ 開包頁摘要、任務與牌組通知使用 aria-live=polite
+  ✓ 打完一場後戰績面板顯示勝率、平均回合與常用卡
+  ✓ 戰績面板可依難度篩選並依牌組軸線分組顯示
+  ✓ 戰績可複製目前篩選後的 JSON 文字
+  ✓ 存檔管家可匯出 stats/collection/deck/goals/quests Base64 並放入文字框
+  ✓ 存檔管家匯入會遷移還原資料並在匯入前自動備份
+  ✓ 壞存檔碼會拒絕且不覆蓋現有存檔
+  ✓ 匯入 commit 中途失敗會拒絕並 rollback 到匯入前狀態
+  ✓ 新卡分數不高於舊卡時不顯示推薦替換（new=9, old=10）
+  ✓ 收藏里程碑 UI 可一次性領取並發放金幣
+  ✓ 收藏里程碑重複領取不會再次加金幣
+  ✓ 週任務可完成領取且跨週重置
+  ✓ 里程碑總增發不超過三包價值
+  ✓ 無 console 錯誤 / pageerror
+
+== 視窗 手機 390x844 ==
+  ✓ 開局輪到玩家
+  ✓ 玩家起手 ≥3 張（4）
+  ✓ 對戰頁 SW 自動更新守衛超過 15 秒不會自動 reload
+  ✓ r61 mobile capture: fourRarityHand 會展開抽屜並顯示四張卡
+  ✓ 手機對戰主要提示與任務通知使用 aria-live=polite
+  ✓ 手機鍵盤 Tab 可移動到主要控制並顯示焦點（tidebreakBtn）
+  ✓ 合法 card_deck_v1 會作為玩家對戰牌庫
+  ✓ 玩家牌庫 20 張皆來自儲存牌組
+  ✓ 開局抽牌後手牌加牌庫仍完整對應儲存牌組
+  ✓ 非法 card_deck_v1 會 fallback，不阻擋開局
+  ✓ fallback 玩家開局手牌加牌庫總張數為 DECK_SIZE
+  ✓ 具名 AI 對手表提供哈爾登、維伊、斯卡拉三人
+  ✓ 三個 AI 固定牌組都通過 validateDeck（[{"id":"op_ser_halden","len":20,"ok":true,"errors":[]},{"id":"op_magister_vey","len":20,"ok":true,"errors":[]},{"id":"op_scarra","len":20,"ok":true,"errors":[]}]）
+  ✓ 對手下拉選單預設哈爾登隊長
+  ✓ 預設 AI 使用哈爾登固定嘲諷控制牌組
+  ✓ AI hero mirror: easy uses the original replacement; normal/hard carry Vey's hero card
+  ✓ 切換斯卡拉後 localStorage、英雄顯示、快攻 faceBias 與固定牌組同步
+  ✓ 困難 AI 仍使用玩家指定的維伊固定法強爆發牌組與偏置
+  ✓ 困難 AI 牌堆來自具名對手模板卡池
+  ✓ 困難 AI 開局手牌加牌庫總張數為 DECK_SIZE
+  ✓ Attune UI requires a friendly target, blocks ending the turn, shows confirm/cancel, and resolves +1/+1
+  ✓ AI 回合有結束（沒有卡死）
+  ✓ AI 非衝鋒隨從下回合有攻擊（玩家 HP 30 → 28）
+  ✓ 點指定型法術後進入待指定狀態
+  ✓ 待指定期間點其他手牌 → 自動取消指定
+  ✓ 火焰箭留在手上、治療術已施放（手牌剩 firebolt）
+  ✓ 只扣治療術的 2 費（剩 8）
+  ✓ 騎士沒有被錯誤結算傷害
+  ✓ 開局顯示重抽按鈕
+  ✓ 法力不足的無效點擊不沒收重抽權
+  ✓ 結束回合後重抽權失效（只限第一回合）
+  ✓ 敵方隨從卡可被點擊（UI 目標路徑存在）
+  ✓ 進入待指定時未沒收、確認目標後法術結算
+  ✓ 指定法術結算後沒收重抽權（resolvePendingSpell 也燒）
+  ✓ 壞存檔欄位自動補齊，全部是數字
+  ✓ 保留舊值、補新欄位（wins=3 coins=0）
+  ✓ 每日任務完成後領取按鈕可用
+  ✓ 領取每日任務會增加金幣並標記已領（+25）
+  ✓ 難度獎勵分層符合 easy 50/15、normal 65/20、hard 85/30
+  ✓ 玩家自然戰敗後 0.8 秒內顯示結算（delay=101ms, hp=-7, over=true）
+  ✓ AI startEnemy 疲勞致死後不再出牌或產生殭屍召喚 log
+  ✓ 玩家 endEnemy 疲勞致死後不推進輪到你文案（turn=player, log=🛡️ 哈爾登隊長：對手召喚了 見習士兵。你牌庫已空，疲勞受到 1 點傷害。）
+  ✓ 結算 pending 計時器在重開後不會蓋住新局（elapsed=2321ms）
+  ✓ 滿場（7 隻）時出隨從被擋且不扣費
+  ✓ 亡語 token 在死者移除後補位（場上 7 隻，含骷髏）
+  ✓ 無水平溢出（0）
+  ✓ 手機首屏可看到 Command Dock、手牌把手與結束回合按鈕（end left=82.96875, right=132.765625）
+  ✓ 手機提示會高亮建議且不自動出牌/攻擊
+  ✓ 提示高亮時會附上為什麼文案
+  ✓ 提示 toast 與 log 使用 polite live region
+  ✓ 動態難度調節可由設定完全關閉
+  ✓ 動態難度調節預設/重新開啟有效
+  ✓ 效能設定可鎖定高/低動畫
+  ✓ 自動效能會在 FPS 低於 45 降低動畫並於回穩恢復
+  ✓ 效能診斷記錄最近降級/恢復歷史
+  ✓ 對戰頁文字大小設定可調整 log 字級並保存
+  ✓ 手機點卡牌詳情不會誤觸出牌
+  ✓ 手機卡牌詳情顯示大卡資料與可點關鍵字
+  ✓ 手機卡牌詳情顯示軸線標籤與風味文字
+  ✓ 手機選牌顯示確認預覽
+  ✓ 手機首屏不捲動即可出牌並結束回合
+  ✓ 指定法術提示會說明理由並預估擊殺目標
+  ✓ 開啟顯示 AI 思路後，AI 出牌會在 log 附理由
+  ✓ 手機場上卡詳情按鈕有獨立命中區（44x44）
+  ✓ 手機場上卡詳情不會誤選攻擊者或攻擊英雄
+  ✓ 手機更多面板內的關鍵字圖鑑按鈕可命中
+  ✓ 手機可點開關鍵字圖鑑
+  ✓ 對戰頁任務抽屜紅點合併每日/每週/里程碑可領數
+  ✓ 對戰頁任務抽屜整合每日/每週/里程碑
+  ✓ 手機任務抽屜一屏可點全部領取
+  ✓ 對戰頁任務抽屜可一鍵領取所有可領獎勵並清除紅點
+  ✓ 手機目標列、日誌、任務按鈕可見且可命中
+  ✓ 手機目標/日誌/任務不被固定手牌或控制列遮住
+  ✓ 手機入口 shell 無水平溢出且高度緊湊（overflow=0, h=60.546875）
+  ✓ 手機入口 tab 不直排、不被文字撐高
+  ✓ 清空存檔後首次對戰自動開啟三步導引，且不注入第 21 張牌
+  ✓ 三步導引可略過並記錄已完成，且牌局仍維持 20 張資源
+  ✓ STEP 1「我知道了」會真正關閉導引並記錄已確認，且牌局仍維持 20 張資源
+  ✓ 導引中重抽後重新定位示範卡，且不改變 20 張牌狀態
+  ✓ 手機教學選牌先預覽再確認
+  ✓ 可依 UI 完成出牌→攻擊→結束回合三步導引
+  ✓ 收藏冊將普通、閃卡、潮鑄分槽顯示且 #tide 計入擁有數
+  ✓ 開包 pity 會累積未中 rare+，第 20 包強制 rare+ 後歸零
+  ✓ 35-pack hero pity composes with rare pity, resets both counters, and prefers an unowned hero
+  ✓ 開包頁也可開啟整合任務抽屜
+  ✓ 手機收藏冊可篩選未擁有＋稀有度組合
+  ✓ 手機收藏冊排序生效且篩選 chip 化、無冗長下拉
+  ✓ 手機牌組編輯器可用搜尋/費用/稀有度篩出迅捷狼
+  ✓ 手機牌組編輯器可自動補滿合法 20 張並儲存
+  ✓ 手機自動補滿牌組會帶入下一場對戰
+  ✓ 儲存成功訊息顯示正確
+  ✓ 重載後牌組仍保留並維持合法
+  ✓ 快攻模板可一鍵建立合法 20 張並顯示費用曲線
+  ✓ 控制模板可一鍵建立合法 20 張並存檔
+  ✓ R16 新卡會被模板選入：快攻 5，控制 5
+  ✓ 牌組比例與 20/20 狀態可見
+  ✓ 模板牌組存檔後可進入對戰並使用 saved 來源
+  ✓ 開包戰績區顯示版本並可調整文字大小
+  ✓ 開包任務抽屜開啟後焦點進入抽屜控制
+  ✓ 開包頁 SW 自動更新守衛超過 15 秒不會自動 reload
+  ✓ 開包頁摘要、任務與牌組通知使用 aria-live=polite
+  ✓ 打完一場後戰績面板顯示勝率、平均回合與常用卡
+  ✓ 戰績面板可依難度篩選並依牌組軸線分組顯示
+  ✓ 戰績可複製目前篩選後的 JSON 文字
+  ✓ 存檔管家可匯出 stats/collection/deck/goals/quests Base64 並放入文字框
+  ✓ 存檔管家匯入會遷移還原資料並在匯入前自動備份
+  ✓ 壞存檔碼會拒絕且不覆蓋現有存檔
+  ✓ 匯入 commit 中途失敗會拒絕並 rollback 到匯入前狀態
+  ✓ 新卡分數不高於舊卡時不顯示推薦替換（new=9, old=10）
+  ✓ 收藏里程碑 UI 可一次性領取並發放金幣
+  ✓ 收藏里程碑重複領取不會再次加金幣
+  ✓ 週任務可完成領取且跨週重置
+  ✓ 里程碑總增發不超過三包價值
+  ✓ 無 console 錯誤 / pageerror
+
+✅ 卡牌對戰 Stage 5 E2E 全部通過
+
+== 1920x1080 desktop ==
+  ✓ 1920x1080 desktop：入口分頁與主題選項具備 tab/radio 語意
+  ✓ 1920x1080 desktop：主題選項可用鍵盤 Enter 切換
+  ✓ 1920x1080 desktop：入口 tab 可用鍵盤 Enter 切到卡包
+  ✓ 1920x1080 desktop：控制型態由 primary pointer 正確判定為 desktop
+  ✓ 1920x1080 desktop 主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 主控制：控制不重疊
+  ✓ 1920x1080 desktop：非觸控桌機不顯示手機專屬手牌把手／更多控制
+  ✓ 1920x1080 desktop：enemyHero 四向偽元素／44px 外緣命中 134x44 → 146x44（geometry≥44;44-left:✓div#enemyHero.hero|44-right:✓div#enemyHero.hero|44-top:✓div#enemyHero.hero|44-bottom:✓div#enemyHero.hero|pseudo-left:✓div#enemyHero.hero|pseudo-right:✓div#enemyHero.hero|pseudo-top:✓div#enemyHero.hero|pseudo-bottom:✓div#enemyHero.hero）
+  ✓ 1920x1080 desktop：playerHero 四向偽元素／44px 外緣命中 70x44 → 82x44（geometry≥44;44-left:✓div#playerHero.hero|44-right:✓div#playerHero.hero|44-top:✓div#playerHero.hero|44-bottom:✓div#playerHero.hero|pseudo-left:✓div#playerHero.hero|pseudo-right:✓div#playerHero.hero|pseudo-top:✓div#playerHero.hero|pseudo-bottom:✓div#playerHero.hero）
+  ✓ 1920x1080 desktop：設定面板完整留在視口內
+  ✓ 1920x1080 desktop 設定關閉鈕：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 設定關閉鈕：控制不重疊
+  ✓ 1920x1080 desktop：手牌卡有語意、焦點與可讀名稱
+  ✓ 1920x1080 desktop：場上卡與英雄有語意和操作提示
+  ✓ 1920x1080 desktop：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄
+  ✓ 1920x1080 desktop 就地目標確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 就地目標確認/取消：控制不重疊
+  ✓ 1920x1080 desktop 卡牌詳情 sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 卡牌詳情 sticky 關閉：控制不重疊
+  ✓ 1920x1080 desktop 關鍵字 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 關鍵字 modal sticky 關閉：控制不重疊
+  ✓ 1920x1080 desktop 任務 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 任務 modal sticky 關閉：控制不重疊
+  ✓ 1920x1080 desktop 編年史 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 編年史 modal sticky 關閉：控制不重疊
+  ✓ 1920x1080 desktop 導引確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 導引確認/取消：控制不重疊
+  ✓ 1920x1080 desktop：不需頁面捲動即可操作
+  ✓ 1920x1080 desktop：牌包本體有語意、焦點與可讀名稱
+  ✓ 1920x1080 desktop：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（packAudioToggleBtn → goBattleTop → pack）
+  ✓ 1920x1080 desktop：牌包可用鍵盤 Enter 開啟
+  ✓ 1920x1080 desktop：collectionChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1920x1080 desktop：deckChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1920x1080 desktop：無 console/page error
+
+== 1440x780 desktop ==
+  ✓ 1440x780 desktop：入口分頁與主題選項具備 tab/radio 語意
+  ✓ 1440x780 desktop：主題選項可用鍵盤 Enter 切換
+  ✓ 1440x780 desktop：入口 tab 可用鍵盤 Enter 切到卡包
+  ✓ 1440x780 desktop：控制型態由 primary pointer 正確判定為 desktop
+  ✓ 1440x780 desktop 主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 主控制：控制不重疊
+  ✓ 1440x780 desktop：非觸控桌機不顯示手機專屬手牌把手／更多控制
+  ✓ 1440x780 desktop：enemyHero 四向偽元素／44px 外緣命中 124x34 → 136x44（geometry≥44;44-left:✓div#enemyHero.hero|44-right:✓div#enemyHero.hero|44-top:✓div#enemyHero.hero|44-bottom:✓div#enemyHero.hero|pseudo-left:✓div#enemyHero.hero|pseudo-right:✓div#enemyHero.hero|pseudo-top:✓div#enemyHero.hero|pseudo-bottom:✓div#enemyHero.hero）
+  ✓ 1440x780 desktop：playerHero 四向偽元素／44px 外緣命中 60x34 → 72x44（geometry≥44;44-left:✓div#playerHero.hero|44-right:✓div#playerHero.hero|44-top:✓div#playerHero.hero|44-bottom:✓div#playerHero.hero|pseudo-left:✓div#playerHero.hero|pseudo-right:✓div#playerHero.hero|pseudo-top:✓div#playerHero.hero|pseudo-bottom:✓div#playerHero.hero）
+  ✓ 1440x780 desktop：設定面板完整留在視口內
+  ✓ 1440x780 desktop 設定關閉鈕：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 設定關閉鈕：控制不重疊
+  ✓ 1440x780 desktop：手牌卡有語意、焦點與可讀名稱
+  ✓ 1440x780 desktop：場上卡與英雄有語意和操作提示
+  ✓ 1440x780 desktop：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄
+  ✓ 1440x780 desktop 就地目標確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 就地目標確認/取消：控制不重疊
+  ✓ 1440x780 desktop 卡牌詳情 sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 卡牌詳情 sticky 關閉：控制不重疊
+  ✓ 1440x780 desktop 關鍵字 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 關鍵字 modal sticky 關閉：控制不重疊
+  ✓ 1440x780 desktop 任務 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 任務 modal sticky 關閉：控制不重疊
+  ✓ 1440x780 desktop 編年史 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 編年史 modal sticky 關閉：控制不重疊
+  ✓ 1440x780 desktop 導引確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 導引確認/取消：控制不重疊
+  ✓ 1440x780 desktop：不需頁面捲動即可操作
+  ✓ 1440x780 desktop：牌包本體有語意、焦點與可讀名稱
+  ✓ 1440x780 desktop：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（packAudioToggleBtn → goBattleTop → pack）
+  ✓ 1440x780 desktop：牌包可用鍵盤 Enter 開啟
+  ✓ 1440x780 desktop：collectionChip 四向偽元素／44px 外緣命中 38x26 → 46x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1440x780 desktop：deckChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1440x780 desktop：無 console/page error
+
+== 1366x600 desktop ==
+  ✓ 1366x600 desktop：入口分頁與主題選項具備 tab/radio 語意
+  ✓ 1366x600 desktop：主題選項可用鍵盤 Enter 切換
+  ✓ 1366x600 desktop：入口 tab 可用鍵盤 Enter 切到卡包
+  ✓ 1366x600 desktop：控制型態由 primary pointer 正確判定為 desktop
+  ✓ 1366x600 desktop 主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 主控制：控制不重疊
+  ✓ 1366x600 desktop：非觸控桌機不顯示手機專屬手牌把手／更多控制
+  ✓ 1366x600 desktop：enemyHero 四向偽元素／44px 外緣命中 118x28 → 130x44（geometry≥44;44-left:✓div#enemyHero.hero|44-right:✓div#enemyHero.hero|44-top:✓div#enemyHero.hero|44-bottom:✓div#enemyHero.hero|pseudo-left:✓div#enemyHero.hero|pseudo-right:✓div#enemyHero.hero|pseudo-top:✓div#enemyHero.hero|pseudo-bottom:✓div#enemyHero.hero）
+  ✓ 1366x600 desktop：playerHero 四向偽元素／44px 外緣命中 54x28 → 66x44（geometry≥44;44-left:✓div#playerHero.hero|44-right:✓div#playerHero.hero|44-top:✓div#playerHero.hero|44-bottom:✓div#playerHero.hero|pseudo-left:✓div#playerHero.hero|pseudo-right:✓div#playerHero.hero|pseudo-top:✓div#playerHero.hero|pseudo-bottom:✓div#playerHero.hero）
+  ✓ 1366x600 desktop：設定面板完整留在視口內
+  ✓ 1366x600 desktop 設定關閉鈕：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 設定關閉鈕：控制不重疊
+  ✓ 1366x600 desktop：手牌卡有語意、焦點與可讀名稱
+  ✓ 1366x600 desktop：場上卡與英雄有語意和操作提示
+  ✓ 1366x600 desktop：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄
+  ✓ 1366x600 desktop 就地目標確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 就地目標確認/取消：控制不重疊
+  ✓ 1366x600 desktop 卡牌詳情 sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 卡牌詳情 sticky 關閉：控制不重疊
+  ✓ 1366x600 desktop 關鍵字 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 關鍵字 modal sticky 關閉：控制不重疊
+  ✓ 1366x600 desktop 任務 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 任務 modal sticky 關閉：控制不重疊
+  ✓ 1366x600 desktop 編年史 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 編年史 modal sticky 關閉：控制不重疊
+  ✓ 1366x600 desktop 導引確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 導引確認/取消：控制不重疊
+  ✓ 1366x600 desktop：不需頁面捲動即可操作
+  ✓ 1366x600 desktop：牌包本體有語意、焦點與可讀名稱
+  ✓ 1366x600 desktop：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（packAudioToggleBtn → goBattleTop → pack）
+  ✓ 1366x600 desktop：牌包可用鍵盤 Enter 開啟
+  ✓ 1366x600 desktop：collectionChip 四向偽元素／44px 外緣命中 38x26 → 46x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1366x600 desktop：deckChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1366x600 desktop：無 console/page error
+
+== 1280x640 desktop ==
+  ✓ 1280x640 desktop：入口分頁與主題選項具備 tab/radio 語意
+  ✓ 1280x640 desktop：主題選項可用鍵盤 Enter 切換
+  ✓ 1280x640 desktop：入口 tab 可用鍵盤 Enter 切到卡包
+  ✓ 1280x640 desktop：控制型態由 primary pointer 正確判定為 desktop
+  ✓ 1280x640 desktop 主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 主控制：控制不重疊
+  ✓ 1280x640 desktop：非觸控桌機不顯示手機專屬手牌把手／更多控制
+  ✓ 1280x640 desktop：enemyHero 四向偽元素／44px 外緣命中 124x34 → 136x44（geometry≥44;44-left:✓div#enemyHero.hero|44-right:✓div#enemyHero.hero|44-top:✓div#enemyHero.hero|44-bottom:✓div#enemyHero.hero|pseudo-left:✓div#enemyHero.hero|pseudo-right:✓div#enemyHero.hero|pseudo-top:✓div#enemyHero.hero|pseudo-bottom:✓div#enemyHero.hero）
+  ✓ 1280x640 desktop：playerHero 四向偽元素／44px 外緣命中 60x34 → 72x44（geometry≥44;44-left:✓div#playerHero.hero|44-right:✓div#playerHero.hero|44-top:✓div#playerHero.hero|44-bottom:✓div#playerHero.hero|pseudo-left:✓div#playerHero.hero|pseudo-right:✓div#playerHero.hero|pseudo-top:✓div#playerHero.hero|pseudo-bottom:✓div#playerHero.hero）
+  ✓ 1280x640 desktop：設定面板完整留在視口內
+  ✓ 1280x640 desktop 設定關閉鈕：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 設定關閉鈕：控制不重疊
+  ✓ 1280x640 desktop：手牌卡有語意、焦點與可讀名稱
+  ✓ 1280x640 desktop：場上卡與英雄有語意和操作提示
+  ✓ 1280x640 desktop：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄
+  ✓ 1280x640 desktop 就地目標確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 就地目標確認/取消：控制不重疊
+  ✓ 1280x640 desktop 卡牌詳情 sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 卡牌詳情 sticky 關閉：控制不重疊
+  ✓ 1280x640 desktop 關鍵字 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 關鍵字 modal sticky 關閉：控制不重疊
+  ✓ 1280x640 desktop 任務 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 任務 modal sticky 關閉：控制不重疊
+  ✓ 1280x640 desktop 編年史 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 編年史 modal sticky 關閉：控制不重疊
+  ✓ 1280x640 desktop 導引確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 導引確認/取消：控制不重疊
+  ✓ 1280x640 desktop：不需頁面捲動即可操作
+  ✓ 1280x640 desktop：牌包本體有語意、焦點與可讀名稱
+  ✓ 1280x640 desktop：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（packAudioToggleBtn → goBattleTop → pack）
+  ✓ 1280x640 desktop：牌包可用鍵盤 Enter 開啟
+  ✓ 1280x640 desktop：collectionChip 四向偽元素／44px 外緣命中 38x26 → 46x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1280x640 desktop：deckChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1280x640 desktop：無 console/page error
+
+== 390x844 touch ==
+  ✓ 390x844 touch：入口分頁與主題選項具備 tab/radio 語意
+  ✓ 390x844 touch：主題選項可用鍵盤 Enter 切換
+  ✓ 390x844 touch：入口 tab 可用鍵盤 Enter 切到卡包
+  ✓ 390x844 touch：控制型態由 primary pointer 正確判定為 touch
+  ✓ 390x844 touch 主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 主控制：控制不重疊
+  ✓ 390x844 touch：手牌抽屜展開後停在 Command Dock 上方、不遮主行動
+  ✓ 390x844 touch：抽屜開啟時提示鈕可見即可點，否則明確隱藏並移出焦點序
+  ✓ 390x844 touch：抽屜開啟時裂潮爆發鈕可見即可點，否則明確隱藏並移出焦點序
+  ✓ 390x844 touch 抽屜展開主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 抽屜展開主控制：控制不重疊
+  ✓ 390x844 touch：抽屜展開手牌逐卡可命中 6/6、詳鈕 6/6
+  ✓ 390x844 touch：觸控選牌先預覽
+  ✓ 390x844 touch：確認前不出牌
+  ✓ 390x844 touch：真實 click 抽屜手牌可出牌
+  ✓ 390x844 touch：真實致死結算壓過開啟抽屜且攔截 pointer（z 100>76、PE auto/auto、probe 1/0:overlay）
+  ✓ 390x844 touch 更多面板：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 更多面板：控制不重疊
+  ✓ 390x844 touch：enemyHero 四向偽元素／44px 外緣命中 116x36 → 128x44（geometry≥44;44-left:✓div#enemyHero.hero|44-right:✓div#enemyHero.hero|44-top:✓div#enemyHero.hero|44-bottom:✓div#enemyHero.hero|pseudo-left:✓div#enemyHero.hero|pseudo-right:✓div#enemyHero.hero|pseudo-top:✓div#enemyHero.hero|pseudo-bottom:✓div#enemyHero.hero）
+  ✓ 390x844 touch：playerHero 四向偽元素／44px 外緣命中 60x36 → 72x44（geometry≥44;44-left:✓div#playerHero.hero|44-right:✓div#playerHero.hero|44-top:✓div#playerHero.hero|44-bottom:✓div#playerHero.hero|pseudo-left:✓div#playerHero.hero|pseudo-right:✓div#playerHero.hero|pseudo-top:✓div#playerHero.hero|pseudo-bottom:✓div#playerHero.hero）
+  ✓ 390x844 touch：設定面板完整留在視口內
+  ✓ 390x844 touch 設定關閉鈕：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 設定關閉鈕：控制不重疊
+  ✓ 390x844 touch：手牌卡有語意、焦點與可讀名稱
+  ✓ 390x844 touch：鍵盤選牌也先預覽
+  ✓ 390x844 touch：場上卡與英雄有語意和操作提示
+  ✓ 390x844 touch：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄
+  ✓ 390x844 touch 就地目標確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 就地目標確認/取消：控制不重疊
+  ✓ 390x844 touch 卡牌詳情 sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 卡牌詳情 sticky 關閉：控制不重疊
+  ✓ 390x844 touch 關鍵字 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 關鍵字 modal sticky 關閉：控制不重疊
+  ✓ 390x844 touch 任務 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 任務 modal sticky 關閉：控制不重疊
+  ✓ 390x844 touch 編年史 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 編年史 modal sticky 關閉：控制不重疊
+  ✓ 390x844 touch 導引確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 導引確認/取消：控制不重疊
+  ✓ 390x844 touch：不需頁面捲動即可操作
+  ✓ 390x844 touch：牌包本體有語意、焦點與可讀名稱
+  ✓ 390x844 touch：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（packAudioToggleBtn → goBattleTop → pack）
+  ✓ 390x844 touch：牌包可用鍵盤 Enter 開啟
+  ✓ 390x844 touch：collectionChip 四向偽元素／44px 外緣命中 40x44 → 46x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 390x844 touch：deckChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 390x844 touch：無 console/page error
+
+== 844x390 touch ==
+  ✓ 844x390 touch：入口分頁與主題選項具備 tab/radio 語意
+  ✓ 844x390 touch：主題選項可用鍵盤 Enter 切換
+  ✓ 844x390 touch：入口 tab 可用鍵盤 Enter 切到卡包
+  ✓ 844x390 touch：控制型態由 primary pointer 正確判定為 touch
+  ✓ 844x390 touch 主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 主控制：控制不重疊
+  ✓ 844x390 touch：手牌抽屜展開後停在 Command Dock 上方、不遮主行動
+  ✓ 844x390 touch：抽屜開啟時提示鈕可見即可點，否則明確隱藏並移出焦點序
+  ✓ 844x390 touch：抽屜開啟時裂潮爆發鈕可見即可點，否則明確隱藏並移出焦點序
+  ✓ 844x390 touch 抽屜展開主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 抽屜展開主控制：控制不重疊
+  ✓ 844x390 touch：抽屜展開手牌逐卡可命中 6/6、詳鈕 6/6
+  ✓ 844x390 touch：觸控選牌先預覽
+  ✓ 844x390 touch：確認前不出牌
+  ✓ 844x390 touch：真實 click 抽屜手牌可出牌
+  ✓ 844x390 touch：66×86 場上卡中心真實 tap 選攻擊者，不誤開詳情
+  ✓ 844x390 touch：右上 32×32 明確小區仍可真實開啟卡牌詳情
+  ✓ 844x390 touch：真實致死結算壓過開啟抽屜且攔截 pointer（z 100>76、PE auto/auto、probe 1/0:result-meta）
+  ✓ 844x390 touch 更多面板：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 更多面板：控制不重疊
+  ✓ 844x390 touch：enemyHero 四向偽元素／44px 外緣命中 98x28 → 110x44（geometry≥44;44-left:✓div#enemyHero.hero|44-right:✓div#enemyHero.hero|44-top:✓div#enemyHero.hero|44-bottom:✓div#enemyHero.hero|pseudo-left:✓div#enemyHero.hero|pseudo-right:✓div#enemyHero.hero|pseudo-top:✓div#enemyHero.hero|pseudo-bottom:✓div#enemyHero.hero）
+  ✓ 844x390 touch：playerHero 四向偽元素／44px 外緣命中 50x28 → 62x44（geometry≥44;44-left:✓div#playerHero.hero|44-right:✓div#playerHero.hero|44-top:✓div#playerHero.hero|44-bottom:✓div#playerHero.hero|pseudo-left:✓div#playerHero.hero|pseudo-right:✓div#playerHero.hero|pseudo-top:✓div#playerHero.hero|pseudo-bottom:✓div#playerHero.hero）
+  ✓ 844x390 touch：設定面板完整留在視口內
+  ✓ 844x390 touch 設定關閉鈕：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 設定關閉鈕：控制不重疊
+  ✓ 844x390 touch：手牌卡有語意、焦點與可讀名稱
+  ✓ 844x390 touch：鍵盤選牌也先預覽
+  ✓ 844x390 touch：場上卡與英雄有語意和操作提示
+  ✓ 844x390 touch：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄
+  ✓ 844x390 touch 就地目標確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 就地目標確認/取消：控制不重疊
+  ✓ 844x390 touch 卡牌詳情 sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 卡牌詳情 sticky 關閉：控制不重疊
+  ✓ 844x390 touch 關鍵字 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 關鍵字 modal sticky 關閉：控制不重疊
+  ✓ 844x390 touch 任務 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 任務 modal sticky 關閉：控制不重疊
+  ✓ 844x390 touch 編年史 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 編年史 modal sticky 關閉：控制不重疊
+  ✓ 844x390 touch 導引確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 導引確認/取消：控制不重疊
+  ✓ 844x390 touch：不需頁面捲動即可操作
+  ✓ 844x390 touch：牌包本體有語意、焦點與可讀名稱
+  ✓ 844x390 touch：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（packAudioToggleBtn → goBattleTop → pack）
+  ✓ 844x390 touch：牌包可用鍵盤 Enter 開啟
+  ✓ 844x390 touch：collectionChip 四向偽元素／44px 外緣命中 40x44 → 46x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 844x390 touch：deckChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 844x390 touch：無 console/page error
+
+✅ R65 控制可達性守門通過
+R67 browser gate: battle boot ready
+R67 browser gate: scene white-tide-citadel ready
+R67 browser gate: scene astral-conclave ready
+R67 browser gate: scene thunderwild-pass ready
+R67 browser gate: scene longnight-necropolis ready
+R67 browser gate: scene tidebreak-confluence ready
+R67 browser gate: new-game rotation ready
+R67 browser gate: desktop-1366x768 captured
+R67 browser gate: mobile-390x844 captured
+R67 browser gate: landscape-844x390 captured
+R67 browser gate: pack boot ready
+{
+  "release": "card R67",
+  "generatedAt": "2026-10-18T17:11:38.667Z",
+  "checks": [
+    {
+      "name": "five battlefield scenes load through the runtime API",
+      "pass": true,
+      "details": [
+        {
+          "id": "white-tide-citadel",
+          "faction": "wardens",
+          "tier": "high",
+          "url": "http://127.0.0.1:61255/assets/battlefields/white-tide-citadel-high.webp?v=f57dd495",
+          "loaded": true,
+          "cursor": 0,
+          "count": 5
+        },
+        {
+          "id": "astral-conclave",
+          "faction": "conclave",
+          "tier": "high",
+          "url": "http://127.0.0.1:61255/assets/battlefields/astral-conclave-high.webp?v=aa8b6fe4",
+          "loaded": true,
+          "cursor": 1,
+          "count": 5
+        },
+        {
+          "id": "thunderwild-pass",
+          "faction": "wild",
+          "tier": "high",
+          "url": "http://127.0.0.1:61255/assets/battlefields/thunderwild-pass-high.webp?v=c0693a23",
+          "loaded": true,
+          "cursor": 2,
+          "count": 5
+        },
+        {
+          "id": "longnight-necropolis",
+          "faction": "wintershadow",
+          "tier": "high",
+          "url": "http://127.0.0.1:61255/assets/battlefields/longnight-necropolis-high.webp?v=4b7300c8",
+          "loaded": true,
+          "cursor": 3,
+          "count": 5
+        },
+        {
+          "id": "tidebreak-confluence",
+          "faction": "neutral",
+          "tier": "high",
+          "url": "http://127.0.0.1:61255/assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7",
+          "loaded": true,
+          "cursor": 4,
+          "count": 5
+        }
+      ]
+    },
+    {
+      "name": "new game rotates all five scenes without gameplay data changes",
+      "pass": true,
+      "details": [
+        "white-tide-citadel",
+        "astral-conclave",
+        "thunderwild-pass",
+        "longnight-necropolis",
+        "tidebreak-confluence"
+      ]
+    },
+    {
+      "name": "low medium high are real hashed assets with safe responsive width",
+      "pass": true,
+      "details": [
+        {
+          "id": "tidebreak-confluence",
+          "faction": "neutral",
+          "tier": "high",
+          "url": "http://127.0.0.1:61255/assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7",
+          "loaded": true,
+          "cursor": 4,
+          "count": 5,
+          "geometry": {
+            "viewport": [
+              1366,
+              768
+            ],
+            "scrollWidth": 1366,
+            "scene": "tidebreak-confluence",
+            "tier": "high",
+            "cssImage": "url(\"http://127.0.0.1:61255/assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7\")"
+          }
+        },
+        {
+          "id": "tidebreak-confluence",
+          "faction": "neutral",
+          "tier": "low",
+          "url": "http://127.0.0.1:61255/assets/battlefields/tidebreak-confluence-low.webp?v=bcaabe4e",
+          "loaded": true,
+          "cursor": 4,
+          "count": 5,
+          "geometry": {
+            "viewport": [
+              390,
+              844
+            ],
+            "scrollWidth": 390,
+            "scene": "tidebreak-confluence",
+            "tier": "low",
+            "cssImage": "url(\"http://127.0.0.1:61255/assets/battlefields/tidebreak-confluence-low.webp?v=bcaabe4e\")"
+          }
+        },
+        {
+          "id": "tidebreak-confluence",
+          "faction": "neutral",
+          "tier": "med",
+          "url": "http://127.0.0.1:61255/assets/battlefields/tidebreak-confluence-med.webp?v=35c28764",
+          "loaded": true,
+          "cursor": 4,
+          "count": 5,
+          "geometry": {
+            "viewport": [
+              844,
+              390
+            ],
+            "scrollWidth": 844,
+            "scene": "tidebreak-confluence",
+            "tier": "med",
+            "cssImage": "url(\"http://127.0.0.1:61255/assets/battlefields/tidebreak-confluence-med.webp?v=35c28764\")"
+          }
+        }
+      ]
+    },
+    {
+      "name": "battle card frames use loaded art and loaded faction emblems with no fallback",
+      "pass": true,
+      "details": {
+        "cardArt": 4,
+        "emblems": 4,
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "faction menu and pack card frames expose five distinct loaded 256 px emblems",
+      "pass": true,
+      "details": {
+        "menu": [
+          {
+            "src": "http://127.0.0.1:61255/assets/factions/wardens.png?v=3fd3693f",
+            "complete": true,
+            "naturalWidth": 256,
+            "naturalHeight": 256
+          },
+          {
+            "src": "http://127.0.0.1:61255/assets/factions/conclave.png?v=326f8a7e",
+            "complete": true,
+            "naturalWidth": 256,
+            "naturalHeight": 256
+          },
+          {
+            "src": "http://127.0.0.1:61255/assets/factions/wild.png?v=153b6fe6",
+            "complete": true,
+            "naturalWidth": 256,
+            "naturalHeight": 256
+          },
+          {
+            "src": "http://127.0.0.1:61255/assets/factions/wintershadow.png?v=d878da4b",
+            "complete": true,
+            "naturalWidth": 256,
+            "naturalHeight": 256
+          },
+          {
+            "src": "http://127.0.0.1:61255/assets/factions/neutral.png?v=4cf2322a",
+            "complete": true,
+            "naturalWidth": 256,
+            "naturalHeight": 256
+          }
+        ],
+        "cardFrames": [
+          {
+            "src": "http://127.0.0.1:61255/assets/factions/wardens.png?v=3fd3693f",
+            "complete": true,
+            "naturalWidth": 256,
+            "naturalHeight": 256
+          },
+          {
+            "src": "http://127.0.0.1:61255/assets/factions/conclave.png?v=326f8a7e",
+            "complete": true,
+            "naturalWidth": 256,
+            "naturalHeight": 256
+          },
+          {
+            "src": "http://127.0.0.1:61255/assets/factions/wild.png?v=153b6fe6",
+            "complete": true,
+            "naturalWidth": 256,
+            "naturalHeight": 256
+          },
+          {
+            "src": "http://127.0.0.1:61255/assets/factions/wintershadow.png?v=d878da4b",
+            "complete": true,
+            "naturalWidth": 256,
+            "naturalHeight": 256
+          },
+          {
+            "src": "http://127.0.0.1:61255/assets/factions/neutral.png?v=4cf2322a",
+            "complete": true,
+            "naturalWidth": 256,
+            "naturalHeight": 256
+          }
+        ]
+      }
+    },
+    {
+      "name": "browser console and page error stream is empty",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "hashed battlefield responses were observed",
+      "pass": true,
+      "details": [
+        "http://127.0.0.1:61255/assets/battlefields/astral-conclave-high.webp?v=aa8b6fe4",
+        "http://127.0.0.1:61255/assets/battlefields/longnight-necropolis-high.webp?v=4b7300c8",
+        "http://127.0.0.1:61255/assets/battlefields/thunderwild-pass-high.webp?v=c0693a23",
+        "http://127.0.0.1:61255/assets/battlefields/tidebreak-confluence-high.webp?v=ae55f8e7",
+        "http://127.0.0.1:61255/assets/battlefields/tidebreak-confluence-low.webp?v=bcaabe4e",
+        "http://127.0.0.1:61255/assets/battlefields/tidebreak-confluence-med.webp?v=35c28764",
+        "http://127.0.0.1:61255/assets/battlefields/white-tide-citadel-high.webp?v=f57dd495",
+        "http://127.0.0.1:61255/assets/battlefields/white-tide-citadel-low.webp?v=50075ecc"
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/R67/after/desktop-1366x768.png",
+    "docs/evidence/R67/after/mobile-390x844.png",
+    "docs/evidence/R67/after/landscape-844x390.png"
+  ],
+  "pass": true
+}
+
+[R72-1] 招牌玩法「裂潮」
+  ✓ 新局雙方潮能 0/6
+  ✓ 預設對手哈爾登帶「守城潮」親和
+  ✓ 裂潮鈕 ≥44px、未滿時不是 ready 狀態
+  ✓ 敵方潮能計顯示 0/6 與親和名
+  ✓ 未滿潮真實點擊：提示充能規則、不扣血
+  ✓ 真實結束回合一輪後雙方各 +1 潮能
+  ✓ 回合橫幅節點存在
+  ✓ 滿潮時裂潮鈕進入 ready 發光狀態
+  ✓ 蓄勢階段不先扣血或消耗潮能
+  ✓ 裂潮爆發：敵方英雄 -2
+  ✓ 裂潮爆發：敵方每個隨從 -1
+  ✓ 施放後潮能歸零、使用次數 1
+  ✓ 施放時播放潮浪特效（高動畫）
+  ✓ AI 滿潮時施放裂潮爆發，清掉 1 血隨從並打臉
+  ✓ 裂潮流程無 console/page error（0）
+
+[R72-2] 星級挑戰
+  ✓ 滿血＋用過裂潮的真實致死勝利：結算點亮 3 星
+  ✓ 最佳星數寫入 localStorage 並顯示新紀錄
+  ✓ 敗北 0 星不覆蓋最佳紀錄，並提示下一顆星
+  ✓ 星級流程無 console/page error（0）
+
+[R72-3] VS 開場
+  ✓ ?intro=1：開場顯示對手名、台詞與角色立繪
+  ✓ 點擊開場即可略過
+  ✓ 自動化預設不播開場（不擋既有 E2E）
+  ✓ 敵方頭像使用角色立繪，emoji 仍保留給讀屏
+  ✓ 背景音樂：缺件時互動後不建立播放器（不產生 404），有檔時建立循環播放器
+
+[R72-4] 桌機矮視口卡片完整入框
+  ✓ 1366×768：縮小後卡片中心仍是主動作（不被「詳」鈕吃掉）
+  ✓ 1366×768：兩排戰場卡片完整入框（攻/血寶石不被裁）
+  ✓ 1366×768：手牌卡片完整入框且在 command dock 之上
+  ✓ 1366×768：每日任務收進任務抽屜，不再壓手牌
+  ✓ 1366×600：縮小後卡片中心仍是主動作（不被「詳」鈕吃掉）
+  ✓ 1366×600：兩排戰場卡片完整入框（攻/血寶石不被裁）
+  ✓ 1366×600：手牌卡片完整入框且在 command dock 之上
+  ✓ 1366×600：每日任務收進任務抽屜，不再壓手牌
+  ✓ 1280×640：縮小後卡片中心仍是主動作（不被「詳」鈕吃掉）
+  ✓ 1280×640：兩排戰場卡片完整入框（攻/血寶石不被裁）
+  ✓ 1280×640：手牌卡片完整入框且在 command dock 之上
+  ✓ 1280×640：每日任務收進任務抽屜，不再壓手牌
+
+[R72-5] 品牌與卡包
+  ✓ 入口標題與字標為《裂潮卡牌》
+  ✓ 開包頁標題為《裂潮卡牌》
+  ✓ 卡包改為程序化補充包（字標＋徽記），不再是 🎁 emoji
+
+R72 fun gate: 39 passed, 0 failed
+R73 touch 390x844
+  ✓ 點選只預覽
+  ✓ 預覽前後法力、手牌、場地不變
+  ✓ handCancelBtn 可見、命中且至少 44px
+  ✓ handConfirmBtn 可見、命中且至少 44px
+  ✓ settingsToggleBtn 可見、命中且至少 44px
+  ✓ 取消零消耗
+  ✓ 確認後只出一張狼並扣 2 費
+  ✓ 確認後清空預覽，重複事件不多扣費
+  ✓ 法力不足時不可確認
+  ✓ pointercancel 零消耗
+  ✓ 多指中斷零消耗
+  ✓ 上拖至己方場地放開只進預覽
+  ✓ 橫滑不出牌
+  ✓ 航程入口可達
+  ✓ voyageClose 可達且至少 44px
+  ✓ voyageStart 可達且至少 44px
+  ✓ voyageFree 可達且至少 44px
+  ✓ voyageNext 可達且至少 44px
+  ✓ voyageDeck 可達且至少 44px
+  ✓ 未通過前站不可越級
+  ✓ 第一站帶入合法試用牌組
+  ✓ gate 真正進入對戰
+  ✓ gate 畫面顯示當站對手
+  ✓ gate 正式致死推進且讀回
+  ✓ gate 結算返回航程可點
+  ✓ gate restartBtn 結算控制不截斷
+  ✓ gate overlayPackBtn 結算控制不截斷
+  ✓ gate overlayQuestBtn 結算控制不截斷
+  ✓ trail 真正進入對戰
+  ✓ trail 畫面顯示當站對手
+  ✓ trail 正式致死推進且讀回
+  ✓ trail 結算返回航程可點
+  ✓ trail restartBtn 結算控制不截斷
+  ✓ trail overlayPackBtn 結算控制不截斷
+  ✓ trail overlayQuestBtn 結算控制不截斷
+  ✓ echo 真正進入對戰
+  ✓ echo 畫面顯示當站對手
+  ✓ echo 正式致死推進且讀回
+  ✓ echo 結算返回航程可點
+  ✓ echo restartBtn 結算控制不截斷
+  ✓ echo overlayPackBtn 結算控制不截斷
+  ✓ echo overlayQuestBtn 結算控制不截斷
+  ✓ frost 真正進入對戰
+  ✓ frost 畫面顯示當站對手
+  ✓ frost 新對手完成正式 AI 回合
+  ✓ frost 正式致死推進且讀回
+  ✓ frost 結算返回航程可點
+  ✓ frost restartBtn 結算控制不截斷
+  ✓ frost overlayPackBtn 結算控制不截斷
+  ✓ frost overlayQuestBtn 結算控制不截斷
+  ✓ dusk 真正進入對戰
+  ✓ dusk 畫面顯示當站對手
+  ✓ dusk 新對手完成正式 AI 回合
+  ✓ dusk 正式致死推進且讀回
+  ✓ dusk 結算返回航程可點
+  ✓ dusk restartBtn 結算控制不截斷
+  ✓ dusk overlayPackBtn 結算控制不截斷
+  ✓ dusk overlayQuestBtn 結算控制不截斷
+  ✓ 航程完成有明確回饋
+  ✓ 全航程不覆寫收藏與自訂牌組
+  ✓ 重載保留五站進度與牌組選擇
+  ✓ 完整存檔匯出／匯入包含航程進度
+  ✓ 舊版存檔無航程欄位時保留當前航程
+R73 touch 844x390
+  ✓ 點選只預覽
+  ✓ 預覽前後法力、手牌、場地不變
+  ✓ handCancelBtn 可見、命中且至少 44px
+  ✓ handConfirmBtn 可見、命中且至少 44px
+  ✓ settingsToggleBtn 可見、命中且至少 44px
+  ✓ 取消零消耗
+  ✓ 確認後只出一張狼並扣 2 費
+  ✓ 確認後清空預覽，重複事件不多扣費
+  ✓ 法力不足時不可確認
+  ✓ pointercancel 零消耗
+  ✓ 多指中斷零消耗
+  ✓ 上拖至己方場地放開只進預覽
+  ✓ 橫滑不出牌
+  ✓ 航程入口可達
+  ✓ voyageClose 可達且至少 44px
+  ✓ voyageStart 可達且至少 44px
+  ✓ voyageFree 可達且至少 44px
+  ✓ voyageNext 可達且至少 44px
+  ✓ voyageDeck 可達且至少 44px
+  ✓ 未通過前站不可越級
+  ✓ 第一站帶入合法試用牌組
+  ✓ gate 真正進入對戰
+  ✓ gate 畫面顯示當站對手
+  ✓ gate 正式致死推進且讀回
+  ✓ gate 結算返回航程可點
+  ✓ gate restartBtn 結算控制不截斷
+  ✓ gate overlayPackBtn 結算控制不截斷
+  ✓ gate overlayQuestBtn 結算控制不截斷
+  ✓ trail 真正進入對戰
+  ✓ trail 畫面顯示當站對手
+  ✓ trail 正式致死推進且讀回
+  ✓ trail 結算返回航程可點
+  ✓ trail restartBtn 結算控制不截斷
+  ✓ trail overlayPackBtn 結算控制不截斷
+  ✓ trail overlayQuestBtn 結算控制不截斷
+  ✓ echo 真正進入對戰
+  ✓ echo 畫面顯示當站對手
+  ✓ echo 正式致死推進且讀回
+  ✓ echo 結算返回航程可點
+  ✓ echo restartBtn 結算控制不截斷
+  ✓ echo overlayPackBtn 結算控制不截斷
+  ✓ echo overlayQuestBtn 結算控制不截斷
+  ✓ frost 真正進入對戰
+  ✓ frost 畫面顯示當站對手
+  ✓ frost 新對手完成正式 AI 回合
+  ✓ frost 正式致死推進且讀回
+  ✓ frost 結算返回航程可點
+  ✓ frost restartBtn 結算控制不截斷
+  ✓ frost overlayPackBtn 結算控制不截斷
+  ✓ frost overlayQuestBtn 結算控制不截斷
+  ✓ dusk 真正進入對戰
+  ✓ dusk 畫面顯示當站對手
+  ✓ dusk 新對手完成正式 AI 回合
+  ✓ dusk 正式致死推進且讀回
+  ✓ dusk 結算返回航程可點
+  ✓ dusk restartBtn 結算控制不截斷
+  ✓ dusk overlayPackBtn 結算控制不截斷
+  ✓ dusk overlayQuestBtn 結算控制不截斷
+  ✓ 航程完成有明確回饋
+  ✓ 全航程不覆寫收藏與自訂牌組
+  ✓ 重載保留五站進度與牌組選擇
+  ✓ 完整存檔匯出／匯入包含航程進度
+  ✓ 舊版存檔無航程欄位時保留當前航程
+  ✓ 手機流程無未捕捉錯誤
+R73 mobile: 127 PASS, 0 FAIL
+✓ 320×568 港口 trialStart 可達
+✓ 320×568 港口 voyageStart 可達
+✓ 320×568 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 退潮預覽符合當前場面
+✓ 第一次正式交換陣亡充能
+✓ 更多選單 tideTrialReplay 真實命中
+✓ 更多選單 tideHarbor 真實命中
+✓ 重開後提供繼續對局
+✓ 恢復一次交換後的實際場面與潮能
+✓ 第二次交換滿六格
+✓ 滿潮預覽顯示兩位殘血敵軍
+✓ 滿潮確認施放可達
+✓ 正式漲潮命中完成首個目標
+✓ 完成紀錄讀回
+✓ 試航不灌入對戰戰績或金幣
+✓ 勝利清除進行中檢查點
+✓ 試航結算隱藏一般開包／領獎控制
+✓ 結算 trialResultReplay 可達
+✓ 結算 trialResultVoyage 可達
+✓ 結算 trialResultHarbor 可達
+✓ 試航結算實際銜接五站航程
+✓ 航程第一站進入正式對戰
+✓ 回到一般對戰清除試航專屬結算
+✓ 冷重載仍保留完成紀錄
+✓ 冷啟動至招牌完成小於三分鐘
+✓ 375×667 港口 trialStart 可達
+✓ 375×667 港口 voyageStart 可達
+✓ 375×667 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 退潮預覽符合當前場面
+✓ 第一次正式交換陣亡充能
+✓ 更多選單 tideTrialReplay 真實命中
+✓ 更多選單 tideHarbor 真實命中
+✓ 重開後提供繼續對局
+✓ 恢復一次交換後的實際場面與潮能
+✓ 第二次交換滿六格
+✓ 滿潮預覽顯示兩位殘血敵軍
+✓ 滿潮確認施放可達
+✓ 正式漲潮命中完成首個目標
+✓ 完成紀錄讀回
+✓ 試航不灌入對戰戰績或金幣
+✓ 勝利清除進行中檢查點
+✓ 試航結算隱藏一般開包／領獎控制
+✓ 結算 trialResultReplay 可達
+✓ 結算 trialResultVoyage 可達
+✓ 結算 trialResultHarbor 可達
+✓ 試航結算實際銜接五站航程
+✓ 航程第一站進入正式對戰
+✓ 回到一般對戰清除試航專屬結算
+✓ 冷重載仍保留完成紀錄
+✓ 冷啟動至招牌完成小於三分鐘
+✓ 430×932 港口 trialStart 可達
+✓ 430×932 港口 voyageStart 可達
+✓ 430×932 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 退潮預覽符合當前場面
+✓ 第一次正式交換陣亡充能
+✓ 更多選單 tideTrialReplay 真實命中
+✓ 更多選單 tideHarbor 真實命中
+✓ 重開後提供繼續對局
+✓ 恢復一次交換後的實際場面與潮能
+✓ 第二次交換滿六格
+✓ 滿潮預覽顯示兩位殘血敵軍
+✓ 滿潮確認施放可達
+✓ 正式漲潮命中完成首個目標
+✓ 完成紀錄讀回
+✓ 試航不灌入對戰戰績或金幣
+✓ 勝利清除進行中檢查點
+✓ 試航結算隱藏一般開包／領獎控制
+✓ 結算 trialResultReplay 可達
+✓ 結算 trialResultVoyage 可達
+✓ 結算 trialResultHarbor 可達
+✓ 試航結算實際銜接五站航程
+✓ 航程第一站進入正式對戰
+✓ 回到一般對戰清除試航專屬結算
+✓ 冷重載仍保留完成紀錄
+✓ 冷啟動至招牌完成小於三分鐘
+✓ 真正離線重載港口
+✓ 真正離線完成完整試航
+✓ 844×390 港口 trialStart 可達
+✓ 844×390 港口 voyageStart 可達
+✓ 844×390 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 退潮預覽符合當前場面
+✓ 第一次正式交換陣亡充能
+✓ 更多選單 tideTrialReplay 真實命中
+✓ 更多選單 tideHarbor 真實命中
+✓ 重開後提供繼續對局
+✓ 恢復一次交換後的實際場面與潮能
+✓ 第二次交換滿六格
+✓ 滿潮預覽顯示兩位殘血敵軍
+✓ 滿潮確認施放可達
+✓ 正式漲潮命中完成首個目標
+✓ 完成紀錄讀回
+✓ 試航不灌入對戰戰績或金幣
+✓ 勝利清除進行中檢查點
+✓ 試航結算隱藏一般開包／領獎控制
+✓ 結算 trialResultReplay 可達
+✓ 結算 trialResultVoyage 可達
+✓ 結算 trialResultHarbor 可達
+✓ 試航結算實際銜接五站航程
+✓ 航程第一站進入正式對戰
+✓ 回到一般對戰清除試航專屬結算
+✓ 冷重載仍保留完成紀錄
+✓ 冷啟動至招牌完成小於三分鐘
+✓ 1032×1376 港口 trialStart 可達
+✓ 1032×1376 港口 voyageStart 可達
+✓ 1032×1376 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 退潮預覽符合當前場面
+✓ 第一次正式交換陣亡充能
+✓ 更多選單 tideTrialReplay 真實命中
+✓ 更多選單 tideHarbor 真實命中
+✓ 重開後提供繼續對局
+✓ 恢復一次交換後的實際場面與潮能
+✓ 第二次交換滿六格
+✓ 滿潮預覽顯示兩位殘血敵軍
+✓ 滿潮確認施放可達
+✓ 正式漲潮命中完成首個目標
+✓ 完成紀錄讀回
+✓ 試航不灌入對戰戰績或金幣
+✓ 勝利清除進行中檢查點
+✓ 試航結算隱藏一般開包／領獎控制
+✓ 結算 trialResultReplay 可達
+✓ 結算 trialResultVoyage 可達
+✓ 結算 trialResultHarbor 可達
+✓ 試航結算實際銜接五站航程
+✓ 航程第一站進入正式對戰
+✓ 回到一般對戰清除試航專屬結算
+✓ 冷重載仍保留完成紀錄
+✓ 冷啟動至招牌完成小於三分鐘
+✓ 1376×1032 港口 trialStart 可達
+✓ 1376×1032 港口 voyageStart 可達
+✓ 1376×1032 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 退潮預覽符合當前場面
+✓ 第一次正式交換陣亡充能
+✓ 更多選單 tideTrialReplay 真實命中
+✓ 更多選單 tideHarbor 真實命中
+✓ 重開後提供繼續對局
+✓ 恢復一次交換後的實際場面與潮能
+✓ 第二次交換滿六格
+✓ 滿潮預覽顯示兩位殘血敵軍
+✓ 滿潮確認施放可達
+✓ 正式漲潮命中完成首個目標
+✓ 完成紀錄讀回
+✓ 試航不灌入對戰戰績或金幣
+✓ 勝利清除進行中檢查點
+✓ 試航結算隱藏一般開包／領獎控制
+✓ 結算 trialResultReplay 可達
+✓ 結算 trialResultVoyage 可達
+✓ 結算 trialResultHarbor 可達
+✓ 試航結算實際銜接五站航程
+✓ 航程第一站進入正式對戰
+✓ 回到一般對戰清除試航專屬結算
+✓ 冷重載仍保留完成紀錄
+✓ 冷啟動至招牌完成小於三分鐘
+✓ 1024×1366 港口 trialStart 可達
+✓ 1024×1366 港口 voyageStart 可達
+✓ 1024×1366 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 退潮預覽符合當前場面
+✓ 第一次正式交換陣亡充能
+✓ 更多選單 tideTrialReplay 真實命中
+✓ 更多選單 tideHarbor 真實命中
+✓ 重開後提供繼續對局
+✓ 恢復一次交換後的實際場面與潮能
+✓ 第二次交換滿六格
+✓ 滿潮預覽顯示兩位殘血敵軍
+✓ 滿潮確認施放可達
+✓ 正式漲潮命中完成首個目標
+✓ 完成紀錄讀回
+✓ 試航不灌入對戰戰績或金幣
+✓ 勝利清除進行中檢查點
+✓ 試航結算隱藏一般開包／領獎控制
+✓ 結算 trialResultReplay 可達
+✓ 結算 trialResultVoyage 可達
+✓ 結算 trialResultHarbor 可達
+✓ 試航結算實際銜接五站航程
+✓ 航程第一站進入正式對戰
+✓ 回到一般對戰清除試航專屬結算
+✓ 冷重載仍保留完成紀錄
+✓ 冷啟動至招牌完成小於三分鐘
+✓ 1366×1024 港口 trialStart 可達
+✓ 1366×1024 港口 voyageStart 可達
+✓ 1366×1024 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 退潮預覽符合當前場面
+✓ 第一次正式交換陣亡充能
+✓ 更多選單 tideTrialReplay 真實命中
+✓ 更多選單 tideHarbor 真實命中
+✓ 重開後提供繼續對局
+✓ 恢復一次交換後的實際場面與潮能
+✓ 第二次交換滿六格
+✓ 滿潮預覽顯示兩位殘血敵軍
+✓ 滿潮確認施放可達
+✓ 正式漲潮命中完成首個目標
+✓ 完成紀錄讀回
+✓ 試航不灌入對戰戰績或金幣
+✓ 勝利清除進行中檢查點
+✓ 試航結算隱藏一般開包／領獎控制
+✓ 結算 trialResultReplay 可達
+✓ 結算 trialResultVoyage 可達
+✓ 結算 trialResultHarbor 可達
+✓ 試航結算實際銜接五站航程
+✓ 航程第一站進入正式對戰
+✓ 回到一般對戰清除試航專屬結算
+✓ 冷重載仍保留完成紀錄
+✓ 冷啟動至招牌完成小於三分鐘
+✓ 1366×600 港口 trialStart 可達
+✓ 1366×600 港口 voyageStart 可達
+✓ 1366×600 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 退潮預覽符合當前場面
+✓ 第一次正式交換陣亡充能
+✓ 更多選單 tideTrialReplay 真實命中
+✓ 更多選單 tideHarbor 真實命中
+✓ 重開後提供繼續對局
+✓ 恢復一次交換後的實際場面與潮能
+✓ 第二次交換滿六格
+✓ 滿潮預覽顯示兩位殘血敵軍
+✓ 滿潮確認施放可達
+✓ 正式漲潮命中完成首個目標
+✓ 完成紀錄讀回
+✓ 試航不灌入對戰戰績或金幣
+✓ 勝利清除進行中檢查點
+✓ 試航結算隱藏一般開包／領獎控制
+✓ 結算 trialResultReplay 可達
+✓ 結算 trialResultVoyage 可達
+✓ 結算 trialResultHarbor 可達
+✓ 試航結算實際銜接五站航程
+✓ 航程第一站進入正式對戰
+✓ 回到一般對戰清除試航專屬結算
+✓ 冷重載仍保留完成紀錄
+✓ 冷啟動至招牌完成小於三分鐘
+✓ 路徑無未捕捉錯誤
+✓ 零外部網域請求
+R74 review: 310 PASS, 0 FAIL
+R74 ebb UI: 9 PASS, 0 FAIL (deterministic fixture; not store evidence)
+✓ 390 harbor trialStart ≥44px, visible, hit-tested
+✓ 390 harbor voyageStart ≥44px, visible, hit-tested
+✓ 390 harbor privacyOpen ≥44px, visible, hit-tested
+✓ navigator uses real loaded art
+✓ one primary CTA color
+✓ four real starting tide segments
+✓ trial chart never covered by settings
+✓ 390 battlefield illustration occupies ≥58% (0.682)
+✓ generated frame actually mounted
+✓ real death advances tide artwork to five
+✓ battlefield waterline binds to real tide
+✓ chart segments match battlefield
+✓ flood icon loaded
+✓ two enemy units and enemy hero previewed
+✓ modal blocks underlying card actions while previews remain visible
+✓ preview causes no damage
+✓ five energy cannot cast
+✓ 390 chart chooseFlood ≥44px, hit-tested
+✓ 390 chart chooseEbb ≥44px, hit-tested
+✓ 390 chart tideChartClose ≥44px, hit-tested
+✓ remaining ally and hero have protection previews
+✓ cancel clears every preview marker
+✓ 390 more tideTrialReplay ≥44px, hit-tested
+✓ 390 more tideHarbor ≥44px, hit-tested
+✓ 844 harbor trialStart ≥44px, visible, hit-tested
+✓ 844 harbor voyageStart ≥44px, visible, hit-tested
+✓ 844 harbor privacyOpen ≥44px, visible, hit-tested
+✓ navigator uses real loaded art
+✓ one primary CTA color
+✓ four real starting tide segments
+✓ trial chart never covered by settings
+✓ 844 battlefield illustration occupies ≥58% (0.616)
+✓ generated frame actually mounted
+✓ real death advances tide artwork to five
+✓ battlefield waterline binds to real tide
+✓ chart segments match battlefield
+✓ flood icon loaded
+✓ two enemy units and enemy hero previewed
+✓ modal blocks underlying card actions while previews remain visible
+✓ preview causes no damage
+✓ five energy cannot cast
+✓ 844 chart chooseFlood ≥44px, hit-tested
+✓ 844 chart chooseEbb ≥44px, hit-tested
+✓ 844 chart tideChartClose ≥44px, hit-tested
+✓ remaining ally and hero have protection previews
+✓ cancel clears every preview marker
+✓ 844 more tideTrialReplay ≥44px, hit-tested
+✓ 844 more tideHarbor ≥44px, hit-tested
+✓ 1032 harbor trialStart ≥44px, visible, hit-tested
+✓ 1032 harbor voyageStart ≥44px, visible, hit-tested
+✓ 1032 harbor privacyOpen ≥44px, visible, hit-tested
+✓ navigator uses real loaded art
+✓ one primary CTA color
+✓ four real starting tide segments
+✓ trial chart never covered by settings
+✓ 1032 battlefield illustration occupies ≥58% (0.806)
+✓ generated frame actually mounted
+✓ real death advances tide artwork to five
+✓ battlefield waterline binds to real tide
+✓ chart segments match battlefield
+✓ flood icon loaded
+✓ two enemy units and enemy hero previewed
+✓ modal blocks underlying card actions while previews remain visible
+✓ preview causes no damage
+✓ five energy cannot cast
+✓ 1032 chart chooseFlood ≥44px, hit-tested
+✓ 1032 chart chooseEbb ≥44px, hit-tested
+✓ 1032 chart tideChartClose ≥44px, hit-tested
+✓ remaining ally and hero have protection previews
+✓ cancel clears every preview marker
+✓ 1032 more tideTrialReplay ≥44px, hit-tested
+✓ 1032 more tideHarbor ≥44px, hit-tested
+✓ foil showcase waits for real card illustrations
+✓ 1366 harbor trialStart ≥44px, visible, hit-tested
+✓ 1366 harbor voyageStart ≥44px, visible, hit-tested
+✓ 1366 harbor privacyOpen ≥44px, visible, hit-tested
+✓ navigator uses real loaded art
+✓ one primary CTA color
+✓ four real starting tide segments
+✓ trial chart never covered by settings
+✓ 1366 battlefield illustration occupies ≥58% (0.630)
+✓ generated frame actually mounted
+✓ real death advances tide artwork to five
+✓ battlefield waterline binds to real tide
+✓ chart segments match battlefield
+✓ flood icon loaded
+✓ two enemy units and enemy hero previewed
+✓ modal blocks underlying card actions while previews remain visible
+✓ preview causes no damage
+✓ five energy cannot cast
+✓ 1366 chart chooseFlood ≥44px, hit-tested
+✓ 1366 chart chooseEbb ≥44px, hit-tested
+✓ 1366 chart tideChartClose ≥44px, hit-tested
+✓ remaining ally and hero have protection previews
+✓ cancel clears every preview marker
+✓ 1366 more tideTrialReplay ≥44px, hit-tested
+✓ 1366 more tideHarbor ≥44px, hit-tested
+✓ zero page errors
+R75 art: 98 PASS, 0 FAIL
+R76 art: 103 PASS, 0 FAIL
+R77 tide: 22 PASS, 0 FAIL
+390x844 {"hero":{"x":9,"y":488.21875,"width":372,"height":52,"top":488.21875,"right":381,"bottom":540.21875,"left":9},"sheet":{"x":6,"y":550.21875,"width":378,"height":226.78125,"top":550.21875,"right":384,"bottom":777,"left":6},"heroVisible":true,"life":"12","tide":"潮 6/6"}
+844x390 {"hero":{"x":10,"y":57.5,"width":410,"height":44,"top":57.5,"right":420,"bottom":101.5,"left":10},"sheet":{"x":6,"y":182,"width":832,"height":134,"top":182,"right":838,"bottom":316,"left":6},"heroVisible":true,"life":"12","tide":"潮 6/6"}
+1366x600 {"hero":{"x":9,"y":326,"width":1348,"height":58,"top":326,"right":1357,"bottom":384,"left":9},"sheet":{"x":213,"y":394,"width":940,"height":134,"top":394,"right":1153,"bottom":528,"left":213},"heroVisible":true,"life":"12","tide":"潮 6/6"}
+1290x2796 {"hero":{"x":9,"y":575.21875,"width":412,"height":52,"top":575.21875,"right":421,"bottom":627.21875,"left":9},"sheet":{"x":6,"y":637.21875,"width":418,"height":226.78125,"top":637.21875,"right":424,"bottom":864,"left":6},"heroVisible":true,"life":"12","tide":"潮 6/6"}
+2064x2752 {"hero":{"x":9,"y":1020,"width":1014,"height":58,"top":1020,"right":1023,"bottom":1078,"left":9},"sheet":{"x":136,"y":1088,"width":760,"height":216,"top":1088,"right":896,"bottom":1304,"left":136},"heroVisible":true,"life":"12","tide":"潮 6/6"}
+R78 art: 75 PASS
+PASS same named pair
+PASS same named pair has actual distinct action states
+PASS waiting visibly thirty percent darker
+PASS ready arrow only on legal attacker
+PASS field illustrations40px at390
+PASS selected card outline synchronizes
+PASS target arrows synchronize with selection
+PASS decision contains only two modes continue confirm
+PASS leave actions moved to existing menu
+PASS one wounded target has lethal outline
+PASS lethal shape shown directly on affected card
+PASS cancel clears lethal previews
+PASS tidal damage never floats into sea
+PASS both actions disabled during active wave
+PASS enemy tide increase explained
+PASS empty tide never orange even during wave
+PASS nonlethal battle remains playable
+PASS real surviving attack produces spent contour
+PASS same named pair
+PASS same named pair has actual distinct action states
+PASS waiting visibly thirty percent darker
+PASS ready arrow only on legal attacker
+PASS selected card outline synchronizes
+PASS target arrows synchronize with selection
+PASS decision contains only two modes continue confirm
+PASS leave actions moved to existing menu
+PASS one wounded target has lethal outline
+PASS lethal shape shown directly on affected card
+PASS cancel clears lethal previews
+PASS tidal damage never floats into sea
+PASS both actions disabled during active wave
+PASS enemy tide increase explained
+PASS empty tide never orange even during wave
+PASS nonlethal battle remains playable
+PASS real surviving attack produces spent contour
+PASS same named pair
+PASS same named pair has actual distinct action states
+PASS waiting visibly thirty percent darker
+PASS ready arrow only on legal attacker
+PASS selected card outline synchronizes
+PASS target arrows synchronize with selection
+PASS decision contains only two modes continue confirm
+PASS leave actions moved to existing menu
+PASS one wounded target has lethal outline
+PASS lethal shape shown directly on affected card
+PASS cancel clears lethal previews
+PASS tidal damage never floats into sea
+PASS both actions disabled during active wave
+PASS enemy tide increase explained
+PASS empty tide never orange even during wave
+PASS nonlethal battle remains playable
+PASS real surviving attack produces spent contour
+PASS same named pair
+PASS same named pair has actual distinct action states
+PASS waiting visibly thirty percent darker
+PASS ready arrow only on legal attacker
+PASS selected card outline synchronizes
+PASS target arrows synchronize with selection
+PASS decision contains only two modes continue confirm
+PASS leave actions moved to existing menu
+PASS one wounded target has lethal outline
+PASS lethal shape shown directly on affected card
+PASS cancel clears lethal previews
+PASS tidal damage never floats into sea
+PASS both actions disabled during active wave
+PASS enemy tide increase explained
+PASS empty tide never orange even during wave
+PASS nonlethal battle remains playable
+PASS real surviving attack produces spent contour
+PASS normal no early damage
+PASS normal both actions disabled on game end
+PASS normal ended tide has no orange
+PASS reduced no early damage
+PASS reduced both actions disabled on game end
+PASS reduced ended tide has no orange
+PASS low no early damage
+PASS low both actions disabled on game end
+PASS low ended tide has no orange
+PASS zero JS/resource errors
+R79 art 83 PASS
+PASS same name has actual distinct generated artwork
+PASS same name bright and waiting in same scene
+PASS UID accessory assignment stable
+PASS archer ivory hood visible on second instance
+PASS illustrations at least40px on390
+PASS every enemy minion has attached minus1
+PASS wounded enemy has lethal exit outline
+PASS hero preview minus2 attached to actual portrait row
+PASS chart explains tide-only cost
+PASS all preview badges within viewport
+PASS ebb clears enemy damage previews
+PASS switching back restores all three previews
+PASS cancel removes all predictions
+PASS wave source explicitly anchored at waterline
+PASS wave axis follows actual opposing card rows
+PASS no friendly waiting overlays during cast
+PASS no friendly dashed hit frames
+PASS friendly protection ripples remain
+PASS friendly cards never marked as tidal targets
+PASS both enemies receive physical impact foam
+PASS impact consumes tide and2 enemy hp, no mana
+PASS same surviving archer loses exactly1
+PASS survivor retains exact slot and x
+PASS survivor keeps ivory hood after death of neighbor
+PASS dead neighbor leaves original ghost slot
+PASS watermarks under survivor and vacated slot
+PASS ghost lasts through entire next turn
+PASS turn banner never covers attack or health
+PASS wet deck lasts entire next turn
+PASS same name has actual distinct generated artwork
+PASS same name bright and waiting in same scene
+PASS UID accessory assignment stable
+PASS archer ivory hood visible on second instance
+PASS every enemy minion has attached minus1
+PASS wounded enemy has lethal exit outline
+PASS hero preview minus2 attached to actual portrait row
+PASS chart explains tide-only cost
+PASS all preview badges within viewport
+PASS ebb clears enemy damage previews
+PASS switching back restores all three previews
+PASS cancel removes all predictions
+PASS wave source explicitly anchored at waterline
+PASS wave axis follows actual opposing card rows
+PASS no friendly waiting overlays during cast
+PASS no friendly dashed hit frames
+PASS friendly protection ripples remain
+PASS friendly cards never marked as tidal targets
+PASS both enemies receive physical impact foam
+PASS impact consumes tide and2 enemy hp, no mana
+PASS same surviving archer loses exactly1
+PASS survivor retains exact slot and x
+PASS survivor keeps ivory hood after death of neighbor
+PASS dead neighbor leaves original ghost slot
+PASS watermarks under survivor and vacated slot
+PASS ghost lasts through entire next turn
+PASS turn banner never covers attack or health
+PASS wet deck lasts entire next turn
+PASS same name has actual distinct generated artwork
+PASS same name bright and waiting in same scene
+PASS UID accessory assignment stable
+PASS archer ivory hood visible on second instance
+PASS every enemy minion has attached minus1
+PASS wounded enemy has lethal exit outline
+PASS hero preview minus2 attached to actual portrait row
+PASS chart explains tide-only cost
+PASS all preview badges within viewport
+PASS ebb clears enemy damage previews
+PASS switching back restores all three previews
+PASS cancel removes all predictions
+PASS wave source explicitly anchored at waterline
+PASS wave axis follows actual opposing card rows
+PASS no friendly waiting overlays during cast
+PASS no friendly dashed hit frames
+PASS friendly protection ripples remain
+PASS friendly cards never marked as tidal targets
+PASS both enemies receive physical impact foam
+PASS impact consumes tide and2 enemy hp, no mana
+PASS same surviving archer loses exactly1
+PASS survivor retains exact slot and x
+PASS survivor keeps ivory hood after death of neighbor
+PASS dead neighbor leaves original ghost slot
+PASS watermarks under survivor and vacated slot
+PASS ghost lasts through entire next turn
+PASS turn banner never covers attack or health
+PASS wet deck lasts entire next turn
+PASS same name has actual distinct generated artwork
+PASS same name bright and waiting in same scene
+PASS UID accessory assignment stable
+PASS archer ivory hood visible on second instance
+PASS every enemy minion has attached minus1
+PASS wounded enemy has lethal exit outline
+PASS hero preview minus2 attached to actual portrait row
+PASS chart explains tide-only cost
+PASS all preview badges within viewport
+PASS ebb clears enemy damage previews
+PASS switching back restores all three previews
+PASS cancel removes all predictions
+PASS wave source explicitly anchored at waterline
+PASS wave axis follows actual opposing card rows
+PASS no friendly waiting overlays during cast
+PASS no friendly dashed hit frames
+PASS friendly protection ripples remain
+PASS friendly cards never marked as tidal targets
+PASS both enemies receive physical impact foam
+PASS impact consumes tide and2 enemy hp, no mana
+PASS same surviving archer loses exactly1
+PASS survivor retains exact slot and x
+PASS survivor keeps ivory hood after death of neighbor
+PASS dead neighbor leaves original ghost slot
+PASS watermarks under survivor and vacated slot
+PASS ghost lasts through entire next turn
+PASS turn banner never covers attack or health
+PASS wet deck lasts entire next turn
+PASS same name has actual distinct generated artwork
+PASS same name bright and waiting in same scene
+PASS UID accessory assignment stable
+PASS archer ivory hood visible on second instance
+PASS every enemy minion has attached minus1
+PASS wounded enemy has lethal exit outline
+PASS hero preview minus2 attached to actual portrait row
+PASS chart explains tide-only cost
+PASS all preview badges within viewport
+PASS ebb clears enemy damage previews
+PASS switching back restores all three previews
+PASS cancel removes all predictions
+PASS wave source explicitly anchored at waterline
+PASS wave axis follows actual opposing card rows
+PASS no friendly waiting overlays during cast
+PASS no friendly dashed hit frames
+PASS friendly protection ripples remain
+PASS friendly cards never marked as tidal targets
+PASS both enemies receive physical impact foam
+PASS impact consumes tide and2 enemy hp, no mana
+PASS same surviving archer loses exactly1
+PASS survivor retains exact slot and x
+PASS survivor keeps ivory hood after death of neighbor
+PASS dead neighbor leaves original ghost slot
+PASS watermarks under survivor and vacated slot
+PASS ghost lasts through entire next turn
+PASS turn banner never covers attack or health
+PASS wet deck lasts entire next turn
+PASS zero resource or JS errors
+R80 art 147 PASS
+PASS harbor to shell to new content entry with full available viewport
+PASS 844x390 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 844x390 #contentPanel no overlapping controls
+PASS fallen reload resumes exact lesson
+PASS fallen completed through real input
+PASS shield reload resumes exact lesson
+PASS shield completed through real input
+PASS shelter reload resumes exact lesson
+PASS shelter completed through real input
+PASS taunt reload resumes exact lesson
+PASS taunt completed through real input
+PASS spell reload resumes exact lesson
+PASS spell completed through real input
+PASS cross reload resumes exact lesson
+PASS cross completed through real input
+PASS six completion records saved
+PASS first-frame result retry accepts one tap and waits for recovery without dropping it
+PASS wrong unshielded exchange fails
+PASS immediate retry restores original board
+PASS one reversal disables further changes
+PASS reversed forecast saved on reload
+PASS forecast hint opens actual schedule instead of recommending unavailable flood
+PASS forecast won through reversed protection and next-turn attack
+PASS all four Moen preparation cards remain entirely inside field
+PASS Moen actual impact heals, consumes tide and shields the knight
+PASS Moen holds protected knight; shield remains a real player-turn obstacle
+PASS Moen script checkpoint and identity resume
+PASS Moen defeated after real scripted ebb, shield removal and ordered trades
+PASS all three content types persisted
+PASS content does not award coins, wins, losses or trial card telemetry
+PASS completion survives browser reload
+PASS 390x844 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 390x844 #contentPanel no overlapping controls
+PASS 390x844 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 390x844 #forecastPanel no overlapping controls
+PASS 390x844 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 390x844 #contentBar no overlapping controls
+PASS 390x844 real puzzle play completed
+PASS 390x844 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 390x844 #contentResult no overlapping controls
+PASS 844x390 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 844x390 #contentPanel no overlapping controls
+PASS 844x390 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 844x390 #forecastPanel no overlapping controls
+PASS 844x390 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 844x390 #contentBar no overlapping controls
+PASS 844x390 real puzzle play completed
+PASS 844x390 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 844x390 #contentResult no overlapping controls
+PASS 1032x1376 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #contentPanel no overlapping controls
+PASS 1032x1376 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #forecastPanel no overlapping controls
+PASS 1032x1376 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #contentBar no overlapping controls
+PASS 1032x1376 real puzzle play completed
+PASS 1032x1376 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #contentResult no overlapping controls
+PASS 1376x1032 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1376x1032 #contentPanel no overlapping controls
+PASS 1376x1032 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1376x1032 #forecastPanel no overlapping controls
+PASS 1376x1032 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 1376x1032 #contentBar no overlapping controls
+PASS 1376x1032 real puzzle play completed
+PASS 1376x1032 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 1376x1032 #contentResult no overlapping controls
+PASS 1366x600 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1366x600 #contentPanel no overlapping controls
+PASS 1366x600 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1366x600 #forecastPanel no overlapping controls
+PASS 1366x600 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 1366x600 #contentBar no overlapping controls
+PASS 1366x600 real puzzle play completed
+PASS 1366x600 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 1366x600 #contentResult no overlapping controls
+PASS 430x932 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 430x932 #contentPanel no overlapping controls
+PASS 430x932 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 430x932 #forecastPanel no overlapping controls
+PASS 430x932 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 430x932 #contentBar no overlapping controls
+PASS 430x932 real puzzle play completed
+PASS 430x932 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 430x932 #contentResult no overlapping controls
+PASS 1032x1376 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #contentPanel no overlapping controls
+PASS 1032x1376 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #forecastPanel no overlapping controls
+PASS 1032x1376 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #contentBar no overlapping controls
+PASS 1032x1376 real puzzle play completed
+PASS 1032x1376 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #contentResult no overlapping controls
+PASS generated study art loads with network disabled
+PASS offline cold navigation and complete real puzzle
+PASS zero JavaScript and resource errors
+Content R1 browser: 97 PASS
+PASS fallen real play completed
+PASS fallen own result card composition
+PASS shield real play completed
+PASS shield own result card composition
+PASS shelter real play completed
+PASS shelter own result card composition
+PASS taunt real play completed
+PASS taunt own result card composition
+PASS spell real play completed
+PASS spell own result card composition
+PASS cross real play completed
+PASS cross own result card composition
+PASS six separate completion records
+PASS wrong order actually fails
+PASS one tap retry restores original archer
+PASS player reverses future turn in real tutorial
+PASS reloaded consumed reversal cannot be used twice
+PASS wrong direction is unavailable
+PASS wrong direction preview consumes nothing
+PASS second turn follows changed future
+PASS real turns reach fourth round
+PASS fourth turn both tide choices available
+PASS future reversal lesson can finish
+PASS past locked while future still available
+PASS wave clears within 0.8s plus 10ms timer tolerance
+PASS first script turn holds shield and heals to seven
+PASS Moen wave clears before player instruction
+PASS one instruction names next card
+PASS soldier actually removes shield
+PASS archer reduces enemy knight to two
+PASS scripted Moen completed through ordered trades
+PASS delayed knight attacks on second enemy turn
+PASS all content leaves wins coins and trial telemetry unchanged
+PASS harbor normal route to real future reversal in under three minutes
+PASS formal forecast never opens lesson picker
+PASS formal voyage boss is a replayable Moen encounter
+PASS formal Moen win recorded
+PASS boss replay retains formal identity
+PASS harbor reflects boss progress
+PASS real export produces full save code
+PASS clear then import preserves six lessons, usage, boss and exact checkpoint
+PASS imported used reversal stays locked
+PASS corrupt checkpoint is rejected
+PASS corrupt checkpoint changes no storage
+PASS populated invalid deck is rejected
+PASS populated invalid deck changes no storage
+PASS legacy save import preserves current R2 progress
+PASS 390x844 voyageBoss visible reachable 44px
+PASS 390x844 voyageForecast visible reachable 44px
+PASS 390x844 voyageClose visible reachable 44px
+PASS 390x844 contentHelp visible reachable 44px
+PASS 390x844 contentRetry visible reachable 44px
+PASS 390x844 contentMenu visible reachable 44px
+PASS 390x844 instruction not clipped
+PASS 390x844 all five cards including names and stats fit their field
+PASS 390x844 player life row above command dock
+PASS 844x390 voyageBoss visible reachable 44px
+PASS 844x390 voyageForecast visible reachable 44px
+PASS 844x390 voyageClose visible reachable 44px
+PASS 844x390 contentHelp visible reachable 44px
+PASS 844x390 contentRetry visible reachable 44px
+PASS 844x390 contentMenu visible reachable 44px
+PASS 844x390 instruction not clipped
+PASS 844x390 all five cards including names and stats fit their field
+PASS 844x390 player life row above command dock
+PASS short landscape Moen completed through real input
+PASS 1032x1376 voyageBoss visible reachable 44px
+PASS 1032x1376 voyageForecast visible reachable 44px
+PASS 1032x1376 voyageClose visible reachable 44px
+PASS 1032x1376 contentHelp visible reachable 44px
+PASS 1032x1376 contentRetry visible reachable 44px
+PASS 1032x1376 contentMenu visible reachable 44px
+PASS 1032x1376 instruction not clipped
+PASS 1032x1376 all five cards including names and stats fit their field
+PASS 1032x1376 player life row above command dock
+PASS 1376x1032 voyageBoss visible reachable 44px
+PASS 1376x1032 voyageForecast visible reachable 44px
+PASS 1376x1032 voyageClose visible reachable 44px
+PASS 1376x1032 contentHelp visible reachable 44px
+PASS 1376x1032 contentRetry visible reachable 44px
+PASS 1376x1032 contentMenu visible reachable 44px
+PASS 1376x1032 instruction not clipped
+PASS 1376x1032 all five cards including names and stats fit their field
+PASS 1376x1032 player life row above command dock
+PASS 1366x600 voyageBoss visible reachable 44px
+PASS 1366x600 voyageForecast visible reachable 44px
+PASS 1366x600 voyageClose visible reachable 44px
+PASS 1366x600 contentHelp visible reachable 44px
+PASS 1366x600 contentRetry visible reachable 44px
+PASS 1366x600 contentMenu visible reachable 44px
+PASS 1366x600 instruction not clipped
+PASS 1366x600 all five cards including names and stats fit their field
+PASS 1366x600 player life row above command dock
+PASS 430x932 voyageBoss visible reachable 44px
+PASS 430x932 voyageForecast visible reachable 44px
+PASS 430x932 voyageClose visible reachable 44px
+PASS 430x932 contentHelp visible reachable 44px
+PASS 430x932 contentRetry visible reachable 44px
+PASS 430x932 contentMenu visible reachable 44px
+PASS 430x932 instruction not clipped
+PASS 430x932 all five cards including names and stats fit their field
+PASS 430x932 player life row above command dock
+PASS 1032x1376 voyageBoss visible reachable 44px
+PASS 1032x1376 voyageForecast visible reachable 44px
+PASS 1032x1376 voyageClose visible reachable 44px
+PASS 1032x1376 contentHelp visible reachable 44px
+PASS 1032x1376 contentRetry visible reachable 44px
+PASS 1032x1376 contentMenu visible reachable 44px
+PASS 1032x1376 instruction not clipped
+PASS 1032x1376 all five cards including names and stats fit their field
+PASS 1032x1376 player life row above command dock
+PASS network disabled reload retains completion
+PASS closed browser process reopens offline and resumes consumed reversal
+PASS zero JS errors and 404s
+Content R2 browser: 114 PASS
+PASS harbor exact name 六道潮汐殘局
+PASS harbor contentEntry reachable 44px
+PASS harbor exact name 潮汐預報
+PASS harbor forecastEntry reachable 44px
+PASS harbor exact name 茉恩的退潮考驗
+PASS harbor moenEntry reachable 44px
+PASS study exact name 六道潮汐殘局
+PASS study exact name 潮汐預報
+PASS study exact name 茉恩的退潮考驗
+PASS first entry is an action sentence
+PASS fallen wrong order really fails
+PASS fallen failure identifies the wrong step
+PASS fallen failure title text buttons uncut
+PASS fallen failure does not grant completion
+PASS fallen immediate retry restored
+PASS fallen real solution complete
+PASS fallen completion title text buttons uncut
+PASS shield wrong order really fails
+PASS shield failure identifies the wrong step
+PASS shield failure title text buttons uncut
+PASS shield failure does not grant completion
+PASS shield immediate retry restored
+PASS shield real solution complete
+PASS shield completion title text buttons uncut
+PASS shelter wrong order really fails
+PASS shelter failure identifies the wrong step
+PASS shelter failure title text buttons uncut
+PASS shelter failure does not grant completion
+PASS shelter immediate retry restored
+PASS shelter real solution complete
+PASS shelter completion title text buttons uncut
+PASS taunt wrong order really fails
+PASS taunt failure identifies the wrong step
+PASS taunt failure title text buttons uncut
+PASS taunt failure does not grant completion
+PASS taunt immediate retry restored
+PASS taunt real solution complete
+PASS taunt completion title text buttons uncut
+PASS spell wrong order really fails
+PASS spell failure identifies the wrong step
+PASS spell failure title text buttons uncut
+PASS spell failure does not grant completion
+PASS spell immediate retry restored
+PASS spell real solution complete
+PASS spell completion title text buttons uncut
+PASS cross wrong order really fails
+PASS cross failure identifies the wrong step
+PASS cross failure title text buttons uncut
+PASS cross failure does not grant completion
+PASS cross immediate retry restored
+PASS cross real solution complete
+PASS cross completion title text buttons uncut
+PASS six title-independent art combinations unique
+PASS six actual completions saved on reload
+PASS visible first-step pulse and label
+PASS press phase is real pointer feedback
+PASS release really changes future
+PASS saved reversal stays consumed
+PASS wrong tide unavailable
+PASS wrong direction zero consumption
+PASS past turn explains lock
+PASS past turn cannot mutate schedule
+PASS fourth round free choice
+PASS forecast result fully fits
+PASS forecast result corrected sentence
+PASS 390x844 all preparation cards complete
+PASS wave anticipation has not resolved damage
+PASS 390x844 no half cards after ebb
+PASS painted Moen fills empty middle
+PASS large real intact shield badge
+PASS broken art and impact frame follow real shield loss
+PASS shield actually removed
+PASS broken shield survives saved checkpoint
+PASS Moen completion uncut
+PASS delaying makes knight actually attack
+PASS study does not alter actual battle ledger
+PASS voyage exact name 六道潮汐殘局
+PASS voyage exact name 潮汐預報
+PASS voyage exact name 茉恩的退潮考驗
+PASS normal boss route records completion
+PASS zero-wins explanation visible
+PASS all progress real export clear import round trip
+PASS bad code leaves every save key unchanged
+PASS save error centered and uncut
+PASS 844x390 complete card bounds
+PASS 1032x1376 complete card bounds
+PASS 1376x1032 complete card bounds
+PASS 1366x600 complete card bounds
+PASS 430x932 complete card bounds
+PASS 1032x1376 complete card bounds
+PASS new shield art cached offline
+PASS offline normal input completes
+PASS zero page or resource errors
+Content R3 browser: 93 PASS

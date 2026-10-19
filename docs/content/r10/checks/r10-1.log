@@ -1,0 +1,53 @@
+PASS puzzle fallen dock at viewport bottom <=16px
+PASS puzzle fallen complete player hero above dock
+PASS puzzle fallen cards complete and clear of hero/dock
+PASS puzzle fallen Moen never intersects cards
+PASS puzzle fallen shield counts never cover costs
+PASS puzzle fallen all visible controls 44px and actual hit
+PASS no zero gap fallen
+PASS initial observation no solution fallen
+PASS playable and completable fallen
+PASS completion actually persists fallen
+PASS puzzle shield dock at viewport bottom <=16px
+PASS puzzle shield complete player hero above dock
+PASS puzzle shield cards complete and clear of hero/dock
+PASS puzzle shield Moen never intersects cards
+PASS puzzle shield shield counts never cover costs
+PASS puzzle shield all visible controls 44px and actual hit
+PASS no zero gap shield
+PASS initial observation no solution shield
+PASS playable and completable shield
+PASS completion actually persists shield
+PASS puzzle shelter dock at viewport bottom <=16px
+PASS puzzle shelter complete player hero above dock
+PASS puzzle shelter cards complete and clear of hero/dock
+PASS puzzle shelter Moen never intersects cards
+PASS puzzle shelter shield counts never cover costs
+PASS puzzle shelter all visible controls 44px and actual hit
+PASS no zero gap shelter
+PASS initial observation no solution shelter
+PASS playable and completable shelter
+PASS completion actually persists shelter
+PASS puzzle taunt dock at viewport bottom <=16px
+PASS puzzle taunt complete player hero above dock
+PASS puzzle taunt cards complete and clear of hero/dock
+PASS puzzle taunt Moen never intersects cards
+PASS puzzle taunt shield counts never cover costs
+PASS puzzle taunt all visible controls 44px and actual hit
+PASS no zero gap taunt
+PASS initial observation no solution taunt
+PASS playable and completable taunt
+PASS completion actually persists taunt
+PASS puzzle spell dock at viewport bottom <=16px
+PASS puzzle spell complete player hero above dock
+AssertionError [ERR_ASSERTION]: puzzle spell cards complete and clear of hero/dock
+    at check (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r10-e2e.js:4:28)
+    at layout (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r10-e2e.js:8:211)
+    at async C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r10-e2e.js:13:77 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

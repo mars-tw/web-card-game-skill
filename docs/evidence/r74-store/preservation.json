@@ -1,0 +1,37 @@
+{
+  "status": "VERIFIED",
+  "restoredTrackedHistoricalEvidence": [
+    "docs/evidence/R67/after/desktop-1366x768.png",
+    "docs/evidence/R67/after/landscape-844x390.png",
+    "docs/evidence/R67/after/mobile-390x844.png",
+    "docs/evidence/R67/gates/browser-integration.json",
+    "docs/evidence/r73-mobile/after/battle-1366x600.png",
+    "docs/evidence/r73-mobile/after/battle-390x844.png",
+    "docs/evidence/r73-mobile/after/frost-battle-390x844.png",
+    "docs/evidence/r73-mobile/after/frost-battle-844x390.png",
+    "docs/evidence/r73-mobile/after/hand-1366x600.png",
+    "docs/evidence/r73-mobile/after/hand-390x844.png",
+    "docs/evidence/r73-mobile/after/hand-844x390.png",
+    "docs/evidence/r73-mobile/after/preview-390x844.png",
+    "docs/evidence/r73-mobile/after/preview-844x390.png",
+    "docs/evidence/r73-mobile/after/staged-result-390x844.png",
+    "docs/evidence/r73-mobile/after/staged-result-844x390.png",
+    "docs/evidence/r73-mobile/after/unlocked-deck-390x844.png",
+    "docs/evidence/r73-mobile/after/voyage-1366x600.png",
+    "docs/evidence/r73-mobile/after/voyage-390x844.png",
+    "docs/evidence/r73-mobile/after/voyage-844x390.png",
+    "docs/evidence/r73-mobile/before/battle-1366x600.png",
+    "docs/evidence/r73-mobile/before/battle-390x844.png",
+    "docs/evidence/r73-mobile/before/battle-844x390.png",
+    "docs/evidence/r73-mobile/before/hand-1366x600.png",
+    "docs/evidence/r73-mobile/before/hand-390x844.png",
+    "docs/evidence/r73-mobile/before/hand-844x390.png"
+  ],
+  "initialVisualGateHash": "e2191f0e89bfeeffe29af1653ca66cac1a862342c9b878e7e8f20f8405347b2a",
+  "preservedUntracked": [
+    "docs/audit_openclose/",
+    "docs/playtest/",
+    "scripts/audit-oc-r1.js"
+  ],
+  "deletions": []
+}

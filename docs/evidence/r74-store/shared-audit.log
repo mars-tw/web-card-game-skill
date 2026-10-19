@@ -1,0 +1,85 @@
+{
+  "ownFiles": 139,
+  "duplicates": 0,
+  "identifierMatches": 199,
+  "inventory": [
+    {
+      "app": "Crackveil Vanguard",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\rift-survivors",
+      "filesChecked": 243,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "暴風啟示錄",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\storm-apocalypse",
+      "filesChecked": 80,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "灰燼護航",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\doomsday-shooter",
+      "filesChecked": 110,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "無盡塔防",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\tower-defense",
+      "filesChecked": 188,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "陽光農場",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\pixel-idle-farm-skill",
+      "filesChecked": 335,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "村莊攻防",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\village-siege",
+      "filesChecked": 308,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "七期：斷鏈行動",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\seven-district-reckoning",
+      "filesChecked": 518,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "Rift Forge 3D",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\rift-forge-3d",
+      "filesChecked": 6,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "島嶼交通學院",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\taiwan-island-drive",
+      "filesChecked": 255,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "小小列車長",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\taiwan-train-math",
+      "filesChecked": 218,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "夜行列車",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\夜行列車_重製企劃_20261002",
+      "filesChecked": 4,
+      "scope": "root files only; redesign preview is not production"
+    },
+    {
+      "app": "島嶼飛行學校",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\island-flight-school",
+      "filesChecked": 21,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "島嶼鐵道學校",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\taiwan-train-school",
+      "filesChecked": 17,
+      "scope": "tracked runtime/assets"
+    }
+  ]
+}

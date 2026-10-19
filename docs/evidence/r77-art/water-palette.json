@@ -1,0 +1,30 @@
+[
+  {
+    "id": "harbor-wave",
+    "path": "docs/art/source/harbor.png",
+    "median_hex": "#3F4369",
+    "water_saturation_median": 0.3765432098765432,
+    "method": "Blue/indigo midtones: hue .55-.76,value .08-.70,alpha>128. Median excludes foam and copper, not a whole-image grade."
+  },
+  {
+    "id": "old-water",
+    "path": "assets/art/r76/waterline.webp",
+    "median_hex": "#274882",
+    "water_saturation_median": 0.6619718309859155,
+    "method": "Blue/indigo midtones: hue .55-.76,value .08-.70,alpha>128. Median excludes foam and copper, not a whole-image grade."
+  },
+  {
+    "id": "new-water",
+    "path": "assets/art/r77/puddle.webp",
+    "median_hex": "#282E4F",
+    "water_saturation_median": 0.49253731343283585,
+    "method": "Blue/indigo midtones: hue .55-.76,value .08-.70,alpha>128. Median excludes foam and copper, not a whole-image grade."
+  },
+  {
+    "id": "new-wave",
+    "path": "assets/art/r77/wave.webp",
+    "median_hex": "#343E5E",
+    "water_saturation_median": 0.44999999999999996,
+    "method": "Blue/indigo midtones: hue .55-.76,value .08-.70,alpha>128. Median excludes foam and copper, not a whole-image grade."
+  }
+]

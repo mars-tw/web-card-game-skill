@@ -1,0 +1,374 @@
+{
+  "status": "VERIFIED",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "model_note": "Built-in tool exposes no verifiable model slug; actual tool name recorded.",
+  "generated_master_count": 6,
+  "source_bytes": 16072051,
+  "runtime_bytes": 904094,
+  "assets": [
+    {
+      "id": "soldier-archer-sheet",
+      "source": "docs/art/source/r80/soldier-archer-sheet.png",
+      "sha256": "656aaeeae256b1dafac5594cc866fd29b0c1c4f559116b79e14d3b064bf98ce6",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2741645,
+      "metrics": {
+        "brightness": 0.5606617647058824,
+        "saturation": 0.2802920757507299,
+        "near_black_ratio": 0.00323486328125,
+        "low_saturation_ratio": 0.02838134765625,
+        "double_gate_pass": false
+      },
+      "references": [
+        {
+          "path": "assets/art/r75/footman.webp",
+          "sha256": "c1f52344ef738412a379a2ca6db51aaede5f40660ccb5e7230884f3c1e4293c8"
+        },
+        {
+          "path": "assets/art/r75/archer.webp",
+          "sha256": "66fff3e9c4def9b33966f4e5c0812e63cbf498ef474e61cf0f4e145b2a43ebcd"
+        }
+      ],
+      "runtime": []
+    },
+    {
+      "id": "footman-band",
+      "source": "docs/art/source/r80/footman-band.png",
+      "sha256": "e45e48b279be4db9246aeec31dac493a69059ecb765da718f4ce2811a0eecc74",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 2717513,
+      "metrics": {
+        "brightness": 0.5073967428768382,
+        "saturation": 0.41219240772890875,
+        "near_black_ratio": 0.00958251953125,
+        "low_saturation_ratio": 0.0377197265625,
+        "double_gate_pass": true
+      },
+      "references": [
+        {
+          "path": "assets/art/r75/footman.webp",
+          "sha256": "c1f52344ef738412a379a2ca6db51aaede5f40660ccb5e7230884f3c1e4293c8"
+        },
+        {
+          "path": "docs/art/character-sheets/soldier-archer-r80.png",
+          "sha256": "656aaeeae256b1dafac5594cc866fd29b0c1c4f559116b79e14d3b064bf98ce6"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r80/footman-band.webp",
+          "bytes": 84072,
+          "sha256": "78342ac25de7b1e1d9983b7357d38cf211e50073908f540438ba0326bad4661c",
+          "size": [
+            512,
+            512
+          ],
+          "metrics": {
+            "brightness": 0.5087162990196078,
+            "saturation": 0.41121472228264266,
+            "near_black_ratio": 0.00897216796875,
+            "low_saturation_ratio": 0.03790283203125,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/art/r80/footman-band-low.webp",
+          "bytes": 11408,
+          "sha256": "8364dff40d3a0478c4c80f2627499e249fa7ba890ae223698acf68a05f679c3b",
+          "size": [
+            160,
+            160
+          ],
+          "metrics": {
+            "brightness": 0.5091715494791667,
+            "saturation": 0.41667026376858185,
+            "near_black_ratio": 0.0113525390625,
+            "low_saturation_ratio": 0.038330078125,
+            "double_gate_pass": true
+          }
+        }
+      ],
+      "canonical": {
+        "path": "docs/art/canonical/r80/footman-band.png",
+        "size": [
+          1024,
+          1024
+        ],
+        "bytes": 1889382,
+        "sha256": "84c364c95930cb4b51fbcb0dcdf4aa7aeb5ea39c8187cbf6715a3ac167d930ce"
+      }
+    },
+    {
+      "id": "archer-hood",
+      "source": "docs/art/source/r80/archer-hood.png",
+      "sha256": "40f7bce04f35ff26c746e54174a3f6345de33bb21a7366aa6e56bf193ce584a8",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 2677598,
+      "metrics": {
+        "brightness": 0.4005426145067402,
+        "saturation": 0.3794739835424714,
+        "near_black_ratio": 0.039794921875,
+        "low_saturation_ratio": 0.03076171875,
+        "double_gate_pass": true
+      },
+      "references": [
+        {
+          "path": "assets/art/r75/archer.webp",
+          "sha256": "66fff3e9c4def9b33966f4e5c0812e63cbf498ef474e61cf0f4e145b2a43ebcd"
+        },
+        {
+          "path": "docs/art/character-sheets/soldier-archer-r80.png",
+          "sha256": "656aaeeae256b1dafac5594cc866fd29b0c1c4f559116b79e14d3b064bf98ce6"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r80/archer-hood.webp",
+          "bytes": 75834,
+          "sha256": "fd45d480e5658fe028958e0b2b54e061c52ebb4dbde5425384beeb2af4797ee9",
+          "size": [
+            512,
+            512
+          ],
+          "metrics": {
+            "brightness": 0.40187724992340684,
+            "saturation": 0.37824136870631,
+            "near_black_ratio": 0.03912353515625,
+            "low_saturation_ratio": 0.03131103515625,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/art/r80/archer-hood-low.webp",
+          "bytes": 10606,
+          "sha256": "6e425e587b7ce71d6fc7485a535d25dcfed93a412943ef9d840592e5148c1ba6",
+          "size": [
+            160,
+            160
+          ],
+          "metrics": {
+            "brightness": 0.40143444584865196,
+            "saturation": 0.3837529250917471,
+            "near_black_ratio": 0.04315185546875,
+            "low_saturation_ratio": 0.03033447265625,
+            "double_gate_pass": true
+          }
+        }
+      ],
+      "canonical": {
+        "path": "docs/art/canonical/r80/archer-hood.png",
+        "size": [
+          1024,
+          1024
+        ],
+        "bytes": 1868481,
+        "sha256": "6caa27464e5e906804071cff6ad76241173ea45b77652ff64e67f3dc2d5acb23"
+      }
+    },
+    {
+      "id": "wave",
+      "source": "docs/art/source/r80/wave.png",
+      "sha256": "792fb2688a08901c82f142c7187c438978a103047210622e9aee2c3e50695988",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2156958,
+      "metrics": {
+        "brightness": 0.7800954489081462,
+        "saturation": 0.2917099896134456,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.26921537229783826,
+        "double_gate_pass": false
+      },
+      "references": [
+        {
+          "path": "assets/art/r79/wave.webp",
+          "sha256": "f99acbfc3c9766d3bdcb2157f519dd2256f1e55d9cbcc3a4db375c4a9348f09a"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r80/wave.webp",
+          "bytes": 245516,
+          "sha256": "d904a24a5e3e82dab86fc844f0f4f28a6accde8be843cfea8f8470ed8be55379",
+          "size": [
+            1200,
+            800
+          ],
+          "metrics": {
+            "brightness": 0.7774582367453883,
+            "saturation": 0.29251084034458136,
+            "near_black_ratio": 0.0,
+            "low_saturation_ratio": 0.2700540108021604,
+            "double_gate_pass": false
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.6609039306640625,
+        "bbox": [
+          0,
+          7,
+          1536,
+          1024
+        ],
+        "corners": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "logo",
+      "source": "docs/art/source/r80/logo.png",
+      "sha256": "5e590789b8b74409458c9a7198aa4d0f5fdf14d1f92538ba9f6d39416a00f4b8",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2645721,
+      "metrics": {
+        "brightness": 0.7073500265554361,
+        "saturation": 0.4062166614558019,
+        "near_black_ratio": 0.023122660207002863,
+        "low_saturation_ratio": 0.25831314688394624,
+        "double_gate_pass": false
+      },
+      "references": [
+        {
+          "path": "assets/art/r79/logo.webp",
+          "sha256": "3377017240e2e5775ef9c04222ec23d92ce2fe008c17ae6c3184a68f4846abfa"
+        },
+        {
+          "path": "docs/art/source/r80/wave.png",
+          "sha256": "792fb2688a08901c82f142c7187c438978a103047210622e9aee2c3e50695988"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r80/logo.webp",
+          "bytes": 220708,
+          "sha256": "cef080e0eff87a6dfb8bb24ab1ffd5ca846bc40166b7aac75a888e6de017e53b",
+          "size": [
+            1000,
+            667
+          ],
+          "metrics": {
+            "brightness": 0.7045246377374869,
+            "saturation": 0.40563481303318455,
+            "near_black_ratio": 0.023015086444224203,
+            "low_saturation_ratio": 0.25779099218147783,
+            "double_gate_pass": false
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.42844200134277344,
+        "bbox": [
+          0,
+          14,
+          1536,
+          1024
+        ],
+        "corners": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "victory-navigator",
+      "source": "docs/art/source/r80/victory-navigator.png",
+      "sha256": "5dd25fd0f24a3d395a4b4fe597e7e78eb36241ba1f5ed1e901e7fd9e492a010a",
+      "size": [
+        1024,
+        1536
+      ],
+      "bytes": 3132616,
+      "metrics": {
+        "brightness": 0.5534162023146164,
+        "saturation": 0.5023637200804181,
+        "near_black_ratio": 0.010544363480497214,
+        "low_saturation_ratio": 0.050064294899271326,
+        "double_gate_pass": true
+      },
+      "references": [
+        {
+          "path": "assets/art/r79/victory-navigator.webp",
+          "sha256": "fe93988e65e650fc82af56ed70b56050245f9a1735e8e159c9c463b1a78a35f3"
+        },
+        {
+          "path": "docs/art/source/r80/wave.png",
+          "sha256": "792fb2688a08901c82f142c7187c438978a103047210622e9aee2c3e50695988"
+        },
+        {
+          "path": "docs/art/character-sheets/navigator-r79.png",
+          "sha256": "f920c616c1422114e456e1b824295ffa0da1f708941aa4d18eb13fd4d7373fb2"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r80/victory-navigator.webp",
+          "bytes": 255950,
+          "sha256": "598323e179d43c750874b250c37f3839747760fec17d34e82daaaf6561fff9ad",
+          "size": [
+            700,
+            1050
+          ],
+          "metrics": {
+            "brightness": 0.5509140302509489,
+            "saturation": 0.5017355372416253,
+            "near_black_ratio": 0.010710307600034273,
+            "low_saturation_ratio": 0.05063833433296204,
+            "double_gate_pass": true
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.2849273681640625,
+        "bbox": [
+          0,
+          0,
+          1024,
+          1536
+        ],
+        "corners": [
+          0,
+          0,
+          204,
+          0
+        ]
+      }
+    }
+  ],
+  "postprocessing": "Pillow resize/WebP compression/QA sheets only. Native alpha preserved. No programmatic replacement art.",
+  "license": "AI-generated for this project; previous licenses retained.",
+  "limitations": "Sheet and accessory variants are static, not limb animation. 64px local self-review, no independent blind test. Pale foam intentionally low saturation; character double gates required; VFX diagnostic only."
+}

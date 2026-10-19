@@ -1,0 +1,4 @@
+AssertionError [ERR_ASSERTION]: puzzle spell cards complete and clear of hero/dock
+    at check (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r10-e2e.js:4:28)
+    at layout (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r10-e2e.js:8:211)
+    at async C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r10-e2e.js:13:77

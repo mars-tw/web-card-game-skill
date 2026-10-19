@@ -1,0 +1,31 @@
+{
+  "round": "CONTENT_R3",
+  "date": "2026-10-19",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "style_prefix": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism.",
+  "new_originals_used": 1,
+  "assets": [
+    {
+      "id": "shell-shield-atlas",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset type: two-state shield VFX sprite atlas, 1536x1024 transparent canvas. Reference image: existing shell shield game icon, preserve its scalloped pearl silver face and coral copper rim. Exactly TWO equal sized frontal shell shield icons side by side, each centered in its own half of canvas, generous transparent padding, no overlap. LEFT: intact pearlescent shell shield with soft moon-white protective rim, solid coherent silhouette. RIGHT: same shield split apart by a huge jagged diagonal fracture, separated shell pieces, coral-copper impact light in the gap and few large shards; unmistakably broken at 48px. Same scale and orientation, legible at small size. No words, lettering, numbers, labels, interface, scene, background, watermark. True transparent alpha background.",
+      "reference": "assets/art/r75/icon-shield.webp",
+      "source": "docs/art/source/content-r3/shell-shield-atlas.png",
+      "runtime": [
+        "assets/art/content-r3/shield-intact.webp",
+        "assets/art/content-r3/shield-broken.webp"
+      ],
+      "transparent_requested": true,
+      "alpha_observed": [
+        0,
+        254
+      ],
+      "output_hint": "Generated images are saved to C:\\Users\\digimkt\\.codex\\generated_images\\01a14ff2-67c6-7d83-a237-4747d0cdc927 as C:\\Users\\digimkt\\.codex\\generated_images\\01a14ff2-67c6-7d83-a237-4747d0cdc927\\exec-714122c2-c62c-4170-89b2-65d0f501c2e2.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    }
+  ],
+  "unused_attempt": {
+    "prompt": "Remove the background from the two-state shield atlas; preserve the icons, true RGBA transparency.",
+    "output_hint": "Generated images are saved to C:\\Users\\digimkt\\.codex\\generated_images\\01a14ff2-67c6-7d83-a237-4747d0cdc927 as C:\\Users\\digimkt\\.codex\\generated_images\\01a14ff2-67c6-7d83-a237-4747d0cdc927\\exec-17a786c6-db81-44d2-a077-a92d0e1e764c.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "reason": "Initial alpha check incorrectly required a maximum of 255. Inspecting the first source confirmed genuine transparent pixels and foreground alpha 252-254. First source retained; second attempt not used."
+  }
+}

@@ -1,0 +1,35 @@
+/* R80 individual accessories, one source-to-target tide, stable presentation slots. */
+#trialStep { display:block;min-height:30px;line-height:15px; }
+.battlefield .card.r76-duplicate[data-art-variant="1"] .art>img:not(.faction-emblem) { transform:none; }
+.r80-empty-slot { position:relative;flex:0 0 auto;width:var(--card-w);height:var(--card-h);border:1px solid #a99abd45;box-shadow:inset 0 0 18px #201c3d77;clip-path:polygon(4% 3%,96% 3%,100% 96%,0 96%);pointer-events:none; }
+.r80-empty-slot[data-fallen-uid]::before { content:"";position:absolute;inset:12% 16%;border:1px dashed #b6a0ec66;transform:skewY(-4deg);background:url('../assets/art/r79/foam.webp?v=r79-foam') bottom/100% 32% no-repeat;opacity:.65; }
+body[data-tide-trial="true"] .battlefield .r80-empty-slot { width:var(--r80-slot-w,var(--card-w));height:var(--r80-slot-h,var(--card-h)); }
+.r80-watermark { position:absolute!important;left:-9%;bottom:-15px;width:118%;height:28px;object-fit:fill;pointer-events:none;z-index:2;opacity:.8; }
+.board.r76-wet::after { opacity:.35;height:var(--r77-wet-h,60px); }
+.r80-preview-damage { position:absolute;right:-9px;top:30%;min-width:30px;padding:3px 4px;z-index:16;text-align:center;font:bold 19px/24px Arial;color:#201c3d;background:#f6c3a8;border:2px solid #fff1de;border-radius:4px;box-shadow:0 2px 8px #10152d;pointer-events:none; }
+#enemyHero { position:relative; }
+#enemyHero>.r80-preview-damage { left:29px;right:auto;top:calc(100% - 13px);font-size:16px; }
+.card.r79-preview-lethal .r80-preview-damage { background:#f2b4a7; }
+.turn-banner { transform:none; }
+.turn-banner span { transform:translateY(-50%);font-size:15px;padding:4px 20px;line-height:24px;background:linear-gradient(90deg,transparent,#201c3df2 20%,#201c3df2 80%,transparent); }
+/* Only the targets take the crest. Friendly art never acquires hit/standby overlays. */
+body[data-r76-wave="true"][data-r80-caster="player"] #playerField .card { border-style:solid;outline:none;rotate:0deg; }
+body[data-r76-wave="true"][data-r80-caster="player"] #playerField .r77-card-state,
+body[data-r76-wave="true"][data-r80-caster="player"] #playerField .r79-spent-seal,
+body[data-r76-wave="true"][data-r80-caster="player"] #playerField .r78-ready-arrow { visibility:hidden; }
+body[data-r76-wave="true"][data-r80-caster="player"] #playerField .card .art>img:not(.faction-emblem) { filter:none; }
+body[data-r76-wave="true"][data-r80-caster="player"] #playerField .card::before { background:none;border:2px solid #a9d5f0;border-radius:50%;height:12%;bottom:-5%;opacity:.7; }
+.tide-wave { clip-path:inset(var(--r80-clip-top,0px) 0 var(--r80-clip-bottom,0px) var(--r80-clip-left,0px)); }
+.tide-wave .r76-wave-art { mask-image:none;top:var(--r79-wave-top);height:var(--wave-height);transform-origin:center; }
+.tide-wave.run .r76-wave-art { animation:r80-surge 1.3s linear both; }
+@keyframes r80-surge { 0%{opacity:0;transform:translateY(var(--r79-travel)) scale(.65,.45)} 8%{opacity:.85} 27.7%,52%{opacity:1;transform:translateY(0) scale(1)} 80%{opacity:.45;transform:translateY(-20px)} 100%{opacity:0;transform:translateY(-35px)} }
+.tide-wave.run[data-axis="x"] .r76-wave-art { animation-name:r79-surge-x; }
+.r80-current-path { position:absolute;background:url('../assets/art/r79/foam.webp?v=r79-foam') center/100% 100% no-repeat;opacity:0;clip-path:polygon(50% 0,100% 24%,70% 24%,100% 62%,65% 62%,85% 100%,15% 100%,35% 62%,0 62%,30% 24%,0 24%); }
+.tide-wave.run .r80-current-path { animation:r80-path 1.3s linear both; }
+.r80-current-path::after { content:"";position:absolute;inset:0;background:#e1edff;clip-path:polygon(0 30%,50% 0,100% 30%,88% 40%,50% 17%,12% 40%,0 30%,0 82%,50% 52%,100% 82%,88% 92%,50% 69%,12% 92%,0 82%);opacity:.8; }
+body[data-r76-wave="true"][data-r80-caster="player"] .r75-tide-channel { text-shadow:0 0 10px #c4e8ff; }
+body[data-r76-wave="true"][data-r80-caster="player"] #r75BoardPips { filter:drop-shadow(0 0 5px #f2f1fa); }
+@keyframes r80-path { 0%{opacity:0;clip-path:inset(100% 0 0)} 8%{opacity:.5} 27.7%,65%{opacity:.9;clip-path:inset(0)} 100%{opacity:0;clip-path:inset(0 0 100%)} }
+@media(max-height:450px) { body[data-tide-trial="true"] .r80-empty-slot { width:92px;height:calc(var(--card-h) - 6px); }.r80-preview-damage{font-size:14px;line-height:18px;min-width:25px}.turn-banner{left:40%;right:0;}.turn-banner span{font-size:12px;padding:2px 8px;} }
+@media(prefers-reduced-motion:reduce) { .tide-wave.run .r76-wave-art,.tide-wave.run .r80-current-path { animation:none;opacity:1;transform:none; } }
+:root[data-perf="low"] .tide-wave.run .r76-wave-art,:root[data-perf="low"] .tide-wave.run .r80-current-path { animation:none;opacity:1;transform:none; }

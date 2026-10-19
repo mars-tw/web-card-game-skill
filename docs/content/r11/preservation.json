@@ -1,0 +1,6 @@
+{
+  "status": "VERIFIED",
+  "protected_count": 270,
+  "changed": [],
+  "method": "Entry-time SHA256; includes preexisting dirty R67 evidence and preexisting untracked files, excludes preexisting .audit-tmp directory which was never removed."
+}

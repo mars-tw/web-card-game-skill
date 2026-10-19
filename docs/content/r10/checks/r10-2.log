@@ -1,0 +1,250 @@
+PASS puzzle fallen dock at viewport bottom <=16px
+PASS puzzle fallen complete player hero above dock
+PASS puzzle fallen cards complete and clear of hero/dock
+PASS puzzle fallen Moen never intersects cards
+PASS puzzle fallen shield counts never cover costs
+PASS puzzle fallen all visible controls 44px and actual hit
+PASS no zero gap fallen
+PASS initial observation no solution fallen
+PASS playable and completable fallen
+PASS completion actually persists fallen
+PASS puzzle shield dock at viewport bottom <=16px
+PASS puzzle shield complete player hero above dock
+PASS puzzle shield cards complete and clear of hero/dock
+PASS puzzle shield Moen never intersects cards
+PASS puzzle shield shield counts never cover costs
+PASS puzzle shield all visible controls 44px and actual hit
+PASS no zero gap shield
+PASS initial observation no solution shield
+PASS playable and completable shield
+PASS completion actually persists shield
+PASS puzzle shelter dock at viewport bottom <=16px
+PASS puzzle shelter complete player hero above dock
+PASS puzzle shelter cards complete and clear of hero/dock
+PASS puzzle shelter Moen never intersects cards
+PASS puzzle shelter shield counts never cover costs
+PASS puzzle shelter all visible controls 44px and actual hit
+PASS no zero gap shelter
+PASS initial observation no solution shelter
+PASS playable and completable shelter
+PASS completion actually persists shelter
+PASS puzzle taunt dock at viewport bottom <=16px
+PASS puzzle taunt complete player hero above dock
+PASS puzzle taunt cards complete and clear of hero/dock
+PASS puzzle taunt Moen never intersects cards
+PASS puzzle taunt shield counts never cover costs
+PASS puzzle taunt all visible controls 44px and actual hit
+PASS no zero gap taunt
+PASS initial observation no solution taunt
+PASS playable and completable taunt
+PASS completion actually persists taunt
+PASS puzzle spell dock at viewport bottom <=16px
+PASS puzzle spell complete player hero above dock
+PASS puzzle spell cards complete and clear of hero/dock
+PASS puzzle spell Moen never intersects cards
+PASS puzzle spell shield counts never cover costs
+PASS puzzle spell all visible controls 44px and actual hit
+PASS no zero gap spell
+PASS initial observation no solution spell
+PASS firebolt below hero in labeled hand area
+PASS no clipped spell effect residue
+PASS playable and completable spell
+PASS completion actually persists spell
+PASS puzzle cross dock at viewport bottom <=16px
+PASS puzzle cross complete player hero above dock
+PASS puzzle cross cards complete and clear of hero/dock
+PASS puzzle cross Moen never intersects cards
+PASS puzzle cross shield counts never cover costs
+PASS puzzle cross all visible controls 44px and actual hit
+PASS no zero gap cross
+PASS initial observation no solution cross
+PASS playable and completable cross
+PASS completion actually persists cross
+PASS R8 exchange cancellation no sacrifice
+PASS R8 exchange real result
+PASS forecast preview dock at viewport bottom <=16px
+PASS forecast preview complete player hero above dock
+PASS forecast preview cards complete and clear of hero/dock
+PASS forecast preview Moen never intersects cards
+PASS forecast preview shield counts never cover costs
+PASS forecast preview all visible controls 44px and actual hit
+PASS forecast preview forecast plus dock <=35%
+PASS move out cancels and states why
+PASS forecast cancelled dock at viewport bottom <=16px
+PASS forecast cancelled complete player hero above dock
+PASS forecast cancelled cards complete and clear of hero/dock
+PASS forecast cancelled Moen never intersects cards
+PASS forecast cancelled shield counts never cover costs
+PASS forecast cancelled all visible controls 44px and actual hit
+PASS forecast cancelled forecast plus dock <=35%
+PASS applied selected second round
+PASS forecast applied dock at viewport bottom <=16px
+PASS forecast applied complete player hero above dock
+PASS forecast applied cards complete and clear of hero/dock
+PASS forecast applied Moen never intersects cards
+PASS forecast applied shield counts never cover costs
+PASS forecast applied all visible controls 44px and actual hit
+PASS forecast applied forecast plus dock <=35%
+PASS preview cancellation apply same panel height
+PASS undo restores tide and allowance
+PASS forecast closed dock at viewport bottom <=16px
+PASS forecast closed complete player hero above dock
+PASS forecast closed cards complete and clear of hero/dock
+PASS forecast closed Moen never intersects cards
+PASS forecast closed shield counts never cover costs
+PASS forecast closed all visible controls 44px and actual hit
+PASS reversal persists through actual reload
+PASS R8 selected future turn actually reached
+PASS full HP explains no healing
+PASS forecast ally shields dock at viewport bottom <=16px
+PASS forecast ally shields complete player hero above dock
+PASS forecast ally shields cards complete and clear of hero/dock
+PASS forecast ally shields Moen never intersects cards
+PASS forecast ally shields shield counts never cover costs
+PASS forecast ally shields all visible controls 44px and actual hit
+PASS R8 each ally shield count clear
+PASS forecast-flood anticipation dock at viewport bottom <=16px
+PASS forecast-flood anticipation complete player hero above dock
+PASS forecast-flood anticipation cards complete and clear of hero/dock
+PASS forecast-flood anticipation Moen never intersects cards
+PASS forecast-flood anticipation shield counts never cover costs
+PASS forecast-flood anticipation all visible controls 44px and actual hit
+PASS forecast-flood 359ms no damage
+PASS forecast-flood impact dock at viewport bottom <=16px
+PASS forecast-flood impact complete player hero above dock
+PASS forecast-flood impact cards complete and clear of hero/dock
+PASS forecast-flood impact Moen never intersects cards
+PASS forecast-flood impact shield counts never cover costs
+PASS forecast-flood impact all visible controls 44px and actual hit
+PASS R8 actual reversed round hero5to3 knight4to3
+PASS two target-specific damage receipts
+PASS forecast flood route completes
+PASS forecast ebb route completes
+PASS forecast completed save persists
+PASS moen preparation dock at viewport bottom <=16px
+PASS moen preparation complete player hero above dock
+PASS moen preparation cards complete and clear of hero/dock
+PASS moen preparation Moen never intersects cards
+PASS moen preparation shield counts never cover costs
+PASS moen preparation all visible controls 44px and actual hit
+PASS complete Moen preparation sentence
+PASS moen casting before dock at viewport bottom <=16px
+PASS moen casting before complete player hero above dock
+PASS moen casting before cards complete and clear of hero/dock
+PASS moen casting before Moen never intersects cards
+PASS moen casting before shield counts never cover costs
+PASS moen casting before all visible controls 44px and actual hit
+PASS Moen 359ms healing not early
+PASS Moen heal and shield on impact
+PASS moen heal impact dock at viewport bottom <=16px
+PASS moen heal impact complete player hero above dock
+PASS moen heal impact cards complete and clear of hero/dock
+PASS moen heal impact Moen never intersects cards
+PASS moen heal impact shield counts never cover costs
+PASS moen heal impact all visible controls 44px and actual hit
+PASS actual attack anticipation still shielded
+PASS actual break impact still four HP
+PASS moen-hurt anticipation dock at viewport bottom <=16px
+PASS moen-hurt anticipation complete player hero above dock
+PASS moen-hurt anticipation cards complete and clear of hero/dock
+PASS moen-hurt anticipation Moen never intersects cards
+PASS moen-hurt anticipation shield counts never cover costs
+PASS moen-hurt anticipation all visible controls 44px and actual hit
+PASS moen-hurt 359ms no damage
+PASS moen-hurt impact dock at viewport bottom <=16px
+PASS moen-hurt impact complete player hero above dock
+PASS moen-hurt impact cards complete and clear of hero/dock
+PASS moen-hurt impact Moen never intersects cards
+PASS moen-hurt impact shield counts never cover costs
+PASS moen-hurt impact all visible controls 44px and actual hit
+PASS new turn no stale shield banner
+PASS Moen first route complete
+PASS Moen has character closing line
+PASS Moen save deduplication
+PASS return tide threshold triggered
+PASS public preattack threshold triggered
+PASS return route completes triggered
+PASS return tide threshold prevented
+PASS public preattack threshold prevented
+PASS prevent heal has real counterattack price
+PASS return route completes prevented
+PASS 320x568 Moen dock at viewport bottom <=16px
+PASS 320x568 Moen complete player hero above dock
+PASS 320x568 Moen cards complete and clear of hero/dock
+PASS 320x568 Moen Moen never intersects cards
+PASS 320x568 Moen shield counts never cover costs
+PASS 320x568 Moen all visible controls 44px and actual hit
+PASS 320x568 forecast dock at viewport bottom <=16px
+PASS 320x568 forecast complete player hero above dock
+PASS 320x568 forecast cards complete and clear of hero/dock
+PASS 320x568 forecast Moen never intersects cards
+PASS 320x568 forecast shield counts never cover costs
+PASS 320x568 forecast all visible controls 44px and actual hit
+PASS 320x568 forecast forecast plus dock <=35%
+PASS 360x640 Moen dock at viewport bottom <=16px
+PASS 360x640 Moen complete player hero above dock
+PASS 360x640 Moen cards complete and clear of hero/dock
+PASS 360x640 Moen Moen never intersects cards
+PASS 360x640 Moen shield counts never cover costs
+PASS 360x640 Moen all visible controls 44px and actual hit
+PASS 360x640 forecast dock at viewport bottom <=16px
+PASS 360x640 forecast complete player hero above dock
+PASS 360x640 forecast cards complete and clear of hero/dock
+PASS 360x640 forecast Moen never intersects cards
+PASS 360x640 forecast shield counts never cover costs
+PASS 360x640 forecast all visible controls 44px and actual hit
+PASS 360x640 forecast forecast plus dock <=35%
+PASS 1032x1376 Moen dock at viewport bottom <=16px
+PASS 1032x1376 Moen complete player hero above dock
+PASS 1032x1376 Moen cards complete and clear of hero/dock
+PASS 1032x1376 Moen Moen never intersects cards
+PASS 1032x1376 Moen shield counts never cover costs
+PASS 1032x1376 Moen all visible controls 44px and actual hit
+PASS 1032x1376 forecast dock at viewport bottom <=16px
+PASS 1032x1376 forecast complete player hero above dock
+PASS 1032x1376 forecast cards complete and clear of hero/dock
+PASS 1032x1376 forecast Moen never intersects cards
+PASS 1032x1376 forecast shield counts never cover costs
+PASS 1032x1376 forecast all visible controls 44px and actual hit
+PASS 1032x1376 forecast forecast plus dock <=35%
+PASS 1376x1032 Moen dock at viewport bottom <=16px
+PASS 1376x1032 Moen complete player hero above dock
+PASS 1376x1032 Moen cards complete and clear of hero/dock
+PASS 1376x1032 Moen Moen never intersects cards
+PASS 1376x1032 Moen shield counts never cover costs
+PASS 1376x1032 Moen all visible controls 44px and actual hit
+PASS 1376x1032 forecast dock at viewport bottom <=16px
+PASS 1376x1032 forecast complete player hero above dock
+PASS 1376x1032 forecast cards complete and clear of hero/dock
+PASS 1376x1032 forecast Moen never intersects cards
+PASS 1376x1032 forecast shield counts never cover costs
+PASS 1376x1032 forecast all visible controls 44px and actual hit
+PASS 1376x1032 forecast forecast plus dock <=35%
+PASS 430x932 Moen dock at viewport bottom <=16px
+PASS 430x932 Moen complete player hero above dock
+PASS 430x932 Moen cards complete and clear of hero/dock
+PASS 430x932 Moen Moen never intersects cards
+PASS 430x932 Moen shield counts never cover costs
+PASS 430x932 Moen all visible controls 44px and actual hit
+PASS 430x932 forecast dock at viewport bottom <=16px
+PASS 430x932 forecast complete player hero above dock
+PASS 430x932 forecast cards complete and clear of hero/dock
+PASS 430x932 forecast Moen never intersects cards
+PASS 430x932 forecast shield counts never cover costs
+PASS 430x932 forecast all visible controls 44px and actual hit
+PASS 430x932 forecast forecast plus dock <=35%
+PASS 1032x1376 Moen dock at viewport bottom <=16px
+PASS 1032x1376 Moen complete player hero above dock
+PASS 1032x1376 Moen cards complete and clear of hero/dock
+PASS 1032x1376 Moen Moen never intersects cards
+PASS 1032x1376 Moen shield counts never cover costs
+PASS 1032x1376 Moen all visible controls 44px and actual hit
+PASS 1032x1376 forecast dock at viewport bottom <=16px
+PASS 1032x1376 forecast complete player hero above dock
+PASS 1032x1376 forecast cards complete and clear of hero/dock
+PASS 1032x1376 forecast Moen never intersects cards
+PASS 1032x1376 forecast shield counts never cover costs
+PASS 1032x1376 forecast all visible controls 44px and actual hit
+PASS 1032x1376 forecast forecast plus dock <=35%
+PASS no browser page errors
+VERIFIED R10 249 checks

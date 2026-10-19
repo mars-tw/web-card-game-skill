@@ -1,0 +1,210 @@
+[
+  {
+    "path": "after/battle-1366x600.png",
+    "pixels": [
+      1366,
+      600
+    ],
+    "sha256": "9ae5c727af9a1c7b41ae88ec1535c6b4cc38627513eebc693d43fba5bdb5c863"
+  },
+  {
+    "path": "after/battle-390x844.png",
+    "pixels": [
+      390,
+      844
+    ],
+    "sha256": "51663b8b590cd9206b980f43bd6d47de55036a5a6ddcbeb7d63070353bd03aab"
+  },
+  {
+    "path": "after/battle-844x390.png",
+    "pixels": [
+      844,
+      390
+    ],
+    "sha256": "27bf8a39c6d5fa2f5d27974be20a01c5705cc9c5a36f277cae5b291b25e3dbce"
+  },
+  {
+    "path": "after/frost-battle-390x844.png",
+    "pixels": [
+      390,
+      844
+    ],
+    "sha256": "d2ad051a855c34db82b73b9dfeeb6bc107255564c6f9451fff2bdd75244fe12d"
+  },
+  {
+    "path": "after/frost-battle-844x390.png",
+    "pixels": [
+      844,
+      390
+    ],
+    "sha256": "627ba06057f4f0b2c81bcc65c6e946589897f2df24b50d20398e058437d72b95"
+  },
+  {
+    "path": "after/hand-1366x600.png",
+    "pixels": [
+      1366,
+      600
+    ],
+    "sha256": "42cb0a0539ae629fe167fd9da8ef07483fcde53115e951b73a94c6e213487db9"
+  },
+  {
+    "path": "after/hand-390x844.png",
+    "pixels": [
+      390,
+      844
+    ],
+    "sha256": "f38ebedcef3fae81ca081c2eea5ac2b57157a29b334eae739de84bcaeee32509"
+  },
+  {
+    "path": "after/hand-844x390.png",
+    "pixels": [
+      844,
+      390
+    ],
+    "sha256": "72927ee3c7479990194c2fb3a1319fd43f56bd574e0dcbc3f5d0dc86ee18fade"
+  },
+  {
+    "path": "after/preview-390x844.png",
+    "pixels": [
+      390,
+      844
+    ],
+    "sha256": "6c40131d27415d54d7fab9b7d33a73261f09eba2b22b188f3ef3f6bcec30a4a1"
+  },
+  {
+    "path": "after/preview-844x390.png",
+    "pixels": [
+      844,
+      390
+    ],
+    "sha256": "9dd62c2a47ef941775d75509c29c4710b73588c948318703f91c3442c1a1b3d7"
+  },
+  {
+    "path": "after/staged-result-390x844.png",
+    "pixels": [
+      390,
+      844
+    ],
+    "sha256": "5c01ca5c636e164d4b717c6d3ea4db45714734c09dba82eca81e15928170a35b"
+  },
+  {
+    "path": "after/staged-result-844x390.png",
+    "pixels": [
+      844,
+      390
+    ],
+    "sha256": "c5f7fa72bb2f291296b798cf3e55193828d6cb9cdb8312ce0c71b762cf3b06e4"
+  },
+  {
+    "path": "after/unlocked-deck-390x844.png",
+    "pixels": [
+      390,
+      844
+    ],
+    "sha256": "45a0a25133346db2d291dec91b40b405477e6aaa78aba07ca1c6eb2dfe796bc2"
+  },
+  {
+    "path": "after/unlocked-deck-844x390.png",
+    "pixels": [
+      844,
+      390
+    ],
+    "sha256": "4d4b971c39189cdc90f68709e0f8bf196d60cf181f408f078e132854f51c8b19"
+  },
+  {
+    "path": "after/voyage-1366x600.png",
+    "pixels": [
+      1366,
+      600
+    ],
+    "sha256": "72ee8d3a1f2b3fad3726e31d9c7e99f8487e474a61fed4218ea2cada0260c83d"
+  },
+  {
+    "path": "after/voyage-390x844.png",
+    "pixels": [
+      390,
+      844
+    ],
+    "sha256": "da3153215e882d8034d110b35613de409977de65ea6ce8fa1042769cd9bbca6a"
+  },
+  {
+    "path": "after/voyage-844x390.png",
+    "pixels": [
+      844,
+      390
+    ],
+    "sha256": "d9ae76aee5bafc94a5ef877b75207ddbe0a068689b14955b969cf24fcceeffd2"
+  },
+  {
+    "path": "before/battle-1366x600.png",
+    "pixels": [
+      1366,
+      600
+    ],
+    "sha256": "6b7fb755ff830f878bd6c16694e40f787fb7e36f1438ab20fdad8049622e9dac"
+  },
+  {
+    "path": "before/battle-390x844.png",
+    "pixels": [
+      390,
+      844
+    ],
+    "sha256": "7a263e8f5989057fe186bafa8f9b9dfe52056d6ff61c0e740812773d6dfb5a88"
+  },
+  {
+    "path": "before/battle-844x390.png",
+    "pixels": [
+      844,
+      390
+    ],
+    "sha256": "27bf8a39c6d5fa2f5d27974be20a01c5705cc9c5a36f277cae5b291b25e3dbce"
+  },
+  {
+    "path": "before/hand-1366x600.png",
+    "pixels": [
+      1366,
+      600
+    ],
+    "sha256": "96c985a47a05e11a6d86213456c7a81ba98e406bba47f3e7860d007effa26a41"
+  },
+  {
+    "path": "before/hand-390x844.png",
+    "pixels": [
+      390,
+      844
+    ],
+    "sha256": "370622aba9d5c8df4bf87296582f24fbe405ee6f86412bfd354fcaa5166fd0d1"
+  },
+  {
+    "path": "before/hand-844x390.png",
+    "pixels": [
+      844,
+      390
+    ],
+    "sha256": "a7d216321fd752ecd410870c53496188c2fe379f5995769bba308a0463a5f93a"
+  },
+  {
+    "path": "legacy-gates/desktop-1366x768.png",
+    "pixels": [
+      1366,
+      768
+    ],
+    "sha256": "c173a80497337ad98aeb17b0126066347a9b1b3dd4edd64a3d351aa028220f9a"
+  },
+  {
+    "path": "legacy-gates/landscape-844x390.png",
+    "pixels": [
+      844,
+      390
+    ],
+    "sha256": "80dd1dc09ca333a524ed158a7756c3e1fda4545511baaef066da916231357edb"
+  },
+  {
+    "path": "legacy-gates/mobile-390x844.png",
+    "pixels": [
+      390,
+      844
+    ],
+    "sha256": "572838c58ccd76ac14202297e8d77085a481119c09ac95802ff20ef559db8f0b"
+  }
+]

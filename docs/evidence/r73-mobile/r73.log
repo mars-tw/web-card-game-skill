@@ -1,0 +1,183 @@
+
+> web-card-game-skill@0.6.0 test:r73
+> node scripts/test-r73-voyage.js && node scripts/test-r73-mobile.js
+
+  ✓ wild 合法 20 張牌組
+  ✓ wild 至少十種戰術卡
+  ✓ wild 全數使用已存在正式卡圖
+  ✓ wardens 合法 20 張牌組
+  ✓ wardens 至少十種戰術卡
+  ✓ wardens 全數使用已存在正式卡圖
+  ✓ conclave 合法 20 張牌組
+  ✓ conclave 至少十種戰術卡
+  ✓ conclave 全數使用已存在正式卡圖
+  ✓ op_rune 合法 20 張牌組
+  ✓ op_rune 至少十種戰術卡
+  ✓ op_rune 全數使用已存在正式卡圖
+  ✓ op_isold 合法 20 張牌組
+  ✓ op_isold 至少十種戰術卡
+  ✓ op_isold 全數使用已存在正式卡圖
+  ✓ 無進度從第一站開始
+  ✓ 損毀與越級進度不解鎖
+  ✓ 拒絕越級與未知站別
+  ✓ 未過關不能選鎖定牌組
+  ✓ 收藏模式可選並持久化
+  ✓ 損毀存檔不能偷解鎖牌組
+  ✓ gate 前站通過可達
+  ✓ gate 敗場不推進
+  ✓ gate 首勝推進
+  ✓ gate 重挑無重複解鎖
+  ✓ gate 讀回進度保留
+  ✓ trail 前站通過可達
+  ✓ trail 敗場不推進
+  ✓ trail 首勝推進
+  ✓ trail 重挑無重複解鎖
+  ✓ trail 讀回進度保留
+  ✓ echo 前站通過可達
+  ✓ echo 敗場不推進
+  ✓ echo 首勝推進
+  ✓ echo 重挑無重複解鎖
+  ✓ echo 讀回進度保留
+  ✓ frost 前站通過可達
+  ✓ frost 敗場不推進
+  ✓ frost 首勝推進
+  ✓ frost 重挑無重複解鎖
+  ✓ frost 讀回進度保留
+  ✓ dusk 前站通過可達
+  ✓ dusk 敗場不推進
+  ✓ dusk 首勝推進
+  ✓ dusk 重挑無重複解鎖
+  ✓ dusk 讀回進度保留
+  ✓ 五站完成全部牌組可用
+  ✓ 未來未知站別不污染進度
+R73 voyage: 48 PASS, 0 FAIL
+R73 touch 390x844
+  ✓ 點選只預覽
+  ✓ 預覽前後法力、手牌、場地不變
+  ✓ handCancelBtn 可見、命中且至少 44px
+  ✓ handConfirmBtn 可見、命中且至少 44px
+  ✓ settingsToggleBtn 可見、命中且至少 44px
+  ✓ 取消零消耗
+  ✓ 確認後只出一張狼並扣 2 費
+  ✓ 確認後清空預覽，重複事件不多扣費
+  ✓ 法力不足時不可確認
+  ✓ pointercancel 零消耗
+  ✓ 多指中斷零消耗
+  ✓ 上拖至己方場地放開只進預覽
+  ✓ 橫滑不出牌
+  ✓ 航程入口可達
+  ✓ voyageClose 可達且至少 44px
+  ✓ voyageStart 可達且至少 44px
+  ✓ voyageFree 可達且至少 44px
+  ✓ voyageNext 可達且至少 44px
+  ✓ voyageDeck 可達且至少 44px
+  ✓ 未通過前站不可越級
+  ✓ 第一站帶入合法試用牌組
+  ✓ gate 真正進入對戰
+  ✓ gate 畫面顯示當站對手
+  ✓ gate 正式致死推進且讀回
+  ✓ gate 結算返回航程可點
+  ✓ gate restartBtn 結算控制不截斷
+  ✓ gate overlayPackBtn 結算控制不截斷
+  ✓ gate overlayQuestBtn 結算控制不截斷
+  ✓ trail 真正進入對戰
+  ✓ trail 畫面顯示當站對手
+  ✓ trail 正式致死推進且讀回
+  ✓ trail 結算返回航程可點
+  ✓ trail restartBtn 結算控制不截斷
+  ✓ trail overlayPackBtn 結算控制不截斷
+  ✓ trail overlayQuestBtn 結算控制不截斷
+  ✓ echo 真正進入對戰
+  ✓ echo 畫面顯示當站對手
+  ✓ echo 正式致死推進且讀回
+  ✓ echo 結算返回航程可點
+  ✓ echo restartBtn 結算控制不截斷
+  ✓ echo overlayPackBtn 結算控制不截斷
+  ✓ echo overlayQuestBtn 結算控制不截斷
+  ✓ frost 真正進入對戰
+  ✓ frost 畫面顯示當站對手
+  ✓ frost 新對手完成正式 AI 回合
+  ✓ frost 正式致死推進且讀回
+  ✓ frost 結算返回航程可點
+  ✓ frost restartBtn 結算控制不截斷
+  ✓ frost overlayPackBtn 結算控制不截斷
+  ✓ frost overlayQuestBtn 結算控制不截斷
+  ✓ dusk 真正進入對戰
+  ✓ dusk 畫面顯示當站對手
+  ✓ dusk 新對手完成正式 AI 回合
+  ✓ dusk 正式致死推進且讀回
+  ✓ dusk 結算返回航程可點
+  ✓ dusk restartBtn 結算控制不截斷
+  ✓ dusk overlayPackBtn 結算控制不截斷
+  ✓ dusk overlayQuestBtn 結算控制不截斷
+  ✓ 航程完成有明確回饋
+  ✓ 全航程不覆寫收藏與自訂牌組
+  ✓ 重載保留五站進度與牌組選擇
+  ✓ 完整存檔匯出／匯入包含航程進度
+  ✓ 舊版存檔無航程欄位時保留當前航程
+R73 touch 844x390
+  ✓ 點選只預覽
+  ✓ 預覽前後法力、手牌、場地不變
+  ✓ handCancelBtn 可見、命中且至少 44px
+  ✓ handConfirmBtn 可見、命中且至少 44px
+  ✓ settingsToggleBtn 可見、命中且至少 44px
+  ✓ 取消零消耗
+  ✓ 確認後只出一張狼並扣 2 費
+  ✓ 確認後清空預覽，重複事件不多扣費
+  ✓ 法力不足時不可確認
+  ✓ pointercancel 零消耗
+  ✓ 多指中斷零消耗
+  ✓ 上拖至己方場地放開只進預覽
+  ✓ 橫滑不出牌
+  ✓ 航程入口可達
+  ✓ voyageClose 可達且至少 44px
+  ✓ voyageStart 可達且至少 44px
+  ✓ voyageFree 可達且至少 44px
+  ✓ voyageNext 可達且至少 44px
+  ✓ voyageDeck 可達且至少 44px
+  ✓ 未通過前站不可越級
+  ✓ 第一站帶入合法試用牌組
+  ✓ gate 真正進入對戰
+  ✓ gate 畫面顯示當站對手
+  ✓ gate 正式致死推進且讀回
+  ✓ gate 結算返回航程可點
+  ✓ gate restartBtn 結算控制不截斷
+  ✓ gate overlayPackBtn 結算控制不截斷
+  ✓ gate overlayQuestBtn 結算控制不截斷
+  ✓ trail 真正進入對戰
+  ✓ trail 畫面顯示當站對手
+  ✓ trail 正式致死推進且讀回
+  ✓ trail 結算返回航程可點
+  ✓ trail restartBtn 結算控制不截斷
+  ✓ trail overlayPackBtn 結算控制不截斷
+  ✓ trail overlayQuestBtn 結算控制不截斷
+  ✓ echo 真正進入對戰
+  ✓ echo 畫面顯示當站對手
+  ✓ echo 正式致死推進且讀回
+  ✓ echo 結算返回航程可點
+  ✓ echo restartBtn 結算控制不截斷
+  ✓ echo overlayPackBtn 結算控制不截斷
+  ✓ echo overlayQuestBtn 結算控制不截斷
+  ✓ frost 真正進入對戰
+  ✓ frost 畫面顯示當站對手
+  ✓ frost 新對手完成正式 AI 回合
+  ✓ frost 正式致死推進且讀回
+  ✓ frost 結算返回航程可點
+  ✓ frost restartBtn 結算控制不截斷
+  ✓ frost overlayPackBtn 結算控制不截斷
+  ✓ frost overlayQuestBtn 結算控制不截斷
+  ✓ dusk 真正進入對戰
+  ✓ dusk 畫面顯示當站對手
+  ✓ dusk 新對手完成正式 AI 回合
+  ✓ dusk 正式致死推進且讀回
+  ✓ dusk 結算返回航程可點
+  ✓ dusk restartBtn 結算控制不截斷
+  ✓ dusk overlayPackBtn 結算控制不截斷
+  ✓ dusk overlayQuestBtn 結算控制不截斷
+  ✓ 航程完成有明確回饋
+  ✓ 全航程不覆寫收藏與自訂牌組
+  ✓ 重載保留五站進度與牌組選擇
+  ✓ 完整存檔匯出／匯入包含航程進度
+  ✓ 舊版存檔無航程欄位時保留當前航程
+  ✓ 手機流程無未捕捉錯誤
+R73 mobile: 127 PASS, 0 FAIL

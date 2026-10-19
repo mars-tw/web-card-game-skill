@@ -1,0 +1,44 @@
+{
+  "status": "VERIFIED",
+  "icons": [
+    {
+      "name": "taunt-wall",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "opaqueBounds": [
+        21,
+        20,
+        237,
+        236
+      ],
+      "silhouetteAspect": 1.0
+    },
+    {
+      "name": "divine-shield",
+      "dimensions": [
+        256,
+        256
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "opaqueBounds": [
+        25,
+        20,
+        230,
+        236
+      ],
+      "silhouetteAspect": 0.949
+    }
+  ],
+  "tool": "image_gen.imagegen",
+  "runtimeImages": 2,
+  "retainedSourceAtlases": 1
+}

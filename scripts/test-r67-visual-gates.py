@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 
 from PIL import Image, ImageChops, ImageFilter, ImageStat
@@ -11,7 +12,7 @@ from PIL import Image, ImageChops, ImageFilter, ImageStat
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / "docs" / "evidence" / "R67"
 MANIFEST_PATH = EVIDENCE / "source-manifest.json"
-OUT_PATH = EVIDENCE / "gates" / "visual-assets.json"
+OUT_PATH = Path(os.environ.get('CARD_EVIDENCE_OUTPUT', EVIDENCE / "gates" / "visual-assets.json"))
 VIEWPORTS = [(1366, 768), (390, 844), (844, 390)]
 
 

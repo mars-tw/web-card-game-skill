@@ -1,0 +1,14 @@
+[
+    {
+        "name":  "performance-final-run",
+        "exitCode":  1
+    },
+    {
+        "name":  "static-final-run",
+        "exitCode":  0
+    },
+    {
+        "name":  "frames-final-run",
+        "exitCode":  1
+    }
+]

@@ -138,6 +138,7 @@ function makeState(playerDeckIds, enemyDeckIds, seed, options) {
     field: [],
     strategy: setup.enemyStrategy || "neutral",
   };
+  if (setup.enemyTideRates) enemy.tideRates = Object.assign({}, setup.enemyTideRates);
   player.opp = enemy;
   enemy.opp = player;
   const state = {
@@ -357,10 +358,22 @@ function checkWinner(state) {
   }
 }
 
+// R72：雙方對稱使用招牌「裂潮爆發」——先出牌鋪場，再於攻擊前滿潮即放（清 1 血隨從、打臉 2）。
+function useTidebreak(state, sideKey, rng) {
+  if (state.over || !Core.canTidebreak(state, sideKey)) return false;
+  const result = Core.tidebreak(state, { side: sideKey }, rng);
+  checkWinner(state);
+  return result.ok;
+}
+
 function runTurn(state, sideKey, rng) {
   playCards(state, sideKey, rng);
+  if (useTidebreak(state, sideKey, rng)) state.tidebreakCount = (state.tidebreakCount || 0) + 1;
+  if (state.over) return;
   attackWithBoard(state, sideKey, rng);
 }
+
+const TIDEBREAK_USAGE = { games: 0, used: 0 };
 
 function runGameDetailed(playerDeckIds, enemyDeckIds, seed, options) {
   const rng = mulberry32(seed * 101 + 11);
@@ -382,7 +395,9 @@ function runGameDetailed(playerDeckIds, enemyDeckIds, seed, options) {
   if (!state.over) {
     state.winner = state.player.hp === state.enemy.hp ? "draw" : (state.player.hp > state.enemy.hp ? "player" : "enemy");
   }
-  return { winner: state.winner, turns };
+  TIDEBREAK_USAGE.games += 1;
+  TIDEBREAK_USAGE.used += state.tidebreakCount || 0;
+  return { winner: state.winner, turns, tidebreaks: state.tidebreakCount || 0 };
 }
 
 function runGame(playerDeckIds, enemyDeckIds, seed) {
@@ -485,7 +500,7 @@ function budgetedArchetypeDeck(seed, axis, epicCount, legendaryCount) {
   return deck;
 }
 
-function fixedPlayerRate(enemyDeck, seedOffset, enemyStrategy) {
+function fixedPlayerRate(enemyDeck, seedOffset, enemyStrategy, enemyTideRates) {
   let score = 0;
   let turns = 0;
   for (let i = 0; i < SIM_SEEDS; i++) {
@@ -507,6 +522,7 @@ function fixedPlayerRate(enemyDeck, seedOffset, enemyStrategy) {
     const game = runGameDetailed(playerDeck, enemyDeck, (seedOffset + i) * 19 + 7, {
       enemyOpening: 4,
       enemyStrategy: enemyStrategy || "neutral",
+      enemyTideRates,
     });
     score += game.winner === "player" ? 1 : game.winner === "draw" ? 0.5 : 0;
     turns += game.turns;
@@ -633,9 +649,9 @@ function run() {
   if (!(moen.attack === 2 && moen.health <= 4 && moen.trigger === "attuneFlexible")) failures.push("Moen exceeds conditional support budget");
 
   console.log("\n== R61 opponent and gold-standard matchups M1-M9 ==");
-  const m1 = fixedPlayerRate(OPPONENT_DECKS.halden, 120000, "control");
-  const m2 = fixedPlayerRate(OPPONENT_DECKS.vey, 122000, "spellburst");
-  const m3 = fixedPlayerRate(OPPONENT_DECKS.scarra, 124000, "aggro");
+  const m1 = fixedPlayerRate(OPPONENT_DECKS.halden, 120000, "control", Core.OPPONENT_TIDE_RATES.op_ser_halden);
+  const m2 = fixedPlayerRate(OPPONENT_DECKS.vey, 122000, "spellburst", Core.OPPONENT_TIDE_RATES.op_magister_vey);
+  const m3 = fixedPlayerRate(OPPONENT_DECKS.scarra, 124000, "aggro", Core.OPPONENT_TIDE_RATES.op_scarra);
   const aggroPredicate = (card) => card.axis === "aggro";
   const winterPredicate = (card) => card.faction === "wintershadow" || card.axis === "control";
   const m4 = pairedDeckMatch(
@@ -681,6 +697,8 @@ function run() {
   matchupRows.forEach(([label, metric]) => console.log(`${label.padEnd(30)} ${(metric.winRate * 100).toFixed(2)}% turns ${metric.avgTurns.toFixed(2)} games ${metric.games}`));
   console.log(`M9 three-faction uplift ${(m9Difference * 100).toFixed(2)}pp`);
 
+  if (!(TIDEBREAK_USAGE.games > 0 && TIDEBREAK_USAGE.used / TIDEBREAK_USAGE.games >= 0.5)) failures.push("R72 tidebreak not exercised in simulated games");
+  console.log(`R72 tidebreak usage ${TIDEBREAK_USAGE.used} casts across ${TIDEBREAK_USAGE.games} games`);
   if (m1.winRate < 0.48 || m1.winRate > 0.58) failures.push("M1 player rate outside 48-58%");
   if (m2.winRate < 0.48 || m2.winRate > 0.58) failures.push("M2 player rate outside 48-58%");
   if (m3.winRate < 0.45 || m3.winRate > 0.55) failures.push("M3 player rate outside 45-55%");

@@ -1,0 +1,23 @@
+✓ 390 harbor trialStart ≥44px, visible, hit-tested
+✓ 390 harbor voyageStart ≥44px, visible, hit-tested
+✓ 390 harbor privacyOpen ≥44px, visible, hit-tested
+✓ navigator uses real loaded art
+✓ one primary CTA color
+✓ four real starting tide segments
+✓ trial chart never covered by settings
+node : AssertionError [ERR_ASSERTION]: 390 battlefield illustration occupies ≥58% (0.520)
+位於 線路:2 字元:1
++ node scripts/test-r75-art.js *> docs/evidence/r75-art/r75-browser.log
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (AssertionError ...es ≥58% (0.520):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    at check (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-r75-art.js:10:36)
+    at C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-r75-art.js:32:7 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

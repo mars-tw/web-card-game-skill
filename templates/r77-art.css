@@ -1,0 +1,50 @@
+/* R77 spell evidence first. Painted assets, actual active-impact settlement. */
+.tide-wave { position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:246; }
+.tide-wave .r76-wave-art { left:-4%;width:108%;height:var(--wave-height,300px);top:calc(var(--impact-y,40vh) - var(--wave-height,300px) * .5);object-fit:fill; }
+.tide-wave.run .r76-wave-art { animation:r77-surge 1.3s ease-out both; }
+@keyframes r77-surge { 0%{opacity:0;transform:translateY(110px) scaleY(.45)} 14%{opacity:.65} 28%,52%{opacity:1;transform:translateY(0) scaleY(1)} 78%{opacity:.45;transform:translateY(-22px)} 100%{opacity:0;transform:translateY(-36px) scaleY(.8)} }
+.r77-impact-foam { position:absolute;object-fit:fill;opacity:0; }
+.tide-wave.run .r77-impact-foam { animation:r77-foam 1.3s ease-out both; }
+@keyframes r77-foam { 0%,25%{opacity:0;transform:translateY(14px) scale(.9)} 30%,65%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:translateY(18px) scale(1.06)} }
+.board.r76-wet { box-shadow:none; }
+.board.r76-wet::after { content:"";display:block;position:absolute;inset:auto -3% auto;top:var(--r77-wet-y,20%);height:var(--r77-wet-h,110px);background:url('../assets/art/r77/puddle.webp?v=03e81419') center/100% 100% no-repeat;z-index:3;pointer-events:none;opacity:.95; }
+.battlefield { position:relative;z-index:4; }
+.hero-row { position:relative;z-index:8; }
+@media(prefers-reduced-motion:reduce) { .tide-wave.run .r76-wave-art{animation:none;opacity:.94} .tide-wave.run .r77-impact-foam{animation:none;opacity:1} }
+:root[data-perf="low"] .tide-wave.run .r76-wave-art { animation:none;opacity:.94; }
+:root[data-perf="low"] .tide-wave.run .r77-impact-foam { animation:none;opacity:1; }
+
+/* One continuous deck plane. The tide is a translucent wash on that plane. */
+.board { background:linear-gradient(#201c3d08,#201c3d08),image-set(url('../assets/art/r77/battlefield-low.webp?v=d7c024be') 1x,url('../assets/art/r77/battlefield.webp?v=2e7028d5') 2x) center/cover;isolation:isolate; }
+.board::before { content:"";position:absolute;left:0;right:0;bottom:23%;height:calc(8% + var(--r75-tide,0)*7%);z-index:1;pointer-events:none;background:url('../assets/art/r77/puddle.webp?v=03e81419') center bottom/100% 100% no-repeat;opacity:calc(.08 + var(--r75-tide,0)*.11);transition:height .5s ease,opacity .5s ease; }
+.r75-tide-channel { background:transparent;border:0;box-shadow:none!important;isolation:initial; }
+.r75-tide-channel::before { inset:auto 0 -28px;height:calc(20px + var(--r75-tide,0)*15px);background:url('../assets/art/r77/puddle.webp?v=03e81419') center/100% 100% no-repeat;opacity:calc(.12 + var(--r75-tide,0)*.1);z-index:-1; }
+.board::before,.board.r76-wet::after,.r75-tide-channel::before { filter:saturate(.8); }
+.tide-wave .r76-wave-art { filter:saturate(.85); }
+.r75-tide-channel span { font-size:12px;letter-spacing:2px; }
+.r75-tide-pips { filter:drop-shadow(0 2px 3px #10152d); }
+.battlefield,.battlefield.enemy { border-bottom:0; }
+.battlefield .card { box-shadow:0 12px 9px -5px #080815ed,0 3px 2px #080815aa!important;background-image:none!important;overflow:visible; }
+.card .stats,.card .cardname { z-index:9; }
+.battlefield .card::before { content:"";position:absolute;left:-12%;right:-12%;height:22%;bottom:-9%;border-radius:50%;background:radial-gradient(ellipse,#050815a6 20%,transparent 68%);z-index:-1;pointer-events:none; }
+body[data-tide-ready="true"] .battlefield .card::before { background:url('../assets/art/r77/puddle.webp?v=03e81419') center/100% 100% no-repeat;opacity:.85; }
+.battlefield .card.r76-duplicate .art>img:not(.faction-emblem) { transform:scaleX(-1);filter:brightness(.7) saturate(.9); }
+.battlefield .card.r76-spent .art>img:not(.faction-emblem) { filter:brightness(.7); }
+.battlefield .card.r76-spent { border-style:dashed; }
+.r77-card-state { position:absolute;top:auto;bottom:54px;left:6px;right:6px;z-index:8;text-align:center;font:600 10px/14px Arial;color:#e1d8ee;background:#201c3df0;border:1px solid #756c90;border-radius:1px;white-space:nowrap;pointer-events:none; }
+.can-attack .r77-card-state { color:#d9eef8;border-color:#8db9cd; }
+.card.can-attack { border-color:#9ac4d6!important;outline:1px solid #9ac4d6; }
+.r76-spent .r77-card-state { color:#b8aecb; }
+.battlefield .empty-hint { width:96px;height:52px;border:0;border-radius:0;background:url('../assets/art/r77/puddle.webp?v=03e81419') center/contain no-repeat;opacity:.35; }
+body[data-tide-trial="true"] #playerField:has(.card:nth-child(4)) .card { width:clamp(62px,19vw,max(90px,calc(var(--card-h)*.67))); }
+body[data-tide-trial="true"] #playerField:has(.card:nth-child(4)) { gap:6px; }
+body[data-tide-trial="true"] #playerField:has(.card:nth-child(4)) .card .cardname { bottom:22px;left:3px;right:3px;line-height:14px;background:#201c3df5; }
+.overlay { background:linear-gradient(#10152d08,#201c3df5 85%),url('../assets/art/r77/night-harbor.webp?v=8a72de64') center/cover #201c3d; }
+.overlay .r75-victory-hero { object-position:center 30%; }
+body:has(#tideChartPanel:not([hidden])) #commandDock { visibility:hidden; }
+body[data-tide-ready="true"] #endTurnBtn { background:#302544;color:#f2f1fa;box-shadow:none; }
+body[data-tide-ready="true"] #tidebreakBtn { background:#da8a6d;color:#10152d;border-color:#f3c5a6;box-shadow:0 0 14px #da8a6d44; }
+body[data-tide-ready="true"] #tidebreakBtn .tide-count,body[data-tide-ready="true"] #tidebreakBtn strong { color:#10152d; }
+@media(max-height:450px) { .r77-card-state { font-size:9px;line-height:11px; } .board::before { bottom:22%;height:calc(6% + var(--r75-tide,0)*7%); } }
+@media(max-height:650px) { .r77-card-state { bottom:38px; } }
+@media(prefers-reduced-motion:reduce) { .board::before,.r75-tide-channel::before { transition:none; } }

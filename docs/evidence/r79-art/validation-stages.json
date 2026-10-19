@@ -1,0 +1,59 @@
+[
+  {
+    "stage": "static-final",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exitCode": 0
+  },
+  {
+    "stage": "e2e-final",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:e2e"
+    ],
+    "exitCode": 0
+  },
+  {
+    "stage": "rwd-final",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:rwd"
+    ],
+    "exitCode": 0
+  },
+  {
+    "stage": "frames-final",
+    "command": [
+      "node",
+      "scripts/measure-r79-frames.js"
+    ],
+    "exitCode": 0
+  },
+  {
+    "stage": "performance-final",
+    "command": [
+      "node",
+      "scripts/test-r67-performance.js",
+      "--runs",
+      "3",
+      "--baseline",
+      "docs/evidence/R67/before/performance.json",
+      "--assert",
+      "--out",
+      "docs/evidence/r79-art/performance.json"
+    ],
+    "exitCode": 0
+  },
+  {
+    "stage": "capture-final",
+    "command": [
+      "node",
+      "scripts/capture-r79-art.js"
+    ],
+    "exitCode": 0
+  }
+]

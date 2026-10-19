@@ -1,0 +1,17 @@
+{
+  "round": "CONTENT_R1",
+  "date": "2026-10-18",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "style_prefix": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism.",
+  "assets": [
+    {
+      "id": "tide-study",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset: horizontal 1536x1024 painting for a tide tactics study chart. Overhead oblique view of an indigo wooden ship navigator desk, a copper engraved tide compass with THREE DISTINCT small circular pools showing incoming crest, receding eddy, incoming crest from left to right; SIX beautiful illustrated miniature nautical playing cards arranged as a sweeping fan along the lower edge, each with silver shell and coral copper frames, a shell shield, a silver crescent bow and a wave map motif. A violet silk sleeve and weathered copper dividers at right edge, small warm lantern out of frame casting restrained copper light, distant dark moonlit sea above the desk. Strong sculptural painterly detail, readable physical tide instruments and collectible cards, quiet center for UI text composited by game, edge vignette. No letters, numbers, text, logos, watermark, UI controls, modern technology. Do not create a screenshot; only one cohesive thematic illustration. RGB opaque.",
+      "source": "docs/art/source/content-r1/tide-study.png",
+      "runtime": "assets/art/content-r1/tide-study.webp",
+      "output_hint": "Generated images are saved to C:\\Users\\digimkt\\.codex\\generated_images\\01a14f5f-efe1-7361-a503-c09fb1942b9f as C:\\Users\\digimkt\\.codex\\generated_images\\01a14f5f-efe1-7361-a503-c09fb1942b9f\\exec-905248de-8de7-46b1-b420-5778506ae301.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "transparent_requested": false
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "status": "VERIFIED",
+  "images": [
+    {
+      "path": "docs/store/screenshots/content-r9-forecast-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "f826ca6703d987cdadc1d0190ff3308410d260a7ec55add8b76e9b850c716c66"
+    },
+    {
+      "path": "docs/store/screenshots/content-r9-forecast-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "6892fe5389b5a0735c4158853847a1d3c87c41ad55811ba9aa6849c15c042972"
+    },
+    {
+      "path": "docs/store/screenshots/content-r9-moen-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "3bf4c18cd027fd99c553448d41990c5a87e1b10c15594baffb911df0f6cce3c9"
+    },
+    {
+      "path": "docs/store/screenshots/content-r9-moen-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "d75ad9068cc831c0da0aa52e0cf9bae894cac54843cfc5b1a255331033f12483"
+    }
+  ],
+  "method": "Native viewport and DPR browser captures, not rescaled composites."
+}

@@ -1,0 +1,10 @@
+{
+  "status": "VERIFIED",
+  "incomingTextFiles": 874,
+  "restoredTestOutputs": [
+    "docs/art/ASSET_MANIFEST.json",
+    "docs/art/ASSET_MANIFEST_R76.json"
+  ],
+  "guard": "scripts/r9-evidence-guard.js",
+  "incomingUntrackedDeleted": false
+}

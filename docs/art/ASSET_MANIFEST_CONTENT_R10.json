@@ -1,0 +1,339 @@
+{
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "license": "MIT project assets",
+  "generation_calls": 5,
+  "runtime_assets": 19,
+  "assets": [
+    {
+      "path": "assets/art/content-r10/actors-atlas.png",
+      "sha256": "4384d941514227f031ddd182549ae4c016ca21df65d39a9c758b2700898c4008",
+      "width": 1983,
+      "height": 793,
+      "alpha": true,
+      "tool": "image_gen.imagegen",
+      "kind": "generated_source"
+    },
+    {
+      "path": "assets/art/content-r10/anchors-atlas.png",
+      "sha256": "9cc85b3c3b5a2db4cc58b59d0c9d33d459791f3ebb6192f18a4b458db3b00baf",
+      "width": 2172,
+      "height": 724,
+      "alpha": true,
+      "tool": "image_gen.imagegen",
+      "kind": "generated_source"
+    },
+    {
+      "path": "assets/art/content-r10/knight-atlas.png",
+      "sha256": "face7d97e4e1b6448ce8f5af39be5877469e439f7709ed61f6f4c47c5389ca5c",
+      "width": 1536,
+      "height": 1024,
+      "alpha": true,
+      "tool": "image_gen.imagegen",
+      "kind": "generated_source"
+    },
+    {
+      "path": "assets/art/content-r10/knight-alpha-comparison.png",
+      "sha256": "08341cb2ff0562b648e781ba9ec39c62995a6450c5c99b5f3ef8836d768297b8",
+      "width": 1536,
+      "height": 1024,
+      "alpha": true,
+      "tool": "image_gen.imagegen",
+      "kind": "generated_source"
+    },
+    {
+      "path": "assets/art/content-r10/footman-atlas.png",
+      "sha256": "f44ceec6a7a9e51d694efbeeedf511cd5976ea50d1b88506d9d9dda2e67e2b0b",
+      "width": 1536,
+      "height": 1024,
+      "alpha": true,
+      "tool": "image_gen.imagegen",
+      "kind": "generated_source"
+    },
+    {
+      "path": "assets/art/content-r10/moen-ready.webp",
+      "sha256": "c922d4ec20f73122f237c988a62c5b5ace5f2fd8a24c6b4a40ffddac7f238495",
+      "width": 427,
+      "height": 428,
+      "alpha": true,
+      "source": "assets/art/content-r10/actors-atlas.png",
+      "crop": [
+        0,
+        0,
+        395,
+        396
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/art/content-r10/moen-cast.webp",
+      "sha256": "bdfbc1000223cb88c79d8313ab2c5c03cbd16747126ddaa3ee78cf8b7d182ecc",
+      "width": 487,
+      "height": 428,
+      "alpha": true,
+      "source": "assets/art/content-r10/actors-atlas.png",
+      "crop": [
+        395,
+        0,
+        850,
+        396
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/art/content-r10/moen-hurt.webp",
+      "sha256": "5f45c08a25713efb0bca5ec6edf3e648d39baa30e64e8d43825c834f26c2c325",
+      "width": 382,
+      "height": 428,
+      "alpha": true,
+      "source": "assets/art/content-r10/actors-atlas.png",
+      "crop": [
+        850,
+        0,
+        1200,
+        396
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/art/content-r10/moen-recover.webp",
+      "sha256": "425456a1052e43339fd463829f1710d3df4a61c5cedb1c76db67cb11c3790794",
+      "width": 434,
+      "height": 428,
+      "alpha": true,
+      "source": "assets/art/content-r10/actors-atlas.png",
+      "crop": [
+        1200,
+        0,
+        1602,
+        396
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/art/content-r10/moen-defeated.webp",
+      "sha256": "ce0c2c0e5e939080fbd668ba803289de91e733476fd550f7fb679e435f9e7cdf",
+      "width": 413,
+      "height": 472,
+      "alpha": true,
+      "source": "assets/art/content-r10/actors-atlas.png",
+      "crop": [
+        1602,
+        0,
+        1983,
+        440
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/animations/content-r10/knight-anticipation.webp",
+      "sha256": "18f60d74924bfdea7b5e86d143f33c7c75a3fda1106d748754597913f40df875",
+      "width": 544,
+      "height": 576,
+      "alpha": true,
+      "source": "assets/art/content-r10/knight-atlas.png",
+      "crop": [
+        0,
+        0,
+        512,
+        544
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/animations/content-r10/knight-impact.webp",
+      "sha256": "ddf49f70f9086f840c908929981332ad42e811ccc75e8ed826ea02065359e5b3",
+      "width": 544,
+      "height": 576,
+      "alpha": true,
+      "source": "assets/art/content-r10/knight-atlas.png",
+      "crop": [
+        512,
+        0,
+        1024,
+        544
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/animations/content-r10/knight-recovery.webp",
+      "sha256": "a058b67bd80ade946b3ea57f4955fe696a48d0368910b1d0a3757717f7d151b3",
+      "width": 544,
+      "height": 576,
+      "alpha": true,
+      "source": "assets/art/content-r10/knight-atlas.png",
+      "crop": [
+        1024,
+        0,
+        1536,
+        544
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/animations/content-r10/knight-hurt.webp",
+      "sha256": "3d0059b1e1f9acb6ec6dd291c9b57eabd1feb77185d216c935a1b7e3d94b6f2b",
+      "width": 544,
+      "height": 512,
+      "alpha": true,
+      "source": "assets/art/content-r10/knight-atlas.png",
+      "crop": [
+        0,
+        544,
+        512,
+        1024
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/animations/content-r10/knight-death.webp",
+      "sha256": "2689fff7d5d84c28e0a1a280b75ceadae8e2a98dcde5b7b2425fe4505162140f",
+      "width": 552,
+      "height": 512,
+      "alpha": true,
+      "source": "assets/art/content-r10/knight-atlas.png",
+      "crop": [
+        512,
+        544,
+        1032,
+        1024
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/animations/content-r10/knight-break.webp",
+      "sha256": "452a0d7bf845ac82462233b5b760aff501c8f6874093b7c1dffbd43a5339f18b",
+      "width": 536,
+      "height": 512,
+      "alpha": true,
+      "source": "assets/art/content-r10/knight-atlas.png",
+      "crop": [
+        1032,
+        544,
+        1536,
+        1024
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/animations/content-r10/footman-anticipation.webp",
+      "sha256": "e5e0ac81a50af35b5eb3ac5fa161bcbef60d1aa20456016338f6f3e5e285f436",
+      "width": 544,
+      "height": 539,
+      "alpha": true,
+      "source": "assets/art/content-r10/footman-atlas.png",
+      "crop": [
+        0,
+        0,
+        512,
+        507
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/animations/content-r10/footman-impact.webp",
+      "sha256": "dea0487de17e3125fc35585405be200d540bb561e48b20324e8c42b76711f9d2",
+      "width": 544,
+      "height": 539,
+      "alpha": true,
+      "source": "assets/art/content-r10/footman-atlas.png",
+      "crop": [
+        512,
+        0,
+        1024,
+        507
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/animations/content-r10/footman-recovery.webp",
+      "sha256": "d405d057c4f42444d142d37da35657ba351b1365d46c99da06a7883e9ca78c69",
+      "width": 544,
+      "height": 539,
+      "alpha": true,
+      "source": "assets/art/content-r10/footman-atlas.png",
+      "crop": [
+        1024,
+        0,
+        1536,
+        507
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/animations/content-r10/footman-hurt.webp",
+      "sha256": "b71c45be1725bcec57e9faf75a9143677afda057fe16722b0615fb72db1598fb",
+      "width": 544,
+      "height": 549,
+      "alpha": true,
+      "source": "assets/art/content-r10/footman-atlas.png",
+      "crop": [
+        0,
+        507,
+        512,
+        1024
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/animations/content-r10/footman-death.webp",
+      "sha256": "99e89e0c6fd20677d207332a86f4c8fbf1b0978661538364cba5e58c38d7bdd0",
+      "width": 544,
+      "height": 549,
+      "alpha": true,
+      "source": "assets/art/content-r10/footman-atlas.png",
+      "crop": [
+        512,
+        507,
+        1024,
+        1024
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/art/content-r10/anchor-puzzles.webp",
+      "sha256": "95d323d1a26c150ac8c361df165b1f61a0127564a68c4e3860b91886ae38a4c4",
+      "width": 756,
+      "height": 756,
+      "alpha": true,
+      "source": "assets/art/content-r10/anchors-atlas.png",
+      "crop": [
+        0,
+        0,
+        724,
+        724
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/art/content-r10/anchor-forecast.webp",
+      "sha256": "e14ae4bef31a3ba7f769ab3d3e560edb0dc20a627f5bc3f3caabeb66fb22b977",
+      "width": 756,
+      "height": 756,
+      "alpha": true,
+      "source": "assets/art/content-r10/anchors-atlas.png",
+      "crop": [
+        724,
+        0,
+        1448,
+        724
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    },
+    {
+      "path": "assets/art/content-r10/anchor-moen.webp",
+      "sha256": "dde7316beb567cb45337b057e113822ee93c3cceab99d011038fcd51868a5ae8",
+      "width": 756,
+      "height": 756,
+      "alpha": true,
+      "source": "assets/art/content-r10/anchors-atlas.png",
+      "crop": [
+        1448,
+        0,
+        2172,
+        724
+      ],
+      "processing": "atlas crop plus transparent 16px padding"
+    }
+  ]
+}

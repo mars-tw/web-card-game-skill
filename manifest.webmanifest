@@ -1,14 +1,14 @@
 {
-  "name": "卡牌對戰",
-  "short_name": "卡牌對戰",
-  "description": "卡牌對戰與開包牌組編輯。",
-  "start_url": "templates/index.html",
+  "name": "裂潮卡牌 TIDEREND CARDS",
+  "short_name": "裂潮卡牌",
+  "description": "倒下的隨從留下潮能。漲潮清場或退潮護航，由你決定。",
+  "start_url": "templates/harbor.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0b0f16",
-  "theme_color": "#f59e0b",
+  "background_color": "#10152d",
+  "theme_color": "#201c3d",
   "lang": "zh-Hant",
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "icons": [
     {
       "src": "assets/icons/icon-192.png",

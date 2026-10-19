@@ -1,0 +1,4 @@
+// All assertions and screenshots still execute. Legacy evidence is retained byte-for-byte.
+const fs=require('node:fs'),path=require('node:path'),root=path.resolve(__dirname,'..');
+function destination(p){if(typeof p!=='string')return p;const rel=path.relative(root,path.resolve(p)).replaceAll('\\','/');if(!rel.startsWith('docs/')||rel.startsWith('docs/content/r10/')||rel.startsWith('docs/evidence/content-r10/')||rel.includes('content-r10-'))return p;const base=/\.(png|jpg|webp)$/.test(rel)?'.audit-tmp/r10/legacy':'docs/content/r10/legacy';const target=path.join(root,base,rel);fs.mkdirSync(path.dirname(target),{recursive:true});return target;}
+const a=fs.writeFileSync.bind(fs),b=fs.writeFile.bind(fs),c=fs.promises.writeFile.bind(fs.promises);fs.writeFileSync=(p,...args)=>a(destination(p),...args);fs.writeFile=(p,...args)=>b(destination(p),...args);fs.promises.writeFile=(p,...args)=>c(destination(p),...args);

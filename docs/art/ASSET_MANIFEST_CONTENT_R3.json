@@ -1,0 +1,42 @@
+{
+  "round": "CONTENT_R3",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "new_originals": 1,
+  "runtime_crops": 2,
+  "files": [
+    {
+      "path": "docs/art/source/content-r3/shell-shield-atlas.png",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "ed8390fe70996e993f9097d3bb16300d0cc49432f07872993896833d52eca3dc",
+      "alphaRange": [
+        0,
+        254
+      ]
+    },
+    {
+      "path": "assets/art/content-r3/shield-intact.webp",
+      "width": 144,
+      "height": 192,
+      "sha256": "8a19ae9159ec7cdd13946207a3e4227492ddfa8268eb3023edb483c0f039a4cf",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets/art/content-r3/shield-broken.webp",
+      "width": 144,
+      "height": 192,
+      "sha256": "74219352eb1468f98666b1939fd9e2fbdf7185d8d2d9ec2ce735e589c732cc10",
+      "alphaRange": [
+        0,
+        255
+      ]
+    }
+  ],
+  "reference": "assets/art/r75/icon-shield.webp",
+  "postprocess": "Atlas tile crop, resize and WebP compression only. Original alpha retained.",
+  "license": "Generated with OpenAI image tool under applicable service terms; project MIT."
+}

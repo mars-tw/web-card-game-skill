@@ -1,0 +1,248 @@
+
+> web-card-game-skill@0.6.0 test:controls
+> node scripts/test-controls-reachability.js
+
+
+== 1920x1080 desktop ==
+  ✓ 1920x1080 desktop：入口分頁與主題選項具備 tab/radio 語意
+  ✓ 1920x1080 desktop：主題選項可用鍵盤 Enter 切換
+  ✓ 1920x1080 desktop：入口 tab 可用鍵盤 Enter 切到卡包
+  ✓ 1920x1080 desktop：控制型態由 primary pointer 正確判定為 desktop
+  ✓ 1920x1080 desktop 主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 主控制：控制不重疊
+  ✓ 1920x1080 desktop：非觸控桌機不顯示手機專屬手牌把手／更多控制
+  ✓ 1920x1080 desktop：enemyHero 四向偽元素／44px 外緣命中 134x44 → 146x44（geometry≥44;44-left:✓div#enemyHero.hero|44-right:✓div#enemyHero.hero|44-top:✓div#enemyHero.hero|44-bottom:✓div#enemyHero.hero|pseudo-left:✓div#enemyHero.hero|pseudo-right:✓div#enemyHero.hero|pseudo-top:✓div#enemyHero.hero|pseudo-bottom:✓div#enemyHero.hero）
+  ✓ 1920x1080 desktop：playerHero 四向偽元素／44px 外緣命中 70x44 → 82x44（geometry≥44;44-left:✓div#playerHero.hero|44-right:✓div#playerHero.hero|44-top:✓div#playerHero.hero|44-bottom:✓div#playerHero.hero|pseudo-left:✓div#playerHero.hero|pseudo-right:✓div#playerHero.hero|pseudo-top:✓div#playerHero.hero|pseudo-bottom:✓div#playerHero.hero）
+  ✓ 1920x1080 desktop：設定面板完整留在視口內
+  ✓ 1920x1080 desktop 設定關閉鈕：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 設定關閉鈕：控制不重疊
+  ✓ 1920x1080 desktop：手牌卡有語意、焦點與可讀名稱
+  ✓ 1920x1080 desktop：場上卡與英雄有語意和操作提示
+  ✓ 1920x1080 desktop：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄
+  ✓ 1920x1080 desktop 就地目標確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 就地目標確認/取消：控制不重疊
+  ✓ 1920x1080 desktop 卡牌詳情 sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 卡牌詳情 sticky 關閉：控制不重疊
+  ✓ 1920x1080 desktop 關鍵字 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 關鍵字 modal sticky 關閉：控制不重疊
+  ✓ 1920x1080 desktop 任務 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 任務 modal sticky 關閉：控制不重疊
+  ✓ 1920x1080 desktop 編年史 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 編年史 modal sticky 關閉：控制不重疊
+  ✓ 1920x1080 desktop 導引確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1920x1080 desktop 導引確認/取消：控制不重疊
+  ✓ 1920x1080 desktop：不需頁面捲動即可操作
+  ✓ 1920x1080 desktop：牌包本體有語意、焦點與可讀名稱
+  ✓ 1920x1080 desktop：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（packAudioToggleBtn → goBattleTop → pack）
+  ✓ 1920x1080 desktop：牌包可用鍵盤 Enter 開啟
+  ✓ 1920x1080 desktop：collectionChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1920x1080 desktop：deckChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1920x1080 desktop：無 console/page error
+
+== 1440x780 desktop ==
+  ✓ 1440x780 desktop：入口分頁與主題選項具備 tab/radio 語意
+  ✓ 1440x780 desktop：主題選項可用鍵盤 Enter 切換
+  ✓ 1440x780 desktop：入口 tab 可用鍵盤 Enter 切到卡包
+  ✓ 1440x780 desktop：控制型態由 primary pointer 正確判定為 desktop
+  ✓ 1440x780 desktop 主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 主控制：控制不重疊
+  ✓ 1440x780 desktop：非觸控桌機不顯示手機專屬手牌把手／更多控制
+  ✓ 1440x780 desktop：enemyHero 四向偽元素／44px 外緣命中 124x34 → 136x44（geometry≥44;44-left:✓div#enemyHero.hero|44-right:✓div#enemyHero.hero|44-top:✓div#enemyHero.hero|44-bottom:✓div#enemyHero.hero|pseudo-left:✓div#enemyHero.hero|pseudo-right:✓div#enemyHero.hero|pseudo-top:✓div#enemyHero.hero|pseudo-bottom:✓div#enemyHero.hero）
+  ✓ 1440x780 desktop：playerHero 四向偽元素／44px 外緣命中 60x34 → 72x44（geometry≥44;44-left:✓div#playerHero.hero|44-right:✓div#playerHero.hero|44-top:✓div#playerHero.hero|44-bottom:✓div#playerHero.hero|pseudo-left:✓div#playerHero.hero|pseudo-right:✓div#playerHero.hero|pseudo-top:✓div#playerHero.hero|pseudo-bottom:✓div#playerHero.hero）
+  ✓ 1440x780 desktop：設定面板完整留在視口內
+  ✓ 1440x780 desktop 設定關閉鈕：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 設定關閉鈕：控制不重疊
+  ✓ 1440x780 desktop：手牌卡有語意、焦點與可讀名稱
+  ✓ 1440x780 desktop：場上卡與英雄有語意和操作提示
+  ✓ 1440x780 desktop：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄
+  ✓ 1440x780 desktop 就地目標確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 就地目標確認/取消：控制不重疊
+  ✓ 1440x780 desktop 卡牌詳情 sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 卡牌詳情 sticky 關閉：控制不重疊
+  ✓ 1440x780 desktop 關鍵字 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 關鍵字 modal sticky 關閉：控制不重疊
+  ✓ 1440x780 desktop 任務 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 任務 modal sticky 關閉：控制不重疊
+  ✓ 1440x780 desktop 編年史 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 編年史 modal sticky 關閉：控制不重疊
+  ✓ 1440x780 desktop 導引確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1440x780 desktop 導引確認/取消：控制不重疊
+  ✓ 1440x780 desktop：不需頁面捲動即可操作
+  ✓ 1440x780 desktop：牌包本體有語意、焦點與可讀名稱
+  ✓ 1440x780 desktop：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（packAudioToggleBtn → goBattleTop → pack）
+  ✓ 1440x780 desktop：牌包可用鍵盤 Enter 開啟
+  ✓ 1440x780 desktop：collectionChip 四向偽元素／44px 外緣命中 38x26 → 46x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1440x780 desktop：deckChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1440x780 desktop：無 console/page error
+
+== 1366x600 desktop ==
+  ✓ 1366x600 desktop：入口分頁與主題選項具備 tab/radio 語意
+  ✓ 1366x600 desktop：主題選項可用鍵盤 Enter 切換
+  ✓ 1366x600 desktop：入口 tab 可用鍵盤 Enter 切到卡包
+  ✓ 1366x600 desktop：控制型態由 primary pointer 正確判定為 desktop
+  ✓ 1366x600 desktop 主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 主控制：控制不重疊
+  ✓ 1366x600 desktop：非觸控桌機不顯示手機專屬手牌把手／更多控制
+  ✓ 1366x600 desktop：enemyHero 四向偽元素／44px 外緣命中 118x28 → 130x44（geometry≥44;44-left:✓div#enemyHero.hero|44-right:✓div#enemyHero.hero|44-top:✓div#enemyHero.hero|44-bottom:✓div#enemyHero.hero|pseudo-left:✓div#enemyHero.hero|pseudo-right:✓div#enemyHero.hero|pseudo-top:✓div#enemyHero.hero|pseudo-bottom:✓div#enemyHero.hero）
+  ✓ 1366x600 desktop：playerHero 四向偽元素／44px 外緣命中 54x28 → 66x44（geometry≥44;44-left:✓div#playerHero.hero|44-right:✓div#playerHero.hero|44-top:✓div#playerHero.hero|44-bottom:✓div#playerHero.hero|pseudo-left:✓div#playerHero.hero|pseudo-right:✓div#playerHero.hero|pseudo-top:✓div#playerHero.hero|pseudo-bottom:✓div#playerHero.hero）
+  ✓ 1366x600 desktop：設定面板完整留在視口內
+  ✓ 1366x600 desktop 設定關閉鈕：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 設定關閉鈕：控制不重疊
+  ✓ 1366x600 desktop：手牌卡有語意、焦點與可讀名稱
+  ✓ 1366x600 desktop：場上卡與英雄有語意和操作提示
+  ✓ 1366x600 desktop：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄
+  ✓ 1366x600 desktop 就地目標確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 就地目標確認/取消：控制不重疊
+  ✓ 1366x600 desktop 卡牌詳情 sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 卡牌詳情 sticky 關閉：控制不重疊
+  ✓ 1366x600 desktop 關鍵字 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 關鍵字 modal sticky 關閉：控制不重疊
+  ✓ 1366x600 desktop 任務 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 任務 modal sticky 關閉：控制不重疊
+  ✓ 1366x600 desktop 編年史 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 編年史 modal sticky 關閉：控制不重疊
+  ✓ 1366x600 desktop 導引確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1366x600 desktop 導引確認/取消：控制不重疊
+  ✓ 1366x600 desktop：不需頁面捲動即可操作
+  ✓ 1366x600 desktop：牌包本體有語意、焦點與可讀名稱
+  ✓ 1366x600 desktop：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（packAudioToggleBtn → goBattleTop → pack）
+  ✓ 1366x600 desktop：牌包可用鍵盤 Enter 開啟
+  ✓ 1366x600 desktop：collectionChip 四向偽元素／44px 外緣命中 38x26 → 46x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1366x600 desktop：deckChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1366x600 desktop：無 console/page error
+
+== 1280x640 desktop ==
+  ✓ 1280x640 desktop：入口分頁與主題選項具備 tab/radio 語意
+  ✓ 1280x640 desktop：主題選項可用鍵盤 Enter 切換
+  ✓ 1280x640 desktop：入口 tab 可用鍵盤 Enter 切到卡包
+  ✓ 1280x640 desktop：控制型態由 primary pointer 正確判定為 desktop
+  ✓ 1280x640 desktop 主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 主控制：控制不重疊
+  ✓ 1280x640 desktop：非觸控桌機不顯示手機專屬手牌把手／更多控制
+  ✓ 1280x640 desktop：enemyHero 四向偽元素／44px 外緣命中 124x34 → 136x44（geometry≥44;44-left:✓div#enemyHero.hero|44-right:✓div#enemyHero.hero|44-top:✓div#enemyHero.hero|44-bottom:✓div#enemyHero.hero|pseudo-left:✓div#enemyHero.hero|pseudo-right:✓div#enemyHero.hero|pseudo-top:✓div#enemyHero.hero|pseudo-bottom:✓div#enemyHero.hero）
+  ✓ 1280x640 desktop：playerHero 四向偽元素／44px 外緣命中 60x34 → 72x44（geometry≥44;44-left:✓div#playerHero.hero|44-right:✓div#playerHero.hero|44-top:✓div#playerHero.hero|44-bottom:✓div#playerHero.hero|pseudo-left:✓div#playerHero.hero|pseudo-right:✓div#playerHero.hero|pseudo-top:✓div#playerHero.hero|pseudo-bottom:✓div#playerHero.hero）
+  ✓ 1280x640 desktop：設定面板完整留在視口內
+  ✓ 1280x640 desktop 設定關閉鈕：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 設定關閉鈕：控制不重疊
+  ✓ 1280x640 desktop：手牌卡有語意、焦點與可讀名稱
+  ✓ 1280x640 desktop：場上卡與英雄有語意和操作提示
+  ✓ 1280x640 desktop：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄
+  ✓ 1280x640 desktop 就地目標確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 就地目標確認/取消：控制不重疊
+  ✓ 1280x640 desktop 卡牌詳情 sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 卡牌詳情 sticky 關閉：控制不重疊
+  ✓ 1280x640 desktop 關鍵字 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 關鍵字 modal sticky 關閉：控制不重疊
+  ✓ 1280x640 desktop 任務 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 任務 modal sticky 關閉：控制不重疊
+  ✓ 1280x640 desktop 編年史 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 編年史 modal sticky 關閉：控制不重疊
+  ✓ 1280x640 desktop 導引確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 1280x640 desktop 導引確認/取消：控制不重疊
+  ✓ 1280x640 desktop：不需頁面捲動即可操作
+  ✓ 1280x640 desktop：牌包本體有語意、焦點與可讀名稱
+  ✓ 1280x640 desktop：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（packAudioToggleBtn → goBattleTop → pack）
+  ✓ 1280x640 desktop：牌包可用鍵盤 Enter 開啟
+  ✓ 1280x640 desktop：collectionChip 四向偽元素／44px 外緣命中 38x26 → 46x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1280x640 desktop：deckChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 1280x640 desktop：無 console/page error
+
+== 390x844 touch ==
+  ✓ 390x844 touch：入口分頁與主題選項具備 tab/radio 語意
+  ✓ 390x844 touch：主題選項可用鍵盤 Enter 切換
+  ✓ 390x844 touch：入口 tab 可用鍵盤 Enter 切到卡包
+  ✓ 390x844 touch：控制型態由 primary pointer 正確判定為 touch
+  ✓ 390x844 touch 主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 主控制：控制不重疊
+  ✓ 390x844 touch：手牌抽屜展開後停在 Command Dock 上方、不遮主行動
+  ✓ 390x844 touch：抽屜開啟時提示鈕可見即可點，否則明確隱藏並移出焦點序
+  ✓ 390x844 touch：抽屜開啟時裂潮爆發鈕可見即可點，否則明確隱藏並移出焦點序
+  ✓ 390x844 touch 抽屜展開主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 抽屜展開主控制：控制不重疊
+  ✓ 390x844 touch：抽屜展開手牌逐卡可命中 6/6、詳鈕 6/6
+  ✓ 390x844 touch：觸控選牌先預覽
+  ✓ 390x844 touch：確認前不出牌
+  ✓ 390x844 touch：真實 click 抽屜手牌可出牌
+  ✓ 390x844 touch：真實致死結算壓過開啟抽屜且攔截 pointer（z 100>76、PE auto/auto、probe 1/0:overlay-actions）
+  ✓ 390x844 touch 更多面板：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 更多面板：控制不重疊
+  ✓ 390x844 touch：enemyHero 四向偽元素／44px 外緣命中 116x36 → 128x44（geometry≥44;44-left:✓div#enemyHero.hero|44-right:✓div#enemyHero.hero|44-top:✓div#enemyHero.hero|44-bottom:✓div#enemyHero.hero|pseudo-left:✓div#enemyHero.hero|pseudo-right:✓div#enemyHero.hero|pseudo-top:✓div#enemyHero.hero|pseudo-bottom:✓div#enemyHero.hero）
+  ✓ 390x844 touch：playerHero 四向偽元素／44px 外緣命中 60x36 → 72x44（geometry≥44;44-left:✓div#playerHero.hero|44-right:✓div#playerHero.hero|44-top:✓div#playerHero.hero|44-bottom:✓div#playerHero.hero|pseudo-left:✓div#playerHero.hero|pseudo-right:✓div#playerHero.hero|pseudo-top:✓div#playerHero.hero|pseudo-bottom:✓div#playerHero.hero）
+  ✓ 390x844 touch：設定面板完整留在視口內
+  ✓ 390x844 touch 設定關閉鈕：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 設定關閉鈕：控制不重疊
+  ✓ 390x844 touch：手牌卡有語意、焦點與可讀名稱
+  ✓ 390x844 touch：鍵盤選牌也先預覽
+  ✓ 390x844 touch：場上卡與英雄有語意和操作提示
+  ✓ 390x844 touch：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄
+  ✓ 390x844 touch 就地目標確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 就地目標確認/取消：控制不重疊
+  ✓ 390x844 touch 卡牌詳情 sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 卡牌詳情 sticky 關閉：控制不重疊
+  ✓ 390x844 touch 關鍵字 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 關鍵字 modal sticky 關閉：控制不重疊
+  ✓ 390x844 touch 任務 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 任務 modal sticky 關閉：控制不重疊
+  ✓ 390x844 touch 編年史 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 編年史 modal sticky 關閉：控制不重疊
+  ✓ 390x844 touch 導引確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 390x844 touch 導引確認/取消：控制不重疊
+  ✓ 390x844 touch：不需頁面捲動即可操作
+  ✓ 390x844 touch：牌包本體有語意、焦點與可讀名稱
+  ✓ 390x844 touch：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（packAudioToggleBtn → goBattleTop → pack）
+  ✓ 390x844 touch：牌包可用鍵盤 Enter 開啟
+  ✓ 390x844 touch：collectionChip 四向偽元素／44px 外緣命中 40x44 → 46x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 390x844 touch：deckChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 390x844 touch：無 console/page error
+
+== 844x390 touch ==
+  ✓ 844x390 touch：入口分頁與主題選項具備 tab/radio 語意
+  ✓ 844x390 touch：主題選項可用鍵盤 Enter 切換
+  ✓ 844x390 touch：入口 tab 可用鍵盤 Enter 切到卡包
+  ✓ 844x390 touch：控制型態由 primary pointer 正確判定為 touch
+  ✓ 844x390 touch 主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 主控制：控制不重疊
+  ✓ 844x390 touch：手牌抽屜展開後停在 Command Dock 上方、不遮主行動
+  ✓ 844x390 touch：抽屜開啟時提示鈕可見即可點，否則明確隱藏並移出焦點序
+  ✓ 844x390 touch：抽屜開啟時裂潮爆發鈕可見即可點，否則明確隱藏並移出焦點序
+  ✓ 844x390 touch 抽屜展開主控制：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 抽屜展開主控制：控制不重疊
+  ✓ 844x390 touch：抽屜展開手牌逐卡可命中 6/6、詳鈕 6/6
+  ✓ 844x390 touch：觸控選牌先預覽
+  ✓ 844x390 touch：確認前不出牌
+  ✓ 844x390 touch：真實 click 抽屜手牌可出牌
+  ✓ 844x390 touch：66×86 場上卡中心真實 tap 選攻擊者，不誤開詳情
+  ✓ 844x390 touch：右上 32×32 明確小區仍可真實開啟卡牌詳情
+  ✓ 844x390 touch：真實致死結算壓過開啟抽屜且攔截 pointer（z 100>76、PE auto/auto、probe 1/0:report-chip）
+  ✓ 844x390 touch 更多面板：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 更多面板：控制不重疊
+  ✓ 844x390 touch：enemyHero 四向偽元素／44px 外緣命中 98x28 → 110x44（geometry≥44;44-left:✓div#enemyHero.hero|44-right:✓div#enemyHero.hero|44-top:✓div#enemyHero.hero|44-bottom:✓div#enemyHero.hero|pseudo-left:✓div#enemyHero.hero|pseudo-right:✓div#enemyHero.hero|pseudo-top:✓div#enemyHero.hero|pseudo-bottom:✓div#enemyHero.hero）
+  ✓ 844x390 touch：playerHero 四向偽元素／44px 外緣命中 50x28 → 62x44（geometry≥44;44-left:✓div#playerHero.hero|44-right:✓div#playerHero.hero|44-top:✓div#playerHero.hero|44-bottom:✓div#playerHero.hero|pseudo-left:✓div#playerHero.hero|pseudo-right:✓div#playerHero.hero|pseudo-top:✓div#playerHero.hero|pseudo-bottom:✓div#playerHero.hero）
+  ✓ 844x390 touch：設定面板完整留在視口內
+  ✓ 844x390 touch 設定關閉鈕：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 設定關閉鈕：控制不重疊
+  ✓ 844x390 touch：手牌卡有語意、焦點與可讀名稱
+  ✓ 844x390 touch：鍵盤選牌也先預覽
+  ✓ 844x390 touch：場上卡與英雄有語意和操作提示
+  ✓ 844x390 touch：鍵盤可完成手牌出牌、選攻擊者與攻擊敵方英雄
+  ✓ 844x390 touch 就地目標確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 就地目標確認/取消：控制不重疊
+  ✓ 844x390 touch 卡牌詳情 sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 卡牌詳情 sticky 關閉：控制不重疊
+  ✓ 844x390 touch 關鍵字 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 關鍵字 modal sticky 關閉：控制不重疊
+  ✓ 844x390 touch 任務 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 任務 modal sticky 關閉：控制不重疊
+  ✓ 844x390 touch 編年史 modal sticky 關閉：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 編年史 modal sticky 關閉：控制不重疊
+  ✓ 844x390 touch 導引確認/取消：中心/全框在視口、elementFromPoint 命中自身、命中區 ≥44px
+  ✓ 844x390 touch 導引確認/取消：控制不重疊
+  ✓ 844x390 touch：不需頁面捲動即可操作
+  ✓ 844x390 touch：牌包本體有語意、焦點與可讀名稱
+  ✓ 844x390 touch：神祕卡包 CTA 依視覺格線在第 4 個焦點內，早於戰績／維護工具（packAudioToggleBtn → goBattleTop → pack）
+  ✓ 844x390 touch：牌包可用鍵盤 Enter 開啟
+  ✓ 844x390 touch：collectionChip 四向偽元素／44px 外緣命中 40x44 → 46x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 844x390 touch：deckChip 四向偽元素／44px 外緣命中 46x32 → 50x46（geometry≥44;44-left:✓button.filter-chip.active|44-right:✓button.filter-chip.active|44-top:✓button.filter-chip.active|44-bottom:✓button.filter-chip.active|pseudo-left:✓button.filter-chip.active|pseudo-right:✓button.filter-chip.active|pseudo-top:✓button.filter-chip.active|pseudo-bottom:✓button.filter-chip.active）
+  ✓ 844x390 touch：無 console/page error
+
+✅ R65 控制可達性守門通過

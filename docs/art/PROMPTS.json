@@ -1,0 +1,79 @@
+{
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "model_note": "The built-in tool does not expose the actual model slug. No gpt-image-2 claim is made.",
+  "style_prefix": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism.",
+  "assets": [
+    {
+      "id": "harbor",
+      "source_path": "C:\\Users\\digimkt\\.codex\\generated_images\\01a1442a-1580-7470-841d-71a83f26246a\\exec-c7083930-6f5f-4191-b6ba-01d9db111af2.png",
+      "prompt": "Use case: stylized-concept. Asset type: final game background, portrait 1024x1536. Style prefix: TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism, no lettering. Primary request: stunning portrait night harbor illustration for a card-game main menu; monumental curling wave splits into two sculptural crests above a harbor, three-quarter view of wet stone quay and beautiful wooden sailing vessels, distant lighthouse with coral lantern light, purple moonlit clouds, luminous surf, foreground ropes and copper mooring rings. Composition: huge sculptural wave and moon in upper half, water reflection as central leading line, lower quarter quieter dark purple quay for menu overlay, clear layered depth, center mobile-safe, no people, no cards, no text, no frames. High production art, not a mockup."
+    },
+    {
+      "id": "battlefield",
+      "source_path": "C:\\Users\\digimkt\\.codex\\generated_images\\01a1442a-1580-7470-841d-71a83f26246a\\exec-8cbee15b-f573-4fda-80b1-c0d8ac438bdf.png",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Asset type: final landscape 1536x1024 game background. Paint a spectacular wooden ship-deck battlefield on a purple moonlit ocean. Top-down three-quarter perspective, broad richly textured wet mahogany deck occupies foreground and middle with a narrow diagonal luminous water fissure crossing the center; copper inlays and pale shell carvings on edges, no grid, no rectangles painted on deck. Distant misty ruined harbor, tiny warm lighthouse and curled waves in upper quarter. Center board calm medium purple brown, readable for collectible cards placed on it; premium painterly illustration, no characters, no text, no UI."
+    },
+    {
+      "id": "navigator",
+      "source_path": "C:\\Users\\digimkt\\.codex\\generated_images\\01a1442a-1580-7470-841d-71a83f26246a\\exec-c666bedf-afe9-4b4e-83fb-f6ea900e4753.png",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Asset type: final isolated waist-up portrait, 1024x1536 transparent alpha background. The Tiderend navigator hero: confident youthful adult East Asian woman with short dark indigo hair, clear expressive face and bright eyes, coral-red scarf and copper rope clasps over indigo-purple weatherproof captain coat, embroidered white wave trim, holding ONE luminous blue collectible card upright beside her shoulder, other hand resting on a brass compass at belt. Three-quarter view facing slightly left but eyes toward viewer, beautiful appealing stylized semi-realistic face, large readable hands and confident smile, clean broad silhouette, bright saturated midtones not black. Framed head to hip, full head and both hands visible with 8% margins, no extra characters, no text, no scenery. True transparent background, not checkerboard.",
+      "transparent_requested": true
+    },
+    {
+      "id": "footman",
+      "source_path": "C:\\Users\\digimkt\\.codex\\generated_images\\01a1442a-1580-7470-841d-71a83f26246a\\exec-a31515c4-58ae-40c1-baaa-da8f9b816602.png",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Asset type: final collectible character card illustration 1024x1024. A white-tide trainee soldier, young adult woman, determined clearly visible face, short windswept brown hair, sea-blue tabard and silver shoulder armor, coral copper straps, holding a bright short sword diagonally upward in right hand and a LARGE scalloped shell shield in left, standing on wet wooden deck with warm lantern and purple moonlit surf behind. Heroic half-body composition, face in upper center, both iconic weapons fully readable, strong chunky silhouette at 64px, subject occupies 85% frame, moderate painterly detail. No typography, no card frame, no logo, no UI. Rich bright midtones, avoid black shadows.",
+      "transparent_requested": false
+    },
+    {
+      "id": "archer",
+      "source_path": "C:\\Users\\digimkt\\.codex\\generated_images\\01a1442a-1580-7470-841d-71a83f26246a\\exec-430938de-478f-4f6b-9adb-999f8ac75616.png",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Asset type: final enemy archer collectible card illustration 1024x1024. A white-tide harbor archer, adult man with sea-green cloak over indigo leather, silver hair tied back, distinct sharp determined face fully visible, holding a giant crescent-shaped copper and pearl longbow upright across the left side of picture, nocking a luminous blue arrow. Half-body at rocky purple night harbor, curling surf and warm lantern far behind, dramatic diagonal composition, face upper center and oversized crescent bow clear at 64px, saturated sea-green cloak separated from purple background, subject fills 85% frame. No card border, no typography, no UI, no logo. Rich bright midtones, do not crush shadows.",
+      "transparent_requested": false
+    },
+    {
+      "id": "frame",
+      "source_path": "C:\\Users\\digimkt\\.codex\\generated_images\\01a1442a-1580-7470-841d-71a83f26246a\\exec-ae4fa8f7-104e-40cc-8532-ad4dadd34a9e.png",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Asset type: final transparent collectible card FRAME only, portrait 1024x1536. One beautiful thin rectangular frame of engraved coral-copper metal and mother-of-pearl shell inlay, sharp clipped wave-split corners, rope knot crest centered at top and scallop shell centered at bottom, subtle engraved flowing wave linework, premium heirloom nautical deck artifact. Border occupies outer 6% only, center entire 88% completely transparent empty hole including lower area, no illustrations, no text, no panels inside. Clean thin frame should overlay existing card art without obscuring it. Entire outside and inside background true transparent alpha, not white or checkerboard. No shadows outside border.",
+      "transparent_requested": true
+    },
+    {
+      "id": "icons",
+      "source_path": "C:\\Users\\digimkt\\.codex\\generated_images\\01a1442a-1580-7470-841d-71a83f26246a\\exec-7caa9e11-dc79-46c7-8e5f-58a9e80e093f.png",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Asset type: final nautical game UI icon atlas, square 1536x1536 transparent alpha. EXACTLY nine separate icons arranged in a strict 3 by 3 equal square grid, each icon centered in its own cell with generous transparent margins. Top row: crossed anchor-swords battle symbol; two collectible cards fanned; a brass compass. Middle row: big curling luminous blue breaking wave; protective pearl scallop shield; rolled nautical route map with coral pin. Bottom row: brass lantern; silver shell coin; knotted rope gear wheel. Unified chunky carved copper rim and pearl/blue enamel fills, painterly sharp outline, simple clear readable shapes at 32px, no text, no letters, no numbers, no labels, no panel backgrounds. Each icon independent, no connecting lines. True transparent background, no chessboard.",
+      "transparent_requested": true
+    },
+    {
+      "id": "logo",
+      "source_path": "C:\\Users\\digimkt\\.codex\\generated_images\\01a1442a-1580-7470-841d-71a83f26246a\\exec-28c7421b-14a8-4fec-982a-1a6c268fd539.png",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Asset type: final Chinese game logotype on true transparent alpha, wide 1536x1024. Design exquisite custom Chinese brush-calligraphy title with EXACT characters \"裂潮\" large on one horizontal line and EXACT smaller subtitle \"卡牌\" centered beneath. Main characters moon-white pearl with sharp sculpted curling-wave stroke endings and a fine coral-copper engraved outline, wide strong legible strokes, dramatic diagonal split cutting through lower strokes, small wave-split moon emblem centered above the lettering. Below Chinese add small widely spaced English \"TIDEREND\" in refined copper serif. Composition wide, very tightly centered artwork, maximum lettering legibility, no other text, no background or plate, no scenery, no mockup. Pure alpha transparency surrounding lettering; no checkerboard.",
+      "transparent_requested": true
+    },
+    {
+      "id": "app-icon",
+      "source_path": "C:\\Users\\digimkt\\.codex\\generated_images\\01a1442a-1580-7470-841d-71a83f26246a\\exec-bbc45f89-cf96-4152-80ed-6f1deb24e1bf.png",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Asset type: final mobile App icon proposal, square 1024x1024 opaque. One striking bold luminous curling blue wave slicing diagonally through a big pearl-white crescent moon and a single indigo collectible card with coral-copper edge. Minimal symbolic composition, icon fills 80% canvas, large central shape with just three simple layers: moon, wave, card. Deep purple indigo background with subtle carved wave texture, copper rim accents, moon-white foam. No characters, no letters, no text, no UI, no rounded corners baked into canvas. Readable at 64px with strong silhouette and high contrast, elegant premium painted enamel emblem.",
+      "transparent_requested": false
+    },
+    {
+      "id": "victory",
+      "source_path": "C:\\Users\\digimkt\\.codex\\generated_images\\01a1442a-1580-7470-841d-71a83f26246a\\exec-e5ed2416-78f1-4c0e-b2db-1d9445ae5ffa.png",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Asset type: final victory background portrait 1024x1536. A breathtaking dawn return to the SAME maritime fantasy harbor, purple indigo night giving way to coral-pink sunrise, white-foam sea now gently curling, gold warm reflection on water leading to a beautiful sailing ship returning beneath lighthouse, copper mooring rings and wet stone quay in foreground, majestic broken crescent moon fading at top. Luxurious painterly art, layered depth and celebratory calm, illuminated clouds in upper half, lower third quieter purple quay for buttons, warm but keep purple maritime identity. No characters, no text, no logo, no UI. Not a screenshot.",
+      "transparent_requested": false
+    }
+  ],
+  "prompt_version": "r75-20261016-v1",
+  "reference_image_hashes": [],
+  "rounds": {
+    "R75": "retained in this file",
+    "R76": "PROMPTS_R76.json",
+    "R77": "PROMPTS_R77.json",
+    "R78": "PROMPTS_R78.json",
+    "R79": "PROMPTS_R79.json"
+  },
+  "round4": "PROMPTS_R78.json",
+  "current_round": "R80",
+  "current_prompt_file": "docs/art/PROMPTS_R80.json",
+  "current_manifest": "docs/art/ASSET_MANIFEST_R80.json"
+}

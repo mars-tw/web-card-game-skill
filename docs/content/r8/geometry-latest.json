@@ -1,0 +1,55 @@
+{
+  "label": "1032x1376 forecast",
+  "proof": {
+    "cards": [
+      {
+        "uid": "content-enemy-0",
+        "r": {
+          "x": 475,
+          "y": 306.6875,
+          "width": 82,
+          "height": 108,
+          "top": 306.6875,
+          "right": 557,
+          "bottom": 414.6875,
+          "left": 475
+        },
+        "inside": true,
+        "free": true
+      },
+      {
+        "uid": "content-player-0",
+        "r": {
+          "x": 431.5,
+          "y": 732.890625,
+          "width": 82,
+          "height": 108,
+          "top": 732.890625,
+          "right": 513.5,
+          "bottom": 840.890625,
+          "left": 431.5
+        },
+        "inside": true,
+        "free": true
+      },
+      {
+        "uid": "content-player-1",
+        "r": {
+          "x": 518.5,
+          "y": 732.890625,
+          "width": 82,
+          "height": 108,
+          "top": 732.890625,
+          "right": 600.5,
+          "bottom": 840.890625,
+          "left": 518.5
+        },
+        "inside": true,
+        "free": true
+      }
+    ],
+    "endTurn": true,
+    "panelHeight": 209,
+    "height": 1376
+  }
+}

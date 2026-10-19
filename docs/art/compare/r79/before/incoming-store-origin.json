@@ -1,0 +1,47 @@
+{
+  "status": "VERIFIED",
+  "baseCommit": "0702936",
+  "method": "Incoming R78 store PNG bytes copied before runtime edits. Four viewport fresh baseline captures taken headlessly before edits; baseline.log is the execution receipt.",
+  "store": [
+    {
+      "path": "docs/store/screenshots/battle-1290x2796.png",
+      "sha256": "35e193a17191a58494c236c71be92cfc2e1e308d560498fb46728febfec24d48"
+    },
+    {
+      "path": "docs/store/screenshots/battle-2064x2752.png",
+      "sha256": "1ce7fca3301ea4d0c1456400d1cb4c2b5f9e9e4e2ed7a23c413e86cb6233fdbf"
+    },
+    {
+      "path": "docs/store/screenshots/harbor-1290x2796.png",
+      "sha256": "50faaf4f2282f0837bc7ee9d63a6f5319f3fa08c4b4cec9820842e71717fd411"
+    },
+    {
+      "path": "docs/store/screenshots/harbor-2064x2752.png",
+      "sha256": "dcdf0ee575381145237308d890aeba0402173d5481ed5e95ddec447fab91cdf6"
+    },
+    {
+      "path": "docs/store/screenshots/tide-chart-1290x2796.png",
+      "sha256": "687a1beacad1a179b09f0b9067f587ab536618f680b49c5ebc96f75aa1e1672a"
+    },
+    {
+      "path": "docs/store/screenshots/tide-chart-2064x2752.png",
+      "sha256": "392192fd88d48950ab1f89cf2c2f684cb740100b5033b327a1bc32189fcd82d8"
+    },
+    {
+      "path": "docs/store/screenshots/trial-1290x2796.png",
+      "sha256": "de45c1ec2617fc0c514ddfd0c470111c9e7363c558e1eb9f2dd8a2db0b15c4ac"
+    },
+    {
+      "path": "docs/store/screenshots/trial-2064x2752.png",
+      "sha256": "b84b9a875abf14c58b50d59369fe48550b65f3860beb698f98f61c6bc08d925a"
+    },
+    {
+      "path": "docs/store/screenshots/victory-1290x2796.png",
+      "sha256": "1592796c950389983e4e2150e6ef4e72d850eb110e397c0d3bb58052db86e5df"
+    },
+    {
+      "path": "docs/store/screenshots/victory-2064x2752.png",
+      "sha256": "78eb67e17325116fb30f2d0e86c796fc097f145b56c4d55e7aa19d494207378c"
+    }
+  ]
+}

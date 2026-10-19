@@ -1,0 +1,119 @@
+PASS contentEntry normal harbor entry
+PASS forecastEntry normal harbor entry
+PASS moenEntry normal harbor entry
+PASS fallen every card complete, no hero or panel intersections
+PASS fallen entire end-turn control inside viewport
+PASS fallen mechanisms readable at card-name size or larger, text inside original viewport
+PASS fallen title hidden in actual normal play
+PASS fallen actual opposing units present
+PASS fallen distinctive mechanism signals
+PASS fallen can fail and retry
+PASS fallen real solution completes
+PASS shield every card complete, no hero or panel intersections
+PASS shield entire end-turn control inside viewport
+PASS shield mechanisms readable at card-name size or larger, text inside original viewport
+PASS shield title hidden in actual normal play
+PASS shield actual opposing units present
+PASS shield distinctive mechanism signals
+PASS shield can fail and retry
+PASS shield real solution completes
+PASS shelter every card complete, no hero or panel intersections
+PASS shelter entire end-turn control inside viewport
+PASS shelter mechanisms readable at card-name size or larger, text inside original viewport
+PASS third puzzle explicitly excludes hero health
+PASS shelter title hidden in actual normal play
+PASS shelter actual opposing units present
+PASS shelter distinctive mechanism signals
+PASS shelter can fail and retry
+PASS shelter real solution completes
+PASS taunt every card complete, no hero or panel intersections
+PASS taunt entire end-turn control inside viewport
+PASS taunt mechanisms readable at card-name size or larger, text inside original viewport
+PASS fourth puzzle explains preset wound
+PASS taunt title hidden in actual normal play
+PASS taunt actual opposing units present
+PASS taunt distinctive mechanism signals
+PASS taunt can fail and retry
+PASS taunt real solution completes
+PASS spell every card complete, no hero or panel intersections
+PASS spell entire end-turn control inside viewport
+PASS spell mechanisms readable at card-name size or larger, text inside original viewport
+PASS spell title hidden in actual normal play
+PASS spell actual opposing units present
+PASS spell distinctive mechanism signals
+PASS spell can fail and retry
+PASS spell real solution completes
+PASS cross every card complete, no hero or panel intersections
+PASS cross entire end-turn control inside viewport
+PASS cross mechanisms readable at card-name size or larger, text inside original viewport
+PASS cross title hidden in actual normal play
+PASS cross actual opposing units present
+PASS cross distinctive mechanism signals
+PASS both allied current/projected HP visible before any exchange
+PASS all four HP previews and complete confirmation/cancel text fit with eight-pixel viewport margin
+PASS read-only preview leaves every actual HP, position and tide unchanged
+PASS cancel exact per-unit equality with initial board
+PASS confirmation exactly matches preview: soldier leaves, archer 1 HP, tide 6
+PASS cross real solution completes
+PASS all six completions survive real reload
+PASS separate verification puzzle completes
+PASS six-puzzle progress remains separate from verification
+PASS forecast before every card complete, no hero or panel intersections
+PASS forecast before entire end-turn control inside viewport
+PASS forecast drawer stays within forty percent
+PASS hold does not spend reversal
+PASS held round has direct consequence preview
+PASS drag outside cancels reversal
+PASS release commits one reversal
+PASS applied second-round ebb effect matches direction and round
+PASS forecast applied every card complete, no hero or panel intersections
+PASS forecast applied entire end-turn control inside viewport
+PASS forecast drawer stays within forty percent
+PASS applied round button states its direction
+PASS closed battlefield identifies reversed second round
+PASS reversed-round marker survives real session reload
+PASS wrong direction cast disabled with words
+PASS wrong direction is visibly gray
+PASS wrong operation spends neither tide nor reversal
+PASS allowed direction restores enabled cast
+PASS fourth round free directions
+PASS forecast actual short encounter completes
+PASS forecast progress survives reload
+PASS applied third-round flood effect matches direction and round
+PASS moen preparing every card complete, no hero or panel intersections
+PASS moen preparing entire end-turn control inside viewport
+PASS anticipation does not grant shield
+PASS moen impact every card complete, no hero or panel intersections
+PASS moen impact entire end-turn control inside viewport
+PASS healing feedback belongs to healed enemy hero
+PASS wave-impact full same knight identity 3 ATK / 4 HP
+PASS Moen actually raises her hand at impact
+PASS real impact labels three-point enemy healing
+PASS recovery restores ready pose
+PASS guarding full same knight identity 3 ATK / 4 HP
+PASS single guarding image identifies enemy Moen, knight target, and one block
+PASS separate painted wall and shield icons replace debug legend
+PASS shield impact does not pretend HP damage
+PASS shield-impact full same knight identity 3 ATK / 4 HP
+PASS shield-after full same knight identity 3 ATK / 4 HP
+PASS small post-break marker
+PASS shield broken persists on reload
+PASS Moen actual battle completes
+PASS second completed challenge uses return variation
+PASS delaying really loses the named soldier
+PASS delayed casualty is named visibly
+PASS delay explains real shield cause
+PASS delay after every card complete, no hero or panel intersections
+PASS delay after entire end-turn control inside viewport
+PASS all three content progress export/import intact
+AssertionError [ERR_ASSERTION]: return variation damaged to one HP before second heal
+    at check (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r8-e2e.js:7:28)
+    at returning (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r8-e2e.js:46:67)
+    at async C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r8-e2e.js:75:538 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

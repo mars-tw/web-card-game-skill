@@ -1,0 +1,32 @@
+{
+  "status": "VERIFIED",
+  "passed": 98,
+  "results": [
+    {
+      "width": 390,
+      "height": 844,
+      "artHeightRatio": 0.6818181818181818,
+      "status": "VERIFIED"
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "artHeightRatio": 0.6162790697674418,
+      "status": "VERIFIED"
+    },
+    {
+      "width": 1032,
+      "height": 1376,
+      "artHeightRatio": 0.8055555555555556,
+      "status": "VERIFIED"
+    },
+    {
+      "width": 1366,
+      "height": 600,
+      "artHeightRatio": 0.6302521008403361,
+      "status": "VERIFIED"
+    }
+  ],
+  "errors": [],
+  "fixtureNote": "Only foil-rarity-fixture uses explicit test state; not a store screenshot."
+}

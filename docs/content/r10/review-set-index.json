@@ -1,0 +1,156 @@
+{
+  "status": "VERIFIED",
+  "selection": "6 puzzles / 5 forecast / 4 Moen; every image original viewport bytes",
+  "images": [
+    {
+      "path": "docs/content/r10/review-set/01-puzzle-spell-playing.png",
+      "source": "docs/content/r10/phone-puzzle-spell-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "20615f558bc9ea757120b5df24e2b2f80383c14aefd93f31fb6eeed76bc7f4ff",
+      "proves": "手牌回到英雄列下方，無截斷殘字"
+    },
+    {
+      "path": "docs/content/r10/review-set/02-puzzle-shield-playing.png",
+      "source": "docs/content/r10/phone-puzzle-shield-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "a25a57bb88c9711fdc99451d7fca2f397ee1f2cfa8988f02c0fe127bdaa7b740",
+      "proves": "聖盾正字、滿潮、盾與費用分開"
+    },
+    {
+      "path": "docs/content/r10/review-set/03-puzzle-shelter-playing.png",
+      "source": "docs/content/r10/phone-puzzle-shelter-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "e21b41febaae4d1a9afc7597536b5366fe0d7ab8bfe2416d24de066e72146ad4",
+      "proves": "不計血量、長弓射線，R8回歸"
+    },
+    {
+      "path": "docs/content/r10/review-set/04-puzzle-fallen-playing.png",
+      "source": "docs/content/r10/phone-puzzle-fallen-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "8d39de9946d6c4612f9be73a4012e7cc3693c5993c5e1de9172ca7a2ac718d8a",
+      "proves": "陣亡補潮首屏，未開提示"
+    },
+    {
+      "path": "docs/content/r10/review-set/05-puzzle-taunt-playing.png",
+      "source": "docs/content/r10/phone-puzzle-taunt-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "6f480b5247d440c95db8ee5dff2f07a0cdc0b13b6016924d525b38ce20f382ab",
+      "proves": "嘲諷目標差異首屏"
+    },
+    {
+      "path": "docs/content/r10/review-set/06-puzzle-cross-playing.png",
+      "source": "docs/content/r10/phone-puzzle-cross-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "adc16f2f10f4405518082fcdae6e6a4a90486cd65318e83ec6c3590b7ec28057",
+      "proves": "雙線交換首屏，未開提示"
+    },
+    {
+      "path": "docs/content/r10/review-set/07-forecast-preview.png",
+      "source": "docs/content/r10/phone-forecast-preview.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "c6e8534d3e1d37837b17547d5eacbeaccb60032fbae076ec00dc7631255752b4",
+      "proves": "按住預覽，同高面板，R8回歸"
+    },
+    {
+      "path": "docs/content/r10/review-set/08-forecast-cancelled.png",
+      "source": "docs/content/r10/phone-forecast-cancelled.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "03a292e5846813cb5603d8ae0a1bb18076d598cc845aee980257309ed462220d",
+      "proves": "真正觸控移出取消，原潮向與額度不變"
+    },
+    {
+      "path": "docs/content/r10/review-set/09-forecast-applied.png",
+      "source": "docs/content/r10/phone-forecast-applied.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "68400786e4a195b990f52b8a90f07d5f1b63efa47a72e200ca425ef4d28dff28",
+      "proves": "滿血不回復的原因、已套用與撤回，頂欄同回合"
+    },
+    {
+      "path": "docs/content/r10/review-set/10-forecast-flood-impact.png",
+      "source": "docs/content/r10/phone-forecast-flood-impact.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "ae198d282a4aefe65d15a969085e7db9cb308e2696db997e919363f4f5247016",
+      "proves": "面板已關，反轉回合實際命中；英雄列、底欄、卡名攻血及兩收據，R8回歸"
+    },
+    {
+      "path": "docs/content/r10/review-set/11-forecast-ebb-shields.png",
+      "source": "docs/content/r10/phone-forecast-ebb-shields.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "9b80d40f0a01d538ae25b7caa0dcba1c95410ceba98a70727b98097ca1899842",
+      "proves": "兩友軍聖盾數可數、費用可讀，R8回歸"
+    },
+    {
+      "path": "docs/content/r10/review-set/12-moen-preparation.png",
+      "source": "docs/content/r10/phone-moen-preparation.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "1947adb5c1cb05cc816e0c83927c6a8c1edcd908645a13bebf500c25f0f38e2f",
+      "proves": "完整首屏句子、英雄列與整備姿勢，R8回歸"
+    },
+    {
+      "path": "docs/content/r10/review-set/13-moen-heal-impact.png",
+      "source": "docs/content/r10/phone-moen-heal-impact.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "2616a492a8f78262b0c38c0b4c33354582d27941a1e5bca568d075f567fab3e8",
+      "proves": "真實治療命中、獨立施法姿勢、騎士聖盾"
+    },
+    {
+      "path": "docs/content/r10/review-set/14-moen-break-impact.png",
+      "source": "docs/content/r10/phone-moen-break-impact.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "1857a09ddf9e79c71de73cf66030115c409a464eddc0c0b76c6af6687adbc1e7",
+      "proves": "真正破盾命中、騎士獨立姿勢、仍4血"
+    },
+    {
+      "path": "docs/content/r10/review-set/15-moen-completed.png",
+      "source": "docs/content/r10/phone-moen-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "1d951d5f87d0fd8072096c385991c2e89e82c1887775625130a947c14f5ce62b",
+      "proves": "茉恩敗退與角色收尾"
+    }
+  ]
+}

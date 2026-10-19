@@ -1,0 +1,31 @@
+[
+  {
+    "name": "ci-performance-latest",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:r67:performance"
+    ],
+    "exitCode": 1,
+    "seconds": 29.31
+  },
+  {
+    "name": "r6-latest",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:content:r6"
+    ],
+    "exitCode": 0,
+    "seconds": 122.91
+  },
+  {
+    "name": "effects-latest",
+    "command": [
+      "node",
+      "scripts/test-content-r6-effects.js"
+    ],
+    "exitCode": 0,
+    "seconds": 8.23
+  }
+]

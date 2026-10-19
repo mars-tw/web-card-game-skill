@@ -1,0 +1,111 @@
+{
+  "status": "VERIFIED",
+  "method": "Native source alpha, no invented opaque matte. White/purple review composites only; original masters and store captures unchanged.",
+  "assets": [
+    {
+      "id": "wave",
+      "source": "docs/art/source/r76/wave.png",
+      "sha256": "482520f68b3f5a5d0b3f74fc228eb4551068d40c8c46d0ba4c9857686a4778a4",
+      "native_alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.4314645131429036,
+        "center": 251,
+        "native": true
+      },
+      "corners": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "status": "VERIFIED"
+    },
+    {
+      "id": "victory-navigator",
+      "source": "docs/art/source/r76/victory-navigator.png",
+      "sha256": "093c77607f31b6616c6d37f6de2a33f888cd85a311a7a1a8401fa40ea1776901",
+      "native_alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.277438481648763,
+        "center": 253,
+        "native": true
+      },
+      "corners": [
+        0,
+        0,
+        244,
+        248
+      ],
+      "status": "VERIFIED"
+    },
+    {
+      "id": "frame",
+      "source": "docs/art/source/r76/frame.png",
+      "sha256": "108fb631f4e42af840aa9f60b2c55a903880c9415f66ce39c72385faaafe081a",
+      "native_alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.8724308013916016,
+        "center": 0,
+        "native": true
+      },
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "status": "VERIFIED"
+    },
+    {
+      "id": "icons",
+      "source": "docs/art/source/r76/icons.png",
+      "sha256": "1cc8f3c52aa9cb13ff5f30a4db44f9bc5ac1be89ec913270c886aa279c9f4a16",
+      "native_alpha": {
+        "extrema": [
+          0,
+          255
+        ],
+        "transparent_ratio": 0.476062564705224,
+        "center": 0,
+        "native": true
+      },
+      "corners": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "status": "VERIFIED"
+    },
+    {
+      "id": "logo",
+      "source": "docs/art/source/r76/logo.png",
+      "sha256": "2320334aecdd467a18ab0fab756e868115073a0281e4393faa4397ea8e341a9c",
+      "native_alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.7237803141276041,
+        "center": 252,
+        "native": true
+      },
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "status": "VERIFIED"
+    }
+  ]
+}

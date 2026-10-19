@@ -1,0 +1,200 @@
+{
+  "status": "VERIFIED",
+  "proofs": [
+    {
+      "id": "fallen",
+      "proof": {
+        "label": "陣亡補潮 · 潮 5/6陣亡補1格；敵弓手2血。",
+        "rect": {
+          "x": 185.4140625,
+          "y": 408.984375,
+          "width": 191.578125,
+          "height": 50,
+          "top": 408.984375,
+          "right": 376.9921875,
+          "bottom": 458.984375,
+          "left": 185.4140625
+        },
+        "plain": {
+          "x": 191.4140625,
+          "y": 437.984375,
+          "width": 179.578125,
+          "height": 16,
+          "top": 437.984375,
+          "right": 370.9921875,
+          "bottom": 453.984375,
+          "left": 191.4140625
+        },
+        "font": 14,
+        "inside": true,
+        "clear": true
+      },
+      "hand": []
+    },
+    {
+      "id": "shield",
+      "proof": {
+        "label": "貝盾擋一次敵守衛1血，聖盾可擋一次。潮能已滿：按「裂潮」選擇潮向。",
+        "rect": {
+          "x": 125,
+          "y": 408.984375,
+          "width": 252,
+          "height": 70,
+          "top": 408.984375,
+          "right": 377,
+          "bottom": 478.984375,
+          "left": 125
+        },
+        "plain": {
+          "x": 150.09375,
+          "y": 437.984375,
+          "width": 201.796875,
+          "height": 16,
+          "top": 437.984375,
+          "right": 351.890625,
+          "bottom": 453.984375,
+          "left": 150.09375
+        },
+        "font": 14,
+        "inside": true,
+        "clear": true
+      },
+      "hand": []
+    },
+    {
+      "id": "shelter",
+      "proof": {
+        "label": "長弓留場弓手與狼互相致命；保住弓手。潮能已滿：按「裂潮」選擇潮向。",
+        "rect": {
+          "x": 125,
+          "y": 408.984375,
+          "width": 252,
+          "height": 70,
+          "top": 408.984375,
+          "right": 377,
+          "bottom": 478.984375,
+          "left": 125
+        },
+        "plain": {
+          "x": 139,
+          "y": 437.984375,
+          "width": 224,
+          "height": 16,
+          "top": 437.984375,
+          "right": 363,
+          "bottom": 453.984375,
+          "left": 139
+        },
+        "font": 14,
+        "inside": true,
+        "clear": true
+      },
+      "hand": []
+    },
+    {
+      "id": "taunt",
+      "proof": {
+        "label": "嘲諷封路敵士兵開局已受傷，只有1血。潮能已滿：按「裂潮」選擇潮向。",
+        "rect": {
+          "x": 125,
+          "y": 408.984375,
+          "width": 252,
+          "height": 70,
+          "top": 408.984375,
+          "right": 377,
+          "bottom": 478.984375,
+          "left": 125
+        },
+        "plain": {
+          "x": 142.09375,
+          "y": 437.984375,
+          "width": 217.796875,
+          "height": 16,
+          "top": 437.984375,
+          "right": 359.890625,
+          "bottom": 453.984375,
+          "left": 142.09375
+        },
+        "font": 14,
+        "inside": true,
+        "clear": true
+      },
+      "hand": []
+    },
+    {
+      "id": "spell",
+      "proof": {
+        "label": "火焰箭 · 3 傷依盤面決定交換與潮向。潮能已滿：按「裂潮」選擇潮向。",
+        "rect": {
+          "x": 125,
+          "y": 408.984375,
+          "width": 252,
+          "height": 70,
+          "top": 408.984375,
+          "right": 377,
+          "bottom": 478.984375,
+          "left": 125
+        },
+        "plain": {
+          "x": 163,
+          "y": 437.984375,
+          "width": 176,
+          "height": 16,
+          "top": 437.984375,
+          "right": 339,
+          "bottom": 453.984375,
+          "left": 163
+        },
+        "font": 14,
+        "inside": true,
+        "clear": true
+      },
+      "hand": [
+        {
+          "id": "firebolt",
+          "rect": {
+            "x": 19,
+            "y": 252,
+            "width": 82,
+            "height": 142,
+            "top": 252,
+            "right": 101,
+            "bottom": 394,
+            "left": 19
+          },
+          "inside": true
+        }
+      ]
+    },
+    {
+      "id": "cross",
+      "proof": {
+        "label": "雙線交換 · 潮 5/6依盤面決定交換與潮向。",
+        "rect": {
+          "x": 189,
+          "y": 418.984375,
+          "width": 188,
+          "height": 50,
+          "top": 418.984375,
+          "right": 377,
+          "bottom": 468.984375,
+          "left": 189
+        },
+        "plain": {
+          "x": 195,
+          "y": 447.984375,
+          "width": 176,
+          "height": 16,
+          "top": 447.984375,
+          "right": 371,
+          "bottom": 463.984375,
+          "left": 195
+        },
+        "font": 14,
+        "inside": true,
+        "clear": true
+      },
+      "hand": []
+    }
+  ]
+}

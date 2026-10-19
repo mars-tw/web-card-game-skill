@@ -1,0 +1,97 @@
+{
+  "round": "R79",
+  "date": "2026-10-18",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "model_note": "Built-in image_gen.imagegen does not expose a verifiable model slug; no gpt-image version inferred.",
+  "style_prefix": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism.",
+  "assets": [
+    {
+      "id": "wave",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset type: game VFX cutout, wide landscape 1536x1024, genuine transparent alpha. Reference image is ONLY the game's crescent crest identity. Paint ONE SINGLE ASYMMETRIC CONTINUOUS TIDAL WALL moving AWAY FROM VIEWER, from BOTTOM to TOP, in elevated three-quarter ship-deck perspective. A broad diagonal raised WATER RIDGE reaches across ENTIRE WIDTH, taller at RIGHT-of-center with ONE hooked moon-white crest pointing toward upper-left, like the logo crescent. Long parallel trailing water streaks run DOWN toward viewer from that elevated ridge. Show the BACK SLOPE of a moving wave, not its hollow front. Transparent indigo body with a clearly tall leading lip and sprayed foam thrown FORWARD toward the far side at top. Foreground is long transparent tapering trailing wash, not a white perimeter. Make the whole silhouette an oblique sweeping WEDGE, not a bowl or a circle. NO paired horns, NO left-right symmetry, NO separate swirls, NO whirlpools, NO closed foam rings, NO two opposing waves. No cards, deck, environment, text, frame or horizon. Clean outside alpha. Designed to move upward through enemy cards; only one continuous sweeping crest.",
+      "references": [
+        "assets/art/r78/logo.webp"
+      ],
+      "transparent_requested": true,
+      "use": "runtime"
+    },
+    {
+      "id": "foam",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset type: single contact splash ribbon VFX cutout, landscape 1536x1024, TRUE transparent outside. Reference the ONE asymmetric crescent wave ridge, not a circular border. Paint a LOW BROAD DIAGONAL SPRAY of seafoam moving from bottom-right toward top-left, with 5-9 irregular pointed WHITE FOAM FINGERS and airborne droplets. Narrow indigo water streak along bottom third, empty upper half except droplets. Spray must cover the LOWER EDGE of a card at impact. NO circle, NO ring, NO oval frame, NO whirling water, NO symmetrical sides, NO clear central window. Shape is an elongated broken brushstroke with one higher hooked tip on its right. No text, card, environment.",
+      "references": [
+        "docs/art/source/r79/wave.png"
+      ],
+      "transparent_requested": true,
+      "use": "runtime"
+    },
+    {
+      "id": "navigator-sheet",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset type: production character continuity sheet, landscape1536x1024, matte lavender background. Reference 1 locks the navigator identity and outfit; reference2 locks NEW SINGLE-HOOK crest replacing old paired/circular wave designs. SAME adult East Asian woman, short dark indigo bob, coral scarf, indigo coat with white embroidery, copper compass, white blouse, brown belts, 7-head adult proportions. FRONT SIDE BACK full-body orthographic views with feet and hands, separated silhouettes; small bottom strip of thoughtful/focused/triumphant faces. Her indigo banner now has ONE diagonal sweeping pearl wave ridge taller at right with a single hook pointing upper-left, exactly like wave reference2, no circular wave logo. Keep moonlight top-left, copper bounce lower-right. No environment, lettering, logo text or UI. This sheet is a visual reference, not animation.",
+      "references": [
+        "docs/art/character-sheets/navigator-r78.png",
+        "docs/art/source/r79/wave.png"
+      ],
+      "transparent_requested": false,
+      "use": "continuity reference"
+    },
+    {
+      "id": "victory-navigator",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset type: final victory navigator cutout, portrait1024x1536, native transparent alpha. Reference1 is approved identity sheet, reference2 is SINGLE-HOOK crest identity. Same adult East Asian navigator, same indigo bob hair, warm face, coral scarf, indigo coat and compass, top-left moonlight, copper bounce. Head to upper thighs, large readable face, right arm raised carrying an indigo triangular swallowtail banner; banner fully visible above head with copper trim. The WHITE BANNER PRINT is the SAME asymmetrical diagonal wave ridge as reference2, one tall tip near its right pointing upper-left, long parallel trailing strokes to lower-left; NOT a round wave circle. Confident triumphant smile, elegant adult proportions. No scenery, no water surrounding the body, no words. Keep hands, banner and full head inside margins. True alpha outside character and flag.",
+      "references": [
+        "docs/art/character-sheets/navigator-r79.png",
+        "docs/art/source/r79/wave.png"
+      ],
+      "transparent_requested": true,
+      "use": "runtime"
+    },
+    {
+      "id": "battlefield",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset type: final existing battlefield background replacement, landscape1536x1024, opaque. Reference1 locks the ship deck geometry, shell railing, violet wood and distant sea. Reference2 locks the one-hook wave signature. Keep continuous wooden deck plane from foreground to rear, no dividing water channel. Refine floor with subtle moonlit damp streaks along vanishing point and fine brass inlays shaped as ONE diagonal hooked wave motif, never mirrored paired curls. Keep middle70% QUIET medium-value indigo-violet planks for card readability, low-frequency texture. Low shell-bronze railing and dark indigo night sea only upper20%; lighthouse copper glint in upper-right, moonlight upper-left. Perspective lines recede to far top center, small raised shell prow crest at top. Not a new location. No cards, people, lettering, UI, tokens or symbols resembling text. Sharper elegant heirloom maritime material, avoid excessive bloom.",
+      "references": [
+        "assets/art/r78/battlefield.webp",
+        "docs/art/source/r79/wave.png"
+      ],
+      "transparent_requested": false,
+      "use": "runtime"
+    },
+    {
+      "id": "frame",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset type: final collectible card border, portrait1024x1536, TRUE transparent center and exterior. Reference1 locks thin shell-copper craft. Reference2 is the ONE-hook diagonal wave signature. ONE thin straight frame, border only outer4% each side, 90% of image EMPTY ALPHA. Warm copper rails, pearl-white inlay, tiny ONE hooked wave relief at upper-right corner and lower-left corner, asymmetric corner ornaments. Crisp faceted corners, very small pearl chips and engraved sea lines. Open lower stats space, no opaque banner or panel. This replaces an existing frame, same2:3 proportions. NO words, digits, badges, stars, background, art inside center. Absolutely transparent center alpha0, outside corners alpha0, no checkerboard.",
+      "references": [
+        "assets/art/r78/frame.webp",
+        "docs/art/source/r79/wave.png"
+      ],
+      "transparent_requested": true,
+      "use": "runtime"
+    },
+    {
+      "id": "icon-wave",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset type: ONE final spell icon square1024x1024, genuine transparent alpha. Reference is canonical SINGLE-HOOK crest. Bold diagonal white wave ridge across small indigo enamel copper token. One elevated crescent curl at upper-right pointing upper-left, long tapered tail to lower-left, EXACT same asymmetric contour idea as reference. Simplify so it reads at32px, thick pearl foam and strong indigo negative wedge, small copper rail only below, no circular compass ring or paired curls. Strong clean silhouette, no lettering, digits, UI tile, backdrop or checkerboard.",
+      "references": [
+        "docs/art/source/r79/wave.png"
+      ],
+      "transparent_requested": true,
+      "use": "runtime"
+    },
+    {
+      "id": "logo",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset type: final Traditional Chinese game title logo, wide1536x1024, TRUE transparent outside. Reference1 locks correct exact typography layout: large 裂潮, smaller 卡牌 and English TIDEREND beneath. Preserve exact Traditional Chinese characters and readable English, no extra words. Keep pearl-white beveled letters, fine copper edges and deep indigo shadows, refine legibility. Replace the small upper crest and lower decorative wave with the SINGLE asymmetrical hook wave from reference2: tall tip right-of-center pointing upper-left, long diagonal tail toward lower-left, one continuous crest, no circular wave rings or mirrored double curls. Typography must remain dominant, small crest. Same dark-purple silhouette, restrained blue highlights. Transparent background, no poster plate, no scenery.",
+      "references": [
+        "assets/art/r78/logo.webp",
+        "docs/art/source/r79/wave.png"
+      ],
+      "transparent_requested": true,
+      "use": "runtime"
+    },
+    {
+      "id": "app-icon",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Asset type: local App icon proposal square1024x1024, opaque full bleed. One copper-and-pearl collectible card tilted slightly, split by the SINGLE hooked white wave from reference. Tall crest near upper-right points upper-left, trailing diagonal indigo water to lower-left, one continuous shape. Deep indigo-purple backdrop, pearl/copper high contrast, strong bold silhouette visible at64px. Keep important art in central78%, no rounded-square border baked in. No words, digits, character, tiny extra icons or fake gameplay. Same wave identity as actual battle spell, collectible card frame and night-maritime material.",
+      "references": [
+        "docs/art/source/r79/wave.png",
+        "docs/art/source/r79/frame.png"
+      ],
+      "transparent_requested": false,
+      "use": "local proposal only"
+    }
+  ]
+}

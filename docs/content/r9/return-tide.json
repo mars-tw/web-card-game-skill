@@ -1,0 +1,12 @@
+{
+  "status": "VERIFIED",
+  "checks": 13,
+  "result": {
+    "tideAtCheck": 1,
+    "currentEnemyTide": 2,
+    "healed": false,
+    "goal": "反攻前敵潮未達2格，追加治療已阻止。迅捷狼可出擊，保留補刀。",
+    "ownKnight": 1
+  },
+  "method": "Normal input, first clear to unlock returning encounter; one tide at pre-attack check, two after knight death; real reload and win; no stale damage receipt or obscured duplicate full-tide toast."
+}

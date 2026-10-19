@@ -1,0 +1,175 @@
+{
+  "status": "VERIFIED",
+  "version": "0.21.0",
+  "cacheVersion": "card-battle-content-r8-v1",
+  "latestTests": {
+    "r8": {
+      "name": "r8",
+      "command": [
+        "node",
+        "scripts/test-content-r8-e2e.js"
+      ],
+      "exit": 0,
+      "seconds": 148.3,
+      "log": "docs/content/r8/checks/r8-attempt4.log"
+    },
+    "r8-effects": {
+      "name": "r8-effects",
+      "command": [
+        "node",
+        "scripts/capture-content-r8-effects.js"
+      ],
+      "exit": 0,
+      "seconds": 13.2,
+      "log": "docs/content/r8/checks/r8-effects-attempt4.log"
+    },
+    "unit": {
+      "name": "unit",
+      "command": [
+        "npm.cmd",
+        "test"
+      ],
+      "exit": 0,
+      "seconds": 7.6,
+      "log": "docs/content/r8/checks/unit-attempt5.log"
+    },
+    "legacy-e2e": {
+      "name": "legacy-e2e",
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:e2e"
+      ],
+      "exit": 0,
+      "seconds": 1099.5,
+      "log": "docs/content/r8/checks/legacy-e2e-attempt4.log"
+    },
+    "rwd": {
+      "name": "rwd",
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:rwd"
+      ],
+      "exit": 0,
+      "seconds": 88.2,
+      "log": "docs/content/r8/checks/rwd.log"
+    },
+    "r6": {
+      "name": "r6",
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:content:r6"
+      ],
+      "exit": 0,
+      "seconds": 122.4,
+      "log": "docs/content/r8/checks/r6.log"
+    },
+    "r6-effects": {
+      "name": "r6-effects",
+      "command": [
+        "node",
+        "scripts/test-content-r6-effects.js"
+      ],
+      "exit": 0,
+      "seconds": 8.8,
+      "log": "docs/content/r8/checks/r6-effects.log"
+    },
+    "r7": {
+      "name": "r7",
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:content:r7"
+      ],
+      "exit": 0,
+      "seconds": 154.6,
+      "log": "docs/content/r8/checks/r7.log"
+    },
+    "r8-offline": {
+      "name": "r8-offline",
+      "command": [
+        "node",
+        "scripts/test-content-r8-offline.js"
+      ],
+      "exit": 0,
+      "seconds": 22.7,
+      "log": "docs/content/r8/checks/r8-offline.log"
+    },
+    "frames": {
+      "name": "frames",
+      "command": [
+        "node",
+        "scripts/measure-content-r8.js"
+      ],
+      "exit": 0,
+      "seconds": 31.5,
+      "log": "docs/content/r8/checks/frames.log"
+    },
+    "timing": {
+      "name": "timing",
+      "command": [
+        "node",
+        "scripts/test-content-r8-timing.js"
+      ],
+      "exit": 0,
+      "seconds": 10.2,
+      "log": "docs/content/r8/checks/timing.log"
+    },
+    "landscape": {
+      "name": "landscape",
+      "command": [
+        "node",
+        "scripts/capture-content-r8-landscape.js"
+      ],
+      "exit": 0,
+      "seconds": 31.0,
+      "log": "docs/content/r8/checks/landscape-attempt2.log"
+    },
+    "forecast-effects": {
+      "name": "forecast-effects",
+      "command": [
+        "node",
+        "scripts/capture-content-r8-forecast.js"
+      ],
+      "exit": 0,
+      "seconds": 19.9,
+      "log": "docs/content/r8/checks/forecast-effects.log"
+    },
+    "puzzle-readability": {
+      "name": "puzzle-readability",
+      "command": [
+        "node",
+        "scripts/capture-content-r8-puzzles.js"
+      ],
+      "exit": 0,
+      "seconds": 2.4,
+      "log": "docs/content/r8/checks/puzzle-readability.log"
+    }
+  },
+  "sourceHashes": {
+    "package.json": "5e8969fc0a89fbcc69532d2bd85f74b26c1d9cf133d4698c004313df4bdc8729",
+    "package-lock.json": "ca52a955e90e6ae72f51df9df729d29afcc4b06de24c7b56e86bea37194b911d",
+    "sw.js": "c5a2b5d80c405863b6ea782ffe06b9b7b1151d8588d16a92b17fc333165b8b8d",
+    "templates/card-battle/battle.js": "2ccab0fe2a70470ca7bd3e9652a6df77c1128b28974dd5886486db34387a5ceb",
+    "templates/card-battle/content-r6.js": "308b2d8322903030ffa73670f83403aac483c6e27b68d0ddff37db63f86a578c",
+    "templates/card-battle/content-r8.css": "9eaf5a9c7ebb5d1bcc7e1a1e85964553b6156cd17fa85ff434d2ce4c2e4abd40",
+    "templates/card-battle/tide-puzzles.js": "b0950fc1b2c82033bf78842ebac94c8b3a237ca8c92b8734218d165dba18400d",
+    "templates/card-battle/index.html": "c1ebda171cc0b729e22e42745c9fba375cc63b3e24003e3786e4520ad5ad893e",
+    "scripts/test-content-r8.js": "8227a5c6d3779045ec4e4c10305f2dfe7687411667374604ca9f7edceb4ab85d",
+    "scripts/test-content-r8-e2e.js": "0fd3d34694e9acb11040e116e9b9408e3a5ccc57829539eb4dda85de7cc1b482",
+    "scripts/test-content-r8-offline.js": "04ddbd4ca35b6611510b97ab562662455f58d25a715d65d02e118687b872e4a6",
+    "scripts/capture-content-r8-effects.js": "1d09bda643914685c89766685b6452dc606068d0bd74cd2820abafec292e2669",
+    "scripts/capture-content-r8-landscape.js": "213e0f8863b56ec93a858289dc229dd53a492781cd4fae862527bc67ad7d5ae0",
+    "scripts/capture-content-r8-puzzles.js": "96c448a3952d2999bf16bd8f6357fc429f8b7933bbbee75e56c884cbf632c629",
+    "scripts/capture-content-r8-forecast.js": "d4b2ff73ff3b921e4db73647fc253bdbbb9f8ed37dfb7aceb5f99bc3d1994dd4",
+    "scripts/test-content-r8-timing.js": "be994903cb96af534575ef8dc440de360671f6c46c74e3084990aa7a9e85a4af",
+    "scripts/test-content-r2-e2e.js": "c1f79d739138cbb46ff7e5f7779d751af6da9c72a9d22be057ee7d3723a876c8",
+    "scripts/test-content-r3-e2e.js": "fe254ee10245b42998e6f22f0844f80599b13bfae2aa1a12e0a434b43eb2d494",
+    "scripts/test-content-r4-e2e.js": "cecb05ae30a16bfa9c7955a5ce316f46d2f2a6f9bf8462b19fba4c47ec51cec5",
+    "scripts/test-content-r7-e2e.js": "1a89c34e5fa6122fb3a161eb99cf85d3e0eae48dc723b74f60fe185ceba12986"
+  },
+  "reviewIndexSha256": "42822fd1b5db567789cb5a4313638664640549da384f8a96c0213c43dd15d1a9",
+  "secretMatches": 0
+}

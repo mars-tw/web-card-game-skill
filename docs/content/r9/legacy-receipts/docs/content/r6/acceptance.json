@@ -1,0 +1,994 @@
+{
+  "status": "VERIFIED",
+  "checks": 84,
+  "screenshots": [
+    "phone-harbor-study-entry.png",
+    "phone-puzzle-fallen-playing.png",
+    "phone-puzzle-fallen-completed.png",
+    "phone-puzzle-shield-playing.png",
+    "phone-puzzle-shield-completed.png",
+    "phone-puzzle-shelter-playing.png",
+    "phone-puzzle-shelter-completed.png",
+    "phone-puzzle-taunt-playing.png",
+    "phone-puzzle-taunt-completed.png",
+    "phone-puzzle-spell-playing.png",
+    "phone-puzzle-spell-completed.png",
+    "phone-exchange-before.png",
+    "phone-puzzle-cross-playing.png",
+    "phone-exchange-preview.png",
+    "phone-exchange-cancelled.png",
+    "phone-exchange-confirmed.png",
+    "phone-puzzle-cross-completed.png",
+    "phone-forecast-before.png",
+    "phone-forecast-held.png",
+    "phone-forecast-applied.png",
+    "phone-forecast-wrong-direction.png",
+    "phone-forecast-allowed-direction.png",
+    "phone-forecast-fourth.png",
+    "phone-forecast-completed.png",
+    "phone-moen-entrance.png",
+    "phone-moen-preparing.png",
+    "phone-moen-anticipation.png",
+    "phone-moen-impact.png",
+    "phone-moen-guarding.png",
+    "phone-moen-shield-before.png",
+    "phone-moen-shield-impact.png",
+    "phone-moen-shield-after.png",
+    "phone-moen-completed.png",
+    "phone-moen-delay-before.png",
+    "phone-moen-delay-after.png",
+    "phone-moen-offline-playing.png",
+    "phone-moen-offline-completed.png",
+    "phone-moen-offline-reloaded.png"
+  ],
+  "exchangeProofs": [
+    {
+      "before": {
+        "tide": 5,
+        "enemyTide": 0,
+        "fields": [
+          {
+            "uid": "content-player-0",
+            "side": "player",
+            "hp": 2,
+            "shield": false,
+            "index": 0,
+            "slot": 0
+          },
+          {
+            "uid": "content-player-1",
+            "side": "player",
+            "hp": 4,
+            "shield": false,
+            "index": 1,
+            "slot": 1
+          },
+          {
+            "uid": "content-enemy-0",
+            "side": "enemy",
+            "hp": 2,
+            "shield": false,
+            "index": 0,
+            "slot": 0
+          },
+          {
+            "uid": "content-enemy-1",
+            "side": "enemy",
+            "hp": 4,
+            "shield": false,
+            "index": 1,
+            "slot": 1
+          }
+        ]
+      },
+      "preview": [
+        "血 2 → 1",
+        "血 4 → 4",
+        "血 2 → 0 退場",
+        "血 4 → 4"
+      ],
+      "cancelled": {
+        "tide": 5,
+        "enemyTide": 0,
+        "fields": [
+          {
+            "uid": "content-player-0",
+            "side": "player",
+            "hp": 2,
+            "shield": false,
+            "index": 0,
+            "slot": 0
+          },
+          {
+            "uid": "content-player-1",
+            "side": "player",
+            "hp": 4,
+            "shield": false,
+            "index": 1,
+            "slot": 1
+          },
+          {
+            "uid": "content-enemy-0",
+            "side": "enemy",
+            "hp": 2,
+            "shield": false,
+            "index": 0,
+            "slot": 0
+          },
+          {
+            "uid": "content-enemy-1",
+            "side": "enemy",
+            "hp": 4,
+            "shield": false,
+            "index": 1,
+            "slot": 1
+          }
+        ]
+      },
+      "after": {
+        "tide": 6,
+        "enemyTide": 0,
+        "fields": [
+          {
+            "uid": "content-player-1",
+            "side": "player",
+            "hp": 4,
+            "shield": false,
+            "index": 0,
+            "slot": 1
+          },
+          {
+            "uid": "content-enemy-0",
+            "side": "enemy",
+            "hp": 1,
+            "shield": false,
+            "index": 0,
+            "slot": 0
+          },
+          {
+            "uid": "content-enemy-1",
+            "side": "enemy",
+            "hp": 4,
+            "shield": false,
+            "index": 1,
+            "slot": 1
+          }
+        ]
+      }
+    }
+  ],
+  "cardProofs": [
+    {
+      "phase": "wave-impact",
+      "label": "content-enemy-0",
+      "card": "knight",
+      "name": "鋼鐵騎士",
+      "stats": "\n        3\n        4\n      ",
+      "rect": {
+        "x": 269.5,
+        "y": 181.5,
+        "width": 82.5,
+        "height": 126,
+        "top": 181.5,
+        "right": 352,
+        "bottom": 307.5,
+        "left": 269.5
+      },
+      "nameRect": {
+        "x": 276.5,
+        "y": 258.5,
+        "width": 68.5,
+        "height": 22,
+        "top": 258.5,
+        "right": 345,
+        "bottom": 280.5,
+        "left": 276.5
+      },
+      "statsRect": {
+        "x": 276.5,
+        "y": 278.5,
+        "width": 68.5,
+        "height": 24,
+        "top": 278.5,
+        "right": 345,
+        "bottom": 302.5,
+        "left": 276.5
+      },
+      "visible": true,
+      "frame": "visible"
+    },
+    {
+      "phase": "guarding",
+      "label": "content-enemy-0",
+      "card": "knight",
+      "name": "鋼鐵騎士",
+      "stats": "\n        3\n        4\n      ",
+      "rect": {
+        "x": 269.5,
+        "y": 196.5,
+        "width": 82.5,
+        "height": 126,
+        "top": 196.5,
+        "right": 352,
+        "bottom": 322.5,
+        "left": 269.5
+      },
+      "nameRect": {
+        "x": 276.5,
+        "y": 273.5,
+        "width": 68.5,
+        "height": 22,
+        "top": 273.5,
+        "right": 345,
+        "bottom": 295.5,
+        "left": 276.5
+      },
+      "statsRect": {
+        "x": 276.5,
+        "y": 293.5,
+        "width": 68.5,
+        "height": 24,
+        "top": 293.5,
+        "right": 345,
+        "bottom": 317.5,
+        "left": 276.5
+      },
+      "visible": true,
+      "frame": "visible"
+    },
+    {
+      "phase": "shield-impact",
+      "label": "content-enemy-0",
+      "card": "knight",
+      "name": "鋼鐵騎士",
+      "stats": "\n        3\n        4\n      ",
+      "rect": {
+        "x": 269.5,
+        "y": 181.5,
+        "width": 82.5,
+        "height": 126,
+        "top": 181.5,
+        "right": 352,
+        "bottom": 307.5,
+        "left": 269.5
+      },
+      "nameRect": {
+        "x": 276.5,
+        "y": 258.5,
+        "width": 68.5,
+        "height": 22,
+        "top": 258.5,
+        "right": 345,
+        "bottom": 280.5,
+        "left": 276.5
+      },
+      "statsRect": {
+        "x": 276.5,
+        "y": 278.5,
+        "width": 68.5,
+        "height": 24,
+        "top": 278.5,
+        "right": 345,
+        "bottom": 302.5,
+        "left": 276.5
+      },
+      "visible": true,
+      "frame": "visible"
+    },
+    {
+      "phase": "shield-after",
+      "label": "content-enemy-0",
+      "card": "knight",
+      "name": "鋼鐵騎士",
+      "stats": "\n        3\n        4\n      ",
+      "rect": {
+        "x": 269.5,
+        "y": 181.5,
+        "width": 82.5,
+        "height": 126,
+        "top": 181.5,
+        "right": 352,
+        "bottom": 307.5,
+        "left": 269.5
+      },
+      "nameRect": {
+        "x": 276.5,
+        "y": 258.5,
+        "width": 68.5,
+        "height": 22,
+        "top": 258.5,
+        "right": 345,
+        "bottom": 280.5,
+        "left": 276.5
+      },
+      "statsRect": {
+        "x": 276.5,
+        "y": 278.5,
+        "width": 68.5,
+        "height": 24,
+        "top": 278.5,
+        "right": 345,
+        "bottom": 302.5,
+        "left": 276.5
+      },
+      "visible": true,
+      "frame": "visible"
+    }
+  ],
+  "layout": [
+    {
+      "width": 844,
+      "height": 390,
+      "dpr": 1,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 733,
+            "y": 146,
+            "width": 92,
+            "height": 140,
+            "top": 146,
+            "right": 825,
+            "bottom": 286,
+            "left": 733
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 46,
+            "y": 166,
+            "width": 68,
+            "height": 100,
+            "top": 166,
+            "right": 114,
+            "bottom": 266,
+            "left": 46
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 118,
+            "y": 166,
+            "width": 68,
+            "height": 100,
+            "top": 166,
+            "right": 186,
+            "bottom": 266,
+            "left": 118
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 190,
+            "y": 166,
+            "width": 68,
+            "height": 100,
+            "top": 166,
+            "right": 258,
+            "bottom": 266,
+            "left": 190
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 262,
+            "y": 166,
+            "width": 68,
+            "height": 100,
+            "top": 166,
+            "right": 330,
+            "bottom": 266,
+            "left": 262
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 324.8999938964844,
+            "width": 82.26092529296875,
+            "height": 46.20001220703125,
+            "top": 324.8999938964844,
+            "right": 96.30233383178711,
+            "bottom": 371.1000061035156,
+            "left": 14.04140853881836
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 689,
+            "y": 7,
+            "width": 70,
+            "height": 44,
+            "top": 7,
+            "right": 759,
+            "bottom": 51,
+            "left": 689
+          },
+          "visible": true,
+          "size": true
+        }
+      ]
+    },
+    {
+      "width": 1032,
+      "height": 1376,
+      "dpr": 1,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 712.8125,
+            "y": 314.5,
+            "width": 105,
+            "height": 126,
+            "top": 314.5,
+            "right": 817.8125,
+            "bottom": 440.5,
+            "left": 712.8125
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 298.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 403.5,
+            "bottom": 1069.5,
+            "left": 298.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 408.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 513.5,
+            "bottom": 1069.5,
+            "left": 408.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 518.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 623.5,
+            "bottom": 1069.5,
+            "left": 518.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 628.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 733.5,
+            "bottom": 1069.5,
+            "left": 628.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 1310.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 1310.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 1357.0999755859375,
+            "left": 14.04140853881836
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 758,
+            "bottom": 102,
+            "left": 714
+          },
+          "visible": true,
+          "size": true
+        }
+      ]
+    },
+    {
+      "width": 1376,
+      "height": 1032,
+      "dpr": 1,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 988,
+            "y": 228.5,
+            "width": 105,
+            "height": 126,
+            "top": 228.5,
+            "right": 1093,
+            "bottom": 354.5,
+            "left": 988
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 470.5,
+            "y": 685.5,
+            "width": 105,
+            "height": 126,
+            "top": 685.5,
+            "right": 575.5,
+            "bottom": 811.5,
+            "left": 470.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 580.5,
+            "y": 685.5,
+            "width": 105,
+            "height": 126,
+            "top": 685.5,
+            "right": 685.5,
+            "bottom": 811.5,
+            "left": 580.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 690.5,
+            "y": 685.5,
+            "width": 105,
+            "height": 126,
+            "top": 685.5,
+            "right": 795.5,
+            "bottom": 811.5,
+            "left": 690.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 800.5,
+            "y": 685.5,
+            "width": 105,
+            "height": 126,
+            "top": 685.5,
+            "right": 905.5,
+            "bottom": 811.5,
+            "left": 800.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 966.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 966.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 1013.0999755859375,
+            "left": 14.04140853881836
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 758,
+            "bottom": 102,
+            "left": 714
+          },
+          "visible": true,
+          "size": true
+        }
+      ]
+    },
+    {
+      "width": 1366,
+      "height": 600,
+      "dpr": 1,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 1255,
+            "y": 277,
+            "width": 92,
+            "height": 140,
+            "top": 277,
+            "right": 1347,
+            "bottom": 417,
+            "left": 1255
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 307,
+            "y": 297,
+            "width": 68,
+            "height": 100,
+            "top": 297,
+            "right": 375,
+            "bottom": 397,
+            "left": 307
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 379,
+            "y": 297,
+            "width": 68,
+            "height": 100,
+            "top": 297,
+            "right": 447,
+            "bottom": 397,
+            "left": 379
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 451,
+            "y": 297,
+            "width": 68,
+            "height": 100,
+            "top": 297,
+            "right": 519,
+            "bottom": 397,
+            "left": 451
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 523,
+            "y": 297,
+            "width": 68,
+            "height": 100,
+            "top": 297,
+            "right": 591,
+            "bottom": 397,
+            "left": 523
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 534.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 534.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 581.0999755859375,
+            "left": 14.04140853881836
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 54,
+            "width": 44,
+            "height": 44,
+            "top": 54,
+            "right": 758,
+            "bottom": 98,
+            "left": 714
+          },
+          "visible": true,
+          "size": true
+        }
+      ]
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "dpr": 3,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 299.5,
+            "y": 218.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 218.5,
+            "right": 392,
+            "bottom": 344.5,
+            "left": 299.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 22.5,
+            "y": 615.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 615.5,
+            "right": 115,
+            "bottom": 741.5,
+            "left": 22.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 120,
+            "y": 615.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 615.5,
+            "right": 212.5,
+            "bottom": 741.5,
+            "left": 120
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 217.5,
+            "y": 615.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 615.5,
+            "right": 310,
+            "bottom": 741.5,
+            "left": 217.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 315,
+            "y": 615.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 615.5,
+            "right": 407.5,
+            "bottom": 741.5,
+            "left": 315
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 866.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 866.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 913.0999755859375,
+            "left": 14.04140853881836
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 368,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 412,
+            "bottom": 122,
+            "left": 368
+          },
+          "visible": true,
+          "size": true
+        }
+      ]
+    },
+    {
+      "width": 1032,
+      "height": 1376,
+      "dpr": 2,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 712.8125,
+            "y": 314.5,
+            "width": 105,
+            "height": 126,
+            "top": 314.5,
+            "right": 817.8125,
+            "bottom": 440.5,
+            "left": 712.8125
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 298.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 403.5,
+            "bottom": 1069.5,
+            "left": 298.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 408.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 513.5,
+            "bottom": 1069.5,
+            "left": 408.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 518.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 623.5,
+            "bottom": 1069.5,
+            "left": 518.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 628.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 733.5,
+            "bottom": 1069.5,
+            "left": 628.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 1310.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 1310.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 1357.0999755859375,
+            "left": 14.04140853881836
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 758,
+            "bottom": 102,
+            "left": 714
+          },
+          "visible": true,
+          "size": true
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "method": "Real normal DOM input, no injected game state; phone PNGs 390x844, DPR1; actual offline completion/reload/export/import."
+}

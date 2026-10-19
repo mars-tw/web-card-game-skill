@@ -1,0 +1,174 @@
+/* Moonrend Maritime: generated art supplies the material; CSS supplies layout/state. */
+:root,:root[data-theme] { --ink:#f2f1fa; --muted:#c1bad8; --accent:#da8a6d; --panel:#201c3d; --panel-border:#9c766f; --bg1:#302544; --bg2:#10152d; --stage:#10152d; --bar1:#302544; --bar2:#201c3d; }
+:root[data-theme="fantasy"] { --accent:#e9bd74; }
+:root[data-theme="cyber"] { --accent:#69cfe9; }
+:root[data-theme="forest"] { --accent:#b6a0ec; }
+body { font-family:Arial,"Noto Sans TC","Microsoft JhengHei",sans-serif; }
+button,select,a { touch-action:manipulation; }
+button:focus-visible,a:focus-visible { outline:3px solid #69cfe9; outline-offset:3px; }
+.r75-icon { width:28px;height:28px;object-fit:contain;flex-shrink:0;vertical-align:middle; }
+.tabbar { background:#201c3d; border-bottom:2px solid #da8a6d; }
+.tabbar .brand-zh { background:none;color:#f2f1fa;filter:none; }
+.tabbar .brand-en { color:#da8a6d; }
+.tabbar .tab { border-radius:2px; min-height:44px; }
+.tabbar .tab.active { color:#10152d;background:var(--accent);box-shadow:none; }
+.tabbar .swatch { min-width:44px;min-height:44px;border-radius:2px; font-size:12px;color:#fff;background:#302544; }
+.tabbar .swatch::after { content:attr(data-label);text-shadow:0 1px 3px #000; }
+.tabbar .theme-picker { gap:2px; }
+.tabbar .pwa-meta button { min-width:44px;min-height:44px;border-radius:2px;background:#302544;border-color:#9c766f; }
+.board { background:linear-gradient(#201c3d18,#201c3d18),image-set(url('../assets/art/r75/battlefield-low.webp') 1x,url('../assets/art/r75/battlefield.webp') 2x) center/cover; border-inline:1px solid #da8a6d60; }
+body::after { opacity:.25; }
+header .brand-mark { background:none;color:#f2f1fa;filter:none; }
+header .brand-sub { color:#da8a6d;text-shadow:none; }
+.hero-row,.settings-panel,.controls,.hand-preview,.voyage-card,.guide-panel,.collection-panel,.deck-panel,.pack-topbar,.pack-stage { background-color:#201c3df5; border-color:#9c766f; border-radius:2px; }
+.hero-row { background:linear-gradient(110deg,#201c3df2,#302544df);border:1px solid #b9958c; }
+.hero .avatar { border-color:#da8a6d; }
+#playerHero .avatar { color:transparent;background:url('../assets/art/r75/avatar.webp') center/cover,radial-gradient(circle at 35% 25%,#7c5c86,#201c3d);box-shadow:inset 0 0 0 2px #e2c9b6,0 0 0 1px #9c766f; }
+.hero-stats .hp-badge,.hp-badge,.mana-badge { border-radius:3px;background:radial-gradient(circle at 35% 20%,#77688e,#302544 68%); border:1px solid #9c766f;box-shadow:inset 0 2px 3px #d6c4df60,0 2px 4px #10152d; }
+.battlefield,.battlefield.enemy { background:transparent; backdrop-filter:none; border:0; border-bottom:1px solid #d7bbc34d; border-radius:0;box-shadow:none; }
+.battlefield .empty-hint { padding:8px 16px;border:1px solid #f2f1fa50;border-radius:50%;color:#f2f1fa;background:#201c3d70; }
+.card { border-radius:3px;padding:6px; background:#10152d!important; border-color:#b6b9d0; box-shadow:0 4px 12px #080817bb!important; }
+.card.rarity-rare { border-color:#69cfe9; }
+.card.rarity-epic { border-color:#b6a0ec; }
+.card.rarity-legendary { border-color:#e9bd74; }
+.card .r75-card-frame { position:absolute;inset:-2px;width:calc(100% + 4px);height:calc(100% + 4px);z-index:6;pointer-events:none;object-fit:fill; }
+.card.rarity-common .r75-card-frame { filter:grayscale(1) brightness(1.3); }
+.card.rarity-rare .r75-card-frame { filter:hue-rotate(155deg) saturate(.8); }
+.card.rarity-epic .r75-card-frame { filter:hue-rotate(240deg) saturate(.7); }
+.card .art { flex:1;min-height:0;height:64%;border-radius:1px;border:0;position:relative; }
+.card .art>img:not(.faction-emblem) { object-position:center 25%; }
+.card .kwrow { position:absolute;top:8px;left:26px;right:24px;z-index:5;min-height:0; }
+.card .cardname { font-size:12px;line-height:1.2;border-radius:0;padding:3px 0;background:#201c3d;color:#f2f1fa; }
+.card .cardtext { font-size:12px;line-height:1.2;min-height:15px;max-height:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:#10152d;padding:0 16px 0 0; }
+.battlefield .card .cardtext { display:none; }
+.battlefield .card .art { position:absolute;inset:4px 4px 31px;flex:none;height:auto;min-height:0; }
+.battlefield .card .cardname { position:absolute;bottom:24px;left:4px;right:4px;padding:2px 0;background:#201c3de8; }
+.battlefield .card .stats { position:absolute;bottom:2px;left:4px;right:4px;min-height:0; }
+.card .stats { min-height:23px; }
+.card .stats,.card .cardname { z-index:9; }
+.card .atk,.card .hp { border-radius:1px;transform:none;background:#302544;border:1px solid #da8a6d;clip-path:polygon(50% 0,100% 18%,90% 78%,50% 100%,10% 78%,0 18%);box-shadow:none; }
+.card .hp { border-color:#b7a7d7; }
+.card .cost { background:#426c9e;box-shadow:inset 0 0 0 2px #b0e9f8;filter:drop-shadow(0 2px 3px #10152d);clip-path:polygon(50% 0,90% 42%,100% 70%,80% 95%,20% 95%,0 70%,10% 42%); }
+.card .frame-sheen { border-radius:3px; }
+.card.foil::after { border-radius:3px;opacity:.58;background:linear-gradient(115deg,transparent 25%,#f2f1fa65 42%,#69cfe950 48%,#e9bd7450 56%,transparent 72%),linear-gradient(60deg,transparent 30%,#b6a0ec30 45%,#da8a6d40 55%,transparent 72%);background-size:260% 260%,230% 230%; }
+.card-info-btn { border-radius:2px;background:#201c3ddb;color:#f2f1fa;min-width:44px;min-height:44px; }
+.card .card-info-btn { top:-4px;right:0;background:transparent;border:0;box-shadow:none;align-items:flex-start;justify-content:flex-end;padding:4px 5px; }
+.card-info-btn::before { content:"";position:absolute;right:2px;top:2px;width:22px;height:22px;z-index:-1;pointer-events:none;background:#201c3ddb;border:1px solid #b9958c;border-radius:2px; }
+.end-turn,#endTurnBtn,.overlay button,.tide-chart-sheet .primary,#handConfirmBtn,#voyageStart { border-radius:2px; background:#da8a6d;color:#10152d;box-shadow:inset 0 2px #f2c6aa,inset 0 -3px #8d4e54; }
+.controls button,.overlay button { min-height:44px; }
+.tidebreak-btn,.tidebreak-btn.ready { border-radius:3px;background:#201c3d;border:1px solid #69cfe9;color:#f2f1fa; }
+.tidebreak-btn .tide-ring,.tide-meter .tide-ring { background:url('../assets/art/r75/icon-wave.webp') center/contain no-repeat;border:0;box-shadow:none; }
+.tidebreak-btn .tide-glyph { color:#fff;text-shadow:0 2px 4px #10152d; }
+.tidebreak-btn.ready { box-shadow:0 0 18px #69cfe9; }
+.r75-tide-channel { height:34px;flex:0 0 34px;position:relative;display:flex;align-items:center;justify-content:center;gap:10px;overflow:hidden;background:linear-gradient(90deg,transparent,#10152de6,transparent);border-block:1px solid #69cfe960;isolation:isolate; }
+.r75-tide-channel::before { content:"";position:absolute;inset:0;z-index:-1;background:url('../assets/art/r75/tide-water.webp') center/cover;transform:translateY(calc((6 - var(--r75-tide,0))*4px));opacity:.75;transition:transform .45s ease; }
+.r75-tide-channel span { font-size:12px;letter-spacing:3px;color:#f2f1fa;text-shadow:0 1px 4px #10152d; }
+.r75-tide-pips { display:flex;gap:4px; }
+.r75-tide-pips i { display:block;width:26px;height:23px;background:url('../assets/art/r75/icon-wave.webp') center/contain no-repeat;filter:grayscale(1);opacity:.22; }
+.r75-tide-pips i.filled { opacity:1;filter:none; }
+body[data-tide-ready="true"] .r75-tide-channel { border-color:#c5f3ff;box-shadow:0 0 15px #69cfe980; }
+.turn-banner { top:42%; }
+.turn-banner span { font-size:16px;padding:5px 24px;letter-spacing:4px;border-radius:0; }
+.toast { top:8px;max-width:min(80vw,600px);font-size:12px; }
+body[data-tide-trial="true"] .quest-panel,body[data-tide-trial="true"] .series-footer,body[data-tide-trial="true"] #log { display:none; }
+.tide-trial-bar { position:relative;top:auto;left:auto;transform:none;width:100%;max-width:none;order:-1;z-index:2;border:0;border-bottom:1px solid #da8a6d80;background:#201c3df0;color:#f2f1fa;justify-content:space-between; }
+.tide-trial-bar span { max-width:none; }
+.tide-trial-bar { padding-right:76px; }
+.settings-toggle { background:#201c3d url('../assets/art/r75/icon-settings.webp') center/32px 32px no-repeat;color:transparent;border-color:#9c766f;border-radius:2px; }
+#hintBtn { background:#201c3d url('../assets/art/r75/icon-lantern.webp') center/28px 28px no-repeat;color:transparent;border-color:#9c766f; }
+.tide-trial-bar button { background:#302544;border-color:#b9958c; }
+#tideChartPanel { place-items:end center;background:#10152d38;pointer-events:auto;padding:10px; }
+#tideChartPanel .tide-chart-sheet { pointer-events:auto;width:min(760px,100%);background:#201c3df7;box-shadow:0 -10px 40px #10152d66;border:1px solid #da8a6d;border-top:3px solid #d9c5cc;border-radius:18px 0 0 0;padding:14px 18px; }
+#tideChartPanel .tide-chart-sheet { padding-top:10px;padding-bottom:10px; }
+.tide-chart-sheet { background:#201c3df7;border-color:#da8a6d;border-radius:18px 0 0 0;color:#f2f1fa; }
+.tide-chart-sheet h2 { font-family:Georgia,"Noto Serif TC",serif; }
+.tide-chart-sheet p { font-size:13px;line-height:1.45;color:#e1dced; }
+#tideSources { font-size:12px; }
+#tideGauge { display:none; }
+#r75ChartPips { justify-content:center;gap:8px;margin:8px 0; }
+#r75ChartPips i { width:38px;height:28px; }
+.tide-choices { margin:8px 0;gap:10px; }
+.tide-choices button { display:flex;align-items:center;justify-content:center;gap:8px;min-height:60px;border-radius:2px;background:#302544;border-color:#9581ab;color:#f2f1fa;font-size:13px; }
+.tide-choices button.selected { background:#394266;color:#f2f1fa;border-color:#69cfe9;box-shadow:inset 0 0 0 1px #69cfe9; }
+.tide-choices .r75-icon { width:42px;height:42px; }
+.tide-chart-sheet .tide-preview { padding:6px 0;min-height:44px;margin:6px 0; }
+.tide-chart-footer { margin-top:8px; }
+.tide-chart-footer button { border-color:#9c766f;border-radius:2px; }
+.tide-chart-footer.r75-secondary button { background:transparent;font-size:12px;box-shadow:none;color:#d5c7de; }
+.tide-chart-footer #tideChartClose { background:#302544;color:#f2f1fa; }
+.r75-preview-hit { outline:3px solid #ed9c91!important; }
+.r75-preview-safe { outline:3px solid #bceafa!important; }
+.r75-preview-number { position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:28;background:#201c3d;color:#fff;padding:3px 8px;font:bold 16px Arial;border:1px solid #ed9c91;pointer-events:none; }
+.overlay { background:linear-gradient(#201c3d10,#201c3df5 80%),url('../assets/art/r75/victory.webp') center/cover #201c3d;isolation:isolate; }
+.overlay.show { padding:20px;gap:12px; }
+.overlay .r75-victory-hero { width:min(360px,65vw);height:38dvh;max-height:460px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 8px 12px #201c3d); }
+.overlay:not(:has(#trialResultActions:not([hidden]))) .r75-victory-hero { position:absolute;left:0;bottom:0;z-index:-1;height:55%;width:36%;opacity:.3; }
+.overlay h1,.overlay.win h1 { color:#f2f1fa;text-shadow:0 3px 6px #201c3d;font:700 clamp(26px,4vw,46px)/1.2 Georgia,"Noto Serif TC",serif;animation:none; }
+.overlay .overlay-epilogue { color:#f2f1fa;font-style:normal;text-align:center;max-width:40em; }
+.overlay #trialResultActions { gap:10px;width:min(460px,100%); }
+.overlay #trialResultActions button { flex:1 1 40%;font-size:14px;padding:12px; }
+.overlay #trialResultReplay,.overlay #trialResultHarbor { background:#201c3df5;color:#f2f1fa;border:1px solid #b9958c;box-shadow:none; }
+.pack { background:#201c3d url('../assets/art/r75/app-icon.webp') center/cover;border:2px solid #da8a6d;border-radius:2px; }
+.pack .pack-icon,.pack .pack-brand { visibility:hidden; }
+.pack .pack-label,.pack .pack-hint { background:#201c3dee;padding:3px 8px;text-shadow:none; }
+.reveal-row:empty { position:relative;width:100%;align-self:stretch;flex:1 1 auto;min-height:124px; }
+.reveal-row:empty::before { content:"開啟卡包，五張卡牌將在此展開";position:absolute;inset:8px;display:flex;align-items:flex-end;justify-content:center;padding:0 8px 10px;background:url('../assets/art/r75/icon-cards.webp') center 25%/64px auto no-repeat;color:#d9cfe8;font-size:13px;text-align:center;pointer-events:none; }
+.pack-topbar,.collection-panel,.deck-panel { border-color:#9c766f; }
+@media(max-width:600px) {
+  .tabbar { padding:4px 6px;gap:4px; }
+  .tabbar .theme-picker { margin-left:auto; }
+  .tabbar .tab { padding:6px 8px;min-width:64px; }
+  .tabbar .swatch { min-width:44px;min-height:44px;width:44px;height:44px; }
+  .tabbar .tab .r75-icon { width:20px;height:24px; }
+  .tabbar .swatch { font-size:10px; }
+  .board { width:100%;gap:4px; }
+  .r75-tide-channel { height:30px;flex-basis:30px; }
+  .card .cardname { font-size:12px; }
+  .card .cardtext { font-size:12px; }
+  #tideChartPanel .tide-chart-sheet { padding:10px 12px; }
+  #tideChartPanel h2 { font-size:20px;margin-bottom:4px; }
+}
+@media(min-width:768px) and (min-height:700px) {
+  :root[data-control-mode="touch"] { --card-w:156px;--card-h:216px; }
+  :root[data-control-mode="touch"] .battlefield .card { width:var(--card-w);height:var(--card-h); }
+  :root[data-control-mode="touch"] .battlefield .card .cardname { font-size:15px; }
+}
+@media(min-width:701px) and (max-height:800px) {
+  :root[data-control-mode="desktop"] .r75-tide-channel { height:0;flex:0 0 0;border:0;overflow:visible;z-index:2;background:none; }
+  :root[data-control-mode="desktop"] .r75-tide-channel::before { top:-9px;bottom:-9px; }
+  :root[data-control-mode="desktop"] .r75-tide-channel span { font-size:10px; }
+  :root[data-control-mode="desktop"] .r75-tide-pips i { height:16px; }
+}
+@media(max-width:360px) {
+  .tabbar .brand { display:none; }
+  .tabbar .theme-picker { gap:0; }
+  .tabbar .swatch { min-width:44px; }
+  .tabbar .tab { min-width:54px;padding:4px;font-size:11px;gap:2px; }
+  .tabbar .tab .r75-icon { width:18px; }
+  .tide-chart-sheet p { font-size:12px; }
+}
+@media(min-width:650px) and (max-height:650px) {
+  .overlay .r75-victory-hero { position:absolute;left:5%;bottom:0;height:85%;width:30%;z-index:-1;opacity:.9; }
+  .overlay:has(#trialResultActions:not([hidden])) { padding-left:36%; }
+  .overlay:has(#trialResultActions:not([hidden])) h1 { font-size:30px; }
+  .overlay:has(#voyageContinue) .r75-victory-hero { display:none; }
+}
+@media(max-height:450px) {
+  .reveal-row:empty { flex:0 0 auto;min-height:0; }
+  .reveal-row:empty::before { display:none; }
+  .battlefield .card .art { position:absolute;inset:4px 4px 22px;height:auto; }
+  .battlefield .card .stats { position:absolute;inset:auto 3px 1px;min-height:18px; }
+  .battlefield .card .atk,.battlefield .card .hp { width:18px;height:18px;font-size:12px; }
+  .battlefield .card .cardname { position:absolute;bottom:3px;left:21px;right:21px;padding:0;font-size:12px;white-space:nowrap;background:#201c3ded; }
+  .battlefield .card .kwrow { display:none; }
+  .r75-tide-channel { height:20px;flex-basis:20px; }
+  .r75-tide-pips i { height:18px;width:20px; }
+  .tide-trial-bar { font-size:11px;padding:2px 76px 2px 8px;min-height:44px; }
+  #tideChartPanel .tide-chart-sheet { padding:8px 12px; }
+  #r75ChartPips { margin:0; }
+  #tideChartPanel .tide-chart-footer { margin:0; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .r75-tide-channel::before { transition:none; }
+  .card.foil::after { animation:none;opacity:.35; }
+}

@@ -1,0 +1,10 @@
+PASS anticipation has unchanged HP and no shield
+PASS 359ms anticipation still has no healing or shield
+PASS impact actually heals 4 to 7 and grants knight shield
+PASS healing attached to hero, no HUD/hero-text/card overlap
+PASS spent shield counter and intact icon disappear on impact
+PASS shield loss leaves actual four HP
+PASS taunt wall remains after shield loss
+PASS painted fracture still extends beyond intact card on both sides
+PASS debug legend removed
+PASS immediate response clears knight and reduces boss to three before next turn

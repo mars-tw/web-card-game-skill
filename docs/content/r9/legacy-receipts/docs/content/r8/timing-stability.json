@@ -1,0 +1,50 @@
+{
+  "status": "VERIFIED",
+  "runs": [
+    {
+      "run": 1,
+      "anticipation": {
+        "unresolved": true,
+        "hp": 4,
+        "shield": false
+      },
+      "actualHpAfterImpact": 7,
+      "readbackDelayMs": 1000,
+      "cpuThrottle": 4
+    },
+    {
+      "run": 2,
+      "anticipation": {
+        "unresolved": true,
+        "hp": 4,
+        "shield": false
+      },
+      "actualHpAfterImpact": 7,
+      "readbackDelayMs": 1000,
+      "cpuThrottle": 4
+    },
+    {
+      "run": 3,
+      "anticipation": {
+        "unresolved": true,
+        "hp": 4,
+        "shield": false
+      },
+      "actualHpAfterImpact": 7,
+      "readbackDelayMs": 1000,
+      "cpuThrottle": 4
+    },
+    {
+      "run": 4,
+      "anticipation": {
+        "unresolved": true,
+        "hp": 4,
+        "shield": false
+      },
+      "actualHpAfterImpact": 7,
+      "readbackDelayMs": 1000,
+      "cpuThrottle": 4
+    }
+  ],
+  "method": "Four real waves with 4x CPU throttling and one-second delayed readback; original unresolved assertion checks observed anticipation, actual impact separately asserted."
+}

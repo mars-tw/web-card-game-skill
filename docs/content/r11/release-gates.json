@@ -1,0 +1,176 @@
+{
+  "status": "VERIFIED",
+  "version": "0.23.1",
+  "cache": "card-battle-content-r11-v1",
+  "branch": "main",
+  "gates": {
+    "r11-e2e": {
+      "name": "r11-e2e",
+      "command": [
+        "node",
+        "scripts/test-content-r11-e2e.js"
+      ],
+      "exit_code": 0,
+      "seconds": 151.34,
+      "status": "VERIFIED"
+    },
+    "npm-test": {
+      "name": "npm-test",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm test"
+      ],
+      "exit_code": 0,
+      "seconds": 9.03,
+      "status": "VERIFIED"
+    },
+    "npm-e2e": {
+      "name": "npm-e2e",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:e2e"
+      ],
+      "exit_code": 0,
+      "seconds": 1081.8,
+      "status": "VERIFIED"
+    },
+    "rwd": {
+      "name": "rwd",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:rwd"
+      ],
+      "exit_code": 0,
+      "seconds": 85.06,
+      "status": "VERIFIED"
+    },
+    "r6": {
+      "name": "r6",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:content:r6"
+      ],
+      "exit_code": 0,
+      "seconds": 120.34,
+      "status": "VERIFIED"
+    },
+    "r6-effects": {
+      "name": "r6-effects",
+      "command": [
+        "node",
+        "scripts/test-content-r6-effects.js"
+      ],
+      "exit_code": 0,
+      "seconds": 7.93,
+      "status": "VERIFIED"
+    },
+    "r7": {
+      "name": "r7",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:content:r7"
+      ],
+      "exit_code": 0,
+      "seconds": 149.03,
+      "status": "VERIFIED"
+    },
+    "r8": {
+      "name": "r8",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:content:r8"
+      ],
+      "exit_code": 0,
+      "seconds": 247.01,
+      "status": "VERIFIED"
+    },
+    "r9": {
+      "name": "r9",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:content:r9"
+      ],
+      "exit_code": 0,
+      "seconds": 315.23,
+      "status": "VERIFIED"
+    },
+    "r9-six-puzzles": {
+      "name": "r9-six-puzzles",
+      "command": [
+        "node",
+        "scripts/capture-content-r9-puzzles.js"
+      ],
+      "exit_code": 0,
+      "seconds": 2.51,
+      "status": "VERIFIED"
+    },
+    "r10": {
+      "name": "r10",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:content:r10"
+      ],
+      "exit_code": 0,
+      "seconds": 150.23,
+      "status": "VERIFIED"
+    },
+    "frames": {
+      "name": "frames",
+      "command": [
+        "node",
+        "scripts/measure-content-r8.js"
+      ],
+      "exit_code": 0,
+      "seconds": 30.77,
+      "status": "VERIFIED"
+    },
+    "ci-performance": {
+      "name": "ci-performance",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:r67:performance"
+      ],
+      "exit_code": 0,
+      "seconds": 31.35,
+      "status": "VERIFIED"
+    },
+    "cleanup": {
+      "name": "cleanup",
+      "command": [
+        "node",
+        "scripts/test-content-r11-cleanup.js"
+      ],
+      "exit_code": 0,
+      "seconds": 2.78,
+      "status": "VERIFIED"
+    }
+  },
+  "acceptance_checks": 647,
+  "review_images": 15,
+  "new_art": 3,
+  "source_hash_method": "Text CRLF normalized to LF as Git; images untouched bytes.",
+  "blocked": [
+    "Physical phone/iPad",
+    "Human/parent-child playtest",
+    "Exclusive clean-machine performance",
+    "Actual Muse >=8 rescore"
+  ]
+}

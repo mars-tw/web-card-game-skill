@@ -1,0 +1,5 @@
+AssertionError [ERR_ASSERTION]: puzzle-spell-failed all panel text ranges stay unclipped: [{"text":"哈爾登隊長","why":"outside viewport","rect":{"x":66,"y":-201,"width":70,"height":16,"top":-201,"right":136,"bottom":-185,"left":66}},{"text":"❤️ ","why":"outside viewport","rect":{"x":329.46875,"y":-203,"width":17.859375,"height":18,"top":-203,"right":347.328125,"bottom":-185,"left":329.46875}},{"text":"2","why":"outside viewport","rect":{"x":352.328125,"y":-203,"width":8.671875,"height":18,"top":-203,"right":361,"bottom":-185,"left":352.328125}}]
+    at check (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r11-e2e.js:4:28)
+    at auditText (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r11-e2e.js:19:135)
+    at async shot (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r11-e2e.js:6:42)
+    at async C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r11-e2e.js:25:150

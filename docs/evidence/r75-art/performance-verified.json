@@ -1,0 +1,155 @@
+{
+  "generatedAt": "2026-10-16T10:49:52.134Z",
+  "source": "working tree (R75)",
+  "profile": "Fast 3G (150ms RTT, 200KiB/s down) + 4x CPU throttle",
+  "concurrentMachine": true,
+  "trustNote": "Local p95 is concurrent-machine evidence; release decision requires clean-machine audit.",
+  "runs": [
+    {
+      "interactiveMs": 5809.7,
+      "visualReadyMs": 2341.1,
+      "domInteractiveMs": 5770.5,
+      "backgroundResponseEndMs": 1969.3,
+      "visualMarkPresent": true,
+      "backgroundResources": [
+        {
+          "name": "white-tide-citadel-low.webp?v=50075ecc",
+          "bytes": 18104,
+          "responseEndMs": 764.4
+        },
+        {
+          "name": "battlefield-low.webp",
+          "bytes": 104166,
+          "responseEndMs": 1969.3
+        },
+        {
+          "name": "icon-wave.webp",
+          "bytes": 11456,
+          "responseEndMs": 655.1
+        },
+        {
+          "name": "icon-settings.webp",
+          "bytes": 8330,
+          "responseEndMs": 592.2
+        },
+        {
+          "name": "icon-lantern.webp",
+          "bytes": 8766,
+          "responseEndMs": 607.6
+        },
+        {
+          "name": "tide-water.webp",
+          "bytes": 11588,
+          "responseEndMs": 922.9
+        },
+        {
+          "name": "avatar.webp",
+          "bytes": 6332,
+          "responseEndMs": 1576.1
+        }
+      ]
+    },
+    {
+      "interactiveMs": 5761.8,
+      "visualReadyMs": 2289.2,
+      "domInteractiveMs": 5717.4,
+      "backgroundResponseEndMs": 1946.6,
+      "visualMarkPresent": true,
+      "backgroundResources": [
+        {
+          "name": "white-tide-citadel-low.webp?v=50075ecc",
+          "bytes": 18104,
+          "responseEndMs": 777.6
+        },
+        {
+          "name": "battlefield-low.webp",
+          "bytes": 104166,
+          "responseEndMs": 1946.6
+        },
+        {
+          "name": "icon-wave.webp",
+          "bytes": 11456,
+          "responseEndMs": 652.5
+        },
+        {
+          "name": "icon-settings.webp",
+          "bytes": 8330,
+          "responseEndMs": 590
+        },
+        {
+          "name": "icon-lantern.webp",
+          "bytes": 8766,
+          "responseEndMs": 605.3
+        },
+        {
+          "name": "tide-water.webp",
+          "bytes": 11588,
+          "responseEndMs": 917
+        },
+        {
+          "name": "avatar.webp",
+          "bytes": 6332,
+          "responseEndMs": 1606.1
+        }
+      ]
+    },
+    {
+      "interactiveMs": 5814.4,
+      "visualReadyMs": 2269.4,
+      "domInteractiveMs": 5776.6,
+      "backgroundResponseEndMs": 1993.9,
+      "visualMarkPresent": true,
+      "backgroundResources": [
+        {
+          "name": "white-tide-citadel-low.webp?v=50075ecc",
+          "bytes": 18104,
+          "responseEndMs": 783.5
+        },
+        {
+          "name": "battlefield-low.webp",
+          "bytes": 104166,
+          "responseEndMs": 1993.9
+        },
+        {
+          "name": "icon-wave.webp",
+          "bytes": 11456,
+          "responseEndMs": 658.5
+        },
+        {
+          "name": "icon-lantern.webp",
+          "bytes": 8766,
+          "responseEndMs": 595.4
+        },
+        {
+          "name": "icon-settings.webp",
+          "bytes": 8330,
+          "responseEndMs": 611.4
+        },
+        {
+          "name": "tide-water.webp",
+          "bytes": 11588,
+          "responseEndMs": 922.3
+        },
+        {
+          "name": "avatar.webp",
+          "bytes": 6332,
+          "responseEndMs": 1577.5
+        }
+      ]
+    }
+  ],
+  "median": {
+    "interactiveMs": 5809.7,
+    "visualReadyMs": 2289.2
+  },
+  "frame": {
+    "samples": 175,
+    "p95Ms": 16.8
+  },
+  "assertions": {
+    "visualReadyWithin3000ms": true,
+    "interactiveRegressionWithin10Percent": true,
+    "interactiveLimitMs": 34627.34,
+    "frameP95Within18ms": true
+  }
+}

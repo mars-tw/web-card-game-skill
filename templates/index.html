@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<link rel="manifest" href="../manifest.webmanifest?v=card-battle-r71-v1" />
+<link rel="manifest" href="../manifest.webmanifest?v=card-battle-content-r11-v1" />
 <meta name="theme-color" content="#f59e0b" />
-<title>卡牌遊戲 · Card Game</title>
+<title>裂潮卡牌 TIDEREND CARDS</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r71-v1";
+    const CACHE_VERSION = "card-battle-content-r11-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r71_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_content_r6_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -46,10 +46,10 @@
 </script>
 <style>
   /* 入口頁主題（影響分頁列底色）*/
-  :root { --bar1:#141c28; --bar2:#0f1620; --accent:#f59e0b; --stage:#0f1419; }
-  :root[data-theme="fantasy"] { --bar1:#251a0f; --bar2:#160d05; --accent:#f0a830; --stage:#160d05; }
-  :root[data-theme="cyber"]   { --bar1:#0d1b2e; --bar2:#04070f; --accent:#2dd4bf; --stage:#04070f; }
-  :root[data-theme="forest"]  { --bar1:#122019; --bar2:#07120c; --accent:#84cc16; --stage:#07120c; }
+  :root { --bar1:#0a3440; --bar2:#06252f; --accent:#8cdbbf; --stage:#06252f; }
+  :root[data-theme="fantasy" data-label="??"] { --bar1:#251a0f; --bar2:#160d05; --accent:#f0a830; --stage:#160d05; }
+  :root[data-theme="cyber" data-label="??"]   { --bar1:#0d1b2e; --bar2:#04070f; --accent:#2dd4bf; --stage:#04070f; }
+  :root[data-theme="forest" data-label="??"]  { --bar1:#122019; --bar2:#07120c; --accent:#84cc16; --stage:#07120c; }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
@@ -71,6 +71,12 @@
     margin-right: 12px; font-size: 16px; white-space: nowrap;
   }
   .brand-icon { width:26px; height:26px; object-fit:contain; filter:drop-shadow(0 2px 4px rgba(0,0,0,.7)); }
+  /* R72 品牌字標：中文主名＋英文副標，潮汐漸層字 */
+  .brand-text { display:inline-flex; flex-direction:column; line-height:1; gap:2px; }
+  .brand-zh { font-size:17px; letter-spacing:3px; font-weight:900;
+    background:linear-gradient(180deg,#fff7d6 0%,#fcd34d 42%,#f59e0b 60%,#38bdf8 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 1px 0 rgba(0,0,0,.6)) drop-shadow(0 0 8px rgba(56,189,248,.35)); }
+  .brand-en { font-size:9px; letter-spacing:4.5px; color:#7dd3fc; font-weight:800; text-shadow:none; }
   .tab {
     appearance: none; border: none; background: transparent; color: #8b98a8;
     font-size: 15px; font-weight: 700; padding: 10px 22px; border-radius: 10px 10px 0 0;
@@ -79,7 +85,7 @@
   }
   .tab:hover { color: #e6edf3; background: rgba(255,255,255,.04); }
   .tab.active {
-    color: #1a1206; background: linear-gradient(180deg, var(--accent), #d97706);
+    color: #1a1206; background: linear-gradient(180deg, #b3e6cf, #6bbfae);
     box-shadow: 0 2px 10px color-mix(in srgb, var(--accent) 35%, transparent);
   }
   .tab .ico { line-height: 1; }
@@ -97,10 +103,10 @@
   }
   .swatch:hover { transform: scale(1.15); }
   .swatch.active { border-color: #fff; box-shadow: 0 0 8px rgba(255,255,255,.5); }
-  .swatch[data-theme="dark"]    { background: linear-gradient(135deg,#3b82f6,#16202e); }
-  .swatch[data-theme="fantasy"] { background: linear-gradient(135deg,#f0a830,#2a1d10); }
-  .swatch[data-theme="cyber"]   { background: linear-gradient(135deg,#2dd4bf,#0a1626); }
-  .swatch[data-theme="forest"]  { background: linear-gradient(135deg,#84cc16,#14241a); }
+  .swatch[data-theme="dark" data-label="??"]    { background: linear-gradient(135deg,#3b82f6,#16202e); }
+  .swatch[data-theme="fantasy" data-label="??"] { background: linear-gradient(135deg,#f0a830,#2a1d10); }
+  .swatch[data-theme="cyber" data-label="??"]   { background: linear-gradient(135deg,#2dd4bf,#0a1626); }
+  .swatch[data-theme="forest" data-label="??"]  { background: linear-gradient(135deg,#84cc16,#14241a); }
 
   .stage { position: relative; flex: 1; min-height: 0; }
   .frame {
@@ -140,19 +146,22 @@
     .swatch { width: 22px; height: 22px; }
   }
 </style>
+<link rel="stylesheet" href="r75-theme.css?v=card-battle-content-r11-v1">
+<link rel="stylesheet" href="r76-art.css?v=card-battle-content-r11-v1">
+<style>body[data-full-bleed="true"] .tabbar { display:none; }</style>
 </head>
 <body>
   <nav class="tabbar" role="tablist" aria-label="主要模式">
-    <span class="brand"><img class="brand-icon" src="../assets/factions/neutral.png?v=4cf2322a" alt=""><span class="brand-text">卡牌遊戲</span></span>
-    <button class="tab active" id="tabBattle" data-target="battle" role="tab" aria-selected="true" aria-controls="battle"><span class="ico">⚔️</span>對戰</button>
-    <button class="tab" id="tabPack" data-target="pack" role="tab" aria-selected="false" aria-controls="pack"><span class="ico">🎁</span>開卡包</button>
+    <span class="brand"><img class="brand-icon" src="../assets/art/r76/app-icon.webp?v=cf49881d" alt=""><span class="brand-text"><span class="brand-zh">裂潮卡牌</span><span class="brand-en">TIDEREND</span></span></span>
+    <button class="tab active" id="tabBattle" data-target="battle" role="tab" aria-selected="true" aria-controls="battle"><img class="r75-icon" src="../assets/art/r76/icon-battle.webp?v=9d522ef8" alt="">對戰</button>
+    <button class="tab" id="tabPack" data-target="pack" role="tab" aria-selected="false" aria-controls="pack"><img class="r75-icon" src="../assets/art/r76/icon-cards.webp?v=2c73e532" alt="">開卡包</button>
 
     <div class="theme-picker" role="radiogroup" aria-label="主題">
       <span class="lbl" aria-hidden="true">主題</span>
-      <button class="swatch" type="button" data-theme="dark"    title="暗黑" aria-label="主題：暗黑" aria-pressed="true"></button>
-      <button class="swatch" type="button" data-theme="fantasy" title="奇幻" aria-label="主題：奇幻" aria-pressed="false"></button>
-      <button class="swatch" type="button" data-theme="cyber"   title="科幻" aria-label="主題：科幻" aria-pressed="false"></button>
-      <button class="swatch" type="button" data-theme="forest"  title="森林" aria-label="主題：森林" aria-pressed="false"></button>
+      <button class="swatch" type="button" data-theme="dark" data-label="夜海" title="夜海" aria-label="主題：暗黑" aria-pressed="true"></button>
+      <button class="swatch" type="button" data-theme="fantasy" data-label="銅帆" title="銅帆" aria-label="主題：奇幻" aria-pressed="false"></button>
+      <button class="swatch" type="button" data-theme="cyber" data-label="星潮" title="星潮" aria-label="主題：科幻" aria-pressed="false"></button>
+      <button class="swatch" type="button" data-theme="forest" data-label="霧島" title="霧島" aria-label="主題：森林" aria-pressed="false"></button>
     </div>
     <div class="pwa-meta" aria-label="PWA 版本">
       <span id="pwaVersion">版本讀取中</span>
@@ -170,11 +179,19 @@
   </div>
 
   <script>
+    // 港口的試航與繼續對局入口。
+    const entry = new URLSearchParams(location.search);
+    if (entry.get('voyage') === '1') document.getElementById('battle').src='card-battle/index.html?voyage=1';
+    else if (entry.get('content') === '1') { const lesson=entry.get('lesson'); document.getElementById('battle').src='card-battle/index.html?content=1'+(['forecast','moen'].includes(lesson)?'&lesson='+lesson:''); }
+    else if (entry.get('trial') === '1') document.getElementById('battle').src='card-battle/index.html?trial=1';
+    else if (entry.get('resume') === '1') document.getElementById('battle').src='card-battle/index.html?resume=1';
     const tabs = document.querySelectorAll(".tab");
     const frames = document.querySelectorAll(".frame");
     const swatches = document.querySelectorAll(".swatch");
+    let battleFullBleed = false;
 
     function switchTab(target) {
+      document.body.dataset.fullBleed = String(target === 'battle' && battleFullBleed);
       tabs.forEach((t) => {
         const active = t.dataset.target === target;
         t.classList.toggle("active", active);
@@ -185,6 +202,8 @@
         const active = f.id === target;
         f.classList.toggle("active", active);
         f.setAttribute("aria-hidden", active ? "false" : "true");
+        // R72：通知子頁是否在前景（對戰背景音樂只在對戰分頁播放）
+        try { f.contentWindow.postMessage({ type: "frameVisibility", visible: active }, "*"); } catch {}
       });
     }
     tabs.forEach((tab) => tab.addEventListener("click", () => switchTab(tab.dataset.target)));
@@ -213,6 +232,10 @@
 
     // 子頁要求切換分頁
     window.addEventListener("message", (e) => {
+      if (e.origin === location.origin && e.source === document.getElementById('battle').contentWindow && e.data?.type === 'battleFullBleed') {
+        battleFullBleed = !!e.data.active;
+        document.body.dataset.fullBleed = String(battleFullBleed && document.getElementById('battle').classList.contains('active'));
+      }
       if (e.data && e.data.type === "switchTab" && e.data.target) switchTab(e.data.target);
     });
 
@@ -231,9 +254,9 @@
     }));
 
     const pwaState = { skippedForWebdriver: false, registered: false, updatePrompted: false, version: "", checking: false };
-    const CACHE_VERSION = window.__CARD_CACHE_VERSION || "card-battle-r71-v1";
+    const CACHE_VERSION = window.__CARD_CACHE_VERSION || "card-battle-content-r11-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-    const SW_AUTO_RELOAD_KEY = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r71_v1";
+    const SW_AUTO_RELOAD_KEY = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_content_r6_v1";
     function swUrl() { return new URL(`../sw.js?v=${CACHE_VERSION}`, location.href).toString(); }
     async function readCacheVersion() {
       try {

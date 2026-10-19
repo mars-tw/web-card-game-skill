@@ -1,0 +1,837 @@
+{
+  "release": "R76",
+  "version": "0.9.0",
+  "status": "VERIFIED",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "model_note": "Built-in tool does not expose a verifiable model slug.",
+  "style_prefix": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism.",
+  "license": "Generated for this project with OpenAI built-in ImageGen; subject to applicable service terms. Existing third-party licenses remain in CREDITS.md.",
+  "postprocess": "Pillow LANCZOS resizing, native alpha retained, atlas cell crop, WebP q82 default; 384px cards q76, 1x 256px cards q55; 960px low battlefield q45; 384px waterline q55. No synthetic painting. Native PNGs unmodified.",
+  "assets": [
+    {
+      "id": "wave",
+      "source": "docs/art/source/r76/wave.png",
+      "source_sha256": "482520f68b3f5a5d0b3f74fc228eb4551068d40c8c46d0ba4c9857686a4778a4",
+      "source_bytes": 2851484,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "source_metrics": {
+        "brightness": 0.7396803212454032,
+        "saturation": 0.44041978499478074,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.1633725820016821,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/wave.webp",
+          "size": [
+            1152,
+            768
+          ],
+          "bytes": 340816,
+          "sha256": "0dbf126b02180d9130d5e3c2ca20905d54a459942f6bbaff1d9d21e4df167338",
+          "color_metrics": {
+            "brightness": 0.7346913702402744,
+            "saturation": 0.4386333026115965,
+            "near_black_ratio": 0.0,
+            "low_saturation_ratio": 0.16799831791421363,
+            "double_gate_pass": true
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.4314645131429036,
+        "center": 251,
+        "native": true
+      }
+    },
+    {
+      "id": "emberpup",
+      "source": "docs/art/source/r76/emberpup.png",
+      "source_sha256": "deafb088cad3065caa5b8df6af8cf307e8ca0387c9181f2547af336f11233fa1",
+      "source_bytes": 2853761,
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_metrics": {
+        "brightness": 0.5754162358302696,
+        "saturation": 0.4666259881689961,
+        "near_black_ratio": 0.0037841796875,
+        "low_saturation_ratio": 0.0157470703125,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/emberpup.webp",
+          "size": [
+            384,
+            384
+          ],
+          "bytes": 37882,
+          "sha256": "d5ccf1ed3ef98cec47480d8754c9797e8a7a99112a153caf47c74fd088264000",
+          "color_metrics": {
+            "brightness": 0.5722512637867647,
+            "saturation": 0.4625112873881006,
+            "near_black_ratio": 0.00323486328125,
+            "low_saturation_ratio": 0.017822265625,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/cards/emberpup.png",
+          "size": [
+            1024,
+            1024
+          ],
+          "bytes": 2165809,
+          "sha256": "1d7812fdc6914acba641354e94b316b3046b5c696fa278c30226965e857f2e4d",
+          "note": "Canonical PNG contract; WebP is displayed by runtime."
+        }
+      ]
+    },
+    {
+      "id": "wolf",
+      "source": "docs/art/source/r76/wolf.png",
+      "source_sha256": "3f2a28c0b931553efaee54a6f6fb41b2614492de552fe6e21550780b1a3cc706",
+      "source_bytes": 3418093,
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_metrics": {
+        "brightness": 0.4727273380055147,
+        "saturation": 0.33550934775370295,
+        "near_black_ratio": 0.00701904296875,
+        "low_saturation_ratio": 0.0772705078125,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/wolf.webp",
+          "size": [
+            384,
+            384
+          ],
+          "bytes": 46882,
+          "sha256": "b3a469e20e9fd0af5a3077fa5719958f6ae92caeefdf7318a0f43b5f93a37b30",
+          "color_metrics": {
+            "brightness": 0.4694481943167892,
+            "saturation": 0.3299815637984631,
+            "near_black_ratio": 0.00634765625,
+            "low_saturation_ratio": 0.0867919921875,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/cards/wolf.png",
+          "size": [
+            1024,
+            1024
+          ],
+          "bytes": 2476349,
+          "sha256": "53add347b6980e8d1e80dbc18c1deb145489b541e4f512e88566fcb5adb988a6",
+          "note": "Canonical PNG contract; WebP is displayed by runtime."
+        }
+      ]
+    },
+    {
+      "id": "sparkSquire",
+      "source": "docs/art/source/r76/sparkSquire.png",
+      "source_sha256": "eeb453f60876f927e22da256448fbde2f5eeccf0ce01ce889f073ba779df8dd0",
+      "source_bytes": 3086674,
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_metrics": {
+        "brightness": 0.44674383425245096,
+        "saturation": 0.4284072351025281,
+        "near_black_ratio": 0.034912109375,
+        "low_saturation_ratio": 0.017333984375,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/sparkSquire.webp",
+          "size": [
+            384,
+            384
+          ],
+          "bytes": 40066,
+          "sha256": "670a755ab749c01a3041065c20393706862b784b7149625fe453beb9358af01c",
+          "color_metrics": {
+            "brightness": 0.44474020565257355,
+            "saturation": 0.4325526581246546,
+            "near_black_ratio": 0.03125,
+            "low_saturation_ratio": 0.02386474609375,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/cards/sparkSquire.png",
+          "size": [
+            1024,
+            1024
+          ],
+          "bytes": 2277503,
+          "sha256": "f9c5a2bc5f45a5f536f7ae6ba136889bed7f56694bcec170e9bfb3907224de5a",
+          "note": "Canonical PNG contract; WebP is displayed by runtime."
+        }
+      ]
+    },
+    {
+      "id": "alleySkirmisher",
+      "source": "docs/art/source/r76/alleySkirmisher.png",
+      "source_sha256": "aba5673cfb49951294f6553b1c469ee24e759253cd06981d9fa6cc02268b0c54",
+      "source_bytes": 2645166,
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_metrics": {
+        "brightness": 0.3645055434283088,
+        "saturation": 0.4718223882629995,
+        "near_black_ratio": 0.03668212890625,
+        "low_saturation_ratio": 0.00665283203125,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/alleySkirmisher.webp",
+          "size": [
+            384,
+            384
+          ],
+          "bytes": 31148,
+          "sha256": "eb3573479cb3eaee68c568cf607a860d088d64a75c3f1c12d00af4b81d78ea7e",
+          "color_metrics": {
+            "brightness": 0.3635385550704657,
+            "saturation": 0.47468873459839106,
+            "near_black_ratio": 0.03082275390625,
+            "low_saturation_ratio": 0.0057373046875,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/cards/alleySkirmisher.png",
+          "size": [
+            1024,
+            1024
+          ],
+          "bytes": 2005778,
+          "sha256": "454052cc98686b9fa0eb227b3c0a7af274faa9e10b159830bd43637928cbaadf",
+          "note": "Canonical PNG contract; WebP is displayed by runtime."
+        }
+      ]
+    },
+    {
+      "id": "frontScout",
+      "source": "docs/art/source/r76/frontScout.png",
+      "source_sha256": "900cf6adeba97963c7df77800d4c7f084cc2c82608988f6c29521d8227eaf101",
+      "source_bytes": 2816067,
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_metrics": {
+        "brightness": 0.44161233340992645,
+        "saturation": 0.4821102826229822,
+        "near_black_ratio": 0.026123046875,
+        "low_saturation_ratio": 0.0084228515625,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/frontScout.webp",
+          "size": [
+            384,
+            384
+          ],
+          "bytes": 37128,
+          "sha256": "34058513bc84802bd87b2e67ced765b861114b726be93e0721704ac52ed96f9f",
+          "color_metrics": {
+            "brightness": 0.43924608417585786,
+            "saturation": 0.48020462294433247,
+            "near_black_ratio": 0.022705078125,
+            "low_saturation_ratio": 0.0101318359375,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/cards/frontScout.png",
+          "size": [
+            1024,
+            1024
+          ],
+          "bytes": 2119070,
+          "sha256": "f761ff7bb6d382043036169d857b9438c5eab3276a204601fd279e3ec2a70b13",
+          "note": "Canonical PNG contract; WebP is displayed by runtime."
+        }
+      ]
+    },
+    {
+      "id": "firebolt",
+      "source": "docs/art/source/r76/firebolt.png",
+      "source_sha256": "47eee178fd51fc8a2cabb59056796462acd49511d9e0332739b7d4d9bac3a9fd",
+      "source_bytes": 3162993,
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_metrics": {
+        "brightness": 0.5438629748774509,
+        "saturation": 0.5013148966451045,
+        "near_black_ratio": 0.00628662109375,
+        "low_saturation_ratio": 0.01849365234375,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/firebolt.webp",
+          "size": [
+            384,
+            384
+          ],
+          "bytes": 40802,
+          "sha256": "6583d849cbf027c584b78033b6fb7c4f831021b1675508d1a3558af98efd3f0c",
+          "color_metrics": {
+            "brightness": 0.5406410366881127,
+            "saturation": 0.4980445814822723,
+            "near_black_ratio": 0.00537109375,
+            "low_saturation_ratio": 0.01849365234375,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/cards/firebolt.png",
+          "size": [
+            1024,
+            1024
+          ],
+          "bytes": 2328377,
+          "sha256": "b48942ebb065dda32bf3ea02fdef4d802d2e5b3944cadd9e8d917e287d31c1cf",
+          "note": "Canonical PNG contract; WebP is displayed by runtime."
+        }
+      ]
+    },
+    {
+      "id": "victory-navigator",
+      "source": "docs/art/source/r76/victory-navigator.png",
+      "source_sha256": "093c77607f31b6616c6d37f6de2a33f888cd85a311a7a1a8401fa40ea1776901",
+      "source_bytes": 3210222,
+      "source_size": [
+        1024,
+        1536
+      ],
+      "source_metrics": {
+        "brightness": 0.49317047072724074,
+        "saturation": 0.41705164293067465,
+        "near_black_ratio": 0.013931250515208968,
+        "low_saturation_ratio": 0.07048058692605721,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/victory-navigator.webp",
+          "size": [
+            576,
+            864
+          ],
+          "bytes": 199358,
+          "sha256": "48d09f3139db5d67016b9131860646a011d37c80316248da54456b100e44fe09",
+          "color_metrics": {
+            "brightness": 0.48898462095110723,
+            "saturation": 0.41359042142013214,
+            "near_black_ratio": 0.013757311145893401,
+            "low_saturation_ratio": 0.07224647829310486,
+            "double_gate_pass": true
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.277438481648763,
+        "center": 253,
+        "native": true
+      }
+    },
+    {
+      "id": "battlefield",
+      "source": "docs/art/source/r76/battlefield.png",
+      "source_sha256": "da085f7b09b10d0e36991aa39e48a0f3a19c026af7fea2e8ff1785d49fab63d8",
+      "source_bytes": 3260619,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "source_metrics": {
+        "brightness": 0.3971150716145833,
+        "saturation": 0.42762977323635065,
+        "near_black_ratio": 0.02532958984375,
+        "low_saturation_ratio": 0.00433349609375,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/battlefield.webp",
+          "size": [
+            1536,
+            1024
+          ],
+          "bytes": 360142,
+          "sha256": "dcdadd26839240883f637e02bab38ac15b0f13c313d9c1627779e660826eeed7",
+          "color_metrics": {
+            "brightness": 0.3970236385569853,
+            "saturation": 0.4276224466851107,
+            "near_black_ratio": 0.02508544921875,
+            "low_saturation_ratio": 0.004150390625,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/art/r76/battlefield-low.webp",
+          "size": [
+            960,
+            640
+          ],
+          "bytes": 93030,
+          "sha256": "99a5f93ce64013656ef828e04638c083e73c7c2de5fe5b8d9e3b7afa6980d2a7",
+          "color_metrics": {
+            "brightness": 0.3951471066942402,
+            "saturation": 0.42377794367647387,
+            "near_black_ratio": 0.02435302734375,
+            "low_saturation_ratio": 0.00433349609375,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/art/r76/waterline.webp",
+          "size": [
+            384,
+            96
+          ],
+          "bytes": 9626,
+          "sha256": "bb4395df01f2946c15eb55a09b644610830ec78c2738303e622ec90270ee1027",
+          "color_metrics": {
+            "brightness": 0.5718967811734068,
+            "saturation": 0.5676036688750716,
+            "near_black_ratio": 0.0107421875,
+            "low_saturation_ratio": 0.00238037109375,
+            "double_gate_pass": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "frame",
+      "source": "docs/art/source/r76/frame.png",
+      "source_sha256": "108fb631f4e42af840aa9f60b2c55a903880c9415f66ce39c72385faaafe081a",
+      "source_bytes": 1363440,
+      "source_size": [
+        1024,
+        1536
+      ],
+      "source_metrics": {
+        "brightness": 0.5181410892887414,
+        "saturation": 0.26667436100647646,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.2984767393989296,
+        "double_gate_pass": false
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/frame.webp",
+          "size": [
+            256,
+            384
+          ],
+          "bytes": 15192,
+          "sha256": "af1d21838bd4d49b9abe14a0ad3f4b7f40ea590faed66419623d1f15f07ff137",
+          "color_metrics": {
+            "brightness": 0.5125162456913601,
+            "saturation": 0.23674693744334396,
+            "near_black_ratio": 0.0,
+            "low_saturation_ratio": 0.30547550432276654,
+            "double_gate_pass": false
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.8724308013916016,
+        "center": 0,
+        "native": true
+      }
+    },
+    {
+      "id": "icons",
+      "source": "docs/art/source/r76/icons.png",
+      "source_sha256": "1cc8f3c52aa9cb13ff5f30a4db44f9bc5ac1be89ec913270c886aa279c9f4a16",
+      "source_bytes": 1977324,
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_metrics": {
+        "brightness": 0.5489537066103835,
+        "saturation": 0.5127829593699422,
+        "near_black_ratio": 0.03043033950266833,
+        "low_saturation_ratio": 0.12671738389917112,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/icon-battle.webp",
+          "size": [
+            125,
+            128
+          ],
+          "bytes": 8074,
+          "sha256": "9d522ef8d83251f47053c1d67653ec1610faa773a2cf70b90fe972551d06b9d0",
+          "color_metrics": {
+            "brightness": 0.5348998143753751,
+            "saturation": 0.529069671776794,
+            "near_black_ratio": 0.046726130143928644,
+            "low_saturation_ratio": 0.13136022704236772,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/art/r76/icon-cards.webp",
+          "size": [
+            126,
+            128
+          ],
+          "bytes": 7324,
+          "sha256": "2c73e5323ecc2cd65ac16b947ca73fd1b13053e8b33501608b1e6080e0095b92",
+          "color_metrics": {
+            "brightness": 0.4533107836403132,
+            "saturation": 0.5645903731902434,
+            "near_black_ratio": 0.042979099205181046,
+            "low_saturation_ratio": 0.05867922676871749,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/art/r76/icon-wave.webp",
+          "size": [
+            128,
+            123
+          ],
+          "bytes": 8114,
+          "sha256": "bbb5ce4bd4be22feb0709d6b8febec0d7db219422b583de0d043aa79cb6ad498",
+          "color_metrics": {
+            "brightness": 0.6240984698029352,
+            "saturation": 0.5446150677838792,
+            "near_black_ratio": 0.033665473541646514,
+            "low_saturation_ratio": 0.14559349908097127,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/art/r76/icon-compass.webp",
+          "size": [
+            128,
+            123
+          ],
+          "bytes": 7968,
+          "sha256": "941d211436b4e3829f11b74a2c11488201bb9510775233b9ebeebca8f67a23ca",
+          "color_metrics": {
+            "brightness": 0.5749581091807038,
+            "saturation": 0.4828690600079507,
+            "near_black_ratio": 0.047132683658170915,
+            "low_saturation_ratio": 0.19068590704647675,
+            "double_gate_pass": true
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          255
+        ],
+        "transparent_ratio": 0.476062564705224,
+        "center": 0,
+        "native": true
+      }
+    },
+    {
+      "id": "logo",
+      "source": "docs/art/source/r76/logo.png",
+      "source_sha256": "2320334aecdd467a18ab0fab756e868115073a0281e4393faa4397ea8e341a9c",
+      "source_bytes": 1757962,
+      "source_size": [
+        1536,
+        1024
+      ],
+      "source_metrics": {
+        "brightness": 0.5286981501488077,
+        "saturation": 0.34668569573115443,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.2453029343466329,
+        "double_gate_pass": false
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/logo.webp",
+          "size": [
+            850,
+            334
+          ],
+          "bytes": 100254,
+          "sha256": "906babbadd9a74149fbe8b8aa19f6de42dac9b801452e7cbaeff64f92321fd57",
+          "color_metrics": {
+            "brightness": 0.5266227084736195,
+            "saturation": 0.3456841784500742,
+            "near_black_ratio": 0.003173523744758019,
+            "low_saturation_ratio": 0.26408251161736374,
+            "double_gate_pass": false
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.7237803141276041,
+        "center": 252,
+        "native": true
+      }
+    },
+    {
+      "id": "app-icon",
+      "source": "docs/art/source/r76/app-icon.png",
+      "source_sha256": "f94a103548b60bbd3c37d01957166240c2b03751aec9bab3fd3cb05cdc0a5a56",
+      "source_bytes": 3039641,
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_metrics": {
+        "brightness": 0.5522465724571078,
+        "saturation": 0.4236842934716631,
+        "near_black_ratio": 0.00140380859375,
+        "low_saturation_ratio": 0.1627197265625,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r76/app-icon.webp",
+          "size": [
+            512,
+            512
+          ],
+          "bytes": 80274,
+          "sha256": "cf49881d8a5c1e472f920650ff61e3a18e6af0e7be6511e7a0ecfe97fb4b325d",
+          "color_metrics": {
+            "brightness": 0.5509677064185049,
+            "saturation": 0.41908056464686555,
+            "near_black_ratio": 0.00128173828125,
+            "low_saturation_ratio": 0.16644287109375,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/icons/icon-192.png",
+          "size": [
+            192,
+            192
+          ],
+          "bytes": 87941,
+          "sha256": "a92e8a4b039900531cda254e9fcc4f34c699cbafde1e0288e651d0d6a03ade43"
+        },
+        {
+          "path": "assets/icons/icon-512.png",
+          "size": [
+            512,
+            512
+          ],
+          "bytes": 551287,
+          "sha256": "147cf5f305d106509e8467227953c72dcb9b49e68e6ef69af38fffadf18ec188"
+        }
+      ]
+    }
+  ],
+  "derived_runtime": [
+    {
+      "id": "emberpup-low",
+      "source": "docs/art/source/r76/emberpup.png",
+      "source_sha256": "deafb088cad3065caa5b8df6af8cf307e8ca0387c9181f2547af336f11233fa1",
+      "path": "assets/art/r76/emberpup-low.webp",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 14746,
+      "sha256": "f65276479bd465eb3b9da16ffbd8216bcb44446852ea933d236559ab492bf365",
+      "color_metrics": {
+        "brightness": 0.5722646675857843,
+        "saturation": 0.45920435662847825,
+        "near_black_ratio": 0.00238037109375,
+        "low_saturation_ratio": 0.01971435546875,
+        "double_gate_pass": true
+      },
+      "note": "Responsive 1x derivative; same painting, not another generated asset. Archer preserves R75 saturation x1.08."
+    },
+    {
+      "id": "wolf-low",
+      "source": "docs/art/source/r76/wolf.png",
+      "source_sha256": "3f2a28c0b931553efaee54a6f6fb41b2614492de552fe6e21550780b1a3cc706",
+      "path": "assets/art/r76/wolf-low.webp",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 17602,
+      "sha256": "c333e73760014b7310f76ee9f62aee0ac539ce678e418b350d7396f24ead3c69",
+      "color_metrics": {
+        "brightness": 0.4686959060968137,
+        "saturation": 0.3250284983942162,
+        "near_black_ratio": 0.00543212890625,
+        "low_saturation_ratio": 0.0924072265625,
+        "double_gate_pass": true
+      },
+      "note": "Responsive 1x derivative; same painting, not another generated asset. Archer preserves R75 saturation x1.08."
+    },
+    {
+      "id": "sparkSquire-low",
+      "source": "docs/art/source/r76/sparkSquire.png",
+      "source_sha256": "eeb453f60876f927e22da256448fbde2f5eeccf0ce01ce889f073ba779df8dd0",
+      "path": "assets/art/r76/sparkSquire-low.webp",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 15412,
+      "sha256": "ffb146b01dd0717cdef024d27f50d21777330a6df0eb005fe905cb025a74eb2c",
+      "color_metrics": {
+        "brightness": 0.4454745423560049,
+        "saturation": 0.43508887179025435,
+        "near_black_ratio": 0.02520751953125,
+        "low_saturation_ratio": 0.02801513671875,
+        "double_gate_pass": true
+      },
+      "note": "Responsive 1x derivative; same painting, not another generated asset. Archer preserves R75 saturation x1.08."
+    },
+    {
+      "id": "alleySkirmisher-low",
+      "source": "docs/art/source/r76/alleySkirmisher.png",
+      "source_sha256": "aba5673cfb49951294f6553b1c469ee24e759253cd06981d9fa6cc02268b0c54",
+      "path": "assets/art/r76/alleySkirmisher-low.webp",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 12210,
+      "sha256": "dade5b6b6c4f66cd854fb2ff479f7cd3c52f0e9db807d2d2746ba9a4fd33fa0b",
+      "color_metrics": {
+        "brightness": 0.3639547909007353,
+        "saturation": 0.47273169957487177,
+        "near_black_ratio": 0.0240478515625,
+        "low_saturation_ratio": 0.0062255859375,
+        "double_gate_pass": true
+      },
+      "note": "Responsive 1x derivative; same painting, not another generated asset. Archer preserves R75 saturation x1.08."
+    },
+    {
+      "id": "frontScout-low",
+      "source": "docs/art/source/r76/frontScout.png",
+      "source_sha256": "900cf6adeba97963c7df77800d4c7f084cc2c82608988f6c29521d8227eaf101",
+      "path": "assets/art/r76/frontScout-low.webp",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 14674,
+      "sha256": "6f407c1845e979228a98c5a4f936ee5cf01cf57d251a64b7ae21c51eebc35a35",
+      "color_metrics": {
+        "brightness": 0.43875205844056375,
+        "saturation": 0.47871956581814956,
+        "near_black_ratio": 0.0194091796875,
+        "low_saturation_ratio": 0.01336669921875,
+        "double_gate_pass": true
+      },
+      "note": "Responsive 1x derivative; same painting, not another generated asset. Archer preserves R75 saturation x1.08."
+    },
+    {
+      "id": "firebolt-low",
+      "source": "docs/art/source/r76/firebolt.png",
+      "source_sha256": "47eee178fd51fc8a2cabb59056796462acd49511d9e0332739b7d4d9bac3a9fd",
+      "path": "assets/art/r76/firebolt-low.webp",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 16098,
+      "sha256": "8f558c82a5776a487521478202717fc83242b25aaa8403ece3ad1629bb44d905",
+      "color_metrics": {
+        "brightness": 0.541284419041054,
+        "saturation": 0.4956354110881371,
+        "near_black_ratio": 0.00469970703125,
+        "low_saturation_ratio": 0.01763916015625,
+        "double_gate_pass": true
+      },
+      "note": "Responsive 1x derivative; same painting, not another generated asset. Archer preserves R75 saturation x1.08."
+    },
+    {
+      "id": "footman-low",
+      "source": "docs/art/source/footman.png",
+      "source_sha256": "b7d7b58df53e03f677a421f16b9d15f10748cc133068427f5090fddc80961194",
+      "path": "assets/art/r76/footman-low.webp",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 13800,
+      "sha256": "aedc66c01ec24af5dcdf1717d4bdd4cc2fdab43100632315daff0b834c9fa136",
+      "color_metrics": {
+        "brightness": 0.49078297334558824,
+        "saturation": 0.338394446571969,
+        "near_black_ratio": 0.00341796875,
+        "low_saturation_ratio": 0.06072998046875,
+        "double_gate_pass": true
+      },
+      "note": "Responsive 1x derivative; same painting, not another generated asset. Archer preserves R75 saturation x1.08."
+    },
+    {
+      "id": "archer-low",
+      "source": "docs/art/source/archer.png",
+      "source_sha256": "847e88e556a132d97975776b31288a7b0e089fe84376989d3f507a202a91f264",
+      "path": "assets/art/r76/archer-low.webp",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 13014,
+      "sha256": "b78bf635a9b6970f8ff1613358d7f488435658e8bc9fc72e171658bf2f4e987a",
+      "color_metrics": {
+        "brightness": 0.38505476409313727,
+        "saturation": 0.3376800314049965,
+        "near_black_ratio": 0.0283203125,
+        "low_saturation_ratio": 0.0521240234375,
+        "double_gate_pass": true
+      },
+      "note": "Responsive 1x derivative; same painting, not another generated asset. Archer preserves R75 saturation x1.08."
+    }
+  ],
+  "generated_master_count": 13,
+  "source_bytes": 35443446,
+  "runtime_bytes": 15593750,
+  "quality_note": "Character source/runtime double gates pass. Pearl frame and ivory title are not characters; their unfiltered low-saturation results are retained. Static front-facing paintings, not walk/hurt/death assets."
+}

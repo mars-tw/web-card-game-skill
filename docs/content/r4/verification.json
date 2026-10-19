@@ -1,0 +1,559 @@
+{
+  "status": "VERIFIED",
+  "version": "0.17.0",
+  "syntaxFiles": 70,
+  "secretScan": {
+    "files": 2232,
+    "hits": 0,
+    "excluded": [
+      ".git",
+      "node_modules"
+    ],
+    "matchingValuesPrinted": false
+  },
+  "oldRuntimeVersionHits": 0,
+  "browserChecks": 149,
+  "screenshots": [
+    {
+      "path": "docs/content/r4/phone-entries-harbor.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "27bcbed94b7716fbf5540168863de40156de922b8db386b048577208de7fc896"
+    },
+    {
+      "path": "docs/content/r4/phone-entries-study.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "0446ceb7c67120a193fc1f083c6916d68044696e2641c45914770e985fe32233"
+    },
+    {
+      "path": "docs/content/r4/phone-entries-voyage.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "78a3c257b5a5682299e7983bb410526ea08f1145e06303c4f01319c1b942f5f2"
+    },
+    {
+      "path": "docs/content/r4/phone-entry-forecast-selected.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "38bae4ceeaf7075eaa4863908cf224f758cddd647e316d6a94c08b5eb731c375"
+    },
+    {
+      "path": "docs/content/r4/phone-entry-moen-selected.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "38ff03f012cc628b3609db6f45a757c657873ba1f04064f19163bd6b222fc191"
+    },
+    {
+      "path": "docs/content/r4/phone-forecast-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "5e902d3767602a6af6254fa5b43f1bf054b5e30555c4e20a3bf86d132849c473"
+    },
+    {
+      "path": "docs/content/r4/phone-forecast-fourth-choices.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "687b20639d9b041e7996df32b64ce81200a928ecb37be5fc6258e85f868e64d6"
+    },
+    {
+      "path": "docs/content/r4/phone-forecast-fourth-collapsed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "d0a217bed960c4b4eb2df4114e11e8eb760dc8a44c7a53202082d8172ce17b4b"
+    },
+    {
+      "path": "docs/content/r4/phone-forecast-past-locked.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "07c94d4156884261a17f3212dd20f1cb31045b00340e7810846122ab69ee0385"
+    },
+    {
+      "path": "docs/content/r4/phone-forecast-reloaded.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "e0dc2901cf6be8c79b4693d71400904f6792cc5276388b2cf8bcb6277b0ff2f5"
+    },
+    {
+      "path": "docs/content/r4/phone-forecast-teaching-1-before.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "8b789a32b794176778064435fc483ebabae53e7df5049c87917ff6de8dfd4b31"
+    },
+    {
+      "path": "docs/content/r4/phone-forecast-teaching-2-pressed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "70fa4bd570fac124787f7f50d3e49b1b39582fc990f1b24328e967fc5f8ab600"
+    },
+    {
+      "path": "docs/content/r4/phone-forecast-teaching-3-changed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "5a70506e6336765b78b2dc85bbc72bc15ebf1cd3a04bd241fda2e9d4226c2df7"
+    },
+    {
+      "path": "docs/content/r4/phone-forecast-wrong-direction.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "d30865e0a7484057cf34b4599191df1a0c3d9fd4dd7c80b407f4771b864cd2fa"
+    },
+    {
+      "path": "docs/content/r4/phone-moen-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "e5fadf280bd67c1304903a44c6dd6c1b7c913208c3d05c77e38842e899f90d66"
+    },
+    {
+      "path": "docs/content/r4/phone-moen-delay-after.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "dce39099daaf2cd2482b125ecf04e0d8cd8f489a71e12497d1cbee7750fed0b9"
+    },
+    {
+      "path": "docs/content/r4/phone-moen-delay-before.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "6d289f8866fc9025d5003e3bad8e7fdf07ba5fa8e3877a5a260feb6cc0f331c3"
+    },
+    {
+      "path": "docs/content/r4/phone-moen-preparing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "110f55e7dfafa7d4264b670d50719f57ba73d51ad4bca48b63c3fcd7d3a55a2b"
+    },
+    {
+      "path": "docs/content/r4/phone-moen-shield-after-text-masked.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "56fb9595bc0d02ccc24afa48b373ec2b4c9df5617abda62babae964a97e39dc5"
+    },
+    {
+      "path": "docs/content/r4/phone-moen-shield-after.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "45d542f2fb4e4f1c40be9d2caf40d2b708ded7de28a1b500477eba8cd4b3f958"
+    },
+    {
+      "path": "docs/content/r4/phone-moen-shield-before-text-masked.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "004bbfa074aa6b66b1bdd6bfc96f7f7eb15de5e1abf5b16eaa2a2d3602f0cfe1"
+    },
+    {
+      "path": "docs/content/r4/phone-moen-shield-before.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "84f47ceaccb6af76f4fe744eb29ff5a165ff1c2b31e41c28600b0b30071bcf4d"
+    },
+    {
+      "path": "docs/content/r4/phone-moen-wave-1-anticipation.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "721fb0d5690b4bbce6324903c134ce1aed22a48cf6eed0b3842f00dad6d69004"
+    },
+    {
+      "path": "docs/content/r4/phone-moen-wave-2-impact.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "e99243dd8aaca930b670724960d58eb2bce10661c2f036ac79efe15d1e6aeae4"
+    },
+    {
+      "path": "docs/content/r4/phone-moen-wave-3-cleared.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "936acf009b07bf69693c7528e1ffab1a5a879df80922afce140bd28ba5d11c30"
+    },
+    {
+      "path": "docs/content/r4/phone-offline-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "af0ba9bfeb41fab068cd9a214b979019a359d7e92e9cfff71bf4d5a6d110c06f"
+    },
+    {
+      "path": "docs/content/r4/phone-offline-moen.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "0f864b541702dafa01dfa1819d15892f900514f1b0578eef4ae6aaad347d459a"
+    },
+    {
+      "path": "docs/content/r4/phone-progress-harbor-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "bc5ddf0e96ef837e92a50d1c7442b9921d50b0a13058ad4ad71877d7e7ecb960"
+    },
+    {
+      "path": "docs/content/r4/phone-progress-ledger.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "80c3e16ea6ef8110d0fa10f3a58d5dd6685a089ba755e7ad5c7bda3875a23daa"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-cross-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "ed4e54a8e0df4683963cafc6b73c238273bc43b6d578fa2efd640997f224eda8"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-cross-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "06992660ad7812a714d6f9a8a1a1362ed5aa20326c8004a2d619bc8cc577fe52"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-cross-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "714b34009f4035e8fdb15e13aa4b200482bcb877ac9dabddbf957e0a47c9f240"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-cross-retry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "d65d73ba0ec486aec68d947c33688d9757cb5aa29910be3d62aea7dd8aaa2072"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-fallen-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "bc5b267ee23d92c4d07f6f297eae45cd67105f13bb78d4396648e90ecde28c22"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-fallen-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "c597e22c6830438ed422935a84ff278cece96a0be8cd718b1bd1858f984a363f"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-fallen-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "ccd1b264fb295da60ffe8603503ad80e714ee2fd1ceffdd17eb3b9d3b3cb16ae"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-fallen-retry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "3fae3563fcf4abdf27fc7f4f5b1b091b3051020e1ac6452423f593e8e5519ef2"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-shelter-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "82e4fadd16b02a8e6afd888a0d8cfe3f09470b7d9b031394eb53cc722104fcc0"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-shelter-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "fbf0ab02a83a27c294ae974396c17e83d248f19019bb483f3197eea9150de28b"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-shelter-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "da848e6396ad91259ea62fb43ae18af253fc9a1d8c156b275339647b31221551"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-shelter-retry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "48eb84bb9ec02a204bd107e00dd8b37a2ec387d06b85ae2eee737781d0412f7d"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-shield-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "af11832bcab3307f7eb52a97198ee3ef369eba7172020d22ac05898aa05f75f6"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-shield-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "772060b56ae1b67f4073e94464853933f8afb3e4904d0c8aed583a5ad5890c14"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-shield-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "a45c7e76febb67eec6a265f93f1dd96e379997d249fe544e8465ddabff7ceb28"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-shield-retry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "b25f830f30d8b75d8dcabb9da7de70183ea5f0e3641a68bb788d9ca674854af6"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-spell-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "7cb5efafd7fbb9ea389f7750cb9a688b852ec62cc394ffab6b8abf196f3baac9"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-spell-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "a157e71adf6b6db21abae3f60c163e085db00d9d1b07b99060d7e24619de709a"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-spell-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "20c89844e8863a7bb2c0fab0e65db71cb04c3eefe7ba30e93e7e412dc40ba685"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-spell-retry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "6e9cfcda15aa1b0c366b03c7a20d7e91ebf1c33119cb966e16b5c8438cccc2be"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-taunt-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "a031040044a9ac605682fd54ab8b844ffaed72d5fc3577eb7001228f0b1f2b0b"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-taunt-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "06e5accc38734c5d427b7db5afcf648720a6a995c1f3c283088224ab4b469af5"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-taunt-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "62b562707c534da7458c298db76f9424300820f1a107db7f6ec1bc48cae3382c"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzle-taunt-retry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "d4ad6458491c77923227e7b2e182a9a5f1891e1779ccc872a23c01a21f04c2ad"
+    },
+    {
+      "path": "docs/content/r4/phone-puzzles-entry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "0446ceb7c67120a193fc1f083c6916d68044696e2641c45914770e985fe32233"
+    },
+    {
+      "path": "docs/content/r4/phone-save-corrupt-rejected.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "f23156e17043e2e84bb86c369ff0d5c290ed9b950b02393ba2354fc9b5280f2c"
+    },
+    {
+      "path": "docs/content/r4/phone-study-forecast.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "f19cf1bee48d161a1dffe78f1b91dbb306059ba7315bc8b0db4541c35d0eba6c"
+    },
+    {
+      "path": "docs/content/r4/phone-study-moen.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "dadd3aa8e4b8fb4aad6d314a0625e793f78c7d37a2d6075c790422b9124d6d95"
+    },
+    {
+      "path": "docs/content/r4/phone-study-puzzles.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "da51fbeba6fefa9c8ef782f3303812c8aba96fbed78485d2aae06ed7dde3ee01"
+    },
+    {
+      "path": "docs/content/r4/phone-verification-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "7d87db22336333172afc2a3231056c3a13678cdad690050030396fe564d20b7b"
+    },
+    {
+      "path": "docs/content/r4/phone-verification-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "d874369a5c2b8f1fffeeb0cfc8a62959565d73437671dbbdecbf9b54f4a6e3ef"
+    },
+    {
+      "path": "docs/content/r4/phone-verification-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "593faf85ecce56d9fe7b75098f7f654db81df06dd425f0c5edee69a01f08d0d3"
+    },
+    {
+      "path": "docs/store/screenshots/content-r4-moen-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "b59b6e37c6454e71ba617306daaaa122c55213c22db28e7aaa005fab2dfbe606"
+    },
+    {
+      "path": "docs/store/screenshots/content-r4-moen-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "0858455c80256fdd8b43b02ec0be5768bc65eb82511210781daebe565be655c2"
+    }
+  ],
+  "newArtOriginals": 1,
+  "runtimeArtCrops": 2,
+  "reviewSha256": "2d0c16d6f1afc6360aa9246d5bc5ccdabdf0cd1e747531be1cba5f2f173b7f0b",
+  "sourceHashes": {
+    "index.html": "989ffbd1886e2e951d92972e16f1c2963494e90a22365e14047e30030a0a63e3",
+    "sw.js": "5d745dfb0f36c0f6c2ac9e404fee1cc134df1a734ceea9610c4cbc1352efa4ea",
+    "README.md": "260497c1796672d6d6c7245fc9765ac49a5f037b513f9f81d42fa7e1754d613d",
+    "package.json": "99bced4bbddbbb8c4eec837a58f7a69414ba18fa329b274bd5352905759ae9e1",
+    "package-lock.json": "4cf80c9d68be746db06837aed8349dc60c877098b8423391ee228c20e385c244",
+    "templates/harbor.html": "e1a535f4245cee10e5a12c0c6d3092ac891750eb7db1b585dcc74ddfd63c348a",
+    "templates/index.html": "08ed4e7066fdc74d94011052a2004db91ad0fe43341193f08fe4f1a1196ade96",
+    "templates/r75-harbor.css": "587fc63b027d7b2cc6933c1ab3a111d96a3f3a83dbc57138728ccb07fc81f0aa",
+    "templates/r75-theme.css": "e6f3ca2696995bdfda48f9b2f888f88389efb4313d9c31b0b9340350b55cce4a",
+    "templates/r76-art.css": "2fb0ba8a50a50f57a68b14f8bc3b3f1e0240f0df5026389994d1865c3023f024",
+    "templates/r77-art.css": "9540c89956246ddf98522de46cd25bb9a0bf39d9db745fca2aa6c6d675bf461c",
+    "templates/r78-art.css": "f54cc69b450fa7816c67a8f3f72ca689f549b24738e9974a4c7cc575a8cdf5d4",
+    "templates/r79-art.css": "2e9d5c6319b83d2dea0cddd3cebaa29b7c0fb18f4ed5edef19f9eeff5c800edf",
+    "templates/r80-art.css": "87b390244cd439cb4ad541d85f47566efcac5df63138998914b96e3103a9e62f",
+    "templates/card-battle/battle.js": "1c412227ab264ade49817c2ecb9a5950418fb458c573f64d847b7079e9eed58a",
+    "templates/card-battle/cards.js": "a427ad865041a93683c08e35b6cc92c6a02627faf07dc456e7a49d1466a2defa",
+    "templates/card-battle/content-r1.css": "b76210b705dd96e67fa3522c74bcf021fb19e7964804cede3c826eda30ce9ef6",
+    "templates/card-battle/content-r2.css": "9f7b0790bda9fae60a9883238b3c37a3648d5a03f1bb6e04800cf29757678a86",
+    "templates/card-battle/content-r3.css": "cfc9557741907d9e7fb6ca29996f6bf81a70f4edb41d8fb1a7fecaabd16b5843",
+    "templates/card-battle/content-r4.css": "b808d638f50c3db9d0494032c7fbbad02d9046b664c8671cfe9aecfb0565b74f",
+    "templates/card-battle/core.js": "b1c1434a4b6a62e8ec0c7aa4da6cde2f9cfa07f38760a43e9f5142745f87364f",
+    "templates/card-battle/index.html": "6f19180ca183be740a7283aa82a77e7d9b806bdd54dd78d2f749ae30c17bfdd6",
+    "templates/card-battle/pose-player.js": "faa13332f20dd800fbca9b2c8c96cf16758809c58503aceac3cc283eb09531f0",
+    "templates/card-battle/r73-mobile.css": "1ab315d41d5f1cebb256aa07570738b82db25d991505ebbae4e8dc6c72629178",
+    "templates/card-battle/r73-ui.js": "0a95f161de1f6101e51536707fe65c1a460dd80422d02cac0271e1557bcc5d31",
+    "templates/card-battle/r74-tide.css": "bccaf6af6627074f3e46e9a4f55004406f62eeb4f57176413074d4ee6719bbb4",
+    "templates/card-battle/tide-puzzles.js": "1f8eb05aacd2b9987ed90706a30cf08d5414d0b136937e6e76774ff91f0930a1",
+    "templates/card-battle/tide-session.js": "82702ff03c1dd79ca5853815770f4019945014dbc6af2c8ceeeccf2f1c530bdb",
+    "templates/card-battle/voyage.js": "24b4458dda0d66706450671cd5445e7f1d4b44fb08b0f4582d1a055aebcff6f7",
+    "templates/card-pack/index.html": "4ed5602d1b7fad726139402cfc4779e80d3795c6dd598bed0d0e48c794c583a8",
+    "templates/card-pack/pack.js": "28cbe6bbcab5408c3d64b041c11cc0d9e5950078427f7927e63f98a5b8f5a361"
+  },
+  "qualification": "Headless Chromium original viewport captures. Text-masked shield evidence uses temporary presentation CSS only. No real-device, human-playtest or independent Muse score claim."
+}

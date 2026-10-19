@@ -1,0 +1,76 @@
+/* R6: preview numbers are ghosts; card roots, actual HP and slots do not move. */
+/* R7: readable mechanisms, explicit ownership and an uncluttered exchange. */
+body[data-content-active=true] .battlefield .card{overflow:visible}
+.r6-hp-preview{position:absolute;bottom:-22px;left:-3px;right:-3px;z-index:32;font:700 12px/20px Arial,sans-serif;text-align:center;background:#29283ce8;color:#f2f1fa;border:1px dashed #e9bd74;white-space:nowrap}
+[data-exchange-preview=leaves] .art{opacity:.55}
+.r6-exchange-path{position:absolute;inset:0;width:100%;height:100%;z-index:7;pointer-events:none;overflow:visible}
+.r6-exchange-path path{stroke:#e9bd74;stroke-width:2;stroke-dasharray:7 4;fill:none}
+.r6-exchange-preview{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:min(350px,92%);z-index:42;background:#201c3df5;border:1px solid #e9bd74;padding:8px;color:#f2f1fa;text-align:center;box-sizing:border-box}
+.r6-exchange-preview strong,.r6-exchange-preview>span{display:block;font-size:11px;line-height:1.4}.r6-exchange-preview>div{display:flex;gap:8px;justify-content:center;margin-top:3px}.r6-exchange-preview button{min-height:44px;min-width:90px;background:#302544;color:#f2f1fa;border:1px solid #b6a0ec}.r6-exchange-preview button:first-child{background:#da8a6d;color:#10152d}
+body:has(#exchangePreview) #endTurnBtn,body:has(#exchangePreview) #tidebreakBtn{background:#302544!important;color:#f2f1fa!important;box-shadow:none!important;border-color:#b6a0ec!important}
+.r6-board-signal{position:absolute;z-index:31;top:-20px;left:0;right:0;text-align:center;font:700 11px/18px Arial;color:#e9bd74;white-space:nowrap;pointer-events:none}.r75-tide-channel>.r6-board-signal{top:5px;left:8px;right:auto;font-size:12px;background:#201c3dd9;padding:3px 6px}
+.r6-hand-signal{position:relative;top:auto;display:flex;align-items:center;justify-content:center;gap:10px}.r6-hand-signal img{width:70px;height:96px;object-fit:cover;border:1px solid #da8a6d}.r6-hand-signal span{max-width:110px;white-space:normal}
+.r75-tide-channel>.r6-hand-signal{position:absolute;left:calc(50% - 110px);right:auto;top:-100px;width:220px;height:94px;padding:3px;background:#201c3dde;box-sizing:border-box}.r75-tide-channel>.r6-hand-signal img{width:60px;height:86px}
+.r6-board-route{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}.r6-board-route path{stroke:#b6a0ec;stroke-width:3;stroke-dasharray:6 5;fill:none}
+body[data-content-id=forecast] #tideChartPanel .tide-choices{grid-template-columns:1fr 100px;align-items:stretch}
+body[data-content-id=forecast] #tideChartPanel .tide-choices button:not(.selected){min-height:44px;background:#302544;font-size:11px;opacity:.75}
+body[data-content-id=forecast] #tideChartPanel .tide-choices button:not(.selected) .r75-icon{width:25px;height:25px}
+body[data-content-id=forecast] #tideChartPanel .tide-choices:has(#chooseEbb.selected){grid-template-columns:100px 1fr}
+body[data-content-id=forecast] #tideChartPanel .tide-choices:has(#chooseEbb:disabled){grid-template-columns:1fr 100px}
+body[data-content-id=forecast] #tideChartPanel .tide-choices:has(#chooseFlood:disabled){grid-template-columns:100px 1fr}
+body[data-content-id=forecast] #tideChartPanel .tide-choices button:disabled{min-height:44px;background:#302544!important;opacity:.6;font-size:11px}
+body[data-content-id=forecast] #tideChartPanel .tide-choices button:disabled .r75-icon{width:25px;height:25px}
+#tideChartCast:disabled{background:#484454!important;color:#e2dde8!important;border:1px dashed #a49caf!important;box-shadow:none!important;opacity:1!important;cursor:not-allowed}
+#forecastCompare{display:block;padding-top:0}#forecastCompare>div{padding:9px;border-left:2px solid #69cfe9;font-size:14px}#forecastCompare strong{display:block;color:#e9bd74;margin-bottom:6px}
+#forecastRule{min-height:0;font-size:16px}#forecastPanel .forecast-note{font-size:12px!important;margin:0}#forecastPanel .content-sheet{grid-template-rows:auto auto auto auto auto;gap:10px;background:#201c3df5}#forecastPanel{background:#10152d55;align-items:end;padding-bottom:75px;pointer-events:none}#forecastPanel .content-sheet{pointer-events:auto;max-width:600px}#forecastPanel .forecast-round button{min-height:82px;gap:3px}#forecastPanel .forecast-round small{font-size:11px}#forecastPanel .forecast-round span{font-size:14px}
+.r6-moen-stage{position:absolute;left:0;width:210px;height:240px;z-index:8;pointer-events:none;background:none;border:0;overflow:visible;display:block}.r6-moen-stage>img{width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 3px 7px #10152d)}.r6-moen-stage>span{position:absolute;bottom:0;left:15px;right:10px;text-align:center;font:700 12px/22px Arial;color:#f2f1fa;text-shadow:0 1px 3px #10152d;background:#201c3da8}
+body[data-content-id=moen] #enemyField{justify-content:flex-end!important;padding-right:25px!important;box-sizing:border-box}.r6-moen-bond{position:absolute;z-index:9;border-top:2px dashed #b6a0ec;color:#e9bd74;font:700 11px/24px Arial;pointer-events:none;white-space:nowrap}.r6-moen-bond[data-active=true]{border-top:3px solid #f2f1fa;filter:drop-shadow(0 0 4px #b6a0ec)}
+.r6-moen-entrance{position:fixed;z-index:240;left:50%;top:47%;transform:translate(-50%,-50%);width:min(340px,90vw);height:390px;pointer-events:none;background:radial-gradient(ellipse,#201c3df2,transparent 72%)}.r6-moen-entrance img{width:100%;height:100%;object-fit:contain}.r6-moen-entrance p{position:absolute;bottom:0;left:0;right:0;padding:12px;text-align:center;background:#201c3de8;color:#e9bd74;font-size:20px}.r6-moen-entrance strong{color:#f2f1fa;font-size:16px}
+/* The broken VFX keeps transparent fragment bounds outside the frame; painted shell stays at card corner. */
+.card[data-shell-state] .r4-shell-art.r3-shell-badge{left:auto;right:0;top:26%;width:32px;height:40px;object-fit:contain;z-index:20;filter:drop-shadow(0 0 3px #b6a0ec)}
+.card[data-shell-state=broken] .r4-shell-art.r3-shell-badge{left:-20%;right:auto;top:-12%;width:140%;height:110%;padding:32% 3% 50% 75%;box-sizing:border-box;object-fit:contain;filter:none}
+.card[data-shell-state=breaking] .r4-shell-art.r3-shell-badge{right:-6px;top:20%;width:46px;height:55px;filter:drop-shadow(0 0 5px #da8a6d)}
+.card[data-shell-state=broken]{outline:2px solid #da8a6d!important;box-shadow:none!important}.r6-shield-label{position:absolute;left:0;right:0;bottom:-20px;z-index:31;color:#e9bd74;background:#201c3dde;text-align:center;font:700 11px/18px Arial;white-space:nowrap}
+body[data-content-id=moen][data-r76-wave=true] #tideWave{opacity:.55!important;z-index:5!important}body[data-content-id=moen][data-r76-wave=true] #enemyField .card{z-index:24!important}body[data-content-id=moen][data-r76-wave=true] #tideWave .r76-wave-art{mask-image:linear-gradient(90deg,#000 0 50%,transparent 85%)}
+body[data-content-id=moen][data-r76-wave=true] #tideWave .r76-wave-art{width:65%;left:0;mask-image:none}
+.r6-contact-ready{outline:2px dashed #e9bd74!important}.r6-contact-impact{outline:3px solid #da8a6d!important}
+body[data-content-id=moen] #enemyField .card.shield-break{animation:none!important;filter:none!important;box-shadow:0 0 8px #da8a6d!important}
+.card[data-shell-state=breaking] .r4-shell-art{animation:r6-crack .4s linear both}
+@keyframes r6-crack{0%{clip-path:polygon(0 0,35% 0,0 35%)}100%{clip-path:polygon(0 0,200% 0,0 200%)}}
+@media(prefers-reduced-motion:reduce){.card[data-shell-state=breaking] .r4-shell-art{animation:none}}
+@media(min-width:700px){.r6-moen-stage{left:12%;width:250px;height:270px}body[data-content-id=moen] #enemyField{padding-right:20%!important}}
+@media(max-width:600px) and (min-height:651px){
+ #forecastPanel .content-sheet{padding:10px;gap:8px}#forecastPanel h2{font-size:20px}#forecastRule{font-size:14px;line-height:1.4}#forecastPanel .forecast-rounds{margin:0}#forecastPanel .forecast-round button{min-height:62px;gap:2px}#forecastCompare>div{font-size:12px;line-height:1.4;padding:5px}#forecastPanel .forecast-note{display:none}
+ body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) .board{display:grid!important;grid-template-columns:1fr;grid-template-rows:44px minmax(80px,1fr) 44px minmax(80px,1fr) 8px;gap:4px;padding:4px 10px;height:calc(100dvh - 480px);min-height:0;flex:0 0 calc(100dvh - 480px);overflow:visible}
+ body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) .hero-row{margin:0;min-height:44px}
+ body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) #enemyField{grid-row:2}body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) .player-hero-row{grid-row:3;transform:none!important}body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) #playerField{grid-row:4}
+ :root body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) .battlefield{padding:0;min-height:0;max-height:none;align-items:center;justify-content:center}
+ :root body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) .battlefield .card{width:86px;height:110px}
+ body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) .r75-tide-channel{grid-row:5;min-height:0;height:8px}
+}
+@media(max-height:650px) and (min-width:600px){.r6-moen-stage{display:block;left:45%;width:140px;height:140px}.r6-moen-stage>span{font-size:10px}.r6-moen-bond{display:none}body[data-content-id=moen] #enemyField{padding-right:10px!important}.r6-exchange-preview{top:50%;width:250px;font-size:11px}.r6-exchange-preview>span{font-size:10px}.r6-hp-preview{font-size:10px;bottom:-19px}#forecastPanel{padding-bottom:10px;align-items:center;justify-items:end}#forecastPanel .content-sheet{width:52%;padding:10px}#forecastPanel .forecast-round button{min-height:60px}#forecastPanel .forecast-note{display:none}#forecastCompare>div{font-size:12px;padding:5px}.r6-moen-entrance{height:260px}}
+@media(max-height:650px) and (min-width:600px){
+ .r6-exchange-preview{position:fixed;left:50%;top:auto!important;bottom:66px;transform:translateX(-50%);width:min(700px,calc(100vw - 20px));padding:6px;display:grid;grid-template-columns:1fr auto;column-gap:10px;text-align:left}
+ .r6-exchange-preview>div{grid-column:2;grid-row:1/3;margin:0}.r6-exchange-preview strong,.r6-exchange-preview>span{grid-column:1}
+}
+/* R7 corrections use layout and labels; all illustrations remain their original assets. */
+.battlefield .card>.r6-board-signal{top:auto;bottom:-29px;left:50%;right:auto;transform:translateX(-50%);width:max-content;max-width:170px;font-size:14px;line-height:22px;padding:1px 5px;background:#201c3df2;white-space:normal;border:1px solid #b6a0ec;box-sizing:border-box}
+.r75-tide-channel>.r6-board-signal{left:auto!important;right:10px!important;top:0!important;transform:none!important;width:max-content;max-width:calc(100% - 20px);font-size:14px;line-height:22px;white-space:normal;box-sizing:border-box}
+.r75-tide-channel>.r6-hand-signal{left:calc(50% - 110px)!important;right:auto!important;top:-100px!important}
+body:has(#exchangePreview) .r75-tide-channel>span,body:has(#exchangePreview) .r6-board-signal{visibility:hidden}
+.r6-exchange-preview strong,.r6-exchange-preview>span{font-size:12px;overflow-wrap:anywhere}
+.r6-hp-preview{left:0;right:0;box-sizing:border-box;font-size:12px}
+.r7-hero-note{display:block;color:#e9bd74;font:700 12px/18px Arial;white-space:nowrap;margin-left:6px}
+body[data-content-id=shelter] #enemyHero{flex-wrap:nowrap}
+body[data-content-id=shelter] #enemyHero .hp-badge{display:none!important}
+.r7-moen-side{position:absolute;top:0;left:18px;background:#201c3df2;border:1px solid #da8a6d;color:#f2f1fa;padding:4px 8px;font:700 14px/20px Arial}
+.r6-moen-bond{box-sizing:border-box;color:#e9bd74;font:700 12px/20px Arial;text-align:center;background:#201c3de8;white-space:normal;padding:2px 4px}
+.r7-shield-owner{position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);width:154px;z-index:32;color:#f2f1fa;background:#302544f5;border:1px solid #b6a0ec;text-align:center;font:700 12px/22px Arial;white-space:nowrap}
+.r7-ally-shield{position:absolute;bottom:3px;left:0;right:0;text-align:center;font:700 13px/22px Arial;color:#69cfe9;background:#201c3de6;pointer-events:none}
+.r7-moen-heal{position:absolute;top:25px;left:22px;z-index:40;color:#f2f1fa;background:#201c3df5;border:1px solid #69cfe9;padding:5px;font:700 16px/24px Arial;white-space:nowrap;animation:r7-heal 1.8s ease-out both}
+@keyframes r7-heal{from{translate:0 8px}to{translate:0 -8px}}
+#forecastReversal{color:#e9bd74;display:flex;align-items:center;gap:4px;font-size:12px;white-space:normal}
+#forecastReversal img{width:18px;height:18px;object-fit:contain;flex:none}
+@media(max-width:600px) and (min-height:651px){body[data-content-id=forecast]:has(#forecastReversal){padding-top:154px}}
+@media(max-height:650px) and (min-width:600px){.r7-moen-side{font-size:12px;top:-10px}.r7-ally-shield{bottom:-5px;font-size:11px}.r7-shield-owner{font-size:11px;width:140px}.r7-moen-heal{top:10px;left:4px;font-size:12px}.battlefield .card>.r6-board-signal{font-size:12px;line-height:17px;bottom:-24px;max-width:140px}}
+@media(prefers-reduced-motion:reduce){.r7-moen-heal{animation:none}}

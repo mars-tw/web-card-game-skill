@@ -1,0 +1,17 @@
+/* R5 keeps evidence visible in normal play; no fabricated character motion. */
+#contentVerify{display:block;width:100%;margin-top:8px;min-height:44px;font-size:13px;line-height:1.4;padding:7px}
+#contentVerify:disabled{opacity:.8;color:#b6a0ec;border-style:dashed}
+#offlineStatus{position:fixed;right:8px;top:4px;z-index:210;font-size:12px;line-height:20px;padding:2px 8px;color:#f2f1fa;background:#201c3d;border:1px solid #da8a6d;pointer-events:none}
+#offlineStatus[hidden]{display:none}
+body[data-offline=true] .content-bar{padding-top:28px}
+#foldDirections{display:none}
+body[data-content-id=forecast] #tideChartPanel .tide-chart-sheet[data-folded=true]{display:flex;flex-direction:column;gap:6px}
+body[data-content-id=forecast] #tideChartPanel .tide-chart-sheet[data-folded=true] .tide-chart-footer{margin:0}
+#tideChartPanel .tide-chart-sheet[data-folded=true]>#foldDirections{display:flex!important;gap:8px;grid-column:1/-1}
+#foldDirections button{flex:1;min-height:44px;font-size:13px;padding:6px;color:#f2f1fa;background:#302544;border:1px solid #b6a0ec}
+#foldDirections button[aria-pressed=true]{outline:2px solid #69cfe9;background:#3d4661}
+#forecastDirectionWhy{min-width:44px;min-height:44px;font-size:12px;padding:6px;background:#302544;color:#f2f1fa;border-color:#b6a0ec}
+#forecastDirectionWhy[hidden]{display:none}
+.battlefield .card[data-shell-state]{overflow:visible!important}
+.card[data-shell-state=broken] .r4-shell-art.r3-shell-badge{left:-20%;right:auto;top:-12%;width:140%;height:110%;object-fit:fill}
+@media(max-height:650px){#contentPanel .content-sheet{gap:6px}#contentVerify{margin-top:4px}body[data-offline=true] .content-bar{padding-top:24px}}

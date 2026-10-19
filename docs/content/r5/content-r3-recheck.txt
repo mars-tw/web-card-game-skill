@@ -1,0 +1,96 @@
+PASS harbor exact name 六道潮汐殘局
+PASS harbor contentEntry reachable 44px
+PASS harbor exact name 潮汐預報
+PASS harbor forecastEntry reachable 44px
+PASS harbor exact name 茉恩的退潮考驗
+PASS harbor moenEntry reachable 44px
+PASS harbor link opens requested 潮汐預報
+PASS harbor link opens requested 茉恩的退潮考驗
+PASS study exact name 六道潮汐殘局
+PASS study exact name 潮汐預報
+PASS study exact name 茉恩的退潮考驗
+PASS first entry is an action sentence
+PASS fallen wrong order really fails
+PASS fallen failure identifies the wrong step
+PASS fallen failure title text buttons uncut
+PASS fallen failure does not grant completion
+PASS fallen immediate retry restored
+PASS fallen real solution complete
+PASS fallen completion title text buttons uncut
+PASS shield wrong order really fails
+PASS shield failure identifies the wrong step
+PASS shield failure title text buttons uncut
+PASS shield failure does not grant completion
+PASS shield immediate retry restored
+PASS shield real solution complete
+PASS shield completion title text buttons uncut
+PASS shelter wrong order really fails
+PASS shelter failure identifies the wrong step
+PASS shelter failure title text buttons uncut
+PASS shelter failure does not grant completion
+PASS shelter immediate retry restored
+PASS shelter real solution complete
+PASS shelter completion title text buttons uncut
+PASS taunt wrong order really fails
+PASS taunt failure identifies the wrong step
+PASS taunt failure title text buttons uncut
+PASS taunt failure does not grant completion
+PASS taunt immediate retry restored
+PASS taunt real solution complete
+PASS taunt completion title text buttons uncut
+PASS spell wrong order really fails
+PASS spell failure identifies the wrong step
+PASS spell failure title text buttons uncut
+PASS spell failure does not grant completion
+PASS spell immediate retry restored
+PASS spell real solution complete
+PASS spell completion title text buttons uncut
+PASS cross wrong order really fails
+PASS cross failure identifies the wrong step
+PASS cross failure title text buttons uncut
+PASS cross failure does not grant completion
+PASS cross immediate retry restored
+PASS cross real solution complete
+PASS cross completion title text buttons uncut
+PASS six title-independent art combinations unique
+PASS six actual completions saved on reload
+PASS visible first-step pulse and label
+PASS press phase is real pointer feedback
+PASS release really changes future
+PASS saved reversal stays consumed
+PASS wrong tide unavailable
+PASS wrong direction zero consumption
+PASS past turn explains lock
+PASS past turn cannot mutate schedule
+PASS fourth round free choice
+PASS forecast result fully fits
+PASS forecast result corrected sentence
+PASS 390x844 all preparation cards complete
+PASS wave anticipation has not resolved damage
+PASS 390x844 no half cards after ebb
+PASS painted Moen fills empty middle
+PASS large real intact shield badge
+PASS broken art and impact frame follow real shield loss
+PASS shield actually removed
+PASS broken shield survives saved checkpoint
+PASS Moen completion uncut
+PASS delaying makes knight actually attack
+PASS study does not alter actual battle ledger
+PASS voyage exact name 六道潮汐殘局
+PASS voyage exact name 潮汐預報
+PASS voyage exact name 茉恩的退潮考驗
+PASS normal boss route records completion
+PASS zero-wins explanation visible
+PASS all progress real export clear import round trip
+PASS bad code leaves every save key unchanged
+PASS save error centered and uncut
+PASS 844x390 complete card bounds
+PASS 1032x1376 complete card bounds
+PASS 1376x1032 complete card bounds
+PASS 1366x600 complete card bounds
+PASS 430x932 complete card bounds
+PASS 1032x1376 complete card bounds
+PASS new shield art cached offline
+PASS offline normal input completes
+PASS zero page or resource errors
+Content R3 browser: 95 PASS

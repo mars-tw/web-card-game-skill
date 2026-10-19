@@ -1,0 +1,22 @@
+{
+  "round": "R73",
+  "status": "VERIFIED",
+  "generation": {
+    "newRasterImages": 0,
+    "modelSlug": null,
+    "reason": "本輪未產生新圖；可用 imagegen 介面沒有可指定並驗證 gpt-image-2 slug 的參數。沿用既有正式卡圖，不用方塊占位。"
+  },
+  "reusedOpponentArt": [
+    "assets/cards/heroSerHalden.png",
+    "assets/cards/heroScarra.png",
+    "assets/cards/heroMagisterVey.png",
+    "assets/cards/heroRuneFrostfang.png",
+    "assets/cards/heroIsoldLongdusk.png"
+  ],
+  "cardArtContract": "三套試用牌與兩套新 AI 牌組逐張驗證既有正式卡圖存在；未改圖檔與原授權紀錄。",
+  "newMusicOrSfx": 0,
+  "missing": [
+    "新增角色姿勢逐幀／骨架、hurt／death 素材；未將卡牌 UI 拖曳當作人物動畫。",
+    "可授權背景音樂；現有 BGM_URL 維持 null。"
+  ]
+}

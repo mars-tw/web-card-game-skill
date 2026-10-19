@@ -1,0 +1,107 @@
+{
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "generationCalls": 1,
+  "processing": "equal atlas cells cropped, aspect-preserving resize, lossless WebP; no painted substitute",
+  "assets": [
+    {
+      "path": "assets/animations/content-r9/combat-atlas-source.png",
+      "size": [
+        1983,
+        793
+      ],
+      "alpha": true,
+      "sha256": "6c02e12ed4b2f636f50a1e9cd37cf9fe461a0370fc14d14087f61cfcccdfa72c"
+    },
+    {
+      "path": "assets/animations/content-r9/footman-anticipation.webp",
+      "size": [
+        256,
+        255
+      ],
+      "alpha": true,
+      "sha256": "c0479875a3cc0b90c026cf8254be65a0f56eddb8504340902f409fb0b69dbe68"
+    },
+    {
+      "path": "assets/animations/content-r9/footman-death.webp",
+      "size": [
+        256,
+        255
+      ],
+      "alpha": true,
+      "sha256": "9f64dac0300aa2e238fe7ccb087a1ffe6846458bfa245547afd447901155fa82"
+    },
+    {
+      "path": "assets/animations/content-r9/footman-hurt.webp",
+      "size": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "sha256": "479bc753912e54ac2ed5d26f610274d2639f63bee0fb883667e84d125bcfba61"
+    },
+    {
+      "path": "assets/animations/content-r9/footman-impact.webp",
+      "size": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "sha256": "1ac69451289e4cd7afee706da7eb6542ca6648a1c389947c7bf18dae3f86e833"
+    },
+    {
+      "path": "assets/animations/content-r9/footman-recovery.webp",
+      "size": [
+        256,
+        255
+      ],
+      "alpha": true,
+      "sha256": "deded8f576e8c9a4d913c05709b8cd337861ac09289f2e2c35dcb397411e7a7a"
+    },
+    {
+      "path": "assets/animations/content-r9/knight-anticipation.webp",
+      "size": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "sha256": "06501a58b41c49bb82db2e18930e36d088d3756c8f533e7909ba5f21ef0a33dd"
+    },
+    {
+      "path": "assets/animations/content-r9/knight-death.webp",
+      "size": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "sha256": "c5f0aa1434495332ac8ac7ae0c397c3212400065d2c823cdfe73f190d5b11341"
+    },
+    {
+      "path": "assets/animations/content-r9/knight-hurt.webp",
+      "size": [
+        255,
+        256
+      ],
+      "alpha": true,
+      "sha256": "d28ccdfca270da9560bf5a62d6459d9f5a7a7ac88099bb2dda05bdc76e7797ce"
+    },
+    {
+      "path": "assets/animations/content-r9/knight-impact.webp",
+      "size": [
+        255,
+        256
+      ],
+      "alpha": true,
+      "sha256": "f59e7b2f45a64e9197a9c0a70c5149e97094c00eecda38abb5e90ba71724da09"
+    },
+    {
+      "path": "assets/animations/content-r9/knight-recovery.webp",
+      "size": [
+        256,
+        256
+      ],
+      "alpha": true,
+      "sha256": "9dbd42976234fab1094b3d2c1de4055e0e737128078186b3007a101c9f5d319a"
+    }
+  ]
+}

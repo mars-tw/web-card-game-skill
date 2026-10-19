@@ -1,0 +1,120 @@
+{
+  "status": "VERIFIED",
+  "initialChain": "e2e-final.txt",
+  "cause": "Landscape preview cancel button intercepted enemy card; fixed by independent bottom action row. Assertions unchanged.",
+  "constituents": [
+    {
+      "command": "node scripts/test-battle-e2e.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-controls-reachability.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-r67-browser.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-r72-fun.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-r73-mobile.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-r74-review.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-r74-ebb.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-r75-art.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-r76-art.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-r77-tide.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-r78-art.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-r79-art.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-r80-art.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt; original && chain reached content R1, so this preceding constituent exited 0"
+    },
+    {
+      "command": "node scripts/test-content-r1-e2e.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "test-content-r1-e2e-recheck.txt",
+      "seconds": 103.06
+    },
+    {
+      "command": "node scripts/test-content-r2-e2e.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "test-content-r2-e2e-recheck.txt",
+      "seconds": 137.09
+    },
+    {
+      "command": "node scripts/test-content-r3-e2e.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "test-content-r3-e2e-recheck.txt",
+      "seconds": 144.2
+    },
+    {
+      "command": "node scripts/test-content-r4-e2e.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "test-content-r4-e2e-recheck.txt",
+      "seconds": 198.58
+    },
+    {
+      "command": "node scripts/test-content-r5-e2e.js",
+      "status": "VERIFIED",
+      "exitCode": 0,
+      "evidence": "test-content-r5-e2e-recheck.txt",
+      "seconds": 172.0
+    }
+  ]
+}

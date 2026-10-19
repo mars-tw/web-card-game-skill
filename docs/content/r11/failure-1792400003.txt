@@ -1,0 +1,5 @@
+AssertionError [ERR_ASSERTION]: 320x568 Moen all panel text ranges stay unclipped: [{"text":"你","why":"clipped by name","rect":{"x":52,"y":155,"width":12,"height":14,"top":155,"right":64,"bottom":169,"left":52},"bounds":{"x":52,"y":152,"width":0,"height":20,"top":152,"right":52,"bottom":172,"left":52}}]
+    at check (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r11-e2e.js:4:28)
+    at auditText (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r11-e2e.js:19:135)
+    at async layout (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r11-e2e.js:7:32)
+    at async C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r11-e2e.js:35:518

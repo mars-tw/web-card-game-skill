@@ -1,0 +1,73 @@
+/* R4: painted shield states, opaque study, and a battlefield above the chart. */
+#contentPanel{background:#10152d}
+#contentPanel .content-sheet{background:#201c3d;box-sizing:border-box}
+#contentHint:empty{display:none}
+#contentVerify[hidden]{display:none!important}
+#contentVerify{grid-column:1/-1;min-height:44px}
+#contentGoal{line-height:1.5;max-width:32em}
+#contentPanel .content-sheet{gap:10px}
+#contentResult .content-sheet{grid-template-rows:repeat(6,auto);overflow:visible;box-sizing:border-box}
+#contentResultTitle{font-size:24px;white-space:nowrap;word-break:keep-all;overflow-wrap:normal;flex:none}
+#contentResultName{font-size:16px;line-height:1.5;margin:0;color:#e9bd74;word-break:keep-all;overflow-wrap:normal}
+#contentResult header{gap:8px;min-width:0}
+#contentResult header button{flex:none}
+.content-recap figure[data-error=true]{border:3px solid #da8a6d;box-shadow:0 0 0 2px #e9bd74}
+.content-recap figure[data-error=true] figcaption{background:#502b3d;color:#fff}
+#contentResult[data-outcome=failed] .content-recap img{height:95px}
+#contentResult[data-outcome=failed] .content-recap figcaption{font-size:12px;padding:5px}
+.r4-shell-art.r3-shell-badge{right:0;top:10%;width:62%;height:75%;object-fit:fill;z-index:10;filter:drop-shadow(-2px 0 2px #10152d)}
+.card[data-shell-state=broken] .r4-shell-art.r3-shell-badge{right:-5%;top:2%;width:110%;height:85%;filter:drop-shadow(0 0 2px #da8a6d)}
+.card[data-shell-state] .stats{z-index:24!important}
+#tideChartFold{position:absolute;right:10px;top:7px;min-width:64px;min-height:44px;font-size:12px;background:#302544;color:#f2f1fa;border-color:#b6a0ec}
+#tideChartPanel .tide-chart-sheet{position:relative}
+.tide-chart-sheet[data-folded=true]>:not(h2):not(#tideChartFold):not(.tide-chart-footer){display:none!important}
+.tide-chart-sheet[data-folded=true] #tideChartCast{display:none}
+body[data-content-id=forecast] #tideChartPanel{inset:auto 0 0;background:none;padding:8px;place-items:end center;pointer-events:none}
+body[data-content-id=forecast] #tideChartPanel .tide-chart-sheet{pointer-events:auto;max-height:50dvh;width:min(680px,100%);padding:10px;box-sizing:border-box;background:#201c3d;overflow:hidden}
+body[data-content-id=forecast] #tideChartTitle{font-size:20px;letter-spacing:1px;min-height:36px;margin:0;padding-right:74px}
+body[data-content-id=forecast] #tideChartStatus{margin:0;line-height:1.2}
+body[data-content-id=forecast] #tideChartStatus{padding-right:74px}
+body[data-content-id=forecast] #tideSources,body[data-content-id=forecast] #tideGauge,body[data-content-id=forecast] #r75ChartPips{display:none}
+body[data-content-id=forecast] #tideChartPanel .tide-choices{margin:8px 0;gap:8px}
+body[data-content-id=forecast] #tideChartPanel .tide-choices button{font-size:12px;min-height:86px;padding:4px;line-height:1.4}
+body[data-content-id=forecast] #tideChartPanel .tide-choices .r75-icon{width:56px;height:56px;display:block;margin:0 auto 3px;float:none}
+body[data-content-id=forecast] #tidePreview{min-height:0;padding:6px 0;margin:0;font-size:12px;line-height:1.5}
+body[data-content-id=forecast] .tide-chart-footer{margin-top:6px}
+body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .player-hero-row{transform:none!important;z-index:auto}
+@media(min-height:651px){
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .board{display:grid!important;grid-template-columns:1fr;grid-template-rows:44px minmax(100px,1fr) 44px minmax(100px,1fr) 8px;gap:4px;padding:4px 10px;height:calc(100dvh - 350px);min-height:0;flex:0 0 calc(100dvh - 350px);overflow:visible}
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .hero-row{margin:0;min-height:44px}
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) #enemyField{grid-row:2}
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .player-hero-row{grid-row:3}
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) #playerField{grid-row:4}
+ :root body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .battlefield{padding:0;min-height:0;max-height:none;align-items:center;justify-content:center}
+ :root body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .battlefield .card{height:min(140px,calc((100dvh - 470px)/2));width:96px}
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .r75-tide-channel{grid-row:5;min-height:0;height:8px}
+ #contentPanel .content-art{height:125px;max-height:125px}
+ #contentResult .content-sheet{gap:8px;padding:12px}
+ .content-recap{gap:8px;padding:4px 0}
+ .content-recap img{height:125px}
+ .content-recap figcaption{font-size:13px;padding:6px}
+ .content-recap[data-puzzle=cross] img{height:90px}
+ #contentResultText{font-size:14px;line-height:1.6}
+}
+@media(max-height:650px) and (min-width:600px){
+ body[data-content-id=forecast] #tideChartPanel{left:auto;width:49vw;top:80px;bottom:0;align-items:center}
+ body[data-content-id=forecast] #tideChartPanel .tide-chart-sheet{max-height:calc(100dvh - 88px)}
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .board{display:block!important;width:49vw!important;align-self:flex-start!important;height:calc(100dvh - 150px)!important;overflow:hidden!important}
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .hero-row,body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .hero{min-width:0;max-width:100%;overflow:hidden}
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .board>.hero-row{position:absolute!important;top:4px;left:8px;width:calc(50% - 12px);height:44px;margin:0;padding:3px;transform:none!important;box-sizing:border-box}
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .board>.hero-row:not(.player-hero-row){left:auto;right:8px}
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .hero .name,body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .tide-style{display:none}
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .hero .avatar{width:26px;height:26px;min-width:26px}
+ :root body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .battlefield{position:absolute;top:56px;bottom:28px;left:8px;width:calc(50% - 12px);height:auto;min-height:0;max-height:none;overflow:visible;margin:0!important;transform:none;align-items:center;justify-content:center;box-sizing:border-box}
+ :root body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) #enemyField{left:auto;right:8px}
+ body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .r75-tide-channel{position:absolute;bottom:4px;left:8px;right:8px;height:16px;min-height:0}
+ body[data-content-id=forecast] #tideChartPanel .tide-chart-sheet{display:block}
+ body[data-content-id=forecast] #tideChartPanel .tide-choices .r75-icon{width:36px;height:36px}
+ body[data-content-id=forecast] #tideChartPanel .tide-choices button{min-height:72px;font-size:11px}
+ #contentResult .content-sheet{gap:4px;padding:10px}
+ #contentResultName{font-size:14px}
+ #contentResultTitle{font-size:20px}
+ #contentResult[data-outcome=failed] .content-recap img{height:48px}
+}

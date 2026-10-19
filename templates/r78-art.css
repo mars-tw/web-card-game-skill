@@ -1,0 +1,37 @@
+/* R78: directional tide on a shared deck; painted assets, no character motion. */
+.board::before { bottom:23%;left:-4%;right:-4%;height:calc(2% + var(--r75-tide,0)*8%);background-image:image-set(url('../assets/art/r78/surface-low.webp') 1x,url('../assets/art/r78/surface.webp') 2x);opacity:calc(var(--r75-tide,0)*.115);transform-origin:center bottom;animation:r78-tidal-current 5s ease-in-out infinite alternate; }
+.r75-tide-channel::before { background-image:image-set(url('../assets/art/r78/surface-low.webp') 1x,url('../assets/art/r78/surface.webp') 2x);opacity:calc(var(--r75-tide,0)*.11); }
+.board.r76-wet::after { opacity:.8; }
+@keyframes r78-tidal-current { from { transform:translateY(4px) scaleX(.97); } to { transform:translateY(-8px) scaleX(1); } }
+.tide-wave.run .r76-wave-art { animation:r78-surge 1.3s ease-out both; }
+.tide-wave .r76-wave-art { mask-image:linear-gradient(to bottom,#000 0%,#000 72%,transparent 100%); }
+@keyframes r78-surge { 0%{opacity:0;transform:translateY(150px) scaleY(.4)} 20%{opacity:.8;transform:translateY(45px) scaleY(.8)} 28%,52%{opacity:.9;transform:translateY(-5px) scaleY(1)} 78%{opacity:.4;transform:translateY(-55px)} 100%{opacity:0;transform:translateY(-90px) scaleY(.8)} }
+.r77-card-state:empty { display:none; }
+.battlefield .card.r76-duplicate .art>img:not(.faction-emblem) { transform:scaleX(-1);filter:brightness(.7) saturate(.9); }
+.battlefield .card[data-action-state="spent"] { rotate:-3deg; }
+.r78-ready-arrow { position:absolute;top:-12px;left:calc(50% - 10px);z-index:12;width:20px;height:23px;border:1px solid #b4d7ee;background:#201c3df5;color:#def1ff;text-align:center;font:bold 20px/20px Arial;pointer-events:none;clip-path:polygon(50% 0,100% 35%,100% 100%,0 100%,0 35%); }
+.card.can-attack::after { display:none!important; }
+body[data-tide-trial="true"] #playerField:has(.card:nth-child(5)) { gap:5px;flex-wrap:nowrap; }
+body[data-tide-trial="true"] #playerField:has(.card:nth-child(5)) .card { width:min(136px,calc((100cqw - 24px)/5)); }
+body[data-tide-trial="true"] #playerField:has(.card:nth-child(5)) .card .cardname { font-size:12px;left:2px;right:2px;bottom:23px; }
+body[data-tide-trial="true"] #playerField:has(.card:nth-child(5)) .card .art { inset:5px 3px 27px; }
+body[data-tide-trial="true"] #playerField:has(.card:nth-child(5)) .card .stats { left:2px;right:2px; }
+#commandDock #tidebreakBtn { min-width:86px;width:auto;display:flex;gap:4px;padding:3px 7px;align-items:center;justify-content:center; }
+#commandDock #tidebreakBtn .tide-ring { width:30px;height:30px;flex:0 0 30px; }
+#commandDock #tidebreakBtn .tidebreak-label { display:flex!important;flex-direction:column;font-size:10px;line-height:13px; }
+#commandDock #tidebreakBtn .tidebreak-label strong { font-size:14px; }
+#commandDock #tidebreakBtn .tide-count { display:none; }
+body[data-r76-wave="true"] #commandDock #tidebreakBtn { background:#da8a6d;color:#10152d;border-color:#f3c5a6;box-shadow:0 0 14px #da8a6d44; }
+body[data-r76-wave="true"] #commandDock #tidebreakBtn strong,body[data-r76-wave="true"] #commandDock #tidebreakBtn .tide-glyph { color:#10152d; }
+:root[data-control-mode="touch"] .controls.has-tide { grid-template-columns:minmax(62px,1fr) 86px minmax(64px,.8fr) 44px;gap:6px; }
+.r78-hero-tide { font:bold 12px/1.3 Arial;color:#acd6ed;white-space:nowrap; }
+@media(max-width:360px) { #handDrawerToggle .hand-state { display:none; } }
+body[data-tide-ready="true"] #commandDock #tidebreakBtn.r78-first-full { animation:r78-ready-once .65s ease-out 2; }
+@keyframes r78-ready-once { 50%{box-shadow:0 0 22px #da8a6d;outline:2px solid #f2c6aa;} }
+body:has(#tideChartPanel:not([hidden])) .player-hero-row { position:relative!important;z-index:246;transform:translateY(var(--r78-hero-shift,0px));min-height:44px;background:#201c3dfc;box-shadow:0 3px 12px #10152daa; }
+@media(max-height:450px) { body:has(#tideChartPanel:not([hidden])) .player-hero-row { transform:none; } }
+@media(prefers-reduced-motion:reduce) { .board::before,.tide-wave.run .r76-wave-art,body[data-tide-ready="true"] #commandDock #tidebreakBtn.r78-first-full { animation:none; }.tide-wave.run .r76-wave-art { opacity:.9; } }
+:root[data-perf="low"] .board::before { animation:none; }
+
+.board { background:linear-gradient(#201c3d0a,#201c3d0a),image-set(url('../assets/art/r78/battlefield-low.webp') 1x,url('../assets/art/r78/battlefield.webp') 2x) center/cover; }
+#playerHero .avatar { background-image:url('../assets/art/r78/avatar.webp'),radial-gradient(circle at 35% 25%,#7c5c86,#201c3d);background-size:cover;background-position:center; }

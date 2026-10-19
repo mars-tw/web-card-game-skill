@@ -1,0 +1,646 @@
+{
+  "status": "VERIFIED",
+  "method": "Explicit reproducible nonlethal QA fixture. Standard cards, one previously wounded target; no mutation between before/impact/after/next turn except actual UI actions. Original unedited screenshots.",
+  "results": [
+    {
+      "prefix": "390x844",
+      "before": {
+        "playerHp": 12,
+        "enemyHp": 12,
+        "playerTide": 6,
+        "enemyTide": 0,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t5aojbr",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tc6moub",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "twpzi1e",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "teb0g06",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tqrm2lc",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "t5tavol",
+            "id": "archer",
+            "health": 1
+          },
+          {
+            "uid": "tnvow3a",
+            "id": "archer",
+            "health": 2
+          }
+        ],
+        "wet": false
+      },
+      "impact": {
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t5aojbr",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tc6moub",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "twpzi1e",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "teb0g06",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tqrm2lc",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "tnvow3a",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "wet": true
+      },
+      "after": {
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t5aojbr",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tc6moub",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "twpzi1e",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "teb0g06",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tqrm2lc",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "tnvow3a",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "wet": true
+      },
+      "next": {
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 2,
+        "enemyTide": 3,
+        "turn": 2,
+        "over": false,
+        "player": [
+          {
+            "uid": "tc6moub",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "twpzi1e",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "teb0g06",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tqrm2lc",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "cco9jb1v",
+            "id": "footman",
+            "health": 2
+          }
+        ],
+        "wet": true
+      },
+      "effect": {
+        "width": 1.0799679487179488,
+        "foam": [
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 88.5,
+              "y": 290.296875,
+              "width": 116,
+              "height": 85.796875,
+              "top": 290.296875,
+              "right": 204.5,
+              "bottom": 376.09375,
+              "left": 88.5
+            }
+          },
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 185.5,
+              "y": 290.296875,
+              "width": 116,
+              "height": 85.796875,
+              "top": 290.296875,
+              "right": 301.5,
+              "bottom": 376.09375,
+              "left": 185.5
+            }
+          }
+        ],
+        "floating": 0,
+        "source": "陣亡蓄潮 +1"
+      },
+      "motion": {
+        "start": {
+          "x": 4.8176422119140625,
+          "y": 446.29345703125,
+          "width": 380.36474609375,
+          "height": 171.26312255859375,
+          "top": 446.29345703125,
+          "right": 385.18238830566406,
+          "bottom": 617.5565795898438,
+          "left": 4.8176422119140625
+        },
+        "end": {
+          "x": -15.59375,
+          "y": 234.515625,
+          "width": 421.1875,
+          "height": 259.1875,
+          "top": 234.515625,
+          "right": 405.59375,
+          "bottom": 493.703125,
+          "left": -15.59375
+        }
+      }
+    },
+    {
+      "prefix": "1290x2796",
+      "before": {
+        "playerHp": 12,
+        "enemyHp": 12,
+        "playerTide": 6,
+        "enemyTide": 0,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t41h4wn",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "thjouza",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tte7bx3",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tfhmzkj",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tenscwx",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "tpx16nk",
+            "id": "archer",
+            "health": 1
+          },
+          {
+            "uid": "t64oryb",
+            "id": "archer",
+            "health": 2
+          }
+        ],
+        "wet": false
+      },
+      "impact": {
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t41h4wn",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "thjouza",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tte7bx3",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tfhmzkj",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tenscwx",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "t64oryb",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "wet": true
+      },
+      "after": {
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t41h4wn",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "thjouza",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tte7bx3",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tfhmzkj",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tenscwx",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "t64oryb",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "wet": true
+      },
+      "next": {
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 2,
+        "enemyTide": 3,
+        "turn": 2,
+        "over": false,
+        "player": [
+          {
+            "uid": "thjouza",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tte7bx3",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tfhmzkj",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tenscwx",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [],
+        "wet": true
+      },
+      "effect": {
+        "width": 1.0799781976744185,
+        "foam": [
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 108.5,
+              "y": 336.296875,
+              "width": 116,
+              "height": 85.796875,
+              "top": 336.296875,
+              "right": 224.5,
+              "bottom": 422.09375,
+              "left": 108.5
+            }
+          },
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 205.5,
+              "y": 336.296875,
+              "width": 116,
+              "height": 85.796875,
+              "top": 336.296875,
+              "right": 321.5,
+              "bottom": 422.09375,
+              "left": 205.5
+            }
+          }
+        ],
+        "floating": 0,
+        "source": "陣亡蓄潮 +1"
+      },
+      "motion": {
+        "static": true
+      }
+    },
+    {
+      "prefix": "2064x2752",
+      "before": {
+        "playerHp": 12,
+        "enemyHp": 12,
+        "playerTide": 6,
+        "enemyTide": 0,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "tnihglr",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "t1ojsrd",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tlb80wn",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "t4cl60w",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tdbyena",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "tpzvnia",
+            "id": "archer",
+            "health": 1
+          },
+          {
+            "uid": "tgyp0n9",
+            "id": "archer",
+            "health": 2
+          }
+        ],
+        "wet": false
+      },
+      "impact": {
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "tnihglr",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "t1ojsrd",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tlb80wn",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "t4cl60w",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tdbyena",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "tgyp0n9",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "wet": true
+      },
+      "after": {
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "tnihglr",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "t1ojsrd",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tlb80wn",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "t4cl60w",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tdbyena",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "tgyp0n9",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "wet": true
+      },
+      "next": {
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 2,
+        "enemyTide": 3,
+        "turn": 2,
+        "over": false,
+        "player": [
+          {
+            "uid": "t1ojsrd",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tlb80wn",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "t4cl60w",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tdbyena",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [],
+        "wet": true
+      },
+      "effect": {
+        "width": 1.0799872819767442,
+        "foam": [
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 345.5,
+              "y": 507.390625,
+              "width": 180,
+              "height": 140.390625,
+              "top": 507.390625,
+              "right": 525.5,
+              "bottom": 647.78125,
+              "left": 345.5
+            }
+          },
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 506.5,
+              "y": 507.390625,
+              "width": 180,
+              "height": 140.390625,
+              "top": 507.390625,
+              "right": 686.5,
+              "bottom": 647.78125,
+              "left": 506.5
+            }
+          }
+        ],
+        "floating": 0,
+        "source": "陣亡蓄潮 +1"
+      },
+      "motion": {
+        "static": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+R67 performance: frame p95 run
+R67 performance: throttled run 1/3
+R67 performance: throttled run 2/3
+R67 performance: throttled run 3/3
+{
+  "generatedAt": "2026-10-16T10:47:37.731Z",
+  "source": "working tree (R75)",
+  "profile": "Fast 3G (150ms RTT, 200KiB/s down) + 4x CPU throttle",
+  "concurrentMachine": true,
+  "trustNote": "Local p95 is concurrent-machine evidence; release decision requires clean-machine audit.",
+  "runs": [
+    {
+      "interactiveMs": 6222.9,
+      "visualReadyMs": 3152.3,
+      "domInteractiveMs": 6168.6,
+      "backgroundResponseEndMs": 3152.3,
+      "visualMarkPresent": true,
+      "backgroundResources": [
+        {
+          "name": "white-tide-citadel-low.webp?v=50075ecc",
+          "bytes": 18104,
+          "responseEndMs": 631.9
+        },
+        {
+          "name": "battlefield-low.webp",
+          "bytes": 104166,
+          "responseEndMs": 1778.6
+        },
+        {
+          "name": "avatar.webp",
+          "bytes": 6332,
+          "responseEndMs": 1388.8
+        },
+        {
+          "name": "icon-settings.webp",
+          "bytes": 12256,
+          "responseEndMs": 2527.3
+        },
+        {
+          "name": "icon-wave.webp",
+          "bytes": 17032,
+          "responseEndMs": 3136.6
+        },
+        {
+          "name": "tide-water.webp",
+          "bytes": 22632,
+          "responseEndMs": 2981.3
+        },
+        {
+          "name": "icon-lantern.webp",
+          "bytes": 12676,
+          "responseEndMs": 3152.3
+        }
+      ]
+    },
+    {
+      "interactiveMs": 6182,
+      "visualReadyMs": 3200.7,
+      "domInteractiveMs": 6116.4,
+      "backgroundResponseEndMs": 3200.7,
+      "visualMarkPresent": true,
+      "backgroundResources": [
+        {
+          "name": "white-tide-citadel-low.webp?v=50075ecc",
+          "bytes": 18104,
+          "responseEndMs": 629
+        },
+        {
+          "name": "battlefield-low.webp",
+          "bytes": 104166,
+          "responseEndMs": 1743.8
+        },
+        {
+          "name": "avatar.webp",
+          "bytes": 6332,
+          "responseEndMs": 1385.7
+        },
+        {
+          "name": "icon-settings.webp",
+          "bytes": 12256,
+          "responseEndMs": 2665.2
+        },
+        {
+          "name": "icon-wave.webp",
+          "bytes": 17032,
+          "responseEndMs": 3200.7
+        },
+        {
+          "name": "tide-water.webp",
+          "bytes": 22632,
+          "responseEndMs": 3028.2
+        },
+        {
+          "name": "icon-lantern.webp",
+          "bytes": 12676,
+          "responseEndMs": 3185.3
+        }
+      ]
+    },
+    {
+      "interactiveMs": 6092.1,
+      "visualReadyMs": 3417.5,
+      "domInteractiveMs": 6058,
+      "backgroundResponseEndMs": 3417.5,
+      "visualMarkPresent": true,
+      "backgroundResources": [
+        {
+          "name": "white-tide-citadel-low.webp?v=50075ecc",
+          "bytes": 18104,
+          "responseEndMs": 622.2
+        },
+        {
+          "name": "battlefield-low.webp",
+          "bytes": 104166,
+          "responseEndMs": 1809.3
+        },
+        {
+          "name": "avatar.webp",
+          "bytes": 6332,
+          "responseEndMs": 1400.7
+        },
+        {
+          "name": "icon-settings.webp",
+          "bytes": 12256,
+          "responseEndMs": 2790.4
+        },
+        {
+          "name": "icon-wave.webp",
+          "bytes": 17032,
+          "responseEndMs": 2822.4
+        },
+        {
+          "name": "tide-water.webp",
+          "bytes": 22632,
+          "responseEndMs": 3417.5
+        },
+        {
+          "name": "icon-lantern.webp",
+          "bytes": 12676,
+          "responseEndMs": 3322.7
+        }
+      ]
+    }
+  ],
+  "median": {
+    "interactiveMs": 6182,
+    "visualReadyMs": 3200.7
+  },
+  "frame": {
+    "samples": 175,
+    "p95Ms": 16.8
+  },
+  "assertions": {
+    "visualReadyWithin3000ms": false,
+    "interactiveRegressionWithin10Percent": true,
+    "interactiveLimitMs": 34627.34,
+    "frameP95Within18ms": true
+  }
+}

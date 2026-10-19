@@ -1,0 +1,38 @@
+{
+  "status": "VERIFIED",
+  "round": "CONTENT_R7",
+  "newOriginals": 0,
+  "newRuntimeCrops": 0,
+  "tool": null,
+  "reason": "Only reviewed text, ownership labels and layout fixes; reuses existing generated art without repainting.",
+  "reused": [
+    {
+      "path": "assets/art/content-r6/moen-0.webp",
+      "sha256": "fcef8e7a28e158f51aaa61d078a3c1371659910c393247ada62617f2ac1c6b30"
+    },
+    {
+      "path": "assets/art/content-r6/moen-1.webp",
+      "sha256": "fc826461bc4e67b9f519b3b9f73409922234384c006d24e39c371e7dc60b0a4c"
+    },
+    {
+      "path": "assets/art/content-r6/moen-2.webp",
+      "sha256": "4261028b0507e84074127645f7806e5b5d06d586cec51873867ac6a39f33b0db"
+    },
+    {
+      "path": "assets/art/content-r4/shield-cover.webp",
+      "sha256": "1e179b4eba2736377fd658f2a5d74e8978cbb666e71047c87eeb2cebd00893c9"
+    },
+    {
+      "path": "assets/art/content-r4/shield-fracture.webp",
+      "sha256": "2f0b143e30cb108944ea96bd56a889f63e3ccf176faa0976869beba8dae3d53f"
+    },
+    {
+      "path": "assets/art/r75/icon-shield.webp",
+      "sha256": "fd774099b5d1e561b657a44516ebe052dd60d4f2977710cfcf45b636ccbd6eb4"
+    },
+    {
+      "path": "assets/art/r79/icon-wave.webp",
+      "sha256": "6b0016a2abdb235d60605a767150d731fa97ce14cd2192b17eb94eb903942217"
+    }
+  ]
+}

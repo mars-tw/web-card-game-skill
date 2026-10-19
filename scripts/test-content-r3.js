@@ -1,0 +1,11 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const C=require('../templates/card-battle/tide-puzzles'),Core=require('../templates/card-battle/core'),S=require('../templates/card-battle/tide-session');
+const v={};vm.createContext(v);vm.runInContext(fs.readFileSync('templates/card-battle/cards.js','utf8')+';this.pool=CARD_POOL',v);const pool=JSON.parse(JSON.stringify(v.pool));
+let checks=0;const check=(v,m)=>{assert.ok(v,m);checks++;console.log('PASS',m);};
+const fresh=id=>C.setup({player:{side:'player'},enemy:{side:'enemy'}},id,pool);
+for(const d of C.PUZZLES){const g=fresh(d.id);check(S.decode(S.encode(g),pool)?.content.id===d.id,d.id+' save checkpoint');check(C.failure(g).includes('錯在')&&C.failure(g).length>25,d.id+' concrete failure diagnosis');}
+check(new Set(C.PUZZLES.map(d=>C.RECAP[d.id].cards.map(x=>x[0]).sort().join(','))).size===6,'actual card combinations unique without titles');
+let g=fresh('moen');g.enemy.field[0].shield=true;const hp=g.enemy.field[0].health;const r=Core.resolveAttack(g,{attackerSide:'player',attackerUid:g.player.field[0].uid,defenderUid:g.enemy.field[0].uid},()=>.4);check(!r.ok,'preparation cannot attack before first turn');g.player.field[0].canAttack=true;const impact=Core.resolveAttack(g,{attackerSide:'player',attackerUid:g.player.field[0].uid,defenderUid:g.enemy.field[0].uid},()=>.4);check(impact.ok&&impact.events.some(e=>e.type==='shieldBreak')&&!g.enemy.field[0].shield&&g.enemy.field[0].health===hp,'shield breaks through actual impact while HP stays unchanged');g.enemy.field[0]._r3ShieldBroken=true;check(S.decode(S.encode(g),pool).enemy.field[0]._r3ShieldBroken,'visual broken state persists with real checkpoint');
+g=fresh('forecast');const old=S.encode(g);g.turnCount=2;check(!C.reverse(g,0),'past forecast locked');check(C.reverse(g,1)&&!C.reverse(g,2),'one future reversal');check(S.decode(S.encode(g),pool).forecast.reversed,'reversal persisted');
+const manifest=require('../docs/art/ASSET_MANIFEST_CONTENT_R3.json');check(manifest.tool==='image_gen.imagegen'&&manifest.new_originals===1,'actual art source tool');for(const f of manifest.files)check(require('node:crypto').createHash('sha256').update(fs.readFileSync(f.path)).digest('hex')===f.sha256,'source hash '+f.path);
+console.log('Content R3 rules:',checks,'PASS');

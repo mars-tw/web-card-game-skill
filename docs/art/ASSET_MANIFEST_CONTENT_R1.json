@@ -1,0 +1,28 @@
+{
+  "status": "VERIFIED",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "new_originals": 1,
+  "files": [
+    {
+      "path": "docs/art/source/content-r1/tide-study.png",
+      "sha256": "f8a161e66ebab28df8b565e487bfbd82755b226183209981c0e48d6e78003bbc",
+      "bytes": 3425404,
+      "size": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/art/content-r1/tide-study.webp",
+      "sha256": "089d56e985cbf38677c13476981d6ec4af5ab776d8038883e343c1f17aa74dcc",
+      "bytes": 202794,
+      "size": [
+        960,
+        640
+      ]
+    }
+  ],
+  "processing": "Resize and WebP compression only; opaque RGB illustration. Existing Moen and card images reused.",
+  "license": "Project MIT; AI-generated artwork, no third-party artwork included."
+}

@@ -1,0 +1,79 @@
+{
+  "status": "VERIFIED",
+  "version": "0.14.0",
+  "pwa": "card-battle-content-r1-v1",
+  "syntaxFiles": 59,
+  "secretScan": {
+    "files": 1445,
+    "hits": 0,
+    "excluded": [
+      ".git",
+      "node_modules"
+    ],
+    "matchingValuesPrinted": false
+  },
+  "oldRuntimeVersionHits": [],
+  "screenshots": [
+    {
+      "path": "docs/store/screenshots/content-r1-study-1290x2796.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "81948d499d086bde4412d90272c433b8fef62e795ae09a646ac2a048f29b852f"
+    },
+    {
+      "path": "docs/store/screenshots/content-r1-study-2064x2752.png",
+      "width": 2064,
+      "height": 2752,
+      "sha256": "94d43e2895f0fa05b2642f220d48c14c919ff157cd954c43d2a49e82347d43c3"
+    },
+    {
+      "path": "docs/store/screenshots/content-r1-forecast-1290x2796.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "1fc12420d32d8d029215430b84e13757231b8048ec17e94a2026cf7e46115fc9"
+    },
+    {
+      "path": "docs/store/screenshots/content-r1-forecast-2064x2752.png",
+      "width": 2064,
+      "height": 2752,
+      "sha256": "52130796413dce23a091da7edf3c992e8e55bc57c5b31f7b8468a6c4ea72a7ff"
+    },
+    {
+      "path": "docs/store/screenshots/content-r1-moen-1290x2796.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "aaa30fdd44d19762205db4fde6a0990a5da050458ed1ef7d8165dee3d9cce2d9"
+    },
+    {
+      "path": "docs/store/screenshots/content-r1-moen-2064x2752.png",
+      "width": 2064,
+      "height": 2752,
+      "sha256": "31b3925904b18467500b2b2e13aa09ac2abbfc5d714228287c5e2990dd57c895"
+    }
+  ],
+  "newOriginals": 1,
+  "runtimeArtBytes": 202794,
+  "runtimeHashes": {
+    "index.html": "531cedf19d454b3fe5c7aae5a359d05e1d762d58a787ebd367ba20fdc287f3df",
+    "sw.js": "132307268807675f2bf084b36dac79520223e271384754f477eb0d72631eb49d",
+    "README.md": "43745b0af6a76693ccc985678f45f1f92a226952b7ac334872e9e400e5ebb2ef",
+    "package.json": "f3ae722f92a22633caed6edfd678ee943fe5bda4716c44cffc9c4325e5cb16cd",
+    "package-lock.json": "6f6ac51b43778867bcda18302083337bfdaec7275acf010f6bb154b013591c2b",
+    "templates/harbor.html": "fb07c984d04a49802bcb525a74eec07772b12bf8f633c27316a3aa195819baee",
+    "templates/index.html": "d3be337b9a1c7d434bf4776c27c4b8b2927196df9dc9090a5fe9e3b337aa35df",
+    "templates/card-battle/index.html": "01199e4c084b707cd675c07ab9643782461fc2b2db04ae9040949d768e9c4c27",
+    "templates/card-pack/index.html": "a16782e2c3d93a1cd226f3cae4255b6ba1e993ed1bc780cb101f4c024133730d",
+    "templates/card-battle/battle.js": "fb0c14a2be250a8b03f38a628088c1d210b75bf00138b34af475d842642c3abc",
+    "templates/card-battle/cards.js": "a427ad865041a93683c08e35b6cc92c6a02627faf07dc456e7a49d1466a2defa",
+    "templates/card-battle/core.js": "b1c1434a4b6a62e8ec0c7aa4da6cde2f9cfa07f38760a43e9f5142745f87364f",
+    "templates/card-battle/pose-player.js": "faa13332f20dd800fbca9b2c8c96cf16758809c58503aceac3cc283eb09531f0",
+    "templates/card-battle/r73-ui.js": "0a95f161de1f6101e51536707fe65c1a460dd80422d02cac0271e1557bcc5d31",
+    "templates/card-battle/tide-puzzles.js": "b5907d841788b1ebb6252f6855c87c3963c148d7458471c32c9ca427d6926b85",
+    "templates/card-battle/tide-session.js": "82702ff03c1dd79ca5853815770f4019945014dbc6af2c8ceeeccf2f1c530bdb",
+    "templates/card-battle/voyage.js": "24b4458dda0d66706450671cd5445e7f1d4b44fb08b0f4582d1a055aebcff6f7",
+    "templates/card-pack/pack.js": "b42b718d7d1925f435506e5e9c54a8a02aaa6e100a7dcfd7e5f9b77cbef99354",
+    "templates/card-battle/content-r1.css": "b76210b705dd96e67fa3522c74bcf021fb19e7964804cede3c826eda30ce9ef6",
+    "assets/art/content-r1/tide-study.webp": "089d56e985cbf38677c13476981d6ec4af5ab776d8038883e343c1f17aa74dcc"
+  },
+  "qualification": "Headless local Chromium and local artifacts; no native-device or Apple acceptance claim."
+}

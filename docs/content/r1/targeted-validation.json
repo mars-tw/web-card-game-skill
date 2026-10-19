@@ -1,0 +1,20 @@
+[
+  {
+    "command": "node scripts/test-r79-art.js",
+    "status": "VERIFIED",
+    "passes": 83,
+    "log": "docs/content/r1/r79-atomic-1.txt",
+    "originalEncoding": "utf-16",
+    "originalLogSha256": "07630a524dc52417ea84b07f9676df41dae79813f76457035d0020d46e6016bf",
+    "utf8LogSha256": "17f18937fbfd2b1abd007ddf2f6331975c5d12a2cf0ce26028faeeeeffba99fe"
+  },
+  {
+    "command": "node scripts/test-r79-art.js",
+    "status": "VERIFIED",
+    "passes": 83,
+    "log": "docs/content/r1/r79-atomic-2.txt",
+    "originalEncoding": "utf-16",
+    "originalLogSha256": "07630a524dc52417ea84b07f9676df41dae79813f76457035d0020d46e6016bf",
+    "utf8LogSha256": "17f18937fbfd2b1abd007ddf2f6331975c5d12a2cf0ce26028faeeeeffba99fe"
+  }
+]

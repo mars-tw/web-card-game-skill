@@ -1,0 +1,25 @@
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const {chromium}=require('playwright'),{serve}=require('./capture-r73-mobile');
+const out=path.resolve(__dirname,'../docs/art/compare/r77/wave');fs.mkdirSync(out,{recursive:true});
+(async()=>{const s=await serve(),b=await chromium.launch({headless:true});const results=[];
+try{for(const [width,height,scale] of [[390,844,1],[430,932,3]]){
+ const c=await b.newContext({viewport:{width,height},deviceScaleFactor:scale,hasTouch:true,isMobile:true,serviceWorkers:'block'}),p=await c.newPage();
+ await p.addInitScript(()=>localStorage.setItem('cb_guide_done_v1','1'));
+ await p.goto(`http://127.0.0.1:${s.address().port}/templates/card-battle/index.html?intro=0`);
+ await p.waitForFunction(()=>window.__test);
+ await p.evaluate(async()=>{window.__test.setup(['wolf','sparkSquire'],['archer','footman']);window.__test.game().tideTrial=true;window.__test.game().player.hand=[];window.__test.setTide(6,0);for(const src of ['wave','foam','puddle']){const i=new Image();i.src=`../../assets/art/r77/${src}.webp`;await i.decode();}});
+ await p.waitForTimeout(1500);const prefix=`${width*scale}x${height*scale}`;
+ const before=await p.evaluate(()=>({hp:window.__test.game().enemy.hp,units:window.__test.game().enemy.field.map(m=>m.health),used:window.__test.game().player.tidebreaksUsed}));
+ await p.screenshot({path:path.join(out,`${prefix}-01-before.png`)});
+ await p.locator('#tidebreakBtn').click();
+ const anticipation=await p.evaluate(()=>({hp:window.__test.game().enemy.hp,units:window.__test.game().enemy.field.map(m=>m.health)}));
+ assert.equal(anticipation.hp,before.hp);assert.deepEqual(anticipation.units,before.units);
+ await p.waitForFunction(()=>document.querySelector('.board').classList.contains('r76-wet'));
+ await p.screenshot({path:path.join(out,`${prefix}-02-impact.png`)});
+ const impact=await p.evaluate(()=>({hp:window.__test.game().enemy.hp,used:window.__test.game().player.tidebreaksUsed,width:document.querySelector('.r76-wave-art').getBoundingClientRect().width/innerWidth,foam:[...document.querySelectorAll('.r77-impact-foam')].map(i=>({opacity:getComputedStyle(i).opacity,box:i.getBoundingClientRect().toJSON()}))}));
+ assert.equal(impact.hp,before.hp-2);assert.ok(impact.width>=.7);assert.equal(impact.foam.length,2);
+ await p.waitForTimeout(1000);await p.screenshot({path:path.join(out,`${prefix}-03-after.png`)});
+ const after=await p.evaluate(()=>({wet:document.querySelector('.board').classList.contains('r76-wet'),active:document.querySelector('#tideWave').classList.contains('run'),hp:window.__test.game().enemy.hp}));
+ assert.ok(after.wet&&!after.active);results.push({prefix,before,anticipation,impact,after});await c.close();
+}fs.writeFileSync(path.join(out,'capture.json'),JSON.stringify({status:'VERIFIED',method:'Explicit nonlethal QA fixture (not store). Actual cast button, continuous unedited browser captures. Rules unchanged until active impact. Other artwork frozen until this receipt.',results},null,2));
+}finally{await b.close();await new Promise(r=>s.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});

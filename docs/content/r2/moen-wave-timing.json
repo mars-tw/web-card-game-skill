@@ -1,0 +1,11 @@
+{
+  "status": "VERIFIED",
+  "timerMs": 780,
+  "observedMs": 787.8999998569489,
+  "impactTimerMs": 360,
+  "shots": [
+    "phone-moen-wave-1.png",
+    "phone-moen-wave-2.png",
+    "phone-moen-wave-3.png"
+  ]
+}

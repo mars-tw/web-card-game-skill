@@ -1,0 +1,356 @@
+
+> web-card-game-skill@0.8.0 test
+> node scripts/test-cards.js && node scripts/test-core.js && node scripts/test-quality-gates.js && node scripts/test-balance-sim.js && python scripts/test-r67-visual-gates.py && node scripts/test-r73-voyage.js && node scripts/test-r74-rules.js
+
+== 結構檢查 ==
+  ✓ 卡池至少 62 張（實際 92）
+  ✓ CARD_POOL has at least 74 cards (actual 92)
+  ✓ CARD_POOL has at least 86 cards in current baseline (actual 92)
+  ✓ 稀有度有 4 級
+  ✓ 關鍵字技能至少 5 種
+  ✓ 新關鍵字吸血與突襲有繁中 label
+  ✓ R47 關鍵字狂怒與法強有繁中 label
+  ✓ silence 關鍵字已註冊
+  ✓ R61 六種角色專屬關鍵字皆有繁中定義
+  ✓ tideforged 機率為 3%
+  ✓ 軸線標籤完整
+== 欄位完整性 ==
+  ✓ 所有卡欄位完整（異常 0）
+== R16 新卡分布 ==
+  ✓ R16 新卡 id 全部存在
+  ✓ R16 新卡四稀有度分布為 4/3/2/1（實際 {"common":4,"rare":3,"epic":2,"legendary":1}）
+  ✓ R16 新卡快攻/控制各 5 張（實際 {"aggro":5,"control":5}）
+  ✓ R16 新卡費用曲線含低費節奏與高費控制收束
+== R47 霜鋒與奧術 ==
+  ✓ R47 12 張新卡 id 全部存在
+  ✓ R47 稀有度分布為 4/3/3/2（實際 {"common":4,"rare":3,"epic":3,"legendary":2}）
+  ✓ R47 快攻/控制各 6 張（實際 {"aggro":6,"control":6}）
+  ✓ R47 費用曲線含 1 費與 7 費
+  ✓ R47 風味文字完整且至少 8 字
+== R48 White Tide Chronicle ==
+  ✓ R48 12 new ids exist
+  ✓ R48 rarity split is 4/3/3/2 (actual {"common":4,"epic":3,"rare":3,"legendary":2})
+  ✓ R48 axis split is 6/6 (actual {"aggro":6,"control":6})
+  ✓ R48 cost curve includes 1 and 7
+  ✓ R48 flavor text is present
+  ✓ R48 faction ids all resolve
+  ✓ R61 五陣營含正式潮間中立並覆蓋卡池
+== R61 對座六影立繪 ==
+  ✓ R61 卡池為 92 張（實際 92）
+  ✓ 六張具名角色卡 id 齊全且唯一
+  ✓ 六張角色皆為傳說隨從且 maxCopies=1
+  ✓ 六張角色共用 hero_shadows_v1、heroTag 並接上專屬立繪
+  ✓ 三位既有 AI 角色卡連回正確 opponentId
+  ✓ 茉恩正式中立，伊索德與魯恩補入凜冬暗影
+  ✓ 傳說子池角色偏向固定為 28%，且只含六張角色
+  ✓ 傳說 roll 先套 28% 角色子池，未命中時仍從完整傳說池抽取
+== Current content baseline ==
+  ✓ baseline 10 cards plus 2 silence cards exist
+  ✓ R63 priority art cards are wired to existing PNG assets
+  ✓ R66 long-tail art cards are wired to existing PNG assets
+  ✓ R66 image:null is zero across the complete card pool
+  ✓ baseline flavor text is present
+  ✓ saltShieldSquire exists
+  ✓ saltShieldSquire.cost is 1
+  ✓ saltShieldSquire.attack is 0
+  ✓ saltShieldSquire.health is 3
+  ✓ saltShieldSquire.rarity is common
+  ✓ saltShieldSquire.type is minion
+  ✓ saltShieldSquire keywords include taunt
+  ✓ iceNeedle exists
+  ✓ iceNeedle.cost is 1
+  ✓ iceNeedle.rarity is common
+  ✓ iceNeedle.type is spell
+  ✓ iceNeedle.effect is damage2
+  ✓ iceNeedle.baseDamage is 1
+  ✓ iceNeedle.tauntBonusDamage is 1
+  ✓ packHowler exists
+  ✓ packHowler.cost is 3
+  ✓ packHowler.attack is 2
+  ✓ packHowler.health is 3
+  ✓ packHowler.rarity is rare
+  ✓ packHowler.type is minion
+  ✓ packHowler keywords include charge,battlecry
+  ✓ packHowler.trigger is buffAdjacent1
+  ✓ toxinViper exists
+  ✓ toxinViper.cost is 3
+  ✓ toxinViper.attack is 1
+  ✓ toxinViper.health is 3
+  ✓ toxinViper.rarity is rare
+  ✓ toxinViper.type is minion
+  ✓ toxinViper keywords include poison,rush
+  ✓ graveScribe exists
+  ✓ graveScribe.cost is 3
+  ✓ graveScribe.attack is 1
+  ✓ graveScribe.health is 4
+  ✓ graveScribe.rarity is rare
+  ✓ graveScribe.type is minion
+  ✓ graveScribe keywords include deathrattle
+  ✓ graveScribe.trigger is drawCard1
+  ✓ mirrorRime exists
+  ✓ mirrorRime.cost is 2
+  ✓ mirrorRime.rarity is epic
+  ✓ mirrorRime.type is spell
+  ✓ mirrorRime.effect is buffTarget
+  ✓ mirrorRime.mirrorRime is true
+  ✓ dualTalon exists
+  ✓ dualTalon.cost is 4
+  ✓ dualTalon.attack is 2
+  ✓ dualTalon.health is 3
+  ✓ dualTalon.rarity is epic
+  ✓ dualTalon.type is minion
+  ✓ dualTalon keywords include windfury
+  ✓ voidTithe exists
+  ✓ voidTithe.cost is 3
+  ✓ voidTithe.rarity is epic
+  ✓ voidTithe.type is spell
+  ✓ voidTithe.effect is nextSpellMinus1
+  ✓ captainGreywake exists
+  ✓ captainGreywake.cost is 6
+  ✓ captainGreywake.attack is 5
+  ✓ captainGreywake.health is 6
+  ✓ captainGreywake.rarity is legendary
+  ✓ captainGreywake.type is minion
+  ✓ captainGreywake keywords include taunt,battlecry
+  ✓ captainGreywake.trigger is aoeEnemy1
+  ✓ ladyAshenBell exists
+  ✓ ladyAshenBell.cost is 5
+  ✓ ladyAshenBell.attack is 3
+  ✓ ladyAshenBell.health is 5
+  ✓ ladyAshenBell.rarity is legendary
+  ✓ ladyAshenBell.type is minion
+  ✓ ladyAshenBell keywords include deathrattle,lifesteal
+  ✓ ladyAshenBell.trigger is summonTwo1_1
+  ✓ silenceOne exists
+  ✓ silenceOne.cost is 2
+  ✓ silenceOne.rarity is epic
+  ✓ silenceOne.type is spell
+  ✓ silenceOne.effect is polymorph
+  ✓ silenceOne.silenceOnly is true
+  ✓ silenceOne keywords include silence
+  ✓ scoutInterrogator exists
+  ✓ scoutInterrogator.cost is 3
+  ✓ scoutInterrogator.attack is 2
+  ✓ scoutInterrogator.health is 3
+  ✓ scoutInterrogator.rarity is rare
+  ✓ scoutInterrogator.type is minion
+  ✓ scoutInterrogator keywords include battlecry
+  ✓ scoutInterrogator.trigger is silenceIfDamaged
+  ✓ content baseline has exactly four added core effect codes (aoeEnemy1,buffAdjacent1,nextSpellMinus1,summonTwo1_1)
+  ✓ baseline faction ids all resolve
+  ✓ baseline axis ids all resolve
+  ✓ toxinViper is not a strict replacement for raptor
+  ✓ captainGreywake sits below highArchivist as a lower aoe tier
+  ✓ mirrorRime is a capped health-copy spell without shield copy
+  ✓ silenceOne uses polymorph target contract but resolves as silenceOnly
+  ✓ iceNeedle trades lower normal damage for taunt-specific parity with emberVolley
+== id 唯一性 ==
+  ✓ 卡片 id 無重複
+== 技能 trigger 對應 ==
+  ✓ 戰吼/亡語卡都有 trigger（缺 0）
+  ✓ 所有卡牌關鍵字都有定義（缺 0）
+== 嚴格優勢回歸檢查 ==
+  ✓ 餘燼齊射以 1 費 2 傷區隔火焰箭 2 費 3 傷
+  ✓ 餘燼齊射沒有和既有單體傷害法術形成嚴格優勢（none）
+  ✓ 單體傷害法術費用/傷害曲線無嚴格支配（none）
+  ✓ 秘能護幕不再以更高費嚴格劣於聖盾術
+  ✓ 前線斥候用較高生命區隔火花侍從
+  ✓ 雷翼巨鵬用低費低攻區隔獅鷲
+== 抽卡機率分布（30000 抽）==
+    分布: { common: 18692, rare: 7751, epic: 2976, legendary: 581 } | 傳說 1.94% | 閃卡 7.82% | 潮鑄 2.85%
+  ✓ 傳說機率在合理範圍（1.94%）
+  ✓ 閃卡機率接近 8%（7.82%）
+  ✓ 潮鑄機率接近 3%（2.85%）
+  ✓ 潮鑄與閃卡互斥，不會同時掛在同一張卡
+== 工具函式 ==
+  ✓ getCardById 正常
+  ✓ collectKey 區分閃卡
+  ✓ collectKey 潮鑄使用 #tide 且優先於 foil
+== 經濟回收 ==
+  ✓ 分解值使用 cards.js 真實匯出值（普 2 / 稀 8 / 史 25 / 傳 80）
+    全重複一包期望回收：37.10 金幣
+  ✓ 全重複分解期望低於包價 50%（37.10 < 50）
+
+✅ 全部測試通過
+== core.js 單元測試 ==
+PASS 法力不足不可出牌
+PASS 法力不足不扣費、不移除手牌、不燒 Mulligan
+PASS MAX_FIELD 滿場不可召喚
+PASS 滿場不扣費也不移除手牌
+PASS 風怒第一次攻擊後保留第二次攻擊權
+PASS 風怒第二次攻擊後關閉攻擊權
+PASS 風怒一回合第三次攻擊被拒絕
+PASS 吸血隨從攻擊造成傷害會治療己方英雄
+PASS 吸血隨從反擊造成傷害也會治療己方英雄
+PASS 吸血治療不會超過英雄 maxHp
+PASS 吸血戰吼造成傷害會治療己方英雄
+PASS 吸血戰吼滿血時 heroHeal 事件回報實際回血 0
+PASS 突襲隨從登場當回合可攻擊隨從
+PASS 突襲隨從登場當回合攻擊隨從合法
+PASS 突襲隨從登場當回合不能攻擊英雄
+PASS 突襲隨從下回合可攻擊英雄
+PASS 亡語先移除死亡者再召喚 token，滿場仍可補上骷髏
+PASS 亡語事件順序為先死亡、後召喚
+PASS combo 計數會在成功出牌時累加
+PASS 第三張成功出牌回傳 combo count 3
+PASS 成功打出非指定法術會燒 Mulligan
+PASS 指定法術進入 pending 時尚未燒 Mulligan
+PASS 指定法術結算時燒 Mulligan 並清掉 pending
+PASS 舊檔無 version 會無損升級並補 version
+PASS 舊檔缺欄位會補預設值
+PASS 舊檔會補 DDA 與本地遙測預設
+PASS 欄位缺失會以 DEFAULT shape 補齊
+PASS NaN 或非數字污染會回到預設數字
+PASS DDA 與遙測污染值會安全遷移
+PASS DDA 關閉時係數完全歸零
+PASS 連敗 2 場開始軟化並小步進
+PASS DDA 軟化有下限
+PASS 連勝 3 場開始增強並小步進
+PASS DDA 增強有上限且係數正確
+PASS DDA 軟化係數正確
+PASS 錯誤韌性保護存檔會保留既有欄位並記錄錯誤
+PASS 合法牌組：20 張、同卡最多 2 張且都有收藏
+PASS 牌組不是 20 張會被拒絕
+PASS 非傳說同卡超過 2 張會被拒絕
+PASS 傳說卡超過 1 張會被拒絕
+PASS 未擁有或擁有數不足會被拒絕
+PASS 普通與閃卡收藏數會合計供牌組使用
+PASS 原型鍵 __proto__ 不會繞過未知卡牌檢查
+PASS 原型鍵 constructor 不會繞過未知卡牌檢查
+PASS 原型鍵 hasOwnProperty 不會繞過未知卡牌檢查
+PASS buildBattleDeck 會產生 20 張對戰牌堆
+PASS 注入固定 rng 時洗牌結果可重現
+PASS buildBattleDeck 保留輸入 20 張 id 的完整張數
+PASS buildBattleDeck 會複製卡牌物件，不直接共用 cardPool 物件
+PASS buildBattleDeck 會把純閃卡收藏還原成閃卡外觀
+PASS buildBattleDeck 會在 1 普通 + 1 閃卡收藏中分配一張閃卡外觀
+PASS buildBattleDeck 會還原潮鑄外觀但不改戰鬥數值
+PASS 牌組舊檔無 version 會補 version 並保留 cards
+PASS 牌組缺 cards 欄位會補空陣列
+PASS 牌組污染值會移除非字串 id 並重設 version
+PASS 每日任務固定輪出 3 個不重複任務
+PASS 同一日期種子會產生同一組每日任務
+PASS 任務舊檔同日會保留進度與已領狀態
+PASS 跨日遷移會重置每日任務
+PASS 任務進度會累積並封頂
+PASS 完成任務可領取一次金幣獎勵
+PASS 任務獎勵不可重複領取
+PASS 任務缺欄位會補今日預設任務
+PASS 任務污染值會回到安全預設
+PASS 狂怒受傷存活後攻擊 +2
+PASS 狂怒同一隻隨從只會觸發一次
+PASS 狂怒被聖盾擋住時不觸發
+PASS 狂怒致死傷害不觸發
+PASS 法強會計算場上多個來源並可疊加
+PASS 法強會加成單體傷害法術
+PASS damage2 對敵方隨從造成 2 點傷害
+PASS 法強會加成範圍傷害法術
+PASS 法強不加成戰吼傷害
+PASS damage5 對敵方隨從造成 5 點傷害
+PASS buffTarget 讓攻擊、生命與上限各 +2
+PASS drawCard1 會安全抽 1 張牌
+PASS drawCard1 牌庫空時觸發 1 點疲勞
+PASS draw2 draws two cards
+PASS draw2 空庫會連續觸發 1、2 點疲勞
+PASS draw2 burns cards at hand limit
+PASS 雙方空庫時回合抽牌會遞增疲勞
+PASS 雙方空庫長局會在疲勞中分出勝負
+PASS damageAny1 戰吼目前固定自動命中生命最低的敵方隨從，忽略外部 targetUid
+PASS migrateChronicle bad data returns safe default
+PASS migrateChronicle dedupes and filters ids
+PASS chronicleContext returns wins and unique counts
+PASS listChapters unlocks default chapter only at start
+PASS chapterUnlocked supports wins and unique thresholds
+PASS finale requires wins and unique thresholds
+PASS claimChapter rejects locked chapters
+PASS claimChapter claims unlocked chapter and returns reward
+PASS claimChapter rejects duplicate claim
+PASS buffAdjacent1 buffs only adjacent minions by +1 attack
+PASS deathrattle buffAdjacent1 uses pre-death adjacency and does not wrongly buff field[0]
+PASS aoeEnemy1 damages all enemy minions for 1 and cleans up deaths
+PASS summonTwo1_1 summons two 1/1 tokens when there is room
+PASS nextSpellMinus1 damages hero and creates the next-spell discount
+PASS nextSpellMinus1 discounts the next spell in the same turn, then clears
+PASS nextSpellMinus1 expires at end of turn when unused
+PASS nextSpellMinus1 does not persist across turns
+PASS mirrorRime copies at most 3 taunt health and does not copy divine shield
+PASS silenceMinion removes keywords, trigger, and shield but preserves attack and health
+PASS silenceOne silences instead of reducing attack or health like polymorph
+PASS silence removes deathrattle so a silenced minion does not trigger on death
+PASS silenceIfDamaged silences only a damaged enemy minion and preserves attack and health
+PASS collectionSummary counts tide variants while unique still dedupes base ids
+PASS 列盾把相鄰友軍受到的 2 傷分成友軍 1、哈爾登 1
+PASS 列盾來源死亡離場後不再轉移傷害
+PASS 殘響在法強傷害法術結算後，對新的最低生命敵軍追加固定 1 傷
+PASS 殘響每個來源只觸發一次且不吃 +2 法強
+PASS 血跡打臉只讓其他友軍 +1，連擊同回合第二次不疊加
+PASS 血跡的臨時攻擊在控制器回合結束時清除
+PASS 寒噤攻擊被聖盾完全擋下時不上狀態
+PASS 寒噤在戰鬥實際造成傷害後標記下一回合禁攻
+PASS 寒噤目標下一個控制器回合無法攻擊
+PASS 寒噤跳過一回合後恢復攻擊
+PASS 裂甲先破聖盾再以完整 3 攻消滅 2/2，而非只破盾
+PASS 調印在單一非中立陣營場面給目標 +1/+1
+PASS 調印只計非中立陣營，wardens + wild 時提升為 +2/+2
+PASS 調印待指定期間不能跳過回合，選定友軍後才完成戰吼
+PASS 靜默可一次移除六種角色專屬關鍵字
+PASS 里程碑總增發 300 金，不超過 3 包價值
+PASS 長線目標可從空存檔遷移並產生週任務
+PASS 收藏 10 種里程碑可領一次
+PASS 里程碑重複領取被阻擋
+PASS 閃卡里程碑用 #foil 收藏計算
+PASS 週任務獎勵介於 80 到 120 金
+PASS 週任務完成後可領取
+PASS 週任務同週只能領一次
+PASS 跨週會重置週任務進度與領取狀態
+PASS 跨週不清除里程碑領取紀錄
+PASS 裂潮：對手回合開始潮能 +1，玩家不變
+PASS 裂潮：玩家回合開始潮能 +1 並送出 tideGain 事件
+PASS 裂潮：己方隨從陣亡時該方潮能 +1
+PASS 裂潮：潮能不超過上限，滿潮送出 tideFull
+PASS 裂潮：未滿潮不可施放、不造成傷害
+PASS 裂潮：非己方回合不可施放且不扣潮能
+PASS 裂潮：滿潮且己方回合時 canTidebreak 為真
+PASS 裂潮：施放後潮能歸零、使用次數 +1
+PASS 裂潮：對敵方英雄造成 2 點傷害
+PASS 裂潮：敵方隨從各受 1 點（聖盾吸收、1 血隨從陣亡）
+PASS 裂潮：被爆發清掉隨從的一方獲得陣亡潮能
+PASS 裂潮：送出 tidebreak 與 heroDamage(source=tidebreak) 事件
+PASS 裂潮：同一次滿潮只能放一次
+PASS 裂潮：對局結束後不可施放
+PASS 星級：敗北 0 星
+PASS 星級：只獲勝 1 星
+PASS 星級：生命剛好一半也算第二星
+PASS 星級：獲勝＋過半生命＋用過裂潮爆發＝3 星
+PASS 星級：首次紀錄寫入最佳 2 星
+PASS 星級：較差成績不覆蓋最佳紀錄
+PASS 星級：刷新紀錄時 improved 為真
+PASS 星級：遷移時夾住 0–3 並丟棄非法 key
+PASS 星級：版本不符時重置
+
+PASS 154 / FAIL 0
+== R40 文案品質守門 ==
+  ✓ battle/pack HTML 與 JS 字串無 mojibake（異常 0）
+== R40 SW 快取完整性守門 ==
+  ✓ 三頁本地 script/link 皆使用 ?v=card-battle-r75-v1（異常 0）
+  ✓ sw.js CORE_ASSETS 清單項目存在（159 項）
+node.exe :     resource gate: templates/card-battle/.webp（引用檔不存在；templates/card-battle/battle.js:js-string）
+位於 線路:1 字元:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    resource ga...e.js:js-string）:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    resource gate: templates/card-pack/.webp（引用檔不存在；templates/card-pack/pack.js:js-string）
+  ✗ 入口 shell、battle、pack 的本地資源皆納入 SW 快取（143 項）
+  ✓ R47 新圖與 cards/art-config/sw 三方一致（12 張）
+  ✓ R48 art cards are consistent across cards/art-config/sw (5 cards)
+  ✓ R61 六張角色立繪與 cards/art-config/sw/壓縮規格一致（6 張）
+  ✓ R66 art debt is zero and MIME/size/cache gates pass (25 generated + 2 repaired)
+  ✓ R61 battle/pack 傳說框掛載 mask 掃光
+  ✓ R61 battle/pack 閃卡使用青/紅/綠多停點雙層色散
+  ✓ R61 傳說框與閃卡掃光受 reduced-motion / low-perf 覆蓋
+  ✓ R61 命名展示盤、手機手牌與三對手色場可重現
+  ✓ R61 英雄頭像框與資源徽章使用同一商品化材質語言
+  ✓ R61 battle/pack 無圖卡使用四陣營紋理 fallback
+❌ 1 項守門失敗

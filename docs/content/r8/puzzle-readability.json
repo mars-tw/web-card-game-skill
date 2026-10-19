@@ -1,0 +1,179 @@
+{
+  "status": "VERIFIED",
+  "proofs": [
+    {
+      "id": "fallen",
+      "proof": {
+        "label": "陣亡補潮 · 潮 5/6士兵換弓手後陣亡，補滿第六格。",
+        "rect": {
+          "x": 140,
+          "y": 408.78125,
+          "width": 237,
+          "height": 50,
+          "top": 408.78125,
+          "right": 377,
+          "bottom": 458.78125,
+          "left": 140
+        },
+        "plain": {
+          "x": 146,
+          "y": 437.78125,
+          "width": 225,
+          "height": 15,
+          "top": 437.78125,
+          "right": 371,
+          "bottom": 452.78125,
+          "left": 146
+        },
+        "font": 13,
+        "inside": true,
+        "clear": true
+      }
+    },
+    {
+      "id": "shield",
+      "proof": {
+        "label": "貝盾擋一次先打掉聖盾，浪潮才打得到守衛。",
+        "rect": {
+          "x": 140,
+          "y": 408.78125,
+          "width": 237,
+          "height": 50,
+          "top": 408.78125,
+          "right": 377,
+          "bottom": 458.78125,
+          "left": 140
+        },
+        "plain": {
+          "x": 146,
+          "y": 437.78125,
+          "width": 225,
+          "height": 15,
+          "top": 437.78125,
+          "right": 371,
+          "bottom": 452.78125,
+          "left": 146
+        },
+        "font": 13,
+        "inside": true,
+        "clear": true
+      }
+    },
+    {
+      "id": "shelter",
+      "proof": {
+        "label": "長弓留場弓手先取得聖盾，交換狼後才會存活。",
+        "rect": {
+          "x": 110,
+          "y": 408.78125,
+          "width": 267,
+          "height": 50,
+          "top": 408.78125,
+          "right": 377,
+          "bottom": 458.78125,
+          "left": 110
+        },
+        "plain": {
+          "x": 116,
+          "y": 437.78125,
+          "width": 255,
+          "height": 15,
+          "top": 437.78125,
+          "right": 371,
+          "bottom": 452.78125,
+          "left": 116
+        },
+        "font": 13,
+        "inside": true,
+        "clear": true
+      }
+    },
+    {
+      "id": "taunt",
+      "proof": {
+        "label": "嘲諷封路一血士兵有嘲諷；清掉他才能打英雄。",
+        "rect": {
+          "x": 110,
+          "y": 408.78125,
+          "width": 267,
+          "height": 50,
+          "top": 408.78125,
+          "right": 377,
+          "bottom": 458.78125,
+          "left": 110
+        },
+        "plain": {
+          "x": 116,
+          "y": 437.78125,
+          "width": 255,
+          "height": 15,
+          "top": 437.78125,
+          "right": 371,
+          "bottom": 452.78125,
+          "left": 116
+        },
+        "font": 13,
+        "inside": true,
+        "clear": true
+      }
+    },
+    {
+      "id": "spell",
+      "proof": {
+        "label": "火焰箭 · 3 傷火焰箭先打騎士3傷，浪潮再收掉1血。",
+        "rect": {
+          "x": 106.53125,
+          "y": 408.78125,
+          "width": 270.46875,
+          "height": 50,
+          "top": 408.78125,
+          "right": 377,
+          "bottom": 458.78125,
+          "left": 106.53125
+        },
+        "plain": {
+          "x": 112.53125,
+          "y": 437.78125,
+          "width": 258.46875,
+          "height": 15,
+          "top": 437.78125,
+          "right": 371,
+          "bottom": 452.78125,
+          "left": 112.53125
+        },
+        "font": 13,
+        "inside": true,
+        "clear": true
+      }
+    },
+    {
+      "id": "cross",
+      "proof": {
+        "label": "雙線交換 · 潮 5/6士兵打弓手、騎士打獅鷲，讓兩敵都剩1血。",
+        "rect": {
+          "x": 70.7578125,
+          "y": 408.78125,
+          "width": 306.234375,
+          "height": 50,
+          "top": 408.78125,
+          "right": 376.9921875,
+          "bottom": 458.78125,
+          "left": 70.7578125
+        },
+        "plain": {
+          "x": 76.7578125,
+          "y": 437.78125,
+          "width": 294.234375,
+          "height": 15,
+          "top": 437.78125,
+          "right": 370.9921875,
+          "bottom": 452.78125,
+          "left": 76.7578125
+        },
+        "font": 13,
+        "inside": true,
+        "clear": true
+      }
+    }
+  ]
+}

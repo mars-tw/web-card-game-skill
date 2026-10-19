@@ -1,0 +1,15 @@
+{
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "assets": [
+    {
+      "id": "status-atlas",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Create ONE horizontal game-status icon atlas, transparent background, two equal square cells, no text, no letters, no numbers. Left cell: TAUNT, chunky wide rectangular shipboard stone barricade, three castellated crenellations, rough purple stone with coral-copper studs, wide silhouette unmistakably a wall and NOT a shield, thick readable outline. Right cell: DIVINE SHIELD, smooth tall pointed pearl-white shell shield with gold-copper rim and small moonlight glint, unmistakably pointed shield silhouette, no wall. Each object centered in its half with generous transparent padding, separate, no overlap, equal visual size, simple enough recognizable at 32 pixels. Upper left moonlight, lower right copper reflection, painterly enamel relief, existing maritime game art style.",
+      "source": "assets/art/content-r8/status-atlas-source.png",
+      "outputs": [
+        "assets/art/content-r8/taunt-wall.webp",
+        "assets/art/content-r8/divine-shield.webp"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "style_prefix": "Tiderend Cards 'Moonrift Sea Treasury', painterly collectible fantasy, indigo #201C3D and #10152D, pearl-white #F2F1FA, restrained coral-copper #DA8A6D glints, top-left moonlight, dark indigo crisp silhouette.",
+  "assets": [
+    {
+      "id": "wave",
+      "use": "spell-wall",
+      "prompt": "Tiderend Cards 'Moonrift Sea Treasury', painterly collectible fantasy, indigo #201C3D and #10152D, pearl-white #F2F1FA, restrained coral-copper #DA8A6D glints, top-left moonlight, dark indigo crisp silhouette. A tremendous horizontal rolling tidal wall, slightly elevated three-quarter tabletop perspective, broad low crest across full width. Moon-shell wave shapes, individual foam droplets, indigo body, pearl edges, transparent negative space. No horizon, background, text or frame.",
+      "reference": null,
+      "transparent_background": true,
+      "note": "Normalized production prompt retaining supplied constraints; actual source and native alpha recorded."
+    },
+    {
+      "id": "foam",
+      "use": "impact-object",
+      "prompt": "Tiderend Cards 'Moonrift Sea Treasury', painterly collectible fantasy, indigo #201C3D and #10152D, pearl-white #F2F1FA, restrained coral-copper #DA8A6D glints, top-left moonlight, dark indigo crisp silhouette. One isolated seafoam impact burst: low arc of dense pearl foam and readable water droplets spraying upward/outward from a navy curling wave. Clear center, asymmetrical crescent, real transparent alpha, no environment/text.",
+      "reference": null,
+      "transparent_background": true,
+      "note": "Normalized production prompt retaining supplied constraints; actual source and native alpha recorded."
+    },
+    {
+      "id": "puddle",
+      "use": "wet-decal",
+      "prompt": "Tiderend Cards 'Moonrift Sea Treasury', painterly collectible fantasy, indigo #201C3D and #10152D, pearl-white #F2F1FA, restrained coral-copper #DA8A6D glints, top-left moonlight, dark indigo crisp silhouette. One wide shallow irregular crescent puddle left after a wave recedes. Elevated three-quarter tabletop perspective; foreshortened oval, broken ripple rings, thin pearl foam edge, moon reflection, copper flecks, transparent islands, no wood or horizon.",
+      "reference": null,
+      "transparent_background": true,
+      "note": "Normalized production prompt retaining supplied constraints; actual source and native alpha recorded."
+    },
+    {
+      "id": "battlefield",
+      "use": "main-background",
+      "prompt": "Tiderend Cards 'Moonrift Sea Treasury', painterly collectible fantasy, indigo #201C3D and #10152D, pearl-white #F2F1FA, restrained coral-copper #DA8A6D glints, top-left moonlight, dark indigo crisp silhouette. One uninterrupted ship-deck card-table floor, elevated three-quarter overhead view. Entire middle/lower85% same continuous violet-brown plank plane, inlaid copper compass and shell-wave engraving. Low railing only in top12%, quiet empty play area. No horizontal ocean band, split decks, cards or UI.",
+      "reference": null,
+      "transparent_background": false,
+      "note": "Normalized production prompt retaining supplied constraints; actual source and native alpha recorded."
+    },
+    {
+      "id": "victory-navigator",
+      "use": "protagonist-lighting-edit",
+      "prompt": "Tiderend Cards 'Moonrift Sea Treasury', painterly collectible fantasy, indigo #201C3D and #10152D, pearl-white #F2F1FA, restrained coral-copper #DA8A6D glints, top-left moonlight, dark indigo crisp silhouette. Keep exact referenced identity, short dark purple hair, friendly face, coral scarf, indigo embroidered coat, raised wave flag and compass jewelry. Change only to night top-left moonlight, no sunset ambient glow. Preserve readable face and true native alpha.",
+      "reference": {
+        "path": "docs/art/source/r76/victory-navigator.png",
+        "sha256": "093c77607f31b6616c6d37f6de2a33f888cd85a311a7a1a8401fa40ea1776901"
+      },
+      "transparent_background": true,
+      "note": "Normalized production prompt retaining supplied constraints; actual source and native alpha recorded."
+    },
+    {
+      "id": "night-harbor",
+      "use": "victory-background",
+      "prompt": "Tiderend Cards 'Moonrift Sea Treasury', painterly collectible fantasy, indigo #201C3D and #10152D, pearl-white #F2F1FA, restrained coral-copper #DA8A6D glints, top-left moonlight, dark indigo crisp silhouette. Returning ship at midnight harbor, spired towers, arch bridges, far crescent wave behind sea gate, pearl surf along lower edge, tiny copper dock lamps. Dark center for existing navigator/UI, illuminated sides. No sunset, people or lettering.",
+      "reference": null,
+      "transparent_background": false,
+      "note": "Normalized production prompt retaining supplied constraints; actual source and native alpha recorded."
+    },
+    {
+      "id": "frame",
+      "use": "ui-border",
+      "prompt": "Tiderend Cards 'Moonrift Sea Treasury', painterly collectible fantasy, indigo #201C3D and #10152D, pearl-white #F2F1FA, restrained coral-copper #DA8A6D glints, top-left moonlight, dark indigo crisp silhouette. One thin portrait2:3 bronze-and-pearl card frame. Forged copper rails, shell/wave etching, silver moon crest, small faceted corners. Border under8% width,88% empty transparent center. Straight-on, no perspective, no text or background.",
+      "reference": null,
+      "transparent_background": true,
+      "note": "Normalized production prompt retaining supplied constraints; actual source and native alpha recorded."
+    },
+    {
+      "id": "icon-wave",
+      "use": "skill-icon",
+      "prompt": "Tiderend Cards 'Moonrift Sea Treasury', painterly collectible fantasy, indigo #201C3D and #10152D, pearl-white #F2F1FA, restrained coral-copper #DA8A6D glints, top-left moonlight, dark indigo crisp silhouette. One diagonal pearl wave across clipped-corner copper compass token, indigo enamel. Bold silhouette readable at64px, fine material highlights. Real transparent outside, no text, numbers or turquoise neon.",
+      "reference": null,
+      "transparent_background": true,
+      "note": "Normalized production prompt retaining supplied constraints; actual source and native alpha recorded."
+    },
+    {
+      "id": "logo",
+      "use": "title-lighting-edit",
+      "prompt": "Tiderend Cards 'Moonrift Sea Treasury', painterly collectible fantasy, indigo #201C3D and #10152D, pearl-white #F2F1FA, restrained coral-copper #DA8A6D glints, top-left moonlight, dark indigo crisp silhouette. Preserve exact Traditional Chinese 裂潮卡牌 and English TIDEREND, original arrangement/crescent-wave mark/sharp letterforms. Refine pearl and copper material edges; reduce cyan to indigo/pearl. True transparent background, no extra words.",
+      "reference": {
+        "path": "docs/art/source/r76/logo.png",
+        "sha256": "2320334aecdd467a18ab0fab756e868115073a0281e4393faa4397ea8e341a9c"
+      },
+      "transparent_background": true,
+      "note": "Normalized production prompt retaining supplied constraints; actual source and native alpha recorded."
+    },
+    {
+      "id": "app-icon",
+      "use": "app-icon-proposal",
+      "prompt": "Tiderend Cards 'Moonrift Sea Treasury', painterly collectible fantasy, indigo #201C3D and #10152D, pearl-white #F2F1FA, restrained coral-copper #DA8A6D glints, top-left moonlight, dark indigo crisp silhouette. Square full bleed: one diagonal copper-framed collectible card split by a powerful white crescent wave from lower-left to upper-right. Bold card-plus-ocean silhouette at64px, indigo background, shell etching. No words, characters or fake screenshot. Important imagery central78%.",
+      "reference": null,
+      "transparent_background": false,
+      "note": "Normalized production prompt retaining supplied constraints; actual source and native alpha recorded."
+    }
+  ]
+}

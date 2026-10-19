@@ -1,0 +1,462 @@
+{
+  "status": "VERIFIED",
+  "version": "0.12.0",
+  "baseCommit": "0702936",
+  "syntax": [
+    {
+      "path": "templates/card-battle/battle.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-battle/cards.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-battle/core.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-battle/pose-player.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-battle/r73-ui.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-battle/tide-session.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-battle/voyage.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-pack/pack.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/audit-oc-r1.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r70-evidence.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r72-evidence.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r73-mobile.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r75-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r76-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r76-wave.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r76-wet.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r77-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r77-wave.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r78-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r78-wave.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r79-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r79-baseline.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r79-wave.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/diagnose-r76-layout.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/diagnose-r79-layout.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/measure-r78-frames.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/measure-r79-frames.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-balance-sim.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-battle-e2e.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-cards.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-controls-reachability.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-core.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-quality-gates.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r67-browser.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r67-performance.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r72-fun.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r73-mobile.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r73-voyage.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r74-ebb.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r74-review.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r74-rules.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r75-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r75-frames.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r76-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r76-frames.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r77-tide.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r78-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r79-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-rwd-matrix.js",
+      "pass_": true
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/store/screenshots/battle-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "c893627cb8fceeb7c4129f46debe09bf6264aff7b7cfd5bdf0df97a19372aa27"
+    },
+    {
+      "path": "docs/store/screenshots/battle-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "7337e45123eddc6c6efe2a648d75982270101d2c436594c902eb9cd2b37c70d3"
+    },
+    {
+      "path": "docs/store/screenshots/harbor-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "5a9c443a37c40d6972025efa1e92d18479451b2593d2fcd0580ea4f4f458e90d"
+    },
+    {
+      "path": "docs/store/screenshots/harbor-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "8446b31a0f07ff0fb9c19d6f74421656ad0a1a99dcb4d33312924b07ce79a6a1"
+    },
+    {
+      "path": "docs/store/screenshots/tide-after-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "c6be42b76eac73e42d9cf6e778643f4c25e12416878602202f7f40dcdd7088ce"
+    },
+    {
+      "path": "docs/store/screenshots/tide-after-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "990c906749c645a13fbf1e7afe8c5d2c1ff5aef0ff1f817a552dcbb0cf4ce996"
+    },
+    {
+      "path": "docs/store/screenshots/tide-before-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "5f13659e670c9dc5a581f1e679ad7ce1ab6b308ffcf1f600fa752be34749c6c1"
+    },
+    {
+      "path": "docs/store/screenshots/tide-before-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "dcf8e2c72e8c6803c86d796e0be8c96686b45a58b1adc86cbafbe12b8e617543"
+    },
+    {
+      "path": "docs/store/screenshots/tide-chart-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "8fa2f01ae4dced93e464b8744d99348e2c08d8fe0e124dc5cc01695ba4fe4a9f"
+    },
+    {
+      "path": "docs/store/screenshots/tide-chart-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "fc0267772044b319368b1fd64a48278c6c188ecd2272dce30bcf8606e316a88d"
+    },
+    {
+      "path": "docs/store/screenshots/tide-next-turn-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "dbeaf0a2a176b0a8a9f555b117e8832bfe6f1b59dc2c78e9192d19553bf138f7"
+    },
+    {
+      "path": "docs/store/screenshots/tide-next-turn-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "4fa2ac20920f50174efdd6348973714d8796458824f969eb16e8860d00ae6725"
+    },
+    {
+      "path": "docs/store/screenshots/trial-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "7e1cc5784cc83727b621d974d0f7f883a3d93fbdd905d38083ac0d8fe1780b3c"
+    },
+    {
+      "path": "docs/store/screenshots/trial-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "6e364da59ba65021908e8644fceb6317b075a1b6a9a52e355162a9f1bd27fdb5"
+    },
+    {
+      "path": "docs/store/screenshots/victory-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "54218dc845c38cf0644e95e97e6e63dc0e10d053421838957b184217aef1d48a"
+    },
+    {
+      "path": "docs/store/screenshots/victory-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "313a29e016b8b6d771ac0c83776c733dad924f1cbb2380b294e278d3e8be5950"
+    }
+  ],
+  "validationStages": [
+    {
+      "stage": "static-final",
+      "command": [
+        "npm.cmd",
+        "test"
+      ],
+      "exitCode": 0
+    },
+    {
+      "stage": "e2e-final",
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:e2e"
+      ],
+      "exitCode": 0
+    },
+    {
+      "stage": "rwd-final",
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:rwd"
+      ],
+      "exitCode": 0
+    },
+    {
+      "stage": "frames-final",
+      "command": [
+        "node",
+        "scripts/measure-r79-frames.js"
+      ],
+      "exitCode": 0
+    },
+    {
+      "stage": "performance-final",
+      "command": [
+        "node",
+        "scripts/test-r67-performance.js",
+        "--runs",
+        "3",
+        "--baseline",
+        "docs/evidence/R67/before/performance.json",
+        "--assert",
+        "--out",
+        "docs/evidence/r79-art/performance.json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "stage": "capture-final",
+      "command": [
+        "node",
+        "scripts/capture-r79-art.js"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "runtimeHashes": {
+    "index.html": "6162366b1ef9cc1b553c77c5c114a52438f4a45ecab0cef00296e46c47884a2f",
+    "sw.js": "e63723d17f7fad0f5a6d24e0061e66e79b351137b915b0d70154bc16a845d812",
+    "manifest.webmanifest": "206b70b1f0a74e79ce9c8587462ffef16d3eefa6e056b2300cc1046a15ca96d7",
+    "templates/card-battle/battle.js": "75850ff48ab23b94ce98a712b0d1c822112cd0810582084d8eb526854c49c12c",
+    "templates/card-battle/cards.js": "a427ad865041a93683c08e35b6cc92c6a02627faf07dc456e7a49d1466a2defa",
+    "templates/card-battle/core.js": "1d2e612e0c742894bade925dcb31fcd0229079ff0fe641ce2cc7ea074918c3c9",
+    "templates/card-battle/pose-player.js": "faa13332f20dd800fbca9b2c8c96cf16758809c58503aceac3cc283eb09531f0",
+    "templates/card-battle/r73-ui.js": "0a95f161de1f6101e51536707fe65c1a460dd80422d02cac0271e1557bcc5d31",
+    "templates/card-battle/tide-session.js": "d14e29d42f5f16769901c9c08c408e6b508863d6b64a35168159718976f70288",
+    "templates/card-battle/voyage.js": "24b4458dda0d66706450671cd5445e7f1d4b44fb08b0f4582d1a055aebcff6f7",
+    "templates/card-pack/pack.js": "986f9026f0d9a82e54de0f0187e1102e21630367af7ec3af6cc22089d19b6ee0",
+    "templates/harbor.html": "bf197248fabac54a1b325eae849d4db2d443f68265387297f8c4531a98abffbc",
+    "templates/index.html": "782c0a3d00fc81f2fb304b3cce08185fdb535a23a94832786e864f38f3ebe5b1",
+    "templates/card-battle/index.html": "cea91da83eef8b9cfda8bcde79c6b18236f823da4f75c8f92792117c3326dd77",
+    "templates/card-pack/index.html": "85d317d1681e1b1b27f68f57273034cfc60f532f9a814f74defd7f4d8d8ba9f3",
+    "templates/r75-harbor.css": "587fc63b027d7b2cc6933c1ab3a111d96a3f3a83dbc57138728ccb07fc81f0aa",
+    "templates/r75-theme.css": "e6f3ca2696995bdfda48f9b2f888f88389efb4313d9c31b0b9340350b55cce4a",
+    "templates/r76-art.css": "2fb0ba8a50a50f57a68b14f8bc3b3f1e0240f0df5026389994d1865c3023f024",
+    "templates/r77-art.css": "9540c89956246ddf98522de46cd25bb9a0bf39d9db745fca2aa6c6d675bf461c",
+    "templates/r78-art.css": "f54cc69b450fa7816c67a8f3f72ca689f549b24738e9974a4c7cc575a8cdf5d4",
+    "templates/r79-art.css": "2e9d5c6319b83d2dea0cddd3cebaa29b7c0fb18f4ed5edef19f9eeff5c800edf",
+    "templates/card-battle/r73-mobile.css": "1ab315d41d5f1cebb256aa07570738b82db25d991505ebbae4e8dc6c72629178",
+    "templates/card-battle/r74-tide.css": "bccaf6af6627074f3e46e9a4f55004406f62eeb4f57176413074d4ee6719bbb4"
+  },
+  "secretScan": {
+    "status": "VERIFIED",
+    "hits": 0,
+    "files": [],
+    "exitCode": 1,
+    "scope": "Repository only; excludes .git/node_modules; filenames only; no credentials directory read."
+  },
+  "oldRevisionHits": [],
+  "artBytes": {
+    "netRuntimeIncrease": 1687248,
+    "sourceArchive": 23784820
+  },
+  "qualification": "Local headless Chromium, concurrent-machine timing; not native device, signed binary, Apple acceptance or independent Muse rescore.",
+  "logs": [
+    {
+      "path": "docs/evidence/r79-art/capture-final.txt",
+      "bytes": 133,
+      "sha256": "476aed9c2883c1f10b1bf8a395e7783037999035cdb09fed453cbadb8e829be8"
+    },
+    {
+      "path": "docs/evidence/r79-art/e2e-final.txt",
+      "bytes": 83375,
+      "sha256": "9083fa10a72ca2374cc70a406e48770d94b5ee5cb93dccc01e3b745945beb949"
+    },
+    {
+      "path": "docs/evidence/r79-art/frames-final.txt",
+      "bytes": 55,
+      "sha256": "60603df9ecd481ed8327e3d392dd3736ec961c566c668e558785fe07c4d9f5c4"
+    },
+    {
+      "path": "docs/evidence/r79-art/performance-final.txt",
+      "bytes": 6279,
+      "sha256": "3b5fb4db65e7749cbe18df1426b12d49a031670f69d47928d2f24a6c58349237"
+    },
+    {
+      "path": "docs/evidence/r79-art/rwd-final.txt",
+      "bytes": 2804,
+      "sha256": "ec2c9446962a62981ca8460ac81e00651005c5f3013f56f74e6db2a9f74a6cc9"
+    },
+    {
+      "path": "docs/evidence/r79-art/static-final.txt",
+      "bytes": 41398,
+      "sha256": "0a0e5689dcd7a89e993d56946c2897a0451e3966aecf45c95a9c4a47f4a1b919"
+    }
+  ]
+}

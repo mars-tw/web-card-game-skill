@@ -1,0 +1,2523 @@
+{
+  "status": "VERIFIED",
+  "files": [
+    "docs/art/compare/r80/after/harbor-390x844.png",
+    "docs/art/compare/r80/after/battle-390x844.png",
+    "docs/art/compare/r80/after/tide-chart-390x844.png",
+    "docs/art/compare/r80/after/tide-before-390x844.png",
+    "docs/art/compare/r80/after/trial-390x844.png",
+    "docs/art/compare/r80/after/tide-after-390x844.png",
+    "docs/art/compare/r80/after/tide-next-turn-390x844.png",
+    "docs/art/compare/r80/after/victory-390x844.png",
+    "docs/art/compare/r80/after/harbor-844x390.png",
+    "docs/art/compare/r80/after/battle-844x390.png",
+    "docs/art/compare/r80/after/tide-chart-844x390.png",
+    "docs/art/compare/r80/after/tide-before-844x390.png",
+    "docs/art/compare/r80/after/trial-844x390.png",
+    "docs/art/compare/r80/after/tide-after-844x390.png",
+    "docs/art/compare/r80/after/tide-next-turn-844x390.png",
+    "docs/art/compare/r80/after/victory-844x390.png",
+    "docs/art/compare/r80/after/harbor-1366x600.png",
+    "docs/art/compare/r80/after/battle-1366x600.png",
+    "docs/art/compare/r80/after/tide-chart-1366x600.png",
+    "docs/art/compare/r80/after/tide-before-1366x600.png",
+    "docs/art/compare/r80/after/trial-1366x600.png",
+    "docs/art/compare/r80/after/tide-after-1366x600.png",
+    "docs/art/compare/r80/after/tide-next-turn-1366x600.png",
+    "docs/art/compare/r80/after/victory-1366x600.png",
+    "docs/art/compare/r80/after/harbor-1032x1376.png",
+    "docs/art/compare/r80/after/battle-1032x1376.png",
+    "docs/art/compare/r80/after/tide-chart-1032x1376.png",
+    "docs/art/compare/r80/after/tide-before-1032x1376.png",
+    "docs/art/compare/r80/after/trial-1032x1376.png",
+    "docs/art/compare/r80/after/tide-after-1032x1376.png",
+    "docs/art/compare/r80/after/tide-next-turn-1032x1376.png",
+    "docs/art/compare/r80/after/victory-1032x1376.png",
+    "docs/art/compare/r80/after/harbor-1290x2796.png",
+    "docs/art/compare/r80/after/battle-1290x2796.png",
+    "docs/art/compare/r80/after/tide-chart-1290x2796.png",
+    "docs/art/compare/r80/after/tide-before-1290x2796.png",
+    "docs/art/compare/r80/after/trial-1290x2796.png",
+    "docs/art/compare/r80/after/tide-after-1290x2796.png",
+    "docs/art/compare/r80/after/tide-next-turn-1290x2796.png",
+    "docs/art/compare/r80/after/victory-1290x2796.png",
+    "docs/art/compare/r80/after/harbor-2064x2752.png",
+    "docs/art/compare/r80/after/battle-2064x2752.png",
+    "docs/art/compare/r80/after/tide-chart-2064x2752.png",
+    "docs/art/compare/r80/after/tide-before-2064x2752.png",
+    "docs/art/compare/r80/after/trial-2064x2752.png",
+    "docs/art/compare/r80/after/tide-after-2064x2752.png",
+    "docs/art/compare/r80/after/tide-next-turn-2064x2752.png",
+    "docs/art/compare/r80/after/victory-2064x2752.png"
+  ],
+  "errors": [],
+  "receipts": [
+    {
+      "prefix": "390x844",
+      "before": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 12,
+        "playerTide": 6,
+        "enemyTide": 0,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "tyt8s5m",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tgxruwh",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "to29e6e",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "td7v4lv",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "t5wvatb",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "tmjmq5e",
+            "id": "archer",
+            "health": 1
+          },
+          {
+            "uid": "ttueqkk",
+            "id": "archer",
+            "health": 2
+          }
+        ],
+        "slots": [
+          {
+            "uid": "tmjmq5e",
+            "slot": "0",
+            "x": 100.5,
+            "y": 208.25
+          },
+          {
+            "uid": "ttueqkk",
+            "slot": "1",
+            "x": 197.5,
+            "y": 208.25
+          },
+          {
+            "uid": "tyt8s5m",
+            "slot": "0",
+            "x": 16.015625,
+            "y": 394.25
+          },
+          {
+            "uid": "tgxruwh",
+            "slot": "1",
+            "x": 88.609375,
+            "y": 394.25
+          },
+          {
+            "uid": "to29e6e",
+            "slot": "2",
+            "x": 161.203125,
+            "y": 394.25
+          },
+          {
+            "uid": "td7v4lv",
+            "slot": "3",
+            "x": 233.796875,
+            "y": 394.25
+          },
+          {
+            "uid": "t5wvatb",
+            "slot": "4",
+            "x": 306.390625,
+            "y": 394.25
+          }
+        ],
+        "wet": false
+      },
+      "impact": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "tyt8s5m",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tgxruwh",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "to29e6e",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "td7v4lv",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "t5wvatb",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "ttueqkk",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "slots": [
+          {
+            "uid": "tmjmq5e",
+            "slot": "0",
+            "x": 100.5,
+            "y": 208.25
+          },
+          {
+            "uid": "ttueqkk",
+            "slot": "1",
+            "x": 197.5,
+            "y": 208.25
+          },
+          {
+            "uid": "tyt8s5m",
+            "slot": "0",
+            "x": 16.015625,
+            "y": 394.25
+          },
+          {
+            "uid": "tgxruwh",
+            "slot": "1",
+            "x": 88.609375,
+            "y": 394.25
+          },
+          {
+            "uid": "to29e6e",
+            "slot": "2",
+            "x": 161.203125,
+            "y": 394.25
+          },
+          {
+            "uid": "td7v4lv",
+            "slot": "3",
+            "x": 233.796875,
+            "y": 394.25
+          },
+          {
+            "uid": "t5wvatb",
+            "slot": "4",
+            "x": 306.390625,
+            "y": 394.25
+          }
+        ],
+        "wet": true
+      },
+      "after": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "tyt8s5m",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tgxruwh",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "to29e6e",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "td7v4lv",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "t5wvatb",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "ttueqkk",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "slots": [
+          {
+            "uid": "tmjmq5e",
+            "slot": "0",
+            "x": 100.5,
+            "y": 208.25
+          },
+          {
+            "uid": "ttueqkk",
+            "slot": "1",
+            "x": 197.5,
+            "y": 208.25
+          },
+          {
+            "uid": "tyt8s5m",
+            "slot": "0",
+            "x": 16.015625,
+            "y": 394.25
+          },
+          {
+            "uid": "tgxruwh",
+            "slot": "1",
+            "x": 88.609375,
+            "y": 394.25
+          },
+          {
+            "uid": "to29e6e",
+            "slot": "2",
+            "x": 161.203125,
+            "y": 394.25
+          },
+          {
+            "uid": "td7v4lv",
+            "slot": "3",
+            "x": 233.796875,
+            "y": 394.25
+          },
+          {
+            "uid": "t5wvatb",
+            "slot": "4",
+            "x": 306.390625,
+            "y": 394.25
+          }
+        ],
+        "wet": true
+      },
+      "next": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 2,
+        "enemyTide": 3,
+        "turn": 2,
+        "over": false,
+        "player": [
+          {
+            "uid": "tgxruwh",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "to29e6e",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "td7v4lv",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "t5wvatb",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [],
+        "slots": [
+          {
+            "uid": "tmjmq5e",
+            "slot": "0",
+            "x": 100.5,
+            "y": 208.25
+          },
+          {
+            "uid": "ttueqkk",
+            "slot": "1",
+            "x": 197.5,
+            "y": 208.25
+          },
+          {
+            "uid": "tyt8s5m",
+            "slot": "0",
+            "x": 16.015625,
+            "y": 394.25
+          },
+          {
+            "uid": "tgxruwh",
+            "slot": "1",
+            "x": 88.609375,
+            "y": 394.25
+          },
+          {
+            "uid": "to29e6e",
+            "slot": "2",
+            "x": 161.203125,
+            "y": 394.25
+          },
+          {
+            "uid": "td7v4lv",
+            "slot": "3",
+            "x": 233.796875,
+            "y": 394.25
+          },
+          {
+            "uid": "t5wvatb",
+            "slot": "4",
+            "x": 306.390625,
+            "y": 394.25
+          }
+        ],
+        "wet": true
+      },
+      "effect": {
+        "width": 1.0799679487179488,
+        "coverage": 1.0799679487179488,
+        "foam": [
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 88.5,
+              "y": 261.046875,
+              "width": 116,
+              "height": 85.796875,
+              "top": 261.046875,
+              "right": 204.5,
+              "bottom": 346.84375,
+              "left": 88.5
+            }
+          },
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 185.5,
+              "y": 261.046875,
+              "width": 116,
+              "height": 85.796875,
+              "top": 261.046875,
+              "right": 301.5,
+              "bottom": 346.84375,
+              "left": 185.5
+            }
+          }
+        ],
+        "floating": 0,
+        "source": "陣亡蓄潮 +1"
+      },
+      "motion": {
+        "start": {
+          "x": 44.4520263671875,
+          "y": 297.3578186035156,
+          "width": 301.095947265625,
+          "height": 107.29287719726562,
+          "top": 297.3578186035156,
+          "right": 345.5479736328125,
+          "bottom": 404.65069580078125,
+          "left": 44.4520263671875
+        },
+        "axis": "y",
+        "static": false,
+        "end": {
+          "x": -13.53582763671875,
+          "y": 182.13597106933594,
+          "width": 417.0716552734375,
+          "height": 191.4055633544922,
+          "top": 182.13597106933594,
+          "right": 403.53582763671875,
+          "bottom": 373.5415344238281,
+          "left": -13.53582763671875
+        }
+      }
+    },
+    {
+      "prefix": "844x390",
+      "before": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 12,
+        "playerTide": 6,
+        "enemyTide": 0,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t7w3oxu",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "t0ajr2f",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "thn9cfp",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tpp7zs6",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "twpd8kt",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "ttyp2hk",
+            "id": "archer",
+            "health": 1
+          },
+          {
+            "uid": "t14mout",
+            "id": "archer",
+            "health": 2
+          }
+        ],
+        "slots": [
+          {
+            "uid": "ttyp2hk",
+            "slot": "0",
+            "x": 427,
+            "y": 108.5
+          },
+          {
+            "uid": "t14mout",
+            "slot": "1",
+            "x": 522,
+            "y": 108.5
+          },
+          {
+            "uid": "t7w3oxu",
+            "slot": "0",
+            "x": 17,
+            "y": 108.5
+          },
+          {
+            "uid": "t0ajr2f",
+            "slot": "1",
+            "x": 98,
+            "y": 108.5
+          },
+          {
+            "uid": "thn9cfp",
+            "slot": "2",
+            "x": 179,
+            "y": 108.5
+          },
+          {
+            "uid": "tpp7zs6",
+            "slot": "3",
+            "x": 260,
+            "y": 108.5
+          },
+          {
+            "uid": "twpd8kt",
+            "slot": "4",
+            "x": 341,
+            "y": 108.5
+          }
+        ],
+        "wet": false
+      },
+      "impact": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t7w3oxu",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "t0ajr2f",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "thn9cfp",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tpp7zs6",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "twpd8kt",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "t14mout",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "slots": [
+          {
+            "uid": "ttyp2hk",
+            "slot": "0",
+            "x": 427,
+            "y": 108.5
+          },
+          {
+            "uid": "t14mout",
+            "slot": "1",
+            "x": 522,
+            "y": 108.5
+          },
+          {
+            "uid": "t7w3oxu",
+            "slot": "0",
+            "x": 17,
+            "y": 108.5
+          },
+          {
+            "uid": "t0ajr2f",
+            "slot": "1",
+            "x": 98,
+            "y": 108.5
+          },
+          {
+            "uid": "thn9cfp",
+            "slot": "2",
+            "x": 179,
+            "y": 108.5
+          },
+          {
+            "uid": "tpp7zs6",
+            "slot": "3",
+            "x": 260,
+            "y": 108.5
+          },
+          {
+            "uid": "twpd8kt",
+            "slot": "4",
+            "x": 341,
+            "y": 108.5
+          }
+        ],
+        "wet": true
+      },
+      "after": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t7w3oxu",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "t0ajr2f",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "thn9cfp",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tpp7zs6",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "twpd8kt",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "t14mout",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "slots": [
+          {
+            "uid": "ttyp2hk",
+            "slot": "0",
+            "x": 427,
+            "y": 108.5
+          },
+          {
+            "uid": "t14mout",
+            "slot": "1",
+            "x": 522,
+            "y": 108.5
+          },
+          {
+            "uid": "t7w3oxu",
+            "slot": "0",
+            "x": 17,
+            "y": 108.5
+          },
+          {
+            "uid": "t0ajr2f",
+            "slot": "1",
+            "x": 98,
+            "y": 108.5
+          },
+          {
+            "uid": "thn9cfp",
+            "slot": "2",
+            "x": 179,
+            "y": 108.5
+          },
+          {
+            "uid": "tpp7zs6",
+            "slot": "3",
+            "x": 260,
+            "y": 108.5
+          },
+          {
+            "uid": "twpd8kt",
+            "slot": "4",
+            "x": 341,
+            "y": 108.5
+          }
+        ],
+        "wet": true
+      },
+      "next": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 2,
+        "enemyTide": 3,
+        "turn": 2,
+        "over": false,
+        "player": [
+          {
+            "uid": "t0ajr2f",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "thn9cfp",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tpp7zs6",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "twpd8kt",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [],
+        "slots": [
+          {
+            "uid": "ttyp2hk",
+            "slot": "0",
+            "x": 427,
+            "y": 108.5
+          },
+          {
+            "uid": "t14mout",
+            "slot": "1",
+            "x": 522,
+            "y": 108.5
+          },
+          {
+            "uid": "t7w3oxu",
+            "slot": "0",
+            "x": 17,
+            "y": 108.5
+          },
+          {
+            "uid": "t0ajr2f",
+            "slot": "1",
+            "x": 98,
+            "y": 108.5
+          },
+          {
+            "uid": "thn9cfp",
+            "slot": "2",
+            "x": 179,
+            "y": 108.5
+          },
+          {
+            "uid": "tpp7zs6",
+            "slot": "3",
+            "x": 260,
+            "y": 108.5
+          },
+          {
+            "uid": "twpd8kt",
+            "slot": "4",
+            "x": 341,
+            "y": 108.5
+          }
+        ],
+        "wet": true
+      },
+      "effect": {
+        "width": 0.34549022511848343,
+        "coverage": 0.7999614197530864,
+        "foam": [
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 415,
+              "y": 142.890625,
+              "width": 116,
+              "height": 55.890625,
+              "top": 142.890625,
+              "right": 531,
+              "bottom": 198.78125,
+              "left": 415
+            }
+          },
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 510,
+              "y": 142.890625,
+              "width": 116,
+              "height": 55.890625,
+              "top": 142.890625,
+              "right": 626,
+              "bottom": 198.78125,
+              "left": 510
+            }
+          }
+        ],
+        "floating": 0,
+        "source": "陣亡蓄潮 +1"
+      },
+      "motion": {
+        "start": {
+          "x": 271.59521484375,
+          "y": 39.43662643432617,
+          "width": 253.8720703125,
+          "height": 225.6580047607422,
+          "top": 39.43662643432617,
+          "right": 525.46728515625,
+          "bottom": 265.09463119506836,
+          "left": 271.59521484375
+        },
+        "axis": "x",
+        "static": false,
+        "end": {
+          "x": 402.78125,
+          "y": 22.671875,
+          "width": 291.59375,
+          "height": 259.1875,
+          "top": 22.671875,
+          "right": 694.375,
+          "bottom": 281.859375,
+          "left": 402.78125
+        }
+      }
+    },
+    {
+      "prefix": "1366x600",
+      "before": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 12,
+        "playerTide": 6,
+        "enemyTide": 0,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "tnd83v0",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tnyq8ws",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "ts60inr",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tnbtl3i",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tl6chv1",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "tqnp89v",
+            "id": "archer",
+            "health": 1
+          },
+          {
+            "uid": "tksqljh",
+            "id": "archer",
+            "health": 2
+          }
+        ],
+        "slots": [
+          {
+            "uid": "tqnp89v",
+            "slot": "0",
+            "x": 588.5,
+            "y": 130.5
+          },
+          {
+            "uid": "tksqljh",
+            "slot": "1",
+            "x": 685.5,
+            "y": 130.5
+          },
+          {
+            "uid": "tnd83v0",
+            "slot": "0",
+            "x": 333,
+            "y": 273.75
+          },
+          {
+            "uid": "tnyq8ws",
+            "slot": "1",
+            "x": 474,
+            "y": 273.75
+          },
+          {
+            "uid": "ts60inr",
+            "slot": "2",
+            "x": 615,
+            "y": 273.75
+          },
+          {
+            "uid": "tnbtl3i",
+            "slot": "3",
+            "x": 756,
+            "y": 273.75
+          },
+          {
+            "uid": "tl6chv1",
+            "slot": "4",
+            "x": 897,
+            "y": 273.75
+          }
+        ],
+        "wet": false
+      },
+      "impact": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "tnd83v0",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tnyq8ws",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "ts60inr",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tnbtl3i",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tl6chv1",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "tksqljh",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "slots": [
+          {
+            "uid": "tqnp89v",
+            "slot": "0",
+            "x": 588.5,
+            "y": 130.5
+          },
+          {
+            "uid": "tksqljh",
+            "slot": "1",
+            "x": 685.5,
+            "y": 130.5
+          },
+          {
+            "uid": "tnd83v0",
+            "slot": "0",
+            "x": 333,
+            "y": 273.75
+          },
+          {
+            "uid": "tnyq8ws",
+            "slot": "1",
+            "x": 474,
+            "y": 273.75
+          },
+          {
+            "uid": "ts60inr",
+            "slot": "2",
+            "x": 615,
+            "y": 273.75
+          },
+          {
+            "uid": "tnbtl3i",
+            "slot": "3",
+            "x": 756,
+            "y": 273.75
+          },
+          {
+            "uid": "tl6chv1",
+            "slot": "4",
+            "x": 897,
+            "y": 273.75
+          }
+        ],
+        "wet": true
+      },
+      "after": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "tnd83v0",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tnyq8ws",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "ts60inr",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tnbtl3i",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tl6chv1",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "tksqljh",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "slots": [
+          {
+            "uid": "tqnp89v",
+            "slot": "0",
+            "x": 588.5,
+            "y": 130.5
+          },
+          {
+            "uid": "tksqljh",
+            "slot": "1",
+            "x": 685.5,
+            "y": 130.5
+          },
+          {
+            "uid": "tnd83v0",
+            "slot": "0",
+            "x": 333,
+            "y": 273.75
+          },
+          {
+            "uid": "tnyq8ws",
+            "slot": "1",
+            "x": 474,
+            "y": 273.75
+          },
+          {
+            "uid": "ts60inr",
+            "slot": "2",
+            "x": 615,
+            "y": 273.75
+          },
+          {
+            "uid": "tnbtl3i",
+            "slot": "3",
+            "x": 756,
+            "y": 273.75
+          },
+          {
+            "uid": "tl6chv1",
+            "slot": "4",
+            "x": 897,
+            "y": 273.75
+          }
+        ],
+        "wet": true
+      },
+      "next": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 2,
+        "enemyTide": 3,
+        "turn": 2,
+        "over": false,
+        "player": [
+          {
+            "uid": "tnyq8ws",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "ts60inr",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tnbtl3i",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tl6chv1",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [],
+        "slots": [
+          {
+            "uid": "tqnp89v",
+            "slot": "0",
+            "x": 588.5,
+            "y": 130.5
+          },
+          {
+            "uid": "tksqljh",
+            "slot": "1",
+            "x": 685.5,
+            "y": 130.5
+          },
+          {
+            "uid": "tnd83v0",
+            "slot": "0",
+            "x": 333,
+            "y": 273.75
+          },
+          {
+            "uid": "tnyq8ws",
+            "slot": "1",
+            "x": 474,
+            "y": 273.75
+          },
+          {
+            "uid": "ts60inr",
+            "slot": "2",
+            "x": 615,
+            "y": 273.75
+          },
+          {
+            "uid": "tnbtl3i",
+            "slot": "3",
+            "x": 756,
+            "y": 273.75
+          },
+          {
+            "uid": "tl6chv1",
+            "slot": "4",
+            "x": 897,
+            "y": 273.75
+          }
+        ],
+        "wet": true
+      },
+      "effect": {
+        "width": 1.0799894765739384,
+        "coverage": 1.0799894765739384,
+        "foam": [
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 576.5,
+              "y": 166.1875,
+              "width": 116,
+              "height": 58,
+              "top": 166.1875,
+              "right": 692.5,
+              "bottom": 224.1875,
+              "left": 576.5
+            }
+          },
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 673.5,
+              "y": 166.1875,
+              "width": 116,
+              "height": 58,
+              "top": 166.1875,
+              "right": 789.5,
+              "bottom": 224.1875,
+              "left": 673.5
+            }
+          }
+        ],
+        "floating": 0,
+        "source": "陣亡蓄潮 +1"
+      },
+      "motion": {
+        "start": {
+          "x": 167.6956787109375,
+          "y": 199.95758056640625,
+          "width": 1030.624267578125,
+          "height": 73.69253540039062,
+          "top": 199.95758056640625,
+          "right": 1198.3199462890625,
+          "bottom": 273.6501159667969,
+          "left": 167.6956787109375
+        },
+        "axis": "y",
+        "static": false,
+        "end": {
+          "x": -47.387451171875,
+          "y": 108.21223449707031,
+          "width": 1460.79052734375,
+          "height": 137.8413848876953,
+          "top": 108.21223449707031,
+          "right": 1413.403076171875,
+          "bottom": 246.05361938476562,
+          "left": -47.387451171875
+        }
+      }
+    },
+    {
+      "prefix": "1032x1376",
+      "before": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 12,
+        "playerTide": 6,
+        "enemyTide": 0,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t98og0z",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tduv26z",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tcd3s87",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "t1mn0ek",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tsajjtf",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "teaqaxe",
+            "id": "archer",
+            "health": 1
+          },
+          {
+            "uid": "t0acwfa",
+            "id": "archer",
+            "health": 2
+          }
+        ],
+        "slots": [
+          {
+            "uid": "teaqaxe",
+            "slot": "0",
+            "x": 357.5,
+            "y": 390.75
+          },
+          {
+            "uid": "t0acwfa",
+            "slot": "1",
+            "x": 518.5,
+            "y": 390.75
+          },
+          {
+            "uid": "t98og0z",
+            "slot": "0",
+            "x": 166,
+            "y": 662.75
+          },
+          {
+            "uid": "tduv26z",
+            "slot": "1",
+            "x": 307,
+            "y": 662.75
+          },
+          {
+            "uid": "tcd3s87",
+            "slot": "2",
+            "x": 448,
+            "y": 662.75
+          },
+          {
+            "uid": "t1mn0ek",
+            "slot": "3",
+            "x": 589,
+            "y": 662.75
+          },
+          {
+            "uid": "tsajjtf",
+            "slot": "4",
+            "x": 730,
+            "y": 662.75
+          }
+        ],
+        "wet": false
+      },
+      "impact": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t98og0z",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tduv26z",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tcd3s87",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "t1mn0ek",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tsajjtf",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "t0acwfa",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "slots": [
+          {
+            "uid": "teaqaxe",
+            "slot": "0",
+            "x": 357.5,
+            "y": 390.75
+          },
+          {
+            "uid": "t0acwfa",
+            "slot": "1",
+            "x": 518.5,
+            "y": 390.75
+          },
+          {
+            "uid": "t98og0z",
+            "slot": "0",
+            "x": 166,
+            "y": 662.75
+          },
+          {
+            "uid": "tduv26z",
+            "slot": "1",
+            "x": 307,
+            "y": 662.75
+          },
+          {
+            "uid": "tcd3s87",
+            "slot": "2",
+            "x": 448,
+            "y": 662.75
+          },
+          {
+            "uid": "t1mn0ek",
+            "slot": "3",
+            "x": 589,
+            "y": 662.75
+          },
+          {
+            "uid": "tsajjtf",
+            "slot": "4",
+            "x": 730,
+            "y": 662.75
+          }
+        ],
+        "wet": true
+      },
+      "after": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t98og0z",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tduv26z",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tcd3s87",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "t1mn0ek",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tsajjtf",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "t0acwfa",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "slots": [
+          {
+            "uid": "teaqaxe",
+            "slot": "0",
+            "x": 357.5,
+            "y": 390.75
+          },
+          {
+            "uid": "t0acwfa",
+            "slot": "1",
+            "x": 518.5,
+            "y": 390.75
+          },
+          {
+            "uid": "t98og0z",
+            "slot": "0",
+            "x": 166,
+            "y": 662.75
+          },
+          {
+            "uid": "tduv26z",
+            "slot": "1",
+            "x": 307,
+            "y": 662.75
+          },
+          {
+            "uid": "tcd3s87",
+            "slot": "2",
+            "x": 448,
+            "y": 662.75
+          },
+          {
+            "uid": "t1mn0ek",
+            "slot": "3",
+            "x": 589,
+            "y": 662.75
+          },
+          {
+            "uid": "tsajjtf",
+            "slot": "4",
+            "x": 730,
+            "y": 662.75
+          }
+        ],
+        "wet": true
+      },
+      "next": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 2,
+        "enemyTide": 3,
+        "turn": 2,
+        "over": false,
+        "player": [
+          {
+            "uid": "tduv26z",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tcd3s87",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "t1mn0ek",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tsajjtf",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [],
+        "slots": [
+          {
+            "uid": "teaqaxe",
+            "slot": "0",
+            "x": 357.5,
+            "y": 390.75
+          },
+          {
+            "uid": "t0acwfa",
+            "slot": "1",
+            "x": 518.5,
+            "y": 390.75
+          },
+          {
+            "uid": "t98og0z",
+            "slot": "0",
+            "x": 166,
+            "y": 662.75
+          },
+          {
+            "uid": "tduv26z",
+            "slot": "1",
+            "x": 307,
+            "y": 662.75
+          },
+          {
+            "uid": "tcd3s87",
+            "slot": "2",
+            "x": 448,
+            "y": 662.75
+          },
+          {
+            "uid": "t1mn0ek",
+            "slot": "3",
+            "x": 589,
+            "y": 662.75
+          },
+          {
+            "uid": "tsajjtf",
+            "slot": "4",
+            "x": 730,
+            "y": 662.75
+          }
+        ],
+        "wet": true
+      },
+      "effect": {
+        "width": 1.0799872819767442,
+        "coverage": 1.0799872819767442,
+        "foam": [
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 345.5,
+              "y": 477.140625,
+              "width": 180,
+              "height": 140.390625,
+              "top": 477.140625,
+              "right": 525.5,
+              "bottom": 617.53125,
+              "left": 345.5
+            }
+          },
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 506.5,
+              "y": 477.140625,
+              "width": 180,
+              "height": 140.390625,
+              "top": 477.140625,
+              "right": 686.5,
+              "bottom": 617.53125,
+              "left": 506.5
+            }
+          }
+        ],
+        "floating": 0,
+        "source": "陣亡蓄潮 +1"
+      },
+      "motion": {
+        "start": {
+          "x": 117.71530151367188,
+          "y": 524.6898193359375,
+          "width": 796.5849609375,
+          "height": 169.81072998046875,
+          "top": 524.6898193359375,
+          "right": 914.3002624511719,
+          "bottom": 694.5005493164062,
+          "left": 117.71530151367188
+        },
+        "axis": "y",
+        "static": false,
+        "end": {
+          "x": -41.265625,
+          "y": 344.84375,
+          "width": 1114.546875,
+          "height": 307.796875,
+          "top": 344.84375,
+          "right": 1073.28125,
+          "bottom": 652.640625,
+          "left": -41.265625
+        }
+      }
+    },
+    {
+      "prefix": "1290x2796",
+      "before": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 12,
+        "playerTide": 6,
+        "enemyTide": 0,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t3kdaoq",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "t5ozwwa",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tm1l5xa",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tmfqdcw",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "t5xgiou",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "tklaays",
+            "id": "archer",
+            "health": 1
+          },
+          {
+            "uid": "ti2codb",
+            "id": "archer",
+            "health": 2
+          }
+        ],
+        "slots": [
+          {
+            "uid": "tklaays",
+            "slot": "0",
+            "x": 120.5,
+            "y": 255.25
+          },
+          {
+            "uid": "ti2codb",
+            "slot": "1",
+            "x": 217.5,
+            "y": 255.25
+          },
+          {
+            "uid": "t3kdaoq",
+            "slot": "0",
+            "x": 16.015625,
+            "y": 441.25
+          },
+          {
+            "uid": "t5ozwwa",
+            "slot": "1",
+            "x": 96.609375,
+            "y": 441.25
+          },
+          {
+            "uid": "tm1l5xa",
+            "slot": "2",
+            "x": 177.203125,
+            "y": 441.25
+          },
+          {
+            "uid": "tmfqdcw",
+            "slot": "3",
+            "x": 257.796875,
+            "y": 441.25
+          },
+          {
+            "uid": "t5xgiou",
+            "slot": "4",
+            "x": 338.390625,
+            "y": 441.25
+          }
+        ],
+        "wet": false
+      },
+      "impact": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t3kdaoq",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "t5ozwwa",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tm1l5xa",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tmfqdcw",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "t5xgiou",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "ti2codb",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "slots": [
+          {
+            "uid": "tklaays",
+            "slot": "0",
+            "x": 120.5,
+            "y": 255.25
+          },
+          {
+            "uid": "ti2codb",
+            "slot": "1",
+            "x": 217.5,
+            "y": 255.25
+          },
+          {
+            "uid": "t3kdaoq",
+            "slot": "0",
+            "x": 16.015625,
+            "y": 441.25
+          },
+          {
+            "uid": "t5ozwwa",
+            "slot": "1",
+            "x": 96.609375,
+            "y": 441.25
+          },
+          {
+            "uid": "tm1l5xa",
+            "slot": "2",
+            "x": 177.203125,
+            "y": 441.25
+          },
+          {
+            "uid": "tmfqdcw",
+            "slot": "3",
+            "x": 257.796875,
+            "y": 441.25
+          },
+          {
+            "uid": "t5xgiou",
+            "slot": "4",
+            "x": 338.390625,
+            "y": 441.25
+          }
+        ],
+        "wet": true
+      },
+      "after": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t3kdaoq",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "t5ozwwa",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tm1l5xa",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tmfqdcw",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "t5xgiou",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "ti2codb",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "slots": [
+          {
+            "uid": "tklaays",
+            "slot": "0",
+            "x": 120.5,
+            "y": 255.25
+          },
+          {
+            "uid": "ti2codb",
+            "slot": "1",
+            "x": 217.5,
+            "y": 255.25
+          },
+          {
+            "uid": "t3kdaoq",
+            "slot": "0",
+            "x": 16.015625,
+            "y": 441.25
+          },
+          {
+            "uid": "t5ozwwa",
+            "slot": "1",
+            "x": 96.609375,
+            "y": 441.25
+          },
+          {
+            "uid": "tm1l5xa",
+            "slot": "2",
+            "x": 177.203125,
+            "y": 441.25
+          },
+          {
+            "uid": "tmfqdcw",
+            "slot": "3",
+            "x": 257.796875,
+            "y": 441.25
+          },
+          {
+            "uid": "t5xgiou",
+            "slot": "4",
+            "x": 338.390625,
+            "y": 441.25
+          }
+        ],
+        "wet": true
+      },
+      "next": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 2,
+        "enemyTide": 3,
+        "turn": 2,
+        "over": false,
+        "player": [
+          {
+            "uid": "t5ozwwa",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tm1l5xa",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tmfqdcw",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "t5xgiou",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [],
+        "slots": [
+          {
+            "uid": "tklaays",
+            "slot": "0",
+            "x": 120.5,
+            "y": 255.25
+          },
+          {
+            "uid": "ti2codb",
+            "slot": "1",
+            "x": 217.5,
+            "y": 255.25
+          },
+          {
+            "uid": "t3kdaoq",
+            "slot": "0",
+            "x": 16.015625,
+            "y": 441.25
+          },
+          {
+            "uid": "t5ozwwa",
+            "slot": "1",
+            "x": 96.609375,
+            "y": 441.25
+          },
+          {
+            "uid": "tm1l5xa",
+            "slot": "2",
+            "x": 177.203125,
+            "y": 441.25
+          },
+          {
+            "uid": "tmfqdcw",
+            "slot": "3",
+            "x": 257.796875,
+            "y": 441.25
+          },
+          {
+            "uid": "t5xgiou",
+            "slot": "4",
+            "x": 338.390625,
+            "y": 441.25
+          }
+        ],
+        "wet": true
+      },
+      "effect": {
+        "width": 1.0799781976744185,
+        "coverage": 1.0799781976744185,
+        "foam": [
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 108.5,
+              "y": 308.046875,
+              "width": 116,
+              "height": 85.796875,
+              "top": 308.046875,
+              "right": 224.5,
+              "bottom": 393.84375,
+              "left": 108.5
+            }
+          },
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 205.5,
+              "y": 308.046875,
+              "width": 116,
+              "height": 85.796875,
+              "top": 308.046875,
+              "right": 321.5,
+              "bottom": 393.84375,
+              "left": 205.5
+            }
+          }
+        ],
+        "floating": 0,
+        "source": "陣亡蓄潮 +1"
+      },
+      "motion": {
+        "start": {
+          "x": 52.784759521484375,
+          "y": 351.1470947265625,
+          "width": 324.44610595703125,
+          "height": 102.336669921875,
+          "top": 351.1470947265625,
+          "right": 377.2308654785156,
+          "bottom": 453.4837646484375,
+          "left": 52.784759521484375
+        },
+        "axis": "y",
+        "static": false,
+        "end": {
+          "x": -14.897491455078125,
+          "y": 229.17379760742188,
+          "width": 459.81060791015625,
+          "height": 191.37796020507812,
+          "top": 229.17379760742188,
+          "right": 444.9131164550781,
+          "bottom": 420.5517578125,
+          "left": -14.897491455078125
+        }
+      }
+    },
+    {
+      "prefix": "2064x2752",
+      "before": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 12,
+        "playerTide": 6,
+        "enemyTide": 0,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t0x5lqv",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "taab4bl",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tyanybd",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tdpc0d4",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tgm6360",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "t91n3l9",
+            "id": "archer",
+            "health": 1
+          },
+          {
+            "uid": "trsij31",
+            "id": "archer",
+            "health": 2
+          }
+        ],
+        "slots": [
+          {
+            "uid": "t91n3l9",
+            "slot": "0",
+            "x": 357.5,
+            "y": 390.75
+          },
+          {
+            "uid": "trsij31",
+            "slot": "1",
+            "x": 518.5,
+            "y": 390.75
+          },
+          {
+            "uid": "t0x5lqv",
+            "slot": "0",
+            "x": 166,
+            "y": 662.75
+          },
+          {
+            "uid": "taab4bl",
+            "slot": "1",
+            "x": 307,
+            "y": 662.75
+          },
+          {
+            "uid": "tyanybd",
+            "slot": "2",
+            "x": 448,
+            "y": 662.75
+          },
+          {
+            "uid": "tdpc0d4",
+            "slot": "3",
+            "x": 589,
+            "y": 662.75
+          },
+          {
+            "uid": "tgm6360",
+            "slot": "4",
+            "x": 730,
+            "y": 662.75
+          }
+        ],
+        "wet": false
+      },
+      "impact": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t0x5lqv",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "taab4bl",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tyanybd",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tdpc0d4",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tgm6360",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "trsij31",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "slots": [
+          {
+            "uid": "t91n3l9",
+            "slot": "0",
+            "x": 357.5,
+            "y": 390.75
+          },
+          {
+            "uid": "trsij31",
+            "slot": "1",
+            "x": 518.5,
+            "y": 390.75
+          },
+          {
+            "uid": "t0x5lqv",
+            "slot": "0",
+            "x": 166,
+            "y": 662.75
+          },
+          {
+            "uid": "taab4bl",
+            "slot": "1",
+            "x": 307,
+            "y": 662.75
+          },
+          {
+            "uid": "tyanybd",
+            "slot": "2",
+            "x": 448,
+            "y": 662.75
+          },
+          {
+            "uid": "tdpc0d4",
+            "slot": "3",
+            "x": 589,
+            "y": 662.75
+          },
+          {
+            "uid": "tgm6360",
+            "slot": "4",
+            "x": 730,
+            "y": 662.75
+          }
+        ],
+        "wet": true
+      },
+      "after": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 0,
+        "enemyTide": 1,
+        "turn": 1,
+        "over": false,
+        "player": [
+          {
+            "uid": "t0x5lqv",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "taab4bl",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tyanybd",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tdpc0d4",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tgm6360",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [
+          {
+            "uid": "trsij31",
+            "id": "archer",
+            "health": 1
+          }
+        ],
+        "slots": [
+          {
+            "uid": "t91n3l9",
+            "slot": "0",
+            "x": 357.5,
+            "y": 390.75
+          },
+          {
+            "uid": "trsij31",
+            "slot": "1",
+            "x": 518.5,
+            "y": 390.75
+          },
+          {
+            "uid": "t0x5lqv",
+            "slot": "0",
+            "x": 166,
+            "y": 662.75
+          },
+          {
+            "uid": "taab4bl",
+            "slot": "1",
+            "x": 307,
+            "y": 662.75
+          },
+          {
+            "uid": "tyanybd",
+            "slot": "2",
+            "x": 448,
+            "y": 662.75
+          },
+          {
+            "uid": "tdpc0d4",
+            "slot": "3",
+            "x": 589,
+            "y": 662.75
+          },
+          {
+            "uid": "tgm6360",
+            "slot": "4",
+            "x": 730,
+            "y": 662.75
+          }
+        ],
+        "wet": true
+      },
+      "next": {
+        "playerMana": 10,
+        "playerManaMax": 10,
+        "playerHp": 12,
+        "enemyHp": 10,
+        "playerTide": 2,
+        "enemyTide": 3,
+        "turn": 2,
+        "over": false,
+        "player": [
+          {
+            "uid": "taab4bl",
+            "id": "footman",
+            "health": 2
+          },
+          {
+            "uid": "tyanybd",
+            "id": "wolf",
+            "health": 2
+          },
+          {
+            "uid": "tdpc0d4",
+            "id": "sparkSquire",
+            "health": 1
+          },
+          {
+            "uid": "tgm6360",
+            "id": "emberpup",
+            "health": 1
+          }
+        ],
+        "enemy": [],
+        "slots": [
+          {
+            "uid": "t91n3l9",
+            "slot": "0",
+            "x": 357.5,
+            "y": 390.75
+          },
+          {
+            "uid": "trsij31",
+            "slot": "1",
+            "x": 518.5,
+            "y": 390.75
+          },
+          {
+            "uid": "t0x5lqv",
+            "slot": "0",
+            "x": 166,
+            "y": 662.75
+          },
+          {
+            "uid": "taab4bl",
+            "slot": "1",
+            "x": 307,
+            "y": 662.75
+          },
+          {
+            "uid": "tyanybd",
+            "slot": "2",
+            "x": 448,
+            "y": 662.75
+          },
+          {
+            "uid": "tdpc0d4",
+            "slot": "3",
+            "x": 589,
+            "y": 662.75
+          },
+          {
+            "uid": "tgm6360",
+            "slot": "4",
+            "x": 730,
+            "y": 662.75
+          }
+        ],
+        "wet": true
+      },
+      "effect": {
+        "width": 1.0799872819767442,
+        "coverage": 1.0799872819767442,
+        "foam": [
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 345.5,
+              "y": 477.140625,
+              "width": 180,
+              "height": 140.390625,
+              "top": 477.140625,
+              "right": 525.5,
+              "bottom": 617.53125,
+              "left": 345.5
+            }
+          },
+          {
+            "opacity": "1",
+            "rect": {
+              "x": 506.5,
+              "y": 477.140625,
+              "width": 180,
+              "height": 140.390625,
+              "top": 477.140625,
+              "right": 686.5,
+              "bottom": 617.53125,
+              "left": 506.5
+            }
+          }
+        ],
+        "floating": 0,
+        "source": "陣亡蓄潮 +1"
+      },
+      "motion": {
+        "start": {
+          "x": -41.265625,
+          "y": 344.84375,
+          "width": 1114.546875,
+          "height": 307.796875,
+          "top": 344.84375,
+          "right": 1073.28125,
+          "bottom": 652.640625,
+          "left": -41.265625
+        },
+        "axis": "y",
+        "static": true,
+        "end": {
+          "x": -41.265625,
+          "y": 344.84375,
+          "width": 1114.546875,
+          "height": 307.796875,
+          "top": 344.84375,
+          "right": 1073.28125,
+          "bottom": 652.640625,
+          "left": -41.265625
+        }
+      }
+    }
+  ],
+  "method": "Natural harbor/selected trial/victory; clearly labelled reproducible nonlethal QA for tide chart and three-frame/next-turn series. No image editing/scaling, original device-scale PNGs. Same series state only changed by actual cast and end-turn."
+}

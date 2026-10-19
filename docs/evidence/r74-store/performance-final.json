@@ -1,0 +1,65 @@
+{
+  "generatedAt": "2026-10-15T13:17:58.335Z",
+  "source": "working tree (R67)",
+  "profile": "Fast 3G (150ms RTT, 200KiB/s down) + 4x CPU throttle",
+  "concurrentMachine": true,
+  "trustNote": "Local p95 is concurrent-machine evidence; release decision requires clean-machine audit.",
+  "runs": [
+    {
+      "interactiveMs": 4935.9,
+      "visualReadyMs": 1396.7,
+      "domInteractiveMs": 4886.9,
+      "backgroundResponseEndMs": 527.8,
+      "visualMarkPresent": true,
+      "backgroundResources": [
+        {
+          "name": "white-tide-citadel-low.webp?v=50075ecc",
+          "bytes": 18104,
+          "responseEndMs": 527.8
+        }
+      ]
+    },
+    {
+      "interactiveMs": 5017.9,
+      "visualReadyMs": 1364.8,
+      "domInteractiveMs": 4965.9,
+      "backgroundResponseEndMs": 538.5,
+      "visualMarkPresent": true,
+      "backgroundResources": [
+        {
+          "name": "white-tide-citadel-low.webp?v=50075ecc",
+          "bytes": 18104,
+          "responseEndMs": 538.5
+        }
+      ]
+    },
+    {
+      "interactiveMs": 4975,
+      "visualReadyMs": 1383.1,
+      "domInteractiveMs": 4925.7,
+      "backgroundResponseEndMs": 543.6,
+      "visualMarkPresent": true,
+      "backgroundResources": [
+        {
+          "name": "white-tide-citadel-low.webp?v=50075ecc",
+          "bytes": 18104,
+          "responseEndMs": 543.6
+        }
+      ]
+    }
+  ],
+  "median": {
+    "interactiveMs": 4975,
+    "visualReadyMs": 1383.1
+  },
+  "frame": {
+    "samples": 175,
+    "p95Ms": 16.8
+  },
+  "assertions": {
+    "visualReadyWithin3000ms": true,
+    "interactiveRegressionWithin10Percent": true,
+    "interactiveLimitMs": 34627.34,
+    "frameP95Within18ms": true
+  }
+}

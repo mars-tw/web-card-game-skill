@@ -1,0 +1,1391 @@
+
+> web-card-game-skill@0.17.0 test
+> node scripts/test-cards.js && node scripts/test-core.js && node scripts/test-quality-gates.js && node scripts/test-balance-sim.js && python scripts/test-r67-visual-gates.py && node scripts/test-r73-voyage.js && node scripts/test-r74-rules.js && python scripts/verify-r75-assets.py && python scripts/verify-r76-assets.py && python scripts/verify-r77-assets.py && python scripts/verify-r78-assets.py && python scripts/verify-r79-assets.py && python scripts/verify-r80-assets.py && node scripts/test-content-r1.js && node scripts/test-content-r2.js && node scripts/test-content-r3.js && node scripts/test-content-r4.js
+
+== 結構檢查 ==
+  ✓ 卡池至少 62 張（實際 92）
+  ✓ CARD_POOL has at least 74 cards (actual 92)
+  ✓ CARD_POOL has at least 86 cards in current baseline (actual 92)
+  ✓ 稀有度有 4 級
+  ✓ 關鍵字技能至少 5 種
+  ✓ 新關鍵字吸血與突襲有繁中 label
+  ✓ R47 關鍵字狂怒與法強有繁中 label
+  ✓ silence 關鍵字已註冊
+  ✓ R61 六種角色專屬關鍵字皆有繁中定義
+  ✓ tideforged 機率為 3%
+  ✓ 軸線標籤完整
+== 欄位完整性 ==
+  ✓ 所有卡欄位完整（異常 0）
+== R16 新卡分布 ==
+  ✓ R16 新卡 id 全部存在
+  ✓ R16 新卡四稀有度分布為 4/3/2/1（實際 {"common":4,"rare":3,"epic":2,"legendary":1}）
+  ✓ R16 新卡快攻/控制各 5 張（實際 {"aggro":5,"control":5}）
+  ✓ R16 新卡費用曲線含低費節奏與高費控制收束
+== R47 霜鋒與奧術 ==
+  ✓ R47 12 張新卡 id 全部存在
+  ✓ R47 稀有度分布為 4/3/3/2（實際 {"common":4,"rare":3,"epic":3,"legendary":2}）
+  ✓ R47 快攻/控制各 6 張（實際 {"aggro":6,"control":6}）
+  ✓ R47 費用曲線含 1 費與 7 費
+  ✓ R47 風味文字完整且至少 8 字
+== R48 White Tide Chronicle ==
+  ✓ R48 12 new ids exist
+  ✓ R48 rarity split is 4/3/3/2 (actual {"common":4,"epic":3,"rare":3,"legendary":2})
+  ✓ R48 axis split is 6/6 (actual {"aggro":6,"control":6})
+  ✓ R48 cost curve includes 1 and 7
+  ✓ R48 flavor text is present
+  ✓ R48 faction ids all resolve
+  ✓ R61 五陣營含正式潮間中立並覆蓋卡池
+== R61 對座六影立繪 ==
+  ✓ R61 卡池為 92 張（實際 92）
+  ✓ 六張具名角色卡 id 齊全且唯一
+  ✓ 六張角色皆為傳說隨從且 maxCopies=1
+  ✓ 六張角色共用 hero_shadows_v1、heroTag 並接上專屬立繪
+  ✓ 三位既有 AI 角色卡連回正確 opponentId
+  ✓ 茉恩正式中立，伊索德與魯恩補入凜冬暗影
+  ✓ 傳說子池角色偏向固定為 28%，且只含六張角色
+  ✓ 傳說 roll 先套 28% 角色子池，未命中時仍從完整傳說池抽取
+== Current content baseline ==
+  ✓ baseline 10 cards plus 2 silence cards exist
+  ✓ R63 priority art cards are wired to existing PNG assets
+  ✓ R66 long-tail art cards are wired to existing PNG assets
+  ✓ R66 image:null is zero across the complete card pool
+  ✓ baseline flavor text is present
+  ✓ saltShieldSquire exists
+  ✓ saltShieldSquire.cost is 1
+  ✓ saltShieldSquire.attack is 0
+  ✓ saltShieldSquire.health is 3
+  ✓ saltShieldSquire.rarity is common
+  ✓ saltShieldSquire.type is minion
+  ✓ saltShieldSquire keywords include taunt
+  ✓ iceNeedle exists
+  ✓ iceNeedle.cost is 1
+  ✓ iceNeedle.rarity is common
+  ✓ iceNeedle.type is spell
+  ✓ iceNeedle.effect is damage2
+  ✓ iceNeedle.baseDamage is 1
+  ✓ iceNeedle.tauntBonusDamage is 1
+  ✓ packHowler exists
+  ✓ packHowler.cost is 3
+  ✓ packHowler.attack is 2
+  ✓ packHowler.health is 3
+  ✓ packHowler.rarity is rare
+  ✓ packHowler.type is minion
+  ✓ packHowler keywords include charge,battlecry
+  ✓ packHowler.trigger is buffAdjacent1
+  ✓ toxinViper exists
+  ✓ toxinViper.cost is 3
+  ✓ toxinViper.attack is 1
+  ✓ toxinViper.health is 3
+  ✓ toxinViper.rarity is rare
+  ✓ toxinViper.type is minion
+  ✓ toxinViper keywords include poison,rush
+  ✓ graveScribe exists
+  ✓ graveScribe.cost is 3
+  ✓ graveScribe.attack is 1
+  ✓ graveScribe.health is 4
+  ✓ graveScribe.rarity is rare
+  ✓ graveScribe.type is minion
+  ✓ graveScribe keywords include deathrattle
+  ✓ graveScribe.trigger is drawCard1
+  ✓ mirrorRime exists
+  ✓ mirrorRime.cost is 2
+  ✓ mirrorRime.rarity is epic
+  ✓ mirrorRime.type is spell
+  ✓ mirrorRime.effect is buffTarget
+  ✓ mirrorRime.mirrorRime is true
+  ✓ dualTalon exists
+  ✓ dualTalon.cost is 4
+  ✓ dualTalon.attack is 2
+  ✓ dualTalon.health is 3
+  ✓ dualTalon.rarity is epic
+  ✓ dualTalon.type is minion
+  ✓ dualTalon keywords include windfury
+  ✓ voidTithe exists
+  ✓ voidTithe.cost is 3
+  ✓ voidTithe.rarity is epic
+  ✓ voidTithe.type is spell
+  ✓ voidTithe.effect is nextSpellMinus1
+  ✓ captainGreywake exists
+  ✓ captainGreywake.cost is 6
+  ✓ captainGreywake.attack is 5
+  ✓ captainGreywake.health is 6
+  ✓ captainGreywake.rarity is legendary
+  ✓ captainGreywake.type is minion
+  ✓ captainGreywake keywords include taunt,battlecry
+  ✓ captainGreywake.trigger is aoeEnemy1
+  ✓ ladyAshenBell exists
+  ✓ ladyAshenBell.cost is 5
+  ✓ ladyAshenBell.attack is 3
+  ✓ ladyAshenBell.health is 5
+  ✓ ladyAshenBell.rarity is legendary
+  ✓ ladyAshenBell.type is minion
+  ✓ ladyAshenBell keywords include deathrattle,lifesteal
+  ✓ ladyAshenBell.trigger is summonTwo1_1
+  ✓ silenceOne exists
+  ✓ silenceOne.cost is 2
+  ✓ silenceOne.rarity is epic
+  ✓ silenceOne.type is spell
+  ✓ silenceOne.effect is polymorph
+  ✓ silenceOne.silenceOnly is true
+  ✓ silenceOne keywords include silence
+  ✓ scoutInterrogator exists
+  ✓ scoutInterrogator.cost is 3
+  ✓ scoutInterrogator.attack is 2
+  ✓ scoutInterrogator.health is 3
+  ✓ scoutInterrogator.rarity is rare
+  ✓ scoutInterrogator.type is minion
+  ✓ scoutInterrogator keywords include battlecry
+  ✓ scoutInterrogator.trigger is silenceIfDamaged
+  ✓ content baseline has exactly four added core effect codes (aoeEnemy1,buffAdjacent1,nextSpellMinus1,summonTwo1_1)
+  ✓ baseline faction ids all resolve
+  ✓ baseline axis ids all resolve
+  ✓ toxinViper is not a strict replacement for raptor
+  ✓ captainGreywake sits below highArchivist as a lower aoe tier
+  ✓ mirrorRime is a capped health-copy spell without shield copy
+  ✓ silenceOne uses polymorph target contract but resolves as silenceOnly
+  ✓ iceNeedle trades lower normal damage for taunt-specific parity with emberVolley
+== id 唯一性 ==
+  ✓ 卡片 id 無重複
+== 技能 trigger 對應 ==
+  ✓ 戰吼/亡語卡都有 trigger（缺 0）
+  ✓ 所有卡牌關鍵字都有定義（缺 0）
+== 嚴格優勢回歸檢查 ==
+  ✓ 餘燼齊射以 1 費 2 傷區隔火焰箭 2 費 3 傷
+  ✓ 餘燼齊射沒有和既有單體傷害法術形成嚴格優勢（none）
+  ✓ 單體傷害法術費用/傷害曲線無嚴格支配（none）
+  ✓ 秘能護幕不再以更高費嚴格劣於聖盾術
+  ✓ 前線斥候用較高生命區隔火花侍從
+  ✓ 雷翼巨鵬用低費低攻區隔獅鷲
+== 抽卡機率分布（30000 抽）==
+    分布: { epic: 3104, common: 18546, rare: 7795, legendary: 555 } | 傳說 1.85% | 閃卡 7.93% | 潮鑄 2.99%
+  ✓ 傳說機率在合理範圍（1.85%）
+  ✓ 閃卡機率接近 8%（7.93%）
+  ✓ 潮鑄機率接近 3%（2.99%）
+  ✓ 潮鑄與閃卡互斥，不會同時掛在同一張卡
+== 工具函式 ==
+  ✓ getCardById 正常
+  ✓ collectKey 區分閃卡
+  ✓ collectKey 潮鑄使用 #tide 且優先於 foil
+== 經濟回收 ==
+  ✓ 分解值使用 cards.js 真實匯出值（普 2 / 稀 8 / 史 25 / 傳 80）
+    全重複一包期望回收：37.10 金幣
+  ✓ 全重複分解期望低於包價 50%（37.10 < 50）
+
+✅ 全部測試通過
+== core.js 單元測試 ==
+PASS 法力不足不可出牌
+PASS 法力不足不扣費、不移除手牌、不燒 Mulligan
+PASS MAX_FIELD 滿場不可召喚
+PASS 滿場不扣費也不移除手牌
+PASS 風怒第一次攻擊後保留第二次攻擊權
+PASS 風怒第二次攻擊後關閉攻擊權
+PASS 風怒一回合第三次攻擊被拒絕
+PASS 吸血隨從攻擊造成傷害會治療己方英雄
+PASS 吸血隨從反擊造成傷害也會治療己方英雄
+PASS 吸血治療不會超過英雄 maxHp
+PASS 吸血戰吼造成傷害會治療己方英雄
+PASS 吸血戰吼滿血時 heroHeal 事件回報實際回血 0
+PASS 突襲隨從登場當回合可攻擊隨從
+PASS 突襲隨從登場當回合攻擊隨從合法
+PASS 突襲隨從登場當回合不能攻擊英雄
+PASS 突襲隨從下回合可攻擊英雄
+PASS 亡語先移除死亡者再召喚 token，滿場仍可補上骷髏
+PASS 亡語事件順序為先死亡、後召喚
+PASS combo 計數會在成功出牌時累加
+PASS 第三張成功出牌回傳 combo count 3
+PASS 成功打出非指定法術會燒 Mulligan
+PASS 指定法術進入 pending 時尚未燒 Mulligan
+PASS 指定法術結算時燒 Mulligan 並清掉 pending
+PASS 舊檔無 version 會無損升級並補 version
+PASS 舊檔缺欄位會補預設值
+PASS 舊檔會補 DDA 與本地遙測預設
+PASS 欄位缺失會以 DEFAULT shape 補齊
+PASS NaN 或非數字污染會回到預設數字
+PASS DDA 與遙測污染值會安全遷移
+PASS DDA 關閉時係數完全歸零
+PASS 連敗 2 場開始軟化並小步進
+PASS DDA 軟化有下限
+PASS 連勝 3 場開始增強並小步進
+PASS DDA 增強有上限且係數正確
+PASS DDA 軟化係數正確
+PASS 錯誤韌性保護存檔會保留既有欄位並記錄錯誤
+PASS 合法牌組：20 張、同卡最多 2 張且都有收藏
+PASS 牌組不是 20 張會被拒絕
+PASS 非傳說同卡超過 2 張會被拒絕
+PASS 傳說卡超過 1 張會被拒絕
+PASS 未擁有或擁有數不足會被拒絕
+PASS 普通與閃卡收藏數會合計供牌組使用
+PASS 原型鍵 __proto__ 不會繞過未知卡牌檢查
+PASS 原型鍵 constructor 不會繞過未知卡牌檢查
+PASS 原型鍵 hasOwnProperty 不會繞過未知卡牌檢查
+PASS buildBattleDeck 會產生 20 張對戰牌堆
+PASS 注入固定 rng 時洗牌結果可重現
+PASS buildBattleDeck 保留輸入 20 張 id 的完整張數
+PASS buildBattleDeck 會複製卡牌物件，不直接共用 cardPool 物件
+PASS buildBattleDeck 會把純閃卡收藏還原成閃卡外觀
+PASS buildBattleDeck 會在 1 普通 + 1 閃卡收藏中分配一張閃卡外觀
+PASS buildBattleDeck 會還原潮鑄外觀但不改戰鬥數值
+PASS 牌組舊檔無 version 會補 version 並保留 cards
+PASS 牌組缺 cards 欄位會補空陣列
+PASS 牌組污染值會移除非字串 id 並重設 version
+PASS 每日任務固定輪出 3 個不重複任務
+PASS 同一日期種子會產生同一組每日任務
+PASS 任務舊檔同日會保留進度與已領狀態
+PASS 跨日遷移會重置每日任務
+PASS 任務進度會累積並封頂
+PASS 完成任務可領取一次金幣獎勵
+PASS 任務獎勵不可重複領取
+PASS 任務缺欄位會補今日預設任務
+PASS 任務污染值會回到安全預設
+PASS 狂怒受傷存活後攻擊 +2
+PASS 狂怒同一隻隨從只會觸發一次
+PASS 狂怒被聖盾擋住時不觸發
+PASS 狂怒致死傷害不觸發
+PASS 法強會計算場上多個來源並可疊加
+PASS 法強會加成單體傷害法術
+PASS damage2 對敵方隨從造成 2 點傷害
+PASS 法強會加成範圍傷害法術
+PASS 法強不加成戰吼傷害
+PASS damage5 對敵方隨從造成 5 點傷害
+PASS buffTarget 讓攻擊、生命與上限各 +2
+PASS drawCard1 會安全抽 1 張牌
+PASS drawCard1 牌庫空時觸發 1 點疲勞
+PASS draw2 draws two cards
+PASS draw2 空庫會連續觸發 1、2 點疲勞
+PASS draw2 burns cards at hand limit
+PASS 雙方空庫時回合抽牌會遞增疲勞
+PASS 雙方空庫長局會在疲勞中分出勝負
+PASS damageAny1 戰吼目前固定自動命中生命最低的敵方隨從，忽略外部 targetUid
+PASS migrateChronicle bad data returns safe default
+PASS migrateChronicle dedupes and filters ids
+PASS chronicleContext returns wins and unique counts
+PASS listChapters unlocks default chapter only at start
+PASS chapterUnlocked supports wins and unique thresholds
+PASS finale requires wins and unique thresholds
+PASS claimChapter rejects locked chapters
+PASS claimChapter claims unlocked chapter and returns reward
+PASS claimChapter rejects duplicate claim
+PASS buffAdjacent1 buffs only adjacent minions by +1 attack
+PASS deathrattle buffAdjacent1 uses pre-death adjacency and does not wrongly buff field[0]
+PASS aoeEnemy1 damages all enemy minions for 1 and cleans up deaths
+PASS summonTwo1_1 summons two 1/1 tokens when there is room
+PASS nextSpellMinus1 damages hero and creates the next-spell discount
+PASS nextSpellMinus1 discounts the next spell in the same turn, then clears
+PASS nextSpellMinus1 expires at end of turn when unused
+PASS nextSpellMinus1 does not persist across turns
+PASS mirrorRime copies at most 3 taunt health and does not copy divine shield
+PASS silenceMinion removes keywords, trigger, and shield but preserves attack and health
+PASS silenceOne silences instead of reducing attack or health like polymorph
+PASS silence removes deathrattle so a silenced minion does not trigger on death
+PASS silenceIfDamaged silences only a damaged enemy minion and preserves attack and health
+PASS collectionSummary counts tide variants while unique still dedupes base ids
+PASS 列盾把相鄰友軍受到的 2 傷分成友軍 1、哈爾登 1
+PASS 列盾來源死亡離場後不再轉移傷害
+PASS 殘響在法強傷害法術結算後，對新的最低生命敵軍追加固定 1 傷
+PASS 殘響每個來源只觸發一次且不吃 +2 法強
+PASS 血跡打臉只讓其他友軍 +1，連擊同回合第二次不疊加
+PASS 血跡的臨時攻擊在控制器回合結束時清除
+PASS 寒噤攻擊被聖盾完全擋下時不上狀態
+PASS 寒噤在戰鬥實際造成傷害後標記下一回合禁攻
+PASS 寒噤目標下一個控制器回合無法攻擊
+PASS 寒噤跳過一回合後恢復攻擊
+PASS 裂甲先破聖盾再以完整 3 攻消滅 2/2，而非只破盾
+PASS 調印在單一非中立陣營場面給目標 +1/+1
+PASS 調印只計非中立陣營，wardens + wild 時提升為 +2/+2
+PASS 調印待指定期間不能跳過回合，選定友軍後才完成戰吼
+PASS 靜默可一次移除六種角色專屬關鍵字
+PASS 里程碑總增發 300 金，不超過 3 包價值
+PASS 長線目標可從空存檔遷移並產生週任務
+PASS 收藏 10 種里程碑可領一次
+PASS 里程碑重複領取被阻擋
+PASS 閃卡里程碑用 #foil 收藏計算
+PASS 週任務獎勵介於 80 到 120 金
+PASS 週任務完成後可領取
+PASS 週任務同週只能領一次
+PASS 跨週會重置週任務進度與領取狀態
+PASS 跨週不清除里程碑領取紀錄
+PASS 裂潮：對手回合開始潮能 +1，玩家不變
+PASS 裂潮：玩家回合開始潮能 +1 並送出 tideGain 事件
+PASS 裂潮：己方隨從陣亡時該方潮能 +1
+PASS 裂潮：潮能不超過上限，滿潮送出 tideFull
+PASS 裂潮：未滿潮不可施放、不造成傷害
+PASS 裂潮：非己方回合不可施放且不扣潮能
+PASS 裂潮：滿潮且己方回合時 canTidebreak 為真
+PASS 裂潮：施放後潮能歸零、使用次數 +1
+PASS 裂潮：對敵方英雄造成 2 點傷害
+PASS 裂潮：敵方隨從各受 1 點（聖盾吸收、1 血隨從陣亡）
+PASS 裂潮：被爆發清掉隨從的一方獲得陣亡潮能
+PASS 裂潮：送出 tidebreak 與 heroDamage(source=tidebreak) 事件
+PASS 裂潮：同一次滿潮只能放一次
+PASS 裂潮：對局結束後不可施放
+PASS 星級：敗北 0 星
+PASS 星級：只獲勝 1 星
+PASS 星級：生命剛好一半也算第二星
+PASS 星級：獲勝＋過半生命＋用過裂潮爆發＝3 星
+PASS 星級：首次紀錄寫入最佳 2 星
+PASS 星級：較差成績不覆蓋最佳紀錄
+PASS 星級：刷新紀錄時 improved 為真
+PASS 星級：遷移時夾住 0–3 並丟棄非法 key
+PASS 星級：版本不符時重置
+
+PASS 154 / FAIL 0
+== R40 文案品質守門 ==
+  ✓ battle/pack HTML 與 JS 字串無 mojibake（異常 0）
+== R40 SW 快取完整性守門 ==
+  ✓ 三頁本地 script/link 皆使用 ?v=card-battle-content-r4-v1（異常 0）
+  ✓ sw.js CORE_ASSETS 清單項目存在（239 項）
+  ✓ 入口 shell、battle、pack 的本地資源皆納入 SW 快取（189 項）
+  ✓ R47 新圖與 cards/art-config/sw 三方一致（12 張）
+  ✓ R48 art cards are consistent across cards/art-config/sw (5 cards)
+  ✓ R61 六張角色立繪與 cards/art-config/sw/壓縮規格一致（6 張）
+  ✓ R66 art debt is zero and MIME/size/cache gates pass (25 generated + 2 repaired)
+  ✓ R61 battle/pack 傳說框掛載 mask 掃光
+  ✓ R61 battle/pack 閃卡使用青/紅/綠多停點雙層色散
+  ✓ R61 傳說框與閃卡掃光受 reduced-motion / low-perf 覆蓋
+  ✓ R61 命名展示盤、手機手牌與三對手色場可重現
+  ✓ R61 英雄頭像框與資源徽章使用同一商品化材質語言
+  ✓ R61 battle/pack 無圖卡使用四陣營紋理 fallback
+✅ R40 quality gates passed
+== R61 balance sim ==
+Seeds per card: 240; paired games per card: 480; pool mean: 47.77%
+saltShieldSquire   47.71% delta -0.06pp one-copy 50.63% must-have -2.92pp
+iceNeedle          50.63% delta 2.85pp one-copy 46.67% must-have 3.96pp
+packHowler         50.21% delta 2.44pp one-copy 51.46% must-have -1.25pp
+toxinViper         50.63% delta 2.85pp one-copy 51.25% must-have -0.62pp
+graveScribe        43.96% delta -3.81pp one-copy 46.25% must-have -2.29pp
+mirrorRime         42.92% delta -4.85pp one-copy 44.17% must-have -1.25pp
+dualTalon          44.58% delta -3.19pp one-copy 42.08% must-have 2.50pp
+voidTithe          46.67% delta -1.10pp one-copy 45.21% must-have 1.46pp
+captainGreywake    50.42% delta 2.65pp one-copy 50.42% must-have 0.00pp
+ladyAshenBell      50.00% delta 2.23pp one-copy 50.00% must-have 0.00pp
+raptor 49.38% | toxinViper 50.63%
+highArchivist 55.42% | captainGreywake 50.42%
+
+== R61 hero injection S0-S4 ==
+heroSerHalden            46.25% delta -1.08pp turns 11.63 base 11.74 (-0.11) games 480
+heroMagisterVey          43.75% delta -3.58pp turns 11.54 base 11.89 (-0.35) games 480
+heroScarra               50.42% delta 3.09pp turns 11.32 base 11.52 (-0.20) games 480
+heroIsoldLongdusk        50.21% delta 2.88pp turns 11.94 base 11.67 (+0.27) games 480
+heroRuneFrostfang        45.00% delta -2.33pp turns 11.85 base 11.57 (+0.27) games 480
+heroMoenTidearbiter      48.33% delta 1.01pp turns 11.28 base 11.64 (-0.36) games 480
+
+== R61 opponent and gold-standard matchups M1-M9 ==
+M1 player vs Halden AI         51.67% turns 15.28 games 240
+M2 player vs Vey AI            52.08% turns 11.30 games 240
+M3 player vs Scarra AI         47.50% turns 10.66 games 240
+M4 Halden vs Archivist         45.00% turns 16.02 games 480
+M5 Vey vs Loremaster           50.21% turns 9.68 games 480
+M6 Scarra vs Dragon            53.96% turns 8.79 games 480
+M7 Isold vs AshenBell          50.63% turns 14.30 games 480
+M8 Rune vs shield control      59.17% turns 18.93 games 480
+M8 Rune vs plain               47.29% turns 11.24 games 480
+M9 Moen multi vs mono          52.50% turns 9.29 games 480
+M9 three-faction uplift 5.00pp
+R72 tidebreak usage 96680 casts across 19440 games
+Balance sim passed.
+{
+  "release": "card R67",
+  "thresholds": {
+    "contrast": 4.5,
+    "centralNoiseRms": 18,
+    "centralLuminanceStddev": 32,
+    "desktopDecodedMiB": 64,
+    "mobileDecodedMiB": 32
+  },
+  "c2pa": {
+    "count": 10,
+    "pass": true
+  },
+  "memory": {
+    "desktopAllRuntimeDecodedBytes": 58327040,
+    "desktopLimitBytes": 67108864,
+    "mobileLowPlusEmblemsDecodedBytes": 9175040,
+    "mobileLimitBytes": 33554432,
+    "pass": true
+  },
+  "battlefields": [
+    {
+      "id": "white-tide-citadel",
+      "tiers": [
+        {
+          "tier": "high",
+          "size": [
+            1536,
+            1024
+          ],
+          "noiseRms": 0.938,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.285,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.464,
+          "contrastLimit": 4.5,
+          "sha256": "f57dd49562692a3bed86f65fc105e51a218233c3a1d34aad5b2214fbd3fa7370",
+          "contentHashQuery": "?v=f57dd495",
+          "pass": true
+        },
+        {
+          "tier": "med",
+          "size": [
+            1152,
+            768
+          ],
+          "noiseRms": 0.948,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.244,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.461,
+          "contrastLimit": 4.5,
+          "sha256": "7e3aa7a2339092900d34424f469136b5c34303e862deb8492784e7ff3e6f595d",
+          "contentHashQuery": "?v=7e3aa7a2",
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "size": [
+            768,
+            512
+          ],
+          "noiseRms": 1.005,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.185,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.469,
+          "contrastLimit": 4.5,
+          "sha256": "50075ecc1ef497639e49621d4274598447f78b0646b486592f1e5716cf8d163b",
+          "contentHashQuery": "?v=50075ecc",
+          "pass": true
+        }
+      ],
+      "safeCrop": [
+        {
+          "viewport": [
+            1366,
+            768
+          ],
+          "safeBox": [
+            76.8,
+            123.39,
+            1459.2,
+            900.61
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "safeBox": [
+            555.07,
+            51.2,
+            980.93,
+            972.8
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            844,
+            390
+          ],
+          "safeBox": [
+            76.8,
+            192.61,
+            1459.2,
+            831.39
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "qualityConsistency": [
+        {
+          "tier": "med",
+          "rms": 2.935,
+          "limit": 8,
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "rms": 3.377,
+          "limit": 8,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "astral-conclave",
+      "tiers": [
+        {
+          "tier": "high",
+          "size": [
+            1536,
+            1024
+          ],
+          "noiseRms": 1.444,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.87,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.536,
+          "contrastLimit": 4.5,
+          "sha256": "aa8b6fe49ae45499766cc2d26305cdfdad0a32cf0d34161976361dee88a41ab4",
+          "contentHashQuery": "?v=aa8b6fe4",
+          "pass": true
+        },
+        {
+          "tier": "med",
+          "size": [
+            1152,
+            768
+          ],
+          "noiseRms": 1.448,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.819,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.535,
+          "contrastLimit": 4.5,
+          "sha256": "a391a7b243bf2f422378b6ab2d8b5a81eb2ac32203f79f89cbdf8b4b28cf5774",
+          "contentHashQuery": "?v=a391a7b2",
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "size": [
+            768,
+            512
+          ],
+          "noiseRms": 1.455,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.669,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.522,
+          "contrastLimit": 4.5,
+          "sha256": "fcf44103ee1f473a4db5959d9c744a04aea2e8c40d8a69afe0e8531744ed1e61",
+          "contentHashQuery": "?v=fcf44103",
+          "pass": true
+        }
+      ],
+      "safeCrop": [
+        {
+          "viewport": [
+            1366,
+            768
+          ],
+          "safeBox": [
+            76.8,
+            123.39,
+            1459.2,
+            900.61
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "safeBox": [
+            555.07,
+            51.2,
+            980.93,
+            972.8
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            844,
+            390
+          ],
+          "safeBox": [
+            76.8,
+            192.61,
+            1459.2,
+            831.39
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "qualityConsistency": [
+        {
+          "tier": "med",
+          "rms": 3.768,
+          "limit": 8,
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "rms": 4.348,
+          "limit": 8,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "thunderwild-pass",
+      "tiers": [
+        {
+          "tier": "high",
+          "size": [
+            1536,
+            1024
+          ],
+          "noiseRms": 0.721,
+          "noiseLimit": 18,
+          "luminanceStddev": 6.331,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.484,
+          "contrastLimit": 4.5,
+          "sha256": "c0693a23f14f2c56d8466d9054c7dd2caf4c91d369f859db3f596ef2629943f5",
+          "contentHashQuery": "?v=c0693a23",
+          "pass": true
+        },
+        {
+          "tier": "med",
+          "size": [
+            1152,
+            768
+          ],
+          "noiseRms": 0.751,
+          "noiseLimit": 18,
+          "luminanceStddev": 6.285,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.487,
+          "contrastLimit": 4.5,
+          "sha256": "47d3f827052422919c0d3c56b6a49441a9b6ba8622a74e2098ffbe11a0877fc7",
+          "contentHashQuery": "?v=47d3f827",
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "size": [
+            768,
+            512
+          ],
+          "noiseRms": 0.778,
+          "noiseLimit": 18,
+          "luminanceStddev": 6.201,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.486,
+          "contrastLimit": 4.5,
+          "sha256": "5af6a31081b59af3f602b9d1dcae3cc022d4e8944139bf3fa34dc26f4166cfcc",
+          "contentHashQuery": "?v=5af6a310",
+          "pass": true
+        }
+      ],
+      "safeCrop": [
+        {
+          "viewport": [
+            1366,
+            768
+          ],
+          "safeBox": [
+            76.8,
+            123.39,
+            1459.2,
+            900.61
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "safeBox": [
+            555.07,
+            51.2,
+            980.93,
+            972.8
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            844,
+            390
+          ],
+          "safeBox": [
+            76.8,
+            192.61,
+            1459.2,
+            831.39
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "qualityConsistency": [
+        {
+          "tier": "med",
+          "rms": 2.857,
+          "limit": 8,
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "rms": 3.325,
+          "limit": 8,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "longnight-necropolis",
+      "tiers": [
+        {
+          "tier": "high",
+          "size": [
+            1536,
+            1024
+          ],
+          "noiseRms": 0.854,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.734,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.492,
+          "contrastLimit": 4.5,
+          "sha256": "4b7300c8304152989139c77c7518b20b6d250d4346ef9d97b11d4af3c7a5cb9b",
+          "contentHashQuery": "?v=4b7300c8",
+          "pass": true
+        },
+        {
+          "tier": "med",
+          "size": [
+            1152,
+            768
+          ],
+          "noiseRms": 0.937,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.717,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.492,
+          "contrastLimit": 4.5,
+          "sha256": "9a48f27c6818ddc1cb7e8d882b58da26b4aecea522364c02db5ee48b9568e765",
+          "contentHashQuery": "?v=9a48f27c",
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "size": [
+            768,
+            512
+          ],
+          "noiseRms": 1.079,
+          "noiseLimit": 18,
+          "luminanceStddev": 4.667,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.504,
+          "contrastLimit": 4.5,
+          "sha256": "927f8f26dfe831951c83d2a22e2716d362ad863d9984cea002a681b83b1d4e6e",
+          "contentHashQuery": "?v=927f8f26",
+          "pass": true
+        }
+      ],
+      "safeCrop": [
+        {
+          "viewport": [
+            1366,
+            768
+          ],
+          "safeBox": [
+            76.8,
+            123.39,
+            1459.2,
+            900.61
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "safeBox": [
+            555.07,
+            51.2,
+            980.93,
+            972.8
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            844,
+            390
+          ],
+          "safeBox": [
+            76.8,
+            192.61,
+            1459.2,
+            831.39
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "qualityConsistency": [
+        {
+          "tier": "med",
+          "rms": 2.981,
+          "limit": 8,
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "rms": 3.556,
+          "limit": 8,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "tidebreak-confluence",
+      "tiers": [
+        {
+          "tier": "high",
+          "size": [
+            1536,
+            1024
+          ],
+          "noiseRms": 1.471,
+          "noiseLimit": 18,
+          "luminanceStddev": 8.148,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.188,
+          "contrastLimit": 4.5,
+          "sha256": "ae55f8e78b28e87475590da246d9fefee6cbe732aa870adf980e487ba416d1a9",
+          "contentHashQuery": "?v=ae55f8e7",
+          "pass": true
+        },
+        {
+          "tier": "med",
+          "size": [
+            1152,
+            768
+          ],
+          "noiseRms": 1.519,
+          "noiseLimit": 18,
+          "luminanceStddev": 8.105,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.196,
+          "contrastLimit": 4.5,
+          "sha256": "35c28764834bee74e438e779fc70eafffb66e2906083b74f376de34dedc8372e",
+          "contentHashQuery": "?v=35c28764",
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "size": [
+            768,
+            512
+          ],
+          "noiseRms": 1.559,
+          "noiseLimit": 18,
+          "luminanceStddev": 8.052,
+          "luminanceStddevLimit": 32,
+          "minimumOverlayContrast": 9.201,
+          "contrastLimit": 4.5,
+          "sha256": "bcaabe4e28c785f6647871c353cabb07a06c02636e9db592a420a94b1a60c2a0",
+          "contentHashQuery": "?v=bcaabe4e",
+          "pass": true
+        }
+      ],
+      "safeCrop": [
+        {
+          "viewport": [
+            1366,
+            768
+          ],
+          "safeBox": [
+            76.8,
+            123.39,
+            1459.2,
+            900.61
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "safeBox": [
+            555.07,
+            51.2,
+            980.93,
+            972.8
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        },
+        {
+          "viewport": [
+            844,
+            390
+          ],
+          "safeBox": [
+            76.8,
+            192.61,
+            1459.2,
+            831.39
+          ],
+          "focalBox": [
+            706.56,
+            471.04,
+            829.44,
+            552.96
+          ],
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "qualityConsistency": [
+        {
+          "tier": "med",
+          "rms": 3.692,
+          "limit": 8,
+          "pass": true
+        },
+        {
+          "tier": "low",
+          "rms": 4.204,
+          "limit": 8,
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "emblems": [
+    {
+      "id": "wardens",
+      "size": [
+        256,
+        256
+      ],
+      "thumbnailSize": [
+        64,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "occupancy": 0.519,
+      "occupancyRange": [
+        0.18,
+        0.78
+      ],
+      "subjectBbox64": [
+        8,
+        3,
+        56,
+        61
+      ],
+      "subjectBboxSize64": [
+        48,
+        58
+      ],
+      "opaquePixels64": 2126,
+      "components64": 1,
+      "greenFringeRatio": 0.0,
+      "sha256": "3fd3693fbf63e84ab80e264d42ff50e6962bafd75be545bb72b84021483b9767",
+      "contentHashQuery": "?v=3fd3693f",
+      "pass": true
+    },
+    {
+      "id": "conclave",
+      "size": [
+        256,
+        256
+      ],
+      "thumbnailSize": [
+        64,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "occupancy": 0.4072,
+      "occupancyRange": [
+        0.18,
+        0.78
+      ],
+      "subjectBbox64": [
+        3,
+        4,
+        61,
+        60
+      ],
+      "subjectBboxSize64": [
+        58,
+        56
+      ],
+      "opaquePixels64": 1668,
+      "components64": 1,
+      "greenFringeRatio": 0.0,
+      "sha256": "326f8a7e9770e6e10701fbb1a238dd3616e4b2b0c5eaaf56bfa5202dce2f752d",
+      "contentHashQuery": "?v=326f8a7e",
+      "pass": true
+    },
+    {
+      "id": "wild",
+      "size": [
+        256,
+        256
+      ],
+      "thumbnailSize": [
+        64,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "occupancy": 0.4404,
+      "occupancyRange": [
+        0.18,
+        0.78
+      ],
+      "subjectBbox64": [
+        8,
+        3,
+        56,
+        61
+      ],
+      "subjectBboxSize64": [
+        48,
+        58
+      ],
+      "opaquePixels64": 1804,
+      "components64": 1,
+      "greenFringeRatio": 0.0,
+      "sha256": "153b6fe697d1eb351c7f0a6c0716c4e17c7952a677a65bc77a0fe49767ec8ea1",
+      "contentHashQuery": "?v=153b6fe6",
+      "pass": true
+    },
+    {
+      "id": "wintershadow",
+      "size": [
+        256,
+        256
+      ],
+      "thumbnailSize": [
+        64,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "occupancy": 0.3225,
+      "occupancyRange": [
+        0.18,
+        0.78
+      ],
+      "subjectBbox64": [
+        10,
+        3,
+        54,
+        61
+      ],
+      "subjectBboxSize64": [
+        44,
+        58
+      ],
+      "opaquePixels64": 1321,
+      "components64": 1,
+      "greenFringeRatio": 0.0,
+      "sha256": "d878da4b59a4554db381cd7a722930e9aaac29f779bb34b1fa0b495a0768f645",
+      "contentHashQuery": "?v=d878da4b",
+      "pass": true
+    },
+    {
+      "id": "neutral",
+      "size": [
+        256,
+        256
+      ],
+      "thumbnailSize": [
+        64,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "occupancy": 0.6438,
+      "occupancyRange": [
+        0.18,
+        0.78
+      ],
+      "subjectBbox64": [
+        3,
+        3,
+        61,
+        61
+      ],
+      "subjectBboxSize64": [
+        58,
+        58
+      ],
+      "opaquePixels64": 2637,
+      "components64": 1,
+      "greenFringeRatio": 0.0,
+      "sha256": "4cf2322a0e0daa99d0c551c230b35ec0ac98fbf13554d9943cfe0ef940706abe",
+      "contentHashQuery": "?v=4cf2322a",
+      "pass": true
+    }
+  ],
+  "pass": true
+}
+  ✓ wild 合法 20 張牌組
+  ✓ wild 至少十種戰術卡
+  ✓ wild 全數使用已存在正式卡圖
+  ✓ wardens 合法 20 張牌組
+  ✓ wardens 至少十種戰術卡
+  ✓ wardens 全數使用已存在正式卡圖
+  ✓ conclave 合法 20 張牌組
+  ✓ conclave 至少十種戰術卡
+  ✓ conclave 全數使用已存在正式卡圖
+  ✓ op_rune 合法 20 張牌組
+  ✓ op_rune 至少十種戰術卡
+  ✓ op_rune 全數使用已存在正式卡圖
+  ✓ op_isold 合法 20 張牌組
+  ✓ op_isold 至少十種戰術卡
+  ✓ op_isold 全數使用已存在正式卡圖
+  ✓ 無進度從第一站開始
+  ✓ 損毀與越級進度不解鎖
+  ✓ 拒絕越級與未知站別
+  ✓ 未過關不能選鎖定牌組
+  ✓ 收藏模式可選並持久化
+  ✓ 損毀存檔不能偷解鎖牌組
+  ✓ gate 前站通過可達
+  ✓ gate 敗場不推進
+  ✓ gate 首勝推進
+  ✓ gate 重挑無重複解鎖
+  ✓ gate 讀回進度保留
+  ✓ trail 前站通過可達
+  ✓ trail 敗場不推進
+  ✓ trail 首勝推進
+  ✓ trail 重挑無重複解鎖
+  ✓ trail 讀回進度保留
+  ✓ echo 前站通過可達
+  ✓ echo 敗場不推進
+  ✓ echo 首勝推進
+  ✓ echo 重挑無重複解鎖
+  ✓ echo 讀回進度保留
+  ✓ frost 前站通過可達
+  ✓ frost 敗場不推進
+  ✓ frost 首勝推進
+  ✓ frost 重挑無重複解鎖
+  ✓ frost 讀回進度保留
+  ✓ dusk 前站通過可達
+  ✓ dusk 敗場不推進
+  ✓ dusk 首勝推進
+  ✓ dusk 重挑無重複解鎖
+  ✓ dusk 讀回進度保留
+  ✓ 五站完成全部牌組可用
+  ✓ 未來未知站別不污染進度
+R73 voyage: 48 PASS, 0 FAIL
+✓ ebb 滿潮只消耗一次
+✓ ebb 拒絕重複施放
+✓ 退潮護航只回復己方並給聖盾
+✓ 聖盾真正在下一次交換擋傷，攻擊仍對敵方造成傷害
+✓ flood 滿潮只消耗一次
+✓ flood 拒絕重複施放
+✓ 漲潮保留原本全體傷害
+✓ 非法狀態拒絕退潮，零消耗
+✓ 非法狀態拒絕退潮，零消耗
+✓ 非法狀態拒絕退潮，零消耗
+✓ 非法狀態拒絕退潮，零消耗
+✓ 未知潮向拒絕且零變更
+✓ 滿血不溢補、既有聖盾不疊加
+✓ 循環對手參照可序列化及恢復
+✓ 損壞／非安全檢查點拒絕還原
+✓ 損壞／非安全檢查點拒絕還原
+✓ 損壞／非安全檢查點拒絕還原
+✓ 損壞／非安全檢查點拒絕還原
+✓ 損壞／非安全檢查點拒絕還原
+✓ 損壞／非安全檢查點拒絕還原
+✓ 損壞／非安全檢查點拒絕還原
+✓ 無效與超大存檔安全退回
+✓ 合法衍生物可恢復，檢查點不採用外部圖片來源
+✓ 缺動作素材明確阻擋，不用單圖假動作
+✓ 缺任一三段姿勢不可播放攻擊
+✓ 單幀不能當行走
+✓ 不可把遠端或未備妥素材當可播放
+✓ 逐幀合同只在 impact 觸發一次命中
+✓ 播放器以幀回呼替換視覺，命中在準備之後、恢復之前
+R74 rules: 29 PASS, 0 FAIL
+R75 assets: 10 masters, alpha/card format/source hashes and character double gates PASS
+R76: 13 masters; source/runtime hashes, alpha, dimensions and character double gates PASS
+R77 assets: 10 PNG masters, native alpha, transparent frame, runtime/reference hashes and protagonist double gates PASS
+R78 assets: 9 originals, source/runtime hashes, native alpha, open frame, reference sheet and character double gates PASS
+R79 assets:9 masters, all hashes/alpha/frame/reference/character double gates PASS
+R80 assets:6 masters, hashes, alpha, references, two character double gates PASS
+Content R1: 50 PASS; all six Core solutions and persistence verified
+PASS non-array progress cannot crash startup
+PASS R1 progress migration preserves completions
+PASS R2 progress exact round trip
+PASS usage counter bounded
+PASS fallen concrete recap uses real card art
+PASS shield concrete recap uses real card art
+PASS shelter concrete recap uses real card art
+PASS taunt concrete recap uses real card art
+PASS spell concrete recap uses real card art
+PASS cross concrete recap uses real card art
+PASS six distinct result compositions
+PASS tutorial changes a future turn, current unchanged
+PASS resume preserves comparison and consumes only reversal
+PASS past turn cannot change state
+PASS regular free battle forecast checkpoint accepted
+PASS unspecified forecast on non-content checkpoint rejected
+PASS fourth turn actual ebb cast legal
+PASS fourth turn actual flood cast legal
+PASS wrong forecast direction costs no resources
+PASS invalid tutorial original rejected
+PASS boss entry survives checkpoint
+Content R2 rules: 21 PASS
+PASS fallen save checkpoint
+PASS fallen concrete failure diagnosis
+PASS shield save checkpoint
+PASS shield concrete failure diagnosis
+PASS shelter save checkpoint
+PASS shelter concrete failure diagnosis
+PASS taunt save checkpoint
+PASS taunt concrete failure diagnosis
+PASS spell save checkpoint
+PASS spell concrete failure diagnosis
+PASS cross save checkpoint
+PASS cross concrete failure diagnosis
+PASS actual card combinations unique without titles
+PASS preparation cannot attack before first turn
+PASS shield breaks through actual impact while HP stays unchanged
+PASS visual broken state persists with real checkpoint
+PASS past forecast locked
+PASS one future reversal
+PASS reversal persisted
+PASS actual art source tool
+PASS source hash docs/art/source/content-r3/shell-shield-atlas.png
+PASS source hash assets/art/content-r3/shield-intact.webp
+PASS source hash assets/art/content-r3/shield-broken.webp
+Content R3 rules: 23 PASS
+PASS unfinished exchange does not falsely claim archer died
+PASS unused spell is diagnosed as a missing action
+PASS unplayed cross board is diagnosed as incomplete
+PASS shield context does not reveal ordered solution
+PASS shelter context does not reveal ordered solution
+PASS taunt context does not reveal ordered solution
+PASS spell context does not reveal ordered solution
+PASS cross context does not reveal ordered solution
+PASS verification locked before six completions
+PASS verification unlocks after all six
+PASS new verification starts with a different four-health target
+PASS unprotected knight cannot satisfy four-health objective
+PASS specific error names missing protection
+PASS same ebb rule preserves new target
+PASS verification checkpoint round trip
+PASS all nine completions survive progress round trip
+PASS fourth turn flood remains playable
+PASS fourth turn ebb remains playable
+PASS actual source hash docs/art/source/content-r4/shield-atlas.png
+PASS actual source hash assets/art/content-r4/shield-cover.webp
+PASS actual source hash assets/art/content-r4/shield-fracture.webp
+PASS new art uses exact existing style prefix
+Content R4 rules: 22 PASS

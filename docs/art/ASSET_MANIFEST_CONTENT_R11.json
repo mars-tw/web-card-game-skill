@@ -1,0 +1,44 @@
+{
+  "tool": "image_gen.imagegen",
+  "assets": [
+    {
+      "path": "assets/art/content-r11/puzzles.webp",
+      "source": "C:\\Users\\digimkt\\.codex\\generated_images\\01a152fe-ad1d-7b73-bb71-8c68bf9248bf\\exec-d7dd18d7-1fad-4a35-a752-d366af62f089.png",
+      "source_sha256": "a463dc0c2a41db27978bb98736068ffe1029c208d2249bc7f95fb9afc08a86da",
+      "sha256": "583e2222e14d3a97148369266c7ee61bced7616c712fb868adbc62bbb6cd6846",
+      "size": [
+        1024,
+        1536
+      ],
+      "tool": "image_gen.imagegen",
+      "processing": "WebP encoding only; no repaint or compositing",
+      "license": "Project generated art; MIT project distribution"
+    },
+    {
+      "path": "assets/art/content-r11/forecast.webp",
+      "source": "C:\\Users\\digimkt\\.codex\\generated_images\\01a152fe-ad1d-7b73-bb71-8c68bf9248bf\\exec-74ea2ea6-8ec6-4960-9c1a-f6ba5a7ed326.png",
+      "source_sha256": "88b64acbbc9e4530f135d69e48ac8749d38224833d465af4d97484743624c9b0",
+      "sha256": "5bc4b50e8287a2c74712b2ef00e85fe66dd6fdb12df16687eeddb27678452eb7",
+      "size": [
+        1024,
+        1536
+      ],
+      "tool": "image_gen.imagegen",
+      "processing": "WebP encoding only; no repaint or compositing",
+      "license": "Project generated art; MIT project distribution"
+    },
+    {
+      "path": "assets/art/content-r11/moen.webp",
+      "source": "C:\\Users\\digimkt\\.codex\\generated_images\\01a152fe-ad1d-7b73-bb71-8c68bf9248bf\\exec-94e0f853-3be6-4e79-ae7b-d5cd74ca34d9.png",
+      "source_sha256": "e0c46528f1c70f4d48112fa9a580da1d9e8fd0494607d201da19b5ad8fb95888",
+      "sha256": "b04bd5cf0cc61a1bbd64c186877c5178204aaa306c008ee9cc22ac0d51d39703",
+      "size": [
+        1024,
+        1536
+      ],
+      "tool": "image_gen.imagegen",
+      "processing": "WebP encoding only; no repaint or compositing",
+      "license": "Project generated art; MIT project distribution"
+    }
+  ]
+}

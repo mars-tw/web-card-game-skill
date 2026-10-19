@@ -1,0 +1,5 @@
+AssertionError [ERR_ASSERTION]: puzzle-spell-failed all panel text ranges stay unclipped: [{"text":"敵騎士 4 血","why":"outside viewport","rect":{"x":159.2109375,"y":-32,"width":71.578125,"height":16,"top":-32,"right":230.7890625,"bottom":-16,"left":159.2109375}}]
+    at check (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r11-e2e.js:4:28)
+    at auditText (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r11-e2e.js:19:135)
+    at async shot (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r11-e2e.js:6:42)
+    at async C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r11-e2e.js:25:150

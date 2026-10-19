@@ -1,0 +1,48 @@
+{
+  "status": "VERIFIED",
+  "initialDirtyPath": "docs/evidence/R67/gates/visual-assets.json",
+  "initialSha256": "e2191f0e89bfeeffe29af1653ca66cac1a862342c9b878e7e8f20f8405347b2a",
+  "finalSha256": "e2191f0e89bfeeffe29af1653ca66cac1a862342c9b878e7e8f20f8405347b2a",
+  "existingUntrackedRetained": [
+    ".audit-tmp/",
+    "docs/art/ART_RESCORE2_MUSE.md",
+    "docs/art/ART_RESCORE3_MUSE.md",
+    "docs/art/ART_RESCORE4_MUSE.md",
+    "docs/art/ART_RESCORE5_MUSE.md",
+    "docs/art/ART_RESCORE6_MUSE.md",
+    "docs/art/ART_RESCORE_MUSE.md",
+    "docs/art/ART_REVIEW_MUSE.md",
+    "docs/audit_openclose/",
+    "docs/content/CONTENT_REVIEW_R1_MUSE.md",
+    "docs/content/CONTENT_REVIEW_R2_MUSE.md",
+    "docs/content/CONTENT_REVIEW_R3_MUSE.md",
+    "docs/content/CONTENT_REVIEW_R4_MUSE.md",
+    "docs/content/CONTENT_REVIEW_R5_MUSE.md",
+    "docs/content/CONTENT_REVIEW_R6_MUSE.md",
+    "docs/content/CONTENT_REVIEW_R7_CLAUDE.md",
+    "docs/content/CONTENT_REVIEW_R7_GPT.md",
+    "docs/content/CONTENT_REVIEW_R7_MUSE.md",
+    "docs/content/CONTENT_REVIEW_R8_CLAUDE.md",
+    "docs/content/CONTENT_REVIEW_R8_GPT.md",
+    "docs/content/CONTENT_REVIEW_R8_MUSE.md",
+    "docs/content/CONTENT_REVIEW_R9_CLAUDE.md",
+    "docs/content/CONTENT_REVIEW_R9_GPT.md",
+    "docs/content/CONTENT_REVIEW_R9_MUSE.md",
+    "docs/playtest/",
+    "scripts/audit-oc-r1.js"
+  ],
+  "regeneratedCleanManifestsRestored": [
+    "docs/art/ASSET_MANIFEST.json",
+    "docs/art/ASSET_MANIFEST_R76.json"
+  ],
+  "legacyArtifactsRetained": 377,
+  "legacyLocation": ".audit-tmp/r10/retained-legacy",
+  "legacyImagesAfterGuardUpdate": ".audit-tmp/r10/legacy",
+  "note": "Only own generated legacy/debug artifacts moved; no pre-existing untracked file deleted; initial dirty evidence restored byte-for-byte.",
+  "regeneratedCleanEvidenceRestored": [
+    "docs/content/r6/art-gates.json",
+    "docs/evidence/r75-art/asset-gates.json",
+    "docs/evidence/r76-art/asset-gates.json"
+  ],
+  "snapshotNote": "Preservation snapshot was taken after the required R10 plan was created; that task-owned plan is excluded from pre-existing entries."
+}

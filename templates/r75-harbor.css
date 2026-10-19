@@ -1,0 +1,71 @@
+body { background:#201c3d url('../assets/art/r75/harbor.webp') center 38%/cover no-repeat;position:relative;isolation:isolate;padding:20px;color:#f2f1fa; }
+body::before { content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(90deg,#201c3d20,#201c3d00 50%,#201c3d50); }
+main { width:min(1100px,100%);grid-template-columns:1.2fr 1fr;gap:32px; }
+.harbor-banner { position:relative;height:min(80dvh,780px);min-height:420px;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start; }
+.harbor-navigator { position:absolute;height:85%;width:100%;object-fit:contain;object-position:center bottom;bottom:0;left:0;z-index:-1;filter:drop-shadow(0 8px 18px #10152d); }
+.harbor-logo { width:min(420px,90%);max-height:220px;object-fit:contain;position:absolute;top:0;left:0;filter:drop-shadow(0 3px 4px #10152d); }
+.harbor-banner .eyebrow { margin-top:auto;background:#201c3de8;padding:8px 12px;color:#f2f1fa;font-size:12px;letter-spacing:2px; }
+.harbor-banner .lead { font-size:18px;line-height:1.5;background:#201c3de8;padding:12px;margin:0;border-left:2px solid #da8a6d; }
+.harbor-banner .small { display:none; }
+.chart { border:1px solid #da8a6d;border-top:3px solid #e2c9b6;border-radius:28px 0 0 0;padding:28px;background:#201c3df0;box-shadow:0 15px 50px #10152d80; }
+.chart .crest { border:0;background:none;width:64px;height:64px; }
+.chart .crest img { width:100%;height:100%;object-fit:contain; }
+.chart h2 { font:700 26px/1.3 Georgia,"Noto Serif TC",serif; }
+.rule { color:#e0dced;font-size:15px; }
+.harbor-badges { display:flex;justify-content:center;gap:12px;margin:16px 0;color:#e4d4cc; }
+.harbor-badges span { font-size:12px;display:flex;align-items:center;gap:4px; }
+.harbor-badges img { width:26px;height:26px;object-fit:contain; }
+.actions { gap:10px; }
+.actions a,.actions button { min-height:48px;background:#302544;border-color:#9c766f;border-radius:2px;color:#f2f1fa;font-size:14px; }
+.actions .primary { background:#da8a6d;color:#10152d;font-size:16px;font-weight:bold;min-height:56px;box-shadow:inset 0 2px #f2c6aa,inset 0 -3px #8d4e54; }
+#privacyOpen { background:transparent;border-color:#8e7c99; }
+.chart #voyageStart { background:#302544;color:#f2f1fa;box-shadow:none; }
+.progress { color:#d2c3f5;font-size:13px; }
+dialog { background:#201c3d;border:1px solid #da8a6d;color:#f2f1fa; }
+dialog button { background:#da8a6d;color:#10152d;border-color:#da8a6d;min-height:48px; }
+@media(max-width:650px) {
+  body { padding:12px;place-items:start center; }
+  main { grid-template-columns:1fr;gap:0; }
+  .harbor-banner { height:44dvh;min-height:250px;max-height:520px; }
+  .harbor-navigator { height:100%;width:78%;left:25%; }
+  .harbor-logo { width:53%;top:0;left:0;max-height:135px; }
+  .harbor-banner .eyebrow { font-size:10px;padding:6px 8px; }
+  .harbor-banner .lead { font-size:14px;padding:8px;max-width:85%; }
+  .chart { padding:14px 16px;border-radius:20px 0 0 0; }
+  .chart .crest { display:none; }
+  .chart h2 { font-size:21px;margin:2px 0 8px; }
+  .rule { font-size:13px;line-height:1.5;margin:4px 0; }
+  .harbor-badges { margin:8px 0;gap:10px; }
+  .actions { gap:8px;margin-top:10px; }
+  .actions a,.actions button { min-height:44px;padding:8px; }
+  .actions .primary { min-height:52px; }
+}
+@media(max-width:650px) and (max-height:700px) {
+  body { padding:8px; }
+  .harbor-banner { height:35dvh;min-height:170px; }
+  .harbor-logo { max-height:100px; }
+  .harbor-banner .lead { font-size:12px;padding:5px; }
+  .harbor-banner .eyebrow { display:none; }
+  .chart { padding:10px 12px; }
+  .chart h2 { font-size:18px; }
+  .rule { font-size:12px; }
+  .harbor-badges { margin:5px 0; }
+  .harbor-badges img { width:20px;height:20px; }
+  .actions { gap:6px;margin-top:6px; }
+  .progress { margin:4px 0; }
+}
+@media(min-width:651px) and (max-height:500px) {
+  body { padding:10px; }
+  main { gap:20px;grid-template-columns:1fr 1fr; }
+  .harbor-banner { height:90dvh;min-height:250px; }
+  .harbor-logo { max-height:130px;width:70%; }
+  .harbor-banner .lead { font-size:13px;padding:8px; }
+  .harbor-banner .eyebrow { font-size:10px;padding:4px; }
+  .chart { padding:12px; }
+  .chart h2 { font-size:20px;margin:0 0 6px; }
+  .chart .crest { display:none; }
+  .rule { font-size:12px;line-height:1.4; }
+  .harbor-badges { margin:5px 0; }
+  .actions { gap:6px;margin-top:8px; }
+  .actions .primary { min-height:48px; }
+}

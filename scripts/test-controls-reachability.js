@@ -281,10 +281,10 @@ async function run() {
         `${name}：控制型態由 primary pointer 正確判定為 ${viewport.touch ? "touch" : "desktop"}`);
 
       const desktopControls = [
-        "#settingsToggleBtn", "#hintBtn", "#mulliganBtn", "#endTurnBtn", "#newGameQuickBtn", "#toPackQuickBtn",
+        "#settingsToggleBtn", "#hintBtn", "#tidebreakBtn", "#mulliganBtn", "#endTurnBtn", "#newGameQuickBtn", "#toPackQuickBtn",
         "#guideReplayBtn", "#missionDrawerBtn", "#kwCodexBtn", "#chronicleBtn",
       ];
-      const touchControls = ["#settingsToggleBtn", "#hintBtn", "#mulliganBtn", "#endTurnBtn", "#handDrawerToggle", "#moreActionsBtn"];
+      const touchControls = ["#settingsToggleBtn", "#hintBtn", "#tidebreakBtn", "#mulliganBtn", "#endTurnBtn", "#handDrawerToggle", "#moreActionsBtn"];
       assertControlAudit(await controlAudit(frame, viewport.touch ? touchControls : desktopControls), `${name} 主控制`);
 
       if (viewport.touch) {
@@ -312,10 +312,21 @@ async function run() {
         });
         assert(drawerHint.displayed ? drawerHint.hitSelf : (drawerHint.ariaHidden === "true" && drawerHint.tabIndex === -1),
           `${name}：抽屜開啟時提示鈕可見即可點，否則明確隱藏並移出焦點序`);
+        // R72：裂潮爆發鈕與提示鈕同列，抽屜開啟時同樣「可見即可點，否則隱藏且移出焦點序」。
+        const drawerTide = await frame.evaluate(() => {
+          const btn = document.getElementById("tidebreakBtn");
+          const style = getComputedStyle(btn);
+          const rect = btn.getBoundingClientRect();
+          const displayed = style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
+          const hit = displayed ? document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2) : null;
+          return { displayed, hitSelf: !!(hit && (hit === btn || btn.contains(hit))), ariaHidden: btn.getAttribute("aria-hidden"), tabIndex: btn.tabIndex };
+        });
+        assert(drawerTide.displayed ? drawerTide.hitSelf : (drawerTide.ariaHidden === "true" && drawerTide.tabIndex === -1),
+          `${name}：抽屜開啟時裂潮爆發鈕可見即可點，否則明確隱藏並移出焦點序`);
         // R69：抽屜是底部面板、z 高於棋盤層（修 844×390 手牌 0/12 可點 P0）；
         // 展開時允許蓋住棋盤層的 #hintBtn（橫向矮視口幾何重疊），收合即恢復——
         // dock/設定等固定控制仍須全數可命中；抽屜收合狀態的全量 audit 在前面已跑。
-        assertControlAudit(await controlAudit(frame, touchControls.filter((selector) => selector !== "#hintBtn")),
+        assertControlAudit(await controlAudit(frame, touchControls.filter((selector) => selector !== "#hintBtn" && selector !== "#tidebreakBtn")),
           `${name} 抽屜展開主控制`);
 
         // R69 P0-1 負向斷言：抽屜展開後手牌逐卡＋詳鈕 elementFromPoint 必中自身、真實 click 可出牌。
@@ -359,6 +370,9 @@ async function run() {
           `${name}：抽屜展開手牌逐卡可命中 ${handHits.ok}/${handHits.total}、詳鈕 ${handHits.infoOk}/${handHits.infoTotal}`
             + (handHits.misses.length ? `（蓋住者：${handHits.misses.join(", ")}）` : ""));
         await frame.locator('#playerHand .card[data-card-id="wolf"]').click();
+        assert(await frame.locator('#handPreview').isVisible(), `${name}：觸控選牌先預覽`);
+        assert(await frame.locator('#playerField .card[data-card-id="wolf"]').count() === 0, `${name}：確認前不出牌`);
+        await frame.locator('#handConfirmBtn').click();
         await frame.waitForFunction(() => !!document.querySelector('#playerField .card[data-card-id="wolf"]'));
         assert(true, `${name}：真實 click 抽屜手牌可出牌`);
 
@@ -519,6 +533,11 @@ async function run() {
       if (viewport.touch) await frame.locator("#handDrawerToggle").click();
       await frame.locator('#playerHand .card[data-card-id="wolf"]').focus();
       await frame.locator('#playerHand .card[data-card-id="wolf"]').press("Enter");
+      if (viewport.touch) {
+        assert(await frame.locator('#handPreview').isVisible(), `${name}：鍵盤選牌也先預覽`);
+        await frame.locator('#handConfirmBtn').focus();
+        await frame.locator('#handConfirmBtn').press('Enter');
+      }
       await frame.waitForFunction(() => !!document.querySelector('#playerField .card[data-card-id="wolf"]'));
       const fieldA11y = await frame.evaluate(() => {
         const card = document.querySelector('#playerField .card[data-card-id="wolf"]');

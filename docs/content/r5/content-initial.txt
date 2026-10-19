@@ -1,0 +1,84 @@
+PASS locked verification visible in normal study
+PASS lock explains condition
+PASS fallen idle pass fails
+PASS fallen failure never invents an action
+PASS fallen identifies missing action
+PASS fallen failure marks copper error card
+PASS fallen failure grants no progress
+PASS fallen real playable solution completes
+PASS shield objective and single situation only
+PASS shield idle pass fails
+PASS shield failure never invents an action
+PASS shield identifies missing action
+PASS shield failure marks copper error card
+PASS shield failure grants no progress
+PASS shield real playable solution completes
+PASS shelter objective and single situation only
+PASS shelter idle pass fails
+PASS shelter failure never invents an action
+PASS shelter identifies missing action
+PASS shelter failure marks copper error card
+PASS shelter failure grants no progress
+PASS shelter real playable solution completes
+PASS taunt objective and single situation only
+PASS taunt idle pass fails
+PASS taunt failure never invents an action
+PASS taunt identifies missing action
+PASS taunt failure marks copper error card
+PASS taunt failure grants no progress
+PASS taunt real playable solution completes
+PASS spell objective and single situation only
+PASS spell idle pass fails
+PASS spell failure never invents an action
+PASS spell identifies missing action
+PASS spell failure marks copper error card
+PASS spell failure grants no progress
+PASS spell real playable solution completes
+PASS cross objective and single situation only
+PASS cross idle pass fails
+PASS cross failure never invents an action
+PASS cross identifies missing action
+PASS cross failure marks copper error card
+PASS cross failure grants no progress
+PASS cross real playable solution completes
+PASS harbor separates 6/6 and 0/1
+PASS harbor normal study opens direct verification
+PASS direct study verification without completion dialog
+locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('#contentClose')[22m
+[2m    - locator resolved to <button type="button" id="contentClose">返回對戰</button>[22m
+[2m  - attempting click action[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is not visible[22m
+[2m    - retrying click action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is not visible[22m
+[2m    - retrying click action[22m
+[2m      - waiting 100ms[22m
+[2m    56 × waiting for element to be visible, enabled and stable[22m
+[2m       - element is not visible[22m
+[2m     - retrying click action[22m
+[2m       - waiting 500ms[22m
+
+    at C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r5-e2e.js:38:100 {
+  log: [
+    "  - waiting for locator('#contentClose')",
+    '    - locator resolved to <button type="button" id="contentClose">返回對戰</button>',
+    '  - attempting click action',
+    '    2 × waiting for element to be visible, enabled and stable',
+    '      - element is not visible',
+    '    - retrying click action',
+    '    - waiting 20ms',
+    '    2 × waiting for element to be visible, enabled and stable',
+    '      - element is not visible',
+    '    - retrying click action',
+    '      - waiting 100ms',
+    '    56 × waiting for element to be visible, enabled and stable',
+    '       - element is not visible',
+    '     - retrying click action',
+    '       - waiting 500ms'
+  ],
+  name: 'TimeoutError'
+}

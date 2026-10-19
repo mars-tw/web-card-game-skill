@@ -1,0 +1,19 @@
+[
+  {
+    "name": "static",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "e2e",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:e2e"
+    ],
+    "exitCode": 1
+  }
+]

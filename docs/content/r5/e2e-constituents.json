@@ -1,0 +1,183 @@
+{
+  "status": "VERIFIED",
+  "verificationMode": "resumed constituent suite; not a successful single npm process",
+  "lastFullNpmProcessExitCode": 1,
+  "resolvedFailure": "Exact native control count updated 12 to 13 for required verification button; added unique visible button assertion; all geometry/hit/overlap checks retained.",
+  "cases": [
+    {
+      "command": "node scripts/test-battle-e2e.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-controls-reachability.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-r67-browser.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-r72-fun.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-r73-mobile.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-r74-review.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-r74-ebb.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-r75-art.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-r76-art.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-r77-tide.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-r78-art.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-r79-art.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-r80-art.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/e2e-second-failed.txt",
+      "proof": "npm && chain reached content R1, so all preceding commands exited 0"
+    },
+    {
+      "command": "node scripts/test-content-r1-e2e.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/content-r1-recheck.txt",
+      "proof": "real sequential recheck batch exited 0; completed PASS banner"
+    },
+    {
+      "command": "node scripts/test-content-r2-e2e.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/content-r2-recheck.txt",
+      "proof": "real sequential recheck batch exited 0; completed PASS banner"
+    },
+    {
+      "command": "node scripts/test-content-r3-e2e.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/content-r3-recheck.txt",
+      "proof": "real sequential recheck batch exited 0; completed PASS banner"
+    },
+    {
+      "command": "node scripts/test-content-r4-e2e.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/content-r4-recheck.txt",
+      "proof": "real sequential recheck batch exited 0; completed PASS banner"
+    },
+    {
+      "command": "node scripts/test-content-r5-e2e.js",
+      "exitCode": 0,
+      "evidence": "docs/content/r5/content-r5-recheck.txt",
+      "proof": "real sequential recheck batch exited 0; completed PASS banner"
+    }
+  ],
+  "sourceHashes": {
+    "index.html": "e47c4779537ab689fa2215e5474e944414b8c41fead23cfea377ecfa5fd6005a",
+    "sw.js": "56bb70c79777046e962f313d80bac61288ff973bc0c8bf4f922059a9b2184e59",
+    "package.json": "b0fb0fed1c520c579d0e84efb5581e5d09cbe6dfb2b6441b14cda14cd3d076cb",
+    "package-lock.json": "31a704ae3e2c35bb6e4121ae432156aec0d53a19b36d4555af88eb68f761081d",
+    "templates/harbor.html": "6b807ef6c46385b1c0fdc0bbcae5908a46670ae9e9277dbec35385fb22c8013a",
+    "templates/index.html": "506106a668c8e89cc962a3df4f47aa7439618f4ae5ea96ce0a0112bd3998b9ad",
+    "templates/r75-harbor.css": "579b7ac6dea40721248830da6d4e6851c0e00a08cba9b15e9836f780e8aeeba1",
+    "templates/r75-theme.css": "0f41b18752a9630fde63b37f508d3fc507d416e5ed31dcf5cdf0c997f952ffe0",
+    "templates/r76-art.css": "9360e7ca27dd54f16e0bba4134d8fac2920beeb1daad4f4fbe20d8dacb12b1b8",
+    "templates/r77-art.css": "457d6fb6c667c33a08142d6bb33f8cc64b870e41ddc0e66b8aab99a2aa7cea43",
+    "templates/r78-art.css": "d2c4c52bad9c0f25c3bee057b1b6d4393c3ddde16fb4df9c8179017bae724a97",
+    "templates/r79-art.css": "faedd64a7a4c970d77b68407422613eac58c4b4376db3210d51c52bb136ee788",
+    "templates/r80-art.css": "c1bdbc277f78bd1459657128d31eaae86dd34937a9a6183b866fa46e3321d92e",
+    "templates/card-battle/battle.js": "9ea764a0e8428cf1c3e88d57319e9bb0c2350d30b795859c8942704c6a23d657",
+    "templates/card-battle/cards.js": "a84204e252222ce4006fad251b236ae6de0b8d7d56265512a4ac5060f6cfe0ab",
+    "templates/card-battle/content-r1.css": "b76210b705dd96e67fa3522c74bcf021fb19e7964804cede3c826eda30ce9ef6",
+    "templates/card-battle/content-r2.css": "89b3164c1b2cf49e7dc2ac7bd41b81589f49f7f75ab0ec6b33e5e91d65a6f914",
+    "templates/card-battle/content-r3.css": "cfc9557741907d9e7fb6ca29996f6bf81a70f4edb41d8fb1a7fecaabd16b5843",
+    "templates/card-battle/content-r4.css": "7281bbeeb5416f1310f634f9cc5f10bee02adc59dfb65582a213666491fd331c",
+    "templates/card-battle/content-r5.css": "fbc6e2da392be7424957e1f88adf7b21f409138a6fffee6c5d49ae9fed04a180",
+    "templates/card-battle/core.js": "84769759853357ab231b9b8c2c42ac890e954172ac78bdf6cece7236f7626f28",
+    "templates/card-battle/index.html": "bc355bec317312210bff19adb7954df5b7f8dc2de466ee03cf7c09a9bcbf26ad",
+    "templates/card-battle/pose-player.js": "acc557ffafe3a774c291d7a97a02068323572fcfc03fc8cbd98230b756c3ae59",
+    "templates/card-battle/r73-mobile.css": "e6846ddb2a4916f77b2a20cd36d70d84494006e62e9ef30d399a014a43277b82",
+    "templates/card-battle/r73-ui.js": "9f3a3af41e3475a9bed1cf64a6460ee6498e97ec4e9751ef58804b16b1aad0cf",
+    "templates/card-battle/r74-tide.css": "18b2c952431f53e148f996fad8c34570d4101c79b7a8c0663f240352e9a327a1",
+    "templates/card-battle/tide-puzzles.js": "7d9a4a1abcd8bfac548b035354fd1fb1f99426d79921905eb32542934b9169e8",
+    "templates/card-battle/tide-session.js": "e3812f1a83900c205b1f58bb2e91f30c1345a20561042c6d8db4aee5dedd7ae1",
+    "templates/card-battle/voyage.js": "01480184862b1e6ac50aa03f3f51745925d484abf5063ada0be1ca7bc3bf77f8",
+    "templates/card-pack/index.html": "181e930dc8fd815892c321e6a9afb5c7d74e14b98de480462ddfd796b440d7bc",
+    "templates/card-pack/pack.js": "7ed2389d43c8560e2220dfd46ad6da00e09438836405d27f8265a3db10179c21"
+  },
+  "testedRawSourceHashes": {
+    "index.html": "ab0022d5efa6ac7ea56fd068a25dd09413128090d5d355bfb59ebc91e8ec188e",
+    "sw.js": "2a8c81e9443daabcc8a9fa440bb3afc91c8d2bb80fdbf9586957c1c19d586d5d",
+    "package.json": "a78e99e6c265018e40101f8b1c3cdc9cb28cede41ac756af218c6c46d29cdfb2",
+    "package-lock.json": "ac89b0ea986a8fd7fbedcdf65d82ea5e3d54c07a7f00042999f6b51feaee22cf",
+    "templates/harbor.html": "69cd7740d81cda0f9318ffdd09e71377ff28eda0044144795ddc779dea8ae552",
+    "templates/index.html": "37299da72c120de7b6089d3e5f2eecd6ca72d65ccda4399b2df697be2090da9d",
+    "templates/r75-harbor.css": "587fc63b027d7b2cc6933c1ab3a111d96a3f3a83dbc57138728ccb07fc81f0aa",
+    "templates/r75-theme.css": "e6f3ca2696995bdfda48f9b2f888f88389efb4313d9c31b0b9340350b55cce4a",
+    "templates/r76-art.css": "2fb0ba8a50a50f57a68b14f8bc3b3f1e0240f0df5026389994d1865c3023f024",
+    "templates/r77-art.css": "9540c89956246ddf98522de46cd25bb9a0bf39d9db745fca2aa6c6d675bf461c",
+    "templates/r78-art.css": "f54cc69b450fa7816c67a8f3f72ca689f549b24738e9974a4c7cc575a8cdf5d4",
+    "templates/r79-art.css": "2e9d5c6319b83d2dea0cddd3cebaa29b7c0fb18f4ed5edef19f9eeff5c800edf",
+    "templates/r80-art.css": "87b390244cd439cb4ad541d85f47566efcac5df63138998914b96e3103a9e62f",
+    "templates/card-battle/battle.js": "4998826099f07b112d63071975b9146b04756278a110de8a44aaa29e11ea8c74",
+    "templates/card-battle/cards.js": "a427ad865041a93683c08e35b6cc92c6a02627faf07dc456e7a49d1466a2defa",
+    "templates/card-battle/content-r1.css": "b76210b705dd96e67fa3522c74bcf021fb19e7964804cede3c826eda30ce9ef6",
+    "templates/card-battle/content-r2.css": "9f7b0790bda9fae60a9883238b3c37a3648d5a03f1bb6e04800cf29757678a86",
+    "templates/card-battle/content-r3.css": "cfc9557741907d9e7fb6ca29996f6bf81a70f4edb41d8fb1a7fecaabd16b5843",
+    "templates/card-battle/content-r4.css": "b808d638f50c3db9d0494032c7fbbad02d9046b664c8671cfe9aecfb0565b74f",
+    "templates/card-battle/content-r5.css": "fbc6e2da392be7424957e1f88adf7b21f409138a6fffee6c5d49ae9fed04a180",
+    "templates/card-battle/core.js": "b1c1434a4b6a62e8ec0c7aa4da6cde2f9cfa07f38760a43e9f5142745f87364f",
+    "templates/card-battle/index.html": "cf6021f030744e5f04ab9e51a29d8fbf28e4eedee6a6b1d85d9b68d43a71a340",
+    "templates/card-battle/pose-player.js": "faa13332f20dd800fbca9b2c8c96cf16758809c58503aceac3cc283eb09531f0",
+    "templates/card-battle/r73-mobile.css": "1ab315d41d5f1cebb256aa07570738b82db25d991505ebbae4e8dc6c72629178",
+    "templates/card-battle/r73-ui.js": "0a95f161de1f6101e51536707fe65c1a460dd80422d02cac0271e1557bcc5d31",
+    "templates/card-battle/r74-tide.css": "bccaf6af6627074f3e46e9a4f55004406f62eeb4f57176413074d4ee6719bbb4",
+    "templates/card-battle/tide-puzzles.js": "5a330edf6e7f91a31e660e42183fd9720ec76d82d78d7fa283e77966046f2051",
+    "templates/card-battle/tide-session.js": "82702ff03c1dd79ca5853815770f4019945014dbc6af2c8ceeeccf2f1c530bdb",
+    "templates/card-battle/voyage.js": "24b4458dda0d66706450671cd5445e7f1d4b44fb08b0f4582d1a055aebcff6f7",
+    "templates/card-pack/index.html": "c345a42fc5c8e01ec5c0b1643d6375e6bf345fe0a93914124038ca8903e95e92",
+    "templates/card-pack/pack.js": "5b1bc0573b79c477eefeb8f2a1cb26dfc1bf8cad1e3fe5092c5dcae29bda826a"
+  },
+  "sourceHashNormalization": "CRLF to LF only, matching Git text blobs; tested raw hashes retained separately"
+}

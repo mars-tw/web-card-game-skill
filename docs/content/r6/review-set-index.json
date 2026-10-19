@@ -1,0 +1,192 @@
+{
+  "status": "VERIFIED",
+  "count": 15,
+  "distribution": {
+    "puzzles": 6,
+    "forecast": 4,
+    "moen": 5
+  },
+  "note": "Six anonymous puzzle boards; continuous forecast 07-09, Moen 11-13 and shield 13-15. Guarding frame serves two acceptance sequences.",
+  "images": [
+    {
+      "content": "puzzles",
+      "path": "docs/content/r6/review-set/01-puzzles-puzzle-fallen-playing.png",
+      "source": "docs/content/r6/phone-puzzle-fallen-playing.png",
+      "proof": "陣亡蓄潮盤面",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "3a96a6eb06dd3a8fadcbeaa1893ac3e72405d4cb7c7d5a0233633e646469f634"
+    },
+    {
+      "content": "puzzles",
+      "path": "docs/content/r6/review-set/02-puzzles-puzzle-shield-playing.png",
+      "source": "docs/content/r6/phone-puzzle-shield-playing.png",
+      "proof": "一血聖盾盤面",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "e2237ca353b2393cb399a72c8f24dafa47bc1a7368a305ac103db5a3ebe540f8"
+    },
+    {
+      "content": "puzzles",
+      "path": "docs/content/r6/review-set/03-puzzles-puzzle-shelter-playing.png",
+      "source": "docs/content/r6/phone-puzzle-shelter-playing.png",
+      "proof": "弓手與狼互相致命",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "5502e555343ea513e279f822b169cdce48907d917b160c5b88b0df2a517d96a5"
+    },
+    {
+      "content": "puzzles",
+      "path": "docs/content/r6/review-set/04-puzzles-puzzle-taunt-playing.png",
+      "source": "docs/content/r6/phone-puzzle-taunt-playing.png",
+      "proof": "嘲諷封路盤面",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "b6a01ab7b1ae5bfbfdf064bfbaa5ed4ea79053b877179aeef9279895e6d782b9"
+    },
+    {
+      "content": "puzzles",
+      "path": "docs/content/r6/review-set/05-puzzles-puzzle-spell-playing.png",
+      "source": "docs/content/r6/phone-puzzle-spell-playing.png",
+      "proof": "火焰箭與四血騎士",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "9b91ecf8888f7cb3eeefdd122d16698aee35747d674462f11c5f96365b0d871e"
+    },
+    {
+      "content": "puzzles",
+      "path": "docs/content/r6/review-set/06-puzzles-puzzle-cross-playing.png",
+      "source": "docs/content/r6/phone-puzzle-cross-playing.png",
+      "proof": "雙線交換與確認前血量預覽",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "329711af9c55d22bd01d577fea2ce6e264acac1799b5887fd54f5f7f631d2cb4"
+    },
+    {
+      "content": "forecast",
+      "path": "docs/content/r6/review-set/07-forecast-forecast-before.png",
+      "source": "docs/content/r6/phone-forecast-before.png",
+      "proof": "反轉前公開預報",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "bcf017f4a73fc85e7cf46cea49fdd01fd34e441096401e86df1a46a34578cc2c"
+    },
+    {
+      "content": "forecast",
+      "path": "docs/content/r6/review-set/08-forecast-forecast-held.png",
+      "source": "docs/content/r6/phone-forecast-held.png",
+      "proof": "按住預覽反轉後果",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "cbad4ac81c56b089824370badf5619427233e3e3ca5b3670c2cbde3db50f9b97"
+    },
+    {
+      "content": "forecast",
+      "path": "docs/content/r6/review-set/09-forecast-forecast-applied.png",
+      "source": "docs/content/r6/phone-forecast-applied.png",
+      "proof": "放開後反轉一次",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "2a7a4abdbaf42dad7a335d2d516b2e4f93aa3048e5fc9c700b101ad300613258"
+    },
+    {
+      "content": "forecast",
+      "path": "docs/content/r6/review-set/10-forecast-forecast-wrong-direction.png",
+      "source": "docs/content/r6/phone-forecast-wrong-direction.png",
+      "proof": "錯誤方向與灰色禁用確認",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "0b23f77f9099040a7b680f3408fafa8cc1df94dc0d630763bcbfb798c4c2539f"
+    },
+    {
+      "content": "moen",
+      "path": "docs/content/r6/review-set/11-moen-moen-preparing.png",
+      "source": "docs/content/r6/phone-moen-preparing.png",
+      "proof": "整備姿勢與受保護騎士",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "9430a50104de0a1cd795562a9f9c02a7c81dd606064c4d099517eed6c2ef4c83"
+    },
+    {
+      "content": "moen",
+      "path": "docs/content/r6/review-set/12-moen-moen-impact.png",
+      "source": "docs/content/r6/phone-moen-impact.png",
+      "proof": "舉手命中與護航連線",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "7d2e57ae309e2ecd3c8a4cc083d36b278c1b2d6bf7440106fb90aa9080f27b6b"
+    },
+    {
+      "content": "moen",
+      "path": "docs/content/r6/review-set/13-moen-moen-guarding.png",
+      "source": "docs/content/r6/phone-moen-guarding.png",
+      "proof": "留守／同卡破盾前 3攻4血",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "6f001139908cfec8ff3c010d87fe324dd72fdb70ad8d4a6c2c96f6677384217a"
+    },
+    {
+      "content": "moen",
+      "path": "docs/content/r6/review-set/14-moen-moen-shield-impact.png",
+      "source": "docs/content/r6/phone-moen-shield-impact.png",
+      "proof": "同卡盾裂瞬間 3攻4血",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "bd265d29e980ccf1956c738f5cc7f94173a3eca311170431c26144ddd3ba51df"
+    },
+    {
+      "content": "moen",
+      "path": "docs/content/r6/review-set/15-moen-moen-shield-after.png",
+      "source": "docs/content/r6/phone-moen-shield-after.png",
+      "proof": "同卡破盾後完整卡框 3攻4血",
+      "playing": true,
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "4dbd3ca4bfebf40890046d057efcde7cd96310c3b38aacad3bd8183f9ffa3ed3"
+    }
+  ]
+}

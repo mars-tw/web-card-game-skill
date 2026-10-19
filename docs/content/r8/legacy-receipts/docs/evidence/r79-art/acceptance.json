@@ -1,0 +1,24 @@
+{
+  "status": "VERIFIED",
+  "passed": 83,
+  "results": [
+    {
+      "w": 390,
+      "h": 844
+    },
+    {
+      "w": 844,
+      "h": 390
+    },
+    {
+      "w": 1366,
+      "h": 600
+    },
+    {
+      "w": 1032,
+      "h": 1376
+    }
+  ],
+  "errors": [],
+  "method": "Explicit nonlethal QA and real lethal trial; no changed rule assertions or fake image edits."
+}

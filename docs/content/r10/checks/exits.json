@@ -1,0 +1,181 @@
+[
+  {
+    "name": "r10",
+    "command": [
+      "node",
+      "scripts/test-content-r10-e2e.js"
+    ],
+    "exit": 1,
+    "seconds": 22.9,
+    "log": "docs/content/r10/checks/r10-1.log"
+  },
+  {
+    "name": "r10",
+    "command": [
+      "node",
+      "scripts/test-content-r10-e2e.js"
+    ],
+    "exit": 0,
+    "seconds": 150.3,
+    "log": "docs/content/r10/checks/r10-2.log"
+  },
+  {
+    "name": "unit",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exit": 0,
+    "seconds": 7.9,
+    "log": "docs/content/r10/checks/unit-1.log"
+  },
+  {
+    "name": "legacy-e2e",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:e2e"
+    ],
+    "exit": 0,
+    "seconds": 1109.2,
+    "log": "docs/content/r10/checks/legacy-e2e-1.log"
+  },
+  {
+    "name": "rwd",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:rwd"
+    ],
+    "exit": 0,
+    "seconds": 88.8,
+    "log": "docs/content/r10/checks/rwd-1.log"
+  },
+  {
+    "name": "r6",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:content:r6"
+    ],
+    "exit": 0,
+    "seconds": 123.9,
+    "log": "docs/content/r10/checks/r6-1.log"
+  },
+  {
+    "name": "r6-effects",
+    "command": [
+      "node",
+      "scripts/test-content-r6-effects.js"
+    ],
+    "exit": 0,
+    "seconds": 8.2,
+    "log": "docs/content/r10/checks/r6-effects-1.log"
+  },
+  {
+    "name": "r7",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:content:r7"
+    ],
+    "exit": 1,
+    "seconds": 57.5,
+    "log": "docs/content/r10/checks/r7-1.log"
+  },
+  {
+    "name": "r10",
+    "command": [
+      "node",
+      "scripts/test-content-r10-e2e.js"
+    ],
+    "exit": 0,
+    "seconds": 152.7,
+    "log": "docs/content/r10/checks/r10-3.log"
+  },
+  {
+    "name": "r7",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:content:r7"
+    ],
+    "exit": 0,
+    "seconds": 159.9,
+    "log": "docs/content/r10/checks/r7-2.log"
+  },
+  {
+    "name": "r8",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:content:r8"
+    ],
+    "exit": 0,
+    "seconds": 246.4,
+    "log": "docs/content/r10/checks/r8-1.log"
+  },
+  {
+    "name": "r9",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:content:r9"
+    ],
+    "exit": 0,
+    "seconds": 311.0,
+    "log": "docs/content/r10/checks/r9-1.log"
+  },
+  {
+    "name": "r9-puzzles",
+    "command": [
+      "node",
+      "scripts/capture-content-r9-puzzles.js"
+    ],
+    "exit": 0,
+    "seconds": 3.1,
+    "log": "docs/content/r10/checks/r9-puzzles-1.log"
+  },
+  {
+    "name": "frames",
+    "command": [
+      "node",
+      "scripts/measure-content-r8.js"
+    ],
+    "exit": 0,
+    "seconds": 31.0,
+    "log": "docs/content/r10/checks/frames-1.log"
+  },
+  {
+    "name": "ci-performance",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:r67:performance"
+    ],
+    "exit": 0,
+    "seconds": 30.3,
+    "log": "docs/content/r10/checks/ci-performance-1.log"
+  },
+  {
+    "name": "r10",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:content:r10"
+    ],
+    "exit": 0,
+    "seconds": 148.8,
+    "log": "docs/content/r10/checks/r10-4.log"
+  },
+  {
+    "name": "unit",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exit": 0,
+    "seconds": 7.5,
+    "log": "docs/content/r10/checks/unit-2.log"
+  }
+]

@@ -1,0 +1,350 @@
+{
+  "generatedAt": "2026-10-17T16:25:58.592Z",
+  "source": "working tree (R76)",
+  "profile": "Fast 3G (150ms RTT, 200KiB/s down) + 4x CPU throttle",
+  "concurrentMachine": true,
+  "trustNote": "Local p95 is concurrent-machine evidence; release decision requires clean-machine audit.",
+  "runs": [
+    {
+      "interactiveMs": 8396.6,
+      "visualReadyMs": 4398.5,
+      "domInteractiveMs": 8349.9,
+      "backgroundResponseEndMs": 4398.5,
+      "visualMarkPresent": true,
+      "backgroundResources": [
+        {
+          "name": "puddle.webp?v=03e81419",
+          "bytes": 58304,
+          "responseEndMs": 2050.6
+        },
+        {
+          "name": "battlefield-low.webp?v=d7c024be",
+          "bytes": 50922,
+          "responseEndMs": 1924.8
+        },
+        {
+          "name": "white-tide-citadel-high.webp?v=f57dd495",
+          "bytes": 97152,
+          "responseEndMs": 3001.9
+        },
+        {
+          "name": "emberpup-low.webp?v=f6527647",
+          "bytes": 15046,
+          "responseEndMs": 1237.7
+        },
+        {
+          "name": "wolf-low.webp?v=c333e737",
+          "bytes": 17902,
+          "responseEndMs": 1344.4
+        },
+        {
+          "name": "sparkSquire-low.webp?v=ffb146b0",
+          "bytes": 15712,
+          "responseEndMs": 1832.1
+        },
+        {
+          "name": "alleySkirmisher-low.webp?v=dade5b6b",
+          "bytes": 12510,
+          "responseEndMs": 1894.1
+        },
+        {
+          "name": "frontScout-low.webp?v=6f407c18",
+          "bytes": 14974,
+          "responseEndMs": 2328.7
+        },
+        {
+          "name": "firebolt-low.webp?v=8f558c82",
+          "bytes": 16398,
+          "responseEndMs": 2437.9
+        },
+        {
+          "name": "footman-low.webp?v=aedc66c0",
+          "bytes": 14100,
+          "responseEndMs": 2422
+        },
+        {
+          "name": "archer-low.webp?v=b78bf635",
+          "bytes": 13314,
+          "responseEndMs": 2491.1
+        },
+        {
+          "name": "frame.webp?v=r78-frame",
+          "bytes": 40392,
+          "responseEndMs": 3172
+        },
+        {
+          "name": "white-tide-citadel-low.webp?v=50075ecc",
+          "bytes": 18104,
+          "responseEndMs": 2907
+        },
+        {
+          "name": "icon-wave.webp?v=r78-icon",
+          "bytes": 17422,
+          "responseEndMs": 2987.2
+        },
+        {
+          "name": "icon-settings.webp",
+          "bytes": 8330,
+          "responseEndMs": 2844.5
+        },
+        {
+          "name": "icon-lantern.webp",
+          "bytes": 8766,
+          "responseEndMs": 2907.3
+        },
+        {
+          "name": "avatar.webp",
+          "bytes": 6332,
+          "responseEndMs": 4023.8
+        },
+        {
+          "name": "battlefield-low.webp",
+          "bytes": 63764,
+          "responseEndMs": 4398.5
+        },
+        {
+          "name": "surface-low.webp",
+          "bytes": 33666,
+          "responseEndMs": 3790.6
+        },
+        {
+          "name": "avatar.webp",
+          "bytes": 6690,
+          "responseEndMs": 3094
+        }
+      ]
+    },
+    {
+      "interactiveMs": 8092.7,
+      "visualReadyMs": 4419.2,
+      "domInteractiveMs": 8049.5,
+      "backgroundResponseEndMs": 4419.2,
+      "visualMarkPresent": true,
+      "backgroundResources": [
+        {
+          "name": "puddle.webp?v=03e81419",
+          "bytes": 58304,
+          "responseEndMs": 2086.7
+        },
+        {
+          "name": "battlefield-low.webp?v=d7c024be",
+          "bytes": 50922,
+          "responseEndMs": 1961.1
+        },
+        {
+          "name": "white-tide-citadel-high.webp?v=f57dd495",
+          "bytes": 97152,
+          "responseEndMs": 3034.3
+        },
+        {
+          "name": "emberpup-low.webp?v=f6527647",
+          "bytes": 15046,
+          "responseEndMs": 1242.5
+        },
+        {
+          "name": "wolf-low.webp?v=c333e737",
+          "bytes": 17902,
+          "responseEndMs": 1337.6
+        },
+        {
+          "name": "sparkSquire-low.webp?v=ffb146b0",
+          "bytes": 15712,
+          "responseEndMs": 1851.1
+        },
+        {
+          "name": "alleySkirmisher-low.webp?v=dade5b6b",
+          "bytes": 12510,
+          "responseEndMs": 1882.1
+        },
+        {
+          "name": "frontScout-low.webp?v=6f407c18",
+          "bytes": 14974,
+          "responseEndMs": 2321.5
+        },
+        {
+          "name": "firebolt-low.webp?v=8f558c82",
+          "bytes": 16398,
+          "responseEndMs": 2429.5
+        },
+        {
+          "name": "footman-low.webp?v=aedc66c0",
+          "bytes": 14100,
+          "responseEndMs": 2452.9
+        },
+        {
+          "name": "archer-low.webp?v=b78bf635",
+          "bytes": 13314,
+          "responseEndMs": 2523.8
+        },
+        {
+          "name": "frame.webp?v=r78-frame",
+          "bytes": 40392,
+          "responseEndMs": 3176
+        },
+        {
+          "name": "white-tide-citadel-low.webp?v=50075ecc",
+          "bytes": 18104,
+          "responseEndMs": 2909.8
+        },
+        {
+          "name": "icon-wave.webp?v=r78-icon",
+          "bytes": 17422,
+          "responseEndMs": 3002.8
+        },
+        {
+          "name": "icon-settings.webp",
+          "bytes": 8330,
+          "responseEndMs": 2848.5
+        },
+        {
+          "name": "icon-lantern.webp",
+          "bytes": 8766,
+          "responseEndMs": 2925.2
+        },
+        {
+          "name": "battlefield-low.webp",
+          "bytes": 63764,
+          "responseEndMs": 4419.2
+        },
+        {
+          "name": "surface-low.webp",
+          "bytes": 33666,
+          "responseEndMs": 3690.8
+        },
+        {
+          "name": "avatar.webp",
+          "bytes": 6690,
+          "responseEndMs": 3191.8
+        },
+        {
+          "name": "avatar.webp",
+          "bytes": 6332,
+          "responseEndMs": 4061.9
+        }
+      ]
+    },
+    {
+      "interactiveMs": 8058.4,
+      "visualReadyMs": 4380.8,
+      "domInteractiveMs": 8019.6,
+      "backgroundResponseEndMs": 4380.8,
+      "visualMarkPresent": true,
+      "backgroundResources": [
+        {
+          "name": "puddle.webp?v=03e81419",
+          "bytes": 58304,
+          "responseEndMs": 2065.5
+        },
+        {
+          "name": "battlefield-low.webp?v=d7c024be",
+          "bytes": 50922,
+          "responseEndMs": 1954.9
+        },
+        {
+          "name": "white-tide-citadel-high.webp?v=f57dd495",
+          "bytes": 97152,
+          "responseEndMs": 3035.5
+        },
+        {
+          "name": "emberpup-low.webp?v=f6527647",
+          "bytes": 15046,
+          "responseEndMs": 1239.7
+        },
+        {
+          "name": "wolf-low.webp?v=c333e737",
+          "bytes": 17902,
+          "responseEndMs": 1317.6
+        },
+        {
+          "name": "sparkSquire-low.webp?v=ffb146b0",
+          "bytes": 15712,
+          "responseEndMs": 1848
+        },
+        {
+          "name": "alleySkirmisher-low.webp?v=dade5b6b",
+          "bytes": 12510,
+          "responseEndMs": 1863
+        },
+        {
+          "name": "frontScout-low.webp?v=6f407c18",
+          "bytes": 14974,
+          "responseEndMs": 2345.4
+        },
+        {
+          "name": "firebolt-low.webp?v=8f558c82",
+          "bytes": 16398,
+          "responseEndMs": 2392.7
+        },
+        {
+          "name": "footman-low.webp?v=aedc66c0",
+          "bytes": 14100,
+          "responseEndMs": 2456.3
+        },
+        {
+          "name": "archer-low.webp?v=b78bf635",
+          "bytes": 13314,
+          "responseEndMs": 2504.1
+        },
+        {
+          "name": "frame.webp?v=r78-frame",
+          "bytes": 40392,
+          "responseEndMs": 3129.1
+        },
+        {
+          "name": "white-tide-citadel-low.webp?v=50075ecc",
+          "bytes": 18104,
+          "responseEndMs": 2971.7
+        },
+        {
+          "name": "icon-settings.webp",
+          "bytes": 8330,
+          "responseEndMs": 2847.3
+        },
+        {
+          "name": "icon-wave.webp?v=r78-icon",
+          "bytes": 17422,
+          "responseEndMs": 2973.1
+        },
+        {
+          "name": "icon-lantern.webp",
+          "bytes": 8766,
+          "responseEndMs": 2910.1
+        },
+        {
+          "name": "battlefield-low.webp",
+          "bytes": 63764,
+          "responseEndMs": 4380.8
+        },
+        {
+          "name": "surface-low.webp",
+          "bytes": 33666,
+          "responseEndMs": 3837.7
+        },
+        {
+          "name": "avatar.webp",
+          "bytes": 6690,
+          "responseEndMs": 3097.5
+        },
+        {
+          "name": "avatar.webp",
+          "bytes": 6332,
+          "responseEndMs": 3992.7
+        }
+      ]
+    }
+  ],
+  "median": {
+    "interactiveMs": 8092.7,
+    "visualReadyMs": 4398.5
+  },
+  "frame": {
+    "samples": 175,
+    "p95Ms": 16.8
+  },
+  "assertions": {
+    "visualReadyWithin3000ms": false,
+    "interactiveRegressionWithin10Percent": true,
+    "interactiveLimitMs": 34627.34,
+    "frameP95Within18ms": true
+  }
+}

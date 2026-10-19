@@ -1,0 +1,293 @@
+{
+  "status": "VERIFIED",
+  "generatedAt": "2026-10-19T05:04:23.641568+00:00",
+  "version": "0.22.0",
+  "cacheVersion": "card-battle-content-r9-v1",
+  "localOnly": true,
+  "requiredCommandGroups": 19,
+  "latestTests": {
+    "return-tide": {
+      "name": "return-tide",
+      "command": [
+        "node",
+        "scripts/test-content-r9-return.js"
+      ],
+      "exit": 0,
+      "seconds": 48.6,
+      "log": "docs/content/r9/checks/return-tide-attempt2.log"
+    },
+    "r9-puzzles": {
+      "name": "r9-puzzles",
+      "command": [
+        "node",
+        "scripts/capture-content-r9-puzzles.js"
+      ],
+      "exit": 0,
+      "seconds": 2.3,
+      "log": "docs/content/r9/checks/r9-puzzles-attempt2.log"
+    },
+    "r9-acceptance": {
+      "name": "r9-acceptance",
+      "command": [
+        "node",
+        "scripts/test-content-r9-acceptance.js"
+      ],
+      "exit": 0,
+      "seconds": 117.1,
+      "log": "docs/content/r9/checks/r9-acceptance-attempt2.log"
+    },
+    "r9": {
+      "name": "r9",
+      "command": [
+        "node",
+        "scripts/test-content-r9-e2e.js"
+      ],
+      "exit": 0,
+      "seconds": 147.3,
+      "log": "docs/content/r9/checks/r9-attempt4.log"
+    },
+    "r8": {
+      "name": "r8",
+      "command": [
+        "node",
+        "scripts/test-content-r8-e2e.js"
+      ],
+      "exit": 0,
+      "seconds": 146.2,
+      "log": "docs/content/r9/checks/r8.log"
+    },
+    "r8-effects": {
+      "name": "r8-effects",
+      "command": [
+        "node",
+        "scripts/capture-content-r8-effects.js"
+      ],
+      "exit": 0,
+      "seconds": 13.4,
+      "log": "docs/content/r9/checks/r8-effects-attempt2.log"
+    },
+    "landscape": {
+      "name": "landscape",
+      "command": [
+        "node",
+        "scripts/capture-content-r8-landscape.js"
+      ],
+      "exit": 0,
+      "seconds": 30.6,
+      "log": "docs/content/r9/checks/landscape-attempt2.log"
+    },
+    "puzzle-readability": {
+      "name": "puzzle-readability",
+      "command": [
+        "node",
+        "scripts/capture-content-r8-puzzles.js"
+      ],
+      "exit": 0,
+      "seconds": 2.5,
+      "log": "docs/content/r9/checks/puzzle-readability.log"
+    },
+    "forecast-effects": {
+      "name": "forecast-effects",
+      "command": [
+        "node",
+        "scripts/capture-content-r8-forecast.js"
+      ],
+      "exit": 0,
+      "seconds": 20.4,
+      "log": "docs/content/r9/checks/forecast-effects.log"
+    },
+    "timing": {
+      "name": "timing",
+      "command": [
+        "node",
+        "scripts/test-content-r8-timing.js"
+      ],
+      "exit": 0,
+      "seconds": 10.6,
+      "log": "docs/content/r9/checks/timing.log"
+    },
+    "unit": {
+      "name": "unit",
+      "command": [
+        "npm.cmd",
+        "test"
+      ],
+      "exit": 0,
+      "seconds": 9.0,
+      "log": "docs/content/r9/checks/unit-attempt7.log"
+    },
+    "legacy-e2e": {
+      "name": "legacy-e2e",
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:e2e"
+      ],
+      "exit": 0,
+      "seconds": 1092.5,
+      "log": "docs/content/r9/checks/legacy-e2e-attempt4.log"
+    },
+    "rwd": {
+      "name": "rwd",
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:rwd"
+      ],
+      "exit": 0,
+      "seconds": 87.3,
+      "log": "docs/content/r9/checks/rwd.log"
+    },
+    "r6": {
+      "name": "r6",
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:content:r6"
+      ],
+      "exit": 0,
+      "seconds": 122.4,
+      "log": "docs/content/r9/checks/r6.log"
+    },
+    "r6-effects": {
+      "name": "r6-effects",
+      "command": [
+        "node",
+        "scripts/test-content-r6-effects.js"
+      ],
+      "exit": 0,
+      "seconds": 8.6,
+      "log": "docs/content/r9/checks/r6-effects.log"
+    },
+    "r7": {
+      "name": "r7",
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:content:r7"
+      ],
+      "exit": 0,
+      "seconds": 149.1,
+      "log": "docs/content/r9/checks/r7.log"
+    },
+    "r8-offline": {
+      "name": "r8-offline",
+      "command": [
+        "node",
+        "scripts/test-content-r8-offline.js"
+      ],
+      "exit": 0,
+      "seconds": 22.2,
+      "log": "docs/content/r9/checks/r8-offline.log"
+    },
+    "frames": {
+      "name": "frames",
+      "command": [
+        "node",
+        "scripts/measure-content-r8.js"
+      ],
+      "exit": 0,
+      "seconds": 30.5,
+      "log": "docs/content/r9/checks/frames-attempt2.log"
+    },
+    "ci-performance": {
+      "name": "ci-performance",
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:r67:performance"
+      ],
+      "exit": 0,
+      "seconds": 30.6,
+      "log": "docs/content/r9/checks/ci-performance-attempt2.log"
+    }
+  },
+  "sourceHashes": {
+    "CREDITS.md": "cf5c3af97de24877b6190cda6b7112485490454cfe39a81b2631f47df00de63e",
+    "index.html": "4cd292d1d9bedf33f8d82dc017edb7c104622e84d7654254f49c24ad0de00a0f",
+    "package.json": "308da6ff8ef484ccccd8b96059c64e6ec89de7b6e6ecc4e21627108358f332ef",
+    "package-lock.json": "5416e1e0bb32a26322926b3e5504e03500473995c993422da8fff807aa7ab97c",
+    "sw.js": "b91ef5fbecf0362001829cbbc7b7f85df7adb3e07e96a8359ce8a2bd3a8896ae",
+    "templates/index.html": "8929ba62ebe938f76dd5b623e03b987a230db8ef073698295592b6316720211a",
+    "templates/harbor.html": "d67e238b56e891042678b292e9d837a12a6ad89806f292e078844ad6159b37c1",
+    "templates/card-battle/index.html": "d89965ecfd6df13998f14be617a05289c7108e0687a334631841b8bc2928117c",
+    "templates/card-pack/index.html": "bc47a300bfeafbfb5925d9974945d5de2a93611f2b1562a87ce50d0cc2012bd8",
+    "templates/card-battle/battle.js": "24c31ffed5ca3d76ba2d0479d57a8681aadb04cafdcc0daa9de875de8f7c585e",
+    "templates/card-battle/content-r6.js": "847a443b5ad5ab4176278596ea681c4c21ee8af1ef895ef4c94f778b3df7b6ff",
+    "templates/card-battle/tide-puzzles.js": "6f054444f02d3c782bb93c03e660e0400641f01496abed456221dc6afe4ec624",
+    "templates/card-battle/tide-session.js": "82702ff03c1dd79ca5853815770f4019945014dbc6af2c8ceeeccf2f1c530bdb",
+    "templates/card-battle/pose-player.js": "faa13332f20dd800fbca9b2c8c96cf16758809c58503aceac3cc283eb09531f0",
+    "templates/card-battle/content-r9.js": "b1fb06f539907b3736b599323ef6ae95ef75ac37d97423fb80806bdd940e3c96",
+    "templates/card-battle/content-r9.css": "8b4931e1b391075cbad0b93c151ea3d6a135d61f8099185fa8595634e470e0c1",
+    "scripts/test-battle-e2e.js": "430c50fa8d18113edfdc57fbe869209952079479fb529dcfde0d50814d3336d9",
+    "scripts/test-content-r1-e2e.js": "c722a812eccf057b1a801d34f81fdfcb20a25a238c0e05e74fe0f1f517810cc5",
+    "scripts/test-content-r9.js": "4a1c54e38fcc5e6da26b63084dbc1ba8165d69ee39a56f32c14ef809197b4c07",
+    "scripts/test-content-r9-e2e.js": "4169f0adb4ace2db9d202507fc479ddeec55f6826c4b5250da2dfe955d6fc2db",
+    "scripts/test-content-r9-acceptance.js": "bc1b312859d1debfc7462c092b1505ef45d0ce453b80e7e04276b095f7bbd82f",
+    "scripts/test-content-r9-return.js": "ba4d4ba6f639580a64abba21afa04c01646c60a866c1bba9e5e0a2cf44bc3dc0",
+    "scripts/capture-content-r9-puzzles.js": "11ba0667ea8447cdd15dafae0b1b35cc59ac36eb4addaff90b5d03eb79a26adf",
+    "scripts/run-content-r9-checks.py": "66375548afc759fb1cba4c5e34f58c902cc2ac972401274e858fae162aabdc13",
+    "scripts/r9-evidence-guard.js": "95efe832244b6a91b3f44fa87bece52d6fd28689982970b8429e3c0836f89c23",
+    "scripts/finalize-content-r9.py": "8abbce0d41b21decc4be7635247d93f79309ab813332684eed3134b5eaa5b03b"
+  },
+  "reviewIndexSha256": "d60756d909949b85b11a4feddb34d8a765e1d29959f9648bfd2aec90ea3d0e13",
+  "phoneOriginals": 92,
+  "storeImages": 4,
+  "runtimePoseFrames": 10,
+  "retainedSourceAtlases": 1,
+  "secretMatches": 0,
+  "frameP95ConcurrentReference": [
+    {
+      "width": 1366,
+      "height": 768,
+      "runs": [
+        {
+          "p95": 16.700000000000728,
+          "samples": 240,
+          "max": 16.800000000000182
+        },
+        {
+          "p95": 16.799999999999727,
+          "samples": 240,
+          "max": 33.30000000000018
+        },
+        {
+          "p95": 16.799999999999727,
+          "samples": 240,
+          "max": 33.30000000000018
+        }
+      ],
+      "median": 16.799999999999727
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "runs": [
+        {
+          "p95": 16.799999999999955,
+          "samples": 240,
+          "max": 16.800000000000182
+        },
+        {
+          "p95": 16.700000000000728,
+          "samples": 240,
+          "max": 16.800000000000182
+        },
+        {
+          "p95": 16.799999999999272,
+          "samples": 240,
+          "max": 16.800000000000182
+        }
+      ],
+      "median": 16.799999999999272
+    }
+  ],
+  "blocked": [
+    "physical devices",
+    "human playtests",
+    "exclusive-machine performance",
+    "Muse actual rescore",
+    "remaining full character pose sets",
+    "atlas sword-tip edge refinement"
+  ]
+}

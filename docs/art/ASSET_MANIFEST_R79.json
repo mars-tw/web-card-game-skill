@@ -1,0 +1,506 @@
+{
+  "status": "VERIFIED",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "model_note": "Built-in image_gen.imagegen does not expose a verifiable model slug; no gpt-image version inferred.",
+  "generated_master_count": 9,
+  "source_bytes": 23784820,
+  "runtime_bytes": 1687248,
+  "assets": [
+    {
+      "id": "wave",
+      "source": "docs/art/source/r79/wave.png",
+      "sha256": "91850fb1ca22b9adf83e55f964ac035fdb4baaec2a890fa1b45e1688c2c102a9",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 3131765,
+      "metrics": {
+        "brightness": 0.7398578580368317,
+        "saturation": 0.3252897485436381,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.22254939209726443,
+        "double_gate_pass": false
+      },
+      "references": [
+        {
+          "path": "assets/art/r78/logo.webp",
+          "sha256": "60fe87aa5cc961aea37f446a782f120596d0912162cea0d423e9ecad237b44a3"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r79/wave.webp",
+          "bytes": 526878,
+          "sha256": "f99acbfc3c9766d3bdcb2157f519dd2256f1e55d9cbcc3a4db375c4a9348f09a",
+          "size": [
+            1400,
+            933
+          ],
+          "metrics": {
+            "brightness": 0.737598984138333,
+            "saturation": 0.3263310626782911,
+            "near_black_ratio": 0.0,
+            "low_saturation_ratio": 0.22144145855094483,
+            "double_gate_pass": false
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          253
+        ],
+        "transparent_ratio": 0.32556915283203125,
+        "center": 249,
+        "bbox": [
+          0,
+          9,
+          1536,
+          1024
+        ]
+      }
+    },
+    {
+      "id": "foam",
+      "source": "docs/art/source/r79/foam.png",
+      "sha256": "cd039d3018a8c9a2436bef7ecf82e9235d15ddfa55e167522d7ed16c2a7e5a2f",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2246275,
+      "metrics": {
+        "brightness": 0.7650364442723515,
+        "saturation": 0.29234822463821225,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.2863411958310477,
+        "double_gate_pass": false
+      },
+      "references": [
+        {
+          "path": "docs/art/source/r79/wave.png",
+          "sha256": "91850fb1ca22b9adf83e55f964ac035fdb4baaec2a890fa1b45e1688c2c102a9"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r79/foam.webp",
+          "bytes": 78790,
+          "sha256": "a8443fd267a2a67e48c8f1d09ccdf82ee4cdf2ab352d96ddfe429ab3cc1a5fde",
+          "size": [
+            540,
+            360
+          ],
+          "metrics": {
+            "brightness": 0.7628441058091734,
+            "saturation": 0.29467265466450293,
+            "near_black_ratio": 0.0,
+            "low_saturation_ratio": 0.2863154043175997,
+            "double_gate_pass": false
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.6113065083821615,
+        "center": 0,
+        "bbox": [
+          0,
+          46,
+          1536,
+          1024
+        ]
+      }
+    },
+    {
+      "id": "navigator-sheet",
+      "source": "docs/art/source/r79/navigator-sheet.png",
+      "sha256": "f920c616c1422114e456e1b824295ffa0da1f708941aa4d18eb13fd4d7373fb2",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2995521,
+      "metrics": {
+        "brightness": 0.6371390548406862,
+        "saturation": 0.32413997068544526,
+        "near_black_ratio": 0.00030517578125,
+        "low_saturation_ratio": 0.0238037109375,
+        "double_gate_pass": true
+      },
+      "references": [
+        {
+          "path": "docs/art/character-sheets/navigator-r78.png",
+          "sha256": "fac9462b79a57861ce5ba8d8f01c6d17a2420c29fdad2d062d9ceb92c1634aaa"
+        },
+        {
+          "path": "docs/art/source/r79/wave.png",
+          "sha256": "91850fb1ca22b9adf83e55f964ac035fdb4baaec2a890fa1b45e1688c2c102a9"
+        }
+      ],
+      "runtime": []
+    },
+    {
+      "id": "victory-navigator",
+      "source": "docs/art/source/r79/victory-navigator.png",
+      "sha256": "2c97b161f7d455bd8821425c5514aff19caa51500ad02e5e79b75c6bd0e69715",
+      "size": [
+        1024,
+        1536
+      ],
+      "bytes": 3047254,
+      "metrics": {
+        "brightness": 0.5309313553551902,
+        "saturation": 0.4750348271690342,
+        "near_black_ratio": 0.017800771659066995,
+        "low_saturation_ratio": 0.05147316730971589,
+        "double_gate_pass": true
+      },
+      "references": [
+        {
+          "path": "docs/art/character-sheets/navigator-r79.png",
+          "sha256": "f920c616c1422114e456e1b824295ffa0da1f708941aa4d18eb13fd4d7373fb2"
+        },
+        {
+          "path": "docs/art/source/r79/wave.png",
+          "sha256": "91850fb1ca22b9adf83e55f964ac035fdb4baaec2a890fa1b45e1688c2c102a9"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r79/victory-navigator.webp",
+          "bytes": 285976,
+          "sha256": "fe93988e65e650fc82af56ed70b56050245f9a1735e8e159c9c463b1a78a35f3",
+          "size": [
+            700,
+            1050
+          ],
+          "metrics": {
+            "brightness": 0.5285425209101615,
+            "saturation": 0.4745281665480258,
+            "near_black_ratio": 0.017536168347216132,
+            "low_saturation_ratio": 0.05252082419991232,
+            "double_gate_pass": true
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.29178810119628906,
+        "center": 253,
+        "bbox": [
+          0,
+          0,
+          1024,
+          1536
+        ]
+      }
+    },
+    {
+      "id": "battlefield",
+      "source": "docs/art/source/r79/battlefield.png",
+      "sha256": "918b1b9cc8a46813ca09fcd5345186f414218f38765ce7ce1491d0605467e018",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 3152027,
+      "metrics": {
+        "brightness": 0.31509363511029415,
+        "saturation": 0.41751341374383594,
+        "near_black_ratio": 0.07220458984375,
+        "low_saturation_ratio": 0.00518798828125,
+        "double_gate_pass": true
+      },
+      "references": [
+        {
+          "path": "assets/art/r78/battlefield.webp",
+          "sha256": "55aeeb4de79a7f1bba030de294243e546879669d696197b01a49d237c7dd5351"
+        },
+        {
+          "path": "docs/art/source/r79/wave.png",
+          "sha256": "91850fb1ca22b9adf83e55f964ac035fdb4baaec2a890fa1b45e1688c2c102a9"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r79/battlefield.webp",
+          "bytes": 324940,
+          "sha256": "cbe574cace150cb5b772217fb1c94a483b2d09b54067c51e8d6706897a084775",
+          "size": [
+            1400,
+            933
+          ],
+          "metrics": {
+            "brightness": 0.31505390242034315,
+            "saturation": 0.41701780931490007,
+            "near_black_ratio": 0.07183837890625,
+            "low_saturation_ratio": 0.00494384765625,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/art/r79/battlefield-low.webp",
+          "bytes": 61032,
+          "sha256": "93913d26f78f3258e09ec54715b6b295eddbc798508c1206a26e9d521c06cb11",
+          "size": [
+            700,
+            467
+          ],
+          "metrics": {
+            "brightness": 0.3153799019607843,
+            "saturation": 0.4168127822100265,
+            "near_black_ratio": 0.07196044921875,
+            "low_saturation_ratio": 0.005126953125,
+            "double_gate_pass": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "frame",
+      "source": "docs/art/source/r79/frame.png",
+      "sha256": "75a0ca4dee2433f174d14d5851156641a273e97e1538cb77e9083e68d74e8201",
+      "size": [
+        1024,
+        1536
+      ],
+      "bytes": 1534658,
+      "metrics": {
+        "brightness": 0.6041247166085664,
+        "saturation": 0.4290024210435923,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.10609200165768752,
+        "double_gate_pass": true
+      },
+      "references": [
+        {
+          "path": "assets/art/r78/frame.webp",
+          "sha256": "0166e0bda8a6de4586ff65d04b51e64754e7f3813bb468ba40cf6e79d9f1ace8"
+        },
+        {
+          "path": "docs/art/source/r79/wave.png",
+          "sha256": "91850fb1ca22b9adf83e55f964ac035fdb4baaec2a890fa1b45e1688c2c102a9"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r79/frame.webp",
+          "bytes": 48056,
+          "sha256": "7e72b1711f65517a45a4344d15ca86a31be7348c57472d9f68d80fbbc0f17d8d",
+          "size": [
+            400,
+            600
+          ],
+          "metrics": {
+            "brightness": 0.5987677380230443,
+            "saturation": 0.43448565901594915,
+            "near_black_ratio": 0.0,
+            "low_saturation_ratio": 0.1043298969072165,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/art/r79/frame-low.webp",
+          "bytes": 12752,
+          "sha256": "f12a7edd186223b461d6ea7dc46fd82af7780cd44be834fc298043a34975d291",
+          "size": [
+            160,
+            240
+          ],
+          "metrics": {
+            "brightness": 0.605162963687971,
+            "saturation": 0.4454125078593936,
+            "near_black_ratio": 0.0,
+            "low_saturation_ratio": 0.10524126455906822,
+            "double_gate_pass": true
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.8296337127685547,
+        "center": 0,
+        "bbox": [
+          11,
+          0,
+          1012,
+          1536
+        ]
+      }
+    },
+    {
+      "id": "icon-wave",
+      "source": "docs/art/source/r79/icon-wave.png",
+      "sha256": "1bb288d57c7bd361b33907669a9b0edf7cee554b3039fd622b423a8c2474a7d2",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 1746879,
+      "metrics": {
+        "brightness": 0.7081281037802777,
+        "saturation": 0.39381715306121684,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.281240498631803,
+        "double_gate_pass": false
+      },
+      "references": [
+        {
+          "path": "docs/art/source/r79/wave.png",
+          "sha256": "91850fb1ca22b9adf83e55f964ac035fdb4baaec2a890fa1b45e1688c2c102a9"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r79/icon-wave.webp",
+          "bytes": 10134,
+          "sha256": "6b0016a2abdb235d60605a767150d731fa97ce14cd2192b17eb94eb903942217",
+          "size": [
+            128,
+            128
+          ],
+          "metrics": {
+            "brightness": 0.7072462991572825,
+            "saturation": 0.40813310341010467,
+            "near_black_ratio": 0.0007590708972218005,
+            "low_saturation_ratio": 0.27903446181873387,
+            "double_gate_pass": false
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          255
+        ],
+        "transparent_ratio": 0.5861492029333882,
+        "center": 0,
+        "bbox": [
+          0,
+          0,
+          1254,
+          1254
+        ]
+      }
+    },
+    {
+      "id": "logo",
+      "source": "docs/art/source/r79/logo.png",
+      "sha256": "67fd7ab9cbd4dc4dda9c2cd7a452a25bc842b27eecf357ad7354d5e82a14f8f0",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2620141,
+      "metrics": {
+        "brightness": 0.6857166818823337,
+        "saturation": 0.35585687713510894,
+        "near_black_ratio": 0.011609434192838813,
+        "low_saturation_ratio": 0.29500183306855676,
+        "double_gate_pass": false
+      },
+      "references": [
+        {
+          "path": "assets/art/r78/logo.webp",
+          "sha256": "60fe87aa5cc961aea37f446a782f120596d0912162cea0d423e9ecad237b44a3"
+        },
+        {
+          "path": "docs/art/source/r79/wave.png",
+          "sha256": "91850fb1ca22b9adf83e55f964ac035fdb4baaec2a890fa1b45e1688c2c102a9"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r79/logo.webp",
+          "bytes": 231682,
+          "sha256": "3377017240e2e5775ef9c04222ec23d92ce2fe008c17ae6c3184a68f4846abfa",
+          "size": [
+            1000,
+            667
+          ],
+          "metrics": {
+            "brightness": 0.6830528788532527,
+            "saturation": 0.3545092934380877,
+            "near_black_ratio": 0.011002444987775062,
+            "low_saturation_ratio": 0.29584352078239606,
+            "double_gate_pass": false
+          }
+        }
+      ],
+      "alpha": {
+        "extrema": [
+          0,
+          254
+        ],
+        "transparent_ratio": 0.48223431905110675,
+        "center": 252,
+        "bbox": [
+          0,
+          25,
+          1516,
+          997
+        ]
+      }
+    },
+    {
+      "id": "app-icon",
+      "source": "docs/art/source/r79/app-icon.png",
+      "sha256": "298814e534a93ca9b8edc46c26adb6b0fcf0659a9cccc3a59b37111272af3d22",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 3310300,
+      "metrics": {
+        "brightness": 0.5121835746017157,
+        "saturation": 0.515422177698544,
+        "near_black_ratio": 0.00311279296875,
+        "low_saturation_ratio": 0.07745361328125,
+        "double_gate_pass": true
+      },
+      "references": [
+        {
+          "path": "docs/art/source/r79/wave.png",
+          "sha256": "91850fb1ca22b9adf83e55f964ac035fdb4baaec2a890fa1b45e1688c2c102a9"
+        },
+        {
+          "path": "docs/art/source/r79/frame.png",
+          "sha256": "75a0ca4dee2433f174d14d5851156641a273e97e1538cb77e9083e68d74e8201"
+        }
+      ],
+      "runtime": [
+        {
+          "path": "assets/art/r79/app-icon.webp",
+          "bytes": 107008,
+          "sha256": "0967f3a683ca3ae81ac37797488a34911cf3f7533e66ac58c996f0eb36064fd1",
+          "size": [
+            512,
+            512
+          ],
+          "metrics": {
+            "brightness": 0.5132197361366422,
+            "saturation": 0.5138900740207445,
+            "near_black_ratio": 0.0028076171875,
+            "low_saturation_ratio": 0.0780029296875,
+            "double_gate_pass": true
+          }
+        }
+      ]
+    }
+  ],
+  "postprocessing": "Pillow dimensions/WebP compression and QA sheets only. Native alpha preserved; no programmatic substitute art.",
+  "license": "AI-generated for this project; all previous licenses retained.",
+  "limitations": "Sheet is continuity reference, not animation; App icon local proposal only; native alpha max253/254 and soft halos retained and inspected. 64px self-review, no external blind test."
+}

@@ -1,0 +1,80 @@
+{
+  "status": "VERIFIED",
+  "assets": [
+    {
+      "id": "navigator",
+      "corners": [
+        0,
+        0,
+        3,
+        0
+      ],
+      "visible_bbox": [
+        6,
+        1,
+        1024,
+        1536
+      ],
+      "mask": "docs/art/source/navigator-alpha-mask.png",
+      "mask_sha256": "736c98b9e328ac67fc69b30a0cfbcde1118ce6f61de811f08e35b834bf14dfa9",
+      "note": "Native alpha; cropped portrait can touch lower edge. Review white/black composites for matte fringe."
+    },
+    {
+      "id": "frame",
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visible_bbox": [
+        7,
+        7,
+        1016,
+        1495
+      ],
+      "mask": "docs/art/source/frame-alpha-mask.png",
+      "mask_sha256": "f4361a6ff9499b3302c8e1afd2c209070dac85161363e0a6d7a31c553620c844",
+      "note": "Native alpha; cropped portrait can touch lower edge. Review white/black composites for matte fringe."
+    },
+    {
+      "id": "icons",
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visible_bbox": [
+        26,
+        29,
+        1243,
+        1216
+      ],
+      "mask": "docs/art/source/icons-alpha-mask.png",
+      "mask_sha256": "0a04895805c810bafb9370ff2c1ccd2504696c6ef6f7a54ef808a95e72f6acea",
+      "note": "Native alpha; cropped portrait can touch lower edge. Review white/black composites for matte fringe."
+    },
+    {
+      "id": "logo",
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visible_bbox": [
+        128,
+        12,
+        1402,
+        968
+      ],
+      "mask": "docs/art/source/logo-alpha-mask.png",
+      "mask_sha256": "1c02320172a63a45625adefc12b9a769d75b65ff73cc8062f55078ea7833f525",
+      "note": "Native alpha; cropped portrait can touch lower edge. Review white/black composites for matte fringe."
+    }
+  ],
+  "review": "docs/art/thumbs/alpha-fringe-review.png",
+  "reviewer": "Codex local visual review of white and indigo composites",
+  "result": "No baked white/black/checkerboard background or visible matte fringe; native near-zero corner alpha recorded without concealing values; portrait bottom edge is an intentional waist crop."
+}

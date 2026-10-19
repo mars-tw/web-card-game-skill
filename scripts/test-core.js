@@ -694,6 +694,86 @@ function testP0EffectsAndSilence() {
 }
 
 console.log("== core.js 單元測試 ==");
+function testTidebreakSignatureMechanic() {
+  // 回合開始充能：玩家在 endEnemy、對手在 startEnemy 各 +1
+  const turnState = state({ player: { deck: [minion("d1"), minion("d2")] }, enemy: { deck: [minion("e1"), minion("e2")] } });
+  Core.advanceTurn(turnState, { phase: "endPlayer" }, rngFactory());
+  Core.advanceTurn(turnState, { phase: "startEnemy" }, rngFactory());
+  assert(Core.tideOf(turnState.enemy) === 1 && Core.tideOf(turnState.player) === 0, "裂潮：對手回合開始潮能 +1，玩家不變");
+  const endEnemy = Core.advanceTurn(turnState, { phase: "endEnemy" }, rngFactory());
+  assert(Core.tideOf(turnState.player) === 1 && endEnemy.events.some((e) => e.type === "tideGain" && e.side === "player" && e.reason === "turn"),
+    "裂潮：玩家回合開始潮能 +1 並送出 tideGain 事件");
+
+  // 陣亡充能：被打死的一方 +1（翻盤機制）
+  const victim = minion("victim", { attack: 1, health: 1 });
+  const killer = minion("killer", { attack: 3, health: 3, canAttack: true });
+  const deathState = state({ player: { field: [killer] }, enemy: { field: [victim] } });
+  Core.resolveAttack(deathState, { attackerSide: "player", attackerUid: "killer", defenderUid: "victim" }, rngFactory());
+  assert(Core.tideOf(deathState.enemy) === 1 && Core.tideOf(deathState.player) === 0, "裂潮：己方隨從陣亡時該方潮能 +1");
+
+  // 上限與滿潮事件
+  const capSide = { side: "player", tide: Core.TIDE_MAX - 1 };
+  const capEvents = [];
+  Core.gainTide(capSide, 5, "fallen", capEvents);
+  assert(capSide.tide === Core.TIDE_MAX && capEvents.some((e) => e.type === "tideFull"), "裂潮：潮能不超過上限，滿潮送出 tideFull");
+
+  // 未滿不可放
+  const notFull = state({ player: { tide: Core.TIDE_MAX - 1 } });
+  const notFullResult = Core.tidebreak(notFull, { side: "player" }, rngFactory());
+  assert(!notFullResult.ok && notFullResult.reason === "tideNotFull" && notFull.enemy.hp === 30 && !Core.canTidebreak(notFull, "player"),
+    "裂潮：未滿潮不可施放、不造成傷害");
+
+  // 不是自己的回合不可放
+  const wrongTurn = state({ player: { tide: Core.TIDE_MAX }, game: { turn: "enemy" } });
+  const wrongTurnResult = Core.tidebreak(wrongTurn, { side: "player" }, rngFactory());
+  assert(!wrongTurnResult.ok && wrongTurnResult.reason === "notYourTurn" && wrongTurn.player.tide === Core.TIDE_MAX,
+    "裂潮：非己方回合不可施放且不扣潮能");
+
+  // 效果：每個敵方隨從 1 點、英雄 2 點、潮能歸零、聖盾吸收、死亡讓對手充能
+  const shielded = minion("shielded", { health: 3, shield: true });
+  const fragile = minion("fragile", { health: 1 });
+  const sturdy = minion("sturdy", { health: 4 });
+  const fire = state({ player: { tide: Core.TIDE_MAX }, enemy: { field: [shielded, fragile, sturdy] } });
+  assert(Core.canTidebreak(fire, "player"), "裂潮：滿潮且己方回合時 canTidebreak 為真");
+  const fired = Core.tidebreak(fire, { side: "player" }, rngFactory());
+  assert(fired.ok && fire.player.tide === 0 && fire.player.tidebreaksUsed === 1, "裂潮：施放後潮能歸零、使用次數 +1");
+  assert(fire.enemy.hp === 30 - Core.TIDEBREAK_HERO_DAMAGE, "裂潮：對敵方英雄造成 2 點傷害");
+  assert(!shielded.shield && shielded.health === 3 && sturdy.health === 3 && !fire.enemy.field.includes(fragile),
+    "裂潮：敵方隨從各受 1 點（聖盾吸收、1 血隨從陣亡）");
+  assert(Core.tideOf(fire.enemy) === 1, "裂潮：被爆發清掉隨從的一方獲得陣亡潮能");
+  assert(fired.events.some((e) => e.type === "tidebreak" && e.side === "player")
+    && fired.events.some((e) => e.type === "heroDamage" && e.source === "tidebreak" && e.amount === 2),
+    "裂潮：送出 tidebreak 與 heroDamage(source=tidebreak) 事件");
+  const twice = Core.tidebreak(fire, { side: "player" }, rngFactory());
+  assert(!twice.ok && twice.reason === "tideNotFull", "裂潮：同一次滿潮只能放一次");
+
+  // 遊戲結束後不可放
+  const over = state({ player: { tide: Core.TIDE_MAX }, game: { over: true } });
+  assert(!Core.tidebreak(over, { side: "player" }, rngFactory()).ok, "裂潮：對局結束後不可施放");
+}
+
+function testStarChallenges() {
+  const lose = Core.computeStars({ won: false, hpLeft: 30, maxHp: 30, tidebreaksUsed: 2 });
+  assert(lose.count === 0, "星級：敗北 0 星");
+  const plain = Core.computeStars({ won: true, hpLeft: 10, maxHp: 30, tidebreaksUsed: 0 });
+  assert(plain.count === 1 && plain.stars[0] && !plain.stars[1] && !plain.stars[2], "星級：只獲勝 1 星");
+  const healthy = Core.computeStars({ won: true, hpLeft: 15, maxHp: 30, tidebreaksUsed: 0 });
+  assert(healthy.count === 2 && healthy.stars[1], "星級：生命剛好一半也算第二星");
+  const full = Core.computeStars({ won: true, hpLeft: 28, maxHp: 30, tidebreaksUsed: 1 });
+  assert(full.count === 3, "星級：獲勝＋過半生命＋用過裂潮爆發＝3 星");
+
+  const first = Core.mergeBestStars(null, "op_ser_halden", "easy", 2);
+  assert(first.improved && first.best === 2 && first.previous === 0, "星級：首次紀錄寫入最佳 2 星");
+  const worse = Core.mergeBestStars(first.record, "op_ser_halden", "easy", 1);
+  assert(!worse.improved && worse.best === 2, "星級：較差成績不覆蓋最佳紀錄");
+  const better = Core.mergeBestStars(worse.record, "op_ser_halden", "easy", 3);
+  assert(better.improved && better.best === 3 && better.previous === 2, "星級：刷新紀錄時 improved 為真");
+  const migrated = Core.migrateStarRecord({ version: 1, best: { "op_ser_halden:easy": 9, "bad key": 2, "op_scarra:hard": "2" } });
+  assert(migrated.best["op_ser_halden:easy"] === 3 && !("bad key" in migrated.best) && migrated.best["op_scarra:hard"] === 2,
+    "星級：遷移時夾住 0–3 並丟棄非法 key");
+  assert(Object.keys(Core.migrateStarRecord({ version: 99, best: { "op_scarra:easy": 3 } }).best).length === 0, "星級：版本不符時重置");
+}
+
 testInsufficientMana();
 testMaxField();
 testWindfuryLimit();
@@ -717,6 +797,8 @@ testChroniclePureFunctions();
 testP0EffectsAndSilence();
 testHeroCardMechanics();
 testGoalsAndWeeklyQuests();
+testTidebreakSignatureMechanic();
+testStarChallenges();
 
 console.log("");
 console.log(`PASS ${passed} / FAIL ${failed}`);

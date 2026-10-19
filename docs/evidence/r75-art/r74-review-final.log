@@ -1,0 +1,280 @@
+✓ 320×568 港口 trialStart 可達
+✓ 320×568 港口 voyageStart 可達
+✓ 320×568 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 觀潮台 tideTrialReplay 真實命中
+✓ 觀潮台 tideHarbor 真實命中
+✓ 退潮預覽符合當前場面
+✓ 第一次正式交換陣亡充能
+✓ 重開後提供繼續對局
+✓ 恢復一次交換後的實際場面與潮能
+✓ 第二次交換滿六格
+✓ 滿潮預覽顯示兩位殘血敵軍
+✓ 滿潮確認施放可達
+✓ 正式漲潮命中完成首個目標
+✓ 完成紀錄讀回
+✓ 試航不灌入對戰戰績或金幣
+✓ 勝利清除進行中檢查點
+✓ 試航結算隱藏一般開包／領獎控制
+✓ 結算 trialResultReplay 可達
+✓ 結算 trialResultVoyage 可達
+✓ 結算 trialResultHarbor 可達
+✓ 試航結算實際銜接五站航程
+✓ 航程第一站進入正式對戰
+✓ 回到一般對戰清除試航專屬結算
+✓ 冷重載仍保留完成紀錄
+✓ 冷啟動至招牌完成小於三分鐘
+✓ 375×667 港口 trialStart 可達
+✓ 375×667 港口 voyageStart 可達
+✓ 375×667 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 觀潮台 tideTrialReplay 真實命中
+✓ 觀潮台 tideHarbor 真實命中
+✓ 退潮預覽符合當前場面
+✓ 第一次正式交換陣亡充能
+✓ 重開後提供繼續對局
+✓ 恢復一次交換後的實際場面與潮能
+✓ 第二次交換滿六格
+✓ 滿潮預覽顯示兩位殘血敵軍
+✓ 滿潮確認施放可達
+✓ 正式漲潮命中完成首個目標
+✓ 完成紀錄讀回
+✓ 試航不灌入對戰戰績或金幣
+✓ 勝利清除進行中檢查點
+✓ 試航結算隱藏一般開包／領獎控制
+✓ 結算 trialResultReplay 可達
+✓ 結算 trialResultVoyage 可達
+✓ 結算 trialResultHarbor 可達
+✓ 試航結算實際銜接五站航程
+✓ 航程第一站進入正式對戰
+✓ 回到一般對戰清除試航專屬結算
+✓ 冷重載仍保留完成紀錄
+✓ 冷啟動至招牌完成小於三分鐘
+✓ 430×932 港口 trialStart 可達
+✓ 430×932 港口 voyageStart 可達
+✓ 430×932 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 觀潮台 tideTrialReplay 真實命中
+✓ 觀潮台 tideHarbor 真實命中
+✓ 退潮預覽符合當前場面
+✓ 第一次正式交換陣亡充能
+✓ 重開後提供繼續對局
+✓ 恢復一次交換後的實際場面與潮能
+✓ 第二次交換滿六格
+✓ 滿潮預覽顯示兩位殘血敵軍
+✓ 滿潮確認施放可達
+✓ 正式漲潮命中完成首個目標
+✓ 完成紀錄讀回
+✓ 試航不灌入對戰戰績或金幣
+✓ 勝利清除進行中檢查點
+✓ 試航結算隱藏一般開包／領獎控制
+✓ 結算 trialResultReplay 可達
+✓ 結算 trialResultVoyage 可達
+✓ 結算 trialResultHarbor 可達
+✓ 試航結算實際銜接五站航程
+✓ 航程第一站進入正式對戰
+✓ 回到一般對戰清除試航專屬結算
+✓ 冷重載仍保留完成紀錄
+✓ 冷啟動至招牌完成小於三分鐘
+✓ 真正離線重載港口
+✓ 真正離線完成完整試航
+✓ 844×390 港口 trialStart 可達
+✓ 844×390 港口 voyageStart 可達
+✓ 844×390 港口 privacyOpen 可達
+✓ 港口無水平溢出
+✓ 隱私說明可讀
+✓ 試航導引 trialBegin ≥44px
+✓ 試航導引 trialLeave ≥44px
+✓ 明示固定試航與初始潮能
+✓ 未滿潮不能消耗
+✓ 觀潮台 chooseFlood 真實命中
+✓ 觀潮台 chooseEbb 真實命中
+✓ 觀潮台 tideChartClose 真實命中
+✓ 觀潮台 tideTrialReplay 真實命中
+✓ 觀潮台 tideHarbor 真實命中
+✓ 退潮預覽符合當前場面
+node : locator.click: Timeout 30000ms exceeded.
+位於 線路:2 字元:1
++ node scripts/test-r74-review.js *> docs/evidence/r75-art/r74-review-f ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (locator.click: Timeout 30000ms exceeded.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Call log:
+[2m  - waiting for locator('[data-uid="trial-e1"]')[22m
+[2m    - locator resolved to <div tabindex="0" role="button" data-uid="trial-e1" data-card-id="archer" class="card rar
+ity-common faction-wardens" aria-label="敵方場上卡，弓箭手，2 費，2 攻 2 血，輸出穩定的萬用兵。">…</div>[22m
+[2m  - attempting click action[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <img alt="見習士兵" src="../../assets/cards/footman.png"/> from <div role="dialog" id="cardDetail" aria-modal="
+true" aria-hidden="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointer
+ events[22m
+[2m    - retrying click action[22m
+[2m    - waiting 20ms[22m
+[2m    - waiting for element to be visible, enabled and stable[22m
+[2m    - element is visible, enabled and stable[22m
+[2m    - scrolling into view if needed[22m
+[2m    - done scrolling[22m
+[2m    - <img alt="見習士兵" src="../../assets/cards/footman.png"/> from <div role="dialog" id="cardDetail" aria-modal="tr
+ue" aria-hidden="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointer e
+vents[22m
+[2m  2 × retrying click action[22m
+[2m      - waiting 100ms[22m
+[2m      - waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <div class="card-detail-card">…</div> from <div role="dialog" id="cardDetail" aria-modal="true" aria-hidden
+="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointer events[22m
+[2m  13 × retrying click action[22m
+[2m       - waiting 500ms[22m
+[2m       - waiting for element to be visible, enabled and stable[22m
+[2m       - element is visible, enabled and stable[22m
+[2m       - scrolling into view if needed[22m
+[2m       - done scrolling[22m
+[2m       - <img alt="見習士兵" src="../../assets/cards/footman.png"/> from <div role="dialog" id="cardDetail" aria-modal=
+"true" aria-hidden="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointe
+r events[22m
+[2m     - retrying click action[22m
+[2m       - waiting 500ms[22m
+[2m       - waiting for element to be visible, enabled and stable[22m
+[2m       - element is visible, enabled and stable[22m
+[2m       - scrolling into view if needed[22m
+[2m       - done scrolling[22m
+[2m       - <img alt="見習士兵" src="../../assets/cards/footman.png"/> from <div role="dialog" id="cardDetail" aria-modal=
+"true" aria-hidden="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointe
+r events[22m
+[2m     - retrying click action[22m
+[2m       - waiting 500ms[22m
+[2m       - waiting for element to be visible, enabled and stable[22m
+[2m       - element is visible, enabled and stable[22m
+[2m       - scrolling into view if needed[22m
+[2m       - done scrolling[22m
+[2m       - <div class="card-detail-card">…</div> from <div role="dialog" id="cardDetail" aria-modal="true" aria-hidde
+n="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointer events[22m
+[2m     - retrying click action[22m
+[2m       - waiting 500ms[22m
+[2m       - waiting for element to be visible, enabled and stable[22m
+[2m       - element is visible, enabled and stable[22m
+[2m       - scrolling into view if needed[22m
+[2m       - done scrolling[22m
+[2m       - <div class="card-detail-card">…</div> from <div role="dialog" id="cardDetail" aria-modal="true" aria-hidde
+n="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointer events[22m
+[2m  2 × retrying click action[22m
+[2m      - waiting 500ms[22m
+[2m      - waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <img alt="見習士兵" src="../../assets/cards/footman.png"/> from <div role="dialog" id="cardDetail" aria-modal="
+true" aria-hidden="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointer
+ events[22m
+[2m  - retrying click action[22m
+[2m    - waiting 500ms[22m
+
+    at attack (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-r74-review.js:19:44)
+    at async C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-r74-review.js:61:7 {
+  log: [
+    `  - waiting for locator('[data-uid="trial-e1"]')`,
+    '    - locator resolved to <div tabindex="0" role="button" data-uid="trial-e1" data-card-id="archer" class="card ra
+rity-common faction-wardens" aria-label="敵方場上卡，弓箭手，2 費，2 攻 2 血，輸出穩定的萬用兵。">…</div>',
+    '  - attempting click action',
+    '    2 × waiting for element to be visible, enabled and stable',
+    '      - element is visible, enabled and stable',
+    '      - scrolling into view if needed',
+    '      - done scrolling',
+    '      - <img alt="見習士兵" src="../../assets/cards/footman.png"/> from <div role="dialog" id="cardDetail" aria-modal=
+"true" aria-hidden="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointe
+r events',
+    '    - retrying click action',
+    '    - waiting 20ms',
+    '    - waiting for element to be visible, enabled and stable',
+    '    - element is visible, enabled and stable',
+    '    - scrolling into view if needed',
+    '    - done scrolling',
+    '    - <img alt="見習士兵" src="../../assets/cards/footman.png"/> from <div role="dialog" id="cardDetail" aria-modal="t
+rue" aria-hidden="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointer 
+events',
+    '  2 × retrying click action',
+    '      - waiting 100ms',
+    '      - waiting for element to be visible, enabled and stable',
+    '      - element is visible, enabled and stable',
+    '      - scrolling into view if needed',
+    '      - done scrolling',
+    '      - <div class="card-detail-card">…</div> from <div role="dialog" id="cardDetail" aria-modal="true" aria-hidde
+n="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointer events',
+    '  13 × retrying click action',
+    '       - waiting 500ms',
+    '       - waiting for element to be visible, enabled and stable',
+    '       - element is visible, enabled and stable',
+    '       - scrolling into view if needed',
+    '       - done scrolling',
+    '       - <img alt="見習士兵" src="../../assets/cards/footman.png"/> from <div role="dialog" id="cardDetail" aria-modal
+="true" aria-hidden="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts point
+er events',
+    '     - retrying click action',
+    '       - waiting 500ms',
+    '       - waiting for element to be visible, enabled and stable',
+    '       - element is visible, enabled and stable',
+    '       - scrolling into view if needed',
+    '       - done scrolling',
+    '       - <img alt="見習士兵" src="../../assets/cards/footman.png"/> from <div role="dialog" id="cardDetail" aria-modal
+="true" aria-hidden="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts point
+er events',
+    '     - retrying click action',
+    '       - waiting 500ms',
+    '       - waiting for element to be visible, enabled and stable',
+    '       - element is visible, enabled and stable',
+    '       - scrolling into view if needed',
+    '       - done scrolling',
+    '       - <div class="card-detail-card">…</div> from <div role="dialog" id="cardDetail" aria-modal="true" aria-hidd
+en="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointer events',
+    '     - retrying click action',
+    '       - waiting 500ms',
+    '       - waiting for element to be visible, enabled and stable',
+    '       - element is visible, enabled and stable',
+    '       - scrolling into view if needed',
+    '       - done scrolling',
+    '       - <div class="card-detail-card">…</div> from <div role="dialog" id="cardDetail" aria-modal="true" aria-hidd
+en="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointer events',
+    '  2 × retrying click action',
+    '      - waiting 500ms',
+    '      - waiting for element to be visible, enabled and stable',
+    '      - element is visible, enabled and stable',
+    '      - scrolling into view if needed',
+    '      - done scrolling',
+    '      - <img alt="見習士兵" src="../../assets/cards/footman.png"/> from <div role="dialog" id="cardDetail" aria-modal=
+"true" aria-hidden="false" class="card-detail show" aria-labelledby="cardDetailTitle">…</div> subtree intercepts pointe
+r events',
+    '  - retrying click action',
+    '    - waiting 500ms'
+  ],
+  name: 'TimeoutError'
+}

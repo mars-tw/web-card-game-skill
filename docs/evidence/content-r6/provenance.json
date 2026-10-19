@@ -1,0 +1,41 @@
+{
+  "status": "VERIFIED",
+  "comparisons": [
+    {
+      "path": "docs/evidence/content-r6/before-exchange.png",
+      "source": "docs/content/r5/phone-puzzle-cross-playing.png",
+      "sha256": "300eac3c80e70027debb432b0cd46470632cee6cb4368a55be965b5be76ca765",
+      "method": "Historical R5 byte copy, not re-captured"
+    },
+    {
+      "path": "docs/evidence/content-r6/after-exchange.png",
+      "source": "docs/content/r6/phone-exchange-preview.png",
+      "sha256": "4507eb05ccc1c105dee11a996b666ec977d03c44c8fe96d8fd5962406f8dd71a",
+      "method": "Current R6 native screenshot byte copy"
+    },
+    {
+      "path": "docs/evidence/content-r6/before-forecast.png",
+      "source": "docs/content/r5/phone-forecast-wrong-direction.png",
+      "sha256": "c670fe0b079be0a1e12dd37c619f0a65d0eba0e2e43d4f3f94417450f822d57d",
+      "method": "Historical R5 byte copy, not re-captured"
+    },
+    {
+      "path": "docs/evidence/content-r6/after-forecast.png",
+      "source": "docs/content/r6/phone-forecast-wrong-direction.png",
+      "sha256": "0b23f77f9099040a7b680f3408fafa8cc1df94dc0d630763bcbfb798c4c2539f",
+      "method": "Current R6 native screenshot byte copy"
+    },
+    {
+      "path": "docs/evidence/content-r6/before-moen.png",
+      "source": "docs/content/r5/phone-moen-shield-after.png",
+      "sha256": "0c2756ca48f6fdd10cc68325bfe80bde2b901520be9dfe8c9c5e2e9622761eb4",
+      "method": "Historical R5 byte copy, not re-captured"
+    },
+    {
+      "path": "docs/evidence/content-r6/after-moen.png",
+      "source": "docs/content/r6/phone-moen-shield-after.png",
+      "sha256": "4dbd3ca4bfebf40890046d057efcde7cd96310c3b38aacad3bd8183f9ffa3ed3",
+      "method": "Current R6 native screenshot byte copy"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+PASS flood allowed direction ready to cast
+PASS flood anticipation has original HP, no shield and no tide spend
+PASS flood actual impact spends six tide
+PASS flood actual direction-specific damage or protection
+PASS flood actual impact checkpoint survives reload
+PASS flood real exchanges expose different surviving allies
+PASS flood branch actually completes
+PASS flood win persists after reload
+PASS ebb allowed direction ready to cast
+PASS ebb anticipation has original HP, no shield and no tide spend
+PASS ebb actual impact spends six tide
+PASS ebb actual direction-specific damage or protection
+PASS ebb actual impact checkpoint survives reload
+PASS ebb real exchanges expose different surviving allies
+PASS ebb branch actually completes
+PASS ebb win persists after reload
+VERIFIED forecast effects: 16 checks

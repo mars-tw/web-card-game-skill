@@ -1,0 +1,256 @@
+{
+  "status": "VERIFIED",
+  "version": "0.8.0",
+  "baseCommit": "676d00efbae738ddc5733c8f0f8f702d202e7692",
+  "runtimeHashes": {
+    "index.html": "1700fcae2087fd46d8aa9869ed55d65e690f424fbcb15db5bd3555ead2f9ac37",
+    "manifest.webmanifest": "206b70b1f0a74e79ce9c8587462ffef16d3eefa6e056b2300cc1046a15ca96d7",
+    "sw.js": "f2ae645c809abb11592642182c905342936467377ee83ebb2ba4ae5eed6c06b5",
+    "templates/card-battle/battle.js": "f20660314d89c1c7250096c38a07f1f1df88ca5bcfb18dd9a32a6c7c108c45ed",
+    "templates/card-battle/cards.js": "a427ad865041a93683c08e35b6cc92c6a02627faf07dc456e7a49d1466a2defa",
+    "templates/card-battle/core.js": "1d2e612e0c742894bade925dcb31fcd0229079ff0fe641ce2cc7ea074918c3c9",
+    "templates/card-battle/pose-player.js": "acc557ffafe3a774c291d7a97a02068323572fcfc03fc8cbd98230b756c3ae59",
+    "templates/card-battle/r73-ui.js": "9f3a3af41e3475a9bed1cf64a6460ee6498e97ec4e9751ef58804b16b1aad0cf",
+    "templates/card-battle/tide-session.js": "e8e72f388af6705627ffe45a824c6844c0c588002c3f8db874ff0f44a33ba2b2",
+    "templates/card-battle/voyage.js": "01480184862b1e6ac50aa03f3f51745925d484abf5063ada0be1ca7bc3bf77f8",
+    "templates/card-pack/pack.js": "8196f7caf86f1e3eac13ff827354fa776c00e31286cc15d809b311577c235743",
+    "templates/harbor.html": "03eecfaaa3b2b80e1ef01495950ece6e8ce35b01db272f3a4d9a2e0da09ad186",
+    "templates/index.html": "e5092557ad7d6f48137139191b9c3e72a5ad05204fa85769f8ce31d248a5996b",
+    "templates/card-battle/index.html": "5af1a637fd64c253e5d661a28a3e9fb1d023c5605c35c513a6e1463d57075edc",
+    "templates/card-pack/index.html": "766aea340c15ea60ff0f9974775e8decf9b76555f82334bf8f9a828536718237",
+    "templates/r75-harbor.css": "579b7ac6dea40721248830da6d4e6851c0e00a08cba9b15e9836f780e8aeeba1",
+    "templates/r75-theme.css": "b8441de6cf1d7f133282419ad6d7129f07d3bdee6963e47bc06db2f5b1491e4f",
+    "templates/card-battle/r73-mobile.css": "1ab315d41d5f1cebb256aa07570738b82db25d991505ebbae4e8dc6c72629178",
+    "templates/card-battle/r74-tide.css": "18b2c952431f53e148f996fad8c34570d4101c79b7a8c0663f240352e9a327a1"
+  },
+  "screenshots": [
+    {
+      "path": "docs/store/screenshots/battle-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "fdc470921492813fa5491ab79c5d5421c7e16e870dee237c70bf41b5ef815498",
+      "bytes": 3200583
+    },
+    {
+      "path": "docs/store/screenshots/battle-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "f085a28c909cb2c614517d8d30fac2e5d3024edb287aee9d17bb3078e37c939a",
+      "bytes": 5258292
+    },
+    {
+      "path": "docs/store/screenshots/harbor-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "2308fd3e768dfa24479fa1b8344d44847029fd3d9f58a18869c46f4411f243ea",
+      "bytes": 3749774
+    },
+    {
+      "path": "docs/store/screenshots/harbor-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "bc6e23134cb9d5e74ed27c76949bf2acbbea358bc1d63ffde60e898c85d248bd",
+      "bytes": 6847579
+    },
+    {
+      "path": "docs/store/screenshots/tide-chart-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "240cb7cc725c606a2070e98f7c30afef79f1191d056dee2acc976f8ca779faaa",
+      "bytes": 2197802
+    },
+    {
+      "path": "docs/store/screenshots/tide-chart-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "61ac86f8cd70cf7c2a8bc9b67a8adc7bdc5f97f7b2b2213dbfd53384a740c199",
+      "bytes": 4215678
+    },
+    {
+      "path": "docs/store/screenshots/trial-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "a93575553616e4d7a4ff1d348732972986b3e6c8b051449e02502328c4f2f8af",
+      "bytes": 3246478
+    },
+    {
+      "path": "docs/store/screenshots/trial-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "7cd443e7ae92983a21716199c2ce58971b2c94389e6509bcc88a0552734e7a7a",
+      "bytes": 5197369
+    },
+    {
+      "path": "docs/store/screenshots/victory-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "b14f1d437e19d8f2ec41b8e3922f61fcc3ecf4c733008eb8c09a427bd685999f",
+      "bytes": 3332012
+    },
+    {
+      "path": "docs/store/screenshots/victory-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "dff280249b54a37ca565e185e818c060dd4292256328b2974076fffe84ee59fd",
+      "bytes": 5127843
+    }
+  ],
+  "syntax": [
+    {
+      "path": "templates/card-battle/battle.js",
+      "pass": true
+    },
+    {
+      "path": "templates/card-battle/cards.js",
+      "pass": true
+    },
+    {
+      "path": "templates/card-battle/core.js",
+      "pass": true
+    },
+    {
+      "path": "templates/card-battle/pose-player.js",
+      "pass": true
+    },
+    {
+      "path": "templates/card-battle/r73-ui.js",
+      "pass": true
+    },
+    {
+      "path": "templates/card-battle/tide-session.js",
+      "pass": true
+    },
+    {
+      "path": "templates/card-battle/voyage.js",
+      "pass": true
+    },
+    {
+      "path": "templates/card-pack/pack.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/audit-oc-r1.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/capture-r70-evidence.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/capture-r72-evidence.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/capture-r73-mobile.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/capture-r75-art.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-balance-sim.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-battle-e2e.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-cards.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-controls-reachability.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-core.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-quality-gates.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-r67-browser.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-r67-performance.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-r72-fun.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-r73-mobile.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-r73-voyage.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-r74-ebb.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-r74-review.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-r74-rules.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-r75-art.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-r75-frames.js",
+      "pass": true
+    },
+    {
+      "path": "scripts/test-rwd-matrix.js",
+      "pass": true
+    }
+  ],
+  "oldRevisionHits": [],
+  "secretScan": {
+    "status": "VERIFIED",
+    "hits": 0,
+    "files": [],
+    "exitCode": 1,
+    "scope": "current repo excluding .git/node_modules; filenames only; no secret values"
+  },
+  "artBytes": {
+    "newOrReplacedRuntime": 6532609,
+    "replacedOldRuntime": 3364742,
+    "netRuntimeArtIncrease": 3167867,
+    "sourceArchive": 26926194
+  },
+  "performanceQualification": "Concurrent-machine headless evidence only; no clean-machine/physical phone release verification.",
+  "scope": "local main branch only; no push/deploy/store/account messages; incoming evidence restoration recorded separately"
+}

@@ -1,0 +1,150 @@
+PASS harbor exact name 六道潮汐殘局
+PASS harbor contentEntry reachable 44px
+PASS harbor exact name 潮汐預報
+PASS harbor forecastEntry reachable 44px
+PASS harbor exact name 茉恩的退潮考驗
+PASS harbor moenEntry reachable 44px
+PASS harbor link opens requested 潮汐預報
+PASS harbor link opens requested 茉恩的退潮考驗
+PASS study exact name 六道潮汐殘局
+PASS study exact name 潮汐預報
+PASS study exact name 茉恩的退潮考驗
+PASS first entry is an action sentence
+PASS study puzzles opaque backdrop
+PASS study puzzles description within three lines
+PASS study forecast opaque backdrop
+PASS study forecast description within three lines
+PASS study moen opaque backdrop
+PASS study moen description within three lines
+PASS fallen wrong order really fails
+PASS fallen failure identifies the wrong step
+PASS fallen failure title text buttons uncut
+PASS puzzle-fallen-failed directly marks exactly the wrong card
+PASS fallen failure does not grant completion
+PASS fallen immediate retry restored
+PASS fallen real solution complete
+PASS fallen completion title text buttons uncut
+PASS short result title stays on one line puzzle-fallen-completed
+PASS puzzle-shield-playing no full ordered answer
+PASS shield wrong order really fails
+PASS shield failure identifies the wrong step
+PASS shield failure title text buttons uncut
+PASS puzzle-shield-failed directly marks exactly the wrong card
+PASS shield failure does not grant completion
+PASS shield immediate retry restored
+PASS shield real solution complete
+PASS shield completion title text buttons uncut
+PASS short result title stays on one line puzzle-shield-completed
+PASS puzzle-shelter-playing no full ordered answer
+PASS shelter wrong order really fails
+PASS shelter failure identifies the wrong step
+PASS shelter failure title text buttons uncut
+PASS puzzle-shelter-failed directly marks exactly the wrong card
+PASS shelter failure does not grant completion
+PASS shelter immediate retry restored
+PASS shelter real solution complete
+PASS shelter completion title text buttons uncut
+PASS short result title stays on one line puzzle-shelter-completed
+PASS puzzle-taunt-playing no full ordered answer
+PASS taunt wrong order really fails
+PASS taunt failure identifies the wrong step
+PASS taunt failure title text buttons uncut
+PASS puzzle-taunt-failed directly marks exactly the wrong card
+PASS taunt failure does not grant completion
+PASS taunt immediate retry restored
+PASS taunt real solution complete
+PASS taunt completion title text buttons uncut
+PASS short result title stays on one line puzzle-taunt-completed
+PASS puzzle-spell-playing no full ordered answer
+PASS spell wrong order really fails
+PASS spell failure identifies the wrong step
+PASS spell failure title text buttons uncut
+PASS puzzle-spell-failed directly marks exactly the wrong card
+PASS spell failure does not grant completion
+PASS spell immediate retry restored
+PASS spell real solution complete
+PASS spell completion title text buttons uncut
+PASS short result title stays on one line puzzle-spell-completed
+PASS puzzle-cross-playing no full ordered answer
+PASS cross wrong order really fails
+PASS cross failure identifies the wrong step
+PASS cross failure title text buttons uncut
+PASS puzzle-cross-failed directly marks exactly the wrong card
+PASS cross failure does not grant completion
+PASS cross immediate retry restored
+PASS cross real solution complete
+PASS cross completion title text buttons uncut
+PASS short result title stays on one line puzzle-cross-completed
+PASS six title-independent art combinations unique
+PASS six actual completions saved on reload
+PASS verification wrong unprotected exchange fails
+PASS verification real checkpoint resumes
+PASS verification completion fits
+PASS short result title stays on one line verification-completed
+PASS verification completion persisted
+PASS visible first-step pulse and label
+PASS press phase is real pointer feedback
+PASS release really changes future
+PASS saved reversal stays consumed
+PASS wrong tide unavailable
+PASS wrong direction zero consumption
+PASS past turn explains lock
+PASS past turn cannot mutate schedule
+PASS fourth round free choice
+PASS fourth turn actual opposing units exist
+PASS fourth turn two choices and complete opposing cards visible together without scroll
+PASS chart really collapses
+PASS collapsed chart traps focus on visible close
+PASS collapsed chart cycles back to visible expand
+PASS chart expands again
+PASS forecast result fully fits
+PASS forecast result corrected sentence
+PASS short result title stays on one line forecast-completed
+PASS 390x844 all preparation cards complete
+PASS wave anticipation has not resolved damage
+PASS 390x844 no half cards after ebb
+PASS painted Moen fills empty middle
+PASS large real intact shield badge
+PASS broken art and impact frame follow real shield loss
+PASS shield actually removed
+PASS real knight HP identical across shield break
+PASS broken shield survives saved checkpoint
+PASS Moen completion uncut
+PASS short result title stays on one line moen-completed
+PASS delaying makes knight actually attack
+PASS study does not alter actual battle ledger
+PASS voyage exact name 六道潮汐殘局
+PASS voyage exact name 潮汐預報
+PASS voyage exact name 茉恩的退潮考驗
+PASS normal boss route records completion
+PASS zero-wins explanation visible
+PASS all progress real export clear import round trip
+PASS bad code leaves every save key unchanged
+PASS save error centered and uncut
+PASS 844x390 complete card bounds
+PASS 844x390 forecast cards stay completely within their fields
+PASS 844x390 forecast hero bars complete within board
+PASS 844x390 forecast choices and collapse controls reachable
+PASS 844x390 opposing cards completely outside chart
+PASS 1032x1376 complete card bounds
+PASS 1032x1376 forecast cards stay completely within their fields
+PASS 1032x1376 forecast hero bars complete within board
+PASS 1032x1376 forecast choices and collapse controls reachable
+PASS 1032x1376 opposing cards completely outside chart
+PASS 1376x1032 complete card bounds
+PASS 1376x1032 forecast cards stay completely within their fields
+PASS 1376x1032 forecast hero bars complete within board
+PASS 1376x1032 forecast choices and collapse controls reachable
+PASS 1376x1032 opposing cards completely outside chart
+PASS 1366x600 complete card bounds
+PASS 1366x600 forecast cards stay completely within their fields
+PASS 1366x600 forecast hero bars complete within board
+PASS 1366x600 forecast choices and collapse controls reachable
+PASS 1366x600 opposing cards completely outside chart
+PASS 430x932 complete card bounds
+PASS 1032x1376 complete card bounds
+PASS new shield art cached offline
+PASS short result title stays on one line offline-completed
+PASS offline normal input completes
+PASS zero page or resource errors
+Content R4 browser: 149 PASS

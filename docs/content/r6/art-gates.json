@@ -1,0 +1,38 @@
+{
+  "status": "VERIFIED",
+  "method": "Same HSV algorithm and thresholds as existing R76: 128px BOX, alpha >32, V .30-.75, S >=.32, V<.1 <35%, S<.12 <20%. No display filters.",
+  "rows": [
+    {
+      "path": "docs/art/source/content-r6/moen-poses.png",
+      "brightness": 0.47107298987327767,
+      "saturation": 0.40635388168506964,
+      "nearBlack": 0.008560677328316087,
+      "lowSaturation": 0.024270931326434618,
+      "passGate": true
+    },
+    {
+      "path": "assets/art/content-r6/moen-0.webp",
+      "brightness": 0.47208358305385884,
+      "saturation": 0.41599109099833953,
+      "nearBlack": 0.02243659223932365,
+      "lowSaturation": 0.03977888575764145,
+      "passGate": true
+    },
+    {
+      "path": "assets/art/content-r6/moen-1.webp",
+      "brightness": 0.4453747760832728,
+      "saturation": 0.4312549816831609,
+      "nearBlack": 0.023407407407407408,
+      "lowSaturation": 0.0214320987654321,
+      "passGate": true
+    },
+    {
+      "path": "assets/art/content-r6/moen-2.webp",
+      "brightness": 0.48302956024682486,
+      "saturation": 0.42357571981260705,
+      "nearBlack": 0.01589825119236884,
+      "lowSaturation": 0.03347000251025019,
+      "passGate": true
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+[
+  {
+    "name": "e2e",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:e2e"
+    ],
+    "exitCode": 0,
+    "seconds": 1082.25
+  },
+  {
+    "name": "rwd",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:rwd"
+    ],
+    "exitCode": 0,
+    "seconds": 87.09
+  },
+  {
+    "name": "r6",
+    "command": [
+      "node",
+      "scripts/test-content-r6-e2e.js"
+    ],
+    "exitCode": 0,
+    "seconds": 119.98
+  },
+  {
+    "name": "ci-performance",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:r67:performance"
+    ],
+    "exitCode": 1,
+    "seconds": 30.41
+  },
+  {
+    "name": "frames",
+    "command": [
+      "node",
+      "scripts/measure-content-r7.js"
+    ],
+    "exitCode": 0,
+    "seconds": 31.02
+  },
+  {
+    "name": "static",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exitCode": 0,
+    "seconds": 6.72
+  },
+  {
+    "name": "r6-effects",
+    "command": [
+      "node",
+      "scripts/test-content-r6-effects.js"
+    ],
+    "exitCode": 0,
+    "seconds": 8.3
+  },
+  {
+    "name": "offline-addendum",
+    "command": [
+      "node",
+      "scripts/test-content-r7-offline.js"
+    ],
+    "exitCode": 0,
+    "seconds": 22.08
+  },
+  {
+    "name": "ci-performance",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:r67:performance"
+    ],
+    "exitCode": 1,
+    "seconds": 29.39
+  },
+  {
+    "name": "ci-performance",
+    "label": "ci-performance-optimized",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:r67:performance"
+    ],
+    "exitCode": 0,
+    "seconds": 28.89
+  },
+  {
+    "name": "static",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exitCode": 0,
+    "seconds": 7.23
+  },
+  {
+    "name": "r7",
+    "command": [
+      "node",
+      "scripts/test-content-r7-e2e.js"
+    ],
+    "exitCode": 0,
+    "seconds": 125.16
+  },
+  {
+    "name": "offline-addendum",
+    "command": [
+      "node",
+      "scripts/test-content-r7-offline.js"
+    ],
+    "exitCode": 0,
+    "seconds": 22.69
+  }
+]

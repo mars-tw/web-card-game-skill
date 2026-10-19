@@ -1,0 +1,1481 @@
+{
+  "status": "EXECUTED",
+  "method": "SHA-256 exact files + named UI/audio/storage identifiers; no claim of exhaustive semantic equivalence",
+  "ownFiles": 139,
+  "inventory": [
+    {
+      "app": "Crackveil Vanguard",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\rift-survivors",
+      "filesChecked": 243,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "暴風啟示錄",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\storm-apocalypse",
+      "filesChecked": 80,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "灰燼護航",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\doomsday-shooter",
+      "filesChecked": 110,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "無盡塔防",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\tower-defense",
+      "filesChecked": 188,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "陽光農場",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\pixel-idle-farm-skill",
+      "filesChecked": 335,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "村莊攻防",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\village-siege",
+      "filesChecked": 308,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "七期：斷鏈行動",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\seven-district-reckoning",
+      "filesChecked": 518,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "Rift Forge 3D",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\rift-forge-3d",
+      "filesChecked": 6,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "島嶼交通學院",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\taiwan-island-drive",
+      "filesChecked": 255,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "小小列車長",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\taiwan-train-math",
+      "filesChecked": 218,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "夜行列車",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\夜行列車_重製企劃_20261002",
+      "filesChecked": 4,
+      "scope": "root files only; redesign preview is not production"
+    },
+    {
+      "app": "島嶼飛行學校",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\island-flight-school",
+      "filesChecked": 21,
+      "scope": "tracked runtime/assets"
+    },
+    {
+      "app": "島嶼鐵道學校",
+      "path": "C:\\Users\\digimkt\\Desktop\\遊戲\\taiwan-train-school",
+      "filesChecked": 17,
+      "scope": "tracked runtime/assets"
+    }
+  ],
+  "duplicates": [],
+  "sharedIdentifiers": [
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "Crackveil Vanguard",
+      "otherFile": "web/mobile_startup.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "Crackveil Vanguard",
+      "otherFile": "web/mobile_startup.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "Crackveil Vanguard",
+      "otherFile": "web/mobile_startup.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "灰燼護航",
+      "otherFile": "index.html",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "灰燼護航",
+      "otherFile": "index.html",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "灰燼護航",
+      "otherFile": "index.html",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/ui.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/ui.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "灰燼護航",
+      "otherFile": "src/ui.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/game.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/trinity-ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/trinity-ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/trinity-ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/trinity-ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/trinity-ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/trinity-ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/trinity-ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/ui.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/ui.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "無盡塔防",
+      "otherFile": "src/ui.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "陽光農場",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "陽光農場",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "陽光農場",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "陽光農場",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "陽光農場",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "陽光農場",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "陽光農場",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "陽光農場",
+      "otherFile": "src/state.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "陽光農場",
+      "otherFile": "src/state.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "陽光農場",
+      "otherFile": "src/state.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "陽光農場",
+      "otherFile": "src/state.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "陽光農場",
+      "otherFile": "src/state.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "陽光農場",
+      "otherFile": "src/state.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "陽光農場",
+      "otherFile": "src/state.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "陽光農場",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "陽光農場",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "陽光農場",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "陽光農場",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "陽光農場",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "陽光農場",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "陽光農場",
+      "otherFile": "src/ui.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "陽光農場",
+      "otherFile": "src/ui.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "陽光農場",
+      "otherFile": "src/ui.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "陽光農場",
+      "otherFile": "src/ui.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "陽光農場",
+      "otherFile": "src/world-ui.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "陽光農場",
+      "otherFile": "src/world-ui.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "陽光農場",
+      "otherFile": "src/world-ui.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "七期：斷鏈行動",
+      "otherFile": "web/play-site.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "七期：斷鏈行動",
+      "otherFile": "web/play-site.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "七期：斷鏈行動",
+      "otherFile": "web/play-site.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "七期：斷鏈行動",
+      "otherFile": "web/play-site.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "七期：斷鏈行動",
+      "otherFile": "web/play-site.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "七期：斷鏈行動",
+      "otherFile": "web/play-site.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "七期：斷鏈行動",
+      "otherFile": "web/play-site.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "七期：斷鏈行動",
+      "otherFile": "web/play-site.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "七期：斷鏈行動",
+      "otherFile": "web/play-site.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "七期：斷鏈行動",
+      "otherFile": "web/play-site.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/tilt.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/tilt.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/car/tilt.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/main.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/main.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/flight/main.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/train/main.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/train/main.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/games/train/main.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/journeys.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/journeys.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/journeys.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/journeys.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/journeys.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/journeys.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/journeys.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/lobby-music.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/lobby-music.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/lobby-music.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/lobby-music.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/lobby-music.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/lobby-music.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/lobby-music.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/rewards.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/rewards.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/rewards.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/rewards.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/rewards.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/rewards.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/rewards.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/settings.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/settings.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/settings.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/settings.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/settings.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/settings.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "src/shared/settings.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/car/physics.test.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/car/physics.test.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/car/physics.test.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/car/tilt.test.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/car/tilt.test.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/car/tilt.test.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/native/native.test.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/native/native.test.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/native/native.test.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/shared/journeys.test.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/shared/journeys.test.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/shared/journeys.test.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/shared/journeys.test.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/shared/journeys.test.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/shared/journeys.test.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/shared/journeys.test.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/shared/journeys.test.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/shared/journeys.test.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼交通學院",
+      "otherFile": "tests/shared/journeys.test.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "小小列車長",
+      "otherFile": "src/app.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "小小列車長",
+      "otherFile": "src/app.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "小小列車長",
+      "otherFile": "src/app.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "小小列車長",
+      "otherFile": "src/app.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "小小列車長",
+      "otherFile": "src/app.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "小小列車長",
+      "otherFile": "src/app.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "小小列車長",
+      "otherFile": "src/app.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "小小列車長",
+      "otherFile": "src/app.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "小小列車長",
+      "otherFile": "src/app.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "小小列車長",
+      "otherFile": "src/app.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "小小列車長",
+      "otherFile": "src/story.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "小小列車長",
+      "otherFile": "src/story.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "小小列車長",
+      "otherFile": "src/story.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "夜行列車",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "夜行列車",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "夜行列車",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "夜行列車",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "夜行列車",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "夜行列車",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "夜行列車",
+      "otherFile": "index.html",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼飛行學校",
+      "otherFile": "src/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼飛行學校",
+      "otherFile": "src/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼飛行學校",
+      "otherFile": "src/game.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼飛行學校",
+      "otherFile": "src/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼飛行學校",
+      "otherFile": "src/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "otherApp": "島嶼飛行學校",
+      "otherFile": "src/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/index.html",
+      "otherApp": "島嶼飛行學校",
+      "otherFile": "src/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼飛行學校",
+      "otherFile": "src/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/index.html",
+      "otherApp": "島嶼飛行學校",
+      "otherFile": "src/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/harbor.html",
+      "otherApp": "島嶼飛行學校",
+      "otherFile": "src/main.js",
+      "token": "localStorage",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/battle.js",
+      "otherApp": "島嶼鐵道學校",
+      "otherFile": "src/main.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-battle/index.html",
+      "otherApp": "島嶼鐵道學校",
+      "otherFile": "src/main.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "otherApp": "島嶼鐵道學校",
+      "otherFile": "src/main.js",
+      "token": "requestAnimationFrame",
+      "classification": "standard browser API"
+    }
+  ]
+}

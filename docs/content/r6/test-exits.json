@@ -1,0 +1,59 @@
+[
+  {
+    "name": "static",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exitCode": 0,
+    "seconds": 9.66
+  },
+  {
+    "name": "e2e",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:e2e"
+    ],
+    "exitCode": 1,
+    "seconds": 445.09
+  },
+  {
+    "name": "rwd",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:rwd"
+    ],
+    "exitCode": 0,
+    "seconds": 89.34
+  },
+  {
+    "name": "ci-performance",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:r67:performance"
+    ],
+    "exitCode": 1,
+    "seconds": 30.66
+  },
+  {
+    "name": "frames",
+    "command": [
+      "node",
+      "scripts/measure-content-r6.js"
+    ],
+    "exitCode": 0,
+    "seconds": 32.22
+  },
+  {
+    "name": "r6",
+    "command": [
+      "node",
+      "scripts/test-content-r6-e2e.js"
+    ],
+    "exitCode": 0,
+    "seconds": 124.09
+  }
+]

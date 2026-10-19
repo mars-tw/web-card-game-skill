@@ -1,0 +1,20 @@
+{
+  "round": "CONTENT_R4",
+  "date": "2026-10-19",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "style_prefix": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism.",
+  "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Use case: stylized-concept. Asset type: two-state shield VFX atlas, wide transparent canvas split into TWO equal square tiles. Reference existing pearl scallop shield with coral copper rim. LEFT: intact large pearlescent scallop shield, coherent solid silhouette, moon-white rim. RIGHT: same shell shield dramatically broken apart by a huge diagonal fracture from upper left to lower right through the entire shield, separated shell halves, clearly detached large pearl and copper shards toward tile corners, transparent crack gap with bright coral fracture edges. The broken state must read at 80px without text. Same scale, frontal angle and identity in both tiles. Transparent padding around both icons. The right tile will cover an entire knight card illustration; make fracture edge-to-edge and shards visibly detached. No words, labels, letters, numbers, UI, scene, characters, background, watermark. True transparent alpha background.",
+  "reference": "assets/art/content-r3/shield-intact.webp",
+  "source": "docs/art/source/content-r4/shield-atlas.png",
+  "runtime": [
+    "assets/art/content-r4/shield-cover.webp",
+    "assets/art/content-r4/shield-fracture.webp"
+  ],
+  "transparent_requested": true,
+  "unused_attempt": {
+    "prompt": "TIDEREND — MOONREND RELIQUARY. Premium hand-painted nautical fantasy card game, indigo-violet #201C3D, moon-white #F2F1FA and coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Use case: stylized-concept. Asset type: transparent two-state protective shell-shield VFX atlas for existing knight card. Reference image is existing shield, preserve its pearlescent scallop and copper rim identity. Canvas landscape, two equal square tiles side by side. LEFT tile: one large intact silver scallop shield in three-quarter frontal view with luminous moon-white rim. RIGHT tile: an unmistakably destroyed shield, a huge jagged diagonal crack spanning the ENTIRE tile from upper-left to lower-right; two separated sections of that same shell shield, large flying pearl/copper shards spread to tile corners, bright coral fracture edges, transparent gap through center. Same scale. This right tile is a full-card overlay, so fractures must run from edge to edge and shards must be visibly detached. Broad readable shapes at 80 pixels, no tiny linework dependency. Generous outer transparent margin. Absolutely no scene, words, labels, numbers, cards, UI, frame, characters, background or watermark. True RGBA transparent background.",
+    "output": "C:/Users/digimkt/.codex/generated_images/01a1501e-00a3-7543-8394-4be89e78b12b/exec-5bac0db2-6ab0-4fe0-93ad-8874ca198725.png",
+    "reason": "Re-generated to use the exact existing PROMPTS_CONTENT_R3 style_prefix, rather than a paraphrase. First attempt not shipped."
+  }
+}

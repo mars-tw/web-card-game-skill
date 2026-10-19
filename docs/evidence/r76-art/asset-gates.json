@@ -1,0 +1,61 @@
+{
+  "status": "VERIFIED",
+  "checks": [
+    {
+      "id": "wave",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "emberpup",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "wolf",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "sparkSquire",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "alleySkirmisher",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "frontScout",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "firebolt",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "victory-navigator",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "battlefield",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "frame",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "icons",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "logo",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "app-icon",
+      "status": "VERIFIED"
+    }
+  ],
+  "model_slug": null,
+  "tool": "image_gen.imagegen",
+  "thumbnail": "docs/art/thumbs/r76/contact-64.png",
+  "scope": "hashes, magic bytes, dimensions, native alpha, actual compressed character color gates; 64px is author visual review, not a blind panel"
+}

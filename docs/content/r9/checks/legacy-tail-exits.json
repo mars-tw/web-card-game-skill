@@ -1,0 +1,38 @@
+[
+  {
+    "name": "r2",
+    "command": [
+      "node",
+      "scripts/test-content-r2-e2e.js"
+    ],
+    "exit": 0,
+    "seconds": 135.5
+  },
+  {
+    "name": "r3",
+    "command": [
+      "node",
+      "scripts/test-content-r3-e2e.js"
+    ],
+    "exit": 0,
+    "seconds": 144.1
+  },
+  {
+    "name": "r4",
+    "command": [
+      "node",
+      "scripts/test-content-r4-e2e.js"
+    ],
+    "exit": 0,
+    "seconds": 198.0
+  },
+  {
+    "name": "r5",
+    "command": [
+      "node",
+      "scripts/test-content-r5-e2e.js"
+    ],
+    "exit": 0,
+    "seconds": 168.1
+  }
+]

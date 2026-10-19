@@ -55,6 +55,8 @@ jobs:
         run: npm run test:e2e
       - name: RWD 九視口矩陣守門（shell/battle/pack 零違規）
         run: npm run test:rwd
+      - name: 新內容 R10 操作、撤回、命中與存檔
+        run: npm run test:content:r10
       - name: R67 Fast 3G／4x CPU 與 frame p95 gate
         run: npm run test:r67:performance
 

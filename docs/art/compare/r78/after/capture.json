@@ -1,0 +1,174 @@
+{
+  "phase": "after",
+  "status": "VERIFIED",
+  "method": "headless Chromium; official root and real five-card trial actions; no test state injection; PNGs unedited; store trial frame is actual cast peak",
+  "files": [
+    "docs/art/compare/r78/after/harbor-390x844.png",
+    "docs/art/compare/r78/after/battle-390x844.png",
+    "docs/art/compare/r78/after/trial-390x844.png",
+    "docs/art/compare/r78/after/tide-chart-390x844.png",
+    "docs/art/compare/r78/wave/official-390x844-01-before.png",
+    "docs/art/compare/r78/wave/official-390x844-02-impact.png",
+    "docs/art/compare/r78/wave/official-390x844-03-after.png",
+    "docs/art/compare/r78/after/victory-390x844.png",
+    "docs/evidence/r78-art/pack-390x844.png",
+    "docs/art/compare/r78/after/harbor-844x390.png",
+    "docs/art/compare/r78/after/battle-844x390.png",
+    "docs/art/compare/r78/after/trial-844x390.png",
+    "docs/art/compare/r78/after/tide-chart-844x390.png",
+    "docs/art/compare/r78/wave/official-844x390-01-before.png",
+    "docs/art/compare/r78/wave/official-844x390-02-impact.png",
+    "docs/art/compare/r78/wave/official-844x390-03-after.png",
+    "docs/art/compare/r78/after/victory-844x390.png",
+    "docs/evidence/r78-art/pack-844x390.png",
+    "docs/art/compare/r78/after/harbor-1366x600.png",
+    "docs/art/compare/r78/after/battle-1366x600.png",
+    "docs/art/compare/r78/after/trial-1366x600.png",
+    "docs/art/compare/r78/after/tide-chart-1366x600.png",
+    "docs/art/compare/r78/wave/official-1366x600-01-before.png",
+    "docs/art/compare/r78/wave/official-1366x600-02-impact.png",
+    "docs/art/compare/r78/wave/official-1366x600-03-after.png",
+    "docs/art/compare/r78/after/victory-1366x600.png",
+    "docs/evidence/r78-art/pack-1366x600.png",
+    "docs/art/compare/r78/after/harbor-1032x1376.png",
+    "docs/art/compare/r78/after/battle-1032x1376.png",
+    "docs/art/compare/r78/after/trial-1032x1376.png",
+    "docs/art/compare/r78/after/tide-chart-1032x1376.png",
+    "docs/art/compare/r78/wave/official-1032x1376-01-before.png",
+    "docs/art/compare/r78/wave/official-1032x1376-02-impact.png",
+    "docs/art/compare/r78/wave/official-1032x1376-03-after.png",
+    "docs/art/compare/r78/after/victory-1032x1376.png",
+    "docs/evidence/r78-art/pack-1032x1376.png",
+    "docs/store/screenshots/harbor-1290x2796.png",
+    "docs/store/screenshots/battle-1290x2796.png",
+    "docs/store/screenshots/trial-1290x2796.png",
+    "docs/store/screenshots/tide-chart-1290x2796.png",
+    "docs/art/compare/r78/wave/official-1290x2796-01-before.png",
+    "docs/art/compare/r78/wave/official-1290x2796-02-impact.png",
+    "docs/art/compare/r78/wave/official-1290x2796-03-after.png",
+    "docs/store/screenshots/victory-1290x2796.png",
+    "docs/store/screenshots/harbor-2064x2752.png",
+    "docs/store/screenshots/battle-2064x2752.png",
+    "docs/store/screenshots/trial-2064x2752.png",
+    "docs/store/screenshots/tide-chart-2064x2752.png",
+    "docs/art/compare/r78/wave/official-2064x2752-01-before.png",
+    "docs/art/compare/r78/wave/official-2064x2752-02-impact.png",
+    "docs/art/compare/r78/wave/official-2064x2752-03-after.png",
+    "docs/store/screenshots/victory-2064x2752.png"
+  ],
+  "castReceipts": [
+    {
+      "size": [
+        390,
+        844
+      ],
+      "peak": {
+        "active": true,
+        "waveWidth": 1.0799679487179488,
+        "foam": [
+          1,
+          1
+        ],
+        "time": [
+          416.72399977333896
+        ],
+        "hp": "0"
+      },
+      "storeFrame": null
+    },
+    {
+      "size": [
+        844,
+        390
+      ],
+      "peak": {
+        "active": true,
+        "waveWidth": 1.079994816350711,
+        "foam": [
+          1,
+          1
+        ],
+        "time": [
+          433.3039999481283
+        ],
+        "hp": "0"
+      },
+      "storeFrame": null
+    },
+    {
+      "size": [
+        1366,
+        600
+      ],
+      "peak": {
+        "active": true,
+        "waveWidth": 1.0799894765739384,
+        "foam": [
+          1,
+          1
+        ],
+        "time": [
+          399.98099994957494
+        ],
+        "hp": "0"
+      },
+      "storeFrame": null
+    },
+    {
+      "size": [
+        1032,
+        1376
+      ],
+      "peak": {
+        "active": true,
+        "waveWidth": 1.0799872819767442,
+        "foam": [
+          0.981968,
+          0.981968
+        ],
+        "time": [
+          383.3009999532244
+        ],
+        "hp": "0"
+      },
+      "storeFrame": null
+    },
+    {
+      "size": [
+        1290,
+        2796
+      ],
+      "peak": {
+        "active": true,
+        "waveWidth": 1.0799781976744185,
+        "foam": [
+          1,
+          1
+        ],
+        "time": [
+          416.636999843643
+        ],
+        "hp": "0"
+      },
+      "storeFrame": "trial-1290x2796.png"
+    },
+    {
+      "size": [
+        2064,
+        2752
+      ],
+      "peak": {
+        "active": true,
+        "waveWidth": 1.0799872819767442,
+        "foam": [
+          1,
+          1
+        ],
+        "time": [],
+        "hp": "0"
+      },
+      "storeFrame": "trial-2064x2752.png"
+    }
+  ],
+  "errors": []
+}

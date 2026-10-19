@@ -1,0 +1,160 @@
+{
+  "status": "VERIFIED",
+  "checks": 16,
+  "cases": [
+    {
+      "mode": "flood",
+      "before": {
+        "tide": 6,
+        "enemyHp": 5,
+        "enemy": [
+          {
+            "uid": "content-enemy-0",
+            "hp": 4
+          }
+        ],
+        "allies": [
+          {
+            "uid": "content-player-0",
+            "hp": 2,
+            "shield": false
+          },
+          {
+            "uid": "content-player-1",
+            "hp": 4,
+            "shield": false
+          }
+        ],
+        "directions": [
+          "flood",
+          "flood",
+          "flood"
+        ]
+      },
+      "impact": {
+        "tide": 0,
+        "enemyHp": 3,
+        "enemy": [
+          {
+            "uid": "content-enemy-0",
+            "hp": 3
+          }
+        ],
+        "allies": [
+          {
+            "uid": "content-player-0",
+            "hp": 2,
+            "shield": false
+          },
+          {
+            "uid": "content-player-1",
+            "hp": 4,
+            "shield": false
+          }
+        ],
+        "directions": [
+          "flood",
+          "flood",
+          "flood"
+        ]
+      },
+      "survivors": {
+        "tide": 1,
+        "enemyHp": 3,
+        "enemy": [],
+        "allies": [
+          {
+            "uid": "content-player-1",
+            "hp": 1,
+            "shield": false
+          }
+        ],
+        "directions": [
+          "flood",
+          "flood",
+          "flood"
+        ]
+      }
+    },
+    {
+      "mode": "ebb",
+      "before": {
+        "tide": 6,
+        "enemyHp": 5,
+        "enemy": [
+          {
+            "uid": "content-enemy-0",
+            "hp": 4
+          }
+        ],
+        "allies": [
+          {
+            "uid": "content-player-0",
+            "hp": 2,
+            "shield": false
+          },
+          {
+            "uid": "content-player-1",
+            "hp": 4,
+            "shield": false
+          }
+        ],
+        "directions": [
+          "ebb",
+          "flood",
+          "ebb"
+        ]
+      },
+      "impact": {
+        "tide": 0,
+        "enemyHp": 5,
+        "enemy": [
+          {
+            "uid": "content-enemy-0",
+            "hp": 4
+          }
+        ],
+        "allies": [
+          {
+            "uid": "content-player-0",
+            "hp": 2,
+            "shield": true
+          },
+          {
+            "uid": "content-player-1",
+            "hp": 4,
+            "shield": true
+          }
+        ],
+        "directions": [
+          "ebb",
+          "flood",
+          "ebb"
+        ]
+      },
+      "survivors": {
+        "tide": 0,
+        "enemyHp": 5,
+        "enemy": [],
+        "allies": [
+          {
+            "uid": "content-player-0",
+            "hp": 2,
+            "shield": false
+          },
+          {
+            "uid": "content-player-1",
+            "hp": 4,
+            "shield": false
+          }
+        ],
+        "directions": [
+          "ebb",
+          "flood",
+          "ebb"
+        ]
+      }
+    }
+  ],
+  "method": "Normal DOM inputs; virtual-time raw impact capture; reload of real checkpoints; both branches win without injected game state."
+}

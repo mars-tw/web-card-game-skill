@@ -1,0 +1,87 @@
+PASS locked verification visible in normal study
+PASS lock explains condition
+PASS fallen idle pass fails
+PASS fallen failure never invents an action
+PASS fallen identifies missing action
+PASS fallen failure marks copper error card
+PASS fallen failure grants no progress
+PASS fallen real playable solution completes
+PASS shield objective and single situation only
+PASS shield idle pass fails
+PASS shield failure never invents an action
+PASS shield identifies missing action
+PASS shield failure marks copper error card
+PASS shield failure grants no progress
+PASS shield real playable solution completes
+PASS shelter objective and single situation only
+PASS shelter idle pass fails
+PASS shelter failure never invents an action
+PASS shelter identifies missing action
+PASS shelter failure marks copper error card
+PASS shelter failure grants no progress
+PASS shelter real playable solution completes
+PASS taunt objective and single situation only
+PASS taunt idle pass fails
+PASS taunt failure never invents an action
+PASS taunt identifies missing action
+PASS taunt failure marks copper error card
+PASS taunt failure grants no progress
+PASS taunt real playable solution completes
+PASS spell objective and single situation only
+PASS spell idle pass fails
+PASS spell failure never invents an action
+PASS spell identifies missing action
+PASS spell failure marks copper error card
+PASS spell failure grants no progress
+PASS spell real playable solution completes
+PASS cross objective and single situation only
+PASS cross idle pass fails
+PASS cross failure never invents an action
+PASS cross identifies missing action
+PASS cross failure marks copper error card
+PASS cross failure grants no progress
+PASS cross real playable solution completes
+PASS harbor separates 6/6 and 0/1
+PASS harbor normal study opens direct verification
+PASS direct study verification without completion dialog
+PASS verification saved after reload
+PASS all seven puzzle objectives still capped at 6/6
+PASS 7/6 regression absent
+PASS forecast entry gives no ordered answer
+PASS pointer down previews without applying
+PASS pointer release applies actual reversal
+PASS wrong direction cannot cast
+PASS direction rejection explicit
+PASS direction explanation consumes nothing
+PASS past reversal diagnoses timing
+PASS phone expanded fourth complete cards outside chart
+PASS fourth two choices reachable
+PASS phone collapsed fourth complete cards outside chart
+PASS collapsed direction and close buttons remain reachable 44px
+PASS collapsed direction really changes
+PASS forecast actual short encounter completes
+PASS wave anticipation resolves no shield
+PASS same actual knight retains four HP after shield impact
+PASS broken painted fragments extend outside unclipped card
+PASS broken state resumes from actual save
+PASS Moen normal encounter completes
+PASS delay really loses soldier
+PASS all six, verification, forecast and Moen actually saved
+PASS all three contents and verification real export/import
+PASS 844x390 forecast complete cards outside chart
+PASS 844x390 compact controls reachable
+PASS 1032x1376 forecast complete cards outside chart
+PASS 1032x1376 compact controls reachable
+PASS 1376x1032 forecast complete cards outside chart
+PASS 1376x1032 compact controls reachable
+PASS 1366x600 forecast complete cards outside chart
+PASS 1366x600 compact controls reachable
+PASS 430x932 forecast complete cards outside chart
+PASS 430x932 compact controls reachable
+PASS 1032x1376 forecast complete cards outside chart
+PASS 1032x1376 compact controls reachable
+PASS true offline entry exposes live network status
+PASS offline completion persists after offline reload
+PASS offline marker persists after reload
+PASS no page/resource errors
+Content R5 browser: 86 PASS

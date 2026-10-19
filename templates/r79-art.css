@@ -1,0 +1,73 @@
+/* R79 single moon-hook crest; a painted spell travels from caster to target. */
+.tide-wave .r76-wave-art {
+  width:108%;left:-4%;height:var(--wave-height,300px);
+  top:var(--r79-wave-top,20vh);filter:saturate(.8);
+  mask-image:linear-gradient(#000 0%,#000 66%,transparent 100%);
+  transform-origin:center 70%;
+}
+.tide-wave.run .r76-wave-art { animation:r79-surge 1.3s linear both; }
+@keyframes r79-surge {
+  0% { opacity:0;transform:translate(var(--r79-travel-x,0px),var(--r79-travel,150px)) scale(.88,.58); }
+  12% { opacity:.62; }
+  28%,50% { opacity:.96;transform:translateY(0) scale(1); }
+  76% { opacity:.55;transform:translateY(calc(var(--r79-travel,150px) * -.16)) scale(.98,.94); }
+  100% { opacity:0;transform:translateY(calc(var(--r79-travel,150px) * -.3)) scale(.94,.8); }
+}
+.tide-wave.enemy .r76-wave-art { rotate:180deg; }
+.tide-wave[data-axis="x"] .r76-wave-art { rotate:90deg;width:80vh;left:calc(65% - 40vh);top:2%;height:90vh; }
+.tide-wave.run[data-axis="x"] .r76-wave-art { animation-name:r79-surge-x; }
+@keyframes r79-surge-x { 0%{opacity:0;left:calc(65% - 40vh + var(--r79-travel-x));transform:scale(.85)} 12%{opacity:.62} 28%,50%{opacity:.96;left:calc(65% - 40vh);transform:scale(1)} 76%{opacity:.55} 100%{opacity:0;left:calc(68% - 40vh);transform:scale(.94)} }
+.tide-wave.enemy[data-axis="x"] .r76-wave-art { rotate:-90deg; }
+.r77-impact-foam { object-fit:fill; }
+.tide-wave.run .r77-impact-foam { animation:r79-contact 1.3s linear both; }
+@keyframes r79-contact { 0%,27%{opacity:0;transform:translateY(10px)} 30%,58%{opacity:1;transform:none} 100%{opacity:0;transform:translateY(-14px)} }
+
+/* State belongs to the card frame; illustration pose is never faked. */
+.battlefield .card[data-action-state="waiting"],
+.battlefield .card[data-action-state="spent"] { outline:none;border-style:dashed; }
+.battlefield .card[data-action-state="waiting"] .art>img:not(.faction-emblem),
+.battlefield .card[data-action-state="spent"] .art>img:not(.faction-emblem) { filter:brightness(.7) saturate(.8); }
+.battlefield .card[data-action-state="spent"] { rotate:-5deg; }
+.battlefield .card[data-action-state="spent"] .r79-spent-seal { position:absolute;inset:7px 7px auto auto;width:25px;height:25px;border:3px double #b6a0ec;border-radius:50%;background:#201c3df0;z-index:12; }
+.r79-spent-seal::before { content:"";position:absolute;width:20px;height:3px;background:#b6a0ec;rotate:-45deg;left:0;top:8px; }
+.battlefield .card.can-attack { outline:2px solid #c4e8f4;outline-offset:2px;box-shadow:0 0 10px #69cfe955,0 12px 9px -5px #080815ed!important; }
+.battlefield .card.selected { outline:3px solid #f2f1fa!important;outline-offset:4px;box-shadow:0 0 0 7px #69cfe944!important; }
+.r79-target-arrow { position:absolute;top:-31px;left:calc(50% - 14px);width:28px;height:30px;background:#f2f1fa;color:#201c3d;clip-path:polygon(25% 0,75% 0,75% 52%,100% 52%,50% 100%,0 52%,25% 52%);z-index:13;pointer-events:none;filter:drop-shadow(0 1px 2px #10152d); }
+.card.r79-tutorial-target,.card.targetable { outline:2px solid #d4e5f5!important;outline-offset:3px; }
+.card.r79-preview-lethal { outline:3px dashed #f3bfa5!important;outline-offset:3px; }
+.r79-preview-exit { position:absolute;inset:0;z-index:11;background:linear-gradient(135deg,transparent 45%,#f2c1abbb 48%,#f2c1abbb 50%,transparent 53%);border:2px dashed #f3bfa5;pointer-events:none; }
+.r79-preview-exit::after { content:"";position:absolute;bottom:-2px;left:20%;right:20%;height:12px;border-bottom:3px solid #f3bfa5;clip-path:polygon(0 0,100% 0,50% 100%);background:#f3bfa5; }
+
+/* Never encode an unavailable action as the coral primary action. */
+body #commandDock #tidebreakBtn:not(.ready),
+body[data-r76-wave="true"] #commandDock #tidebreakBtn:not(.ready),
+body #commandDock #tidebreakBtn:disabled {
+  background:#25223d;color:#a6a1b6;border-color:#68617f;box-shadow:none;animation:none;filter:none;
+}
+body #commandDock #tidebreakBtn:not(.ready) strong,
+body #commandDock #tidebreakBtn:disabled strong,
+body[data-r76-wave="true"] #commandDock #tidebreakBtn:not(.ready) .tide-glyph { color:#b8b0cb; }
+body #endTurnBtn:disabled { background:#302d3d;color:#aaa4b4;border-color:#68617f;box-shadow:none; }
+.r79-tide-source { color:#c9bce6;font-size:10px;white-space:nowrap; }
+.dmg-float.r79-target-damage { transform:translate(-50%,-50%);animation:r79-target-damage .3s linear both; }
+@keyframes r79-target-damage { 0%,65%{opacity:1} 100%{opacity:0} }
+#tideChartPanel .tide-chart-sheet { border-top:3px solid #b6a0ec; }
+#tideChartStatus { font-size:11px!important; }
+#dockMorePanel #tideTrialReplay,#dockMorePanel #tideHarbor { min-height:44px; }
+:root[data-control-mode="desktop"] #dockMorePanel #tideTrialReplay,
+:root[data-control-mode="desktop"] #dockMorePanel #tideHarbor { font-size:0;width:44px;min-width:44px;flex:0 0 44px;padding:0; }
+:root[data-control-mode="desktop"] #dockMorePanel #tideTrialReplay::before,
+:root[data-control-mode="desktop"] #dockMorePanel #tideHarbor::before { content:"";display:block;width:28px;height:28px;margin:auto;background:url('../assets/art/r79/icon-wave.webp?v=r79-icon') center/contain no-repeat; }
+:root[data-control-mode="desktop"] #dockMorePanel #tideHarbor::before { background-image:url('../assets/art/r76/icon-compass.webp?v=941d2114'); }
+.board { background:linear-gradient(#201c3d0a,#201c3d0a),image-set(url('../assets/art/r79/battlefield-low.webp') 1x,url('../assets/art/r79/battlefield.webp') 2x) center/cover; }
+.harbor-banner .eyebrow,.harbor-banner .lead { background:transparent;border:0;padding:0;position:relative;z-index:1;text-shadow:0 2px 4px #10152d; }
+.harbor-banner::after { content:"";position:absolute;inset:auto -12px -2px;height:34%;z-index:0;pointer-events:none;background:linear-gradient(transparent,#201c3d99 35%,#201c3dbb 70%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 78%,transparent); }
+.harbor-navigator { mask-image:linear-gradient(#000 0%,#000 84%,transparent 100%); }
+.harbor-banner .eyebrow { padding-top:12px;color:#d4cbe9;letter-spacing:2px; }
+.harbor-banner .lead { padding:7px 0 12px; }
+.harbor-banner .lead::after { content:"";display:block;margin-top:8px;width:110px;height:10px;background:url('../assets/art/r79/icon-wave.webp?v=r79-icon') left center/contain no-repeat;opacity:.8; }
+.harbor-banner { isolation:isolate; }
+@media(max-width:650px) { .harbor-banner .lead { font-size:14px; }.harbor-banner .lead::after { height:7px;margin-top:4px; }.harbor-banner::after { height:32%; } }
+@media(max-width:650px) and (max-height:700px) { .harbor-banner .lead { font-size:12px;padding-bottom:4px; }.harbor-banner .lead::after { display:none; } }
+@media(prefers-reduced-motion:reduce) { .tide-wave.run .r76-wave-art,.tide-wave.run .r77-impact-foam { animation:none;opacity:1;transform:none; } }
+:root[data-perf="low"] .tide-wave.run .r76-wave-art,:root[data-perf="low"] .tide-wave.run .r77-impact-foam { animation:none;opacity:1;transform:none; }

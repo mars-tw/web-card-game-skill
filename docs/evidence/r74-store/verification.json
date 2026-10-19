@@ -1,0 +1,239 @@
+{
+  "status": "VERIFIED",
+  "version": "0.7.0",
+  "baseCommit": "29d996d7aa3d252ecdffaff0403f69eeeedbca21",
+  "runtimeHashes": {
+    "index.html": "54b120b1cca87184eb86e0fd56a4a02ec716e26e236b8535c459c4323698d6da",
+    "offline.html": "718600c3f4e36876d4bc8146f7cd7157efc3de1402721ece142195ca13014a08",
+    "manifest.webmanifest": "064708d7be68e395b2eb710a5595f1aa3f79cb6ae1e0c1dfa0904be319ec7b40",
+    "sw.js": "1aaef50ee1cc469f2d240f660986d05c47bb0a66f7a91b997c8fe168bdb754de",
+    "templates/card-battle/battle.js": "71316f17fc842df332e50976a0d630373ad49a86e62cc38e2fdf96ab276fff54",
+    "templates/card-battle/cards.js": "a427ad865041a93683c08e35b6cc92c6a02627faf07dc456e7a49d1466a2defa",
+    "templates/card-battle/core.js": "1d2e612e0c742894bade925dcb31fcd0229079ff0fe641ce2cc7ea074918c3c9",
+    "templates/card-battle/pose-player.js": "acc557ffafe3a774c291d7a97a02068323572fcfc03fc8cbd98230b756c3ae59",
+    "templates/card-battle/r73-ui.js": "9f3a3af41e3475a9bed1cf64a6460ee6498e97ec4e9751ef58804b16b1aad0cf",
+    "templates/card-battle/tide-session.js": "e8e72f388af6705627ffe45a824c6844c0c588002c3f8db874ff0f44a33ba2b2",
+    "templates/card-battle/voyage.js": "01480184862b1e6ac50aa03f3f51745925d484abf5063ada0be1ca7bc3bf77f8",
+    "templates/card-pack/pack.js": "c68834e827b3849cdd044a318317e229daa90578a8b421f329d4d4a177e6ed52",
+    "templates/harbor.html": "a526868feee2f849e9832ab18c3f8bc17c4ea2e64b99ffc68a6a29692e5318a6",
+    "templates/index.html": "a9dd72b6af8e56472c2d3d3c1cfa20bb377e78bc2834918768c3a1ea70e4e792",
+    "templates/card-battle/index.html": "df7d3ef6ca3112c78dbb91d4318a5370f38c90f41ed4df76324c81c67590f5d4",
+    "templates/card-pack/index.html": "1aee3d9acba8647fb95d8eaa0541cd88b8ce04a998ba5e2e8d1faba06d10e762",
+    "templates/card-battle/r73-mobile.css": "1ab315d41d5f1cebb256aa07570738b82db25d991505ebbae4e8dc6c72629178",
+    "templates/card-battle/r74-tide.css": "18b2c952431f53e148f996fad8c34570d4101c79b7a8c0663f240352e9a327a1"
+  },
+  "screenshots": [
+    {
+      "file": "docs/store/screenshots/harbor-1290x2796.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "6358427e5421f9ff69ad5900cda98973c055f7ae51f9b2d1687a6f8b72c962e4",
+      "bytes": 958149
+    },
+    {
+      "file": "docs/store/screenshots/harbor-2064x2752.png",
+      "width": 2064,
+      "height": 2752,
+      "sha256": "74f2afd890bb922e30de06f46e620f52f5373e19687598a540d6a4f3db5c6bd6",
+      "bytes": 1785608
+    },
+    {
+      "file": "docs/store/screenshots/tide-chart-1290x2796.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "be345a074ec245bbcca658d4fed55e7361a96d138c1a5b4f7d3f8e02b4e29de4",
+      "bytes": 504301
+    },
+    {
+      "file": "docs/store/screenshots/tide-chart-2064x2752.png",
+      "width": 2064,
+      "height": 2752,
+      "sha256": "523ce9e601e039e2255cf36d207e840065fdab91f99a4bc403ffaac27a4077a8",
+      "bytes": 700268
+    },
+    {
+      "file": "docs/store/screenshots/trial-1290x2796.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "577975232d93f54a4b0e47ca06af8d9bac86e78de265ec670a554fa43a67061c",
+      "bytes": 1611103
+    },
+    {
+      "file": "docs/store/screenshots/trial-2064x2752.png",
+      "width": 2064,
+      "height": 2752,
+      "sha256": "16d3e8d88ad8681c1d74212b12d1d77fdbf6cec13a8173e719e0dd6f1d1c5927",
+      "bytes": 2403283
+    },
+    {
+      "file": "docs/store/screenshots/victory-1290x2796.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "e43304fbefff8830074bdf43e3024ce7d53f5fc814e910e795980cafa8e03369",
+      "bytes": 1423567
+    },
+    {
+      "file": "docs/store/screenshots/victory-2064x2752.png",
+      "width": 2064,
+      "height": 2752,
+      "sha256": "aa2d6c722f0df49b31e5dc4e0aa2ee32871a565efe01c7c1280b521131281d73",
+      "bytes": 821971
+    }
+  ],
+  "syntax": [
+    {
+      "file": "templates/card-battle/battle.js",
+      "pass": true
+    },
+    {
+      "file": "templates/card-battle/cards.js",
+      "pass": true
+    },
+    {
+      "file": "templates/card-battle/core.js",
+      "pass": true
+    },
+    {
+      "file": "templates/card-battle/pose-player.js",
+      "pass": true
+    },
+    {
+      "file": "templates/card-battle/r73-ui.js",
+      "pass": true
+    },
+    {
+      "file": "templates/card-battle/tide-session.js",
+      "pass": true
+    },
+    {
+      "file": "templates/card-battle/voyage.js",
+      "pass": true
+    },
+    {
+      "file": "templates/card-pack/pack.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/audit-oc-r1.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/capture-r70-evidence.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/capture-r72-evidence.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/capture-r73-mobile.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-balance-sim.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-battle-e2e.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-cards.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-controls-reachability.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-core.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-quality-gates.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-r67-browser.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-r67-performance.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-r72-fun.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-r73-mobile.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-r73-voyage.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-r74-ebb.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-r74-review.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-r74-rules.js",
+      "pass": true
+    },
+    {
+      "file": "scripts/test-rwd-matrix.js",
+      "pass": true
+    }
+  ],
+  "oldRevisionHits": [],
+  "secretScan": {
+    "status": "VERIFIED",
+    "hits": 0,
+    "files": [],
+    "scope": "entire current repo excluding .git and node_modules; filenames only, no values",
+    "exitCode": 1
+  },
+  "nativeReferences": [
+    {
+      "source": "C:\\Users\\digimkt\\Desktop\\遊戲\\game-store-publisher\\native-kit\\apps\\web-card-game-skill\\native-status.json",
+      "sha256": "4811403b6abeaf096ff20bbbe4bedffecbfd281a8e9baecf3060e73b0fe1ec4a",
+      "scope": "read only; not the new release artifact"
+    },
+    {
+      "source": "C:\\Users\\digimkt\\Desktop\\遊戲\\game-store-publisher\\native-kit\\apps\\web-card-game-skill\\capacitor.config.json",
+      "sha256": "7278edf4cc93430ffff83a6272e2589d83f3fca96f65a71622fc3d74637a04d5",
+      "scope": "read only; not the new release artifact"
+    },
+    {
+      "source": "C:\\Users\\digimkt\\Desktop\\遊戲\\game-store-publisher\\native-kit\\apps\\web-card-game-skill\\package.json",
+      "sha256": "fcb4d5160f4ea758c62734f5566cad77261461786afdf8651c4581835c8b3086",
+      "scope": "read only; not the new release artifact"
+    },
+    {
+      "source": "C:\\Users\\digimkt\\Desktop\\遊戲\\game-store-publisher\\native-kit\\apps\\web-card-game-skill\\web-payload.json",
+      "sha256": "f6543485c5283d18751f893ae89e55eff6dd0863e58f31bc19a0b4074dfda4b3",
+      "scope": "read only; not the new release artifact"
+    },
+    {
+      "source": "C:\\Users\\digimkt\\Desktop\\遊戲\\game-store-publisher\\native-kit\\apps\\web-card-game-skill\\bundle-manifest.json",
+      "sha256": "2918e056e4894e5de6d793a40887b2c0b7aac290c1fafc8500feba85937fa494",
+      "scope": "read only; not the new release artifact"
+    },
+    {
+      "source": "C:\\Users\\digimkt\\Desktop\\遊戲\\game-store-publisher\\native-kit\\apps\\web-card-game-skill\\ios\\App\\App\\PrivacyInfo.xcprivacy",
+      "sha256": "6452295a6ad29254c92c668038f2c6a2cfd440c07cda81f814e996ac215b8415",
+      "scope": "read only; not the new release artifact"
+    },
+    {
+      "source": "C:\\Users\\digimkt\\Desktop\\遊戲\\game-store-publisher\\native-kit\\apps\\web-card-game-skill\\android\\app\\src\\main\\AndroidManifest.xml",
+      "sha256": "a91441960aad37b4887a4493f02acc5c2a085d1e7a1e144db260a66c8fcfeb73",
+      "scope": "read only; not the new release artifact"
+    }
+  ],
+  "performanceQualification": "並發載量測，僅供參考；沒有獨立手機或乾淨機況出貨效能驗證"
+}

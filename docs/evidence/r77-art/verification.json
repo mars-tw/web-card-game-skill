@@ -1,0 +1,538 @@
+{
+  "status": "VERIFIED",
+  "version": "0.10.0",
+  "baseCommit": "9e216fd736668b828151e81ff346db71f8040296",
+  "syntax": [
+    {
+      "path": "templates/card-battle/battle.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-battle/cards.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-battle/core.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-battle/pose-player.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-battle/r73-ui.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-battle/tide-session.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-battle/voyage.js",
+      "pass_": true
+    },
+    {
+      "path": "templates/card-pack/pack.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/audit-oc-r1.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r70-evidence.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r72-evidence.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r73-mobile.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r75-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r76-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r76-wave.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r76-wet.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r77-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/capture-r77-wave.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/diagnose-r76-layout.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-balance-sim.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-battle-e2e.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-cards.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-controls-reachability.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-core.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-quality-gates.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r67-browser.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r67-performance.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r72-fun.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r73-mobile.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r73-voyage.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r74-ebb.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r74-review.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r74-rules.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r75-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r75-frames.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r76-art.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r76-frames.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-r77-tide.js",
+      "pass_": true
+    },
+    {
+      "path": "scripts/test-rwd-matrix.js",
+      "pass_": true
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/store/screenshots/battle-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "110218bac019ec9d7278260612f4350ba3f5f7d416a94f85be22026fa35ae860"
+    },
+    {
+      "path": "docs/store/screenshots/battle-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "0280ebd3374fe4c4b10823321e21544f349491720dcaf941b938ce676e97143b"
+    },
+    {
+      "path": "docs/store/screenshots/harbor-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "85f833b72a8fda48ff7907f79a662a11eb861eda0234707e26ece3878f819cbb"
+    },
+    {
+      "path": "docs/store/screenshots/harbor-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "5f4159627f933f6e90a6a23a601ea720ca9d0ce3087d4368d06688164a494788"
+    },
+    {
+      "path": "docs/store/screenshots/tide-chart-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "ee9a57c9c1f3e85d13d21f815a369f3558a9c4c0ba5a277ce4a88c0077838240"
+    },
+    {
+      "path": "docs/store/screenshots/tide-chart-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "fe066b0f9666f97f699982d815002923de5b92651b3ac218c60acabf81d59a7a"
+    },
+    {
+      "path": "docs/store/screenshots/trial-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "57a0de6bc9975bbd96ce13700d8c8d72e03253c18b2fa115cc3e772d9399024e"
+    },
+    {
+      "path": "docs/store/screenshots/trial-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "31d986d74a9b8fa771c8545e682013addf1c08e926b799508bfb81747ac4b2e5"
+    },
+    {
+      "path": "docs/store/screenshots/victory-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "fd4cedc6d28307396ae0aa27ba8cab4930f3d578f1ba9b4563ad1fb40c5d76d2"
+    },
+    {
+      "path": "docs/store/screenshots/victory-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "d578fb25d82cd3c1d7761e2360c5cc0685fc293094454f734ba9f717bb854589"
+    }
+  ],
+  "runtimeHashes": {
+    "index.html": "c5d6fe012ef45bf0ddc7836d3c7835c320952d1443364761b48aec8a8f8da3c1",
+    "manifest.webmanifest": "206b70b1f0a74e79ce9c8587462ffef16d3eefa6e056b2300cc1046a15ca96d7",
+    "sw.js": "2ba3dda4bbe57029aaaf06f4b71b5ee82cdb9582aec5515eaf52c136273e9722",
+    "templates/card-battle/battle.js": "27cbc677d3ca0bd186de5f3d60c6f0180d935bd515fc3e223aba6ea739e2b7b1",
+    "templates/card-battle/cards.js": "a427ad865041a93683c08e35b6cc92c6a02627faf07dc456e7a49d1466a2defa",
+    "templates/card-battle/core.js": "1d2e612e0c742894bade925dcb31fcd0229079ff0fe641ce2cc7ea074918c3c9",
+    "templates/card-battle/pose-player.js": "acc557ffafe3a774c291d7a97a02068323572fcfc03fc8cbd98230b756c3ae59",
+    "templates/card-battle/r73-ui.js": "9f3a3af41e3475a9bed1cf64a6460ee6498e97ec4e9751ef58804b16b1aad0cf",
+    "templates/card-battle/tide-session.js": "e8e72f388af6705627ffe45a824c6844c0c588002c3f8db874ff0f44a33ba2b2",
+    "templates/card-battle/voyage.js": "01480184862b1e6ac50aa03f3f51745925d484abf5063ada0be1ca7bc3bf77f8",
+    "templates/card-pack/pack.js": "106ddb98e7a14589ef8d515697d7a4752604a33b88bacc142931fa4193e83bc3",
+    "templates/harbor.html": "c103351660085d88f3cc0759a16e8fddde6fe2f408ec6c2b490efbce37de6d43",
+    "templates/index.html": "c3afb16c96acc3abdff58d29bf0ad4751407d8a93265d2f49794b25623a98e75",
+    "templates/card-battle/index.html": "bdc1eb0199bff41457e4c8c842e79db2e834cf1f9bba47eb6bf9b1ec217b87a5",
+    "templates/card-pack/index.html": "8036c84e7be7b900f711a13f4fae56055166dac38b829efbf291a8e3caf97651",
+    "templates/r75-harbor.css": "579b7ac6dea40721248830da6d4e6851c0e00a08cba9b15e9836f780e8aeeba1",
+    "templates/r75-theme.css": "e6f3ca2696995bdfda48f9b2f888f88389efb4313d9c31b0b9340350b55cce4a",
+    "templates/r76-art.css": "f70493a48ed9fc24ff97ad25d9c7a366edb3d17ec4dae2cc5e948b75029f7cab",
+    "templates/r77-art.css": "9540c89956246ddf98522de46cd25bb9a0bf39d9db745fca2aa6c6d675bf461c",
+    "templates/card-battle/r73-mobile.css": "1ab315d41d5f1cebb256aa07570738b82db25d991505ebbae4e8dc6c72629178",
+    "templates/card-battle/r74-tide.css": "18b2c952431f53e148f996fad8c34570d4101c79b7a8c0663f240352e9a327a1"
+  },
+  "oldRevisionHits": [],
+  "secretScan": {
+    "status": "VERIFIED",
+    "hits": 0,
+    "files": [],
+    "exitCode": 1,
+    "scope": "This repository only, excluding .git/node_modules, filenames only; no credential folders read."
+  },
+  "artBytes": {
+    "netAssetsIncrease": 1761416,
+    "sourceArchive": 22629357
+  },
+  "qualification": "Local/headless browser verification and concurrent-machine timings. Not a native device/signed binary/store/independent Muse rescore.",
+  "logs": [
+    {
+      "path": "docs/evidence/r77-art/battle-e2e-final-guard.log",
+      "bytes": 21142,
+      "sha256": "c916dcc420031284abd1da99e1c7f001e9efebbef06d7afe35aa5c2ea92a3467"
+    },
+    {
+      "path": "docs/evidence/r77-art/capture-delivery.log",
+      "bytes": 1540,
+      "sha256": "ddcc00c3f698ea3cf2d86fef8908b3b7017ea62426ae669ecbf81db83037ef16"
+    },
+    {
+      "path": "docs/evidence/r77-art/capture-final-delivery.log",
+      "bytes": 1540,
+      "sha256": "ddcc00c3f698ea3cf2d86fef8908b3b7017ea62426ae669ecbf81db83037ef16"
+    },
+    {
+      "path": "docs/evidence/r77-art/capture-final.log",
+      "bytes": 1540,
+      "sha256": "ddcc00c3f698ea3cf2d86fef8908b3b7017ea62426ae669ecbf81db83037ef16"
+    },
+    {
+      "path": "docs/evidence/r77-art/capture-ship.log",
+      "bytes": 1540,
+      "sha256": "ddcc00c3f698ea3cf2d86fef8908b3b7017ea62426ae669ecbf81db83037ef16"
+    },
+    {
+      "path": "docs/evidence/r77-art/capture.log",
+      "bytes": 1540,
+      "sha256": "ddcc00c3f698ea3cf2d86fef8908b3b7017ea62426ae669ecbf81db83037ef16"
+    },
+    {
+      "path": "docs/evidence/r77-art/controls-fixed.log",
+      "bytes": 37996,
+      "sha256": "1966ea62ea4c771ade1a2aa99adc930ce8f0cbe164b754362a08cb62261f5669"
+    },
+    {
+      "path": "docs/evidence/r77-art/e2e-final-delivery.log",
+      "bytes": 105562,
+      "sha256": "e1288228123acad1aa4b3c44e7f0fd09b73e79ce9a5a40f9028535ad7b80daa1"
+    },
+    {
+      "path": "docs/evidence/r77-art/e2e-final.log",
+      "bytes": 79796,
+      "sha256": "f0150a2d03ef6e4d5739af37ea10964846ddf76840b3cb715b98132844205afa"
+    },
+    {
+      "path": "docs/evidence/r77-art/e2e-release.log",
+      "bytes": 107126,
+      "sha256": "83732eb52d4410ecebb8390dbde7f50c6ffca303b7e0fb936c9ef3d7c695bb60"
+    },
+    {
+      "path": "docs/evidence/r77-art/e2e-verified.log",
+      "bytes": 105560,
+      "sha256": "fbabdaafe6c5977842d5ea1ab88d068643f0e1f4d9b3753e6e51d2afe3438670"
+    },
+    {
+      "path": "docs/evidence/r77-art/e2e.log",
+      "bytes": 60596,
+      "sha256": "c6779eea6e44e7fd6ce14f56b8fae106e70bba55df17d8815740eb70bd9aebf8"
+    },
+    {
+      "path": "docs/evidence/r77-art/frames.log",
+      "bytes": 1344,
+      "sha256": "5c0eca181e887d0354f85c60111a558026fa300e1d8a98e935af395c34b634f6"
+    },
+    {
+      "path": "docs/evidence/r77-art/npm-test-2.log",
+      "bytes": 69172,
+      "sha256": "211ce95de2b3673d19def6d93f3f8e645783338156f6dd42fb5925c5741b108b"
+    },
+    {
+      "path": "docs/evidence/r77-art/npm-test-final-delivery.log",
+      "bytes": 69492,
+      "sha256": "17aa298d32136aea64f5a4a74e1b7f3dd6bd04c820bee6e23441a2bf73471cc7"
+    },
+    {
+      "path": "docs/evidence/r77-art/npm-test-final-guard.log",
+      "bytes": 69492,
+      "sha256": "cdbd7c462b62f8ee1702d7c75eeb7a3b18c6b96771958840c945537d43e35064"
+    },
+    {
+      "path": "docs/evidence/r77-art/npm-test-final.log",
+      "bytes": 69492,
+      "sha256": "5c71d081d60a342bcb7970784589107e9af86b25c8fe5b5ac2de20a4c54af99c"
+    },
+    {
+      "path": "docs/evidence/r77-art/npm-test-release.log",
+      "bytes": 69492,
+      "sha256": "d0609f40e1e5279c7a4e45d4c3609ad0d555170ca5735dc5a85e3ff9ecd83051"
+    },
+    {
+      "path": "docs/evidence/r77-art/npm-test-ship.log",
+      "bytes": 69492,
+      "sha256": "bce6888d4ddc84a037b18b6ea5ad8779c351d1a0fcc6f10ab39e3ee465d44cfb"
+    },
+    {
+      "path": "docs/evidence/r77-art/npm-test.log",
+      "bytes": 24922,
+      "sha256": "c86ba8c63c5146d7dbcafdf1361eef022d2fff1d6336c2954b8c69f4e7228462"
+    },
+    {
+      "path": "docs/evidence/r77-art/performance.log",
+      "bytes": 16582,
+      "sha256": "0fb20ff75f0d37255faa11db93ae4bed4f2b95e1b23ac9157eb7e6472e1067df"
+    },
+    {
+      "path": "docs/evidence/r77-art/r72-final.log",
+      "bytes": 2470,
+      "sha256": "562a2dbcd973661416421c6cc00dbe43cdac1313d8eec880c943cfd26817483d"
+    },
+    {
+      "path": "docs/evidence/r77-art/r72-fixed.log",
+      "bytes": 3124,
+      "sha256": "90fac25831df6f7e9b172428756fcc43882c718e5b278bbc5df973f220ee3442"
+    },
+    {
+      "path": "docs/evidence/r77-art/r73-mobile.log",
+      "bytes": 6026,
+      "sha256": "8c963cb45d149f067f405cab0c2d54046ad0d7c3a87577792828496fed7775e4"
+    },
+    {
+      "path": "docs/evidence/r77-art/r74-ebb.log",
+      "bytes": 146,
+      "sha256": "50cdafba266b6244122a8b3e549f47cae38d9327a23d6fb4e3351076ba719777"
+    },
+    {
+      "path": "docs/evidence/r77-art/r74-review.log",
+      "bytes": 11806,
+      "sha256": "312892ae1d290f004d031fe393e98677779b70771bcf2e90eed9b12f2dcc7702"
+    },
+    {
+      "path": "docs/evidence/r77-art/r75-art-delivery.log",
+      "bytes": 8288,
+      "sha256": "0f2377ea89c7453def29a723295881e12ab3eab409234a0633ca0f6882ed793d"
+    },
+    {
+      "path": "docs/evidence/r77-art/r75-art-final.log",
+      "bytes": 8288,
+      "sha256": "0f2377ea89c7453def29a723295881e12ab3eab409234a0633ca0f6882ed793d"
+    },
+    {
+      "path": "docs/evidence/r77-art/r75-art-ship.log",
+      "bytes": 8288,
+      "sha256": "0f2377ea89c7453def29a723295881e12ab3eab409234a0633ca0f6882ed793d"
+    },
+    {
+      "path": "docs/evidence/r77-art/r75-art.log",
+      "bytes": 8288,
+      "sha256": "0f2377ea89c7453def29a723295881e12ab3eab409234a0633ca0f6882ed793d"
+    },
+    {
+      "path": "docs/evidence/r77-art/r76-art-2.log",
+      "bytes": 1404,
+      "sha256": "5792c74890b239133ae86b03354469f9c325445648f52ba42cbbc113ca0674e2"
+    },
+    {
+      "path": "docs/evidence/r77-art/r76-art-3.log",
+      "bytes": 1404,
+      "sha256": "2870bd9d94a443df105c893811089038781e2413dd6e993b076db14fef26fad3"
+    },
+    {
+      "path": "docs/evidence/r77-art/r76-art-4.log",
+      "bytes": 54,
+      "sha256": "42098108a68c83f8f1945d60bc634a15aa96c681c0f037e74ce97d4eefe048d0"
+    },
+    {
+      "path": "docs/evidence/r77-art/r76-art-accepted.log",
+      "bytes": 1378,
+      "sha256": "dcb7dcb9736ba5b10a8a0228103863e8ade3faad5083b2370e6b7087c909dfed"
+    },
+    {
+      "path": "docs/evidence/r77-art/r76-art-delivery.log",
+      "bytes": 56,
+      "sha256": "d509981fe24dd60b949b00f5b96f963f091fac4fb2240877dc8cc859fe43b3b9"
+    },
+    {
+      "path": "docs/evidence/r77-art/r76-art-final.log",
+      "bytes": 54,
+      "sha256": "03e0628dda5eb41cd4943efda63854a496785b24f6cfff1720f67a6bb27c0fd5"
+    },
+    {
+      "path": "docs/evidence/r77-art/r76-art-ship.log",
+      "bytes": 54,
+      "sha256": "1a5cf1fed20935730a8ecf87a0b2d543f57e1c9f548f883454b91042f44a0319"
+    },
+    {
+      "path": "docs/evidence/r77-art/r76-art.log",
+      "bytes": 2300,
+      "sha256": "39c3e6b65e9732cbff7240c3fe38e0e68fca26edbbcbe1cf3e1a3a48ac7c23a0"
+    },
+    {
+      "path": "docs/evidence/r77-art/r77-tide-final-guard.log",
+      "bytes": 56,
+      "sha256": "04c1ea65ce1a724ed78b1f80c27a8cb474b23a094ded80cd2b40f689456385f0"
+    },
+    {
+      "path": "docs/evidence/r77-art/r77-tide-final.log",
+      "bytes": 56,
+      "sha256": "04c1ea65ce1a724ed78b1f80c27a8cb474b23a094ded80cd2b40f689456385f0"
+    },
+    {
+      "path": "docs/evidence/r77-art/r77-tide-layout-final.log",
+      "bytes": 56,
+      "sha256": "868f44b66a0ff0f94a256c5674325165d4fb27b47388495a79ee2dfa4052673e"
+    },
+    {
+      "path": "docs/evidence/r77-art/r77-tide-ship.log",
+      "bytes": 56,
+      "sha256": "fbac0da7ac9ccd846f6704f10545adc0988b6e11f5d45343a133a9444bad53ca"
+    },
+    {
+      "path": "docs/evidence/r77-art/r77-tide.log",
+      "bytes": 56,
+      "sha256": "868f44b66a0ff0f94a256c5674325165d4fb27b47388495a79ee2dfa4052673e"
+    },
+    {
+      "path": "docs/evidence/r77-art/rwd-ship.log",
+      "bytes": 3230,
+      "sha256": "58376623df531f6c782f3e0bafaf1959447c21f971b600deb4a190258ce52380"
+    },
+    {
+      "path": "docs/evidence/r77-art/rwd.log",
+      "bytes": 3230,
+      "sha256": "58376623df531f6c782f3e0bafaf1959447c21f971b600deb4a190258ce52380"
+    },
+    {
+      "path": "docs/evidence/r77-art/wave-capture-delivery.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/evidence/r77-art/wave-capture-final-clear.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/evidence/r77-art/wave-capture-final-delivery.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/evidence/r77-art/wave-capture-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/evidence/r77-art/wave-capture-ship.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/evidence/r77-art/wave-capture.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

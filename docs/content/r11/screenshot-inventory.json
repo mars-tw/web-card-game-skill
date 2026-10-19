@@ -1,0 +1,718 @@
+{
+  "status": "VERIFIED",
+  "method": "Native viewport PNG, no crop, resize or composite; clock paused only for exact active impact.",
+  "images": [
+    {
+      "file": "layout-forecast-1032x1376-1.png",
+      "size": [
+        1032,
+        1376
+      ],
+      "sha256": "af7ac18b090eb84d4e48dd0f3fe32fcd1d000cdfafe225512500690d4ff331a5"
+    },
+    {
+      "file": "layout-forecast-1032x1376-2.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "55a1b9197013ec144d77ba386e853b2e84e860fbcf51d6846501e013eee03dab"
+    },
+    {
+      "file": "layout-forecast-1366x600-1.png",
+      "size": [
+        1366,
+        600
+      ],
+      "sha256": "02a7a9023b985297b30e203100bd960da245034ce0dd6872fcbf03a1c591f203"
+    },
+    {
+      "file": "layout-forecast-1376x1032-1.png",
+      "size": [
+        1376,
+        1032
+      ],
+      "sha256": "6b581639432d860aa2d596e4f26b874e3c7b213a6fd575cd1d215ac0c7e5eac8"
+    },
+    {
+      "file": "layout-forecast-320x568-1.png",
+      "size": [
+        320,
+        568
+      ],
+      "sha256": "98aa8bf0e8ae0947d7f2c7350778ca60f7674730959a4459c847d245aa8c6eb4"
+    },
+    {
+      "file": "layout-forecast-360x640-1.png",
+      "size": [
+        360,
+        640
+      ],
+      "sha256": "cbccfdb28a6169a997aa39b3454c0e97952f591739a9a70adec21f398c71eba5"
+    },
+    {
+      "file": "layout-forecast-430x932-3.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "113dc742c3bca345f8646f3640d87f62a2034eed0c816f958914ec604893d195"
+    },
+    {
+      "file": "layout-forecast-844x390-1.png",
+      "size": [
+        844,
+        390
+      ],
+      "sha256": "8fb7158ee02b81b8b6bf62748de1cbf2b1aabb9c162115b2ff5b4f759a0a12c0"
+    },
+    {
+      "file": "layout-moen-1032x1376-1.png",
+      "size": [
+        1032,
+        1376
+      ],
+      "sha256": "9aba09594cc18ed22a78a0f2e134dff193818297de9cce70de493fa022f6b0a7"
+    },
+    {
+      "file": "layout-moen-1032x1376-2.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "d0e13a16a83e3a0c703befc3e0020760cb2e0c30b704e6f1e5f3708360fafab7"
+    },
+    {
+      "file": "layout-moen-1366x600-1.png",
+      "size": [
+        1366,
+        600
+      ],
+      "sha256": "007a0eb13c3179e8efd1f026211b62a5cb9b6ffe4e4d1c2f7a7f2c6c19301c23"
+    },
+    {
+      "file": "layout-moen-1376x1032-1.png",
+      "size": [
+        1376,
+        1032
+      ],
+      "sha256": "9a5867bc5ec99881cb793a8fd8e42d6df91e7e1bcd255b9fec72c0bee81fece9"
+    },
+    {
+      "file": "layout-moen-320x568-1.png",
+      "size": [
+        320,
+        568
+      ],
+      "sha256": "054c3d7c9c9239ba8ffe7d68c0191aa7a5f9a0d084ba5757ffa6214664619dbf"
+    },
+    {
+      "file": "layout-moen-360x640-1.png",
+      "size": [
+        360,
+        640
+      ],
+      "sha256": "8c6b48c63592a2869c7cde55839c318e91c2bd2ecb75cd0241f5d70a3ce7d272"
+    },
+    {
+      "file": "layout-moen-430x932-3.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "52743554afddabce230bf6817ac8ff67014881916d315889b921ab92cdb96c55"
+    },
+    {
+      "file": "layout-moen-844x390-1.png",
+      "size": [
+        844,
+        390
+      ],
+      "sha256": "cc3153fbc0decf7b3cafe6f5073fbaaa41aaf3de769b738dbb02a3c1fcfa22da"
+    },
+    {
+      "file": "phone-exchange-preview.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "88c6d3672a2aec7e66809b720d016820324366d96c8bfd33ed9eb1e445ebcc52"
+    },
+    {
+      "file": "phone-exchange-result.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "3b1b55d2bd2730279ca22a4edf6ea36fb71d75e79d655f79dcd5bb08b4c35862"
+    },
+    {
+      "file": "phone-forecast-applied.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "b99a6e36decbc8f87ea9cc3a91094c5501520bbd3654bc3943943dc871c84ae2"
+    },
+    {
+      "file": "phone-forecast-cancelled.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "d151db1afd129a6d06bcbf9315db296286b29f8f03397bf72af192723104d5e5"
+    },
+    {
+      "file": "phone-forecast-closed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "cbca44227af28a5e129eff11d196ee1ac44f28e10364f0e1336ff2582ef0abfe"
+    },
+    {
+      "file": "phone-forecast-ebb-shields.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "72d973e87d54c779f9eecd224edbd5a68f80e5cb2437b7a47ccc889a600ef85b"
+    },
+    {
+      "file": "phone-forecast-flood-after.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "d82d0304318bd4be08a4b5ab1adc92a18f31a4af16f089cadf3b1ff6d1ccea29"
+    },
+    {
+      "file": "phone-forecast-flood-applied.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "7ff362ca6b80a497ed81e56de9abf6a354797d315136956bac741c1646230f0f"
+    },
+    {
+      "file": "phone-forecast-flood-before.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "ffc764f72b9d0dcf6db3e89c8f498ab8f08011c3f7ed733febbaea71bbe9837c"
+    },
+    {
+      "file": "phone-forecast-flood-cancelled.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "b38628d8ea40099eead661803346ad82b7156faa4cd83b5487d0c3d07071741a"
+    },
+    {
+      "file": "phone-forecast-flood-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "93c5367ea9898f8faaedd2facd1a0138f9366ebc5164c596452681deccbb3bbe"
+    },
+    {
+      "file": "phone-forecast-flood-impact.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "f3408822bb5cf0816e18a67f12e3e50fe38bca3ff3d0718af641858ea686347f"
+    },
+    {
+      "file": "phone-forecast-flood-preview.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "73631ee096bd6de446775b32a3e8592a515d37e7802c423f94aebc762b79fceb"
+    },
+    {
+      "file": "phone-forecast-full-health-preview.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "642d858e3aece465a7aef9871ae1da75a8bf805482ace396d410b43f57b18269"
+    },
+    {
+      "file": "phone-forecast-mouse-cancelled.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "53ac8523366688991d879c8a18833e233fab5d50b51823677d429687dbabb775"
+    },
+    {
+      "file": "phone-forecast-past-locked.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "931b59ab6fe2d104faa0822d9f199adb9d42aa828c362dcad81a9c3338d6ce94"
+    },
+    {
+      "file": "phone-forecast-preview.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "828b5d8b81b57e45a9ea86168b4dd32e15c41436c29865562523dc3cd79b0085"
+    },
+    {
+      "file": "phone-forecast-undone.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "e841bbf63e8622a8331f7782a71ae70f709c789178c5e49bf04edfb1ff2289b1"
+    },
+    {
+      "file": "phone-forecast320-applied.png",
+      "size": [
+        320,
+        568
+      ],
+      "sha256": "94020ce6125e9ef1dc41bc4014d584dc728239c1897a4522c1ff9db925879c71"
+    },
+    {
+      "file": "phone-forecast320-cancelled.png",
+      "size": [
+        320,
+        568
+      ],
+      "sha256": "24636b6edd96a44d03fb9b1d160f8fa8488b43586fca7844c09bc20eb8fbf83a"
+    },
+    {
+      "file": "phone-forecast320-preview.png",
+      "size": [
+        320,
+        568
+      ],
+      "sha256": "41d758ed899334a71d9ea65c34ea25ee04fe36b69655f384ded429fc4962be01"
+    },
+    {
+      "file": "phone-moen-before.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "916e5020a0a78d0791d16e07ce52254d58cb50feac7ae09b8d1defdb4cabefa1"
+    },
+    {
+      "file": "phone-moen-break-anticipation.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "90a2285de98f2ffc70b31c9eb39d9c333168fa5a6d2dd0e443cbcf5e7ee90f35"
+    },
+    {
+      "file": "phone-moen-break-impact.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "c2c07cd76a6e09cb072e0657fa141a03b94d796952d1114a2d31aaee938e1b9a"
+    },
+    {
+      "file": "phone-moen-break-recovery.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "fdf56972c49aa564a94ab4d3cbc74d2ec8b7596fea8dab3e08e3dfe4de29ff00"
+    },
+    {
+      "file": "phone-moen-broken.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "7645e93976774200993bbeff139f2ac290de4053f69eae8ffb0465d4c875a221"
+    },
+    {
+      "file": "phone-moen-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "9937c729a95c4aa4bfa77a1b105f993879d94423ed3007a6547aa21c1becac50"
+    },
+    {
+      "file": "phone-moen-heal-impact.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "59fbc2a1636a64db090705a515ea25d1e45b18d6da9f0eed371493896e3eb598"
+    },
+    {
+      "file": "phone-moen-hurt-after.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "c642d67cb49b7596c06100713277bc5900f66302f1985f08c98e33a5f1812f05"
+    },
+    {
+      "file": "phone-moen-hurt-before.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "dd2ab798590fafa69732b061f690f7513d90930ca1e5f90494138077a46dccd0"
+    },
+    {
+      "file": "phone-moen-hurt-impact.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "94cbc9c18eaca0c896d6b7c10f3c9008aaacda0345f6007c3281768f97cffbcd"
+    },
+    {
+      "file": "phone-moen-preparation.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "b7e8cb63d291ce38ec8572f26b67bbb0d75c5586200042e27827ae4cdd47ad34"
+    },
+    {
+      "file": "phone-moen-return-prevented-before.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "cbbef80821f8944495964c7c6dc9158bacb386c807dacbf01525f2f0fbad7cd4"
+    },
+    {
+      "file": "phone-moen-return-prevented-break-anticipation.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "5f99b45bfec39de0e66ab26ee68aec7b293a53fa0633fe46d2df92b70bb2295e"
+    },
+    {
+      "file": "phone-moen-return-prevented-break-impact.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "5d00dbcd52b1b0c5e2e534595232f01d14ad3415ff5286a03fff590deed38f61"
+    },
+    {
+      "file": "phone-moen-return-prevented-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "9e0fa0b3abaea83844433cec0e790c0357fa6512c329aa896885916cad389512"
+    },
+    {
+      "file": "phone-moen-return-prevented.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "b011a0b353c96510413847477151faefc6fd210b5f67e9c3ee0b24b94bfab558"
+    },
+    {
+      "file": "phone-moen-return-triggered-before.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "6b247d4bc17237b4506c059c792e8d29f04a032fe68c68de45e9b2a996cfb7d4"
+    },
+    {
+      "file": "phone-moen-return-triggered-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "17e59d0ebee20d8d554dd6b8e37dd0e0762952bb58c7c465460fcb62b8b7bbb2"
+    },
+    {
+      "file": "phone-moen-return-triggered.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "0e6fb772489f3eb434020785833379a284cbb9d6fb159a1caf0f0ec0024b85af"
+    },
+    {
+      "file": "phone-moen-return-wolf-spent.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "6b247d4bc17237b4506c059c792e8d29f04a032fe68c68de45e9b2a996cfb7d4"
+    },
+    {
+      "file": "phone-puzzle-cross-abandoned-preview.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "ce109103dfe50c6067bf8c3c56aa9fdb8627cdaeb291a8dee7ea123a2e419116"
+    },
+    {
+      "file": "phone-puzzle-cross-clean-retried.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "4baa6bcb81c9b752043ad8d303adfa8b0fd6a1c2a17d794317e492bf21463002"
+    },
+    {
+      "file": "phone-puzzle-cross-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "5c13f6b27de23ba7b2cf9d3b0bb3ec5e0d834da83cef403271d0418175909c1a"
+    },
+    {
+      "file": "phone-puzzle-cross-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "ce109103dfe50c6067bf8c3c56aa9fdb8627cdaeb291a8dee7ea123a2e419116"
+    },
+    {
+      "file": "phone-puzzle-cross-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "a76254fd02f908374f7ad4e21e2f1b843ca12cb9101fb9fae68dd919e27e0572"
+    },
+    {
+      "file": "phone-puzzle-cross-retried.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "76dee1c2ea6e32d72d821eaa40147913902cbecfa443a55d0d25fdf73ccbb4d0"
+    },
+    {
+      "file": "phone-puzzle-fallen-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "732d4355824da65f424c63b296ef2b38ce169fcdcbceb2f46b19e8d76dd98965"
+    },
+    {
+      "file": "phone-puzzle-fallen-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "58811abfaa21c83c41bdc8aa0f5f6ab1da1962c64ff94d644e3e76fd612ade38"
+    },
+    {
+      "file": "phone-puzzle-fallen-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "ee4d2c9caf72a776a5e2bc9f9fd3fbe73c4cbe52af2c6d8b5f2cf035e81af4dd"
+    },
+    {
+      "file": "phone-puzzle-fallen-retried.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "8cb6185bb3642259383aa433f05beeec3b84b633161c2e3b147513fa21eaabcf"
+    },
+    {
+      "file": "phone-puzzle-shelter-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "119f53557fb2d47b8d9beddae3957ea887d3b4b5a553f5d95837a9ebe2cb8734"
+    },
+    {
+      "file": "phone-puzzle-shelter-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "a5f5d8b443cddf59340dc54da83f0e5c7857a3d0777f183315ff97e53ef92dea"
+    },
+    {
+      "file": "phone-puzzle-shelter-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "a42234e8e3802425581112ef2f1b4b2bb97648f45313f83297322c27608d4c4b"
+    },
+    {
+      "file": "phone-puzzle-shelter-retried.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "87796b7a8ada50f9c76a4e186f31b4d1773656cba8ecfa15570dce0cc9368c4a"
+    },
+    {
+      "file": "phone-puzzle-shield-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "551846e596b948df1cc64590b3cb8b79d4da39cbb7a18c820f2b38de860a7fff"
+    },
+    {
+      "file": "phone-puzzle-shield-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "a0147a4a81831b2cb7a59e37b8b3f8bf884f0f087abd70c5bee70b7e5b832ba3"
+    },
+    {
+      "file": "phone-puzzle-shield-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "e55935e7940e30d3ba641b36f2f87d4ac69d59aa2ebdff638108deda2f1cde3c"
+    },
+    {
+      "file": "phone-puzzle-shield-retried.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "83e9910332c3c0094878463714e4fbbcdbcf4026aa816dc224e6b14ba5f74877"
+    },
+    {
+      "file": "phone-puzzle-spell-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "460783d2f07f07e7e01108339c7bc45435fcc43c8a7a27a3cf4c1d556425ff1e"
+    },
+    {
+      "file": "phone-puzzle-spell-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "a669ffcd858517096fbf3b1a88faac1f9cad4120b9186c9091f4309832041faa"
+    },
+    {
+      "file": "phone-puzzle-spell-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "56fc97c6def039d8dc643de5afb622a3ffe6fd0cb5dcae53fb20086c3a629c8f"
+    },
+    {
+      "file": "phone-puzzle-spell-retried.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "b66f8caf56ffcd0c1713ee9f695eee6d0e0b513d91542f9a1cfe7907755c2bc6"
+    },
+    {
+      "file": "phone-puzzle-taunt-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "446ea7796e6c4f8d97c4ac35d1db42d58bc21b7fc0ec760c05770e9d8fc63497"
+    },
+    {
+      "file": "phone-puzzle-taunt-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "9d0e23f04bfc419566282cf451c8a60f998ac5d0704b3e2dee06f7b28c346d83"
+    },
+    {
+      "file": "phone-puzzle-taunt-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "1385b4ecfe2e1ad207a16ffbb6c448fea5b5ec195bc67c431b52a21df633fcdb"
+    },
+    {
+      "file": "phone-puzzle-taunt-retried.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "987397d9b4118ff85902dd9b8c128a7369c4b8cd23ff4bfa44d95dd68f2ff0b9"
+    },
+    {
+      "file": "phone-puzzle320-cross-playing.png",
+      "size": [
+        320,
+        568
+      ],
+      "sha256": "993b46a5188dbda2ad9326f7d72a6781ea20fa64973ff5df84ed9d556d2c6570"
+    },
+    {
+      "file": "phone-puzzle320-fallen-playing.png",
+      "size": [
+        320,
+        568
+      ],
+      "sha256": "29c702f7c6ec7f3e5a1d87086a90ddfcafd11c265a87713b908c68cb3c14bb35"
+    },
+    {
+      "file": "phone-puzzle320-shelter-playing.png",
+      "size": [
+        320,
+        568
+      ],
+      "sha256": "c9ffc95162b41daeec939851ae03e6b1bf80f2ef3928a843cdc7afa0312ccc53"
+    },
+    {
+      "file": "phone-puzzle320-shield-playing.png",
+      "size": [
+        320,
+        568
+      ],
+      "sha256": "0397f0a08eae535128dc6458da7bfd62fa42814851d62b43935b1dd9954d18ca"
+    },
+    {
+      "file": "phone-puzzle320-spell-playing.png",
+      "size": [
+        320,
+        568
+      ],
+      "sha256": "2aa65f422deb2f3393bc4af97e9d30aa4aa270064e8b88f7d876d9412b0e05ba"
+    },
+    {
+      "file": "phone-puzzle320-taunt-playing.png",
+      "size": [
+        320,
+        568
+      ],
+      "sha256": "83df865e1a4a79d33c772a59a535ba696cd3fb8b275c24efa4d4f2676a73d31b"
+    }
+  ]
+}

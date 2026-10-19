@@ -1,0 +1,44 @@
+[
+  {
+    "phase": "before",
+    "path": "docs/evidence/content-r8/before/exchange.png",
+    "source": "docs/content/r7/phone-exchange-preview.png",
+    "sha256": "4dbc3e6397f853f015c0ce1b5bf78578060fb5300c58c1891b7f5847db504a87",
+    "historical": true
+  },
+  {
+    "phase": "after",
+    "path": "docs/evidence/content-r8/after/exchange.png",
+    "source": "docs/content/r8/phone-exchange-preview.png",
+    "sha256": "a7a94e4de652c9c2e36f5f7ce52fce5e94803043040459eb3ed9e94e6a080579",
+    "historical": false
+  },
+  {
+    "phase": "before",
+    "path": "docs/evidence/content-r8/before/forecast.png",
+    "source": "docs/content/r7/phone-forecast-flood-to-ebb-applied.png",
+    "sha256": "f3f93cce653686e9c1218132b0a6a4adbcf3e1565ff73f75e5556b4cd7eac375",
+    "historical": true
+  },
+  {
+    "phase": "after",
+    "path": "docs/evidence/content-r8/after/forecast.png",
+    "source": "docs/content/r8/phone-forecast-flood-to-ebb-applied.png",
+    "sha256": "9ef76581440a7dc62e32b99cf308f0d141bfe372787c68448c731e2d2a5a861c",
+    "historical": false
+  },
+  {
+    "phase": "before",
+    "path": "docs/evidence/content-r8/before/moen.png",
+    "source": "docs/content/r7/phone-moen-impact.png",
+    "sha256": "6beee970253d5795277b2c7a31b86f8e9f750e05769f617ee3a51f339ea24931",
+    "historical": true
+  },
+  {
+    "phase": "after",
+    "path": "docs/evidence/content-r8/after/moen.png",
+    "source": "docs/content/r8/phone-moen-impact.png",
+    "sha256": "18707feebf3ce065497cbe32634da27ee5d6a830bf88280b08289e3506f27dfe",
+    "historical": false
+  }
+]

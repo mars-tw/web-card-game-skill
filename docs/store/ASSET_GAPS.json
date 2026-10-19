@@ -1,0 +1,25 @@
+{
+  "status": "BLOCKED",
+  "round": "R74",
+  "newRasterAssets": 0,
+  "generationModelSlug": null,
+  "generationEvidence": "本輪工具沒有可指定且核實為 gpt-image-2 的本機出圖路徑；未送出生成工作、未用方塊或單圖位移補交。",
+  "existingArt": "沿用 R67 與既有卡圖來源紀錄，不改寫歷史模型資訊。",
+  "animationAdapter": "templates/card-battle/pose-player.js",
+  "registry": "CardPosePlayer.register(cardId, asset)",
+  "requiredFormat": {
+    "attack": { "anticipation": [], "impact": [], "recovery": [] },
+    "hurt": { "frames": [] },
+    "death": { "frames": [] },
+    "walk": { "frames": [] }
+  },
+  "frameContract": { "src": "../../assets/animations/<card-id>/<pose>.webp", "ms": 100 },
+  "missing": [
+    "見習士兵、弓箭手及全部可參戰角色的真實姿勢幀／骨架素材",
+    "攻擊 anticipation／impact／recovery；hurt／death 的完整姿勢及人工動作 QA",
+    "若新增移動玩法，走路至少兩種可見肢體姿勢；本作目前是牌桌沒有角色行走控制",
+    "hurt／death 階段接入回收時序的素材驗收；目前卡片閃紅／退場不是人物演出",
+    "可授權本作背景音樂、來源與授權證據；BGM_URL 仍為 null"
+  ],
+  "runtime": "現有卡片位移是牌桌 UI 交換；不是合格人物動畫。可替換攻擊播放 adapter 只有合法三段幀註冊後才啟用，不改碰撞／規則根節點；無素材時使用既有卡片 UI 並維持缺件狀態。"
+}

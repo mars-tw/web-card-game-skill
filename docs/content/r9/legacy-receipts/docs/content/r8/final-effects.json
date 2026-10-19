@@ -1,0 +1,20 @@
+{
+  "status": "VERIFIED",
+  "checks": 10,
+  "placement": {
+    "parent": "enemyHero",
+    "rect": {
+      "x": 22,
+      "y": 166,
+      "width": 113.65625,
+      "height": 30,
+      "top": 166,
+      "right": 135.65625,
+      "bottom": 196,
+      "left": 22
+    },
+    "clear": true,
+    "text": "+3 治療 · 4 → 7"
+  },
+  "method": "Real DOM inputs; virtual time for actual state phases; original 390x844 CDP screenshots without cropping/compositing."
+}

@@ -1,0 +1,24 @@
+{
+  "round": "CONTENT_R2",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "new_originals": 1,
+  "reference": "assets/cards/heroMoenTidearbiter.png",
+  "postprocess": "Resize and WebP encoding only; no generated proxy shapes.",
+  "files": [
+    {
+      "path": "docs/art/source/content-r2/moen-harbor.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 3003444,
+      "sha256": "a9ec9e0046a5149f6f4c9a51fd3ddf60cf7416d9afd0dda75ddb0530523761be"
+    },
+    {
+      "path": "assets/art/content-r2/moen-harbor.webp",
+      "width": 960,
+      "height": 640,
+      "bytes": 186102,
+      "sha256": "c120fd392dae51bd3e72c0c17cb0d0ab91bc82fd317656adc2c2f7b8c58c6c63"
+    }
+  ]
+}

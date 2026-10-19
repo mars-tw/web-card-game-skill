@@ -1,0 +1,106 @@
+PASS harbor to shell to new content entry with full available viewport
+PASS R5 native verification button is uniquely present alongside all original controls
+PASS 844x390 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 844x390 #contentPanel no overlapping controls
+PASS fallen reload resumes exact lesson
+PASS fallen completed through real input
+PASS shield reload resumes exact lesson
+PASS shield completed through real input
+PASS shelter reload resumes exact lesson
+PASS shelter completed through real input
+PASS taunt reload resumes exact lesson
+PASS taunt completed through real input
+PASS spell reload resumes exact lesson
+PASS spell completed through real input
+PASS cross reload resumes exact lesson
+PASS cross completed through real input
+PASS six completion records saved
+PASS first-frame result retry accepts one tap and waits for recovery without dropping it
+PASS wrong unshielded exchange fails
+PASS immediate retry restores original board
+PASS one reversal disables further changes
+PASS reversed forecast saved on reload
+PASS forecast hint opens actual schedule instead of recommending unavailable flood
+PASS forecast won through reversed protection and next-turn attack
+PASS all four Moen preparation cards remain entirely inside field
+PASS Moen actual impact heals, consumes tide and shields the knight
+PASS Moen holds protected knight; shield remains a real player-turn obstacle
+PASS Moen script checkpoint and identity resume
+PASS Moen defeated after real scripted ebb, shield removal and ordered trades
+PASS all three content types persisted
+PASS content does not award coins, wins, losses or trial card telemetry
+PASS completion survives browser reload
+PASS R5 native verification button is uniquely present alongside all original controls
+PASS 390x844 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 390x844 #contentPanel no overlapping controls
+PASS 390x844 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 390x844 #forecastPanel no overlapping controls
+PASS 390x844 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 390x844 #contentBar no overlapping controls
+PASS 390x844 real puzzle play completed
+PASS 390x844 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 390x844 #contentResult no overlapping controls
+PASS R5 native verification button is uniquely present alongside all original controls
+PASS 844x390 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 844x390 #contentPanel no overlapping controls
+PASS 844x390 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 844x390 #forecastPanel no overlapping controls
+PASS 844x390 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 844x390 #contentBar no overlapping controls
+PASS 844x390 real puzzle play completed
+PASS 844x390 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 844x390 #contentResult no overlapping controls
+PASS R5 native verification button is uniquely present alongside all original controls
+PASS 1032x1376 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #contentPanel no overlapping controls
+PASS 1032x1376 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #forecastPanel no overlapping controls
+PASS 1032x1376 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #contentBar no overlapping controls
+PASS 1032x1376 real puzzle play completed
+PASS 1032x1376 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #contentResult no overlapping controls
+PASS R5 native verification button is uniquely present alongside all original controls
+PASS 1376x1032 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1376x1032 #contentPanel no overlapping controls
+PASS 1376x1032 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1376x1032 #forecastPanel no overlapping controls
+PASS 1376x1032 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 1376x1032 #contentBar no overlapping controls
+PASS 1376x1032 real puzzle play completed
+PASS 1376x1032 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 1376x1032 #contentResult no overlapping controls
+PASS R5 native verification button is uniquely present alongside all original controls
+PASS 1366x600 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1366x600 #contentPanel no overlapping controls
+PASS 1366x600 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1366x600 #forecastPanel no overlapping controls
+PASS 1366x600 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 1366x600 #contentBar no overlapping controls
+PASS 1366x600 real puzzle play completed
+PASS 1366x600 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 1366x600 #contentResult no overlapping controls
+PASS R5 native verification button is uniquely present alongside all original controls
+PASS 430x932 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 430x932 #contentPanel no overlapping controls
+PASS 430x932 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 430x932 #forecastPanel no overlapping controls
+PASS 430x932 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 430x932 #contentBar no overlapping controls
+PASS 430x932 real puzzle play completed
+PASS 430x932 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 430x932 #contentResult no overlapping controls
+PASS R5 native verification button is uniquely present alongside all original controls
+PASS 1032x1376 #contentPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #contentPanel no overlapping controls
+PASS 1032x1376 #forecastPanel all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #forecastPanel no overlapping controls
+PASS 1032x1376 #contentBar all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #contentBar no overlapping controls
+PASS 1032x1376 real puzzle play completed
+PASS 1032x1376 #contentResult all expected controls visible, 44px, within viewport and center hits self
+PASS 1032x1376 #contentResult no overlapping controls
+PASS generated study art loads with network disabled
+PASS offline cold navigation and complete real puzzle
+PASS zero JavaScript and resource errors
+Content R1 browser: 105 PASS

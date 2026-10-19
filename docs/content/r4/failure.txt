@@ -1,0 +1,3 @@
+AssertionError [ERR_ASSERTION]: 844x390 opposing cards completely outside chart
+    at check (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r4-e2e.js:7:28)
+    at C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r4-e2e.js:74:2

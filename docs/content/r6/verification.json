@@ -1,0 +1,21 @@
+{
+  "status": "VERIFIED",
+  "version": "0.19.0",
+  "reviewImages": 15,
+  "phoneScreenshots": 38,
+  "secretScan": {
+    "status": "VERIFIED",
+    "files": 746,
+    "hits": [],
+    "scope": "Repo text files, excludes .git/node_modules/.audit-tmp; never reads secrets directory."
+  },
+  "syntax": [
+    "templates/card-battle/content-r6.js",
+    "templates/card-battle/battle.js",
+    "scripts/test-content-r6.js",
+    "scripts/test-content-r6-e2e.js"
+  ],
+  "acceptanceChecks": 84,
+  "newOriginals": 1,
+  "newRuntimeCrops": 3
+}

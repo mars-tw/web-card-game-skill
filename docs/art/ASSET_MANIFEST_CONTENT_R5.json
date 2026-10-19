@@ -1,0 +1,31 @@
+{
+  "round": "CONTENT_R5",
+  "status": "VERIFIED",
+  "newOriginals": 0,
+  "newRuntimeCrops": 0,
+  "method": "Reuse existing generated art unchanged; only layout and state visibility changed.",
+  "priorTool": "image_gen.imagegen",
+  "priorManifests": [
+    "docs/art/ASSET_MANIFEST_CONTENT_R4.json",
+    "docs/art/ASSET_MANIFEST_CONTENT_R2.json",
+    "docs/art/ASSET_MANIFEST_CONTENT_R1.json"
+  ],
+  "files": [
+    {
+      "path": "assets/art/content-r4/shield-cover.webp",
+      "sha256": "1e179b4eba2736377fd658f2a5d74e8978cbb666e71047c87eeb2cebd00893c9"
+    },
+    {
+      "path": "assets/art/content-r4/shield-fracture.webp",
+      "sha256": "2f0b143e30cb108944ea96bd56a889f63e3ccf176faa0976869beba8dae3d53f"
+    },
+    {
+      "path": "assets/art/content-r2/moen-harbor.webp",
+      "sha256": "c120fd392dae51bd3e72c0c17cb0d0ab91bc82fd317656adc2c2f7b8c58c6c63"
+    },
+    {
+      "path": "assets/art/content-r1/tide-study.webp",
+      "sha256": "089d56e985cbf38677c13476981d6ec4af5ab776d8038883e343c1f17aa74dcc"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "status": "VERIFIED",
+  "images": [
+    {
+      "name": "puzzle",
+      "state": "before",
+      "path": "docs/evidence/content-r9/before/puzzle.png",
+      "source": "docs/content/r8/phone-exchange-confirmed.png",
+      "sha256": "cf7f1b6cfccec45ae706433cffd7870c5a540780fcad7b0c39c80f235d605c42",
+      "historical": true
+    },
+    {
+      "name": "puzzle",
+      "state": "after",
+      "path": "docs/evidence/content-r9/after/puzzle.png",
+      "source": "docs/content/r9/phone-exchange-live-result.png",
+      "sha256": "9ca59b7aded5b816b0b2a2ddf57208cee8aae29c81e7744db5517ef315d85eaf",
+      "historical": false
+    },
+    {
+      "name": "forecast",
+      "state": "before",
+      "path": "docs/evidence/content-r9/before/forecast.png",
+      "source": "docs/content/r8/phone-forecast-held.png",
+      "sha256": "2069af623ddd00f69e0bcc9b04412afeea3857cffea01222d25369f631c5b6f1",
+      "historical": true
+    },
+    {
+      "name": "forecast",
+      "state": "after",
+      "path": "docs/evidence/content-r9/after/forecast.png",
+      "source": "docs/content/r9/phone-forecast-fixed-held.png",
+      "sha256": "f975381ef6be7ce03cb7a600a61992d029353af279c55b15e8e1a7139fd36456",
+      "historical": false
+    },
+    {
+      "name": "moen",
+      "state": "before",
+      "path": "docs/evidence/content-r9/before/moen.png",
+      "source": "docs/content/r8/phone-moen-impact.png",
+      "sha256": "18707feebf3ce065497cbe32634da27ee5d6a830bf88280b08289e3506f27dfe",
+      "historical": true
+    },
+    {
+      "name": "moen",
+      "state": "after",
+      "path": "docs/evidence/content-r9/after/moen.png",
+      "source": "docs/content/r9/phone-moen-r9-impact.png",
+      "sha256": "b11dbaa004dc936ca511eb084a62a6cb798b92ff53cd7a9e3b083953e436d43d",
+      "historical": false
+    }
+  ],
+  "before": "Historical R8 original copies, not a newly executed baseline."
+}

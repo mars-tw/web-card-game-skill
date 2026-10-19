@@ -1,0 +1,24 @@
+{
+  "status": "VERIFIED",
+  "passed": 22,
+  "before": {
+    "hp": 9,
+    "health": [
+      2,
+      2
+    ],
+    "tide": 6,
+    "used": 0
+  },
+  "after": {
+    "hp": 7,
+    "health": [
+      1,
+      1
+    ],
+    "tide": 0,
+    "used": 1
+  },
+  "errors": [],
+  "note": "Real trial plays followed by explicit nonlethal QA; not store evidence."
+}

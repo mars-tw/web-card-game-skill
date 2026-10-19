@@ -1,0 +1,6 @@
+PASS real raised-arm pose at tide impact
+PASS shield loss never whitens or shakes the entire knight card
+PASS confirmation removes preview throughout impact
+PASS actual impact retains four HP
+PASS same knight identity/frame/HP remain
+PASS small persistent shield-loss marker

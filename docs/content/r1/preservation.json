@@ -1,0 +1,392 @@
+{
+  "status": "VERIFIED",
+  "incomingTrackedDocsChecked": 1542,
+  "restored": [
+    {
+      "path": "docs/art/ASSET_MANIFEST.json",
+      "originalSha256": "632979c7d609bd638603eefcf7ec6d039f028527f8fc383ea692b25618545847",
+      "testOutputSha256": "f936c27388864822fb6be664308ad66cd4c5a5ab574c76c70a3d3832959273b2"
+    },
+    {
+      "path": "docs/art/ASSET_MANIFEST_R76.json",
+      "originalSha256": "0cfc1e78a1c4f28ddf231851c94aab2d974b01139e84881cfbed6276af72eb7d",
+      "testOutputSha256": "9c632ba6ca07e5f05cb6536689624214be84977c27f6a2edb4018cf778c8d1e6"
+    },
+    {
+      "path": "docs/evidence/R67/after/desktop-1366x768.png",
+      "originalSha256": "1734595a6ef49f8dce721b86238593411fabfbef5d006fbf92112c6dba6b8bd0",
+      "testOutputSha256": "708cce70f5a2655352e49fd65bf065ceaef5a25adc239e1acd8a199a8d21e6bb"
+    },
+    {
+      "path": "docs/evidence/R67/after/landscape-844x390.png",
+      "originalSha256": "2d849e0ccc81af566f125b456b18215f6184f02d70ac2884e384bb780ff9c1b1",
+      "testOutputSha256": "be411e337c62f9256137f81f3b169309366473c412d678d35b396f298f22ec9f"
+    },
+    {
+      "path": "docs/evidence/R67/after/mobile-390x844.png",
+      "originalSha256": "4f8b8d8a851fdaf12644d8ef0f9a85bb945d1680d73a89acd2c2396ee05c2133",
+      "testOutputSha256": "60e65c4da667e676c40f0ad6d04c6a69970db55ed0537524ebf2090e2403a20e"
+    },
+    {
+      "path": "docs/evidence/R67/gates/browser-integration.json",
+      "originalSha256": "1985691c498118528a7867341d355ad170e00c10b52325bd9148be7214160413",
+      "testOutputSha256": "1ea2b88a75c143d58f2b85310473e759b3c2c6e9ac90622feb619dfa9a9c2532"
+    },
+    {
+      "path": "docs/evidence/r73-mobile/after/frost-battle-390x844.png",
+      "originalSha256": "d2ad051a855c34db82b73b9dfeeb6bc107255564c6f9451fff2bdd75244fe12d",
+      "testOutputSha256": "a8c8a0d43582590b2269281bfad081fd69045c40a55730b4463ea2cb79bf2da9"
+    },
+    {
+      "path": "docs/evidence/r73-mobile/after/frost-battle-844x390.png",
+      "originalSha256": "627ba06057f4f0b2c81bcc65c6e946589897f2df24b50d20398e058437d72b95",
+      "testOutputSha256": "a3d72294226df6192e744897d6460c19a2f0a34191179b44382b0275a21dd45f"
+    },
+    {
+      "path": "docs/evidence/r73-mobile/after/staged-result-390x844.png",
+      "originalSha256": "5c01ca5c636e164d4b717c6d3ea4db45714734c09dba82eca81e15928170a35b",
+      "testOutputSha256": "b612d33325908a4757a69fac873d16d071450f3bfac39280f50afacffff6b4b7"
+    },
+    {
+      "path": "docs/evidence/r73-mobile/after/staged-result-844x390.png",
+      "originalSha256": "c5f7fa72bb2f291296b798cf3e55193828d6cb9cdb8312ce0c71b762cf3b06e4",
+      "testOutputSha256": "7f25c0f797a743af2f56d72bc6b01a30dccb9f78813a667fc841c79223073c29"
+    },
+    {
+      "path": "docs/evidence/r73-mobile/after/unlocked-deck-390x844.png",
+      "originalSha256": "45a0a25133346db2d291dec91b40b405477e6aaa78aba07ca1c6eb2dfe796bc2",
+      "testOutputSha256": "94ac6b3ea1b5d0835ee29df4e0371cb8454d438959d4a694ff795c2f97dc497f"
+    },
+    {
+      "path": "docs/evidence/r73-mobile/after/unlocked-deck-844x390.png",
+      "originalSha256": "4d4b971c39189cdc90f68709e0f8bf196d60cf181f408f078e132854f51c8b19",
+      "testOutputSha256": "9b81db62f089fb9165359983c04ab2cea7c01ba71cb69c81013188e7cc800fa5"
+    },
+    {
+      "path": "docs/evidence/r74-store/review-path.json",
+      "originalSha256": "3fa232ee6dfabf5a285252c5fb0b77fee4367bcc7581ffcf213c798e89b0158e",
+      "testOutputSha256": "2636559723cc93fdf558a63c615ccabcff43862e36fe81d74f47f0302fcbf0c3"
+    },
+    {
+      "path": "docs/evidence/r75-art/art-browser.json",
+      "originalSha256": "c31a291720fd256d694082d4a3a90b5ed4028f18b6f82a938672533eb55c9f85",
+      "testOutputSha256": "2b83ca7de2b30cb8c88eeda1c2d0267c5cae07320e1cae5f4028fbe5991995c9"
+    },
+    {
+      "path": "docs/evidence/r75-art/foil-rarity-fixture-1032x1376.png",
+      "originalSha256": "dec8498aafcbfc1820567635132f0b41525dd864e55c6eead97c90d5104ff080",
+      "testOutputSha256": "09dac47c11a20d03dde4b2496f5a661ae4b1a7eba65cd6160008f388a369b4fe"
+    },
+    {
+      "path": "docs/evidence/r76-art/art-browser.json",
+      "originalSha256": "d92f36e18eccca58f06ba847002211179eb2fbd2c480978bb6506c1e7651d24b",
+      "testOutputSha256": "75754f02ec0f5e64398d3cc9bfa84e3faeb0c0ef60050a4fbac46bd4491aee1e"
+    },
+    {
+      "path": "docs/evidence/r76-art/water-0-1032x1376.png",
+      "originalSha256": "b959d3ba6f2da210b63e009d58034eb1588c7c6501f431b1de0a6c4e3b7cf15c",
+      "testOutputSha256": "8475464e754802a321d8499c7b8bc3f18d7ec79fdfccd4ccf0dd1b50fef95bfd"
+    },
+    {
+      "path": "docs/evidence/r76-art/water-0-1366x600.png",
+      "originalSha256": "de0e9f73ba262676dde61141326d1b08db0f358d65f26b6feb6eddf2a8874b54",
+      "testOutputSha256": "f2d9483c257a68bb20ff8b074cbdec658071744144aee21faa86bebe2c31a858"
+    },
+    {
+      "path": "docs/evidence/r76-art/water-0-320x568.png",
+      "originalSha256": "05d55155ca787492b924377f21b090001fdd5ea8357a84c9d8c953253a133265",
+      "testOutputSha256": "e8167df9cc4558f43b2d08af4f12162194a8ba66159b7cb712540f6528cf8c2b"
+    },
+    {
+      "path": "docs/evidence/r76-art/water-0-390x844.png",
+      "originalSha256": "005992fdd5eb6bd1dd35196adf4610f48f78b6ed31ec7a4786f4fbd32a80db22",
+      "testOutputSha256": "44c5f8a049acf4d75be46bf28e0c8ff5cea697d3c3a0c3621e8182248a66a32c"
+    },
+    {
+      "path": "docs/evidence/r76-art/water-0-844x390.png",
+      "originalSha256": "7ff9e2634cb1b847fcc05775ed86882a9bb58db4315227cc2b792201b4d594a5",
+      "testOutputSha256": "9f0ce75b390e5bdabbcf37d888ac35f13788f3f5cb170a0e03397c11d874d917"
+    },
+    {
+      "path": "docs/evidence/r76-art/water-6-1032x1376.png",
+      "originalSha256": "9374060cb3a6daeddb0e03daa6eb924c25130c1f8844fd379b6eb252e9f0a59b",
+      "testOutputSha256": "11c84c64fe2209764080946734f37f5c2ca012c45beca88b0939d2b837d77b48"
+    },
+    {
+      "path": "docs/evidence/r76-art/water-6-1366x600.png",
+      "originalSha256": "f151608bc48c54172ed4595a6aab1e4de21ffb7100d4d15346e226f467101d72",
+      "testOutputSha256": "4b7b076e806209b79bf6ffe22a2e0899e314e92924b10e7bdf32f48306330d39"
+    },
+    {
+      "path": "docs/evidence/r76-art/water-6-320x568.png",
+      "originalSha256": "d4192e5eb62912d71a47d60cd73cfe2ff00cf18be6baac5ae7b88e5c513083a1",
+      "testOutputSha256": "299560234cf94677878bd77e8e634676990b390510c56a27f77c13d00445d1db"
+    },
+    {
+      "path": "docs/evidence/r76-art/water-6-390x844.png",
+      "originalSha256": "7405c39d44430537c56476fc1b6ac9ea3466c27a16a91e16c14c3fa0bd16d535",
+      "testOutputSha256": "47533d1aa28ee4e5e0709476ed27cdb3e585ad318a2f802265551d57f04c52b2"
+    },
+    {
+      "path": "docs/evidence/r76-art/water-6-844x390.png",
+      "originalSha256": "b9a6fd48e39066fb2910da5715bcc593ffa30ec23407070e754dc8a58b7696c8",
+      "testOutputSha256": "4e11be4d13ae57cdd1541d83700bf801026d553577b22022b092720e9cd377b2"
+    },
+    {
+      "path": "docs/evidence/r77-art/empty-field-fixture-390x844.png",
+      "originalSha256": "381ab7c9700aeef9975633f40cb70a75a98b78f1726540e3ddde355a3618ccd2",
+      "testOutputSha256": "4353e66e291bf7026ac6222b129c7fafaad16801cf2e04adb608c3fd658c2dab"
+    },
+    {
+      "path": "docs/evidence/r77-art/four-cards-official-390x844.png",
+      "originalSha256": "aefd678e40748d0a90ea17e1bc00718d647f8bb823d96313c7ddd25737e0629d",
+      "testOutputSha256": "21a4f57c5f9869805ac2069867d46d26fdfb5f4c6ede7d7fef9d6d2a0ecb5b64"
+    },
+    {
+      "path": "docs/evidence/r78-art/acceptance.json",
+      "originalSha256": "3227b7fcc18bfa856d5b377d511c7e39ea271094106f930e36858c5e73a2db8b",
+      "testOutputSha256": "166a36b4976951f5ef1dc9dea7cea742a9ef7eed4eaeec43ae6ed6899f23b625"
+    },
+    {
+      "path": "docs/evidence/r78-art/chart-hero-1290x2796.png",
+      "originalSha256": "895edd5f787efe8c18f6bbe9e2ff17b341b6d8107a61ffa9e41e10125e0cb844",
+      "testOutputSha256": "ca5849ab999c938aab095e07c7a06d6f8a03883840aa00dc77c003e59d1a7fba"
+    },
+    {
+      "path": "docs/evidence/r78-art/chart-hero-1366x600.png",
+      "originalSha256": "f07d8eef5a33626573deb7127c75106378fe3f84a173e23d2ef790ec3049ede4",
+      "testOutputSha256": "bf3fd9b4293c3f5e45ff094bb331482753240ca3326b5f2dc79561e258cca91a"
+    },
+    {
+      "path": "docs/evidence/r78-art/chart-hero-2064x2752.png",
+      "originalSha256": "2c44415c76c1d5bc9a263157aa215a32aeca18a92140200d73ebc3853f552e0f",
+      "testOutputSha256": "d2473f6578377176ab9fde87f6e285c7b426138927293eb25fba0d4a1e44da55"
+    },
+    {
+      "path": "docs/evidence/r78-art/chart-hero-390x844.png",
+      "originalSha256": "82ab7a41dc247dfa0850e83abd497201d897b3f50915a889ebbb800f2a4be142",
+      "testOutputSha256": "a25d77641a9090c00804be27f2f4a19bdc9f708c1d31d04318b19ab03a57807f"
+    },
+    {
+      "path": "docs/evidence/r78-art/chart-hero-844x390.png",
+      "originalSha256": "26f42991da9b37b6cf50374a73635f4e4c41ed955674bda83dbd7757107fbe2b",
+      "testOutputSha256": "a5bea295b58dae0f18d1a5430310146c93c1f4a56a577c347674785e3f8425c9"
+    },
+    {
+      "path": "docs/evidence/r78-art/five-cards-1290x2796.png",
+      "originalSha256": "cef8e2da559c0c7c1bc62156b21a97c1fb2e090dd2fc7350fb8693794de598ff",
+      "testOutputSha256": "adea1599f7dcd6616a3bf2da49012f7c3b7222de2e883f3916dd57417108f516"
+    },
+    {
+      "path": "docs/evidence/r78-art/five-cards-1366x600.png",
+      "originalSha256": "a38058003d9a27511ee7a4779b96f48f12318ddf846e8afd6c8be36d7316e12c",
+      "testOutputSha256": "3dcb9186d98a973a7540e64f3cd6404c11ec111d5b9834de4e6d5d06a64ae587"
+    },
+    {
+      "path": "docs/evidence/r78-art/five-cards-2064x2752.png",
+      "originalSha256": "f7de552fa596f54d8ca93ea8498ec8b41b1c502578edcabda5e93029487e231e",
+      "testOutputSha256": "8a686e31f4a390c5ae54c3a4a00f985fcf7ccf1fa886a0ea0d6b457ef74bb5b2"
+    },
+    {
+      "path": "docs/evidence/r78-art/five-cards-390x844.png",
+      "originalSha256": "c4480e0cf71685e7bae8a725dcad3198b4e2bb5eb49e88c45ffc79be0731e000",
+      "testOutputSha256": "d9296b93d110e3e875b1b8a399bb24cb8eb92c34c32535c12f41bcea3b0d5711"
+    },
+    {
+      "path": "docs/evidence/r78-art/five-cards-844x390.png",
+      "originalSha256": "bfa70805d9a52d8561cbdc448b72aa408ba698b5b776be66ac95da6edf3e3614",
+      "testOutputSha256": "4ce46a2418b73af305d1a5087d4992dad35e5efd69a38d53f69611aa350c23cc"
+    },
+    {
+      "path": "docs/evidence/r78-art/nonlethal-1290x2796-01-before.png",
+      "originalSha256": "a01a991e653a0948dcfdee0ea19d475adce5769b962dd480b5a4c142e2b1794c",
+      "testOutputSha256": "52b3463889cc99f21d0c683fba2079e60668bb7ce8cd2f2dd471f748b9f9ac3f"
+    },
+    {
+      "path": "docs/evidence/r78-art/nonlethal-1290x2796-02-impact.png",
+      "originalSha256": "ea00ce8dcd7ffd4d9bb9a446f605012b7d12c723e51409e6b60ddf55863d6ed6",
+      "testOutputSha256": "ddb8732f7894bc5397e9e1f7ea25de1c26bc03bfb1a799955b356299dbcd1d35"
+    },
+    {
+      "path": "docs/evidence/r78-art/nonlethal-1290x2796-03-after.png",
+      "originalSha256": "3d21102daf36e83cca7efad1f8ea422401902899659fcc772561547e19c52594",
+      "testOutputSha256": "f9f1753e6ab7dcf566b13c6aa3f1a0abf63b88810e539b856199cc9347301f73"
+    },
+    {
+      "path": "docs/evidence/r78-art/nonlethal-1290x2796-04-next-turn.png",
+      "originalSha256": "303cb9931fdedb757d6c2c9307f32dfe00e53524b94a659b9d1953731ec00827",
+      "testOutputSha256": "78366c0dc757b25209d9ae85e28a3273fcaa82353bd168dbedbe22063308396d"
+    },
+    {
+      "path": "docs/evidence/r78-art/water-0-1290x2796.png",
+      "originalSha256": "75b0a9b985cce548ad4a9734698b94461c08db2971aae3c2f29e124ad8c0aed7",
+      "testOutputSha256": "34565cf65784846fc48cff6f8060abbdb47204a4f849e0bf9a750830414eb7dd"
+    },
+    {
+      "path": "docs/evidence/r78-art/water-0-1366x600.png",
+      "originalSha256": "d577157488656addfffcfb5aa4bb5bac3f968944c751fcb571cec8fd08a158f3",
+      "testOutputSha256": "25b96f2a0002d7f8f8c9bccf952f7812bbf0e118860b9ea12418a255578c8b58"
+    },
+    {
+      "path": "docs/evidence/r78-art/water-0-2064x2752.png",
+      "originalSha256": "32de4fd966013210ff693c342c54629f8947facd5ae45937aca73459316880ad",
+      "testOutputSha256": "40e33e3d423f42b216f7d42ede20495fe66f16df85322f6eef41eecb689356b8"
+    },
+    {
+      "path": "docs/evidence/r78-art/water-0-390x844.png",
+      "originalSha256": "7e08fcffc6da1106c215b29ea7f1aa4934aed41178f16a79feae9f66fd6863d0",
+      "testOutputSha256": "9f5189f62521b1abd7a7a2938d3467220716d7aba71a803eb16853287476ec59"
+    },
+    {
+      "path": "docs/evidence/r78-art/water-0-844x390.png",
+      "originalSha256": "2495241c063a724b934fa7ce797754e135ee1a573495dfce5e1b285d2d4f7082",
+      "testOutputSha256": "df6772f9f305218b676dffd965efc353aa8a53656d20564eb4878955fe39f0d6"
+    },
+    {
+      "path": "docs/evidence/r78-art/water-6-1290x2796.png",
+      "originalSha256": "ebe60c797fc720560101f682fbfac70e04ee10327fa55e9d13de8d2a5b4b0323",
+      "testOutputSha256": "257ecf6feba52c33bc357cba74324a5c9fe6c169916ce92047bb0fdb17a82262"
+    },
+    {
+      "path": "docs/evidence/r78-art/water-6-1366x600.png",
+      "originalSha256": "4861e6ae6b833be7da2d22baa57486532df31d9d6ff6f9231ff481a9eb5d6533",
+      "testOutputSha256": "dd7edb496eea8ebf3386553a407d8b6b59da22ef6f12909c63a386ee43454e27"
+    },
+    {
+      "path": "docs/evidence/r78-art/water-6-2064x2752.png",
+      "originalSha256": "0d487bef18e0c053481c0f3fa817d0f9206096ed18bb5a6b67cb330c12b35ad5",
+      "testOutputSha256": "6e90a6aad100a6598881b881b54b9d52dd145ad0458488242312c809c4eb8bfc"
+    },
+    {
+      "path": "docs/evidence/r78-art/water-6-390x844.png",
+      "originalSha256": "9f95d1391bcd0b82fd558cfe5539f4f954b0a5b6019fb13c673df210304641f8",
+      "testOutputSha256": "ce19b2a5f81da0a03e959baa440f1f9ead5cb730fb18b7386f2689608d8b3385"
+    },
+    {
+      "path": "docs/evidence/r78-art/water-6-844x390.png",
+      "originalSha256": "eea5d96da26047a5982c5117dcbb22097fb41d143f07a144427087ee770bb8c2",
+      "testOutputSha256": "8ba5ab0b7d638ed039d1f0fcfdb566f34abc467e5e1d5af8d199ec069305074c"
+    },
+    {
+      "path": "docs/evidence/r79-art/ended-low-390x844.png",
+      "originalSha256": "4b78eb93c134fcd51a2db14729f04932722b5eb47efe02086813475b7500592b",
+      "testOutputSha256": "bf848c2c244d68907aa6785d13acbd5a7ecae6c2758144c1450ebcd9d7611c28"
+    },
+    {
+      "path": "docs/evidence/r79-art/ended-normal-390x844.png",
+      "originalSha256": "4b78eb93c134fcd51a2db14729f04932722b5eb47efe02086813475b7500592b",
+      "testOutputSha256": "bf848c2c244d68907aa6785d13acbd5a7ecae6c2758144c1450ebcd9d7611c28"
+    },
+    {
+      "path": "docs/evidence/r79-art/ended-reduced-390x844.png",
+      "originalSha256": "4b78eb93c134fcd51a2db14729f04932722b5eb47efe02086813475b7500592b",
+      "testOutputSha256": "bf848c2c244d68907aa6785d13acbd5a7ecae6c2758144c1450ebcd9d7611c28"
+    },
+    {
+      "path": "docs/evidence/r79-art/states-1032x1376.png",
+      "originalSha256": "32aa0e119e8e21e4c5ce98af4fcfd7f0be99fccaff49edd270d97920d35d9567",
+      "testOutputSha256": "e426efcc3c2f8fecafcc47c7e910da415f4dfff3cccf0b3b1e52f9d54dc4b179"
+    },
+    {
+      "path": "docs/evidence/r79-art/states-1366x600.png",
+      "originalSha256": "61a56b662b9d6197972868f74787fa9b18560ccf243726b3a341cf4f8d471bf5",
+      "testOutputSha256": "bcd05265ea26611b2276a6b807acd34b28e282b8a4249bcbe461a534fd55b3a9"
+    },
+    {
+      "path": "docs/evidence/r79-art/states-390x844.png",
+      "originalSha256": "03012d53c58dae4de8018a8a14a54d158240b405803850324c33237eda9875c1",
+      "testOutputSha256": "50c29bf9cc83d5d7d5225945b25ad672738510b5190426d555193a08f5cebdf8"
+    },
+    {
+      "path": "docs/evidence/r79-art/states-844x390.png",
+      "originalSha256": "568b563a82ef78c3f9dee3a780c93f2a723eaed7cf901eb7d002904bb01d24f0",
+      "testOutputSha256": "b9e2daf7b3233d5331442aff55d0fb31f4379a23b90dbd3eb0a4a1dd489a3839"
+    },
+    {
+      "path": "docs/evidence/r80-art/acceptance.json",
+      "originalSha256": "da6d7b5096ea8738b839f344200f48f4189672714d5d147ad83f89db1283a795",
+      "testOutputSha256": "71aadf650b9c7604581fa843a1c84aa80b456ab64a08595f36536c19e0e72550"
+    },
+    {
+      "path": "docs/evidence/r80-art/next-turn-1032x1376.png",
+      "originalSha256": "e410c9256cb8ebe5a57230555f0c70ebae5f022d56de196ed97dab899a680498",
+      "testOutputSha256": "1a2e1c6eceb25d4bd937b87ef9c7b98a8554e7ff237dd9d7cda68ce5ba49e283"
+    },
+    {
+      "path": "docs/evidence/r80-art/next-turn-1366x600.png",
+      "originalSha256": "d06d87eb9539caa9a4cb5727582dcf1c7a31352c480a368f7033af8ac5be40af",
+      "testOutputSha256": "2ac5686c205ce41e88c39260ad57724f30d44f4c6565ae65a00fdc5118c4a309"
+    },
+    {
+      "path": "docs/evidence/r80-art/next-turn-390x844.png",
+      "originalSha256": "33bfa90a6fe7d008ee25adef3a7741bcf78a27146a039c4d21b7bc85ecaa15a5",
+      "testOutputSha256": "2362336bb7fdcc026553826096597930a3dc5ba12d0a0c8763633ea5c85e2bf3"
+    },
+    {
+      "path": "docs/evidence/r80-art/next-turn-430x932.png",
+      "originalSha256": "32dcd896f5396a62c8542ffa6d12f57bb64eef614fa2c55e33483b05f0d29998",
+      "testOutputSha256": "810c6a7204ce8a3d0b174baf73d9610cd8f602339e917c72888e23884171b5b2"
+    },
+    {
+      "path": "docs/evidence/r80-art/next-turn-844x390.png",
+      "originalSha256": "fdaca4fab3551acb42d9e0a7eac2d76fc6257c467655c30f761f2f734ebee6c7",
+      "testOutputSha256": "57bf41a82fd75db5e4181aab00afa2941b6ba2e0abffa76c1f1d3ca23887d9a8"
+    },
+    {
+      "path": "docs/evidence/r80-art/preview-1032x1376.png",
+      "originalSha256": "4549c1d622b377decce0a03147e9b39f59c8f0afdff92a4581b31bdcf01df966",
+      "testOutputSha256": "5501834b7e98fe0fb76f144d3079cd794ca62b7c91d05b77fb750233d0fb5d23"
+    },
+    {
+      "path": "docs/evidence/r80-art/preview-1366x600.png",
+      "originalSha256": "bfb24c1646755fca0fcd7395483851e88f6389420ddfafad8417e057d813c371",
+      "testOutputSha256": "56608be2a849a951703d8d8405c4b1ee8dfebc09057a27cbdeafbdc6ab298e01"
+    },
+    {
+      "path": "docs/evidence/r80-art/preview-390x844.png",
+      "originalSha256": "7b9d5cebfaf40f3ebbd103148c27fcb309c4f58849c8e70cafffab1e5424a588",
+      "testOutputSha256": "7906f762fea5e0855ec0eb01043459f91deb643a4dcae93bff85fd4cb88bd487"
+    },
+    {
+      "path": "docs/evidence/r80-art/preview-430x932.png",
+      "originalSha256": "5ba0415addf2f22a3e999aaa188c5cd2d3287ae5e429277cafac3d060b305c9f",
+      "testOutputSha256": "54f25609c91b3920cfa9957418f4530e5987fc4c8c0f967b075093af6ada0bdd"
+    },
+    {
+      "path": "docs/evidence/r80-art/preview-844x390.png",
+      "originalSha256": "7c2cef05ce2b42c4c081196285369de45804081ee3ba1c7177cb97d6c4cb1930",
+      "testOutputSha256": "4949f1fe97f02ce79d8dbfc2f2e2896adad49147867c6bf0e46f1b6250cc45d2"
+    },
+    {
+      "path": "docs/store/screenshots/harbor-1290x2796.png",
+      "originalSha256": "699e91899100cdb88811290f1961360a0c6d69c2e6e1475f07dce06f3fa58a85",
+      "testOutputSha256": "72620261505ba7e2085cf838aa8dab526592cd1a407227e308190d4e76ae3690"
+    },
+    {
+      "path": "docs/store/screenshots/harbor-2064x2752.png",
+      "originalSha256": "79734b8c0f6905deb6c454b7e3eeeb0b24484d2dd3318f0a10b6170343be9d1d",
+      "testOutputSha256": "07dec2529f9160f4d158b9bc79abe4e0badd1ff1885e1c90759e83c54f3ca372"
+    },
+    {
+      "path": "docs/store/screenshots/tide-chart-1290x2796.png",
+      "originalSha256": "7b7242d953fb1a9e412a40b1c23ff60398b16c30a1d8e05dab4438dfc057b1d0",
+      "testOutputSha256": "fadf2d6bc73139d51db3a0a6aa625a3a254830d5ed9758b882d8812bceeeaf85"
+    },
+    {
+      "path": "docs/store/screenshots/tide-chart-2064x2752.png",
+      "originalSha256": "cdfcefc8cba84f024dc42623d1ea54c0c37a2b812e47d8153abfc2e94507a052",
+      "testOutputSha256": "954a8d29b673138bd8d51e35c9e68c07a7d224bf4e8b08808aa4087e482839e7"
+    },
+    {
+      "path": "docs/store/screenshots/trial-1290x2796.png",
+      "originalSha256": "b35f053f7abf1d179f802e62ebeb14b78abad111e2b5b8d9623381f37a80e0b3",
+      "testOutputSha256": "9fa21b4c9c339f86b6824ddaf0154f63a55f0579993a28e009c495bee381f037"
+    },
+    {
+      "path": "docs/store/screenshots/trial-2064x2752.png",
+      "originalSha256": "6d6a8221cd0cbe02853cd128fb6068ca65df17e051de564f558dc5010480603c",
+      "testOutputSha256": "6e3375afd2e9c43d579c883c56a468793fa03f0c4eebbfb8d8be6deb990295b1"
+    }
+  ],
+  "note": "Incoming tracked docs restored byte-for-byte, including initially modified R67 gate. Test output copies retained locally in .audit-tmp/content-r1-legacy-output. Existing untracked files were not deleted."
+}

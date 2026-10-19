@@ -1,0 +1,80 @@
+PASS same named pair
+PASS same named pair has actual distinct action states
+PASS waiting visibly thirty percent darker
+PASS ready arrow only on legal attacker
+PASS field illustrations40px at390
+PASS selected card outline synchronizes
+PASS target arrows synchronize with selection
+PASS decision contains only two modes continue confirm
+PASS leave actions moved to existing menu
+PASS one wounded target has lethal outline
+PASS lethal shape shown directly on affected card
+PASS cancel clears lethal previews
+PASS tidal damage never floats into sea
+PASS both actions disabled during active wave
+PASS enemy tide increase explained
+PASS empty tide never orange even during wave
+PASS nonlethal battle remains playable
+PASS real surviving attack produces spent contour
+PASS same named pair
+PASS same named pair has actual distinct action states
+PASS waiting visibly thirty percent darker
+PASS ready arrow only on legal attacker
+PASS selected card outline synchronizes
+PASS target arrows synchronize with selection
+PASS decision contains only two modes continue confirm
+PASS leave actions moved to existing menu
+PASS one wounded target has lethal outline
+PASS lethal shape shown directly on affected card
+PASS cancel clears lethal previews
+PASS tidal damage never floats into sea
+PASS both actions disabled during active wave
+PASS enemy tide increase explained
+PASS empty tide never orange even during wave
+PASS nonlethal battle remains playable
+PASS real surviving attack produces spent contour
+PASS same named pair
+PASS same named pair has actual distinct action states
+PASS waiting visibly thirty percent darker
+PASS ready arrow only on legal attacker
+PASS selected card outline synchronizes
+PASS target arrows synchronize with selection
+PASS decision contains only two modes continue confirm
+PASS leave actions moved to existing menu
+PASS one wounded target has lethal outline
+PASS lethal shape shown directly on affected card
+PASS cancel clears lethal previews
+PASS tidal damage never floats into sea
+PASS both actions disabled during active wave
+PASS enemy tide increase explained
+PASS empty tide never orange even during wave
+PASS nonlethal battle remains playable
+PASS real surviving attack produces spent contour
+PASS same named pair
+PASS same named pair has actual distinct action states
+PASS waiting visibly thirty percent darker
+PASS ready arrow only on legal attacker
+PASS selected card outline synchronizes
+PASS target arrows synchronize with selection
+PASS decision contains only two modes continue confirm
+PASS leave actions moved to existing menu
+PASS one wounded target has lethal outline
+PASS lethal shape shown directly on affected card
+PASS cancel clears lethal previews
+PASS tidal damage never floats into sea
+PASS both actions disabled during active wave
+PASS enemy tide increase explained
+PASS empty tide never orange even during wave
+PASS nonlethal battle remains playable
+PASS real surviving attack produces spent contour
+PASS normal no early damage
+PASS normal both actions disabled on game end
+PASS normal ended tide has no orange
+PASS reduced no early damage
+PASS reduced both actions disabled on game end
+PASS reduced ended tide has no orange
+PASS low no early damage
+PASS low both actions disabled on game end
+PASS low ended tide has no orange
+PASS zero JS/resource errors
+R79 art 83 PASS

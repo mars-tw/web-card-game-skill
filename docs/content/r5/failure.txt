@@ -1,0 +1,3 @@
+AssertionError [ERR_ASSERTION]: collapsed direction buttons remain reachable 44px
+    at check (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r5-e2e.js:7:38)
+    at C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r5-e2e.js:44:89

@@ -1,0 +1,57 @@
+{
+  "status": "VERIFIED",
+  "checks": 105,
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844,
+      "deviceScaleFactor": 1,
+      "pngWidth": 390,
+      "pngHeight": 844
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "deviceScaleFactor": 1,
+      "pngWidth": 844,
+      "pngHeight": 390
+    },
+    {
+      "width": 1032,
+      "height": 1376,
+      "deviceScaleFactor": 1,
+      "pngWidth": 1032,
+      "pngHeight": 1376
+    },
+    {
+      "width": 1376,
+      "height": 1032,
+      "deviceScaleFactor": 1,
+      "pngWidth": 1376,
+      "pngHeight": 1032
+    },
+    {
+      "width": 1366,
+      "height": 600,
+      "deviceScaleFactor": 1,
+      "pngWidth": 1366,
+      "pngHeight": 600
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "deviceScaleFactor": 3,
+      "pngWidth": 1290,
+      "pngHeight": 2796
+    },
+    {
+      "width": 1032,
+      "height": 1376,
+      "deviceScaleFactor": 2,
+      "pngWidth": 2064,
+      "pngHeight": 2752
+    }
+  ],
+  "errors": [],
+  "method": "Headless Chromium, normal harbor entry, fixed public content boards, real DOM play actions; no __test writes or injected victory."
+}

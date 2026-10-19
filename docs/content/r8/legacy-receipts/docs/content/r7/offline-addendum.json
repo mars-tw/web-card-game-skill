@@ -1,0 +1,5 @@
+{
+  "status": "VERIFIED",
+  "checks": 7,
+  "method": "Fresh persistent profile, service-worker pre-cache, then browser offline; real puzzle and forecast completion, both reversal icon directions, actual reload."
+}

@@ -1,0 +1,14 @@
+{
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Generate one transparent animation sprite atlas, exactly 5 columns by 2 rows of equal cells, no grid lines, NO text. Image 1 reference identity is row 1: young short brown hair FEMALE novice soldier with blue tunic, silver shoulder armor, copper trim, short sword in right hand and pearl seashell shield in left hand. Image 2 reference identity is row 2: enclosed silver black steel helmet knight, red plume, red cape, long sword, black wolf-emblem shield. Maintain each identity consistently across all five cells in its row. Columns left to right: 1 anticipation visibly bend elbows and draw sword back, knees bent; 2 active impact swing visibly extend sword arm forward and twist torso; 3 recovery arm lowers and stance regains balance; 4 hurt visibly recoil torso head and arms inward with shield dropped; 5 defeated kneeling body on one knee bow head sword down, no gore. Full body on every cell, same scale, feet baseline, all weapons inside cell with 10% transparent gutter, subject centered per cell. Each cell separately redrawn differing limb positions, NOT translated or rotated copies. Clear face and hands. Light upper-left moon white lower-right copper. Crisp silhouettes visible at 80px. Genuine alpha transparent background, no scenery, no labels or letters.",
+  "outputs": "assets/animations/content-r9/",
+  "references": [
+    "assets/art/r75/footman.webp",
+    "assets/cards/knight.png"
+  ],
+  "reference_roles": [
+    "soldier identity reference",
+    "knight identity reference"
+  ]
+}

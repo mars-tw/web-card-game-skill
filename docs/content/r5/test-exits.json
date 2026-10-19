@@ -1,0 +1,64 @@
+[
+  {
+    "name": "static",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "e2e",
+    "commands": [
+      "node scripts/test-battle-e2e.js",
+      "node scripts/test-controls-reachability.js",
+      "node scripts/test-r67-browser.js",
+      "node scripts/test-r72-fun.js",
+      "node scripts/test-r73-mobile.js",
+      "node scripts/test-r74-review.js",
+      "node scripts/test-r74-ebb.js",
+      "node scripts/test-r75-art.js",
+      "node scripts/test-r76-art.js",
+      "node scripts/test-r77-tide.js",
+      "node scripts/test-r78-art.js",
+      "node scripts/test-r79-art.js",
+      "node scripts/test-r80-art.js",
+      "node scripts/test-content-r1-e2e.js",
+      "node scripts/test-content-r2-e2e.js",
+      "node scripts/test-content-r3-e2e.js",
+      "node scripts/test-content-r4-e2e.js",
+      "node scripts/test-content-r5-e2e.js"
+    ],
+    "exitCode": 0,
+    "aggregate": true,
+    "lastFullNpmProcessExitCode": 1,
+    "evidence": "docs/content/r5/e2e-constituents.json",
+    "verificationMode": "resumed constituent suite; not a successful single npm process"
+  },
+  {
+    "name": "rwd",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:rwd"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "ci-performance",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:r67:performance"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "frames",
+    "command": [
+      "node",
+      "scripts/measure-content-r5.js"
+    ],
+    "exitCode": 0
+  }
+]

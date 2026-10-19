@@ -1,0 +1,260 @@
+{
+  "status": "VERIFIED",
+  "passed": 75,
+  "results": [
+    {
+      "prefix": "390x844",
+      "cardIds": [
+        "archer",
+        "footman",
+        "wolf",
+        "sparkSquire",
+        "emberpup"
+      ],
+      "water0": {
+        "height": 14.5,
+        "opacity": 0
+      },
+      "water6": {
+        "height": 362.75,
+        "opacity": 0.69
+      },
+      "geometry": {
+        "hero": {
+          "x": 9,
+          "y": 488.21875,
+          "width": 372,
+          "height": 52,
+          "top": 488.21875,
+          "right": 381,
+          "bottom": 540.21875,
+          "left": 9
+        },
+        "sheet": {
+          "x": 6,
+          "y": 550.21875,
+          "width": 378,
+          "height": 226.78125,
+          "top": 550.21875,
+          "right": 384,
+          "bottom": 777,
+          "left": 6
+        },
+        "heroVisible": true,
+        "life": "12",
+        "tide": "潮 6/6"
+      }
+    },
+    {
+      "prefix": "844x390",
+      "cardIds": [
+        "archer",
+        "footman",
+        "wolf",
+        "sparkSquire",
+        "emberpup"
+      ],
+      "water0": {
+        "height": 5.4375,
+        "opacity": 0
+      },
+      "water6": {
+        "height": 136.25,
+        "opacity": 0.69
+      },
+      "geometry": {
+        "hero": {
+          "x": 10,
+          "y": 57.5,
+          "width": 410,
+          "height": 44,
+          "top": 57.5,
+          "right": 420,
+          "bottom": 101.5,
+          "left": 10
+        },
+        "sheet": {
+          "x": 6,
+          "y": 184,
+          "width": 832,
+          "height": 134,
+          "top": 184,
+          "right": 838,
+          "bottom": 318,
+          "left": 6
+        },
+        "heroVisible": true,
+        "life": "12",
+        "tide": "潮 6/6"
+      }
+    },
+    {
+      "prefix": "1366x600",
+      "cardIds": [
+        "archer",
+        "footman",
+        "wolf",
+        "sparkSquire",
+        "emberpup"
+      ],
+      "water0": {
+        "height": 9.375,
+        "opacity": 0
+      },
+      "water6": {
+        "height": 234.75,
+        "opacity": 0.69
+      },
+      "geometry": {
+        "hero": {
+          "x": 9,
+          "y": 326,
+          "width": 1348,
+          "height": 58,
+          "top": 326,
+          "right": 1357,
+          "bottom": 384,
+          "left": 9
+        },
+        "sheet": {
+          "x": 213,
+          "y": 394,
+          "width": 940,
+          "height": 134,
+          "top": 394,
+          "right": 1153,
+          "bottom": 528,
+          "left": 213
+        },
+        "heroVisible": true,
+        "life": "12",
+        "tide": "潮 6/6"
+      }
+    },
+    {
+      "prefix": "1290x2796",
+      "cardIds": [
+        "archer",
+        "footman",
+        "wolf",
+        "sparkSquire",
+        "emberpup"
+      ],
+      "water0": {
+        "height": 16.1094,
+        "opacity": 0
+      },
+      "water6": {
+        "height": 402.75,
+        "opacity": 0.69
+      },
+      "geometry": {
+        "hero": {
+          "x": 9,
+          "y": 575.21875,
+          "width": 412,
+          "height": 52,
+          "top": 575.21875,
+          "right": 421,
+          "bottom": 627.21875,
+          "left": 9
+        },
+        "sheet": {
+          "x": 6,
+          "y": 637.21875,
+          "width": 418,
+          "height": 226.78125,
+          "top": 637.21875,
+          "right": 424,
+          "bottom": 864,
+          "left": 6
+        },
+        "heroVisible": true,
+        "life": "12",
+        "tide": "潮 6/6"
+      }
+    },
+    {
+      "prefix": "2064x2752",
+      "cardIds": [
+        "archer",
+        "footman",
+        "wolf",
+        "sparkSquire",
+        "emberpup"
+      ],
+      "water0": {
+        "height": 24.9062,
+        "opacity": 0
+      },
+      "water6": {
+        "height": 622.75,
+        "opacity": 0.69
+      },
+      "geometry": {
+        "hero": {
+          "x": 9,
+          "y": 1020,
+          "width": 1014,
+          "height": 58,
+          "top": 1020,
+          "right": 1023,
+          "bottom": 1078,
+          "left": 9
+        },
+        "sheet": {
+          "x": 136,
+          "y": 1088,
+          "width": 760,
+          "height": 216,
+          "top": 1088,
+          "right": 896,
+          "bottom": 1304,
+          "left": 136
+        },
+        "heroVisible": true,
+        "life": "12",
+        "tide": "潮 6/6"
+      }
+    }
+  ],
+  "before": {
+    "hp": 25,
+    "turn": 1,
+    "tide": 6
+  },
+  "impact": {
+    "hp": 23,
+    "ratio": 1.0799781976744185,
+    "foam": [
+      {
+        "opacity": "1",
+        "box": {
+          "x": 108.5,
+          "y": 176.296875,
+          "width": 116,
+          "height": 85.796875,
+          "top": 176.296875,
+          "right": 224.5,
+          "bottom": 262.09375,
+          "left": 108.5
+        }
+      },
+      {
+        "opacity": "1",
+        "box": {
+          "x": 205.5,
+          "y": 176.296875,
+          "width": 116,
+          "height": 85.796875,
+          "top": 176.296875,
+          "right": 321.5,
+          "bottom": 262.09375,
+          "left": 205.5
+        }
+      }
+    ]
+  },
+  "errors": [],
+  "note": "five cards real trial; tide fixtures and nonlethal state labelled QA; unedited original-size PNGs"
+}

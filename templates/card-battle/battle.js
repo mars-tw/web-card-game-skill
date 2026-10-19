@@ -144,6 +144,46 @@
   };
 
   let game;
+  // Presentation only: never insert empty slots or accessory metadata into Core state.
+  const r80Views = new WeakMap();
+  function r80View() {
+    if (!r80Views.has(game)) r80Views.set(game, {player:[],enemy:[],variants:new Map(),counts:new Map()});
+    return r80Views.get(game);
+  }
+  function r80Variant(card) {
+    if (!game || !card.uid || !['footman','archer'].includes(card.id)) return 0;
+    const view=r80View();
+    if (!view.variants.has(card.uid)) {
+      const count=view.counts.get(card.id)||0;view.variants.set(card.uid,count%2);view.counts.set(card.id,count+1);
+    }
+    return view.variants.get(card.uid);
+  }
+  function r80Slots(field,side) {
+    const view=r80View(), slots=view[side], live=new Set(field.map(c=>c.uid));
+    for (let n=0;n<slots.length;n++) {
+      const slot=slots[n];if(!slot)continue;
+      if(!live.has(slot.uid) && slot.fallenTurn===undefined)slot.fallenTurn=game.turnCount||1;
+      if(slot.fallenTurn!==undefined && (game.turnCount||1)>slot.fallenTurn+1)slots[n]=null;
+    }
+    for(const card of field) {
+      r80Variant(card);
+      if(slots.some(slot=>slot?.uid===card.uid))continue;
+      let free=slots.findIndex(slot=>slot===null);
+      if(free<0 && slots.length>=7)free=slots.findIndex(slot=>!live.has(slot?.uid));
+      const value={uid:card.uid,id:card.id};if(free<0)slots.push(value);else slots[free]=value;
+    }
+    // Only trailing expired slots collapse; a live survivor never changes its original slot.
+    while(slots.length && slots.at(-1)===null)slots.pop();
+    return slots.map((slot,index)=>({slot,index,card:field.find(c=>c.uid===slot?.uid)}));
+  }
+  function r80WetMark(el,side) {
+    const board=document.querySelector('.board');
+    if(!board?.classList.contains('r76-wet') || (board.dataset.wetSide==='enemy'?'player':'enemy')!==side)return;
+    const mark=document.createElement('img');mark.className='r80-watermark';mark.src='../../assets/art/r79/foam.webp?v=r79-foam';mark.alt='';el.appendChild(mark);
+  }
+  let sessionReady = false;
+  let tideMode = 'flood';
+  let tideReturnFocus = null;
   let pendingTargetUid = null;
   const pendingSummonFx = new Set();
   const GUIDE_KEY = "cb_guide_done_v1";
@@ -167,7 +207,7 @@
   let battlefieldLoadToken = 0;
   const SW_BOOT = window.__CARD_SW_BOOT || {};
   const SW_AUTO_RELOAD_WINDOW_MS = SW_BOOT.SW_AUTO_RELOAD_WINDOW_MS || 15000;
-  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_r71_v1";
+  const SW_AUTO_RELOAD_KEY = SW_BOOT.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_content_r6_v1";
   const swPageLoadedAt = SW_BOOT.swPageLoadedAt || Date.now();
   let guide = { active: false, step: 0, selectedAttacker: null };
   let audioCtx = null;
@@ -182,9 +222,9 @@
   let lastUnlockedChapterIds = null;
   const ACTIVE_FX_SELECTOR = ".combat-ghost, .dmg-float, .hit-spark, .combo-float, .kw-pop, .confetti-piece, .burst-star, .spell-flash";
   const GUIDE_STEPS = [
-    { label: "STEP 1 / 3", title: "先出一張牌", copy: "點手牌中發亮的「迅捷狼」。它有衝鋒，登場後可以立刻攻擊。" },
-    { label: "STEP 2 / 3", title: "選擇攻擊", copy: "先點你場上的迅捷狼，再點敵方英雄完成一次攻擊。" },
-    { label: "STEP 3 / 3", title: "結束回合", copy: "攻擊後點「結束回合」，讓對手行動。之後就照這個節奏出牌、攻擊、結束回合。" },
+    { label: "第 1／3 步", title: "先出一張牌", copy: "點手牌中發亮的「迅捷狼」；手機預覽後再按「確認出牌」。它有衝鋒，登場後可以立刻攻擊。" },
+    { label: "第 2／3 步", title: "選擇攻擊", copy: "先點你場上的迅捷狼，再點敵方英雄完成一次攻擊。" },
+    { label: "第 3／3 步", title: "結束回合", copy: "攻擊後點「結束回合」，讓對手行動。之後就照這個節奏出牌、攻擊、結束回合。" },
   ];
 
   function prefersReducedMotion() {
@@ -204,14 +244,49 @@
     if (stateEl) stateEl.textContent = next ? "收合" : "展開";
     const countEl = document.getElementById("handCount");
     if (countEl) countEl.textContent = String(count);
-    // R70 R1-B02：觸控抽屜會蓋過英雄列；提示鈕若仍顯示就必須可點，因此開啟時明確移出可見/焦點樹。
-    const hint = document.getElementById("hintBtn");
-    const coveredByTouchDrawer = next && window.__controlMode === "touch";
-    if (hint) {
-      hint.hidden = coveredByTouchDrawer;
-      hint.setAttribute("aria-hidden", coveredByTouchDrawer ? "true" : "false");
-      hint.tabIndex = coveredByTouchDrawer ? -1 : 0;
-    }
+    // R70 R1-B02：觸控抽屜會蓋過英雄列；提示鈕若仍顯示就必須可點，因此被蓋住時明確移出可見/焦點樹。
+    // R72：改為「實際幾何被抽屜蓋住才隱藏」——直向手機抽屜不碰英雄列，裂潮鈕要一直看得到充能。
+    syncDrawerCoveredControls(next);
+    clearTimeout(drawerCoverTimer);
+    if (next) drawerCoverTimer = setTimeout(() => syncDrawerCoveredControls(drawer.classList.contains("open")), 230);
+  }
+
+  var drawerCoverTimer = 0;
+  function syncDrawerCoveredControls(open) {
+    const drawer = document.getElementById("handDrawer");
+    const touch = window.__controlMode === "touch";
+    const drawerRect = drawer ? drawer.getBoundingClientRect() : null;
+    ["hintBtn", "tidebreakBtn"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      let covered = false;
+      if (open && touch && drawerRect && !el.closest(".controls")) {
+        // 先暫時顯示以取得原位置，再判斷是否與抽屜（含展開中的最終高度）重疊
+        const wasHidden = el.hidden;
+        el.hidden = false;
+        const r = el.getBoundingClientRect();
+        el.hidden = wasHidden;
+        const finalTop = drawerRect.bottom - Math.max(drawerRect.height, drawer.classList.contains("open") ? openDrawerHeight(drawer) : 0);
+        covered = r.width > 0 && r.bottom > finalTop - 2 && r.top < drawerRect.bottom;
+      }
+      el.hidden = covered;
+      el.setAttribute("aria-hidden", covered ? "true" : "false");
+      el.tabIndex = covered ? -1 : 0;
+    });
+  }
+
+  function openDrawerHeight(drawer) {
+    // 抽屜高度有 .18s 過渡；用不帶過渡的淺複本量最終高度，不打斷畫面上的展開動畫
+    const ghost = drawer.cloneNode(false);
+    ghost.removeAttribute("id");
+    ghost.classList.add("open");
+    ghost.style.transition = "none";
+    ghost.style.visibility = "hidden";
+    ghost.style.pointerEvents = "none";
+    drawer.parentNode.appendChild(ghost);
+    const h = ghost.getBoundingClientRect().height;
+    ghost.remove();
+    return h;
   }
 
   function setSettingsOpen(open) {
@@ -267,10 +342,12 @@
     if (!btn) return;
     const muted = audioMuted();
     btn.classList.toggle("is-muted", muted);
-    btn.textContent = muted ? "M" : "SFX";
-    btn.title = muted ? "Audio muted" : (audioUnlocked ? "Audio on" : "Audio unlocks on first gesture");
+    btn.textContent = muted ? "靜音" : "音效";
+    btn.title = muted ? "音效已關閉" : (audioUnlocked ? "音效已開啟" : "操作後啟用音效");
+    btn.setAttribute("aria-label", muted ? "開啟音效" : "關閉音效");
     btn.setAttribute("aria-pressed", muted ? "true" : "false");
     syncAudioVolumeControl();
+    if (typeof syncBgm === "function") syncBgm();
   }
 
   function ensureAudio() {
@@ -629,7 +706,19 @@
   }
 
   // ===== 初始化 =====
-  function newGame() {
+  function newGame(voyageStageId) {
+    if (parent !== window) parent.postMessage({type:"battleFullBleed",active:false},location.origin);
+    delete document.body.dataset.r76Wave;
+    document.getElementById('tideWave')?.classList.remove('run','enemy');
+    window.CardMobile?.cancel(false);
+    document.getElementById('tideTrialBar').hidden = true;
+    document.getElementById('trialResultActions').hidden = true;
+    document.querySelector('#overlay .overlay-actions:not(#trialResultActions)').hidden = false;
+    ['contentPanel','contentResult','forecastPanel','contentBar'].forEach(id=>document.getElementById(id).hidden=true);
+    tideMode = 'flood';
+    setHandDrawerOpen(false);
+    const voyageStage = CardVoyage.STAGES.find(s => s.id === voyageStageId);
+    if (voyageStage && !CardVoyage.canStart(CardMobile.load(), voyageStage.id)) return;
     applyBattlefieldScene({ advance: true });
     combatInFlight = false;
     pendingSummonFx.clear();
@@ -638,23 +727,26 @@
     document.body.classList.remove("defeat-fade");
     clearTransientFx();
     const board = document.querySelector(".board");
-    if (board) board.classList.remove("lethal-slow", "shake-screen");
+    if (board) board.classList.remove("lethal-slow", "shake-screen", "r76-wet");
     finishFx = { win: false, lethal: false, confetti: 0, defeatFade: false };
-    const diffKey = currentDifficulty();
+    const diffKey = voyageStage ? voyageStage.difficulty : currentDifficulty();
     const D = DIFFICULTY[diffKey];
-    const playerDeck = buildDeck(true);
+    const trial = voyageStage && CardVoyage.DECKS.find(d => d.id === CardMobile.load().deck);
+    const playerDeck = trial ? Core.buildBattleDeck(trial.cards, CARD_POOL, rng) : buildDeck(true);
+    if (trial) playerDeck._deckSource = 'trial';
     const playerDeckSource = playerDeck._deckSource || "fallback";
     const playerDeckIds = playerDeck.map((card) => card.id);
     const playerArchetype = detectDeckArchetype(playerDeckIds);
     const stats = loadStats();
     const dda = Core.ddaProfile(stats.dda);
-    const opponent = currentOpponent();
+    const opponent = voyageStage ? (CardVoyage.OPPONENTS[voyageStage.opponent] || OPPONENTS[voyageStage.opponent]) : currentOpponent();
     const enemyPlan = buildAiDeck(diffKey, playerArchetype, opponent);
     const enemyDeck = enemyPlan.deck;
     const enemyDeckIds = enemyDeck.map((card) => card.id);
     delete playerDeck._deckSource;
     game = {
       difficulty: diffKey, aiSmart: D.aiSmart,
+      voyageStage: voyageStage ? voyageStage.id : null,
       playerDeckSource,
       playerDeckIds,
       playerArchetype,
@@ -679,6 +771,12 @@
       over: false,
     };
     game.player.opp = game.enemy; game.enemy.opp = game.player;
+    // R72 裂潮：雙方潮能歸零；具名對手帶自己的潮汐親和
+    game.player.tide = 0; game.enemy.tide = 0;
+    game.player.tidebreaksUsed = 0; game.enemy.tidebreaksUsed = 0;
+    game.enemy.tideRates = Object.assign({}, opponent.tideRates || (Core.OPPONENT_TIDE_RATES || {})[opponent.id] || {});
+    game.tideFullAnnounced = false;
+    game.starResult = null;
     game.comboCount = 0;
     game.mulliganUsed = false; // CP2-6 起手可重抽一次
     for (let i = 0; i < D.playerDraw; i++) drawCard(game.player);
@@ -693,7 +791,13 @@
     if (opponent.heroCardId && playerDeckIds.includes(opponent.heroCardId)) {
       log(`「${opponent.name}對上了……另一個${opponent.name}。」`, "me");
     }
+    applyOpponentPortrait(opponent);
+    if (voyageStage) {
+      applyBattlefieldScene({ id: voyageStage.scene, advance: false });
+      log(`${voyageStage.name}：${voyageStage.tip}`, 'me');
+    }
     render();
+    showVsIntro(opponent);
     syncDdaToggle();
     syncAiThoughtToggle();
     refreshChronicle();
@@ -1128,6 +1232,7 @@
   // ===== 玩家出牌 =====
   function playFromHand(uid) {
     if (game.turn !== "player" || game.over || combatInFlight) return;
+    window.CardMobile?.cancel(false);
     const result = Core.playCard(game, { side: "player", cardUid: uid }, rng);
     handleCoreResult(result);
     if (!result.ok) {
@@ -1258,6 +1363,7 @@
 
   function clickEnemyHero() {
     if (game.turn !== "player" || game.over || combatInFlight) return;
+    if (game.tideTrial) { showToast('試航要用裂潮破陣，先讓士兵交換蓄潮。'); return; }
     if (game.pendingSpell || game.pendingBattlecry) { flash(game.pendingBattlecry ? "調印需指定友方隨從。" : "此法術需指定隨從。"); return; }
     if (game.selected) {
       if (hasTaunt(game.enemy.field)) { flash("敵方有嘲諷，不能直接攻擊英雄！"); return; }
@@ -1273,7 +1379,7 @@
     const m = game.player.field.find((x) => x.uid === uid);
     if (!m) return;
     if ((game.pendingSpell || game.pendingBattlecry) && clickFriendlyMinionAsTarget(m)) return;
-    if (!m.canAttack) { flash("這個隨從本回合無法攻擊。"); return; }
+    if (!m.canAttack || m._cantAttackThisTurn) { flash("這個隨從本回合無法攻擊。"); return; }
     game.selected = game.selected === uid ? null : uid;
     render();
     if (game.selected === uid) advanceGuide("attackerSelected", { attackerId: m.id });
@@ -1482,6 +1588,16 @@
         actions.push(Object.assign({ type: "play", card, target, score: playerHintScore(card, target), label: target ? `建議施放 ${card.name} → ${target.name}` : `建議施放：${card.name}` }, hintCopyForPlay(card, target)));
       }
     }
+    if (Core.canTidebreak(game, "player")) {
+      const kills = tidebreakKillCount("player");
+      const lethalTide = game.enemy.hp <= (Core.TIDEBREAK_HERO_DAMAGE || 2);
+      actions.push({
+        type: "tidebreak", score: (lethalTide ? 900 : 0) + 24 + kills * 14,
+        label: "建議施放：裂潮爆發",
+        reason: lethalTide ? "裂潮爆發的 2 點英雄傷害就能斬殺。" : kills ? "潮浪能一次清掉低血隨從。" : "潮能已滿，放掉才能重新累積。",
+        estimate: kills ? `預計清掉 ${kills} 隻敵方隨從。` : `預計對敵方英雄造成 ${Core.TIDEBREAK_HERO_DAMAGE} 點傷害。`,
+      });
+    }
     for (const attacker of game.player.field.filter((m) => m.canAttack)) {
       const taunts = game.enemy.field.filter((m) => (m.keywords || []).includes("taunt"));
       if (taunts.length) {
@@ -1502,6 +1618,8 @@
   }
 
   function showHint() {
+    if(game?.forecast){openForecast();return;}
+    if(game?.content){openContent();return;}
     if (!game || game.turn !== "player" || game.over) return null;
     if (game.hintUsedTurn === game.turnCount) {
       flash("本回合已使用提示。");
@@ -1515,7 +1633,7 @@
     game.hintUsedTurn = game.turnCount;
     clearHintHighlights();
     const primaryUid = action.card ? action.card.uid : action.attacker && action.attacker.uid;
-    const primary = primaryUid ? elFor(primaryUid) : null;
+    const primary = action.type === "tidebreak" ? document.getElementById("tidebreakBtn") : primaryUid ? elFor(primaryUid) : null;
     const target = action.target ? elFor(action.target.uid) : action.hero ? document.getElementById(action.hero) : null;
     if (primary) primary.classList.add("hint-highlight");
     if (target) target.classList.add("hint-highlight");
@@ -1573,6 +1691,7 @@
       return Promise.resolve(preflight);
     }
     combatInFlight = true;
+    if(game.content)CardContentR6.renderExchange(Core,game,{busy:true});
     const attackerName = attacker.name;
     const defenderName = defender.name;
     const attackerUid = attacker.uid;
@@ -1684,6 +1803,8 @@
   // ===== AI 回合 =====
   function endTurn() {
     if (game.turn !== "player" || game.over || combatInFlight) return;
+    if (game.content && CardTideContent.isPuzzle(game.content.id)) { flash('本題不可結束回合。可在「目標／提示」結束這次挑戰。'); return; }
+    window.CardMobile?.cancel(false);
     if (game.pendingBattlecry) {
       flash("請先完成調印戰吼。");
       return;
@@ -1959,9 +2080,11 @@
 
   function aiTurn() {
     if (game.over) return;
+    if (game.content) { scriptedContentTurn(); return; }
     const ai = game.enemy;
     handleCoreResult(Core.advanceTurn(game, { phase: "startEnemy" }, rng));
     if (game.over) { render(); return; }
+    showTurnBanner("enemy");
 
     // 出牌：簡單維持貴牌優先；archetype AI 依快攻/控制權重調整出牌序。
     let acted = true;
@@ -2008,6 +2131,9 @@
     }
     if (game.over) { render(); return; }
     render();
+    // R72：出完牌後判斷是否掀起裂潮爆發（有施放就多留時間看潮浪）
+    const aiTideFired = maybeAiTidebreak();
+    if (game.over) { render(); return; }
 
     // 攻擊（考慮玩家嘲諷）
     const gRef = game; // 幽靈計時器防護：newGame() 後舊局的排程回呼直接失效
@@ -2060,7 +2186,7 @@
         }
       };
       step();
-    }, 600);
+    }, aiTideFired ? 1450 : 600);
   }
 
   function endAiTurn() {
@@ -2070,6 +2196,7 @@
     game.turnCount = (game.turnCount || 1) + 1;
     log("輪到你了。", "me");
     render();
+    showTurnBanner("player");
   }
 
   function checkWin() {
@@ -2078,8 +2205,10 @@
 
   function settleIfGameEnded() {
     if (!game || game.over) return false;
+    if (game.content) { const outcome=CardTideContent.outcome(game); if(outcome) { finishContent(outcome==='completed'); return true; } return false; }
     if (game.enemy.hp > 0 && game.player.hp > 0) return false;
     game.over = true;
+    clearSession();
     game.selected = null;
     game.pendingSpell = null;
     const win = game.enemy.hp <= 0;
@@ -2111,6 +2240,7 @@
 
     renderField("playerField", game.player.field, "player");
     renderField("enemyField", game.enemy.field, "enemy");
+    renderTide();
 
     const hand = document.getElementById("playerHand");
     requestAnimationFrame(() => { hand.dataset.overflow = hand.scrollWidth > hand.clientWidth + 4 ? "true" : "false"; });
@@ -2121,7 +2251,8 @@
       else el.classList.add("disabled");
       const playAction = () => playFromHand(card.uid);
       el.onclick = playAction;
-      bindKeyboardAction(el, cardAriaLabel(card, "手牌，可按 Enter 或 Space 出牌"), playAction);
+      bindKeyboardAction(el, cardAriaLabel(card, window.__controlMode === 'touch' ? "手牌，選牌後確認出牌" : "手牌，可按 Enter 或 Space 出牌"), playAction);
+      window.CardMobile?.bind(el, card);
       handFrag.appendChild(el);
     });
     hand.replaceChildren(handFrag);
@@ -2130,9 +2261,9 @@
 
     const enemyHero = document.getElementById("enemyHero");
     const selectedMinion = game.selected ? game.player.field.find((m) => m.uid === game.selected) : null;
-    enemyHero.classList.toggle("targetable", !!selectedMinion && game.turn === "player" && !hasTaunt(game.enemy.field) && !isRushHeroLocked(selectedMinion));
+    enemyHero.classList.toggle("targetable", !!selectedMinion && !game.tideTrial && game.turn === "player" && !hasTaunt(game.enemy.field) && !isRushHeroLocked(selectedMinion));
     enemyHero.onclick = clickEnemyHero;
-    bindKeyboardAction(enemyHero, `敵方英雄 ${game.enemy.hp}/${game.enemy.maxHp} 生命${selectedMinion ? "，可按 Enter 或 Space 攻擊" : ""}`, clickEnemyHero, { disabled: game.turn !== "player" || game.over });
+    bindKeyboardAction(enemyHero, `敵方英雄 ${game.enemy.hp}/${game.enemy.maxHp} 生命${game.tideTrial ? '，試航以裂潮破陣' : selectedMinion ? "，可按 Enter 或 Space 攻擊" : ""}`, clickEnemyHero, { disabled: game.turn !== "player" || game.over || game.tideTrial });
     const playerHero = document.getElementById("playerHero");
     if (playerHero) {
       playerHero.tabIndex = 0;
@@ -2141,7 +2272,7 @@
     }
     updateTargetStatus();
 
-    document.getElementById("endTurnBtn").disabled = game.turn !== "player" || game.over;
+    document.getElementById("endTurnBtn").disabled = game.turn !== "player" || game.over || combatInFlight || !!(game.content && CardTideContent.isPuzzle(game.content.id));
     // R68（C-02 精簡版）：無可行動時結束回合鈕發光引導（純資訊，零摩擦）
     {
       const btn = document.getElementById("endTurnBtn");
@@ -2155,6 +2286,11 @@
     updateHintButton();
     renderQuests();
     focusGuideTarget();
+    renderTideTrial();
+    renderContentBar();
+    CardContentR6.renderSignals(game);CardContentR10.render(game);CardContentR11.render(game);
+    CardContentR6.renderExchange(Core,game,{busy:combatInFlight,cancel:()=>cancelTargeting(),confirm:(a,t)=>resolveAttack(game.player,a,t)});
+    saveSession();
   }
 
   function appendTargetActions(cardEl, uid) {
@@ -2177,36 +2313,66 @@
 
   function renderField(elId, field, side) {
     const el = document.getElementById(elId);
+    const previousCard=el.querySelector('.card');
+    if(previousCard){const size=getComputedStyle(previousCard);el.style.setProperty('--r80-slot-w',size.width);el.style.setProperty('--r80-slot-h',size.height);}
     el.onclick = (event) => {
       if (event.target === el || event.target.classList.contains("empty-hint")) cancelTargeting("已取消選取。");
     };
-    if (field.length === 0) {
+    const slots=r80Slots(field,side);
+    if (field.length === 0 && !slots.some(({slot})=>slot)) {
       const hint = document.createElement("div");
       hint.className = "empty-hint";
-      hint.textContent = side === "enemy" ? "（敵方戰場）" : "（你的隨從）";
+      hint.textContent = '';
+      hint.setAttribute('aria-label', side === 'enemy' ? '敵方空位' : '我方空位');
       el.replaceChildren(hint);
       return;
     }
     const enemyHasTaunt = hasTaunt(game.enemy.field);
     const frag = document.createDocumentFragment();
-    field.forEach((card) => {
-      const c = renderCard(card);
+    slots.forEach(({slot,index,card}) => {
+      if(!card) {
+        const ghost=document.createElement('div');ghost.className='r80-empty-slot';ghost.dataset.slot=String(index);
+        if(slot){ghost.dataset.fallenUid=slot.uid;ghost.setAttribute('aria-label','退場空位');}
+        else ghost.setAttribute('aria-hidden','true');
+        r80WetMark(ghost,side);frag.appendChild(ghost);return;
+      }
+      const c = renderCard(card);c.dataset.slot=String(index);
+      r80WetMark(c,side);
+      const ready = side==='player' && card.canAttack && !card._cantAttackThisTurn && game.turn==='player' && !game.over && !combatInFlight;
+      if (field.filter(previous => previous.id === card.id).length>1 && r80Variant(card)===1) c.classList.add("r76-duplicate");
+      if (side === "player" && !ready) c.classList.add("r76-spent");
+      const station = document.createElement('span'); station.className = 'r77-card-state';
+      station.textContent = side === 'enemy' ? '' : ready ? '' : card._r77SpentTurn===game.turnCount ? '已行動' : '待命';
+      c.dataset.actionState = side === 'enemy' ? 'enemy' : ready ? 'ready' : card._r77SpentTurn===game.turnCount ? 'spent' : 'waiting';
+      if (c.dataset.actionState === 'spent') {
+        const seal=document.createElement('span');seal.className='r79-spent-seal';seal.setAttribute('aria-hidden','true');c.appendChild(seal);
+      }
+      if (ready) {
+        const arrow = document.createElement('span'); arrow.className = 'r78-ready-arrow';
+        arrow.setAttribute('aria-hidden','true'); arrow.textContent = '↑'; c.appendChild(arrow);
+      }
+      c.appendChild(station);
       if (pendingSummonFx.has(card.uid)) {
         c.classList.add("landing");
         pendingSummonFx.delete(card.uid);
       }
       if (side === "player") {
-        if (card.canAttack && game.turn === "player") c.classList.add("can-attack");
+        if (ready) c.classList.add("can-attack");
         if (game.selected === card.uid) c.classList.add("selected");
         if ((game.pendingSpell && game.pendingSpell.need === "friendlyMinion") || (game.pendingBattlecry && game.pendingBattlecry.need === "friendlyMinion")) c.classList.add("targetable");
         if (pendingTargetUid === card.uid) c.classList.add("target-queued");
         const selectAction = (event) => { if (event) event.stopPropagation(); selectMyMinion(card.uid); };
         c.onclick = selectAction;
-        bindKeyboardAction(c, cardAriaLabel(card, card.canAttack ? "你的場上卡，可按 Enter 或 Space 選為攻擊者" : "你的場上卡"), selectAction, { pressed: game.selected === card.uid });
+        bindKeyboardAction(c, cardAriaLabel(card, ready ? "你的場上卡，可按 Enter 或 Space 選為攻擊者" : "你的場上卡，待命或已行動"), selectAction, { pressed: game.selected === card.uid });
       } else {
         const spellTargetable = game.pendingSpell && game.pendingSpell.need === "enemyMinion";
         const attackTargetable = game.selected && isLegalTarget(game.enemy, card);
         if (spellTargetable || attackTargetable) c.classList.add("targetable");
+        const lessonTarget = game.tideTrial && game.selected && card.id==='archer' && attackTargetable;
+        if (attackTargetable || lessonTarget) {
+          const arrow=document.createElement('span');arrow.className='r79-target-arrow';arrow.setAttribute('aria-hidden','true');c.appendChild(arrow);
+          if(lessonTarget)c.classList.add('r79-tutorial-target');
+        }
         if (pendingTargetUid === card.uid) c.classList.add("target-queued");
         if (game.selected && enemyHasTaunt && !(card.keywords || []).includes("taunt")) c.classList.add("blocked");
         const targetAction = (event) => { if (event) event.stopPropagation(); clickEnemyMinion(card.uid); };
@@ -2231,8 +2397,13 @@
     el.style.setProperty("--glow", r.glow);
     el.style.setProperty("--glow-size", (r.glowSize || 0) + "px");
 
-    const art = card.image
-      ? `<img src="${card.image}" alt="${card.name}" onerror="this.replaceWith(document.createTextNode('${card.emoji}'))">`
+    const variant=r80Variant(card);el.dataset.artVariant=String(variant);
+    const variantFull=variant===1?({footman:'../../assets/art/r80/footman-band.webp',archer:'../../assets/art/r80/archer-hood.webp'})[card.id]:null;
+    const variantLow=variant===1?({footman:'../../assets/art/r80/footman-band-low.webp',archer:'../../assets/art/r80/archer-hood-low.webp'})[card.id]:null;
+    const artSource = variantFull || ({ footman:'../../assets/art/r75/footman.webp?v=c1f52344', archer:'../../assets/art/r75/archer.webp?v=66fff3e9', emberpup:'../../assets/art/r76/emberpup.webp?v=d5ccf1ed', wolf:'../../assets/art/r76/wolf.webp?v=b3a469e2', sparkSquire:'../../assets/art/r76/sparkSquire.webp?v=670a755a', alleySkirmisher:'../../assets/art/r76/alleySkirmisher.webp?v=eb357347', frontScout:'../../assets/art/r76/frontScout.webp?v=34058513', firebolt:'../../assets/art/r76/firebolt.webp?v=6583d849' })[card.id] || card.image;
+    const artLowSource = variantLow || ({ emberpup:'../../assets/art/r76/emberpup-low.webp?v=f6527647', wolf:'../../assets/art/r76/wolf-low.webp?v=c333e737', sparkSquire:'../../assets/art/r76/sparkSquire-low.webp?v=ffb146b0', alleySkirmisher:'../../assets/art/r76/alleySkirmisher-low.webp?v=dade5b6b', frontScout:'../../assets/art/r76/frontScout-low.webp?v=6f407c18', firebolt:'../../assets/art/r76/firebolt-low.webp?v=8f558c82', footman:'../../assets/art/r76/footman-low.webp?v=aedc66c0', archer:'../../assets/art/r76/archer-low.webp?v=b78bf635' })[card.id];
+    const art = artSource
+      ? `<img src="${artLowSource || artSource}" ${artLowSource ? `srcset="${artLowSource} 1x, ${artSource} 2x"` : ""} alt="${card.name}" onerror="this.replaceWith(document.createTextNode('${card.emoji}'))">`
       : `<span class="art-glyph" aria-hidden="true">${card.emoji}</span>`;
     const factionInfo = FACTIONS[card.faction] || FACTIONS.neutral;
     const factionEmblem = factionInfo && factionInfo.emblem
@@ -2248,11 +2419,12 @@
     const stars = "★".repeat(r.stars);
 
     el.innerHTML = `
+      <img class="r75-card-frame" src="../../assets/art/r79/frame-low.webp" srcset="../../assets/art/r79/frame-low.webp 1x, ../../assets/art/r79/frame.webp?v=r79-frame 2x" alt="" aria-hidden="true">
       <div class="summon-impact"></div>
       <div class="frame-sheen" aria-hidden="true"></div>
       <div class="cost">${card.cost}</div>
-      ${card.shield ? '<div class="shield-ring"></div>' : ""}
-      ${(card.keywords || []).includes("taunt") ? '<div class="taunt-crest" title="嘲諷" aria-hidden="true">◆</div>' : ""}
+      ${card.shield ? '<div class="shield-ring"></div><img class="r8-shield-icon" src="../../assets/art/content-r8/divine-shield.webp" alt="聖盾擋一次">' : ""}
+      ${(card.keywords || []).includes("taunt") ? '<div class="taunt-crest" title="嘲諷：必須先攻擊這張卡"><img src="../../assets/art/content-r8/taunt-wall.webp" alt="嘲諷石牆"></div>' : ""}
       <div class="stars">${stars}</div>
       <div class="art${card.image ? "" : " art-fallback"}"${card.image ? "" : ` aria-label="${card.name}・${FACTIONS[card.faction]?.name || "中立"}佔位圖"`}>${art}${factionEmblem}</div>
       <div class="kwrow">${kwBadges}</div>
@@ -2317,7 +2489,8 @@
     art.innerHTML = "";
     if (card.image) {
       const img = document.createElement("img");
-      img.src = card.image;
+      const variantFull=r80Variant(card)===1?({footman:'../../assets/art/r80/footman-band.webp',archer:'../../assets/art/r80/archer-hood.webp'})[card.id]:null;
+      img.src = variantFull || ({ footman:'../../assets/art/r75/footman.webp?v=c1f52344', archer:'../../assets/art/r75/archer.webp?v=66fff3e9', emberpup:'../../assets/art/r76/emberpup.webp?v=d5ccf1ed', wolf:'../../assets/art/r76/wolf.webp?v=b3a469e2', sparkSquire:'../../assets/art/r76/sparkSquire.webp?v=670a755a', alleySkirmisher:'../../assets/art/r76/alleySkirmisher.webp?v=eb357347', frontScout:'../../assets/art/r76/frontScout.webp?v=34058513', firebolt:'../../assets/art/r76/firebolt.webp?v=6583d849' })[card.id] || card.image;
       img.alt = card.name;
       img.onerror = () => {
         art.innerHTML = "";
@@ -2445,7 +2618,13 @@
 
   function handleCoreResult(result) {
     if (!result || !Array.isArray(result.events)) return;
+    const tidalImpact = result.events.some(e=>e.type==='tidebreak'||e.type==='tideEbb');
+    for(const key of ['player','enemy']) {
+      const gains=result.events.filter(e=>e.type==='tideGain'&&e.side===key&&e.reason==='fallen');
+      if(gains.length)game[key]._r79TideSource={amount:gains.reduce((n,e)=>n+e.amount,0),turn:game.turnCount};
+    }
     for (const event of result.events) {
+      if(event.type==='attackSpent') { const unit=findBattleMinion(event.uid);if(unit)unit._r77SpentTurn=game.turnCount; }
       if (event.type === "minionSummoned") {
         if (event.uid) pendingSummonFx.add(event.uid);
       }
@@ -2456,11 +2635,14 @@
       } else if (event.type === "combo") {
         showCombo(event.uid, event.count);
       } else if (event.type === "shieldBreak") {
+        const broken=findBattleMinion(event.uid);if(broken&&game.content?.id==='moen')broken._r3ShieldBroken=true;
+        if(broken&&game.content?.id==='moen'&&game.enemy.field.some(c=>c.uid===event.uid))set('contentBarGoal',`聖盾抵擋命中；敵騎士仍 ${broken.health} 血。`);
+        CardContentR6.shieldBreak(game,event.uid);
         flashCard(event.uid, "shield-break");
         flashKeyword2(event.uid, "聖盾破裂");
       } else if (event.type === "damage") {
         flashCard(event.uid, "damaged");
-        floatDamage(event.uid, event.amount);
+        if (!tidalImpact) floatDamage(event.uid, event.amount);
         playSound("hurt");
         if ((event.amount || 0) >= 4) screenShake();
       } else if (event.type === "poison") {
@@ -2517,10 +2699,20 @@
         const sideObj = event.side === "enemy" ? game.enemy : game.player;
         const sp = spellDamage(event.effect) ? Core.spellPower(sideObj) : 0;
         if (sp > 0) log(`法強 +${sp} 強化了${event.side === "enemy" ? "對手" : "你的"}法術。`, event.side === "enemy" ? "ai" : "me");
+      } else if (event.type === "tideGain") {
+        pulseTide(event.side);
+      } else if (event.type === "tideFull") {
+        if (event.side === "player" && game && !game.tideFullAnnounced) {
+          game.tideFullAnnounced = true;
+          if (!game.tideTrial&&!game.content) showToast("潮能滿了，按裂潮掀起浪潮。");
+        } else if (event.side === "enemy") {
+          flashKeyword("enemyHero", "滿潮！");
+        }
       } else if (event.type === "heroDamage") {
-        floatDamage(event.defenderSide === "enemy" ? "enemyHero" : "playerHero", event.amount);
+        if (!tidalImpact) floatDamage(event.defenderSide === "enemy" ? "enemyHero" : "playerHero", event.amount);
         playSound("hurt");
         if ((event.amount || 0) >= 4) screenShake();
+        if(event.defenderSide==='enemy')CardContentR10.react(game,game.enemy.hp<=0);
       } else if (event.type === "fatigue") {
         const heroId = event.side === "enemy" ? "enemyHero" : "playerHero";
         floatDamage(heroId, event.amount);
@@ -2640,7 +2832,8 @@
     const r = source.getBoundingClientRect();
     if (!r.width || !r.height) return null;
     const ghost = source.cloneNode(true);
-    ghost.classList.remove("spawn", "selected", "targetable", "can-attack", "blocked", "guide-focus");
+    ghost.classList.remove("spawn", "selected", "targetable", "can-attack", "blocked", "guide-focus", "target-queued");
+    ghost.querySelectorAll('.cardtext,.card-info-btn,.target-action-popover,.r77-card-state,.r78-ready-arrow').forEach(el=>el.remove());
     ghost.classList.add("combat-ghost");
     if (extraClass) ghost.classList.add(extraClass);
     ghost.style.position = "fixed";
@@ -2669,8 +2862,33 @@
       impacted = true;
       return typeof onImpact === "function" ? onImpact() : undefined;
     };
-    if (prefersReducedMotion()) return Promise.resolve(resolveImpact());
     const a = elFor(attackerUid), t = elFor(targetUidOrId);
+    const poseAsset = a && window.CardPosePlayer?.get(a.dataset.cardId);
+    const poseArt = a?.querySelector('.art > img:not(.faction-emblem)');
+    // Content encounters use timed card-exchange feedback until minion pose assets exist.
+    // Never move a flat character/card to claim a character attack animation.
+    if(game.content && !(poseArt && window.CardPosePlayer?.plan(poseAsset,'attack').status==='PREPARED')){
+      return new Promise((resolve,reject)=>{
+        a?.classList.add('r6-contact-ready');
+        setTimeout(()=>{try{const result=resolveImpact();a?.classList.remove('r6-contact-ready');t?.classList.add('r6-contact-impact');setTimeout(()=>{t?.classList.remove('r6-contact-impact');resolve(result);},350);}catch(e){reject(e);}},150);
+      });
+    }
+    if (game.content && poseArt && window.CardPosePlayer?.plan(poseAsset, 'attack').status === 'PREPARED') {
+      const originalSrc = poseArt.getAttribute('src');
+      const cleanPose=CardContentR11.poseLayer(a,poseArt);
+      const originalSrcset=poseArt.getAttribute('srcset');poseArt.removeAttribute('srcset');
+      let result;
+      return CardPosePlayer.play(poseAsset, 'attack', src => { poseArt.src = src;a.dataset.posePhase=src.split('-').at(-1).split('.')[0]; }, () => {
+        result = resolveImpact();
+        const unit=findBattleMinion(targetUidOrId),art=t?.querySelector('.art>img'),asset=t&&CardPosePlayer.get(t.dataset.cardId);
+        if(unit&&art&&CardPosePlayer.plan(asset,'hurt').status==='PREPARED'){
+          const old=art.src,set=art.getAttribute('srcset');art.removeAttribute('srcset');
+          const cleanHurt=CardContentR11.poseLayer(t,art);
+          CardPosePlayer.play(asset,'hurt',src=>art.src=t.dataset.shellState==='breaking'&&unit.id==='knight'?'../../assets/animations/content-r10/knight-break.webp':src).then(()=>{art.src=old;if(set)art.setAttribute('srcset',set);cleanHurt();});
+        }
+      }).then(() => { poseArt.setAttribute('src', originalSrc);if(originalSrcset)poseArt.setAttribute('srcset',originalSrcset);cleanPose();delete a.dataset.posePhase;return result; });
+    }
+    if (prefersReducedMotion()) return Promise.resolve(resolveImpact());
     if (!a) return Promise.resolve(resolveImpact());
     return new Promise((resolve, reject) => {
       const finishImpact = () => {
@@ -2726,14 +2944,15 @@
     if (prefersReducedMotion()) return;
     const el = elFor(uidOrId); if (!el) return;
     if (isLowPerf() && amount <= 2) return;
-    const r = el.getBoundingClientRect();
+    const anchor = uidOrId==='enemyHero' ? document.getElementById('enemyHp') : uidOrId==='playerHero' ? document.getElementById('playerHp') : el;
+    const r = anchor.getBoundingClientRect();
     const d = document.createElement("div");
     const tier = amount >= 6 ? "dmg-big" : amount >= 3 ? "dmg-mid" : "dmg-sm";
-    d.className = "dmg-float " + tier; d.textContent = "-" + amount;
+    d.className = "dmg-float r79-target-damage " + tier; d.textContent = "-" + amount;
     d.style.left = (r.left + r.width / 2) + "px";
-    d.style.top = (r.top + 8) + "px";
+    d.style.top = (r.top + r.height / 2) + "px";
     document.body.appendChild(d);
-    setTimeout(() => d.remove(), isLowPerf() ? 480 : 850);
+    setTimeout(() => d.remove(), 300);
   }
   // CP2-8 連擊回饋文字
   function flashCombo(x, y, n) {
@@ -2766,6 +2985,7 @@
   }
   function flashKeyword2(uid, label) {
     if (prefersReducedMotion()) return;
+    if(game.content?.id==='moen'&&(label==='滿潮！'||label.includes('生命')))return;
     const el = elFor(uid); if (!el) return;
     const r = el.getBoundingClientRect();
     const b = document.createElement("div");
@@ -2778,6 +2998,12 @@
   function markDying(uid) {
     const el = elFor(uid);
     if (!el) return;
+    const asset=CardPosePlayer.get(el.dataset.cardId);
+    if(game.content&&CardPosePlayer.plan(asset,'death').status==='PREPARED'){
+      const ghost=cloneCardGhost(el,'r9-dying'),art=ghost?.querySelector('.art>img');
+      if(art){CardContentR11.poseLayer(ghost,art);art.removeAttribute('srcset');CardPosePlayer.play(asset,'death',src=>art.src=src).then(()=>ghost.remove());}
+      return;
+    }
     if (prefersReducedMotion()) return;
     const deathMs = isLowPerf() ? 260 : 560;
     const ghost = cloneCardGhost(el, "dying");
@@ -2862,7 +3088,7 @@
   }
 
   function trackCardUse(card) {
-    if (!card || !card.id) return;
+    if (!card || !card.id || game?.content) return;
     const stats = loadStats();
     const plays = stats.telemetry.cardPlays;
     plays[card.id] = (plays[card.id] || 0) + 1;
@@ -3080,7 +3306,7 @@
   }
 
   function trackQuestFromCoreEvent(event) {
-    if (!event) return;
+    if (!event || game?.tideTrial || game?.content) return;
     if (event.type === "spellCast" && event.side === "player") {
       progressQuest({ type: "playSpell", amount: 1 });
       progressWeeklyGoal({ type: "playSpell", amount: 1 });
@@ -3385,6 +3611,20 @@
 
   function showOverlay(title, win) {
     const ov = document.getElementById("overlay");
+    document.getElementById('r75VictoryHero').src = '../../assets/art/r80/victory-navigator.webp';
+    if (game.tideTrial) {
+      if (win) writeStorage(CardTideSession.DONE, '1', '試航紀錄儲存');
+      document.getElementById('tideTrialBar').hidden = true;
+      document.getElementById('overlayTitle').textContent = win ? '潮汐試航完成' : '再試一次';
+      document.getElementById('overlayEpilogue').hidden = false;
+      document.getElementById('overlayEpilogue').textContent = win ? '滿潮施放，浪峰命中敵陣。這次的航程由你掌舵。' : '讓兩位見習士兵各交換一次，滿潮再施放漲潮。';
+      document.getElementById('resultStats').textContent = '固定戰術短局 · 不計戰績、不發金幣。下一步可進入五站航程，或返回港口。';
+      document.querySelector('#overlay .overlay-actions:not(#trialResultActions)').hidden = true;
+      document.getElementById('trialResultActions').hidden = false;
+      document.getElementById('resultStars').textContent = '';
+      ov.classList.toggle('win', win); ov.classList.toggle('lose', !win); ov.classList.add('show');
+      return;
+    }
     document.getElementById("overlayTitle").textContent = title;
     // R68：對手化結語（勝=玩家贏→對手 win 句）
     const epi = document.getElementById("overlayEpilogue");
@@ -3443,12 +3683,15 @@
         ${lossEncourage}
         <div class="hint">💡 用金幣去「開卡包」抽更強的卡，組成你的牌組！</div>`;
     }
+    renderResultStars(settleStars(win));
+    CardMobile.cancel(false);
+    CardMobile.result(win);
     updateQuestCtas();
     refreshChronicle();
     updateChronicleBadge();
     if (win) { burstStars(); burstConfetti(); }
     const gRef = game;
-    setTimeout(() => { if (game === gRef) ov.classList.add("show"); }, 500);
+    setTimeout(() => { if (game === gRef) ov.classList.add("show"); }, win ? 500 : 100);
   }
   function burstStars() {
     if (isLowPerf() || prefersReducedMotion()) return;
@@ -3468,15 +3711,833 @@
     }
   }
 
+  // ===================== R72 招牌玩法「裂潮」＋開場／回合／星級 =====================
+  // R72 P6 背景音樂：可替換的循環曲（本機 AI 派工器 music 產出，見 CREDITS）。檔案缺件時靜默略過。
+  // 缺件（R72）：本機 AI 派工器 music 兩次因 GPU 佇列逾時未產出；放入 assets/audio/battle-tide-loop.mp3
+  // 後把下行改成該路徑即可啟用（音量跟 SFX 音量連動、靜音同步、只在對戰分頁前景播放）。
+  var BGM_URL = null;
+  var bgm = null;
+  var bgmMissing = !BGM_URL;
+  var bgmFrameVisible = true;
+  function syncBgm() {
+    const want = audioUnlocked && !audioMuted() && audioVolume() > 0 && !document.hidden && bgmFrameVisible;
+    if (!want) { if (bgm && !bgm.paused) bgm.pause(); return false; }
+    if (bgmMissing || !BGM_URL) return false;
+    if (!bgm) {
+      bgm = new Audio(BGM_URL);
+      bgm.loop = true;
+      bgm.preload = "auto";
+      bgm.addEventListener("error", () => { bgmMissing = true; });
+    }
+    bgm.volume = Math.max(0, Math.min(1, audioVolume() * 0.3));
+    const played = bgm.play();
+    if (played && played.catch) played.catch(() => {});
+    return true;
+  }
+  document.addEventListener("visibilitychange", () => syncBgm());
+  window.addEventListener("message", (e) => {
+    if (e.data && e.data.type === "frameVisibility") { bgmFrameVisible = !!e.data.visible; syncBgm(); }
+  });
+  const STARS_KEY = "card_star_challenges_v1";
+  const TIDE_MAX = Core.TIDE_MAX || 6;
+  const OPPONENT_PORTRAITS = Object.freeze({
+    op_rune: { url: "../../assets/cards/heroRuneFrostfang.png", pos: "50% 20%", zoom: "240%" },
+    op_isold: { url: "../../assets/cards/heroIsoldLongdusk.png", pos: "50% 20%", zoom: "240%" },
+    op_moen: { url: "../../assets/cards/heroMoenTidearbiter.png", zoom: "cover", pos: "center" },
+    op_ser_halden: { url: "../../assets/cards/heroSerHalden.png", pos: "46% 14%", zoom: "260%" },
+    op_magister_vey: { url: "../../assets/cards/heroMagisterVey.png", pos: "40% 17%", zoom: "260%" },
+    op_scarra: { url: "../../assets/cards/heroScarra.png", pos: "55% 37%", zoom: "230%" },
+  });
+  const STAR_LABELS = Object.freeze(["獲勝", "生命過半", "用過裂潮爆發"]);
+  let vsIntroTimer = 0;
+  let turnBannerTimer = 0;
+
+  function opponentTideStyle(opponentId) {
+    if(opponentId==='op_moen')return{label:'退潮守約',desc:'手工腳本：先滿潮護住騎士、留守一回合，再出擊'};
+    const rates = (Core.OPPONENT_TIDE_RATES || {})[opponentId] || CardVoyage.OPPONENTS[opponentId]?.tideRates;
+    return rates || { label: "潮汐", desc: "每回合 +1、隨從陣亡 +1" };
+  }
+
+  function applyOpponentPortrait(opponent) {
+    const portrait = OPPONENT_PORTRAITS[opponent && opponent.id];
+    const root = document.body;
+    const avatar = document.querySelector("#enemyHero .avatar");
+    if (!portrait) {
+      root.style.removeProperty("--opponent-portrait");
+      if (avatar) avatar.classList.remove("has-portrait");
+      return;
+    }
+    root.style.setProperty("--opponent-portrait", `url("${portrait.url}")`);
+    if (avatar) {
+      avatar.classList.add("has-portrait");
+      avatar.style.backgroundSize = `${portrait.zoom}, auto`;
+      avatar.style.backgroundPosition = `${portrait.pos}, center`;
+    }
+  }
+
+  function introAllowed() {
+    // 自動化（webdriver）預設略過開場，避免遮擋既有 E2E；?intro=1 可強制播放供截圖與測試。
+    const forced = new URLSearchParams(location.search).get("intro");
+    if (forced === "1") return true;
+    if (forced === "0") return false;
+    return !navigator.webdriver;
+  }
+
+  function hideVsIntro() {
+    const el = document.getElementById("vsIntro");
+    clearTimeout(vsIntroTimer);
+    if (!el || !el.classList.contains("show")) return;
+    el.classList.add("hide");
+    el.setAttribute("aria-hidden", "true");
+    setTimeout(() => { el.classList.remove("show", "hide"); }, 300);
+    showTurnBanner("player");
+  }
+
+  function showVsIntro(opponent) {
+    const el = document.getElementById("vsIntro");
+    if (!el || !introAllowed()) { showTurnBanner("player"); return false; }
+    const lines = OPPONENT_LINES[opponent.id] || {};
+    const scene = R67_BATTLEFIELDS[battlefieldCursor];
+    const fieldName = scene && BATTLEFIELD_NAMES[scene.id];
+    const tide = opponentTideStyle(opponent.id);
+    const set = (id, text) => { const node = document.getElementById(id); if (node) node.textContent = text || ""; };
+    set("vsKicker", `裂潮之戰 · ${DIFFICULTY[game.difficulty] ? DIFFICULTY[game.difficulty].label : ""}`);
+    set("vsName", opponent.name);
+    set("vsLine", lines.intro ? `「${lines.intro}」` : "");
+    set("vsField", fieldName ? `戰場：${fieldName}` : "");
+    set("vsTide", `對手潮汐：${tide.label}（${tide.desc}）`);
+    el.classList.remove("hide");
+    el.classList.add("show");
+    el.setAttribute("aria-hidden", "false");
+    el.onclick = hideVsIntro;
+    clearTimeout(vsIntroTimer);
+    vsIntroTimer = setTimeout(hideVsIntro, prefersReducedMotion() ? 1200 : 1900);
+    return true;
+  }
+
+  function showTurnBanner(side) {
+    const el = document.getElementById("turnBanner");
+    const text = document.getElementById("turnBannerText");
+    if (!el || !text || !game || game.over) return;
+    text.textContent = side === "enemy" ? `${game.opponentName || "對手"}的回合` : "你的回合";
+    el.classList.toggle("enemy", side === "enemy");
+    el.classList.remove("show");
+    void el.offsetWidth;
+    const source=document.querySelector('.r75-tide-channel').getBoundingClientRect();
+    el.style.top=`${source.top+source.height/2}px`;
+    el.classList.add("show");
+    clearTimeout(turnBannerTimer);
+    turnBannerTimer = setTimeout(() => el.classList.remove("show"), 1200);
+  }
+
+  function renderTide() {
+    if (!game) return;
+    const playerTide = Core.tideOf(game.player);
+    const enemyTide = Core.tideOf(game.enemy);
+    if (playerTide>=4 || enemyTide>=4) preloadTidalArt().catch(()=>{});
+    document.body.dataset.tideTrial = String(!!game.tideTrial);
+    const wasReady = document.body.dataset.tideReady === "true";
+    document.body.dataset.tideReady = String(playerTide >= TIDE_MAX);
+    if (playerTide >= TIDE_MAX && !wasReady) document.getElementById("tidebreakBtn")?.classList.add("r78-first-full");
+    if (playerTide < TIDE_MAX) document.getElementById("tidebreakBtn")?.classList.remove("r78-first-full");
+    document.body.style.setProperty('--r75-tide', String(playerTide));
+    let heroTide = document.querySelector('.r78-hero-tide');
+    if (!heroTide) { heroTide = document.createElement('span'); heroTide.className = 'r78-hero-tide';document.querySelector('.player-hero-scene').appendChild(heroTide); }
+    heroTide.textContent = `潮 ${playerTide}/6`;
+    document.querySelectorAll('#r75BoardPips i,#r75ChartPips i').forEach((el, i) => el.classList.toggle('filled', i % 6 < playerTide));
+    document.querySelector('.r75-tide-channel')?.setAttribute('aria-label', `潮位 ${playerTide}/6`);
+    const chartPips = document.getElementById('r75ChartPips');
+    if (chartPips) { chartPips.removeAttribute('aria-hidden'); chartPips.setAttribute('role','img'); chartPips.setAttribute('aria-label', `我方潮能 ${playerTide}/6`); }
+    const btn = document.getElementById("tidebreakBtn");
+    if (btn) {
+      const ready = Core.canTidebreak(game, "player") && !combatInFlight;
+      btn.disabled = game.over || combatInFlight || game.turn !== 'player';
+      btn.setAttribute('aria-disabled',String(btn.disabled));
+      btn.classList.toggle("ready", ready);
+      const ring = btn.querySelector(".tide-ring");
+      if (ring) ring.style.setProperty("--tide-pct", String(playerTide / TIDE_MAX));
+      const glyph = btn.querySelector(".tide-glyph");
+      if (glyph) glyph.textContent = playerTide >= TIDE_MAX ? "潮" : String(playerTide);
+      const count = document.getElementById("playerTideCount");
+      if (count) count.textContent = playerTide >= TIDE_MAX ? (tideMode === 'ebb' ? '護航！' : '爆發！') : `${playerTide}/${TIDE_MAX}`;
+      btn.setAttribute("aria-label", ready
+        ? `裂潮爆發：潮能已滿，對所有敵方隨從造成 ${Core.TIDEBREAK_MINION_DAMAGE} 點、敵方英雄 ${Core.TIDEBREAK_HERO_DAMAGE} 點`
+        : `裂潮爆發：潮能 ${playerTide}/${TIDE_MAX}`);
+      btn.title = ready ? "潮能已滿：點擊施放裂潮爆發" : `潮能 ${playerTide}/${TIDE_MAX}：每回合 +1、己方隨從陣亡 +1`;
+      if (tideMode === 'ebb') btn.setAttribute('aria-label', `退潮護航：潮能 ${playerTide}/6，友軍聖盾、英雄回復 3 點`);
+    }
+    const meter = document.getElementById("enemyTide");
+    if (meter) {
+      meter.classList.toggle("ready", enemyTide >= TIDE_MAX);
+      const ring = meter.querySelector(".tide-ring");
+      if (ring) ring.style.setProperty("--tide-pct", String(enemyTide / TIDE_MAX));
+      const glyph = meter.querySelector(".tide-glyph");
+      if (glyph) glyph.textContent = enemyTide >= TIDE_MAX ? "潮" : String(enemyTide);
+      const count = document.getElementById("enemyTideCount");
+      if (count) count.textContent = `${enemyTide}/${TIDE_MAX}`;
+      const style = opponentTideStyle(game.opponentId);
+      const styleEl = document.getElementById("enemyTideStyle");
+      if (styleEl) styleEl.textContent = style.label;
+      meter.setAttribute("aria-label", `對手潮能 ${enemyTide}/${TIDE_MAX}（${style.label}：${style.desc}）`);
+      meter.title = `${style.label}：${style.desc}`;
+      let source=meter.querySelector('.r79-tide-source');
+      if(!source){source=document.createElement('span');source.className='r79-tide-source';source.setAttribute('aria-live','polite');meter.appendChild(source);}
+      const gain=game.enemy._r79TideSource;
+      source.textContent=gain&&gain.turn>=game.turnCount-1?`陣亡蓄潮 +${gain.amount}`:'';
+    }
+  }
+
+  function pulseTide(side) {
+    const el = side === "enemy" ? document.getElementById("enemyTide") : document.getElementById("tidebreakBtn");
+    if (!el || prefersReducedMotion()) return;
+    el.classList.remove("charging");
+    void el.offsetWidth;
+    el.classList.add("charging");
+    setTimeout(() => el.classList.remove("charging"), 520);
+  }
+
+  new ResizeObserver(entries => {
+    for (const entry of entries) if (entry.contentRect.height > 0) {
+      const sheet = entry.target.getBoundingClientRect(), hero = document.querySelector('.player-hero-row');
+      document.body.style.setProperty('--r10-chart-reserve',`${innerHeight-sheet.top+8}px`);
+      const matrix = getComputedStyle(hero).transform;
+      const shift = matrix === 'none' ? 0 : new DOMMatrix(matrix).m42;
+      const rect = hero.getBoundingClientRect();
+      document.body.style.setProperty('--r78-hero-shift', `${Math.min(0,sheet.top-10-rect.height-(rect.top-shift))}px`);
+    }
+  }).observe(document.querySelector("#tideChartPanel .tide-chart-sheet"));
+  const resultShellObserver = new MutationObserver(() => {
+    if (parent !== window) parent.postMessage({type:"battleFullBleed",active:!!(game?.content||game?.forecast) || !document.getElementById('contentPanel').hidden || (document.getElementById("overlay").classList.contains("show") && document.body.dataset.r76Wave !== 'true')},location.origin);
+  });
+  resultShellObserver.observe(document.getElementById("overlay"),{attributes:true,attributeFilter:["class"]});
+  resultShellObserver.observe(document.body,{attributes:true,attributeFilter:["data-r76-wave"]});
+  let tidalArtReady;
+  function preloadTidalArt() {
+    if (!tidalArtReady) tidalArtReady=Promise.all([
+      '../../assets/art/r80/wave.webp',
+      '../../assets/art/r79/foam.webp?v=r79-foam',
+      '../../assets/art/r77/puddle.webp?v=03e81419',
+    ].map(src=>{const i=new Image();i.src=src;return i.decode();})).catch(error=>{tidalArtReady=null;throw error;});
+    return tidalArtReady;
+  }
+  function playTidalWave(side, targetUids) {
+    const waveGame = game;
+    const wave = document.getElementById("tideWave");
+    (targetUids || []).forEach((uid, index) => {
+      const card = elFor(uid);
+      if (!card) return;
+      setTimeout(() => { if(game!==waveGame)return;card.classList.add("tide-hit"); setTimeout(() => card.classList.remove("tide-hit"), 520); }, 360);
+    });
+    if (audioUnlocked && !audioMuted()) {
+      playTone(110, .5, "sawtooth", .03, 0, 340);
+      playTone(220, .45, "triangle", .03, .08, 660);
+      playTone(880, .35, "sine", .022, .22, 1320);
+    }
+    if (!wave) return;
+    wave.replaceChildren();
+    const img = document.createElement('img'); img.className = 'r76-wave-art'; img.src = '../../assets/art/r80/wave.webp'; img.alt = ''; wave.appendChild(img);
+    const field = document.getElementById(side === 'enemy' ? 'playerField' : 'enemyField');
+    const board = document.querySelector('.board');
+    const rect = field.getBoundingClientRect();
+    const boardRect = board.getBoundingClientRect();
+    board.style.setProperty('--r77-wet-y', `${rect.top-boardRect.top+rect.height*.55}px`);
+    board.style.setProperty('--r77-wet-h', `${Math.max(80,rect.height*.8)}px`);
+    wave.style.setProperty('--impact-y', `${rect.top + rect.height * .5}px`);
+    wave.style.setProperty('--wave-height', `${Math.max(180, rect.height * 1.8)}px`);
+    const waveHeight=Math.max(180,rect.height*1.8);
+    const origin=document.getElementById(side==='enemy'?'enemyField':'r75BoardPips').getBoundingClientRect();
+    const caster=document.getElementById(side==='enemy'?'enemyField':'playerField').getBoundingClientRect();
+    const horizontal=Math.abs(caster.left+caster.width*.5-rect.left-rect.width*.5)>Math.abs(caster.top+caster.height*.5-rect.top-rect.height*.5);
+    wave.dataset.axis=horizontal?'x':'y';
+    wave.style.setProperty('--r79-travel-x',horizontal?`${origin.left+origin.width*.5-rect.left-rect.width*.5}px`:'0px');
+    wave.style.setProperty('--r79-wave-top',`${rect.top+rect.height*.5-waveHeight*.27}px`);
+    wave.style.setProperty('--r79-travel',horizontal?'0px':`${(origin.top+origin.height*.5)-(rect.top+rect.height*.5)}px`);
+    // A source-anchored path remains visible while the crest advances; allies are below its clip.
+    const source=document.querySelector('.r75-tide-channel').getBoundingClientRect();
+    const height=Math.max(140,rect.height*1.35);
+    wave.style.setProperty('--wave-height',`${height}px`);
+    wave.style.setProperty('--r79-wave-top',`${rect.top+rect.height*.5-height*.5}px`);
+    wave.style.setProperty('--r79-travel',horizontal?'0px':`${origin.top+origin.height*.5-(rect.top+rect.height*.5)}px`);
+    wave.style.setProperty('--r80-clip-bottom',side==='player'&&!horizontal?`${Math.max(0,innerHeight-source.bottom-2)}px`:'0px');
+    wave.style.setProperty('--r80-clip-left',horizontal&&side==='player'?`${caster.right+2}px`:'0px');
+    wave.style.setProperty('--r80-clip-top',horizontal?`${Math.max(0,rect.top-4)}px`:'0px');
+    if(horizontal)wave.style.setProperty('--r80-clip-bottom',`${Math.max(0,innerHeight-Math.max(rect.bottom+24,source.bottom+2))}px`);
+    wave.dataset.source='waterline';wave.dataset.caster=side;
+    const trail=document.createElement('div');trail.className='r80-current-path';
+    if(!horizontal)Object.assign(trail.style,{left:`${origin.left+origin.width*.5-24}px`,top:`${rect.bottom-8}px`,width:'48px',height:`${Math.max(20,source.top-rect.bottom+16)}px`});
+    else Object.assign(trail.style,{left:`${origin.left}px`,top:`${rect.top+rect.height*.5-18}px`,width:`${Math.max(24,rect.left-origin.left)}px`,height:'36px'});
+    wave.appendChild(trail);
+    // Real painted foam is placed over each target, including lethal targets that leave at impact.
+    for (const uid of targetUids || []) {
+      const target = elFor(uid); if (!target) continue;
+      const r = target.getBoundingClientRect(), foam = document.createElement('img');
+      foam.className = 'r77-impact-foam'; foam.src = '../../assets/art/r79/foam.webp?v=r79-foam'; foam.alt = '';
+      Object.assign(foam.style, {left:`${r.left-12}px`,top:`${r.top+r.height*.4}px`,width:`${r.width+24}px`,height:`${r.height*.65}px`});
+      if(game.content||game.forecast)Object.assign(foam.style,{top:`${r.top+r.height*.35}px`,height:`${r.height*.22}px`});
+      wave.appendChild(foam);
+    }
+    board.classList.remove('r76-wet');
+    setTimeout(() => { if (game===waveGame && document.body.dataset.r76Wave === 'true') { board.classList.add('r76-wet'); board.dataset.wetSide = side; } }, 360);
+    document.body.dataset.r76Wave = 'true';document.body.dataset.r80Caster=side;
+    wave.classList.remove("run", "enemy");
+    void wave.offsetWidth;
+    wave.classList.toggle("enemy", side === "enemy");
+    wave.classList.add("run");
+    screenShake();
+  }
+
+  function tidebreakKillCount(sideKey) {
+    const foe = sideKey === "enemy" ? game.player : game.enemy;
+    return foe.field.filter((m) => !m.shield && m.health <= (Core.TIDEBREAK_MINION_DAMAGE || 1)).length;
+  }
+
+  function castTidebreak(sideKey, mode) {
+    const key = sideKey === "enemy" ? "enemy" : "player";
+    if (!game || game.over) return null;
+    if (key === "player") {
+      if (game.turn !== "player" || combatInFlight) return null;
+      if (!Core.canTidebreak(game, "player")) {
+        const tide = Core.tideOf(game.player);
+        showToast(game.turn === "player" ? `潮能 ${tide}/${TIDE_MAX}：每回合 +1、己方隨從陣亡 +1，滿了就能掀起裂潮。` : "等你的回合再掀起裂潮。");
+        return null;
+      }
+    }
+    const chosen = key === 'player' ? (mode || tideMode || 'flood') : (mode || 'flood');
+    if (key==='player' && CardTideContent.direction(game) && chosen!==CardTideContent.direction(game)) { showToast('當回合潮向不符，請先在預報中反轉一次。'); return null; }
+    if (combatInFlight || !Core.canTidebreak(game, key)) return null;
+    const reference = game;
+    const targets = (chosen === 'ebb' ? game[key] : key === 'enemy' ? game.player : game.enemy).field.map(m => m.uid);
+    game.selected = null;
+    pendingTargetUid = null;
+    combatInFlight = true;
+    preloadTidalArt().then(()=>{
+    if (game!==reference) return;
+    document.body.dataset.tidePhase='anticipation';
+    playTidalWave(chosen==='ebb' ? (key==='enemy'?'player':'enemy') : key, targets);
+    if(key==='enemy'&&chosen==='ebb')CardContentR6.setPose(reference,1,'anticipation');
+    renderTide();
+    document.getElementById('endTurnBtn').disabled = true;
+    // Reserve the action, then mutate rules only when the crest reaches its targets.
+    setTimeout(() => {
+      if (game !== reference) return;
+      document.body.dataset.tidePhase='impact';
+      const r9Before=CardContentR9.capture(game);
+      const hpBefore=game[key].hp;
+      const result = Core.tidebreak(game, { side: key, mode: chosen }, rng);
+      if(result.ok&&key==='player'&&chosen==='flood')CardContentR9.record(game,r9Before);
+      if(key==='enemy'&&chosen==='ebb'&&result.ok)CardContentR6.heal(game,game[key].hp-hpBefore,hpBefore,game[key].hp);
+      if(key==='enemy'&&chosen==='ebb')CardContentR6.setPose(reference,2,'impact');
+      if (!result.ok) { combatInFlight = false; render(); return; }
+    const side = key === "enemy" ? game.enemy : game.player;
+    if (key==='enemy' && chosen==='ebb') { if(game.content)game.content.enemyEbbUsed=true; log('茉恩退潮護航：騎士獲得聖盾，英雄回復 3 點。先剝盾，再安排交換。','ai');
+    } else if (key === 'player' && chosen === 'ebb') {
+      log('退潮護航：友方隨從獲得聖盾，英雄最多回復 3 點生命。', 'me');
+    } else if (key === "player") {
+      game.player.tidebreaksUsed = side.tidebreaksUsed;
+      log(`🌊 你掀起裂潮爆發！敵方全體隨從受 ${Core.TIDEBREAK_MINION_DAMAGE} 點、敵方英雄受 ${Core.TIDEBREAK_HERO_DAMAGE} 點。`, "me");
+    } else {
+      log(`🌊 ${game.opponentName || "對手"}掀起${opponentTideStyle(game.opponentId).label}爆發！你的隨從各受 ${Core.TIDEBREAK_MINION_DAMAGE} 點、你受 ${Core.TIDEBREAK_HERO_DAMAGE} 點。`, "ai");
+    }
+    handleCoreResult(result);
+    render();
+    }, 360);
+    setTimeout(() => {
+      if (game !== reference) return;
+      // End the visible wave and release its input lock in one synchronous transition.
+      delete document.body.dataset.r76Wave;delete document.body.dataset.r80Caster;delete document.body.dataset.tidePhase;
+      document.getElementById('tideWave')?.classList.remove('run','enemy');
+      combatInFlight = false; render();
+      if(key==='enemy'&&chosen==='ebb')CardContentR6.setPose(reference,0,'guarding');
+    }, reference.content?.id==='moen'?780:1300);
+    }).catch(()=>{if(game===reference){combatInFlight=false;render();showToast('浪潮素材載入失敗，潮能未消耗，請再試一次。');}});
+    return { ok: true, pending: true };
+  }
+
+  // AI：滿潮時看局面決定是否施放——能清隨從、能斬殺、我方場空、或已經憋了一回合就放。
+  function maybeAiTidebreak() {
+    if (!game || game.over || !Core.canTidebreak(game, "enemy")) return false;
+    const kills = tidebreakKillCount("enemy");
+    const lethal = game.player.hp <= (Core.TIDEBREAK_HERO_DAMAGE || 2);
+    const held = (game.enemy._tideHeldTurns || 0) >= 1;
+    const smart = (game.aiSmart || 0) >= 1;
+    const shouldFire = lethal || kills >= (smart ? 1 : 0) || game.player.field.length === 0 || held;
+    if (!shouldFire) {
+      game.enemy._tideHeldTurns = (game.enemy._tideHeldTurns || 0) + 1;
+      logAiThought(`潮能已滿，先按住等更好的時機（可清 ${kills} 隻）。`);
+      return false;
+    }
+    game.enemy._tideHeldTurns = 0;
+    logAiThought(lethal ? "裂潮爆發可以直接斬殺。" : kills ? `裂潮爆發能清掉 ${kills} 隻低血隨從。` : "潮能已滿，先放掉免得浪費充能。");
+    const result = castTidebreak("enemy");
+    return !!(result && result.ok);
+  }
+
+  function loadStarRecord() {
+    try { return Core.migrateStarRecord(JSON.parse(localStorage.getItem(STARS_KEY) || "null")); } catch { return Core.migrateStarRecord(null); }
+  }
+
+  function settleStars(win) {
+    if (!game) return null;
+    const verdict = Core.computeStars({
+      won: win,
+      hpLeft: Math.max(0, game.player.hp),
+      maxHp: game.player.maxHp,
+      tidebreaksUsed: game.player.tidebreaksUsed || 0,
+    });
+    const merged = Core.mergeBestStars(loadStarRecord(), game.opponentId, game.difficulty, verdict.count);
+    writeStorage(STARS_KEY, JSON.stringify(merged.record), "星級紀錄儲存");
+    game.starResult = { stars: verdict.stars, count: verdict.count, best: merged.best, improved: merged.improved };
+    return game.starResult;
+  }
+
+  function renderResultStars(starResult) {
+    const box = document.getElementById("resultStars");
+    if (!box) return;
+    if (!starResult) { box.innerHTML = ""; return; }
+    const nextIndex = starResult.stars.findIndex((lit) => !lit);
+    const slots = starResult.stars.map((lit, i) => `
+      <div class="star-slot${lit ? " lit" : ""}" style="--i:${i}">
+        <span class="star" aria-hidden="true">★</span>
+        <span class="star-label">${STAR_LABELS[i]}</span>
+      </div>`).join("");
+    const opponentName = game.opponentName || "對手";
+    const bestLine = starResult.improved
+      ? `新紀錄！${opponentName}（${DIFFICULTY[game.difficulty].label}）最佳 ${starResult.best}/3 星`
+      : `${opponentName}（${DIFFICULTY[game.difficulty].label}）最佳 ${starResult.best}/3 星`;
+    const nextLine = nextIndex >= 0 ? `下一顆星：${STAR_LABELS[nextIndex]}` : "三星達成！換個對手或提高難度再挑戰。";
+    box.innerHTML = `${slots}<div class="star-best${starResult.improved ? " improved" : ""}">${bestLine} · ${nextLine}</div>`;
+    box.setAttribute("aria-label", `本局 ${starResult.count}/3 星。${bestLine}。${nextLine}`);
+  }
+
+  // R74 正式短局與檢查點；固定局面提供給所有玩家，不呼叫測試掛鉤。
+  function clearSession() {
+    try { localStorage.removeItem(CardTideSession.KEY); } catch {}
+  }
+  function loadSession() {
+    try { return CardTideSession.decode(localStorage.getItem(CardTideSession.KEY), CARD_POOL); } catch { return null; }
+  }
+  function saveSession() {
+    if (!sessionReady || !game || game.over || game.turn !== 'player' || combatInFlight || guide.active || game.pendingSpell || game.pendingBattlecry) return;
+    writeStorage(CardTideSession.KEY, CardTideSession.encode(game), '對局檢查點儲存');
+  }
+  function startTideTrial() {
+    const previous = sessionReady; sessionReady = false;
+    newGame(); stopGuide(false); hideVsIntro(); hideMulliganButton();
+    document.getElementById('trialBrief').hidden = true;
+    document.getElementById('tideChartPanel').hidden = true;
+    game.tideTrial = true; game.difficulty = 'normal'; game.turnCount = 1;
+    game.player.hp = game.player.maxHp = 12; game.enemy.hp = game.enemy.maxHp = 2;
+    game.player.mana = game.player.manaMax = 4;
+    document.querySelector(".board").classList.remove("r76-wet");
+    game.player.tide = 4; game.enemy.tide = 0;
+    const card = (id, uid) => {
+      const c = cloneCard(getCardById(id)); c.uid = uid; c.maxHealth = c.health; c.canAttack = true; return c;
+    };
+    game.player.field = [card('footman','trial-p1'),card('footman','trial-p2')];
+    game.enemy.field = [card('archer','trial-e1'),card('archer','trial-e2')];
+    game.player.hand = [card('wolf','trial-hand-wolf'),card('sparkSquire','trial-hand-squire'),card('emberpup','trial-hand-pup')];
+    game.enemy.hand = [];
+    game.player.deck = Core.buildBattleDeck(CardVoyage.DECKS[0].cards, CARD_POOL, rng);
+    game.enemy.deck = Core.buildBattleDeck(OPPONENTS.op_ser_halden.deckIds, CARD_POOL, rng);
+    game.opponent = OPPONENTS.op_ser_halden; game.opponentId = game.opponent.id; game.opponentName = game.opponent.name;
+    game.player.opp = game.enemy; game.enemy.opp = game.player;
+    applyBattlefieldScene({ id: 'tidebreak-confluence', advance: false });
+    tideMode = 'flood'; sessionReady = previous;
+    document.getElementById('log').textContent = '';
+    log('試航目標：兩位見習士兵各攻擊一位弓箭手，陣亡充能後以漲潮破陣。', 'me');
+    render();
+  }
+  function renderTideTrial() {
+    const bar = document.getElementById('tideTrialBar');
+    if (!bar || !game) return;
+    bar.hidden = !game.tideTrial || game.over;
+    if (!bar.hidden) document.getElementById('trialStep').textContent = combatInFlight ? '浪峰命中敵陣，退浪後可繼續對戰。' : game.player.tidebreaksUsed>0 ? game.turnCount>1 ? '回合蓄潮 +1；交戰與陣亡另結算，水痕仍在。' : '裂潮只耗潮能，不耗法力；敵陣水痕留到下一回合。' : Core.tideOf(game.player) < 6
+      ? game.selected ? '已選取，點有箭頭的弓箭手。' : `潮能 ${Core.tideOf(game.player)}/6：點見習士兵，再點弓箭手。陣亡 +1。`
+      : '滿潮了！按裂潮，只耗潮能、不耗法力。';
+  }
+  function drawTideChart() {
+    const p = game.player, e = game.enemy, tide = Core.tideOf(p);
+    document.getElementById('tideChartTitle').textContent=CardContentR6.tideCopy(tideMode).name+(tide<6?'（潮能未滿）':CardTideContent.direction(game)&&CardTideContent.direction(game)!==tideMode?'（方向不符）':' · 確認施放');
+    document.getElementById('tideChartStatus').textContent = `我方 ${tide}/6 · 對手 ${Core.tideOf(e)}/6 · ${game.tideTrial ? '固定試航短局' : '單人對戰'}`;
+    document.getElementById('tideGauge').value = tide;
+    const rate = (side, why, fallback) => Core.tideRate(side, why, fallback);
+    document.getElementById('tideSources').textContent = `我方：回合 +${rate(p,'turn',1)}／陣亡 +${rate(p,'fallen',1)}／法術 +${rate(p,'spell',0)}。滿六格後可施放。裂潮只耗潮能，不耗法力。`;
+    document.getElementById('tideSources').title = `對手：回合 +${rate(e,'turn',1)}／陣亡 +${rate(e,'fallen',1)}／法術 +${rate(e,'spell',0)}。`;
+    for (const [id, mode] of [['chooseFlood','flood'],['chooseEbb','ebb']]) {
+      const el = document.getElementById(id); el.disabled=!!CardTideContent.direction(game)&&CardTideContent.direction(game)!==mode; el.classList.toggle('selected', tideMode === mode); el.setAttribute('aria-pressed', String(tideMode === mode));
+      if(mode==='ebb')for(const text of el.childNodes)if(text.nodeType===Node.TEXT_NODE&&text.textContent.includes('友軍聖盾'))text.textContent=p.hp>=p.maxHp?'友軍聖盾；已滿血，不回復':`友軍聖盾、回復 ${Math.min(3,p.maxHp-p.hp)}`;
+    }
+    for(const [id,mode]of [['foldFlood','flood'],['foldEbb','ebb']]){
+      const b=document.getElementById(id);if(!b)continue;
+      b.disabled=!!CardTideContent.direction(game)&&CardTideContent.direction(game)!==mode;
+      b.setAttribute('aria-pressed',String(tideMode===mode));
+    }
+    const why=document.getElementById('forecastDirectionWhy');if(why)why.hidden=!CardTideContent.direction(game);
+    document.getElementById('tidePreview').textContent = tideMode === 'flood'
+      ? `只耗潮能，不耗法力。敵方英雄受 2 點；每位敵方隨從受 1 點。${e.field.filter(m => !m.shield && m.health <= 1).length} 位可能退場（亡語另結算）。`
+      : `退潮預覽：${CardContentR10.healLabel(p)}；${p.field.filter(m => !m.shield).length} 位友軍取得聖盾，可擋下下一次傷害。`;
+    const wrongDirection=!!CardTideContent.direction(game)&&CardTideContent.direction(game)!==tideMode;
+    document.getElementById('tideChartCast').disabled = wrongDirection || !Core.canTidebreak(game,'player') || combatInFlight || !!game.pendingSpell;
+    document.getElementById('tideChartCast').textContent=wrongDirection?'目前不可用':Core.tideOf(game.player)<6?`潮能 ${Core.tideOf(game.player)}/6 未滿`:combatInFlight?'結算中，請稍候':game.pendingSpell?'請先完成法術選擇':'確認施放';
+    document.querySelectorAll('.r80-preview-damage').forEach(el=>el.remove());
+    document.querySelectorAll('.r75-preview-number').forEach(el => el.remove());
+    document.querySelectorAll('.r75-preview-hit,.r75-preview-safe').forEach(el => el.classList.remove('r75-preview-hit','r75-preview-safe'));
+    document.querySelectorAll('.r79-preview-exit').forEach(el=>el.remove());
+    document.querySelectorAll('.r79-preview-lethal').forEach(el=>el.classList.remove('r79-preview-lethal'));
+    const affected = tideMode === 'flood' ? '#enemyField .card,#enemyHero' : '#playerField .card,#playerHero';
+    document.querySelectorAll(affected).forEach(el => {
+      el.classList.add(tideMode === 'flood' ? 'r75-preview-hit' : 'r75-preview-safe');
+      const unit=e.field.find(m=>m.uid===el.dataset.uid);
+      if(tideMode==='flood') {
+        const damage=document.createElement('span');damage.className='r80-preview-damage';
+        damage.textContent=unit?(unit.shield?'擋下':'−1'):'−2';
+        damage.setAttribute('aria-label',unit?(unit.shield?'聖盾擋下傷害':'將受1點傷害'):'英雄將受2點傷害');el.appendChild(damage);
+      }
+      if(tideMode==='flood'&&unit&&!unit.shield&&unit.health<=Core.TIDEBREAK_MINION_DAMAGE){
+        el.classList.add('r79-preview-lethal');const mark=document.createElement('span');mark.className='r79-preview-exit';mark.setAttribute('aria-hidden','true');el.appendChild(mark);
+      }
+    });
+  }
+  function openTideChart() {
+    if (!game.over && (game.turn !== 'player' || combatInFlight)) { showToast('等這次行動結束再觀潮。'); return; }
+    CardMobile.cancel(false); setSettingsOpen(false); setMoreActionsOpen(false);
+    tideReturnFocus = document.activeElement;
+    const sheet=document.querySelector('#tideChartPanel .tide-chart-sheet');
+    let fold=document.getElementById('tideChartFold');
+    if(game.forecast){
+      if(!document.getElementById('forecastDirectionWhy')){
+        const why=document.createElement('button');why.id='forecastDirectionWhy';why.type='button';why.textContent='方向限制';
+        why.onclick=()=>{const mode=CardTideContent.direction(game);tideMode=mode==='ebb'?'flood':'ebb';drawTideChart();document.getElementById('tidePreview').textContent=`方向不符：第 ${game.turnCount} 回合預報為${mode==='ebb'?'退潮':'漲潮'}。目前不可用，不消耗潮能或反轉次數。`;};
+        sheet.querySelector('.tide-chart-footer').prepend(why);
+      }
+      if(!fold){fold=document.createElement('button');fold.id='tideChartFold';fold.type='button';sheet.querySelector('h2').after(fold);}
+      if(!document.getElementById('foldDirections')){
+        const compact=document.createElement('div');compact.id='foldDirections';
+        for(const [id,mode,label]of [['foldFlood','flood','漲潮破陣'],['foldEbb','ebb','退潮護航']]){
+          const b=document.createElement('button');b.id=id;b.type='button';b.textContent=label;
+          b.onclick=()=>{tideMode=mode;drawTideChart();};compact.appendChild(b);
+        }
+        fold.after(compact);
+      }
+      sheet.dataset.folded='false';fold.textContent='精簡選項';fold.setAttribute('aria-expanded','true');
+      fold.onclick=()=>{const folded=sheet.dataset.folded!=='true';sheet.dataset.folded=String(folded);fold.textContent=folded?'詳細選項':'精簡選項';fold.setAttribute('aria-expanded',String(!folded));};
+    }else{fold?.remove();document.getElementById('foldDirections')?.remove();document.getElementById('forecastDirectionWhy')?.remove();sheet.dataset.folded='false';}
+    if(CardTideContent.direction(game))tideMode=CardTideContent.direction(game);
+    drawTideChart(); document.getElementById('tideChartPanel').hidden = false;
+    if(game.forecast){const board=document.querySelector('.board');board.scrollTop=0;board.scrollLeft=0;}
+    document.getElementById('tideChartClose').focus(); saveSession();
+  }
+  function closeTideChart() {
+    document.getElementById('tideChartPanel').hidden = true;
+    document.querySelectorAll('.r80-preview-damage').forEach(el=>el.remove());
+    document.querySelectorAll('.r79-preview-exit').forEach(el=>el.remove());
+    document.querySelectorAll('.r79-preview-lethal').forEach(el=>el.classList.remove('r79-preview-lethal'));
+    document.querySelectorAll('.r75-preview-number').forEach(el => el.remove());
+    document.querySelectorAll('.r75-preview-hit,.r75-preview-safe').forEach(el => el.classList.remove('r75-preview-hit','r75-preview-safe'));
+    const target = tideReturnFocus?.closest('#dockMorePanel') ? document.getElementById('moreActionsBtn') : tideReturnFocus;
+    target?.focus({ preventScroll: true });
+  }
+  function installTideChart() {
+    for (const [id, icon] of [['chooseFlood','../../assets/art/r79/icon-wave.webp?v=r79-icon'],['chooseEbb','../../assets/art/r75/icon-shield.webp']]) {
+      document.getElementById(id).insertAdjacentHTML('afterbegin', `<img class="r75-icon" src="${icon}" alt="">`);
+    }
+    document.getElementById('tideChartBtn').onclick = openTideChart;
+    document.getElementById('trialChart').onclick = openTideChart;
+    document.getElementById('tideChartClose').onclick = closeTideChart;
+    document.getElementById('trialBegin').onclick = startTideTrial;
+    const harbor = () => { saveSession(); window.top.location.href = new URL('../harbor.html', location.href).href; };
+    document.getElementById('trialLeave').onclick = harbor;
+    document.getElementById('tideHarbor').onclick = harbor;
+    document.getElementById('tideTrialReplay').onclick = startTideTrial;
+    document.getElementById('trialResultReplay').onclick = startTideTrial;
+    document.getElementById('trialResultHarbor').onclick = harbor;
+    document.getElementById('trialResultVoyage').onclick = () => { newGame(); CardMobile.openVoyage(); };
+    document.getElementById('chooseFlood').onclick = () => { tideMode = 'flood'; drawTideChart(); };
+    document.getElementById('chooseEbb').onclick = () => { tideMode = 'ebb'; drawTideChart(); };
+    document.getElementById('tideChartCast').onclick = () => {
+      if (document.getElementById('tideChartCast').disabled) return;
+      closeTideChart(); castTidebreak('player', tideMode);
+    };
+    document.addEventListener('keydown', e => {
+      const panel = !document.getElementById('tideChartPanel').hidden ? document.getElementById('tideChartPanel') : !document.getElementById('trialBrief').hidden ? document.getElementById('trialBrief') : null;
+      if (!panel) return;
+      if (e.key === 'Escape' && panel.id === 'tideChartPanel') { e.preventDefault(); closeTideChart(); }
+      if (e.key === 'Tab') {
+        const buttons = [...panel.querySelectorAll('button:not(:disabled)')].filter(b=>b.getClientRects().length), first = buttons[0], last = buttons[buttons.length-1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    document.addEventListener('visibilitychange', saveSession);
+    window.addEventListener('pagehide', saveSession);
+  }
+
+  // Content R1: hand-authored lessons, reusing actual Core actions and renderer.
+  let contentSelection = CardTideContent.get(new URLSearchParams(location.search).get('lesson'))?.id || 'fallen';
+  let contentReturnFocus = null;
+  function syncContentShell(){if(parent!==window)parent.postMessage({type:'battleFullBleed',active:!!(game?.content||game?.forecast)||!document.getElementById('contentPanel').hidden||(document.getElementById('overlay').classList.contains('show')&&document.body.dataset.r76Wave!=='true')},location.origin);}
+  function contentProgress() {
+    try { return CardTideContent.progress(localStorage.getItem(CardTideContent.KEY)); }
+    catch { return CardTideContent.progress(null); }
+  }
+  function drawContent() {
+    const d=CardTideContent.get(contentSelection), puzzle=CardTideContent.isPuzzle(d.id);
+    const tab=puzzle?'puzzles':d.id;
+    document.querySelectorAll('[data-content-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.contentTab===tab)));
+    document.getElementById('contentName').textContent=d.name;
+    document.getElementById('contentGoal').textContent=d.goal;
+    document.getElementById('contentHint').textContent='';
+    let reveal=document.getElementById('contentReveal');
+    if(!reveal){reveal=document.createElement('button');reveal.id='contentReveal';reveal.type='button';document.getElementById('contentHint').after(reveal);}
+    reveal.textContent='查看觀察提示';let hintLevel=0;
+    reveal.onclick=()=>{hintLevel++;document.getElementById('contentHint').textContent=hintLevel===1?d.hint:CardContentR9.solutions[d.id]||d.hint;reveal.textContent=hintLevel===1?'再看解法':'解法已顯示';};
+    const done=contentProgress().completed;
+    const count=CardTideContent.counts(contentProgress());
+    document.getElementById('contentProgress').textContent=`六道已解 ${count.puzzles}/6 · 複驗 ${count.verification}/1${done.includes(d.id)?' · 本題已完成':''}。試用卡不計戰績。`;
+    document.getElementById('contentArt').src=d.id==='moen'?'../../assets/cards/heroMoenTidearbiter.png':'../../assets/art/content-r1/tide-study.webp';
+    document.getElementById('contentArt').alt=d.id==='moen'?'潮間仲裁者茉恩':'銅製三潮儀與六張海藏牌';
+    const list=document.getElementById('contentPuzzles');list.replaceChildren();
+    if(puzzle)CardTideContent.PUZZLES.forEach((item,i)=>{
+      const b=document.createElement('button');b.type='button';b.dataset.puzzle=item.id;b.textContent=`${i+1} · ${item.name}${done.includes(item.id)?' ✓':''}`;b.setAttribute('aria-pressed',String(item.id===d.id));b.onclick=()=>{contentSelection=item.id;drawContent();};list.appendChild(b);
+    });
+    const verify=document.getElementById('contentVerify');verify.hidden=!puzzle;verify.disabled=!CardTideContent.unlocked(contentProgress());verify.textContent=verify.disabled?'複驗：護住騎士 · 解完六道開啟':`複驗：護住騎士 · ${count.verification}/1`;
+  }
+  function openContent() {
+    if(combatInFlight)return;
+    contentReturnFocus=document.activeElement;stopGuide(false);hideVsIntro();hideMulliganButton();CardMobile.cancel(false);setSettingsOpen(false);setMoreActionsOpen(false);closeTideChart();
+    if(game.content)contentSelection=game.content.id;
+    document.getElementById('contentResult').hidden=true;document.getElementById('forecastPanel').hidden=true;
+    drawContent();document.getElementById('contentAbandon').hidden=!game.content||game.over;document.getElementById('contentPanel').hidden=false;syncContentShell();document.getElementById('contentClose').focus();saveSession();
+  }
+  function startContent(id,harborBoss=false) {
+    if(combatInFlight)return;
+    document.getElementById('contentResultRetry').disabled=false;document.getElementById('contentResultRetry').textContent='立即重試';
+    const previous=sessionReady;sessionReady=false;newGame();stopGuide(false);hideVsIntro();hideMulliganButton();
+    CardTideContent.setup(game,id,CARD_POOL);game.content.harborBoss=harborBoss;contentSelection=id;
+    if(id==='moen'){
+      game.content.returning=contentProgress().completed.includes('moen');
+      game.opponent={id:'op_moen',name:'茉恩',heroCardId:'heroMoenTidearbiter'};game.opponentId='op_moen';game.opponentName=game.opponent.name;game.opponentEmoji='';
+    }else{game.opponentId='op_ser_halden';game.opponent=OPPONENTS.op_ser_halden;game.opponentName='潮汐研習守備';}
+    applyOpponentPortrait(game.opponent);applyBattlefieldScene({id:'tidebreak-confluence',advance:false});
+    tideMode=CardTideContent.direction(game)||'flood';sessionReady=previous;
+    document.getElementById('log').textContent='';log(CardTideContent.get(id).goal,'me');render();
+    if(id==='forecast')openForecast();
+    CardContentR6.entrance(game);
+  }
+  function startForecastFree() {
+    newGame();stopGuide(false);hideVsIntro();hideMulliganButton();
+    game.forecast={directions:['flood','flood','ebb'],original:['flood','flood','ebb'],reversed:false,scope:'free'};
+    render();openForecast();saveSession();
+  }
+  function contentInstruction() {
+    if(!game.content)return '';
+    if(game.selected||game.pendingSpell||game.pendingBattlecry)return targetStatusText();
+    const d=CardTideContent.get(game.content.id);
+    if(d.id!=='moen')return d.goal;
+    if(!game.content.enemyEbbUsed)return '結束整備：茉恩為騎士授盾，並回復自己 3 血。'+(game.content.returning?'二式：下輪敵潮滿2格才回2血。':'首航：只治療這一次。');
+    if(game.turn!=='player')return '茉恩正在行動，等浪退去。';
+    const knight=game.enemy.field.find(c=>c.id==='knight');
+    if(game.content.delayedCasualty==='footman')return '拖延：騎士撞上士兵，聖盾擋下反擊後破裂；見習士兵已陣亡。敵騎士'+(knight?'仍有 '+knight.health+' 血。':'已退場。');
+    if(knight?.shield)return '先用見習士兵拆盾；敵騎士下輪會打他3傷。現在清掉騎士，可搶先反攻。'+(game.content.returning?'二式：下輪敵潮滿2格才回2血；騎士陣亡補1格。':'');
+    if(knight)return '敵騎士剩 '+knight.health+' 血，下一輪將出擊。';
+    const reserve=CardContentR9.wolfInstruction(game);
+    return game.content.returning&&!CardContentR9.returnCompleted(game)?'回潮二式：下輪敵潮滿2格才回2血。'+reserve:CardContentR9.returnCompleted(game)?(game.content.returnHeal?'反攻前敵潮達2格，追加治療已觸發。':'反攻前敵潮未達2格，追加治療已阻止。')+reserve:'敵陣已空；留意茉恩血量與仍能出手的隨從。';
+  }
+  function renderContentBar() {
+    syncContentShell();
+    document.body.dataset.contentActive=String(!!(game.content||game.forecast)&&!game.over);
+    document.body.dataset.contentId=game.content?.id||(game.forecast?'forecast':'');
+    const bar=document.getElementById('contentBar');bar.hidden=!(game.content||game.forecast)||game.over;
+    renderMoenStage();
+    if(bar.hidden)return;
+    const d=CardTideContent.get(game.content?.id);document.getElementById('contentBarTitle').textContent=d?.name||'潮汐預報';
+    const forecast=CardTideContent.direction(game);
+    document.getElementById('contentBarGoal').textContent=game.forecast?`第 ${game.turnCount} 回合 · ${forecast?forecast==='ebb'?'退潮護航':'漲潮破陣':'自由潮向'} · ${game.forecast.reversed?'反轉已用':'可反轉一次'}`:contentInstruction();
+    document.getElementById('contentHelp').textContent=game.forecast?'潮汐預報':'目標／提示';
+    document.getElementById('forecastReversal')?.remove();
+    if(game.forecast?.reversed){
+      const f=game.forecast,i=f.directions.findIndex((mode,j)=>mode!==f.original?.[j]);
+      if(i>=0){const copy=CardContentR6.tideCopy(f.directions[i]),mark=document.createElement('span'),icon=document.createElement('img');mark.id='forecastReversal';icon.src=copy.icon;icon.alt='';mark.append(icon,document.createTextNode(`第 ${i+1} 回合已反轉 → ${copy.name} · 反轉已用`));document.getElementById('contentBarGoal').appendChild(mark);}
+    }
+    for(const id of ['contentHelp','contentRetry','contentMenu'])document.getElementById(id).disabled=combatInFlight||game.turn!=='player';
+    if(forecast)tideMode=forecast;
+  }
+  function renderMoenStage(){ CardContentR6.renderMoen(game); CardContentR9.render(game); }
+  function replayContent() {
+    const ref=game,id=game.content.id,boss=game.content.harborBoss,button=document.getElementById('contentResultRetry');
+    button.disabled=true;button.textContent=combatInFlight?'退浪後重試…':'正在重試…';
+    const retry=()=>{if(game!==ref)return;if(combatInFlight){setTimeout(retry,40);return;}startContent(id,boss);};retry();
+  }
+  function finishContent(win) {
+    const art=document.querySelector('#contentResult .content-result-art'),recap=document.getElementById('contentRecap');
+    const summary=CardTideContent.RECAP[game.content.id];
+    art.hidden=!!summary;recap.hidden=!summary;recap.replaceChildren();recap.dataset.puzzle=game.content.id;
+    art.src=game.content.id==='moen'?'../../assets/art/content-r10/moen-defeated.webp':'../../assets/art/content-r1/tide-study.webp';
+    art.alt=game.content.id==='moen'?'茉恩在月光甲板前守約':'銅製三潮儀與海藏牌';
+    if(summary)for(const [id,label]of summary.cards){
+      const card=CARD_POOL.find(c=>c.id===id),figure=document.createElement('figure'),img=document.createElement('img'),caption=document.createElement('figcaption'),name=document.createElement('strong');
+      img.src=({footman:'../../assets/art/r75/footman.webp?v=c1f52344',archer:'../../assets/art/r75/archer.webp?v=66fff3e9',wolf:'../../assets/art/r76/wolf.webp?v=b3a469e2',firebolt:'../../assets/art/r76/firebolt.webp?v=6583d849'})[id]||card.image;img.alt=card.name;name.textContent=card.name;caption.append(name,document.createTextNode(label));figure.append(img,caption);recap.appendChild(figure);
+      if(!win&&id===CardTideContent.failureCard(game)){figure.dataset.error='true';caption.prepend(document.createTextNode('錯序卡片 · '));}
+    }
+    game.over=true;game.selected=null;game.pendingSpell=null;game.pendingBattlecry=null;clearSession();
+    document.getElementById('contentBar').hidden=true;document.getElementById('forecastPanel').hidden=true;document.getElementById('tideChartPanel').hidden=true;
+    const d=CardTideContent.get(game.content.id);
+    const progress=CardTideContent.complete(contentProgress(),d.id);if(win&&d.id==='moen'&&game.content.harborBoss)progress.harborBossCleared=true;
+    const saved=win?writeStorage(CardTideContent.KEY,JSON.stringify(progress),'研習進度儲存'):true;
+    document.getElementById('contentResultTitle').textContent=win?'通關':'再試一次';
+    document.getElementById('contentResultName').textContent=d.name;
+    document.getElementById('contentResult').dataset.outcome=win?'completed':'failed';
+    if(game.content.id==='moen'&&win){art.hidden=false;}
+    document.getElementById('contentResultText').textContent=(win?(game.content.id==='moen'?CardContentR11.closingLine(game)+' '+CardContentR11.recap(game)+' ':'')+(summary?.line||d.lesson):CardTideContent.failure(game))+(saved?'':' 進度未能儲存，請檢查裝置空間。');
+    if(!win)for(const caption of recap.querySelectorAll('figcaption'))caption.prepend(document.createTextNode('重試目標 · '));
+    const i=CardTideContent.PUZZLES.indexOf(d),verify=win&&i===5&&CardTideContent.unlocked(progress);
+    let next=document.getElementById('contentNext');
+    if(!next){next=document.createElement('button');next.id='contentNext';next.type='button';next.className='content-primary';document.querySelector('#contentResult footer').appendChild(next);}
+    next.textContent=i>=0&&i<5?'下一道':verify?'換目標複驗':'返回選題';
+    if(next.textContent==='返回選題')next.remove();
+    document.body.dataset.contentStage='';document.body.dataset.contentActive='false';document.getElementById('moenTideMeter')?.remove();document.getElementById('endTurnLockReason')?.remove();
+    CardContentR6.renderSignals(game);CardContentR6.renderExchange(Core,game,{busy:true});renderMoenStage();CardContentR10.render(game);CardContentR11.render(game);
+    next.onclick=()=>{if(combatInFlight)return;i>=0&&i<5?startContent(CardTideContent.PUZZLES[i+1].id):verify?startContent('undertow'):openContent();};
+    document.getElementById('contentResult').hidden=false;document.getElementById('contentResultMenu').focus();
+  }
+  function openForecast() {
+    if(!game.forecast||combatInFlight||game.turn!=='player'||game.over)return;
+    const f=game.forecast;f.original=f.original||f.directions.slice();
+    const panel=document.getElementById('forecastPanel');panel.dataset.gesture=f.reversed?'applied':'idle';
+    const suggested=Math.max(1,Math.min(2,game.turnCount-1));
+    document.getElementById('forecastRule').textContent=f.reversed?(CardContentR10.canUndo(game)?'已套用（已改向）・繼續對戰前可撤回。':'已鎖定（不能改）・依新潮向對戰。'):game.turnCount>3?'第 4 回合起，自由選潮向。':'反轉（改潮向）一次・按住看・移出取消。';
+    const compare=document.getElementById('forecastCompare');
+    const comparison=(i,held=false)=>{const mode=held?(f.directions[i]==='flood'?'ebb':'flood'):f.directions[i];compare.replaceChildren();const box=document.createElement('div'),title=document.createElement('strong');title.textContent=`第 ${i+1} 回合 · ${held?'預覽：'+(f.directions[i]==='flood'?'漲潮 → 退潮':'退潮 → 漲潮'):f.reversed?'已套用潮向':'目前預報'}`;box.append(title,document.createTextNode(mode==='ebb'?'退潮時（依目前盤面）：'+CardContentR10.healLabel(game.player)+'；友軍聖盾。':'漲潮時：敵軍−1、英雄−2。'));box.dataset.forecastRound=String(i+1);box.dataset.direction=mode;compare.appendChild(box);};
+    const rounds=document.getElementById('forecastRounds');rounds.replaceChildren();
+    game.forecast.directions.forEach((mode,i)=>{
+      const wrap=document.createElement('div');wrap.className='forecast-round';
+      const b=document.createElement('button');b.type='button';b.dataset.round=String(i);
+      const title=document.createElement('strong'),value=document.createElement('span'),tip=document.createElement('small');title.textContent=`第 ${i+1} 回合${i===game.turnCount-1?' · 現在':''}`;value.textContent=mode==='ebb'?'退潮護航':'漲潮破陣';
+      const past=i<game.turnCount-1,guide=!f.reversed&&!past&&i===suggested;
+      tip.textContent=f.reversed&&mode!==f.original[i]?'已套用・'+(mode==='ebb'?'退潮':'漲潮'):past?'已過':f.reversed?'未改向':guide?'按住改向':'可改一次';b.append(title,value,tip);const ring=document.createElement('i');ring.className='r11-hold-ring';ring.setAttribute('aria-hidden','true');b.appendChild(ring);b.classList.toggle('forecast-current',i===game.turnCount-1);b.classList.toggle('forecast-guide',guide);
+      b.disabled=f.reversed||past;
+      let cancelled=false;
+      b.onpointerdown=()=>{if(!b.disabled){cancelled=false;panel.dataset.gesture='holding';document.getElementById('forecastCancelZone').textContent='移出到這裡取消';b.classList.add('forecast-press');tip.textContent='放開改'+(mode==='flood'?'退潮':'漲潮');comparison(i,true);}};
+      const cancel=()=>{cancelled=true;panel.dataset.gesture='cancelled';document.getElementById('forecastCancelZone').textContent='已取消・原潮向保留';b.classList.remove('forecast-press');tip.textContent='已取消';comparison(i);document.getElementById('forecastRule').textContent='已取消：潮向未改・剩餘 1 次。';};
+      b.onpointercancel=cancel;b.onpointerleave=()=>{if(b.classList.contains('forecast-press'))cancel();};
+      b.onpointermove=event=>{if(!b.classList.contains('forecast-press'))return;const r=b.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)cancel();};
+      b.onclick=event=>{if(combatInFlight||(cancelled&&event.detail!==0))return;if(CardTideContent.reverse(game,i)){CardContentR10.remember(game,i);const p=contentProgress();p.forecastUses++;writeStorage(CardTideContent.KEY,JSON.stringify(p),'預報反轉紀錄');render();openForecast();saveSession();}};
+      wrap.appendChild(b);
+      if(past){wrap.classList.add('forecast-locked');wrap.tabIndex=0;wrap.setAttribute('role','button');wrap.setAttribute('aria-label',`第 ${i+1} 回合已鎖定，查看原因`);const reason=()=>{document.getElementById('forecastRule').textContent=`第 ${i+1} 回合已過，不能改寫（時機不符）。`;wrap.dataset.explained='true';};wrap.onclick=reason;wrap.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();reason();}};}
+      rounds.appendChild(wrap);
+    });
+    const changed=f.directions.findIndex((x,i)=>x!==f.original[i]),i=changed<0?Math.max(1,Math.min(2,game.turnCount-1)):changed;
+    comparison(i);
+    document.getElementById('forecastUndo')?.remove();if(CardContentR10.canUndo(game)){const undo=document.createElement('button');undo.id='forecastUndo';undo.type='button';undo.textContent='撤回反轉';document.getElementById('forecastClose').before(undo);undo.onclick=()=>{if(combatInFlight||!CardContentR10.revert(game))return;const p=contentProgress();p.forecastUses=Math.max(0,p.forecastUses-1);writeStorage(CardTideContent.KEY,JSON.stringify(p),'撤回預報');render();openForecast();document.getElementById('forecastRule').textContent='已撤回：原潮向與反轉額度已恢復。';saveSession();};}
+    document.getElementById('forecastPanel').hidden=false;CardContentR11.positionForecast();document.getElementById('forecastClose').focus();
+  }
+  async function scriptedContentTurn() {
+    const ref=game;handleCoreResult(Core.advanceTurn(game,{phase:'startEnemy'},rng));render();
+    if(game.over)return;
+    if(game.content.id==='forecast'&&game.turnCount===3){
+      const card=JSON.parse(JSON.stringify(CARD_POOL.find(c=>c.id==='wolf')));
+      handleCoreResult(Core.summon(game,{side:'enemy',card,reason:'forecastWatch'},rng));
+      log('第四回合守備狼登船。無嘲諷，可選交換或直取英雄。','ai');render();
+    }
+    if(game.content.id==='moen'&&!game.content.enemyEbbUsed&&Core.canTidebreak(game,'enemy')){
+      castTidebreak('enemy','ebb');
+      while(game===ref&&combatInFlight)await new Promise(r=>setTimeout(r,40));
+    }
+    if(game!==ref||game.over)return;
+    if(game.content.id==='forecast'&&game.turnCount<=2){
+      log('預報守備前兩輪留守；你可以保留滿潮，等指定回合再施放。','ai');endAiTurn();render();return;
+    }
+    if(game.content.id==='moen'&&game.content.returning&&game.turnCount===2&&!CardContentR9.returnCompleted(game)){
+      game.content.returnResolved=true;game.content.returnTide=Core.tideOf(game.enemy);
+      if(CardContentR9.returnCanHeal(game)){
+      const before=game.enemy.hp;game.enemy.hp=Math.min(game.enemy.maxHp,before+2);game.content.returnHeal=true;
+      game.content.returnHealAmount=game.enemy.hp-before;
+      CardContentR6.heal(game,game.enemy.hp-before,before,game.enemy.hp);log(`回潮二式：茉恩再次治療自己，${before} → ${game.enemy.hp} 血。`,'ai');render();await new Promise(r=>setTimeout(r,800));
+      }else{game.content.returnHeal=false;log('敵潮未滿2格，回潮二式的追加治療已阻止。','me');render();}
+    }
+    if(game.content.id==='moen'&&game.turnCount===1){log('茉恩留下騎士的聖盾，這回合留守；下一輪才出擊。','ai');endAiTurn();render();return;}
+    const knight=game.enemy.field.find(c=>c.id==='knight'&&c.canAttack);
+    if(knight){
+      const target=game.player.field.find(c=>(c.keywords||[]).includes('taunt'))||game.player.field[0];
+      const counterBefore=target?.health??game.player.hp;
+      if(target)await resolveAttack(game.enemy,knight,target);else await resolveHeroAttackUi(game.enemy,knight,game.player);
+      if(game.content.id==='moen')game.content.counterDamage=(game.content.counterDamage||0)+Math.max(0,counterBefore-(target?Math.max(0,target.health):game.player.hp));
+      if(target?.id==='footman'&&!game.player.field.some(c=>c.uid===target.uid))game.content.delayedCasualty='footman';
+    }
+    if(game!==ref||game.over)return;
+    endAiTurn();render();
+  }
+  function installContent() {
+    const measureContent=()=>{
+      CardContentR11.render(game);
+      document.body.style.setProperty('--r8-content-top',`${document.getElementById('contentBar').getBoundingClientRect().bottom+8}px`);
+      const sheet=document.querySelector('#forecastPanel .content-sheet');
+      if(sheet?.getClientRects().length){document.body.style.setProperty('--r9-panel-reserve',`${document.documentElement.clientHeight-sheet.getBoundingClientRect().top+8}px`);CardContentR11.positionForecast();}
+    };
+    new ResizeObserver(measureContent).observe(document.getElementById('contentBar'));
+    new ResizeObserver(measureContent).observe(document.querySelector('#forecastPanel .content-sheet'));
+    const offline=document.getElementById('offlineStatus');
+    const updateOffline=()=>{offline.hidden=navigator.onLine;document.body.dataset.offline=String(!navigator.onLine);};
+    window.addEventListener('online',updateOffline);window.addEventListener('offline',updateOffline);updateOffline();
+    document.getElementById('contentOpen').onclick=openContent;
+    document.querySelectorAll('[data-content-tab]').forEach(b=>b.onclick=()=>{contentSelection=b.dataset.contentTab==='puzzles'?'fallen':b.dataset.contentTab;drawContent();});
+    document.getElementById('contentStart').onclick=()=>startContent(contentSelection);
+    document.getElementById('contentVerify').onclick=()=>{if(CardTideContent.unlocked(contentProgress())){contentSelection='undertow';drawContent();startContent('undertow');}};
+    document.getElementById('contentClose').onclick=()=>{document.getElementById('contentPanel').hidden=true;syncContentShell();if(game.over)document.getElementById('contentResult').hidden=false;else contentReturnFocus?.focus({preventScroll:true});};
+    document.getElementById('contentHarbor').onclick=()=>{saveSession();window.top.location.href=new URL('../harbor.html',location.href).href;};
+    document.getElementById('contentMenu').onclick=()=>game.content?openContent():CardMobile.openVoyage();
+    document.getElementById('contentHelp').onclick=()=>game.forecast?openForecast():openContent();
+    document.getElementById('contentRetry').onclick=()=>game.content?startContent(game.content.id,game.content.harborBoss):startForecastFree();
+    document.getElementById('voyageForecast').onclick=()=>{document.getElementById('voyagePanel').hidden=true;startForecastFree();};
+    document.getElementById('voyageBoss').onclick=()=>{document.getElementById('voyagePanel').hidden=true;startContent('moen',true);};
+    document.getElementById('voyageLessons').onclick=()=>{document.getElementById('voyagePanel').hidden=true;contentSelection='fallen';openContent();};
+    document.getElementById('contentResultRetry').onclick=replayContent;
+    document.getElementById('contentResultMenu').onclick=openContent;
+    document.getElementById('forecastClose').onclick=()=>{CardContentR10.seal(game);document.getElementById('forecastPanel').hidden=true;document.getElementById('contentHelp').focus();};
+    document.addEventListener('keydown',e=>{
+      const panel=['contentPanel','forecastPanel','contentResult'].map(id=>document.getElementById(id)).find(x=>!x.hidden);if(!panel)return;
+      if(e.key==='Escape'){e.preventDefault();if(panel.id==='contentPanel')document.getElementById('contentClose').click();if(panel.id==='forecastPanel')document.getElementById('forecastClose').click();}
+      if(e.key==='Tab'){const a=[...panel.querySelectorAll('button:not(:disabled)')],first=a[0],last=a[a.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
+    });
+  }
+
   // ===== 綁定 & 啟動 =====
   installErrorRecovery();
   installSwAutoReload();
   installAccessibilityLabels();
   applyTextSize(currentTextSize());
   installAudioUnlock();
+  document.getElementById('contentAbandon').onclick=()=>{if(combatInFlight||!game.content||game.over)return;document.getElementById('contentPanel').hidden=true;finishContent(false);};
   document.getElementById("endTurnBtn").onclick = endTurn;
   const hintBtn = document.getElementById("hintBtn");
   if (hintBtn) hintBtn.onclick = showHint;
+  const tidebreakBtnEl = document.getElementById("tidebreakBtn");
+  if (tidebreakBtnEl) tidebreakBtnEl.onclick = () => castTidebreak("player");
+  // R72：觸控版把裂潮鈕放進常駐 command dock（抽屜展開也看得到充能、按得到）；桌機留在英雄列旁。
+  function placeTidebreakButton() {
+    const btn = document.getElementById("tidebreakBtn");
+    const dock = document.getElementById("commandDock");
+    const scene = document.querySelector(".player-hero-scene");
+    if (!btn || !dock || !scene) return;
+    if (window.__controlMode === "touch") {
+      const primary = dock.querySelector(".primary-actions");
+      if (btn.parentNode !== dock) primary.insertAdjacentElement("afterend", btn);
+      dock.classList.add("has-tide");
+    } else {
+      if (btn.parentNode !== scene) scene.appendChild(btn);
+      dock.classList.remove("has-tide");
+    }
+    btn.hidden = false;
+    btn.setAttribute("aria-hidden", "false");
+    btn.tabIndex = 0;
+  }
+  placeTidebreakButton();
+  if (window.matchMedia) {
+    const coarse = window.matchMedia("(pointer: coarse)");
+    const onPointerChange = () => setTimeout(placeTidebreakButton, 0);
+    if (coarse.addEventListener) coarse.addEventListener("change", onPointerChange);
+    else if (coarse.addListener) coarse.addListener(onPointerChange);
+  }
   const ddaToggle = document.getElementById("ddaToggle");
   if (ddaToggle) ddaToggle.onchange = () => setDdaEnabled(ddaToggle.checked);
   const aiThoughtToggle = document.getElementById("aiThoughtToggle");
@@ -3516,7 +4577,7 @@
     const drawer = document.getElementById("handDrawer");
     setHandDrawerOpen(!drawer?.classList.contains("open"));
   };
-  document.getElementById("restartBtn").onclick = newGame;
+  document.getElementById("restartBtn").onclick = () => game?.content ? startContent(game.content.id) : game?.tideTrial ? startTideTrial() : newGame(game && game.voyageStage);
   document.getElementById("overlayPackBtn").onclick = goPack;
   document.getElementById("overlayQuestBtn").onclick = claimAllQuestsUi;
   const claimAllBtn = document.getElementById("questClaimAllBtn");
@@ -3540,8 +4601,34 @@
   const toPackQuickBtn = document.getElementById("toPackQuickBtn");
   if (toPackQuickBtn) toPackQuickBtn.onclick = goPack;
   startPerfMonitor();
+  CardMobile.init({
+    game: () => game, busy: () => combatInFlight,
+    cost: card => playableCost(game.player, card),
+    play: playFromHand, start: newGame, save: writeStorage,
+    opponent: id => CardVoyage.OPPONENTS[id] || OPPONENTS[id],
+    closeMenus: () => { setSettingsOpen(false); setMoreActionsOpen(false); },
+  });
+  const launch = new URLSearchParams(location.search);
+  const savedSession = (launch.has('resume') || launch.has('trial') || launch.has('content')) ? loadSession() : null;
   newGame();
-  maybeStartGuide();
+  sessionReady = true;
+  if (savedSession && (!launch.has('trial') || savedSession.tideTrial) && (!launch.has('content') || savedSession.content)) {
+    game = savedSession;
+    game.opponent = game.opponentId==='op_moen' ? {id:'op_moen',name:'茉恩',heroCardId:'heroMoenTidearbiter'} : OPPONENTS[game.opponentId] || CardVoyage.OPPONENTS[game.opponentId] || OPPONENTS.op_ser_halden;
+    applyOpponentPortrait(game.opponent);
+    hideVsIntro(); hideMulliganButton(); stopGuide(false); render();
+    log('已恢復上次玩家回合的安全檢查點。', 'me');
+  } else if (launch.has('trial')) {
+    stopGuide(false); hideVsIntro();
+    document.getElementById('trialBrief').hidden = false;
+    document.getElementById('trialBegin').focus();
+  } else if (launch.has('content')) { stopGuide(false); hideVsIntro(); openContent(); }
+  else maybeStartGuide();
+  installTideChart();
+  installContent();
+  CardContentR9.installPoses(CardPosePlayer);
+  CardContentR10.installPoses(CardPosePlayer);
+  if(launch.get('voyage')==='1'){stopGuide(false);hideVsIntro();CardMobile.openVoyage();}
 
   const guideReplayBtn = document.getElementById("guideReplayBtn");
   if (guideReplayBtn) guideReplayBtn.onclick = () => startGuide(true);
@@ -3615,6 +4702,7 @@
     game: () => game,
     setup(playerField, enemyField) {
       clearTransientFx();
+      r80Views.delete(game); // A new deterministic fixture is a new presentation, not deaths in the old one.
       pendingTargetUid = null;
       game.selected = null;
       game.pendingSpell = null;
@@ -3751,6 +4839,17 @@
       return c.uid;
     },
     maxField: MAX_FIELD,
+    // R72 裂潮／星級／開場掛鉤
+    tide: () => ({ player: Core.tideOf(game.player), enemy: Core.tideOf(game.enemy), max: TIDE_MAX, enemyRates: Object.assign({}, game.enemy.tideRates || {}), playerUsed: game.player.tidebreaksUsed || 0, enemyUsed: game.enemy.tidebreaksUsed || 0 }),
+    setTide: (player, enemy) => { if (player != null) game.player.tide = player; if (enemy != null) game.enemy.tide = enemy; render(); return { player: Core.tideOf(game.player), enemy: Core.tideOf(game.enemy) }; },
+    castTidebreak: (side) => { const r = castTidebreak(side || "player"); return r ? { ok: r.ok, reason: r.reason || "" } : null; },
+    aiTidebreak: () => maybeAiTidebreak(),
+    starResult: () => game.starResult,
+    starRecord: () => loadStarRecord(),
+    showIntro: () => showVsIntro(game.opponent || currentOpponent()),
+    hideIntro: () => hideVsIntro(),
+    bgm: () => ({ url: BGM_URL, missing: bgmMissing, created: !!bgm, playing: !!(bgm && !bgm.paused), volume: bgm ? bgm.volume : 0, frameVisible: bgmFrameVisible }),
+    introOpen: () => document.getElementById("vsIntro")?.classList.contains("show") || false,
   };
   function prepMinion(c) { c.uid = "t" + Math.random().toString(36).slice(2, 8); c.maxHealth = c.health; if ((c.keywords || []).includes("divineshield")) c.shield = true; c.canAttack = true; return c; }
 

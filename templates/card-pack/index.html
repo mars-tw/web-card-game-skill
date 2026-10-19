@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>開卡包 · Card Pack</title>
+<title>裂潮卡牌 · 開卡包 | TIDEREND CARDS</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r71-v1";
+    const CACHE_VERSION = "card-battle-content-r11-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r71_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_content_r6_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -81,6 +81,13 @@
   @keyframes ambientDrift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(2%,-2%) scale(1.06)} }
   header { padding: 6px 8px; font-size: 18px; font-weight: 800; letter-spacing: 2px; flex-shrink: 0;
     color: var(--accent); text-shadow: 0 0 16px color-mix(in srgb, var(--accent) 50%, transparent); }
+
+  /* R72 品牌字標（取代通用「CARD BATTLE／CARD PACK」標題）*/
+  header { display:flex; align-items:baseline; justify-content:center; gap:10px; }
+  header .brand-mark { font-weight:900; letter-spacing:4px;
+    background:linear-gradient(180deg,#fff7d6 0%,#fcd34d 40%,#f59e0b 62%,#38bdf8 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 1px 0 rgba(0,0,0,.65)) drop-shadow(0 0 10px rgba(56,189,248,.3)); text-shadow:none; }
+  header .brand-sub { font-size:.62em; letter-spacing:3px; color:#7dd3fc; font-weight:800; text-shadow:0 0 8px rgba(56,189,248,.35); }
   /* app-shell 頂列：金幣＋前往對戰同一列，頁面本身不捲動 */
   .pack-topbar { flex-shrink: 0; display: flex; align-items: center; justify-content: center;
     gap: 10px; flex-wrap: wrap; padding: 0 10px 6px; max-width: 100vw; }
@@ -134,6 +141,29 @@
   .pack .pack-icon { font-size: 64px; filter: drop-shadow(0 0 12px gold); z-index:1; }
   .pack .pack-label { font-weight: 800; font-size: 18px; z-index:1; }
   .pack .pack-hint { font-size: 12px; color: rgba(255,255,255,.75); z-index:1; }
+  /* R72 P5：🎁 emoji 換成程序化「裂潮補充包」——深海箔面＋潮紋＋金邊＋上下鋸齒封口＋中央潮間徽記 */
+  .pack {
+    border: 0; border-radius: 10px;
+    background:
+      radial-gradient(ellipse 80% 45% at 50% 58%, rgba(103,232,249,.32), transparent 70%),
+      repeating-radial-gradient(ellipse 160% 60% at 50% 115%, transparent 0 13px, rgba(165,243,252,.16) 13px 14px, transparent 14px 26px),
+      linear-gradient(165deg, #0e7490 0%, #0c4a6e 34%, #1e1b4b 72%, #3b0764 100%);
+    box-shadow: 0 0 0 2px #fcd34d, 0 0 0 4px rgba(15,23,42,.9), 0 0 36px rgba(34,211,238,.45), 0 16px 30px rgba(0,0,0,.55), inset 0 0 26px rgba(0,0,0,.45);
+    gap: 6px; justify-content: center;
+  }
+  .pack .pack-crimp { position:absolute; left:0; right:0; height:9px; z-index:2; pointer-events:none;
+    background: linear-gradient(90deg, #fde68a, #f59e0b 50%, #fde68a);
+    -webkit-mask: conic-gradient(from 135deg at 50% 0, #000 90deg, transparent 0) 0 0 / 9px 9px repeat-x;
+            mask: conic-gradient(from 135deg at 50% 0, #000 90deg, transparent 0) 0 0 / 9px 9px repeat-x; }
+  .pack .pack-crimp.top { top:0; transform: scaleY(-1); }
+  .pack .pack-crimp.bottom { bottom:0; }
+  .pack .pack-brand { z-index:1; font-weight:900; letter-spacing:3px; font-size:15px; line-height:1.1; text-align:center;
+    background: linear-gradient(180deg,#fff7d6,#fcd34d 55%,#f59e0b); -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter: drop-shadow(0 1px 0 rgba(0,0,0,.7)); }
+  .pack .pack-brand span { display:block; font-size:7.5px; letter-spacing:2.5px; color:#a5f3fc; -webkit-text-fill-color:#a5f3fc; }
+  .pack .pack-icon { filter: drop-shadow(0 0 14px rgba(103,232,249,.85)) drop-shadow(0 4px 6px rgba(0,0,0,.6)); line-height:1; }
+  .pack .pack-icon img { display:block; width:1.25em; height:1.25em; object-fit:contain; }
+  .pack .pack-label { color:#ecfeff; text-shadow: 0 0 10px rgba(34,211,238,.7), 0 2px 2px rgba(0,0,0,.8); letter-spacing:2px; }
 
   .reveal-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; padding: 18px; min-height: var(--card-h);
     perspective: 1200px; } /* 3D 透視讓翻牌立體（CP1-13）*/
@@ -500,6 +530,8 @@
     .pack { width: 96px; height: 134px; }
     .pack .pack-icon { font-size: 30px; }
     .pack .pack-hint { display: none; }
+    .pack .pack-brand { font-size:11px; letter-spacing:1.5px; }
+    .pack .pack-brand span { display:none; }
     .series-footer { padding: 1px 8px 3px; font-size: 10px; }
   }
   @media (max-width: 390px), (max-height: 400px) {
@@ -617,14 +649,16 @@
   body.reveal-freeze[data-reveal-freeze="foilPeak"] .card { transform:translateY(0) scale(1); filter:none; }
   body.reveal-freeze[data-reveal-freeze="foilPeak"] .card.foil { box-shadow:0 0 40px #67e8f9,0 0 72px rgba(196,181,253,.52); }
 </style>
+<link rel="stylesheet" href="../r75-theme.css?v=card-battle-content-r11-v1">
+<link rel="stylesheet" href="../r76-art.css?v=card-battle-content-r11-v1">
 </head>
 <body>
-  <header>🎴 開卡包 · CARD PACK 🎴</header>
+  <header><span class="brand-mark">裂潮卡牌</span><span class="brand-sub">TIDEREND · 開卡包</span></header>
   <button class="mission-drawer-btn" id="missionDrawerBtn">任務<span class="mission-badge" id="missionBadge" aria-live="polite">0</span></button>
   <div class="pack-topbar">
     <div class="coin-bar">💰 金幣 <span id="coinBalance" aria-live="polite">0</span> · 一包 100 金（首包免費）</div>
     <div class="top-actions">
-      <button class="ghost audio-toggle-btn" id="packAudioToggleBtn" type="button" title="Audio on/off" aria-label="Audio on/off">SFX</button>
+      <button class="ghost audio-toggle-btn" id="packAudioToggleBtn" type="button" title="音效開關" aria-label="音效開關">音效</button>
       <button class="ghost" id="goBattleTop">前往對戰</button>
     </div>
   </div>
@@ -633,10 +667,13 @@
   <section class="open-panel" id="openPanel">
     <div class="pack-stage" id="packStage">
       <div class="pack" id="pack">
-        <div class="pack-icon">🎁</div>
+        <div class="pack-crimp top" aria-hidden="true"></div>
+        <div class="pack-brand" aria-hidden="true">裂潮卡牌<span>TIDEREND BOOSTER</span></div>
+        <div class="pack-icon" aria-hidden="true"><img src="../../assets/factions/neutral.png?v=4cf2322a" alt=""></div>
         <div class="pack-label">神祕卡包</div>
         <div class="pack-hint">點擊開啟（5 張）</div>
         <div class="pack-hint" id="heroPityProgress">角色保底：0/35</div>
+        <div class="pack-crimp bottom" aria-hidden="true"></div>
       </div>
     </div>
 
@@ -675,7 +712,7 @@
         <button class="ghost" id="clearRecordBtn">清除戰績</button>
       </div>
     </div>
-    <div class="record-grid" id="recordGrid"></div>
+    <p id="studyRecordNote" style="font-size:14px;line-height:1.7">研習通過只記解題進度，不計對戰勝敗；0 勝場也能顯示已通過。</p><div class="record-grid" id="recordGrid"></div>
     <div class="record-tools pwa-save-tools">
       <select id="packTextSizeSel" aria-label="文字大小">
         <option value="small">小</option>
@@ -862,12 +899,7 @@
   </div>
   </main>
 
-  <footer class="series-footer">
-    🎮 阿軒的小遊戲系列
-    <a href="https://mars-tw.github.io/tower-defense-skill/" target="_blank" rel="noopener">塔防</a>
-    <a href="https://mars-tw.github.io/pixel-idle-farm-skill/" target="_blank" rel="noopener">像素農場</a>
-    <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
-  </footer>
+  <footer class="series-footer">裂潮卡牌 · 潮汐領航</footer>
 
   <script>
     (() => {
@@ -889,9 +921,13 @@
       else mq.addListener(applyCompactFilters);
     })();
   </script>
-  <script src="../card-battle/cards.js?v=card-battle-r71-v1"></script>
-  <script src="../card-battle/core.js?v=card-battle-r71-v1"></script>
-  <script src="pack.js?v=card-battle-r71-v1"></script>
+  <script src="../card-battle/cards.js?v=card-battle-content-r11-v1"></script>
+  <script src="../card-battle/core.js?v=card-battle-content-r11-v1"></script>
+  <script src="../card-battle/voyage.js?v=card-battle-content-r11-v1"></script>
+  <script src="../card-battle/tide-puzzles.js?v=card-battle-content-r11-v1"></script>
+  <script src="../card-battle/tide-session.js?v=card-battle-content-r11-v1"></script>
+  <script src="pack.js?v=card-battle-content-r11-v1"></script>
+
   <script>
     window.addEventListener("message", (e) => {
       if (e.data && e.data.type === "setTheme") document.documentElement.setAttribute("data-theme", e.data.theme);

@@ -1,0 +1,55 @@
+/* R73：只呈現 UI 回饋，沿用正式卡圖。 */
+[hidden] { display:none !important; }
+.hand-preview { position:fixed; z-index:132; bottom:calc(74px + env(safe-area-inset-bottom, 0px)); left:12px; right:12px; margin:auto; max-width:580px; padding:12px; border:1px solid #67e8f9; border-radius:16px; background:#101f31; color:#e8f7ff; box-shadow:0 10px 45px #000b; }
+.hand-preview-copy { display:grid; grid-template-columns:62px 1fr; gap:12px; }
+.hand-preview img { width:62px; height:78px; object-fit:cover; border-radius:8px; }
+.hand-preview h2 { font-size:18px; margin:0 0 6px; }
+.hand-preview p { font-size:14px; line-height:1.5; margin:0; }
+#handPreviewText { max-height:76px; overflow:auto; }
+#handPreviewHint { margin:8px 0; font-size:13px; color:#bae6fd; }
+.hand-preview-actions { display:flex; gap:12px; justify-content:space-between; }
+.hand-preview button, .voyage-card button, .voyage-card select, #voyageContinue { min-height:44px; min-width:44px; padding:8px 14px; border-radius:10px; border:1px solid #5c8098; color:#f0f9ff; background:#23445e; font:700 15px system-ui; cursor:pointer; }
+.hand-preview #handConfirmBtn, #voyageStart { background:#0e7490; }
+.hand-preview button:disabled, .voyage-card button:disabled { opacity:.5; cursor:default; }
+html[data-control-mode="touch"] #playerHand .card { touch-action:pan-x; }
+body[data-control-mode="touch"] #playerHand .card { touch-action:pan-x; }
+@media (pointer:coarse) { #playerHand .card { touch-action:pan-x; } }
+.hand-queued { outline:3px solid #67e8f9; outline-offset:-3px; }
+.hand-drop-ready { outline:3px dashed #67e8f9; outline-offset:-4px; }
+.hand-drag-hint { position:fixed; z-index:125; top:28%; left:12px; right:12px; text-align:center; pointer-events:none; padding:10px; border-radius:12px; background:#0e3149ee; color:#e0faff; font-size:15px; }
+.voyage-panel { position:fixed; inset:0; z-index:140; background:#020b16ed; display:flex; align-items:center; justify-content:center; padding:max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom)); }
+.voyage-card { width:min(700px, 100%); max-height:100%; display:flex; flex-direction:column; overflow:hidden; border:1px solid #57879b; border-radius:16px; color:#e0f2fe; background:#102235; font-size:14px; line-height:1.5; }
+.voyage-head, .voyage-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; flex-shrink:0; background:#142d43; }
+.voyage-head h2 { font-size:20px; margin:0; flex:1; }
+.voyage-content { overflow:auto; padding:12px 16px; min-height:0; overscroll-behavior:contain; }
+.voyage-content h3 { margin:4px 0 8px; font-size:18px; }
+.voyage-content p { margin:7px 0; }
+.voyage-story { display:grid; grid-template-columns:78px 1fr; gap:14px; }
+#voyageStageArt { width:78px; height:100px; object-fit:cover; border-radius:8px; }
+.voyage-navigation { display:flex; gap:8px; margin:0; }
+#voyageDeck { width:100%; margin:5px 0; }
+#voyageDeckCards { color:#b2c9d8; font-size:13px; }
+#voyageReward { color:#fde68a; }
+#voyageResult p { margin:8px 0; color:#a5f3fc; font-size:14px; }
+@media (min-width:650px) and (max-height:650px) {
+  #overlay.show:has(#voyageContinue) { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); grid-template-rows:auto auto minmax(0,1fr) auto; gap:6px 20px; padding:12px 20px; overflow:hidden; align-content:stretch; justify-content:stretch; }
+  #overlay:has(#voyageContinue) h1 { grid-area:1 / 1; font-size:32px; margin:0; text-align:center; }
+  #overlay:has(#voyageContinue) .overlay-epilogue { grid-area:2 / 1; font-size:12px; margin:0; text-align:center; }
+  #overlay:has(#voyageContinue) #resultStars { grid-area:3 / 1; margin:0; }
+  #overlay:has(#voyageContinue) .star-slot { width:80px; }
+  #overlay:has(#voyageContinue) .star-slot .star { font-size:28px; }
+  #overlay:has(#voyageContinue) #resultStats { grid-area:1 / 2 / 4 / 3; align-self:stretch; min-height:0; overflow:auto; justify-content:center; }
+  #overlay:has(#voyageContinue) #voyageResult { grid-area:4 / 1; text-align:center; }
+  #overlay:has(#voyageContinue) .overlay-actions { grid-area:4 / 2; gap:6px; }
+  #overlay:has(#voyageContinue) button { min-height:44px; padding:10px 12px; font-size:14px; }
+}
+@media (max-height:450px) {
+  :root[data-control-mode="touch"] .controls .controls-scroll { grid-template-columns:repeat(3,minmax(0,1fr)); width:min(420px,calc(100vw - 24px)); max-height:calc(100dvh - 100px); }
+  .hand-preview { padding:8px 12px; bottom:70px; max-width:620px; }
+  .hand-preview-copy { grid-template-columns:44px 1fr; }
+  .hand-preview img { width:44px; height:54px; }
+  #handPreviewText { max-height:42px; }
+  #handPreviewHint { margin:4px 0; }
+  .voyage-content { display:grid; grid-template-columns:1fr 1fr; gap:6px 18px; }
+  .voyage-navigation { grid-column:1; margin:0; }
+}

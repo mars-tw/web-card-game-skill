@@ -1,0 +1,14 @@
+[
+    {
+        "name":  "performance-confirm",
+        "exitCode":  0
+    },
+    {
+        "name":  "frames-confirm",
+        "exitCode":  0
+    },
+    {
+        "name":  "effects-confirm",
+        "exitCode":  0
+    }
+]

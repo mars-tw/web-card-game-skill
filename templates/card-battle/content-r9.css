@@ -1,0 +1,139 @@
+/* R9: stable combat layout, readable outcomes, no transform of the physics root. */
+body[data-content-active=true] #handDrawer,body[data-content-active=true] #playerHand{width:100%!important;max-width:100%!important;box-sizing:border-box!important}
+body[data-content-active=true]{overflow-x:clip}
+html:has(body[data-content-active=true]){overflow:hidden;height:100%}
+#contentPanel .content-sheet{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:44px 44px minmax(0,1fr) 44px!important;height:min(680px,calc(100dvh - 24px));gap:8px;padding:12px;box-sizing:border-box}
+#contentPanel .content-sheet>header{grid-column:1!important;grid-row:1!important}
+#contentPanel .content-tabs{grid-column:1!important;grid-row:2!important}
+#contentPanel .content-body{grid-column:1!important;grid-row:3!important}
+#contentPanel .content-sheet>footer{grid-column:1!important;grid-row:4!important}
+#contentPanel .content-body{overflow:auto;min-height:0}
+#contentPanel .content-body>div{min-height:0}
+body[data-content-active=true] .content-bar{font-size:14px;align-items:start;box-sizing:border-box;width:calc(100vw - 16px)!important;max-width:760px;left:8px!important;transform:none!important;right:8px!important}
+body[data-content-active=true] #contentBar>span{max-width:none;flex:1;min-width:0}
+body[data-content-active=true] #contentBarGoal{display:block;max-width:none;line-height:20px}
+body[data-content-active=true] .content-bar strong{font-size:15px}
+body[data-content-active=true] .content-bar button{font-size:14px;padding:5px;flex-shrink:0}
+body[data-content-active=true] .hero .name{white-space:nowrap;max-width:none;font-size:14px;line-height:20px;overflow:hidden;text-overflow:ellipsis}
+body[data-content-active=true] .hero-stats{flex-shrink:0;gap:5px}
+body[data-content-active=true] .tide-style{white-space:nowrap;font-size:12px;max-width:none}
+body[data-content-active=true] .tide-style small{display:none}
+body[data-content-active=true] #targetStatus{display:none!important}
+body[data-content-active=true] .card-info-btn{min-width:44px!important;min-height:44px!important;width:44px!important;height:44px!important;box-sizing:border-box;display:flex;align-items:start;justify-content:end;padding:3px!important;background:transparent!important;border:0!important}
+body[data-content-active=true] .r8-plain{font-size:14px;line-height:20px}
+.r9-next{display:block;color:#e9bd74;font:700 14px/20px Arial;white-space:nowrap}
+.r9-receipt{position:absolute;z-index:101;top:100%;left:0;white-space:nowrap;color:#fff2e9;background:#512b3d;border:1px solid #da8a6d;padding:4px 6px;font:700 14px/20px Arial;pointer-events:none}
+.card>.r9-receipt{top:-30px;left:50%;transform:translateX(-50%)}
+.r9-shield-count,.r7-shield-owner{position:absolute!important;top:5px!important;left:2px!important;right:auto!important;bottom:auto!important;width:auto!important;padding:2px 4px!important;background:#f2f1fa!important;color:#201c3d!important;font:700 14px/20px Arial!important;border:1px solid #e9bd74!important;z-index:35!important;white-space:nowrap}
+.r9-shield-count,.r7-shield-owner{pointer-events:none!important}
+.r7-moen-heal{top:100%!important;left:0!important;right:auto!important;white-space:nowrap;font:700 14px/20px Arial!important;background:#203f4c;padding:4px 7px!important;border:1px solid #69cfe9}
+.r7-moen-heal:before{content:'';position:absolute;left:20px;bottom:100%;height:9px;border-left:2px solid #69cfe9}
+body[data-content-active=true] .r80-empty-slot{border:0!important;box-shadow:none!important;background:none!important}
+body[data-content-active=true] .r80-empty-slot::before{border:0!important;background:none!important}
+body[data-content-active=true] .r6-shield-label{font-size:14px!important;line-height:20px;background:#512b3d;color:#f2f1fa;padding:2px 4px}
+body[data-content-active=true] .card[data-shell-state=broken] .r3-shell-badge{filter:sepia(.6) saturate(1.8) drop-shadow(0 0 2px #da8a6d);opacity:.85}
+#forecastPanel .content-sheet{height:204px!important;max-height:204px!important;width:100%!important;min-width:0!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:44px 20px 64px 38px!important;gap:3px!important;overflow:hidden!important}
+#forecastPanel{bottom:80px!important}
+#forecastPanel header{gap:4px!important}#forecastRule{font-size:14px!important;line-height:20px!important;white-space:nowrap}
+#forecastRounds button{height:64px;min-height:64px!important;font-size:14px!important;line-height:18px}
+#forecastRounds strong,#forecastRounds span,#forecastRounds small{font-size:14px!important}
+#forecastCompare>div{font-size:14px!important;line-height:18px!important;padding:0!important}
+#forecastCompare strong{font-size:14px!important;display:inline!important;margin-right:4px!important}
+body[data-content-id=forecast] #tideChartStatus{display:block!important;white-space:nowrap;font:400 14px/20px Arial!important;padding:0!important;margin:0!important}
+body[data-content-id=forecast] #tideChartTitle{font-size:17px!important;text-align:left!important;padding:0!important}
+body[data-content-id=forecast] #tideChartPanel .tide-chart-sheet{padding:8px!important}
+body[data-content-id=forecast] #tideChartPanel .tide-chart-sheet{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;grid-template-rows:44px 20px auto auto 44px!important;gap:4px!important}
+body[data-content-id=forecast] #tideChartTitle{grid-column:1!important;grid-row:1!important;position:static!important;min-width:0!important;letter-spacing:0!important;line-height:24px!important;align-self:center}
+body[data-content-id=forecast] #tideChartFold{grid-column:2!important;grid-row:1!important;position:static!important;min-height:44px!important;margin:0!important;float:none!important}
+body[data-content-id=forecast] #tideChartStatus{grid-column:1/-1!important;grid-row:2!important;position:static!important;width:auto!important;height:20px!important;text-align:left!important;transform:none!important}
+body[data-content-id=forecast] #tideChartPanel .tide-choices,body[data-content-id=forecast] #foldDirections{grid-column:1/-1!important;grid-row:3!important}
+body[data-content-id=forecast] #tidePreview{grid-column:1/-1!important;grid-row:4!important;line-height:20px!important;font-size:14px!important;margin:0!important;padding:0!important;min-height:40px!important}
+body[data-content-id=forecast] #tideChartPanel .tide-chart-footer{grid-column:1/-1!important;grid-row:5!important;margin:0!important}
+body[data-content-id=forecast] #tideChartPanel .tide-chart-footer button{font-size:14px!important;line-height:20px!important;padding:4px!important;min-height:44px!important}
+body[data-content-id=forecast] #tideChartPanel .tide-choices{margin:0!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body[data-content-id=forecast] #tideChartPanel .tide-choices button{font-size:14px!important;line-height:20px!important;padding:4px!important;display:block!important}
+body[data-content-id=forecast] #tideGauge,body[data-content-id=forecast] #r75ChartPips,body[data-content-id=forecast] #tideSources{display:none!important}
+@media(min-height:651px){
+ :root body[data-content-id=moen] .board{grid-template-rows:44px minmax(138px,1fr) 190px minmax(138px,1fr) 44px!important;gap:4px!important}
+ :root body[data-content-id=moen] .battlefield .card{height:126px!important}
+ :root body[data-content-id=moen] .r75-tide-channel{height:190px!important}
+ body[data-content-id=moen] .r6-moen-stage{width:162px!important;height:168px!important;left:10px!important;z-index:7!important}
+ body[data-content-id=moen] .r7-moen-side{top:0;font-size:14px;line-height:20px}
+ body[data-content-id=moen] #moenPressure{font-size:14px!important;line-height:20px}
+ body[data-content-id=moen] .r75-tide-channel>span:first-child{bottom:0!important;left:auto!important;right:8px!important}
+ body[data-content-id=moen] .r6-moen-bond{left:178px!important;width:calc(100% - 190px)!important;max-width:none;white-space:normal;font:400 14px/20px Arial}
+ :root body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) .board{bottom:var(--r9-panel-reserve,288px)!important;grid-template-rows:44px minmax(108px,1fr) 20px minmax(108px,1fr) 44px!important}
+ body[data-content-id=forecast] .board:has(+*){transition:none}
+ :root body[data-content-active=true] .battlefield .card .cardname{font-size:14px!important;line-height:18px!important}
+ .r75-tide-channel>.r6-hand-signal{left:4px!important;top:-116px!important;width:84px!important;height:110px!important}
+ .r75-tide-channel>.r6-hand-signal img{width:48px!important;height:64px!important}
+ .r75-tide-channel>.r6-hand-signal span{font-size:12px!important;line-height:16px!important}
+ body[data-content-id=spell] .r6-hand-signal{display:none!important}
+ :root body[data-content-id=spell] #handDrawer{display:block!important;position:fixed!important;left:16px!important;right:auto!important;top:calc(var(--r8-content-top) + 108px)!important;bottom:auto!important;width:88px!important;max-width:88px!important;height:154px!important;max-height:none!important;pointer-events:auto!important;overflow:visible!important;background:none!important;border:0!important;z-index:80}
+ :root body[data-content-id=spell] #playerHand{visibility:visible!important;pointer-events:auto!important;width:88px!important;height:154px!important;display:flex!important;padding:0!important;overflow:visible!important;justify-content:center!important;align-items:center!important;transform:none!important}
+ :root body[data-content-id=spell] #playerHand .card{width:82px!important;height:142px!important;min-width:82px!important;margin:0!important;transform:none!important}
+}
+@media(max-height:650px) and (min-width:600px){
+ body[data-content-id=forecast] #tideChartTitle{font-size:14px!important;line-height:18px!important}
+ body[data-content-id=forecast] #tideChartPanel .tide-choices button{font-size:12px!important;line-height:16px!important}
+ body[data-content-id=moen] .r6-moen-stage{left:calc(50% - 60px)!important;width:120px!important;height:140px!important;top:50px!important}
+ #forecastPanel .content-sheet{height:204px!important;max-height:calc(100dvh - 155px)!important}
+}
+
+.r9-dying{animation:none!important;transform:none!important;opacity:1!important}.r9-dying .art>img{object-fit:contain!important}
+@media(max-height:480px) and (min-width:600px){
+ body[data-content-active=true] .content-bar{font-size:12px}
+ body[data-content-active=true] #contentBarGoal{line-height:16px;font-size:12px}
+ #contentPanel .content-art{display:none}
+ #contentPanel .content-body{display:block;overflow:visible!important}
+ #contentPanel .content-body>div{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr);grid-template-rows:repeat(4,44px);gap:2px 14px;height:100%;min-height:0}
+ #contentName{grid-column:1;grid-row:1;align-self:center;font-size:18px!important;margin:0!important}
+ #contentGoal{grid-column:1;grid-row:2;margin:0!important;font:400 13px/18px Arial!important;align-self:center}
+ #contentProgress{grid-column:1;grid-row:3;margin:0!important;font:400 12px/18px Arial!important;align-self:center}
+ #contentReveal{grid-column:1;grid-row:4;margin:0!important;min-height:44px!important}
+ #contentHint{grid-column:1;grid-row:2/4;margin:0!important;font:400 13px/18px Arial!important;overflow:auto}
+ #contentHint:empty{display:none}
+ #contentPanel .content-body>div:has(#contentHint:not(:empty)) #contentGoal,#contentPanel .content-body>div:has(#contentHint:not(:empty)) #contentProgress{display:none}
+ #contentPuzzles{grid-column:2;grid-row:1/4;margin:0!important;grid-template-rows:repeat(2,minmax(44px,1fr));gap:6px!important}
+ #contentVerify{grid-column:2;grid-row:4;margin:0!important;min-height:44px!important}
+}
+/* Small portrait phones keep opposing crews in separate columns. */
+@media(max-height:650px) and (max-width:599px){
+ :root body[data-content-active=true] .board{position:absolute!important;top:var(--r8-content-top,132px)!important;bottom:80px!important;left:0!important;width:100%!important;height:auto!important;display:block!important;padding:0!important;min-height:0!important;overflow:visible!important}
+ :root body[data-content-active=true] .board>.hero-row{position:absolute!important;top:2px!important;left:8px!important;width:calc(50% - 12px)!important;height:44px!important;min-height:44px!important;margin:0!important;padding:3px!important;transform:none!important;box-sizing:border-box}
+ :root body[data-content-active=true] .board>.hero-row:not(.player-hero-row){left:auto!important;right:8px!important}
+ body[data-content-active=true] .hero{min-width:0!important;gap:3px}
+ body[data-content-active=true] .hero .avatar{width:28px!important;height:28px!important;min-width:28px!important}
+ body[data-content-active=true] .hero .name{font-size:12px!important}
+ body[data-content-active=true] .tide-style,body[data-content-active=true] .tide-ring,body[data-content-active=true] .r78-hero-tide,body[data-content-active=true] .scene-hint-btn{display:none!important}
+ body[data-content-active=true] .hero-stats{gap:2px!important}
+ body[data-content-active=true] .hero-row .hp-badge,body[data-content-active=true] .hero-row .mana-badge{padding:3px!important;font-size:12px!important}
+ body[data-content-active=true] .player-hero-row>div:last-child{gap:2px!important}
+ :root body[data-content-active=true] .battlefield{position:absolute!important;top:56px!important;bottom:94px!important;left:8px!important;width:calc(50% - 12px)!important;height:auto!important;max-height:none!important;min-height:0!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;align-content:center!important;justify-items:center!important;padding:0!important;margin:0!important;overflow:visible!important;box-sizing:border-box}
+ :root body[data-content-active=true] #enemyField{left:auto!important;right:8px!important}
+ :root body[data-content-active=true] .battlefield:has(.card:only-child){grid-template-columns:1fr!important}
+ :root body[data-content-active=true] .battlefield .card{width:min(82px,calc((100vw - 48px)/4))!important;height:110px!important;min-width:44px!important;transform:none!important}
+ body[data-content-active=true] .r75-tide-channel{position:absolute!important;left:8px!important;right:8px!important;bottom:4px!important;top:auto!important;height:84px!important;width:auto!important;margin:0!important;min-height:0!important}
+ body[data-content-active=true] .r8-plain{font-size:13px!important;line-height:18px!important}
+ body[data-content-active=true] .r6-hand-signal{display:none!important}
+ body[data-content-active=true] #exchangePreview{position:fixed!important;left:8px!important;right:8px!important;top:auto!important;bottom:80px!important;width:auto!important;transform:none!important;box-sizing:border-box}
+ :root body[data-content-id=moen] #playerField{bottom:8px!important}
+ :root body[data-content-id=moen] #enemyField{bottom:auto!important;height:112px!important}
+ :root body[data-content-id=moen] .battlefield .card{height:100px!important}
+ body[data-content-id=moen] .r6-moen-stage{left:calc(50% + 10px)!important;top:auto!important;bottom:8px!important;width:108px!important;height:108px!important}
+ body[data-content-id=moen] .r7-moen-side{top:0!important;font-size:11px!important;line-height:16px!important}
+ body[data-content-id=moen] #moenPressure{font-size:11px!important;line-height:16px!important}
+ body[data-content-id=moen] #moenBond{display:none!important}
+ body[data-content-id=moen] .r75-tide-channel{right:auto!important;width:calc(50% - 16px)!important;height:18px!important;bottom:0!important}
+ body[data-content-id=moen] .r75-tide-pips{display:none!important}
+ #forecastPanel .content-sheet{height:126px!important;max-height:126px!important;padding:4px!important;grid-template-rows:44px 44px 24px!important;gap:2px!important}
+ #forecastRule{display:none!important}
+ #forecastRounds{grid-row:2!important}
+ #forecastRounds button{height:44px!important;min-height:44px!important;padding:1px!important;line-height:13px!important}
+ #forecastRounds strong,#forecastRounds span,#forecastRounds small{font-size:11px!important;line-height:13px!important}
+ #forecastCompare{grid-row:3!important}
+ #forecastCompare>div,#forecastCompare strong{font-size:11px!important;line-height:11px!important}
+ :root body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) .board{bottom:var(--r9-panel-reserve,214px)!important}
+ :root body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) .battlefield{bottom:4px!important}
+ body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) .r75-tide-channel{display:none!important}
+}

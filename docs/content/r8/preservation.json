@@ -1,0 +1,13 @@
+{
+  "status": "VERIFIED",
+  "incomingTextFiles": 612,
+  "intentionalChanges": [
+    "docs/art/ART_DIRECTION.md"
+  ],
+  "restored": [
+    "docs/art/ASSET_MANIFEST.json",
+    "docs/art/ASSET_MANIFEST_R76.json"
+  ],
+  "noIncomingUntrackedDeleted": true,
+  "legacyPngsProtectedBy": "scripts/r8-evidence-guard.js"
+}

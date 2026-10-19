@@ -1,0 +1,49 @@
+/* R10: stable physics/layout roots, painted state-specific art, readable impacts. */
+body[data-content-active=true] .board{animation:none!important;transform:none!important;filter:none!important;contain:none!important}
+body[data-content-active=true] .board>.player-hero-row{visibility:visible!important;opacity:1!important;transform:none!important}
+body[data-content-id=shelter] #puzzleHeroNote{display:none!important}
+body[data-content-active=true] #commandDock{visibility:visible!important}
+#forecastUndo{min-width:66px;min-height:44px;padding:4px;font-size:13px}
+#forecastRounds button{touch-action:none}
+#forecastPanel header{justify-content:start!important}
+#forecastTitle{flex:1;min-width:0}
+#forecastRule{margin:0!important;font-size:13px!important}
+.r9-shield-count,.r7-shield-owner{top:auto!important;bottom:-27px!important;left:50%!important;transform:translateX(-50%)!important;line-height:20px!important}
+body[data-content-active=true] .card[data-shell-state=breaking] .r3-shell-badge{width:140%!important;height:100%!important;left:-20%!important;top:-4%!important;filter:drop-shadow(0 0 7px #f2f1fa)!important}
+body[data-content-active=true] .r6-board-signal{overflow:visible!important;text-overflow:clip!important;clip-path:none!important}
+@media(min-height:651px){
+ :root body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .board{bottom:var(--r10-chart-reserve,350px)!important;grid-template-rows:44px minmax(104px,1fr) 16px minmax(104px,1fr) 44px!important;gap:4px!important}
+ :root body[data-content-id=forecast]:has(#tideChartPanel:not([hidden])) .battlefield .card{height:104px!important}
+ body[data-content-active=true]:not([data-content-id=moen]):not([data-content-id=forecast]) .r75-tide-channel>.r6-board-signal:not(.r6-hand-signal){left:4px!important;right:auto!important;transform:none!important;width:calc(100% - 100px)!important;max-width:calc(100% - 100px)!important;white-space:normal!important}
+ body[data-content-active=true] .r75-tide-channel>.r6-board-signal .r9-next{white-space:normal}
+}
+body[data-content-active=true] .r75-tide-channel>.r6-board-signal{letter-spacing:0!important}
+body[data-content-id=moen] #moenBond{line-height:22px;letter-spacing:0}
+#contentResult:has(img[src*='content-r10/moen-defeated']) .content-result-art{object-fit:contain;max-height:250px;height:250px}
+body[data-content-active=true] #tideWave .r76-wave-art{opacity:.22!important}
+body[data-content-active=true] #tideWave .r77-impact-foam{opacity:.65!important}
+body[data-content-active=true] .r9-receipt{padding:3px 6px}
+body[data-content-active=true] .r9-receipt::before{content:'';position:absolute;left:50%;bottom:100%;height:8px;border-left:2px solid #da8a6d}
+body[data-content-active=true] .card.tide-hit{outline:3px solid #e9bd74!important;outline-offset:2px}
+#contentAnchor{position:absolute;right:10px;top:18px;width:72px;height:72px;object-fit:contain;pointer-events:none;opacity:.85;z-index:3}
+body[data-content-id=moen] #contentAnchor{right:20px;top:95px}
+body[data-content-id=forecast] #contentAnchor{left:10px;top:0;width:56px;height:56px}
+body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) #contentAnchor{display:none}
+body[data-content-active=true] .battlefield .card .art>img[src*='animations/content-r10']{object-fit:contain!important}
+body[data-content-id=spell] #handDrawer::before{content:'手牌 · 火焰箭';display:block;color:#e9bd74;font:700 14px/22px Arial}
+body[data-content-id=spell] #playerHand .card .desc,body[data-content-id=spell] #playerHand .card .keywords{display:none!important}
+body[data-content-id=spell] #playerHand .card .card-text,body[data-content-id=spell] #playerHand .card .text{display:none!important}
+body[data-content-id=spell] #playerHand .card .cardtext{display:none!important}
+body[data-content-active=true] .card:has(.r9-shield-count,.r7-shield-owner)>.r6-board-signal{bottom:-51px!important}
+body[data-content-id=spell] #contentAnchor{top:12px;width:48px;height:48px}
+body[data-content-id=spell] .r75-tide-channel>.r6-board-signal{max-width:100%!important}
+@media(min-height:651px){
+ :root body[data-content-id=spell] .board{bottom:246px!important}
+ :root body[data-content-id=spell] .battlefield .card{height:126px!important}
+ :root body[data-content-id=spell] #handDrawer{top:auto!important;bottom:80px!important;left:16px!important;width:112px!important;max-width:112px!important;height:160px!important;background:#201c3df2!important;border:1px solid #da8a6d!important;padding:4px!important;box-sizing:border-box!important}
+ :root body[data-content-id=spell] #playerHand{width:102px!important;height:126px!important;align-items:center!important}
+ :root body[data-content-id=spell] #playerHand .card{height:122px!important;width:82px!important;min-width:82px!important}
+ body[data-content-id=spell] .r6-hand-signal{display:none!important}
+}
+@media(max-height:650px){#contentAnchor{width:44px;height:44px;top:20px}body[data-content-id=moen] #contentAnchor{display:none}}
+@media(max-height:650px) and (max-width:599px){body[data-content-id=shelter] #enemyHero .name{display:none!important}}

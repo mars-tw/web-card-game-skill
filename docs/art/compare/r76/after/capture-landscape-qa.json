@@ -1,0 +1,14 @@
+{
+  "phase": "after",
+  "status": "VERIFIED",
+  "method": "headless Chromium; official root and real trial actions; no test state injection; PNGs unedited",
+  "files": [
+    "docs/art/compare/r76/after/harbor-844x390.png",
+    "docs/art/compare/r76/after/battle-844x390.png",
+    "docs/art/compare/r76/after/trial-844x390.png",
+    "docs/art/compare/r76/after/tide-chart-844x390.png",
+    "docs/art/compare/r76/after/victory-844x390.png",
+    "docs/evidence/r76-art/pack-844x390.png"
+  ],
+  "errors": []
+}

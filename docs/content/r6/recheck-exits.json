@@ -1,0 +1,39 @@
+[
+  {
+    "name": "ci-performance-recheck",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:r67:performance"
+    ],
+    "exitCode": 1,
+    "seconds": 29.8
+  },
+  {
+    "name": "e2e-recheck",
+    "command": [
+      "python",
+      "scripts/recheck-content-r6-e2e.py"
+    ],
+    "exitCode": 0,
+    "seconds": 755.0
+  },
+  {
+    "name": "final-effects",
+    "command": [
+      "node",
+      "scripts/test-content-r6-effects.js"
+    ],
+    "exitCode": 0,
+    "seconds": 8.25
+  },
+  {
+    "name": "static-recheck",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exitCode": 0,
+    "seconds": 10.05
+  }
+]

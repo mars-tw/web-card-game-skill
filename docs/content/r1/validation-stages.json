@@ -1,0 +1,98 @@
+[
+  {
+    "stage": "static",
+    "command": [
+      "cmd",
+      "/d",
+      "/c",
+      "npm",
+      "test"
+    ],
+    "status": "VERIFIED",
+    "startedAt": "2026-10-18T23:39:55+0800",
+    "exitCode": 0,
+    "completedAt": "2026-10-18T23:40:03+0800",
+    "log": "docs/content/r1/static-final.txt",
+    "logSha256": "988331a105581ee346c11da20c4115da1ddc948abafda549e44cd521e4738e84"
+  },
+  {
+    "stage": "e2e",
+    "command": [
+      "cmd",
+      "/d",
+      "/c",
+      "npm",
+      "run",
+      "test:e2e"
+    ],
+    "status": "VERIFIED",
+    "startedAt": "2026-10-18T23:40:03+0800",
+    "exitCode": 0,
+    "completedAt": "2026-10-18T23:47:44+0800",
+    "log": "docs/content/r1/e2e-final.txt",
+    "logSha256": "f1ca427de24d36ff6ca26669613ee00f1be139c7a41f2cc166a419be9988038f"
+  },
+  {
+    "stage": "rwd",
+    "command": [
+      "cmd",
+      "/d",
+      "/c",
+      "npm",
+      "run",
+      "test:rwd"
+    ],
+    "status": "VERIFIED",
+    "startedAt": "2026-10-18T23:47:44+0800",
+    "exitCode": 0,
+    "completedAt": "2026-10-18T23:49:13+0800",
+    "log": "docs/content/r1/rwd-final.txt",
+    "logSha256": "712caa2765a80eebfdb11a4b1876939cdad4712f66df6a19ce2be5a1b09d1152"
+  },
+  {
+    "stage": "ci-performance",
+    "command": [
+      "node",
+      "scripts/test-r67-performance.js",
+      "--runs",
+      "3",
+      "--baseline",
+      "docs/evidence/R67/before/performance.json",
+      "--assert",
+      "--out",
+      "docs/content/r1/performance.json"
+    ],
+    "status": "VERIFIED",
+    "startedAt": "2026-10-18T23:49:13+0800",
+    "exitCode": 0,
+    "completedAt": "2026-10-18T23:49:41+0800",
+    "log": "docs/content/r1/ci-performance-final.txt",
+    "logSha256": "14abab5c7a50cec92851d321ca5ed85585d6e9c64cdfa507048511f60ac818bb"
+  },
+  {
+    "stage": "content-performance",
+    "command": [
+      "node",
+      "scripts/measure-content-r1.js"
+    ],
+    "status": "VERIFIED",
+    "startedAt": "2026-10-18T23:49:41+0800",
+    "exitCode": 0,
+    "completedAt": "2026-10-18T23:50:12+0800",
+    "log": "docs/content/r1/content-performance-final.txt",
+    "logSha256": "7644120ccfe53ef8312e32b239c457d99e9931a9e3f847ff0f4ab07fd1c2de3f"
+  },
+  {
+    "stage": "release",
+    "command": [
+      "python",
+      "scripts/verify-content-r1.py"
+    ],
+    "status": "VERIFIED",
+    "startedAt": "2026-10-18T23:50:12+0800",
+    "exitCode": 0,
+    "completedAt": "2026-10-18T23:50:22+0800",
+    "log": "docs/content/r1/release-final.txt",
+    "logSha256": "385feada29d6d2ebfd1c6a12a81f45abd09382a1a7d2e5a869932bd7b82b3d5e"
+  }
+]

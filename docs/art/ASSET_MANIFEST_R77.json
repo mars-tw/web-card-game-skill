@@ -1,0 +1,562 @@
+{
+  "round": "R77",
+  "status": "VERIFIED",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "model_note": "Actual built-in tool did not expose a verifiable model slug. No inferred gpt-image model claim.",
+  "assets": [
+    {
+      "id": "wave",
+      "kind": "spell-wall",
+      "source": "docs/art/source/r77/wave.png",
+      "source_sha256": "ae24051de7269037105053a31310242c80e754fd915fb6a61cd908c65cc3c440",
+      "source_bytes": 2756311,
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "source_metrics": {
+        "brightness": 0.5326756677296063,
+        "saturation": 0.3323887883550517,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.21972318339100347,
+        "double_gate_pass": false
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r77/wave.webp",
+          "sha256": "8dab4642b6ec43ff4da9e83e0baa6f016d602cf7611ad878269c097b25dbbfc1",
+          "bytes": 333608,
+          "size": [
+            1200,
+            800
+          ],
+          "format": "WEBP",
+          "metrics": {
+            "brightness": 0.5310431914701363,
+            "saturation": 0.33219399147548045,
+            "near_black_ratio": 0.0,
+            "low_saturation_ratio": 0.22223502304147466,
+            "double_gate_pass": false
+          }
+        }
+      ],
+      "alpha": {
+        "corners": [
+          1,
+          0,
+          1,
+          0
+        ],
+        "transparent_ratio": 0.4797967274983724,
+        "occupancy": 0.5142103830973307,
+        "bbox": [
+          0,
+          0,
+          1536,
+          1024
+        ],
+        "center": 251,
+        "native": true
+      }
+    },
+    {
+      "id": "foam",
+      "kind": "impact-object",
+      "source": "docs/art/source/r77/foam.png",
+      "source_sha256": "12c7d37b20d001626fe4b12f8fc55723c2c4dc2636a747281f1ad5cb2ee29ff1",
+      "source_bytes": 1806147,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "source_metrics": {
+        "brightness": 0.6875221080054854,
+        "saturation": 0.24028990013500745,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.3945061367621274,
+        "double_gate_pass": false
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r77/foam.webp",
+          "sha256": "cbff159ede3e6d1041c3e602c79a5ec84bc73028ef4381303c4b59d20ec6b05a",
+          "bytes": 64118,
+          "size": [
+            384,
+            384
+          ],
+          "format": "WEBP",
+          "metrics": {
+            "brightness": 0.6814682904411764,
+            "saturation": 0.23445191059756038,
+            "near_black_ratio": 0.0,
+            "low_saturation_ratio": 0.390625,
+            "double_gate_pass": false
+          }
+        }
+      ],
+      "alpha": {
+        "corners": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "transparent_ratio": 0.7132531560887139,
+        "occupancy": 0.28198632001200624,
+        "bbox": [
+          0,
+          19,
+          1254,
+          1254
+        ],
+        "center": 0,
+        "native": true
+      }
+    },
+    {
+      "id": "puddle",
+      "kind": "wet-decal",
+      "source": "docs/art/source/r77/puddle.png",
+      "source_sha256": "a5c59ba4b8c6034feed78e7896752fecd6750f46dd6ec0ed04e79c6df8e43c10",
+      "source_bytes": 1037123,
+      "size": [
+        2172,
+        724
+      ],
+      "mode": "RGBA",
+      "source_metrics": {
+        "brightness": 0.3952623470932998,
+        "saturation": 0.4213829876174521,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.090140218117071,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r77/puddle.webp",
+          "sha256": "03e81419643846eb87538ee31cffe6ae603a83ca9895ebe99c45d58957cac5ae",
+          "bytes": 58004,
+          "size": [
+            960,
+            320
+          ],
+          "format": "WEBP",
+          "metrics": {
+            "brightness": 0.3931817784994675,
+            "saturation": 0.417998154845229,
+            "near_black_ratio": 0.0,
+            "low_saturation_ratio": 0.08659839715048975,
+            "double_gate_pass": true
+          }
+        }
+      ],
+      "alpha": {
+        "corners": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "transparent_ratio": 0.7365757557258122,
+        "occupancy": 0.26180519520161166,
+        "bbox": [
+          0,
+          9,
+          2158,
+          724
+        ],
+        "center": 0,
+        "native": true
+      }
+    },
+    {
+      "id": "battlefield",
+      "kind": "main-background",
+      "source": "docs/art/source/r77/battlefield.png",
+      "source_sha256": "69ec9248ae9a24a9a5313da984e14b78281cf4e60d03a8991b893915cc0be961",
+      "source_bytes": 2907969,
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "source_metrics": {
+        "brightness": 0.21918322993259803,
+        "saturation": 0.29258561016680196,
+        "near_black_ratio": 0.02862548828125,
+        "low_saturation_ratio": 0.00238037109375,
+        "double_gate_pass": false
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r77/battlefield.webp",
+          "sha256": "2e7028d5300b9fd3f82684365ff4253e2a18e4f2c090ef7b23d8fab267b441e6",
+          "bytes": 200346,
+          "size": [
+            1536,
+            1024
+          ],
+          "format": "WEBP",
+          "metrics": {
+            "brightness": 0.21878686044730392,
+            "saturation": 0.2893159657043273,
+            "near_black_ratio": 0.02825927734375,
+            "low_saturation_ratio": 0.00262451171875,
+            "double_gate_pass": false
+          }
+        },
+        {
+          "path": "assets/art/r77/battlefield-low.webp",
+          "sha256": "d7c024be917ac70e827e0bc00f5ae5234e0ba0f2190c42a28002d9352070b790",
+          "bytes": 50622,
+          "size": [
+            960,
+            640
+          ],
+          "format": "WEBP",
+          "metrics": {
+            "brightness": 0.21797832414215687,
+            "saturation": 0.2857957088937267,
+            "near_black_ratio": 0.02703857421875,
+            "low_saturation_ratio": 0.0032958984375,
+            "double_gate_pass": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "victory-navigator",
+      "kind": "protagonist-lighting-edit",
+      "source": "docs/art/source/r77/victory-navigator.png",
+      "source_sha256": "954a1b865406050f65ce5686693bce63e05e93f942cd4a7d31f240750b432caf",
+      "source_bytes": 3096554,
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "source_metrics": {
+        "brightness": 0.48152582803554217,
+        "saturation": 0.4407552458480552,
+        "near_black_ratio": 0.01587171725435654,
+        "low_saturation_ratio": 0.04974228912705555,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r77/victory-navigator.webp",
+          "sha256": "3f81a50e907c9e73ea2896a4ada2d26b2950004e9411b4848a26f962f541bec3",
+          "bytes": 159278,
+          "size": [
+            576,
+            864
+          ],
+          "format": "WEBP",
+          "metrics": {
+            "brightness": 0.47688911775133025,
+            "saturation": 0.4357168085302587,
+            "near_black_ratio": 0.016117156180970302,
+            "low_saturation_ratio": 0.050969483760124355,
+            "double_gate_pass": true
+          }
+        }
+      ],
+      "alpha": {
+        "corners": [
+          0,
+          0,
+          252,
+          251
+        ],
+        "transparent_ratio": 0.27286847432454425,
+        "occupancy": 0.7254892985026041,
+        "bbox": [
+          0,
+          0,
+          1024,
+          1536
+        ],
+        "center": 253,
+        "native": true
+      },
+      "reference": {
+        "path": "docs/art/source/r76/victory-navigator.png",
+        "sha256": "093c77607f31b6616c6d37f6de2a33f888cd85a311a7a1a8401fa40ea1776901"
+      }
+    },
+    {
+      "id": "night-harbor",
+      "kind": "victory-background",
+      "source": "docs/art/source/r77/night-harbor.png",
+      "source_sha256": "441134b3796907e61a7b9b374d691f4270fd569f722d56287301230239cbaf80",
+      "source_bytes": 2696095,
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "source_metrics": {
+        "brightness": 0.24129542930453432,
+        "saturation": 0.419698358475187,
+        "near_black_ratio": 0.08203125,
+        "low_saturation_ratio": 0.02960205078125,
+        "double_gate_pass": false
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r77/night-harbor.webp",
+          "sha256": "8a72de64c640421fcde80fc6049c7ff9aad05a8bdb2ba5885b0b3d8930709cb1",
+          "bytes": 208436,
+          "size": [
+            1024,
+            1536
+          ],
+          "format": "WEBP",
+          "metrics": {
+            "brightness": 0.2409012140012255,
+            "saturation": 0.41869896552363384,
+            "near_black_ratio": 0.08099365234375,
+            "low_saturation_ratio": 0.032470703125,
+            "double_gate_pass": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "frame",
+      "kind": "ui-border",
+      "source": "docs/art/source/r77/frame.png",
+      "source_sha256": "1c4285e0a3e4c13976377f4c057b06187965a80e7d157821657120f583f441be",
+      "source_bytes": 1493107,
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "source_metrics": {
+        "brightness": 0.5657185706543124,
+        "saturation": 0.359356690770125,
+        "near_black_ratio": 0.0,
+        "low_saturation_ratio": 0.07307837940174176,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r77/frame.webp",
+          "sha256": "dd64e1b075370a0e757f9a712f918dab071bc3bbba698ac2f2cca69c44be3e21",
+          "bytes": 21264,
+          "size": [
+            256,
+            384
+          ],
+          "format": "WEBP",
+          "metrics": {
+            "brightness": 0.5544780669855054,
+            "saturation": 0.3442275654967382,
+            "near_black_ratio": 0.0,
+            "low_saturation_ratio": 0.07493443237167478,
+            "double_gate_pass": true
+          }
+        }
+      ],
+      "alpha": {
+        "corners": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "transparent_ratio": 0.8562590281168619,
+        "occupancy": 0.14206314086914062,
+        "bbox": [
+          0,
+          10,
+          1010,
+          1536
+        ],
+        "center": 0,
+        "native": true
+      }
+    },
+    {
+      "id": "icon-wave",
+      "kind": "skill-icon",
+      "source": "docs/art/source/r77/icon-wave.png",
+      "source_sha256": "a0d5623c7dda6e977b28944c286fd4009dc3ae3123a4996352981378bc236435",
+      "source_bytes": 2485474,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "source_metrics": {
+        "brightness": 0.5257155017737455,
+        "saturation": 0.39102509202843694,
+        "near_black_ratio": 0.014437916957084537,
+        "low_saturation_ratio": 0.24624116299910384,
+        "double_gate_pass": false
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r77/icon-wave.webp",
+          "sha256": "f5485b8afebcf158ea8f9416336abb46b248b4de3ec3f9d0affa4bdc762f4e6b",
+          "bytes": 9556,
+          "size": [
+            128,
+            128
+          ],
+          "format": "WEBP",
+          "metrics": {
+            "brightness": 0.5118744723702348,
+            "saturation": 0.36198246964700886,
+            "near_black_ratio": 0.03281296609326837,
+            "low_saturation_ratio": 0.2506711743064532,
+            "double_gate_pass": false
+          }
+        }
+      ],
+      "alpha": {
+        "corners": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "transparent_ratio": 0.394357195729646,
+        "occupancy": 0.6050068806931058,
+        "bbox": [
+          0,
+          0,
+          1247,
+          1254
+        ],
+        "center": 253,
+        "native": true
+      }
+    },
+    {
+      "id": "logo",
+      "kind": "title-lighting-edit",
+      "source": "docs/art/source/r77/logo.png",
+      "source_sha256": "33a7581426dce4d53316f48cfa7ab74838f46c917ee87aa53f48ecdfb18c7f0e",
+      "source_bytes": 1493426,
+      "size": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "source_metrics": {
+        "brightness": 0.48519951311809295,
+        "saturation": 0.37097786443532177,
+        "near_black_ratio": 0.021204671173939767,
+        "low_saturation_ratio": 0.2561462814996927,
+        "double_gate_pass": false
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r77/logo.webp",
+          "sha256": "10b69417168d33d0cd982e37c595d08d252c7e56155b3d61f0d060da199d5990",
+          "bytes": 85690,
+          "size": [
+            800,
+            400
+          ],
+          "format": "WEBP",
+          "metrics": {
+            "brightness": 0.4775933996853842,
+            "saturation": 0.3542986518138444,
+            "near_black_ratio": 0.027151403589507593,
+            "low_saturation_ratio": 0.2753489799048934,
+            "double_gate_pass": false
+          }
+        }
+      ],
+      "alpha": {
+        "corners": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "transparent_ratio": 0.6284849809791693,
+        "occupancy": 0.36973304743832053,
+        "bbox": [
+          0,
+          2,
+          1762,
+          887
+        ],
+        "center": 243,
+        "native": true
+      },
+      "reference": {
+        "path": "docs/art/source/r76/logo.png",
+        "sha256": "2320334aecdd467a18ab0fab756e868115073a0281e4393faa4397ea8e341a9c"
+      }
+    },
+    {
+      "id": "app-icon",
+      "kind": "app-icon-proposal",
+      "source": "docs/art/source/r77/app-icon.png",
+      "source_sha256": "c8661515b33b5688d6a547ae408228fcec1a1d9724c0da6714859a61bea454ef",
+      "source_bytes": 2857151,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "source_metrics": {
+        "brightness": 0.3589144837622549,
+        "saturation": 0.40131850954669274,
+        "near_black_ratio": 0.0013427734375,
+        "low_saturation_ratio": 0.14129638671875,
+        "double_gate_pass": true
+      },
+      "runtime": [
+        {
+          "path": "assets/art/r77/app-icon.webp",
+          "sha256": "49534764bd72ab6c37fa50e410e8dfdfa3386ff39fb6fbf55ee2c5118e3e61dd",
+          "bytes": 63778,
+          "size": [
+            512,
+            512
+          ],
+          "format": "WEBP",
+          "metrics": {
+            "brightness": 0.3589276482077206,
+            "saturation": 0.3964364921255192,
+            "near_black_ratio": 0.0010986328125,
+            "low_saturation_ratio": 0.1419677734375,
+            "double_gate_pass": true
+          }
+        },
+        {
+          "path": "assets/art/r77/app-icon-proposal.png",
+          "sha256": "2d593095f8d34c272dfc471f86038923fb180a8ec752b2d6cb3442d98d89b776",
+          "bytes": 506716,
+          "size": [
+            512,
+            512
+          ],
+          "format": "PNG",
+          "metrics": {
+            "brightness": 0.36016582414215687,
+            "saturation": 0.3991597912665274,
+            "near_black_ratio": 0.00054931640625,
+            "low_saturation_ratio": 0.14044189453125,
+            "double_gate_pass": true
+          }
+        }
+      ]
+    }
+  ],
+  "alpha_policy": "Native RGBA returned by actual tool. Original PNG preserved; derived alpha masks and alpha-preserving WebP. No invented opaque-master or background-removal claim.",
+  "generated_master_count": 10,
+  "source_bytes": 22629357,
+  "runtime_bytes": 1761416,
+  "thumbnail": "docs/art/thumbs/r77/contact-64.png"
+}

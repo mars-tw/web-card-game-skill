@@ -3,8 +3,30 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>卡牌對戰 · Card Battle</title>
+<!-- R76 critical style preloads -->
+<link rel="preload" as="style" href="r73-mobile.css?v=card-battle-content-r11-v1" fetchpriority="high">
+<link rel="preload" as="style" href="r74-tide.css?v=card-battle-content-r11-v1" fetchpriority="high">
+<link rel="preload" as="style" href="../r75-theme.css?v=card-battle-content-r11-v1" fetchpriority="high">
+<link rel="preload" as="style" href="../r76-art.css?v=card-battle-content-r11-v1" fetchpriority="high">
+<link rel="preload" as="style" href="../r77-art.css?v=card-battle-content-r11-v1" fetchpriority="high">
+<link rel="preload" as="style" href="../r78-art.css?v=card-battle-content-r11-v1" fetchpriority="high">
+<link rel="preload" as="style" href="../r79-art.css?v=card-battle-content-r11-v1" fetchpriority="high">
+<link rel="preload" as="style" href="../r80-art.css?v=card-battle-content-r11-v1" fetchpriority="high">
+<!-- Content sheets load through their stylesheet links below; reserve early bandwidth for the visible deck. -->
+<title>裂潮卡牌 · 對戰 | TIDEREND CARDS</title>
+<!-- R76 first-deck preloads -->
+<link rel="preload" as="image" href="../../assets/battlefields/white-tide-citadel-high.webp?v=f57dd495" fetchpriority="high">
+<link rel="preload" as="image" href="../../assets/art/r76/footman-low.webp?v=aedc66c0" imagesrcset="../../assets/art/r76/footman-low.webp?v=aedc66c0 1x, ../../assets/art/r75/footman.webp?v=c1f52344 2x" fetchpriority="high">
+<link rel="preload" as="image" href="../../assets/art/r76/archer-low.webp?v=b78bf635" imagesrcset="../../assets/art/r76/archer-low.webp?v=b78bf635 1x, ../../assets/art/r75/archer.webp?v=66fff3e9 2x" fetchpriority="high">
+<link rel="preload" as="image" href="../../assets/art/r79/frame-low.webp" imagesrcset="../../assets/art/r79/frame-low.webp 1x, ../../assets/art/r79/frame.webp?v=r79-frame 2x" fetchpriority="high">
 <link id="r67BattlefieldPreload" rel="preload" as="image" href="../../assets/battlefields/white-tide-citadel-low.webp?v=50075ecc" fetchpriority="high" />
+<link rel="preload" as="image" href="../../assets/art/r79/icon-wave.webp?v=r79-icon" fetchpriority="high">
+<link rel="preload" as="image" href="../../assets/art/r75/icon-settings.webp" fetchpriority="high">
+<link rel="preload" as="image" href="../../assets/art/r75/icon-lantern.webp" fetchpriority="high">
+<link rel="preload" as="image" href="../../assets/art/r79/battlefield-low.webp" imagesrcset="../../assets/art/r79/battlefield-low.webp 1x, ../../assets/art/r79/battlefield.webp 2x" fetchpriority="high">
+<link rel="preload" as="image" href="../../assets/art/r78/surface-low.webp" imagesrcset="../../assets/art/r78/surface-low.webp 1x, ../../assets/art/r78/surface.webp 2x" fetchpriority="high">
+<link rel="preload" as="image" href="../../assets/art/r78/avatar.webp" fetchpriority="high">
+<link rel="preload" as="image" href="../../assets/art/r76/icon-compass.webp?v=941d2114" fetchpriority="high">
 <script>
   (() => {
     const candidate = document.getElementById("r67BattlefieldPreload");
@@ -20,9 +42,9 @@
 </script>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-r71-v1";
+    const CACHE_VERSION = "card-battle-content-r11-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
-    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_r71_v1";
+    const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_content_r6_v1";
     const swPageLoadedAt = Date.now();
     window.__CARD_CACHE_VERSION = CACHE_VERSION;
     window.__CARD_SW_BOOT = { CACHE_VERSION, SW_AUTO_RELOAD_WINDOW_MS, SW_AUTO_RELOAD_KEY, swPageLoadedAt };
@@ -138,6 +160,13 @@
     letter-spacing: 2px; color: var(--accent);
     text-shadow: 0 0 12px color-mix(in srgb, var(--accent) 50%, transparent);
   }
+
+  /* R72 品牌字標（取代通用「CARD BATTLE／CARD PACK」標題）*/
+  header { display:flex; align-items:baseline; justify-content:center; gap:10px; }
+  header .brand-mark { font-weight:900; letter-spacing:4px;
+    background:linear-gradient(180deg,#fff7d6 0%,#fcd34d 40%,#f59e0b 62%,#38bdf8 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 1px 0 rgba(0,0,0,.65)) drop-shadow(0 0 10px rgba(56,189,248,.3)); text-shadow:none; }
+  header .brand-sub { font-size:.62em; letter-spacing:3px; color:#7dd3fc; font-weight:800; text-shadow:0 0 8px rgba(56,189,248,.35); }
 
   /* app-shell：頁面本身不捲動，區域各自內捲 */
   .board { width: clamp(980px, 92vw, 1600px); flex: 1; min-height: 0; overflow-y: auto;
@@ -801,6 +830,158 @@
     .card.rarity-legendary .frame-sheen, .card .taunt-crest, body::after,
     .hero.targetable, .card.targetable { animation: none !important; }
   }
+  /* ===================== R72 好玩＋美觀 ===================== */
+  /* P2 戰場去試算表感：拿掉 38px 方格，改「潮紋場地墊」——同心潮線＋岸邊光，讓 R67 戰場圖透出。
+     保留 backdrop-filter（z 階表依賴它形成疊層）。 */
+  .battlefield {
+    background:
+      radial-gradient(ellipse 58% 120% at 50% 112%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 70%),
+      repeating-radial-gradient(ellipse 150% 70% at 50% 128%, transparent 0 25px, color-mix(in srgb, var(--accent) 15%, transparent) 25px 26.5px, transparent 26.5px 50px),
+      linear-gradient(180deg, rgba(5,9,15,.40), rgba(5,9,15,.16));
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, rgba(255,255,255,.06));
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.035), inset 0 12px 30px rgba(0,0,0,.34), inset 0 -16px 28px color-mix(in srgb, var(--accent) 8%, transparent), 0 6px 18px rgba(0,0,0,.25);
+  }
+  .battlefield.enemy {
+    background:
+      radial-gradient(ellipse 58% 120% at 50% -12%, color-mix(in srgb, var(--opponent-tone) 24%, transparent), transparent 70%),
+      repeating-radial-gradient(ellipse 150% 70% at 50% -28%, transparent 0 25px, color-mix(in srgb, var(--opponent-tone) 17%, transparent) 25px 26.5px, transparent 26.5px 50px),
+      linear-gradient(0deg, rgba(5,9,15,.40), rgba(5,9,15,.16));
+    border-color: color-mix(in srgb, var(--opponent-tone) 44%, rgba(255,255,255,.06));
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.035), inset 0 -12px 30px rgba(0,0,0,.34), inset 0 16px 28px color-mix(in srgb, var(--opponent-tone) 12%, transparent), 0 6px 18px rgba(0,0,0,.25);
+  }
+  .battlefield .empty-hint { font-size: 12px; letter-spacing: 3px; opacity: .55; text-shadow: 0 1px 2px rgba(0,0,0,.8); }
+
+  /* P3 敵方英雄立繪頭像（R61 既有角色立繪；emoji 留給讀屏與載入失敗後備） */
+  #enemyHero .avatar.has-portrait {
+    background: var(--opponent-portrait) center 18% / cover no-repeat, radial-gradient(circle at 32% 24%, #fff 0 4%, color-mix(in srgb, var(--opponent-tone) 82%, #94a3b8) 34%, #1e293b 73%, #090d18 100%);
+    color: transparent; text-shadow: none; font-size: 0;
+    border-color: color-mix(in srgb, var(--opponent-tone) 70%, #fff);
+  }
+  .hero-stats { display:flex; align-items:center; gap:8px; }
+
+  /* F1 潮能計與裂潮爆發鈕 */
+  .tide-ring {
+    --tide-pct: 0; position:relative; display:grid; place-items:center; flex:0 0 auto;
+    width:34px; height:34px; border-radius:50%;
+    background:
+      radial-gradient(circle, rgba(6,14,26,.96) 0 56%, transparent 57%),
+      conic-gradient(from -90deg, #67e8f9 0, #0ea5e9 calc(var(--tide-pct) * 1turn), rgba(148,163,184,.22) 0);
+    box-shadow: 0 0 0 1px rgba(125,211,252,.45), 0 2px 6px rgba(0,0,0,.5);
+  }
+  .tide-glyph { font: 900 13px/1 "Microsoft JhengHei", system-ui, sans-serif; color:#bae6fd; text-shadow:0 0 6px rgba(56,189,248,.8); }
+  .tide-meter { display:inline-flex; align-items:center; gap:5px; color:#bae6fd; font-weight:900; font-size:12px; }
+  .tide-meter .tide-ring { width:30px; height:30px; }
+  .tide-meter .tide-glyph { font-size:11px; }
+  .tide-meter .tide-style { color:#7dd3fc; font-size:11px; font-weight:700; opacity:.85; }
+  .tide-meter.ready .tide-ring { box-shadow: 0 0 0 1px #a5f3fc, 0 0 14px rgba(34,211,238,.85); }
+  .tidebreak-btn {
+    display:inline-flex; align-items:center; gap:7px; min-width:44px; min-height:44px; padding:4px 12px 4px 5px;
+    position:relative; z-index:75; border-radius:999px; cursor:pointer; color:#e0f2fe; font-family:inherit;
+    border:1px solid rgba(125,211,252,.42); background:linear-gradient(180deg, rgba(14,40,66,.92), rgba(8,20,36,.92));
+    box-shadow: 0 3px 10px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.12);
+    transition: transform .12s, box-shadow .2s, filter .2s;
+  }
+  .tidebreak-btn[hidden] { display:none !important; }
+  .tidebreak-btn:not(.ready) { filter: saturate(.75) brightness(.92); }
+  .tidebreak-label { display:flex; flex-direction:column; align-items:flex-start; line-height:1.05; }
+  .tidebreak-label strong { font-size:14px; letter-spacing:2px; }
+  .tidebreak-label span { font-size:11px; color:#7dd3fc; font-weight:800; }
+  .tidebreak-btn.ready {
+    color:#04131f; border-color:#cffafe;
+    background: linear-gradient(115deg, #a5f3fc 0%, #22d3ee 38%, #0ea5e9 62%, #fde68a 100%);
+    background-size: 220% 100%;
+    box-shadow: 0 0 0 2px rgba(34,211,238,.35), 0 0 22px rgba(34,211,238,.75), 0 4px 12px rgba(0,0,0,.5);
+    animation: tideReady 1.4s ease-in-out infinite;
+  }
+  .tidebreak-btn.ready .tidebreak-label span { color:#083344; }
+  .tidebreak-btn.ready .tide-ring { box-shadow: 0 0 0 2px #ecfeff, 0 0 14px rgba(255,255,255,.8); }
+  .tidebreak-btn:active { transform: scale(.96); }
+  .tidebreak-btn.charging .tide-ring, .tide-meter.charging .tide-ring { animation: tidePulse .5s ease-out; }
+  @keyframes tideReady { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+  @keyframes tidePulse { 0% { transform: scale(1); } 40% { transform: scale(1.22); box-shadow:0 0 18px rgba(103,232,249,.95); } 100% { transform: scale(1); } }
+
+  /* F5 裂潮爆發：潮浪橫掃（pointer-events:none，不影響命中測試） */
+  .tide-wave { position:fixed; inset:0; z-index:172; pointer-events:none; opacity:0; overflow:hidden; }
+  .tide-wave.run { opacity:1; }
+  .tide-wave.run::before {
+    /* 浪頭：亮白浪峰＋青藍水體＋扇形浪花邊，自下而上掃過棋盤 */
+    content:""; position:absolute; left:-15%; right:-15%; height:62%; top:100%;
+    background:
+      radial-gradient(18px 14px at 50% 0, rgba(255,255,255,.95) 60%, transparent 64%) 0 0 / 46px 22px repeat-x,
+      linear-gradient(180deg, rgba(240,253,255,.92) 0, rgba(165,243,252,.78) 5%, rgba(34,211,238,.55) 18%, rgba(14,116,144,.38) 46%, rgba(8,47,73,0) 100%);
+    box-shadow: 0 -18px 40px rgba(103,232,249,.55);
+    animation: tideSweepUp .95s cubic-bezier(.2,.75,.25,1) forwards;
+  }
+  .tide-wave.run.enemy::before { top:auto; bottom:100%; animation-name: tideSweepDown; transform: scaleY(-1); }
+  .tide-wave.run::after { content:""; position:absolute; inset:0; background: radial-gradient(ellipse at 50% 50%, rgba(103,232,249,.22), transparent 65%); animation: tideFlash .95s ease-out forwards; }
+  @keyframes tideSweepUp { 0% { transform: translateY(0); } 100% { transform: translateY(-175%); } }
+  @keyframes tideSweepDown { 0% { transform: scaleY(-1) translateY(0); } 100% { transform: scaleY(-1) translateY(-175%); } }
+  @keyframes tideFlash { 0% { opacity:0; } 30% { opacity:1; } 100% { opacity:0; } }
+  .card.tide-hit { animation: tideHit .5s ease-out; }
+  @keyframes tideHit { 0% { filter: brightness(1); } 30% { filter: brightness(1.9) saturate(1.4) hue-rotate(-20deg); box-shadow: 0 0 24px rgba(103,232,249,.95); } 100% { filter: brightness(1); } }
+
+  /* F3 回合橫幅 */
+  .turn-banner { position:fixed; left:0; right:0; top:38%; z-index:168; pointer-events:none; display:flex; justify-content:center; opacity:0; }
+  .turn-banner span {
+    padding:10px 46px; font: 900 clamp(20px, 3.4vw, 34px)/1.1 "Microsoft JhengHei", system-ui, sans-serif; letter-spacing:8px; color:#fff7d6;
+    background: linear-gradient(90deg, transparent, rgba(8,14,24,.88) 18%, rgba(8,14,24,.88) 82%, transparent);
+    border-block: 1px solid rgba(252,211,77,.55); text-shadow: 0 0 14px rgba(245,158,11,.75), 0 2px 2px rgba(0,0,0,.8);
+  }
+  .turn-banner.enemy span { color:#e2e8f0; border-color: color-mix(in srgb, var(--opponent-tone) 70%, transparent); text-shadow: 0 0 14px var(--opponent-tone), 0 2px 2px rgba(0,0,0,.8); }
+  .turn-banner.show { animation: bannerSweep 1.15s cubic-bezier(.2,.8,.2,1) forwards; }
+  @keyframes bannerSweep { 0% { opacity:0; transform: translateX(-12%) scaleY(.6); } 18% { opacity:1; transform: translateX(0) scaleY(1); } 72% { opacity:1; transform: translateX(0); } 100% { opacity:0; transform: translateX(10%); } }
+
+  /* F2 VS 開場演出 */
+  .vs-intro { position:fixed; inset:0; z-index:138; display:none; align-items:center; justify-content:center; cursor:pointer;
+    background: radial-gradient(ellipse at 30% 50%, color-mix(in srgb, var(--opponent-tone) 34%, transparent), transparent 62%), linear-gradient(100deg, rgba(3,6,12,.94), rgba(3,6,12,.84)); }
+  .vs-intro.show { display:flex; animation: vsIn .32s ease-out; }
+  .vs-intro.hide { animation: vsOut .3s ease-in forwards; }
+  .vs-intro-inner { display:flex; align-items:center; gap:clamp(14px, 3vw, 36px); max-width:min(880px, 94vw); padding:12px; }
+  .vs-portrait { flex:0 0 auto; width:clamp(110px, 24vw, 250px); aspect-ratio:1; border-radius:22px; background: var(--opponent-portrait) center 18%/cover no-repeat, #0f172a;
+    border:3px solid color-mix(in srgb, var(--opponent-tone) 75%, #fff); box-shadow: 0 0 40px color-mix(in srgb, var(--opponent-tone) 60%, transparent), 0 18px 40px rgba(0,0,0,.6);
+    animation: vsPortrait .6s cubic-bezier(.2,.9,.25,1.2); }
+  .vs-copy { min-width:0; }
+  .vs-kicker { font-size:13px; letter-spacing:6px; color:#7dd3fc; font-weight:900; }
+  .vs-name { font: 900 clamp(28px, 5vw, 52px)/1.1 "Microsoft JhengHei", system-ui, sans-serif; color:#fff; letter-spacing:4px; text-shadow: 0 0 20px color-mix(in srgb, var(--opponent-tone) 80%, transparent), 0 3px 3px rgba(0,0,0,.8); animation: vsName .55s .08s both cubic-bezier(.2,.9,.25,1); }
+  .vs-line { margin-top:10px; font-size:clamp(14px, 1.7vw, 18px); color:#e2e8f0; font-style:italic; max-width:46ch; animation: vsFade .5s .25s both; }
+  .vs-field { margin-top:10px; font-size:13px; color:#fcd34d; font-weight:800; letter-spacing:2px; animation: vsFade .5s .35s both; }
+  .vs-tide { margin-top:6px; font-size:12px; color:#67e8f9; font-weight:800; animation: vsFade .5s .42s both; }
+  .vs-skip { position:absolute; bottom:max(18px, env(safe-area-inset-bottom)); left:0; right:0; text-align:center; font-size:12px; color:rgba(226,232,240,.7); letter-spacing:3px; }
+  @keyframes vsIn { from { opacity:0; } to { opacity:1; } }
+  @keyframes vsOut { to { opacity:0; visibility:hidden; } }
+  @keyframes vsPortrait { from { opacity:0; transform: translateX(-40px) scale(.9) rotate(-4deg); } to { opacity:1; transform:none; } }
+  @keyframes vsName { from { opacity:0; transform: translateX(40px); } to { opacity:1; transform:none; } }
+  @keyframes vsFade { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform:none; } }
+  @media (max-width: 560px) {
+    .vs-intro-inner { flex-direction:column; text-align:center; }
+    .vs-line { margin-inline:auto; }
+  }
+  @media (max-height: 460px) {
+    .vs-portrait { width:clamp(96px, 30vh, 150px); }
+    .vs-skip { bottom:8px; }
+  }
+
+  /* F4 星級挑戰 */
+  .result-stars { display:flex; flex-wrap:wrap; justify-content:center; gap:4px clamp(8px, 2vw, 18px); margin:4px 0 6px; }
+  .result-stars:empty { display:none; }
+  .star-slot { display:flex; flex-direction:column; align-items:center; gap:3px; width:clamp(78px, 14vw, 118px); }
+  .star-slot .star { font-size:clamp(28px, 5vw, 44px); line-height:1; color:#334155; text-shadow:0 2px 3px rgba(0,0,0,.8); opacity:.7; }
+  .star-slot.lit .star { color:#fde047; opacity:1; text-shadow:0 0 18px rgba(250,204,21,.9), 0 2px 3px rgba(0,0,0,.8); animation: starPop .5s cubic-bezier(.2,1.6,.4,1) both; animation-delay: calc(var(--i) * .28s + .55s); }
+  .star-slot .star-label { font-size:11px; color:#94a3b8; text-align:center; line-height:1.25; }
+  .star-slot.lit .star-label { color:#fef3c7; font-weight:800; }
+  .star-best { width:100%; text-align:center; font-size:12px; color:#7dd3fc; font-weight:800; }
+  .star-best.improved { color:#fde047; }
+  @keyframes starPop { 0% { transform: scale(0) rotate(-40deg); opacity:0; } 100% { transform: scale(1) rotate(0); opacity:1; } }
+
+  /* P4 桌機：每日任務收進「任務」抽屜（dock 已有入口與紅點），把高度還給手牌 */
+  @media (min-width: 701px) {
+    :root[data-control-mode="desktop"] .quest-panel { display:none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tidebreak-btn.ready, .tide-wave.run::before, .tide-wave.run::after, .vs-intro.show, .vs-portrait, .vs-name, .vs-line, .vs-field, .vs-tide, .star-slot.lit .star, .card.tide-hit { animation: none !important; }
+    .turn-banner.show { animation: vsIn .2s ease-out both; }
+  }
+  :root[data-perf="low"] .tide-wave.run::before { animation-duration:.45s; }
   /* 矮視口壓縮階層：卡片縮小＋面板收斂，讓 app-shell 一屏裝得下 */
   @media (max-height: 900px) and (min-width: 701px) {
     :root { --card-w: 104px; --card-h: 148px; }
@@ -848,6 +1029,26 @@
     .quest-panel { max-height: 52px; min-height: 30px; padding: 4px 8px; }
     .quest-list { gap: 4px; }
     .series-footer { padding: 2px 6px; font-size: 10px; }
+  }
+  /* R72 P4：桌機矮視口讓「兩排戰場＋手牌」三列卡牌完整入框（before：1366×768 底部攻/血寶石被裁、1366×600 手牌只露 3/4）。
+     手牌不再被壓縮，戰場平分剩餘高度；系列連結移到開包頁，對戰頁讓位給棋盤。 */
+  @media (min-width: 701px) {
+    :root[data-control-mode="desktop"] .board > .series-footer { display:none; }
+    :root[data-control-mode="desktop"] .hand { flex-shrink:0; }
+  }
+  @media (max-height: 820px) and (min-width: 701px) {
+    :root[data-control-mode="desktop"] { --card-w: 94px; --card-h: 133px; }
+  }
+  @media (max-height: 760px) and (min-width: 701px) {
+    :root[data-control-mode="desktop"] { --card-w: 84px; --card-h: 119px; }
+  }
+  @media (max-height: 660px) and (min-width: 701px) {
+    :root[data-control-mode="desktop"] { --card-w: 68px; --card-h: 97px; }
+    :root[data-control-mode="desktop"] #log { height: 24px; }
+    :root[data-control-mode="desktop"] .card .cardtext,
+    :root[data-control-mode="desktop"] .card .kwrow { display:none; }
+    /* 68px 小卡：「詳」移到右上角小區，不覆蓋卡片中心的主動作（同 R70 觸控修法） */
+    :root[data-control-mode="desktop"] .card-info-btn { width:28px; height:28px; top:0; right:0; border-radius:8px; font-size:11px; }
   }
   @media (max-width: 1024px) and (min-width: 701px) {
     .board { width:100%; }
@@ -929,6 +1130,18 @@
       box-shadow:0 14px 34px rgba(0,0,0,.52);
     }
     .controls.more-open .controls-scroll { display:grid; }
+    /* R72：觸控 dock 多一格常駐「裂潮」圓鈕（48px），抽屜展開也看得到充能 */
+    .controls.has-tide { grid-template-columns:minmax(0,1fr) 48px minmax(100px,.8fr) 48px; }
+    .controls.has-tide .tidebreak-btn { width:48px; height:44px; min-width:0; padding:0; justify-content:center; border-radius:12px; z-index:auto; }
+    .controls.has-tide .tidebreak-btn .tidebreak-label { display:none; }
+    @media (max-width: 400px) {
+      /* 窄機：首回合「結束回合＋重抽」並排時不能被裂潮格擠成三行；手牌鈕收成圖示＋張數 */
+      .controls.has-tide { grid-template-columns:minmax(0,1fr) 44px minmax(60px,.45fr) 44px; gap:6px; padding-inline:6px; }
+      .controls.has-tide .tidebreak-btn { width:44px; }
+      .controls.has-tide .more-actions-btn { width:44px; }
+      .controls.has-tide .hand-drawer-toggle .hand-state { display:none; }
+      .controls.has-tide #endTurnBtn, .controls.has-tide #mulliganBtn { padding-inline:4px; font-size:11px; }
+    }
     .controls .controls-scroll button { width:100%; min-height:44px; padding:8px 10px; border-radius:10px; font-size:12px; white-space:normal; }
     .more-actions-btn {
       display:grid; place-items:center; min-width:0; width:48px; height:44px; border:1px solid rgba(255,255,255,.14);
@@ -1000,6 +1213,7 @@
     :root[data-control-mode="touch"] .quest-panel,
     :root[data-control-mode="touch"] .series-footer { display:none; }
     :root[data-control-mode="touch"] .target-status { min-height:20px; padding-block:1px; }
+    :root[data-control-mode="touch"] .tide-meter .tide-style { display:none; }
   }
   /* 控制型態以主指標能力為準；非觸控桌機即使窄窗也不渲染手機專屬把手／更多鈕。 */
   :root[data-control-mode="desktop"] .hand-drawer { display:contents; position:static; height:auto; pointer-events:auto; }
@@ -1028,9 +1242,23 @@
   body.capture-pose .card.foil::after { background-position:46% 42%,62% 54%; opacity:.84; }
   body.capture-pose .card.legend-idle { box-shadow:0 0 31px var(--glow),0 0 47px color-mix(in srgb,var(--glow) 72%,transparent),0 5px 13px rgba(0,0,0,.52); }
 </style>
+<link rel="stylesheet" href="r73-mobile.css?v=card-battle-content-r11-v1">
+<link rel="stylesheet" href="r74-tide.css?v=card-battle-content-r11-v1">
+<link rel="stylesheet" href="../r75-theme.css?v=card-battle-content-r11-v1">
+<link rel="stylesheet" href="../r76-art.css?v=card-battle-content-r11-v1">
+<link rel="stylesheet" href="../r77-art.css?v=card-battle-content-r11-v1">
+<link rel="stylesheet" href="../r78-art.css?v=card-battle-content-r11-v1">
+<link rel="stylesheet" href="../r79-art.css?v=card-battle-content-r11-v1">
+<link rel="stylesheet" href="../r80-art.css?v=card-battle-content-r11-v1">
+<link rel="stylesheet" href="content-r1.css?v=card-battle-content-r11-v1" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="content-r2.css?v=card-battle-content-r11-v1" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="content-r3.css?v=card-battle-content-r11-v1" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="content-r4.css?v=card-battle-content-r11-v1" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="content-r5.css?v=card-battle-content-r11-v1" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="content-r6.css?v=card-battle-content-r11-v1" media="print" onload="this.media='all'">
 </head>
 <body>
-  <header>⚔️ 卡牌對戰 · CARD BATTLE ⚔️</header>
+  <header><span class="brand-mark">裂潮卡牌</span><span class="brand-sub">TIDEREND · 對戰</span></header>
 
   <div class="settings-hud">
     <button class="settings-toggle" id="settingsToggleBtn" type="button" aria-label="開啟設定" aria-expanded="false" aria-controls="settingsPanel">⚙</button>
@@ -1073,7 +1301,8 @@
           <option value="large">大</option>
         </select>
       </label>
-      <button class="audio-toggle-btn" id="audioToggleBtn" type="button" title="Audio on/off" aria-label="Audio on/off">SFX</button>
+      <button class="audio-toggle-btn" id="audioToggleBtn" type="button" title="音效開關" aria-label="音效開關">音效</button>
+      <button class="audio-toggle-btn" id="contentOpen" type="button">潮汐研習／新內容</button>
       <label class="text-size-toggle">音量
         <input id="audioVolumeRange" type="range" min="0" max="100" step="5" value="75" aria-label="音效音量" />
       </label>
@@ -1085,10 +1314,18 @@
       <div class="hero" id="enemyHero">
         <span class="avatar">😈</span><span class="name">電腦對手</span>
       </div>
-      <div><span class="hp-badge">❤️ <span id="enemyHp">30</span></span></div>
+      <div class="hero-stats">
+        <span class="tide-meter enemy" id="enemyTide" role="img" aria-label="對手潮能 0/6" title="對手潮能">
+          <span class="tide-ring" aria-hidden="true"><span class="tide-glyph">潮</span></span>
+          <span class="tide-count" id="enemyTideCount">0/6</span>
+          <span class="tide-style" id="enemyTideStyle"></span>
+        </span>
+        <span class="hp-badge">❤️ <span id="enemyHp">30</span></span>
+      </div>
     </div>
 
     <div class="battlefield enemy" id="enemyField"></div>
+    <div class="r75-tide-channel" role="img" aria-label="六格潮位水線"><span>裂潮水線</span><div class="r75-tide-pips" id="r75BoardPips"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
     <div class="battlefield" id="playerField"></div>
 
     <div class="hero-row player-hero-row">
@@ -1097,6 +1334,10 @@
           <span class="avatar">🦸</span><span class="name">你</span>
         </div>
         <button class="scene-hint-btn" id="hintBtn" type="button" title="本回合提示最佳一步" aria-label="取得本回合提示">💡</button>
+        <button class="tidebreak-btn" id="tidebreakBtn" type="button" aria-label="裂潮爆發：潮能 0/6" title="潮能滿 6 時可施放裂潮爆發">
+          <span class="tide-ring" aria-hidden="true"><span class="tide-glyph">潮</span></span>
+          <span class="tidebreak-label"><strong>裂潮</strong><span id="playerTideCount">0/6</span></span>
+        </button>
       </div>
       <div style="display:flex; gap:8px;">
         <span class="mana-badge">💧 <span id="playerMana">1</span>/<span id="playerManaMax">1</span></span>
@@ -1125,6 +1366,10 @@
       <div class="controls-scroll" id="dockMorePanel">
         <button class="mulligan-btn" id="newGameBtn" title="重開一局（會帶入最新收藏的牌組）">🔁 重新開始</button>
         <button class="mulligan-btn" id="toPackBtn" title="前往卡包與牌組編輯器">🃏 卡包／牌組</button>
+        <button class="mulligan-btn" id="tideChartBtn" type="button">施放潮術</button>
+        <button class="mulligan-btn" id="tideTrialReplay" type="button" title="重玩潮汐試航" aria-label="重玩潮汐試航">重玩潮汐試航</button>
+        <button class="mulligan-btn" id="tideHarbor" type="button" title="儲存返回港口" aria-label="儲存返回港口">儲存返回港口</button>
+        <button class="mulligan-btn" id="voyageBtn" type="button">航程／試用牌組</button>
         <button class="mulligan-btn" id="guideReplayBtn" title="重看三步導引">🧭 導引</button>
         <button class="mission-drawer-btn" id="missionDrawerBtn">任務<span class="mission-badge" id="missionBadge" aria-live="polite">0</span></button>
         <button class="kw-codex-btn" id="kwCodexBtn">📖 關鍵字</button>
@@ -1137,18 +1382,34 @@
       <div class="quest-list" id="questList" aria-live="polite"></div>
     </section>
 
-    <footer class="series-footer">
-      🎮 阿軒的小遊戲系列
-      <a href="https://mars-tw.github.io/tower-defense-skill/" target="_blank" rel="noopener">塔防</a>
-      <a href="https://mars-tw.github.io/pixel-idle-farm-skill/" target="_blank" rel="noopener">像素農場</a>
-      <a href="https://mars-tw.github.io/ashes-convoy/" target="_blank" rel="noopener">末日射擊</a>
-    </footer>
+    <footer class="series-footer">裂潮卡牌 · 潮汐領航</footer>
   </div>
 
+  <!-- R72 開場演出：對手立繪＋台詞＋戰場（約 1.6 秒，可點略過） -->
+  <div class="vs-intro" id="vsIntro" aria-hidden="true">
+    <div class="vs-intro-inner">
+      <div class="vs-portrait" id="vsPortrait"></div>
+      <div class="vs-copy">
+        <div class="vs-kicker" id="vsKicker">裂潮之戰</div>
+        <div class="vs-name" id="vsName">對手</div>
+        <div class="vs-line" id="vsLine"></div>
+        <div class="vs-field" id="vsField"></div>
+        <div class="vs-tide" id="vsTide"></div>
+      </div>
+    </div>
+    <div class="vs-skip">點一下開始</div>
+  </div>
+  <div class="turn-banner" id="turnBanner" aria-hidden="true"><span id="turnBannerText">你的回合</span></div>
+  <div class="tide-wave" id="tideWave" aria-hidden="true"></div>
+
   <div class="overlay" id="overlay">
+    <img class="r75-victory-hero" id="r75VictoryHero" src="../../assets/art/r78/avatar.webp" alt="領航員與歸航的潮牌">
     <h1 id="overlayTitle">勝利！</h1>
     <p id="overlayEpilogue" class="overlay-epilogue" hidden></p>
+    <div class="result-stars" id="resultStars" aria-live="polite"></div>
+    <div id="voyageResult" aria-live="polite"></div>
     <div class="result-stats" id="resultStats"></div>
+    <div id="trialResultActions" class="overlay-actions" hidden><button id="trialResultReplay">重玩試航</button><button id="trialResultVoyage">開始五站航程</button><button id="trialResultHarbor">返回港口</button></div>
     <div class="overlay-actions">
       <button id="restartBtn">再戰一場</button>
       <button class="secondary" id="overlayPackBtn">去開卡包</button>
@@ -1160,7 +1421,7 @@
   <div class="battle-guide" id="battleGuide" aria-live="polite">
     <div class="guide-panel">
       <h2 id="guideTitle">對戰導引</h2>
-      <div class="guide-step-label" id="guideStepLabel">STEP 1 / 3</div>
+      <div class="guide-step-label" id="guideStepLabel">第 1／3 步</div>
       <p class="guide-copy" id="guideCopy">點一張發亮的手牌出牌。</p>
       <div class="guide-actions">
         <button class="secondary" id="guideSkipBtn">略過</button>
@@ -1237,9 +1498,53 @@
     </div>
   </div>
 
-  <script src="cards.js?v=card-battle-r71-v1"></script>
-  <script src="core.js?v=card-battle-r71-v1"></script>
-  <script src="battle.js?v=card-battle-r71-v1"></script>
+
+  <section id="contentPanel" class="content-panel" hidden role="dialog" aria-modal="true" aria-labelledby="contentTitle">
+    <div class="content-sheet"><header><h2 id="contentTitle">潮汐研習</h2><button id="contentClose" type="button">返回對戰</button></header>
+    <nav class="content-tabs" aria-label="研習種類"><button data-content-tab="puzzles" type="button">六道潮汐殘局</button><button data-content-tab="forecast" type="button">潮汐預報</button><button data-content-tab="moen" type="button">茉恩的退潮考驗</button></nav>
+    <div class="content-body"><img id="contentArt" class="content-art" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="夜海甲板上，銅製三潮儀與六張海藏牌"><div><h3 id="contentName"></h3><p id="contentGoal"></p><p id="contentHint"></p><p id="contentProgress" role="status"></p><div id="contentPuzzles" class="content-puzzles"></div><button id="contentVerify" type="button" hidden>複驗：護住騎士</button></div></div>
+    <footer><button id="contentAbandon" type="button" hidden>結束這次挑戰</button><button id="contentHarbor" type="button">返回港口</button><button id="contentStart" class="content-primary" type="button">開始研習</button></footer></div>
+  </section>
+  <section id="contentBar" class="content-bar" hidden aria-label="研習目標"><span><strong id="contentBarTitle"></strong><span id="contentBarGoal"></span></span><button id="contentHelp" type="button">目標／提示</button><button id="contentRetry" type="button">重試</button><button id="contentMenu" type="button">選題</button></section>
+  <aside id="offlineStatus" role="status" hidden>離線遊玩 · 進度儲存在此裝置</aside>
+  <section id="forecastPanel" class="content-panel" hidden role="dialog" aria-modal="true" aria-labelledby="forecastTitle"><div class="content-sheet"><header><h2 id="forecastTitle">潮汐預報</h2><button id="forecastClose" type="button">繼續對戰</button></header><p id="forecastRule"></p><div id="forecastCancelZone" aria-live="polite">移出到這裡取消</div><div id="forecastRounds" class="forecast-rounds"></div><div id="forecastCompare" class="forecast-compare" aria-live="polite"></div><p class="forecast-note">移開手指可取消；整局一次。滿潮後到「施放潮術」確認。</p></div></section>
+  <section id="contentResult" class="content-panel" hidden role="dialog" aria-modal="true" aria-labelledby="contentResultTitle"><div class="content-sheet"><header><h2 id="contentResultTitle"></h2><button id="contentResultMenu" type="button">返回選題</button></header><p id="contentResultName"></p><img class="content-result-art" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="銅製三潮儀與海藏牌"><div id="contentRecap" class="content-recap" hidden></div><p id="contentResultText" role="status"></p><footer><button id="contentResultRetry" type="button">立即重試</button><button id="contentNext" class="content-primary" type="button">下一道</button></footer></div></section>
+
+  <script src="cards.js?v=card-battle-content-r11-v1"></script>
+  <section id="tideTrialBar" class="tide-trial-bar" hidden aria-live="polite"><span><b class="trial-badge">潮汐試航</b><br><span id="trialStep"></span></span><button id="trialChart" type="button">觀潮</button></section>
+  <section id="trialBrief" class="trial-brief" hidden role="dialog" aria-modal="true" aria-labelledby="trialTitle"><div class="tide-chart-sheet"><h2 id="trialTitle">潮汐試航：借敗成潮</h2><p>這是固定局面的戰術短局，不消耗收藏，也不發放對戰獎勵。</p><p>可先開啟手牌，召喚迅捷狼與火花侍從。<br>① 點選己方見習士兵，再點一位敵方弓箭手。<br>② 兩位士兵各交換一次，陣亡各留一格潮能。<br>③ 滿六格後施放漲潮，沖破殘血防線。</p><div class="tide-chart-footer"><button id="trialLeave" type="button">返回港口</button><button id="trialBegin" class="primary" type="button">開始試航</button></div></div></section>
+  <section id="tideChartPanel" class="tide-chart-panel" hidden role="dialog" aria-modal="true" aria-labelledby="tideChartTitle"><div class="tide-chart-sheet"><h2 id="tideChartTitle">施放潮術</h2><p id="tideChartStatus" aria-live="polite"></p><meter id="tideGauge" min="0" max="6" value="0" aria-label="我方潮能"></meter><div class="r75-tide-pips" id="r75ChartPips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><p id="tideSources"></p><div class="tide-choices"><button id="chooseFlood" type="button" aria-pressed="true">漲潮破陣<br>敵軍全體 1、英雄 2</button><button id="chooseEbb" type="button" aria-pressed="false">退潮護航<br>友軍聖盾、回復 3</button></div><p class="tide-preview" id="tidePreview" aria-live="polite"></p><div class="tide-chart-footer"><button id="tideChartClose" type="button">繼續對戰</button><button id="tideChartCast" class="primary" type="button">確認施放</button></div></div></section>
+  <script src="core.js?v=card-battle-content-r11-v1"></script>
+  <section id="handPreview" class="hand-preview" hidden aria-label="出牌預覽">
+    <div class="hand-preview-copy"><img id="handPreviewArt" src="../../assets/cards/wolf.png" alt=""><div><h2 id="handPreviewName"></h2><p id="handPreviewText"></p></div></div>
+    <p id="handPreviewHint" role="status"></p>
+    <div class="hand-preview-actions"><button id="handCancelBtn" type="button">取消／返回</button><button id="handConfirmBtn" type="button">確認出牌</button></div>
+  </section>
+  <div id="handDragHint" class="hand-drag-hint" hidden role="status"></div>
+  <section id="voyagePanel" class="voyage-panel" hidden role="dialog" aria-modal="true" aria-labelledby="voyageTitle">
+    <div class="voyage-card">
+      <div class="voyage-head"><h2 id="voyageTitle">五站歸航</h2><nav class="voyage-navigation" aria-label="航程站別"><button id="voyagePrev" type="button" aria-label="上一站">‹</button><button id="voyageNext" type="button" aria-label="下一站">›</button></nav><button id="voyageClose" type="button" aria-label="關閉航程">關閉</button></div>
+      <div class="voyage-content">
+        <div><p id="voyageProgress"></p><div class="voyage-story"><img id="voyageStageArt" src="../../assets/cards/heroSerHalden.png" alt="對手立繪"><div><h3 id="voyageStageName"></h3><p id="voyageStory"></p></div></div><p id="voyageTip"></p><p id="voyageReward"></p></div>
+        <div><label for="voyageDeck">航程牌組（每套 20 張）</label><select id="voyageDeck"></select><p id="voyageDeckTip"></p><p id="voyageDeckCards"></p><p>手機：點手牌，或上拖到己方戰場；預覽後再確認。橫滑看手牌，放回原處取消。</p></div>
+      </div>
+      <footer class="voyage-footer"><button id="voyageFree" type="button">自由對戰</button><button id="voyageStart" type="button">開始挑戰</button><button id="voyageLessons" type="button">六道潮汐殘局</button><button id="voyageForecast" type="button">潮汐預報</button><button id="voyageBoss" type="button">茉恩的退潮考驗</button></footer>
+    </div>
+  </section>
+  <script src="voyage.js?v=card-battle-content-r11-v1"></script>
+  <script src="r73-ui.js?v=card-battle-content-r11-v1"></script>
+  <script src="tide-puzzles.js?v=card-battle-content-r11-v1"></script>
+  <script src="tide-session.js?v=card-battle-content-r11-v1"></script>
+  <script src="pose-player.js?v=card-battle-content-r11-v1"></script>
+  <link rel="stylesheet" href="content-r8.css?v=card-battle-content-r11-v1">
+  <link rel="stylesheet" href="content-r9.css?v=card-battle-content-r11-v1">
+  <link rel="stylesheet" href="content-r10.css?v=card-battle-content-r11-v1">
+  <script src="content-r10.js?v=card-battle-content-r11-v1"></script>
+  <link rel="stylesheet" href="content-r11.css?v=card-battle-content-r11-v1">
+  <script src="content-r11.js?v=card-battle-content-r11-v1"></script>
+  <script src="content-r9.js?v=card-battle-content-r11-v1"></script>
+  <script src="content-r6.js?v=card-battle-content-r11-v1"></script>
+  <script src="battle.js?v=card-battle-content-r11-v1"></script>
   <script>
     // 接收入口頁的主題切換
     window.addEventListener("message", (e) => {

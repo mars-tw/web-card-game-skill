@@ -1,0 +1,82 @@
+{
+  "status": "VERIFIED",
+  "passed": 310,
+  "errors": [],
+  "external": [],
+  "results": [
+    {
+      "width": 320,
+      "height": 568,
+      "deviceScaleFactor": 1,
+      "elapsedMs": 4548,
+      "status": "VERIFIED"
+    },
+    {
+      "width": 375,
+      "height": 667,
+      "deviceScaleFactor": 1,
+      "elapsedMs": 4323,
+      "status": "VERIFIED"
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "deviceScaleFactor": 3,
+      "elapsedMs": 7333,
+      "status": "VERIFIED"
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "deviceScaleFactor": 1,
+      "elapsedMs": 4450,
+      "status": "VERIFIED"
+    },
+    {
+      "width": 1032,
+      "height": 1376,
+      "deviceScaleFactor": 2,
+      "elapsedMs": 9299,
+      "status": "VERIFIED"
+    },
+    {
+      "width": 1376,
+      "height": 1032,
+      "deviceScaleFactor": 1,
+      "elapsedMs": 4572,
+      "status": "VERIFIED"
+    },
+    {
+      "width": 1024,
+      "height": 1366,
+      "deviceScaleFactor": 1,
+      "elapsedMs": 4615,
+      "status": "VERIFIED"
+    },
+    {
+      "width": 1366,
+      "height": 1024,
+      "deviceScaleFactor": 1,
+      "elapsedMs": 4565,
+      "status": "VERIFIED"
+    },
+    {
+      "width": 1366,
+      "height": 600,
+      "deviceScaleFactor": 1,
+      "elapsedMs": 4526,
+      "status": "VERIFIED"
+    }
+  ],
+  "screenshots": [
+    "harbor-1290x2796.png",
+    "trial-1290x2796.png",
+    "tide-chart-1290x2796.png",
+    "victory-1290x2796.png",
+    "harbor-2064x2752.png",
+    "trial-2064x2752.png",
+    "tide-chart-2064x2752.png",
+    "victory-2064x2752.png"
+  ],
+  "method": "正式冷入口、固定試航真實點擊；沒有測試注入；Chromium headless，非原生實機"
+}

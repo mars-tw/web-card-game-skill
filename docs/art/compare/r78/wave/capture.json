@@ -1,0 +1,118 @@
+{
+  "status": "VERIFIED",
+  "method": "Explicit nonlethal QA fixture (not store). Actual cast button, continuous unedited browser captures. Rules unchanged until active impact. Other artwork frozen until this receipt.",
+  "results": [
+    {
+      "prefix": "390x844",
+      "before": {
+        "hp": 25,
+        "units": [
+          2,
+          2
+        ],
+        "used": 0
+      },
+      "anticipation": {
+        "hp": 25,
+        "units": [
+          2,
+          2
+        ]
+      },
+      "impact": {
+        "hp": 23,
+        "used": 1,
+        "width": 1.0799679487179488,
+        "foam": [
+          {
+            "opacity": "1",
+            "box": {
+              "x": 88.5,
+              "y": 221.5,
+              "width": 116,
+              "height": 156,
+              "top": 221.5,
+              "right": 204.5,
+              "bottom": 377.5,
+              "left": 88.5
+            }
+          },
+          {
+            "opacity": "1",
+            "box": {
+              "x": 185.5,
+              "y": 221.5,
+              "width": 116,
+              "height": 156,
+              "top": 221.5,
+              "right": 301.5,
+              "bottom": 377.5,
+              "left": 185.5
+            }
+          }
+        ]
+      },
+      "after": {
+        "wet": true,
+        "active": false,
+        "hp": 23
+      }
+    },
+    {
+      "prefix": "1290x2796",
+      "before": {
+        "hp": 25,
+        "units": [
+          2,
+          2
+        ],
+        "used": 0
+      },
+      "anticipation": {
+        "hp": 25,
+        "units": [
+          2,
+          2
+        ]
+      },
+      "impact": {
+        "hp": 23,
+        "used": 1,
+        "width": 1.0799781976744185,
+        "foam": [
+          {
+            "opacity": "1",
+            "box": {
+              "x": 108.5,
+              "y": 267.5,
+              "width": 116,
+              "height": 156,
+              "top": 267.5,
+              "right": 224.5,
+              "bottom": 423.5,
+              "left": 108.5
+            }
+          },
+          {
+            "opacity": "1",
+            "box": {
+              "x": 205.5,
+              "y": 267.5,
+              "width": 116,
+              "height": 156,
+              "top": 267.5,
+              "right": 321.5,
+              "bottom": 423.5,
+              "left": 205.5
+            }
+          }
+        ]
+      },
+      "after": {
+        "wet": true,
+        "active": false,
+        "hp": 23
+      }
+    }
+  ]
+}

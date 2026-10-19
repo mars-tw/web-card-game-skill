@@ -1,0 +1,4 @@
+AssertionError [ERR_ASSERTION]: 844x390 forecast every card complete, no hero or panel intersections
+    at check (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r8-e2e.js:7:28)
+    at geometry (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r8-e2e.js:37:2)
+    at async C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r8-e2e.js:80:30

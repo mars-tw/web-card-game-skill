@@ -1,0 +1,258 @@
+{
+  "status": "VERIFIED",
+  "checks": 86,
+  "screenshots": [
+    "phone-study-verification-locked.png",
+    "phone-puzzle-fallen-playing.png",
+    "phone-puzzle-fallen-failed.png",
+    "phone-puzzle-fallen-retry.png",
+    "phone-puzzle-fallen-completed.png",
+    "phone-puzzle-shield-playing.png",
+    "phone-puzzle-shield-failed.png",
+    "phone-puzzle-shield-retry.png",
+    "phone-puzzle-shield-completed.png",
+    "phone-puzzle-shelter-playing.png",
+    "phone-puzzle-shelter-failed.png",
+    "phone-puzzle-shelter-retry.png",
+    "phone-puzzle-shelter-completed.png",
+    "phone-puzzle-taunt-playing.png",
+    "phone-puzzle-taunt-failed.png",
+    "phone-puzzle-taunt-retry.png",
+    "phone-puzzle-taunt-completed.png",
+    "phone-puzzle-spell-playing.png",
+    "phone-puzzle-spell-failed.png",
+    "phone-puzzle-spell-retry.png",
+    "phone-puzzle-spell-completed.png",
+    "phone-puzzle-cross-playing.png",
+    "phone-puzzle-cross-failed.png",
+    "phone-puzzle-cross-retry.png",
+    "phone-puzzle-cross-exchange-1.png",
+    "phone-puzzle-cross-exchange-2.png",
+    "phone-puzzle-cross-completed.png",
+    "phone-harbor-six-completed.png",
+    "phone-study-verification-unlocked.png",
+    "phone-verification-playing.png",
+    "phone-verification-completed.png",
+    "phone-harbor-verification-completed.png",
+    "phone-study-forecast.png",
+    "phone-forecast-press-1-before.png",
+    "phone-forecast-press-2-down.png",
+    "phone-forecast-press-3-applied.png",
+    "phone-forecast-wrong-direction.png",
+    "phone-forecast-wrong-timing.png",
+    "phone-forecast-fourth-battle.png",
+    "phone-forecast-fourth-choices.png",
+    "phone-forecast-fourth-collapsed.png",
+    "phone-forecast-completed.png",
+    "phone-moen-preparing.png",
+    "phone-moen-wave-1-anticipation.png",
+    "phone-moen-wave-2-impact.png",
+    "phone-moen-wave-3-cleared.png",
+    "phone-moen-shield-before.png",
+    "phone-moen-shield-after.png",
+    "phone-moen-completed.png",
+    "phone-moen-delay-before.png",
+    "phone-moen-delay-after.png",
+    "phone-moen-offline-entry.png",
+    "phone-moen-offline-completed.png"
+  ],
+  "boards": [
+    {
+      "name": "phone expanded fourth",
+      "cards": [
+        {
+          "uid": "coaps1i3",
+          "x": 154,
+          "y": 187.203125,
+          "width": 82,
+          "height": 108,
+          "outsidePanel": true,
+          "visible": true
+        },
+        {
+          "uid": "content-player-1",
+          "x": 202.5,
+          "y": 338.40625,
+          "width": 82,
+          "height": 108,
+          "outsidePanel": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "phone collapsed fourth",
+      "cards": [
+        {
+          "uid": "coaps1i3",
+          "x": 154,
+          "y": 187.203125,
+          "width": 82,
+          "height": 108,
+          "outsidePanel": true,
+          "visible": true
+        },
+        {
+          "uid": "content-player-1",
+          "x": 202.5,
+          "y": 338.40625,
+          "width": 82,
+          "height": 108,
+          "outsidePanel": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "844x390 forecast",
+      "cards": [
+        {
+          "uid": "cdl58rw3",
+          "x": 261.65625,
+          "y": 144,
+          "width": 92,
+          "height": 140,
+          "outsidePanel": true,
+          "visible": true
+        },
+        {
+          "uid": "content-player-1",
+          "x": 94.875,
+          "y": 144,
+          "width": 92,
+          "height": 140,
+          "outsidePanel": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "1032x1376 forecast",
+      "cards": [
+        {
+          "uid": "cbqtb4bj",
+          "x": 475,
+          "y": 320.1875,
+          "width": 82,
+          "height": 108,
+          "outsidePanel": true,
+          "visible": true
+        },
+        {
+          "uid": "content-player-1",
+          "x": 555.5,
+          "y": 737.390625,
+          "width": 82,
+          "height": 108,
+          "outsidePanel": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "1376x1032 forecast",
+      "cards": [
+        {
+          "uid": "c92ih1cw",
+          "x": 647,
+          "y": 234.1875,
+          "width": 82,
+          "height": 108,
+          "outsidePanel": true,
+          "visible": true
+        },
+        {
+          "uid": "content-player-1",
+          "x": 727.5,
+          "y": 494.796875,
+          "width": 82,
+          "height": 108,
+          "outsidePanel": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "1366x600 forecast",
+      "cards": [
+        {
+          "uid": "chkg77f9",
+          "x": 453.5,
+          "y": 301,
+          "width": 92,
+          "height": 140,
+          "outsidePanel": true,
+          "visible": true
+        },
+        {
+          "uid": "content-player-1",
+          "x": 171.828125,
+          "y": 301,
+          "width": 92,
+          "height": 140,
+          "outsidePanel": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "430x932 forecast",
+      "cards": [
+        {
+          "uid": "cson9280",
+          "x": 174,
+          "y": 209.1875,
+          "width": 82,
+          "height": 108,
+          "outsidePanel": true,
+          "visible": true
+        },
+        {
+          "uid": "content-player-1",
+          "x": 222.5,
+          "y": 404.390625,
+          "width": 82,
+          "height": 108,
+          "outsidePanel": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "1032x1376 forecast",
+      "cards": [
+        {
+          "uid": "c20oaka2",
+          "x": 475,
+          "y": 320.1875,
+          "width": 82,
+          "height": 108,
+          "outsidePanel": true,
+          "visible": true
+        },
+        {
+          "uid": "content-player-1",
+          "x": 555.5,
+          "y": 737.390625,
+          "width": 82,
+          "height": 108,
+          "outsidePanel": true,
+          "visible": true
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "phase": "impact",
+      "hp": 7,
+      "shield": true
+    }
+  ],
+  "shieldHP": [
+    4,
+    4
+  ],
+  "errors": [],
+  "method": "Headless Chromium, normal DOM actions, real save reload/export/import and context.setOffline; 390x844 unscaled PNGs, no injected battle state."
+}

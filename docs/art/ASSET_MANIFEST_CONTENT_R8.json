@@ -1,0 +1,33 @@
+{
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "source": "C:\\Users\\digimkt\\.codex\\generated_images\\01a151bb-eeab-7ca0-8d4c-72c34f3f8b94\\exec-340c4144-9782-483e-b0c8-0cbb66e2d6ec.png",
+  "style_prefix": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism.",
+  "postprocess": "alpha-preserving atlas split, trim, resize and lossless WebP; no painted substitutes",
+  "assets": [
+    {
+      "path": "assets/art/content-r8/divine-shield.webp",
+      "sha256": "64f2e8ab72cbbbf91bda5fd8233512a7f9cd50d5a8c4c1b1dcb812d6ad99bd68",
+      "dimensions": [
+        256,
+        256
+      ]
+    },
+    {
+      "path": "assets/art/content-r8/status-atlas-source.png",
+      "sha256": "f17e16caa81a2458af22d64ddd893ac52ece8e92d5180f390fb223331e278a3f",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "path": "assets/art/content-r8/taunt-wall.webp",
+      "sha256": "7d824b6645af0dcb1bbb3d1d2344d2c71fc28b796a8daa7660e55dd1c8069124",
+      "dimensions": [
+        256,
+        256
+      ]
+    }
+  ]
+}

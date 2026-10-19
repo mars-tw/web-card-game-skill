@@ -1,0 +1,67 @@
+/* Composition and rules feedback use existing painted cards, never proxy artwork. */
+[hidden].content-recap{display:none!important}
+#forecastPanel .content-sheet{grid-template-rows:auto auto auto auto auto;max-width:680px}
+#forecastRule{font-size:16px;line-height:1.65;color:#f2f1fa}
+.forecast-note{font-size:14px!important;line-height:1.7!important}
+.forecast-rounds button{font-size:15px;line-height:1.5;padding:12px 6px}
+.forecast-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid #b6a0ec;padding-top:14px}
+.forecast-compare div{background:#10152d;padding:12px;border-left:3px solid #da8a6d;font-size:15px;line-height:1.6}
+.forecast-compare strong{display:block;color:#e9bd74;margin-bottom:6px}
+:root body[data-content-active=true] #targetStatus,body[data-content-active=true] #turnBanner,body[data-content-active=true] #log,body[data-content-active=true] #hintText{display:none!important}
+body[data-content-active=true]{padding-top:132px}
+body[data-content-active=true]>header{display:none}
+.content-bar{display:grid;grid-template-columns:1fr repeat(3,44px);gap:6px;min-height:88px;font-size:14px;padding:7px 9px}
+.content-bar>span{grid-column:1/-1;max-width:none!important;font-size:14px;line-height:1.5}
+.content-bar>span>span{display:block;white-space:normal}
+.content-bar button{grid-row:2;min-width:44px;padding:4px;font-size:12px}
+.content-bar #contentHelp{grid-column:1}
+.content-bar #contentRetry{grid-column:3}
+.content-bar #contentMenu{grid-column:4}
+.content-bar>span{display:block}
+.content-bar span{max-width:none!important}
+body:has(#voyagePanel:not([hidden])) #turnBanner{display:none!important}
+.content-bar strong{font-size:13px;display:block;line-height:18px;margin-right:8px}
+body[data-content-id=moen] #enemyHero .avatar.has-portrait{background-image:var(--opponent-portrait)!important;background-size:240%!important;background-position:50% 15%!important;color:transparent}
+body[data-content-id=moen] .tide-wave.run .r76-wave-art{animation:r2-moen-surge .78s linear both}
+body[data-content-id=moen] .tide-wave.run .r80-current-path{animation-duration:.78s}
+@keyframes r2-moen-surge{0%{opacity:0;transform:translateY(var(--r79-travel)) scale(.65,.45)}15%{opacity:.55}46%{opacity:.7;transform:translateY(0) scale(1)}70%{opacity:.2}100%{opacity:0;transform:translateY(-35px)}}
+.content-recap{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:12px 0}
+.content-recap figure{margin:0;position:relative;border:1px solid #b6a0ec;background:#10152d;overflow:hidden}
+.content-recap img{width:100%;height:190px;object-fit:cover;display:block}
+.content-recap figcaption{padding:9px;font-size:14px;line-height:1.5;color:#f2f1fa}
+.content-recap figcaption strong{display:block;color:#e9bd74}
+.content-recap[data-puzzle=shelter]{grid-template-columns:1.6fr 1fr;align-items:center}
+.content-recap[data-puzzle=taunt]{grid-template-columns:1fr 1.6fr;align-items:end}
+.content-recap[data-puzzle=cross] img{height:105px}
+.content-recap[data-puzzle=spell] figure:first-child{border-color:#da8a6d}
+#contentResult .content-sheet{max-width:650px}
+#contentResultText{font-size:16px;line-height:1.7}
+.content-result-art[src*="content-r2"]{object-position:center 25%}
+.voyage-footer{display:grid!important;grid-template-columns:repeat(2,1fr);gap:8px}
+.voyage-footer button{min-height:44px}
+body[data-content-active=true] .voyage-panel{z-index:248}
+@media(max-height:480px){body[data-content-active=true]{padding-top:80px}.content-bar{min-height:66px;padding:3px 8px;grid-template-columns:1fr repeat(3,70px);grid-template-rows:auto auto}.content-bar>span{grid-column:1;grid-row:1/3}.content-bar strong{display:block}.content-bar button{grid-row:1/3}.content-bar #contentHelp{grid-column:2}.content-bar #contentRetry{grid-column:3}.content-bar #contentMenu{grid-column:4}.content-bar>span>span{display:block;font-size:12px}.content-recap{padding:0;gap:6px;grid-template-columns:repeat(4,1fr)!important}.content-recap img,.content-recap[data-puzzle=cross] img{height:65px}.content-recap figcaption{padding:3px;font-size:11px}#contentResult .content-sheet{gap:6px}#contentResultText{font-size:13px;margin:0}.forecast-compare{padding-top:4px;gap:6px}.forecast-compare div{padding:6px;font-size:12px}.forecast-rounds{margin:0}.forecast-rounds button{min-height:50px;padding:4px;font-size:13px}#forecastRule{font-size:13px}.forecast-note{font-size:12px!important}.voyage-footer{grid-template-columns:repeat(4,1fr)}}
+
+#voyageBoss{background:linear-gradient(90deg,#201c3d66,#201c3dee),url(../../assets/art/content-r2/moen-harbor.webp) 25% 30%/cover;color:#f2f1fa;text-shadow:0 1px 3px #10152d}
+@media(prefers-reduced-motion:reduce){body[data-content-id=moen] .tide-wave.run .r76-wave-art{animation:none;opacity:.5}}
+/* Short landscape uses two complete opposing fields, including names and stats. */
+@media(max-height:650px) and (min-width:600px){
+ :root body[data-content-active=true] .board{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:44px minmax(0,1fr) 16px;gap:4px;padding:4px 8px;height:calc(100dvh - 198px);flex:0 0 auto;min-height:0}
+ body[data-content-active=true] .board>.hero-row:not(.player-hero-row){grid-column:2;grid-row:1}
+ body[data-content-active=true] .player-hero-row{grid-column:1;grid-row:1;margin:0}
+ body[data-content-active=true] #enemyField{grid-column:2;grid-row:2;justify-content:flex-start}
+ body[data-content-active=true] #playerField{grid-column:1;grid-row:2;justify-content:flex-end}
+ :root body[data-content-active=true] .battlefield{min-height:0;max-height:none;align-items:center;align-content:center;overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap;flex:none;gap:4px;padding:3px}
+ :root body[data-content-active=true] .battlefield .card{width:min(92px,calc((100vw - 80px)/8));height:min(140px,calc(100dvh - 242px));flex-shrink:0}
+ :root body[data-content-active=true] .battlefield .card .art{inset:4px 4px 22px}
+ :root body[data-content-active=true] .battlefield .card .stats{inset:auto 3px 1px;min-height:18px}
+ :root body[data-content-active=true] .battlefield .card .atk,:root body[data-content-active=true] .battlefield .card .hp{width:18px;height:18px;font-size:12px}
+ :root body[data-content-active=true] .battlefield .card .cardname{bottom:3px;left:21px;right:21px;padding:0;font-size:11px;white-space:nowrap;background:#201c3ded}
+ :root body[data-content-active=true] .battlefield:has(>:nth-child(5)) .card{width:max(44px,calc((100vw - 90px)/10))}
+ :root body[data-content-active=true] .battlefield:has(>:nth-child(6)) .card{width:max(44px,calc((100vw - 90px)/12))}
+ :root body[data-content-active=true] .battlefield:has(>:nth-child(7)) .card{width:max(44px,calc((100vw - 90px)/14))}
+ :root body[data-content-active=true] .battlefield:has(>:nth-child(5)) .card .cardname{left:2px;right:2px;bottom:22px;font-size:10px}
+ body[data-content-active=true] .r75-tide-channel{grid-column:1/-1;grid-row:3;min-height:16px;height:16px}
+ body[data-content-active=true] .series-footer{display:none}
+}
+@media(max-height:480px) and (min-width:600px){:root body[data-content-active=true] .board{height:calc(100dvh - 146px)}}

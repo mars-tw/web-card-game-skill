@@ -1,0 +1,5 @@
+{
+  "algorithm": "SHA-256 of Git-normalized LF text, binary files unchanged",
+  "repositoryContract": ".gitattributes text=auto eol=lf",
+  "images": "Screenshot and art hashes always use original raw bytes"
+}

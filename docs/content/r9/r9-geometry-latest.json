@@ -1,0 +1,190 @@
+{
+  "label": "1032x1376 Moen",
+  "width": 1032,
+  "height": 1376,
+  "stage": {
+    "x": 11,
+    "y": 615,
+    "width": 162,
+    "height": 168,
+    "top": 615,
+    "right": 173,
+    "bottom": 783,
+    "left": 11
+  },
+  "stageHits": [],
+  "panelWithDock": 0,
+  "gap": 0,
+  "rects": [
+    {
+      "id": "content-enemy-0",
+      "rect": {
+        "x": 712.8125,
+        "y": 314.5,
+        "width": 105,
+        "height": 126,
+        "top": 314.5,
+        "right": 817.8125,
+        "bottom": 440.5,
+        "left": 712.8125
+      }
+    },
+    {
+      "id": "content-player-0",
+      "rect": {
+        "x": 298.5,
+        "y": 943.5,
+        "width": 105,
+        "height": 126,
+        "top": 943.5,
+        "right": 403.5,
+        "bottom": 1069.5,
+        "left": 298.5
+      }
+    },
+    {
+      "id": "content-player-1",
+      "rect": {
+        "x": 408.5,
+        "y": 943.5,
+        "width": 105,
+        "height": 126,
+        "top": 943.5,
+        "right": 513.5,
+        "bottom": 1069.5,
+        "left": 408.5
+      }
+    },
+    {
+      "id": "content-player-2",
+      "rect": {
+        "x": 518.5,
+        "y": 943.5,
+        "width": 105,
+        "height": 126,
+        "top": 943.5,
+        "right": 623.5,
+        "bottom": 1069.5,
+        "left": 518.5
+      }
+    },
+    {
+      "id": "content-player-3",
+      "rect": {
+        "x": 628.5,
+        "y": 943.5,
+        "width": 105,
+        "height": 126,
+        "top": 943.5,
+        "right": 733.5,
+        "bottom": 1069.5,
+        "left": 628.5
+      }
+    }
+  ],
+  "nameLines": [
+    {
+      "text": "茉恩",
+      "height": 20,
+      "lineHeight": 20
+    },
+    {
+      "text": "退潮守約",
+      "height": 17,
+      "lineHeight": 20
+    }
+  ],
+  "buttons": [
+    {
+      "id": "endTurnBtn",
+      "rect": {
+        "x": 14.04140853881836,
+        "y": 1310.9000244140625,
+        "width": 82.26092529296875,
+        "height": 46.199951171875,
+        "top": 1310.9000244140625,
+        "right": 96.30233383178711,
+        "bottom": 1357.0999755859375,
+        "left": 14.04140853881836
+      }
+    },
+    {
+      "id": "tidebreakBtn",
+      "rect": {
+        "x": 495.328125,
+        "y": 1312,
+        "width": 86,
+        "height": 44,
+        "top": 1312,
+        "right": 581.328125,
+        "bottom": 1356,
+        "left": 495.328125
+      }
+    },
+    {
+      "id": "handDrawerToggle",
+      "rect": {
+        "x": 587.328125,
+        "y": 1312,
+        "width": 378.671875,
+        "height": 44,
+        "top": 1312,
+        "right": 966,
+        "bottom": 1356,
+        "left": 587.328125
+      }
+    },
+    {
+      "id": "moreActionsBtn",
+      "rect": {
+        "x": 972,
+        "y": 1312,
+        "width": 48,
+        "height": 44,
+        "top": 1312,
+        "right": 1020,
+        "bottom": 1356,
+        "left": 972
+      }
+    },
+    {
+      "id": "contentHelp",
+      "rect": {
+        "x": 18,
+        "y": 58,
+        "width": 590,
+        "height": 44,
+        "top": 58,
+        "right": 608,
+        "bottom": 102,
+        "left": 18
+      }
+    },
+    {
+      "id": "contentRetry",
+      "rect": {
+        "x": 664,
+        "y": 58,
+        "width": 44,
+        "height": 44,
+        "top": 58,
+        "right": 708,
+        "bottom": 102,
+        "left": 664
+      }
+    },
+    {
+      "id": "contentMenu",
+      "rect": {
+        "x": 714,
+        "y": 58,
+        "width": 44,
+        "height": 44,
+        "top": 58,
+        "right": 758,
+        "bottom": 102,
+        "left": 714
+      }
+    }
+  ]
+}

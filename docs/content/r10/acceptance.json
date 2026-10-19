@@ -1,0 +1,6989 @@
+{
+  "status": "VERIFIED",
+  "checks": 287,
+  "geometry": [
+    {
+      "label": "puzzle fallen",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 153.75,
+            "y": 175.421875,
+            "width": 82.5,
+            "height": 160,
+            "top": 175.421875,
+            "right": 236.25,
+            "bottom": 335.421875,
+            "left": 153.75
+          }
+        },
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 153.75,
+            "y": 516.578125,
+            "width": 82.5,
+            "height": 160,
+            "top": 516.578125,
+            "right": 236.25,
+            "bottom": 676.578125,
+            "left": 153.75
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 368,
+          "bottom": 158,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "puzzle shield",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "符文守衛",
+          "rect": {
+            "x": 153.75,
+            "y": 175.421875,
+            "width": 82.5,
+            "height": 160,
+            "top": 175.421875,
+            "right": 236.25,
+            "bottom": 335.421875,
+            "left": 153.75
+          }
+        },
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 153.75,
+            "y": 516.578125,
+            "width": 82.5,
+            "height": 160,
+            "top": 516.578125,
+            "right": 236.25,
+            "bottom": 676.578125,
+            "left": 153.75
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 368,
+          "bottom": 158,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "puzzle shelter",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 153.75,
+            "y": 175.421875,
+            "width": 82.5,
+            "height": 160,
+            "top": 175.421875,
+            "right": 236.25,
+            "bottom": 335.421875,
+            "left": 153.75
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 153.75,
+            "y": 516.578125,
+            "width": 82.5,
+            "height": 160,
+            "top": 516.578125,
+            "right": 236.25,
+            "bottom": 676.578125,
+            "left": 153.75
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 275.140625,
+          "y": 130,
+          "width": 92.859375,
+          "height": 28,
+          "top": 130,
+          "right": 368,
+          "bottom": 158,
+          "left": 275.140625
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "puzzle taunt",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 153.75,
+            "y": 175.421875,
+            "width": 82.5,
+            "height": 160,
+            "top": 175.421875,
+            "right": 236.25,
+            "bottom": 335.421875,
+            "left": 153.75
+          }
+        },
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 153.75,
+            "y": 516.578125,
+            "width": 82.5,
+            "height": 160,
+            "top": 516.578125,
+            "right": 236.25,
+            "bottom": 676.578125,
+            "left": 153.75
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 368,
+          "bottom": 158,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "puzzle spell",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 550,
+        "width": 364,
+        "height": 44,
+        "top": 550,
+        "right": 377,
+        "bottom": 594,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 153.75,
+            "y": 165.28125,
+            "width": 82.5,
+            "height": 126,
+            "top": 165.28125,
+            "right": 236.25,
+            "bottom": 291.28125,
+            "left": 153.75
+          }
+        },
+        {
+          "name": "鹽盾侍從",
+          "rect": {
+            "x": 153.75,
+            "y": 408.71875,
+            "width": 82.5,
+            "height": 126,
+            "top": 408.71875,
+            "right": 236.25,
+            "bottom": 534.71875,
+            "left": 153.75
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 368,
+          "bottom": 158,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 558,
+          "width": 71.828125,
+          "height": 28,
+          "top": 558,
+          "right": 301.796875,
+          "bottom": 586,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 558,
+          "width": 58.203125,
+          "height": 28,
+          "top": 558,
+          "right": 368,
+          "bottom": 586,
+          "left": 309.796875
+        }
+      ],
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "puzzle cross",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 110,
+            "y": 191.859375,
+            "width": 82.5,
+            "height": 160,
+            "top": 191.859375,
+            "right": 192.5,
+            "bottom": 351.859375,
+            "left": 110
+          }
+        },
+        {
+          "name": "獅鷲",
+          "rect": {
+            "x": 197.5,
+            "y": 191.859375,
+            "width": 82.5,
+            "height": 160,
+            "top": 191.859375,
+            "right": 280,
+            "bottom": 351.859375,
+            "left": 197.5
+          }
+        },
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 110,
+            "y": 520.140625,
+            "width": 82.5,
+            "height": 160,
+            "top": 520.140625,
+            "right": 192.5,
+            "bottom": 680.140625,
+            "left": 110
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 197.5,
+            "y": 520.140625,
+            "width": 82.5,
+            "height": 160,
+            "top": 520.140625,
+            "right": 280,
+            "bottom": 680.140625,
+            "left": 197.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 150,
+          "width": 49.53125,
+          "height": 28,
+          "top": 150,
+          "right": 368,
+          "bottom": 178,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 78,
+            "width": 204,
+            "height": 44,
+            "top": 78,
+            "right": 222,
+            "bottom": 122,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 322,
+            "bottom": 122,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 372,
+            "bottom": 122,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "forecast preview",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 504,
+        "width": 364,
+        "height": 44,
+        "top": 504,
+        "right": 377,
+        "bottom": 548,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 154,
+            "y": 183.5,
+            "width": 82,
+            "height": 108,
+            "top": 183.5,
+            "right": 236,
+            "bottom": 291.5,
+            "left": 154
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 110.5,
+            "y": 362.5,
+            "width": 82,
+            "height": 108,
+            "top": 362.5,
+            "right": 192.5,
+            "bottom": 470.5,
+            "left": 110.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 197.5,
+            "y": 362.5,
+            "width": 82,
+            "height": 108,
+            "top": 362.5,
+            "right": 279.5,
+            "bottom": 470.5,
+            "left": 197.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 368,
+          "bottom": 158,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 512,
+          "width": 71.828125,
+          "height": 28,
+          "top": 512,
+          "right": 301.796875,
+          "bottom": 540,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 512,
+          "width": 58.203125,
+          "height": 28,
+          "top": 512,
+          "right": 368,
+          "bottom": 540,
+          "left": 309.796875
+        }
+      ],
+      "panel": {
+        "x": 8,
+        "y": 560,
+        "width": 374,
+        "height": 204,
+        "top": 560,
+        "right": 382,
+        "bottom": 764,
+        "left": 8
+      },
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          },
+          "hit": true
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 293,
+            "y": 569,
+            "width": 74,
+            "height": 44,
+            "top": 569,
+            "right": 367,
+            "bottom": 613,
+            "left": 293
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 17,
+            "y": 639,
+            "width": 114.65625,
+            "height": 64,
+            "top": 639,
+            "right": 131.65625,
+            "bottom": 703,
+            "left": 17
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 137.65625,
+            "y": 639,
+            "width": 114.671875,
+            "height": 64,
+            "top": 639,
+            "right": 252.328125,
+            "bottom": 703,
+            "left": 137.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 258.328125,
+            "y": 639,
+            "width": 114.65625,
+            "height": 64,
+            "top": 639,
+            "right": 372.984375,
+            "bottom": 703,
+            "left": 258.328125
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "forecast cancelled",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 504,
+        "width": 364,
+        "height": 44,
+        "top": 504,
+        "right": 377,
+        "bottom": 548,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 154,
+            "y": 183.5,
+            "width": 82,
+            "height": 108,
+            "top": 183.5,
+            "right": 236,
+            "bottom": 291.5,
+            "left": 154
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 110.5,
+            "y": 362.5,
+            "width": 82,
+            "height": 108,
+            "top": 362.5,
+            "right": 192.5,
+            "bottom": 470.5,
+            "left": 110.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 197.5,
+            "y": 362.5,
+            "width": 82,
+            "height": 108,
+            "top": 362.5,
+            "right": 279.5,
+            "bottom": 470.5,
+            "left": 197.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 368,
+          "bottom": 158,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 512,
+          "width": 71.828125,
+          "height": 28,
+          "top": 512,
+          "right": 301.796875,
+          "bottom": 540,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 512,
+          "width": 58.203125,
+          "height": 28,
+          "top": 512,
+          "right": 368,
+          "bottom": 540,
+          "left": 309.796875
+        }
+      ],
+      "panel": {
+        "x": 8,
+        "y": 560,
+        "width": 374,
+        "height": 204,
+        "top": 560,
+        "right": 382,
+        "bottom": 764,
+        "left": 8
+      },
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          },
+          "hit": true
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 293,
+            "y": 569,
+            "width": 74,
+            "height": 44,
+            "top": 569,
+            "right": 367,
+            "bottom": 613,
+            "left": 293
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 17,
+            "y": 639,
+            "width": 114.65625,
+            "height": 64,
+            "top": 639,
+            "right": 131.65625,
+            "bottom": 703,
+            "left": 17
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 137.65625,
+            "y": 639,
+            "width": 114.671875,
+            "height": 64,
+            "top": 639,
+            "right": 252.328125,
+            "bottom": 703,
+            "left": 137.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 258.328125,
+            "y": 639,
+            "width": 114.65625,
+            "height": 64,
+            "top": 639,
+            "right": 372.984375,
+            "bottom": 703,
+            "left": 258.328125
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "forecast applied",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 504,
+        "width": 364,
+        "height": 44,
+        "top": 504,
+        "right": 377,
+        "bottom": 548,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 154,
+            "y": 197,
+            "width": 82,
+            "height": 108,
+            "top": 197,
+            "right": 236,
+            "bottom": 305,
+            "left": 154
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 110.5,
+            "y": 367,
+            "width": 82,
+            "height": 108,
+            "top": 367,
+            "right": 192.5,
+            "bottom": 475,
+            "left": 110.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 197.5,
+            "y": 367,
+            "width": 82,
+            "height": 108,
+            "top": 367,
+            "right": 279.5,
+            "bottom": 475,
+            "left": 197.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 148,
+          "width": 49.53125,
+          "height": 28,
+          "top": 148,
+          "right": 368,
+          "bottom": 176,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 512,
+          "width": 71.828125,
+          "height": 28,
+          "top": 512,
+          "right": 301.796875,
+          "bottom": 540,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 512,
+          "width": 58.203125,
+          "height": 28,
+          "top": 512,
+          "right": 368,
+          "bottom": 540,
+          "left": 309.796875
+        }
+      ],
+      "panel": {
+        "x": 8,
+        "y": 560,
+        "width": 374,
+        "height": 204,
+        "top": 560,
+        "right": 382,
+        "bottom": 764,
+        "left": 8
+      },
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 76,
+            "width": 204,
+            "height": 44,
+            "top": 76,
+            "right": 222,
+            "bottom": 120,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 76,
+            "width": 44,
+            "height": 44,
+            "top": 76,
+            "right": 322,
+            "bottom": 120,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 76,
+            "width": 44,
+            "height": 44,
+            "top": 76,
+            "right": 372,
+            "bottom": 120,
+            "left": 328
+          },
+          "hit": true
+        },
+        {
+          "id": "forecastUndo",
+          "rect": {
+            "x": 223,
+            "y": 569,
+            "width": 66,
+            "height": 44,
+            "top": 569,
+            "right": 289,
+            "bottom": 613,
+            "left": 223
+          },
+          "hit": true
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 293,
+            "y": 569,
+            "width": 74,
+            "height": 44,
+            "top": 569,
+            "right": 367,
+            "bottom": 613,
+            "left": 293
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 17,
+            "y": 639,
+            "width": 114.65625,
+            "height": 64,
+            "top": 639,
+            "right": 131.65625,
+            "bottom": 703,
+            "left": 17
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 137.65625,
+            "y": 639,
+            "width": 114.671875,
+            "height": 64,
+            "top": 639,
+            "right": 252.328125,
+            "bottom": 703,
+            "left": 137.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 258.328125,
+            "y": 639,
+            "width": 114.65625,
+            "height": 64,
+            "top": 639,
+            "right": 372.984375,
+            "bottom": 703,
+            "left": 258.328125
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "forecast closed",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 153.75,
+            "y": 190.21875,
+            "width": 82.5,
+            "height": 160,
+            "top": 190.21875,
+            "right": 236.25,
+            "bottom": 350.21875,
+            "left": 153.75
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 110,
+            "y": 519.78125,
+            "width": 82.5,
+            "height": 160,
+            "top": 519.78125,
+            "right": 192.5,
+            "bottom": 679.78125,
+            "left": 110
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 197.5,
+            "y": 519.78125,
+            "width": 82.5,
+            "height": 160,
+            "top": 519.78125,
+            "right": 280,
+            "bottom": 679.78125,
+            "left": 197.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 148,
+          "width": 49.53125,
+          "height": 28,
+          "top": 148,
+          "right": 368,
+          "bottom": 176,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 76,
+            "width": 204,
+            "height": 44,
+            "top": 76,
+            "right": 222,
+            "bottom": 120,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 76,
+            "width": 44,
+            "height": 44,
+            "top": 76,
+            "right": 322,
+            "bottom": 120,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 76,
+            "width": 44,
+            "height": 44,
+            "top": 76,
+            "right": 372,
+            "bottom": 120,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "forecast ally shields",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 153.75,
+            "y": 190.21875,
+            "width": 82.5,
+            "height": 160,
+            "top": 190.21875,
+            "right": 236.25,
+            "bottom": 350.21875,
+            "left": 153.75
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 110,
+            "y": 519.78125,
+            "width": 82.5,
+            "height": 160,
+            "top": 519.78125,
+            "right": 192.5,
+            "bottom": 679.78125,
+            "left": 110
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 197.5,
+            "y": 519.78125,
+            "width": 82.5,
+            "height": 160,
+            "top": 519.78125,
+            "right": 280,
+            "bottom": 679.78125,
+            "left": 197.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 148,
+          "width": 49.53125,
+          "height": 28,
+          "top": 148,
+          "right": 368,
+          "bottom": 176,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 76,
+            "width": 204,
+            "height": 44,
+            "top": 76,
+            "right": 222,
+            "bottom": 120,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 76,
+            "width": 44,
+            "height": 44,
+            "top": 76,
+            "right": 322,
+            "bottom": 120,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 76,
+            "width": 44,
+            "height": 44,
+            "top": 76,
+            "right": 372,
+            "bottom": 120,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "forecast-flood anticipation",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 153.75,
+            "y": 190.21875,
+            "width": 82.5,
+            "height": 160,
+            "top": 190.21875,
+            "right": 236.25,
+            "bottom": 350.21875,
+            "left": 153.75
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 110,
+            "y": 519.78125,
+            "width": 82.5,
+            "height": 160,
+            "top": 519.78125,
+            "right": 192.5,
+            "bottom": 679.78125,
+            "left": 110
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 197.5,
+            "y": 519.78125,
+            "width": 82.5,
+            "height": 160,
+            "top": 519.78125,
+            "right": 280,
+            "bottom": 679.78125,
+            "left": 197.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 148,
+          "width": 49.53125,
+          "height": 28,
+          "top": 148,
+          "right": 368,
+          "bottom": 176,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 76,
+            "width": 204,
+            "height": 44,
+            "top": 76,
+            "right": 222,
+            "bottom": 120,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 76,
+            "width": 44,
+            "height": 44,
+            "top": 76,
+            "right": 322,
+            "bottom": 120,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 76,
+            "width": 44,
+            "height": 44,
+            "top": 76,
+            "right": 372,
+            "bottom": 120,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "forecast-flood impact",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 153.75,
+            "y": 190.21875,
+            "width": 82.5,
+            "height": 160,
+            "top": 190.21875,
+            "right": 236.25,
+            "bottom": 350.21875,
+            "left": 153.75
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 110,
+            "y": 519.78125,
+            "width": 82.5,
+            "height": 160,
+            "top": 519.78125,
+            "right": 192.5,
+            "bottom": 679.78125,
+            "left": 110
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 197.5,
+            "y": 519.78125,
+            "width": 82.5,
+            "height": 160,
+            "top": 519.78125,
+            "right": 280,
+            "bottom": 679.78125,
+            "left": 197.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 148,
+          "width": 49.53125,
+          "height": 28,
+          "top": 148,
+          "right": 368,
+          "bottom": 176,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 76,
+            "width": 204,
+            "height": 44,
+            "top": 76,
+            "right": 222,
+            "bottom": 120,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 76,
+            "width": 44,
+            "height": 44,
+            "top": 76,
+            "right": 322,
+            "bottom": 120,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 76,
+            "width": 44,
+            "height": 44,
+            "top": 76,
+            "right": 372,
+            "bottom": 120,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "moen preparation",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 269.5,
+            "y": 196.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 196.5,
+            "right": 352,
+            "bottom": 322.5,
+            "left": 269.5
+          }
+        },
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 22.5,
+            "y": 549.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 549.5,
+            "right": 105,
+            "bottom": 675.5,
+            "left": 22.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 110,
+            "y": 549.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 549.5,
+            "right": 192.5,
+            "bottom": 675.5,
+            "left": 110
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 197.5,
+            "y": 549.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 549.5,
+            "right": 280,
+            "bottom": 675.5,
+            "left": 197.5
+          }
+        },
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 285,
+            "y": 549.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 549.5,
+            "right": 367.5,
+            "bottom": 675.5,
+            "left": 285
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 150,
+          "width": 49.53125,
+          "height": 28,
+          "top": 150,
+          "right": 368,
+          "bottom": 178,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": {
+        "x": 11,
+        "y": 359,
+        "width": 162,
+        "height": 168,
+        "top": 359,
+        "right": 173,
+        "bottom": 527,
+        "left": 11
+      },
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 78,
+            "width": 204,
+            "height": 44,
+            "top": 78,
+            "right": 222,
+            "bottom": 122,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 322,
+            "bottom": 122,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 372,
+            "bottom": 122,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "moen casting before",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 269.5,
+            "y": 196.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 196.5,
+            "right": 352,
+            "bottom": 322.5,
+            "left": 269.5
+          }
+        },
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 22.5,
+            "y": 549.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 549.5,
+            "right": 105,
+            "bottom": 675.5,
+            "left": 22.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 110,
+            "y": 549.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 549.5,
+            "right": 192.5,
+            "bottom": 675.5,
+            "left": 110
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 197.5,
+            "y": 549.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 549.5,
+            "right": 280,
+            "bottom": 675.5,
+            "left": 197.5
+          }
+        },
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 285,
+            "y": 549.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 549.5,
+            "right": 367.5,
+            "bottom": 675.5,
+            "left": 285
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 150,
+          "width": 49.53125,
+          "height": 28,
+          "top": 150,
+          "right": 368,
+          "bottom": 178,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": {
+        "x": 11,
+        "y": 359,
+        "width": 162,
+        "height": 168,
+        "top": 359,
+        "right": 173,
+        "bottom": 527,
+        "left": 11
+      },
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 15.06076431274414,
+            "y": 779.36572265625,
+            "width": 67.03472900390625,
+            "height": 45.2685546875,
+            "top": 779.36572265625,
+            "right": 82.09549331665039,
+            "bottom": 824.63427734375,
+            "left": 15.06076431274414
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 78,
+            "width": 204,
+            "height": 44,
+            "top": 78,
+            "right": 222,
+            "bottom": 122,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 322,
+            "bottom": 122,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 372,
+            "bottom": 122,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "moen heal impact",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 269.5,
+            "y": 181.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 181.5,
+            "right": 352,
+            "bottom": 307.5,
+            "left": 269.5
+          }
+        },
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 22.5,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 105,
+            "bottom": 670.5,
+            "left": 22.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 110,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 192.5,
+            "bottom": 670.5,
+            "left": 110
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 197.5,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 280,
+            "bottom": 670.5,
+            "left": 197.5
+          }
+        },
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 285,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 367.5,
+            "bottom": 670.5,
+            "left": 285
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 368,
+          "bottom": 158,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": {
+        "x": 11,
+        "y": 339,
+        "width": 162,
+        "height": 168,
+        "top": 339,
+        "right": 173,
+        "bottom": 507,
+        "left": 11
+      },
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.37109375,
+            "y": 778.9000244140625,
+            "width": 68.4140625,
+            "height": 46.199951171875,
+            "top": 778.9000244140625,
+            "right": 82.78515625,
+            "bottom": 825.0999755859375,
+            "left": 14.37109375
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "moen-hurt anticipation",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 110,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 192.5,
+            "bottom": 670.5,
+            "left": 110
+          }
+        },
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 294.5,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 377,
+            "bottom": 670.5,
+            "left": 294.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 368,
+          "bottom": 158,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": {
+        "x": 11,
+        "y": 349,
+        "width": 162,
+        "height": 168,
+        "top": 349,
+        "right": 173,
+        "bottom": 517,
+        "left": 11
+      },
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "moen-hurt impact",
+      "width": 390,
+      "height": 844,
+      "hero": {
+        "x": 13,
+        "y": 702,
+        "width": 364,
+        "height": 44,
+        "top": 702,
+        "right": 377,
+        "bottom": 746,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 772,
+        "width": 374,
+        "height": 64,
+        "top": 772,
+        "right": 382,
+        "bottom": 836,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 110,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 192.5,
+            "bottom": 670.5,
+            "left": 110
+          }
+        },
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 294.5,
+            "y": 544.5,
+            "width": 82.5,
+            "height": 126,
+            "top": 544.5,
+            "right": 377,
+            "bottom": 670.5,
+            "left": 294.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 318.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 368,
+          "bottom": 158,
+          "left": 318.46875
+        },
+        {
+          "x": 229.96875,
+          "y": 710,
+          "width": 71.828125,
+          "height": 28,
+          "top": 710,
+          "right": 301.796875,
+          "bottom": 738,
+          "left": 229.96875
+        },
+        {
+          "x": 309.796875,
+          "y": 710,
+          "width": 58.203125,
+          "height": 28,
+          "top": 710,
+          "right": 368,
+          "bottom": 738,
+          "left": 309.796875
+        }
+      ],
+      "stage": {
+        "x": 11,
+        "y": 349,
+        "width": 162,
+        "height": 168,
+        "top": 349,
+        "right": 173,
+        "bottom": 517,
+        "left": 11
+      },
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 780,
+            "width": 65.15625,
+            "height": 44,
+            "top": 780,
+            "right": 81.15625,
+            "bottom": 824,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 138.65625,
+            "y": 780,
+            "width": 86,
+            "height": 44,
+            "top": 780,
+            "right": 224.65625,
+            "bottom": 824,
+            "left": 138.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 230.65625,
+            "y": 780,
+            "width": 93.34375,
+            "height": 44,
+            "top": 780,
+            "right": 324,
+            "bottom": 824,
+            "left": 230.65625
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 330,
+            "y": 780,
+            "width": 44,
+            "height": 44,
+            "top": 780,
+            "right": 374,
+            "bottom": 824,
+            "left": 330
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 204,
+            "height": 44,
+            "top": 58,
+            "right": 222,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 278,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 322,
+            "bottom": 102,
+            "left": 278
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 328,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 372,
+            "bottom": 102,
+            "left": 328
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "320x568 Moen",
+      "width": 320,
+      "height": 568,
+      "hero": {
+        "x": 9,
+        "y": 140,
+        "width": 147,
+        "height": 44,
+        "top": 140,
+        "right": 156,
+        "bottom": 184,
+        "left": 9
+      },
+      "dock": {
+        "x": 8,
+        "y": 496,
+        "width": 304,
+        "height": 64,
+        "top": 496,
+        "right": 312,
+        "bottom": 560,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 191,
+            "y": 200,
+            "width": 68,
+            "height": 100,
+            "top": 200,
+            "right": 259,
+            "bottom": 300,
+            "left": 191
+          }
+        },
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 10.25,
+            "y": 234,
+            "width": 68,
+            "height": 100,
+            "top": 234,
+            "right": 78.25,
+            "bottom": 334,
+            "left": 10.25
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 86.75,
+            "y": 234,
+            "width": 68,
+            "height": 100,
+            "top": 234,
+            "right": 154.75,
+            "bottom": 334,
+            "left": 86.75
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 10.25,
+            "y": 340,
+            "width": 68,
+            "height": 100,
+            "top": 340,
+            "right": 78.25,
+            "bottom": 440,
+            "left": 10.25
+          }
+        },
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 86.75,
+            "y": 340,
+            "width": 68,
+            "height": 100,
+            "top": 340,
+            "right": 154.75,
+            "bottom": 440,
+            "left": 86.75
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 269.5,
+          "y": 148,
+          "width": 37.5,
+          "height": 28,
+          "top": 148,
+          "right": 307,
+          "bottom": 176,
+          "left": 269.5
+        },
+        {
+          "x": 45.640625,
+          "y": 148,
+          "width": 58.859375,
+          "height": 28,
+          "top": 148,
+          "right": 104.5,
+          "bottom": 176,
+          "left": 45.640625
+        },
+        {
+          "x": 106.5,
+          "y": 148,
+          "width": 45.5,
+          "height": 28,
+          "top": 148,
+          "right": 152,
+          "bottom": 176,
+          "left": 106.5
+        }
+      ],
+      "stage": {
+        "x": 170,
+        "y": 372,
+        "width": 108,
+        "height": 108,
+        "top": 372,
+        "right": 278,
+        "bottom": 480,
+        "left": 170
+      },
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.37109375,
+            "y": 502.8999938964844,
+            "width": 68.4140625,
+            "height": 46.199981689453125,
+            "top": 502.8999938964844,
+            "right": 82.78515625,
+            "bottom": 549.0999755859375,
+            "left": 14.37109375
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 98,
+            "y": 504,
+            "width": 86,
+            "height": 44,
+            "top": 504,
+            "right": 184,
+            "bottom": 548,
+            "left": 98
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 190,
+            "y": 504,
+            "width": 64,
+            "height": 44,
+            "top": 504,
+            "right": 254,
+            "bottom": 548,
+            "left": 190
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 260,
+            "y": 504,
+            "width": 44,
+            "height": 44,
+            "top": 504,
+            "right": 304,
+            "bottom": 548,
+            "left": 260
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 78,
+            "width": 134,
+            "height": 44,
+            "top": 78,
+            "right": 152,
+            "bottom": 122,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 208,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 252,
+            "bottom": 122,
+            "left": 208
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 258,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 302,
+            "bottom": 122,
+            "left": 258
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "320x568 forecast",
+      "width": 320,
+      "height": 568,
+      "hero": {
+        "x": 9,
+        "y": 120,
+        "width": 147,
+        "height": 44,
+        "top": 120,
+        "right": 156,
+        "bottom": 164,
+        "left": 9
+      },
+      "dock": {
+        "x": 8,
+        "y": 496,
+        "width": 304,
+        "height": 64,
+        "top": 496,
+        "right": 312,
+        "bottom": 560,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 203.5,
+            "y": 207,
+            "width": 68,
+            "height": 110,
+            "top": 207,
+            "right": 271.5,
+            "bottom": 317,
+            "left": 203.5
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 10.25,
+            "y": 207,
+            "width": 68,
+            "height": 110,
+            "top": 207,
+            "right": 78.25,
+            "bottom": 317,
+            "left": 10.25
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 86.75,
+            "y": 207,
+            "width": 68,
+            "height": 110,
+            "top": 207,
+            "right": 154.75,
+            "bottom": 317,
+            "left": 86.75
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 269.5,
+          "y": 128,
+          "width": 37.5,
+          "height": 28,
+          "top": 128,
+          "right": 307,
+          "bottom": 156,
+          "left": 269.5
+        },
+        {
+          "x": 45.640625,
+          "y": 128,
+          "width": 58.859375,
+          "height": 28,
+          "top": 128,
+          "right": 104.5,
+          "bottom": 156,
+          "left": 45.640625
+        },
+        {
+          "x": 106.5,
+          "y": 128,
+          "width": 45.5,
+          "height": 28,
+          "top": 128,
+          "right": 152,
+          "bottom": 156,
+          "left": 106.5
+        }
+      ],
+      "panel": {
+        "x": 8,
+        "y": 362,
+        "width": 304,
+        "height": 126,
+        "top": 362,
+        "right": 312,
+        "bottom": 488,
+        "left": 8
+      },
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 15.972953796386719,
+            "y": 503.98175048828125,
+            "width": 65.21034240722656,
+            "height": 44.0364990234375,
+            "top": 503.98175048828125,
+            "right": 81.18329620361328,
+            "bottom": 548.0182495117188,
+            "left": 15.972953796386719
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 98,
+            "y": 504,
+            "width": 86,
+            "height": 44,
+            "top": 504,
+            "right": 184,
+            "bottom": 548,
+            "left": 98
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 190,
+            "y": 504,
+            "width": 64,
+            "height": 44,
+            "top": 504,
+            "right": 254,
+            "bottom": 548,
+            "left": 190
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 260,
+            "y": 504,
+            "width": 44,
+            "height": 44,
+            "top": 504,
+            "right": 304,
+            "bottom": 548,
+            "left": 260
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 134,
+            "height": 44,
+            "top": 58,
+            "right": 152,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 208,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 252,
+            "bottom": 102,
+            "left": 208
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 258,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 302,
+            "bottom": 102,
+            "left": 258
+          },
+          "hit": true
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 227,
+            "y": 367,
+            "width": 74,
+            "height": 44,
+            "top": 367,
+            "right": 301,
+            "bottom": 411,
+            "left": 227
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 13,
+            "y": 413,
+            "width": 94,
+            "height": 44,
+            "top": 413,
+            "right": 107,
+            "bottom": 457,
+            "left": 13
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 113,
+            "y": 413,
+            "width": 94,
+            "height": 44,
+            "top": 413,
+            "right": 207,
+            "bottom": 457,
+            "left": 113
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 213,
+            "y": 413,
+            "width": 94,
+            "height": 44,
+            "top": 413,
+            "right": 307,
+            "bottom": 457,
+            "left": 213
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "360x640 Moen",
+      "width": 360,
+      "height": 640,
+      "hero": {
+        "x": 9,
+        "y": 140,
+        "width": 167,
+        "height": 44,
+        "top": 140,
+        "right": 176,
+        "bottom": 184,
+        "left": 9
+      },
+      "dock": {
+        "x": 8,
+        "y": 568,
+        "width": 344,
+        "height": 64,
+        "top": 568,
+        "right": 352,
+        "bottom": 632,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 216,
+            "y": 200,
+            "width": 78,
+            "height": 100,
+            "top": 200,
+            "right": 294,
+            "bottom": 300,
+            "left": 216
+          }
+        },
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 10.25,
+            "y": 270,
+            "width": 78,
+            "height": 100,
+            "top": 270,
+            "right": 88.25,
+            "bottom": 370,
+            "left": 10.25
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 96.75,
+            "y": 270,
+            "width": 78,
+            "height": 100,
+            "top": 270,
+            "right": 174.75,
+            "bottom": 370,
+            "left": 96.75
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 10.25,
+            "y": 376,
+            "width": 78,
+            "height": 100,
+            "top": 376,
+            "right": 88.25,
+            "bottom": 476,
+            "left": 10.25
+          }
+        },
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 96.75,
+            "y": 376,
+            "width": 78,
+            "height": 100,
+            "top": 376,
+            "right": 174.75,
+            "bottom": 476,
+            "left": 96.75
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 309.5,
+          "y": 148,
+          "width": 37.5,
+          "height": 28,
+          "top": 148,
+          "right": 347,
+          "bottom": 176,
+          "left": 309.5
+        },
+        {
+          "x": 65.640625,
+          "y": 148,
+          "width": 58.859375,
+          "height": 28,
+          "top": 148,
+          "right": 124.5,
+          "bottom": 176,
+          "left": 65.640625
+        },
+        {
+          "x": 126.5,
+          "y": 148,
+          "width": 45.5,
+          "height": 28,
+          "top": 148,
+          "right": 172,
+          "bottom": 176,
+          "left": 126.5
+        }
+      ],
+      "stage": {
+        "x": 190,
+        "y": 444,
+        "width": 108,
+        "height": 108,
+        "top": 444,
+        "right": 298,
+        "bottom": 552,
+        "left": 190
+      },
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.37109375,
+            "y": 574.9000244140625,
+            "width": 68.4140625,
+            "height": 46.199951171875,
+            "top": 574.9000244140625,
+            "right": 82.78515625,
+            "bottom": 621.0999755859375,
+            "left": 14.37109375
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 122,
+            "y": 576,
+            "width": 86,
+            "height": 44,
+            "top": 576,
+            "right": 208,
+            "bottom": 620,
+            "left": 122
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 214,
+            "y": 576,
+            "width": 80,
+            "height": 44,
+            "top": 576,
+            "right": 294,
+            "bottom": 620,
+            "left": 214
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 300,
+            "y": 576,
+            "width": 44,
+            "height": 44,
+            "top": 576,
+            "right": 344,
+            "bottom": 620,
+            "left": 300
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 78,
+            "width": 174,
+            "height": 44,
+            "top": 78,
+            "right": 192,
+            "bottom": 122,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 248,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 292,
+            "bottom": 122,
+            "left": 248
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 298,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 342,
+            "bottom": 122,
+            "left": 298
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "360x640 forecast",
+      "width": 360,
+      "height": 640,
+      "hero": {
+        "x": 9,
+        "y": 120,
+        "width": 167,
+        "height": 44,
+        "top": 120,
+        "right": 176,
+        "bottom": 164,
+        "left": 9
+      },
+      "dock": {
+        "x": 8,
+        "y": 568,
+        "width": 344,
+        "height": 64,
+        "top": 568,
+        "right": 352,
+        "bottom": 632,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 228.5,
+            "y": 243,
+            "width": 78,
+            "height": 110,
+            "top": 243,
+            "right": 306.5,
+            "bottom": 353,
+            "left": 228.5
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 10.25,
+            "y": 243,
+            "width": 78,
+            "height": 110,
+            "top": 243,
+            "right": 88.25,
+            "bottom": 353,
+            "left": 10.25
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 96.75,
+            "y": 243,
+            "width": 78,
+            "height": 110,
+            "top": 243,
+            "right": 174.75,
+            "bottom": 353,
+            "left": 96.75
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 309.5,
+          "y": 128,
+          "width": 37.5,
+          "height": 28,
+          "top": 128,
+          "right": 347,
+          "bottom": 156,
+          "left": 309.5
+        },
+        {
+          "x": 65.640625,
+          "y": 128,
+          "width": 58.859375,
+          "height": 28,
+          "top": 128,
+          "right": 124.5,
+          "bottom": 156,
+          "left": 65.640625
+        },
+        {
+          "x": 126.5,
+          "y": 128,
+          "width": 45.5,
+          "height": 28,
+          "top": 128,
+          "right": 172,
+          "bottom": 156,
+          "left": 126.5
+        }
+      ],
+      "panel": {
+        "x": 8,
+        "y": 434,
+        "width": 344,
+        "height": 126,
+        "top": 434,
+        "right": 352,
+        "bottom": 560,
+        "left": 8
+      },
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 15.973213195800781,
+            "y": 575.98193359375,
+            "width": 65.20982360839844,
+            "height": 44.0361328125,
+            "top": 575.98193359375,
+            "right": 81.18303680419922,
+            "bottom": 620.01806640625,
+            "left": 15.973213195800781
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 122,
+            "y": 576,
+            "width": 86,
+            "height": 44,
+            "top": 576,
+            "right": 208,
+            "bottom": 620,
+            "left": 122
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 214,
+            "y": 576,
+            "width": 80,
+            "height": 44,
+            "top": 576,
+            "right": 294,
+            "bottom": 620,
+            "left": 214
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 300,
+            "y": 576,
+            "width": 44,
+            "height": 44,
+            "top": 576,
+            "right": 344,
+            "bottom": 620,
+            "left": 300
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 174,
+            "height": 44,
+            "top": 58,
+            "right": 192,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 248,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 292,
+            "bottom": 102,
+            "left": 248
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 298,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 342,
+            "bottom": 102,
+            "left": 298
+          },
+          "hit": true
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 267,
+            "y": 439,
+            "width": 74,
+            "height": 44,
+            "top": 439,
+            "right": 341,
+            "bottom": 483,
+            "left": 267
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 13,
+            "y": 485,
+            "width": 107.328125,
+            "height": 44,
+            "top": 485,
+            "right": 120.328125,
+            "bottom": 529,
+            "left": 13
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 126.328125,
+            "y": 485,
+            "width": 107.328125,
+            "height": 44,
+            "top": 485,
+            "right": 233.65625,
+            "bottom": 529,
+            "left": 126.328125
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 239.65625,
+            "y": 485,
+            "width": 107.34375,
+            "height": 44,
+            "top": 485,
+            "right": 347,
+            "bottom": 529,
+            "left": 239.65625
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "1032x1376 Moen",
+      "width": 1032,
+      "height": 1376,
+      "hero": {
+        "x": 13,
+        "y": 1234,
+        "width": 1006,
+        "height": 44,
+        "top": 1234,
+        "right": 1019,
+        "bottom": 1278,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 1304,
+        "width": 1016,
+        "height": 64,
+        "top": 1304,
+        "right": 1024,
+        "bottom": 1368,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 712.8125,
+            "y": 314.5,
+            "width": 105,
+            "height": 126,
+            "top": 314.5,
+            "right": 817.8125,
+            "bottom": 440.5,
+            "left": 712.8125
+          }
+        },
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 298.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 403.5,
+            "bottom": 1069.5,
+            "left": 298.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 408.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 513.5,
+            "bottom": 1069.5,
+            "left": 408.5
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 518.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 623.5,
+            "bottom": 1069.5,
+            "left": 518.5
+          }
+        },
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 628.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 733.5,
+            "bottom": 1069.5,
+            "left": 628.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 960.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 1010,
+          "bottom": 158,
+          "left": 960.46875
+        },
+        {
+          "x": 871.96875,
+          "y": 1242,
+          "width": 71.828125,
+          "height": 28,
+          "top": 1242,
+          "right": 943.796875,
+          "bottom": 1270,
+          "left": 871.96875
+        },
+        {
+          "x": 951.796875,
+          "y": 1242,
+          "width": 58.203125,
+          "height": 28,
+          "top": 1242,
+          "right": 1010,
+          "bottom": 1270,
+          "left": 951.796875
+        }
+      ],
+      "stage": {
+        "x": 11,
+        "y": 615,
+        "width": 162,
+        "height": 168,
+        "top": 615,
+        "right": 173,
+        "bottom": 783,
+        "left": 11
+      },
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 1310.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 1310.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 1357.0999755859375,
+            "left": 14.04140853881836
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 495.328125,
+            "y": 1312,
+            "width": 86,
+            "height": 44,
+            "top": 1312,
+            "right": 581.328125,
+            "bottom": 1356,
+            "left": 495.328125
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 587.328125,
+            "y": 1312,
+            "width": 378.671875,
+            "height": 44,
+            "top": 1312,
+            "right": 966,
+            "bottom": 1356,
+            "left": 587.328125
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 972,
+            "y": 1312,
+            "width": 48,
+            "height": 44,
+            "top": 1312,
+            "right": 1020,
+            "bottom": 1356,
+            "left": 972
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 590,
+            "height": 44,
+            "top": 58,
+            "right": 608,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 664,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 708,
+            "bottom": 102,
+            "left": 664
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 758,
+            "bottom": 102,
+            "left": 714
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "1032x1376 forecast",
+      "width": 1032,
+      "height": 1376,
+      "hero": {
+        "x": 13,
+        "y": 1036,
+        "width": 1006,
+        "height": 44,
+        "top": 1036,
+        "right": 1019,
+        "bottom": 1080,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 1304,
+        "width": 1016,
+        "height": 64,
+        "top": 1304,
+        "right": 1024,
+        "bottom": 1368,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 475,
+            "y": 316.5,
+            "width": 82,
+            "height": 108,
+            "top": 316.5,
+            "right": 557,
+            "bottom": 424.5,
+            "left": 475
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 431.5,
+            "y": 761.5,
+            "width": 82,
+            "height": 108,
+            "top": 761.5,
+            "right": 513.5,
+            "bottom": 869.5,
+            "left": 431.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 518.5,
+            "y": 761.5,
+            "width": 82,
+            "height": 108,
+            "top": 761.5,
+            "right": 600.5,
+            "bottom": 869.5,
+            "left": 518.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 960.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 1010,
+          "bottom": 158,
+          "left": 960.46875
+        },
+        {
+          "x": 871.96875,
+          "y": 1044,
+          "width": 71.828125,
+          "height": 28,
+          "top": 1044,
+          "right": 943.796875,
+          "bottom": 1072,
+          "left": 871.96875
+        },
+        {
+          "x": 951.796875,
+          "y": 1044,
+          "width": 58.203125,
+          "height": 28,
+          "top": 1044,
+          "right": 1010,
+          "bottom": 1072,
+          "left": 951.796875
+        }
+      ],
+      "panel": {
+        "x": 216,
+        "y": 1092,
+        "width": 600,
+        "height": 204,
+        "top": 1092,
+        "right": 816,
+        "bottom": 1296,
+        "left": 216
+      },
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 15.967479705810547,
+            "y": 1311.981689453125,
+            "width": 78.40878295898438,
+            "height": 44.03662109375,
+            "top": 1311.981689453125,
+            "right": 94.37626266479492,
+            "bottom": 1356.018310546875,
+            "left": 15.967479705810547
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 495.328125,
+            "y": 1312,
+            "width": 86,
+            "height": 44,
+            "top": 1312,
+            "right": 581.328125,
+            "bottom": 1356,
+            "left": 495.328125
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 587.328125,
+            "y": 1312,
+            "width": 378.671875,
+            "height": 44,
+            "top": 1312,
+            "right": 966,
+            "bottom": 1356,
+            "left": 587.328125
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 972,
+            "y": 1312,
+            "width": 48,
+            "height": 44,
+            "top": 1312,
+            "right": 1020,
+            "bottom": 1356,
+            "left": 972
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 590,
+            "height": 44,
+            "top": 58,
+            "right": 608,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 664,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 708,
+            "bottom": 102,
+            "left": 664
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 758,
+            "bottom": 102,
+            "left": 714
+          },
+          "hit": true
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 727,
+            "y": 1101,
+            "width": 74,
+            "height": 44,
+            "top": 1101,
+            "right": 801,
+            "bottom": 1145,
+            "left": 727
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 225,
+            "y": 1171,
+            "width": 190,
+            "height": 64,
+            "top": 1171,
+            "right": 415,
+            "bottom": 1235,
+            "left": 225
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 421,
+            "y": 1171,
+            "width": 190,
+            "height": 64,
+            "top": 1171,
+            "right": 611,
+            "bottom": 1235,
+            "left": 421
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 617,
+            "y": 1171,
+            "width": 190,
+            "height": 64,
+            "top": 1171,
+            "right": 807,
+            "bottom": 1235,
+            "left": 617
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "1376x1032 Moen",
+      "width": 1376,
+      "height": 1032,
+      "hero": {
+        "x": 13,
+        "y": 890,
+        "width": 1350,
+        "height": 44,
+        "top": 890,
+        "right": 1363,
+        "bottom": 934,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 960,
+        "width": 1360,
+        "height": 64,
+        "top": 960,
+        "right": 1368,
+        "bottom": 1024,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 988,
+            "y": 228.5,
+            "width": 105,
+            "height": 126,
+            "top": 228.5,
+            "right": 1093,
+            "bottom": 354.5,
+            "left": 988
+          }
+        },
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 470.5,
+            "y": 685.5,
+            "width": 105,
+            "height": 126,
+            "top": 685.5,
+            "right": 575.5,
+            "bottom": 811.5,
+            "left": 470.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 580.5,
+            "y": 685.5,
+            "width": 105,
+            "height": 126,
+            "top": 685.5,
+            "right": 685.5,
+            "bottom": 811.5,
+            "left": 580.5
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 690.5,
+            "y": 685.5,
+            "width": 105,
+            "height": 126,
+            "top": 685.5,
+            "right": 795.5,
+            "bottom": 811.5,
+            "left": 690.5
+          }
+        },
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 800.5,
+            "y": 685.5,
+            "width": 105,
+            "height": 126,
+            "top": 685.5,
+            "right": 905.5,
+            "bottom": 811.5,
+            "left": 800.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 1304.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 1354,
+          "bottom": 158,
+          "left": 1304.46875
+        },
+        {
+          "x": 1215.96875,
+          "y": 898,
+          "width": 71.828125,
+          "height": 28,
+          "top": 898,
+          "right": 1287.796875,
+          "bottom": 926,
+          "left": 1215.96875
+        },
+        {
+          "x": 1295.796875,
+          "y": 898,
+          "width": 58.203125,
+          "height": 28,
+          "top": 898,
+          "right": 1354,
+          "bottom": 926,
+          "left": 1295.796875
+        }
+      ],
+      "stage": {
+        "x": 11,
+        "y": 443,
+        "width": 162,
+        "height": 168,
+        "top": 443,
+        "right": 173,
+        "bottom": 611,
+        "left": 11
+      },
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 966.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 966.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 1013.0999755859375,
+            "left": 14.04140853881836
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 686.4375,
+            "y": 968,
+            "width": 86,
+            "height": 44,
+            "top": 968,
+            "right": 772.4375,
+            "bottom": 1012,
+            "left": 686.4375
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 778.4375,
+            "y": 968,
+            "width": 531.5625,
+            "height": 44,
+            "top": 968,
+            "right": 1310,
+            "bottom": 1012,
+            "left": 778.4375
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 1316,
+            "y": 968,
+            "width": 48,
+            "height": 44,
+            "top": 968,
+            "right": 1364,
+            "bottom": 1012,
+            "left": 1316
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 590,
+            "height": 44,
+            "top": 58,
+            "right": 608,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 664,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 708,
+            "bottom": 102,
+            "left": 664
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 758,
+            "bottom": 102,
+            "left": 714
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "1376x1032 forecast",
+      "width": 1376,
+      "height": 1032,
+      "hero": {
+        "x": 13,
+        "y": 692,
+        "width": 1350,
+        "height": 44,
+        "top": 692,
+        "right": 1363,
+        "bottom": 736,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 960,
+        "width": 1360,
+        "height": 64,
+        "top": 960,
+        "right": 1368,
+        "bottom": 1024,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 647,
+            "y": 230.5,
+            "width": 82,
+            "height": 108,
+            "top": 230.5,
+            "right": 729,
+            "bottom": 338.5,
+            "left": 647
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 603.5,
+            "y": 503.5,
+            "width": 82,
+            "height": 108,
+            "top": 503.5,
+            "right": 685.5,
+            "bottom": 611.5,
+            "left": 603.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 690.5,
+            "y": 503.5,
+            "width": 82,
+            "height": 108,
+            "top": 503.5,
+            "right": 772.5,
+            "bottom": 611.5,
+            "left": 690.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 1304.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 1354,
+          "bottom": 158,
+          "left": 1304.46875
+        },
+        {
+          "x": 1215.96875,
+          "y": 700,
+          "width": 71.828125,
+          "height": 28,
+          "top": 700,
+          "right": 1287.796875,
+          "bottom": 728,
+          "left": 1215.96875
+        },
+        {
+          "x": 1295.796875,
+          "y": 700,
+          "width": 58.203125,
+          "height": 28,
+          "top": 700,
+          "right": 1354,
+          "bottom": 728,
+          "left": 1295.796875
+        }
+      ],
+      "panel": {
+        "x": 388,
+        "y": 748,
+        "width": 600,
+        "height": 204,
+        "top": 748,
+        "right": 988,
+        "bottom": 952,
+        "left": 388
+      },
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 15.9678955078125,
+            "y": 967.9819946289062,
+            "width": 78.407958984375,
+            "height": 44.0360107421875,
+            "top": 967.9819946289062,
+            "right": 94.3758544921875,
+            "bottom": 1012.0180053710938,
+            "left": 15.9678955078125
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 686.4375,
+            "y": 968,
+            "width": 86,
+            "height": 44,
+            "top": 968,
+            "right": 772.4375,
+            "bottom": 1012,
+            "left": 686.4375
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 778.4375,
+            "y": 968,
+            "width": 531.5625,
+            "height": 44,
+            "top": 968,
+            "right": 1310,
+            "bottom": 1012,
+            "left": 778.4375
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 1316,
+            "y": 968,
+            "width": 48,
+            "height": 44,
+            "top": 968,
+            "right": 1364,
+            "bottom": 1012,
+            "left": 1316
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 590,
+            "height": 44,
+            "top": 58,
+            "right": 608,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 664,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 708,
+            "bottom": 102,
+            "left": 664
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 758,
+            "bottom": 102,
+            "left": 714
+          },
+          "hit": true
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 899,
+            "y": 757,
+            "width": 74,
+            "height": 44,
+            "top": 757,
+            "right": 973,
+            "bottom": 801,
+            "left": 899
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 397,
+            "y": 827,
+            "width": 190,
+            "height": 64,
+            "top": 827,
+            "right": 587,
+            "bottom": 891,
+            "left": 397
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 593,
+            "y": 827,
+            "width": 190,
+            "height": 64,
+            "top": 827,
+            "right": 783,
+            "bottom": 891,
+            "left": 593
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 789,
+            "y": 827,
+            "width": 190,
+            "height": 64,
+            "top": 827,
+            "right": 979,
+            "bottom": 891,
+            "left": 789
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "430x932 Moen",
+      "width": 430,
+      "height": 932,
+      "hero": {
+        "x": 13,
+        "y": 790,
+        "width": 404,
+        "height": 44,
+        "top": 790,
+        "right": 417,
+        "bottom": 834,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 860,
+        "width": 414,
+        "height": 64,
+        "top": 860,
+        "right": 422,
+        "bottom": 924,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 299.5,
+            "y": 218.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 218.5,
+            "right": 392,
+            "bottom": 344.5,
+            "left": 299.5
+          }
+        },
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 22.5,
+            "y": 615.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 615.5,
+            "right": 115,
+            "bottom": 741.5,
+            "left": 22.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 120,
+            "y": 615.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 615.5,
+            "right": 212.5,
+            "bottom": 741.5,
+            "left": 120
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 217.5,
+            "y": 615.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 615.5,
+            "right": 310,
+            "bottom": 741.5,
+            "left": 217.5
+          }
+        },
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 315,
+            "y": 615.5,
+            "width": 92.5,
+            "height": 126,
+            "top": 615.5,
+            "right": 407.5,
+            "bottom": 741.5,
+            "left": 315
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 358.46875,
+          "y": 150,
+          "width": 49.53125,
+          "height": 28,
+          "top": 150,
+          "right": 408,
+          "bottom": 178,
+          "left": 358.46875
+        },
+        {
+          "x": 269.96875,
+          "y": 798,
+          "width": 71.828125,
+          "height": 28,
+          "top": 798,
+          "right": 341.796875,
+          "bottom": 826,
+          "left": 269.96875
+        },
+        {
+          "x": 349.796875,
+          "y": 798,
+          "width": 58.203125,
+          "height": 28,
+          "top": 798,
+          "right": 408,
+          "bottom": 826,
+          "left": 349.796875
+        }
+      ],
+      "stage": {
+        "x": 11,
+        "y": 413,
+        "width": 162,
+        "height": 168,
+        "top": 413,
+        "right": 173,
+        "bottom": 581,
+        "left": 11
+      },
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 866.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 866.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 913.0999755859375,
+            "left": 14.04140853881836
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 160.875,
+            "y": 868,
+            "width": 86,
+            "height": 44,
+            "top": 868,
+            "right": 246.875,
+            "bottom": 912,
+            "left": 160.875
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 252.875,
+            "y": 868,
+            "width": 111.109375,
+            "height": 44,
+            "top": 868,
+            "right": 363.984375,
+            "bottom": 912,
+            "left": 252.875
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 369.984375,
+            "y": 868,
+            "width": 48,
+            "height": 44,
+            "top": 868,
+            "right": 417.984375,
+            "bottom": 912,
+            "left": 369.984375
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 78,
+            "width": 244,
+            "height": 44,
+            "top": 78,
+            "right": 262,
+            "bottom": 122,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 318,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 362,
+            "bottom": 122,
+            "left": 318
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 368,
+            "y": 78,
+            "width": 44,
+            "height": 44,
+            "top": 78,
+            "right": 412,
+            "bottom": 122,
+            "left": 368
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "430x932 forecast",
+      "width": 430,
+      "height": 932,
+      "hero": {
+        "x": 13,
+        "y": 592,
+        "width": 404,
+        "height": 44,
+        "top": 592,
+        "right": 417,
+        "bottom": 636,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 860,
+        "width": 414,
+        "height": 64,
+        "top": 860,
+        "right": 422,
+        "bottom": 924,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 174,
+            "y": 205.5,
+            "width": 82,
+            "height": 108,
+            "top": 205.5,
+            "right": 256,
+            "bottom": 313.5,
+            "left": 174
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 130.5,
+            "y": 428.5,
+            "width": 82,
+            "height": 108,
+            "top": 428.5,
+            "right": 212.5,
+            "bottom": 536.5,
+            "left": 130.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 217.5,
+            "y": 428.5,
+            "width": 82,
+            "height": 108,
+            "top": 428.5,
+            "right": 299.5,
+            "bottom": 536.5,
+            "left": 217.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 358.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 408,
+          "bottom": 158,
+          "left": 358.46875
+        },
+        {
+          "x": 269.96875,
+          "y": 600,
+          "width": 71.828125,
+          "height": 28,
+          "top": 600,
+          "right": 341.796875,
+          "bottom": 628,
+          "left": 269.96875
+        },
+        {
+          "x": 349.796875,
+          "y": 600,
+          "width": 58.203125,
+          "height": 28,
+          "top": 600,
+          "right": 408,
+          "bottom": 628,
+          "left": 349.796875
+        }
+      ],
+      "panel": {
+        "x": 8,
+        "y": 648,
+        "width": 414,
+        "height": 204,
+        "top": 648,
+        "right": 422,
+        "bottom": 852,
+        "left": 8
+      },
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 16,
+            "y": 868,
+            "width": 78.34375,
+            "height": 44,
+            "top": 868,
+            "right": 94.34375,
+            "bottom": 912,
+            "left": 16
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 160.875,
+            "y": 868,
+            "width": 86,
+            "height": 44,
+            "top": 868,
+            "right": 246.875,
+            "bottom": 912,
+            "left": 160.875
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 252.875,
+            "y": 868,
+            "width": 111.109375,
+            "height": 44,
+            "top": 868,
+            "right": 363.984375,
+            "bottom": 912,
+            "left": 252.875
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 369.984375,
+            "y": 868,
+            "width": 48,
+            "height": 44,
+            "top": 868,
+            "right": 417.984375,
+            "bottom": 912,
+            "left": 369.984375
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 244,
+            "height": 44,
+            "top": 58,
+            "right": 262,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 318,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 362,
+            "bottom": 102,
+            "left": 318
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 368,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 412,
+            "bottom": 102,
+            "left": 368
+          },
+          "hit": true
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 333,
+            "y": 657,
+            "width": 74,
+            "height": 44,
+            "top": 657,
+            "right": 407,
+            "bottom": 701,
+            "left": 333
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 17,
+            "y": 727,
+            "width": 128,
+            "height": 64,
+            "top": 727,
+            "right": 145,
+            "bottom": 791,
+            "left": 17
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 151,
+            "y": 727,
+            "width": 128,
+            "height": 64,
+            "top": 727,
+            "right": 279,
+            "bottom": 791,
+            "left": 151
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 285,
+            "y": 727,
+            "width": 128,
+            "height": 64,
+            "top": 727,
+            "right": 413,
+            "bottom": 791,
+            "left": 285
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "1032x1376 Moen",
+      "width": 1032,
+      "height": 1376,
+      "hero": {
+        "x": 13,
+        "y": 1234,
+        "width": 1006,
+        "height": 44,
+        "top": 1234,
+        "right": 1019,
+        "bottom": 1278,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 1304,
+        "width": 1016,
+        "height": 64,
+        "top": 1304,
+        "right": 1024,
+        "bottom": 1368,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 712.8125,
+            "y": 314.5,
+            "width": 105,
+            "height": 126,
+            "top": 314.5,
+            "right": 817.8125,
+            "bottom": 440.5,
+            "left": 712.8125
+          }
+        },
+        {
+          "name": "見習士兵",
+          "rect": {
+            "x": 298.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 403.5,
+            "bottom": 1069.5,
+            "left": 298.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 408.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 513.5,
+            "bottom": 1069.5,
+            "left": 408.5
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 518.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 623.5,
+            "bottom": 1069.5,
+            "left": 518.5
+          }
+        },
+        {
+          "name": "迅捷狼",
+          "rect": {
+            "x": 628.5,
+            "y": 943.5,
+            "width": 105,
+            "height": 126,
+            "top": 943.5,
+            "right": 733.5,
+            "bottom": 1069.5,
+            "left": 628.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 960.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 1010,
+          "bottom": 158,
+          "left": 960.46875
+        },
+        {
+          "x": 871.96875,
+          "y": 1242,
+          "width": 71.828125,
+          "height": 28,
+          "top": 1242,
+          "right": 943.796875,
+          "bottom": 1270,
+          "left": 871.96875
+        },
+        {
+          "x": 951.796875,
+          "y": 1242,
+          "width": 58.203125,
+          "height": 28,
+          "top": 1242,
+          "right": 1010,
+          "bottom": 1270,
+          "left": 951.796875
+        }
+      ],
+      "stage": {
+        "x": 11,
+        "y": 615,
+        "width": 162,
+        "height": 168,
+        "top": 615,
+        "right": 173,
+        "bottom": 783,
+        "left": 11
+      },
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 1310.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 1310.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 1357.0999755859375,
+            "left": 14.04140853881836
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 495.328125,
+            "y": 1312,
+            "width": 86,
+            "height": 44,
+            "top": 1312,
+            "right": 581.328125,
+            "bottom": 1356,
+            "left": 495.328125
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 587.328125,
+            "y": 1312,
+            "width": 378.671875,
+            "height": 44,
+            "top": 1312,
+            "right": 966,
+            "bottom": 1356,
+            "left": 587.328125
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 972,
+            "y": 1312,
+            "width": 48,
+            "height": 44,
+            "top": 1312,
+            "right": 1020,
+            "bottom": 1356,
+            "left": 972
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 590,
+            "height": 44,
+            "top": 58,
+            "right": 608,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 664,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 708,
+            "bottom": 102,
+            "left": 664
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 758,
+            "bottom": 102,
+            "left": 714
+          },
+          "hit": true
+        }
+      ]
+    },
+    {
+      "label": "1032x1376 forecast",
+      "width": 1032,
+      "height": 1376,
+      "hero": {
+        "x": 13,
+        "y": 1036,
+        "width": 1006,
+        "height": 44,
+        "top": 1036,
+        "right": 1019,
+        "bottom": 1080,
+        "left": 13
+      },
+      "dock": {
+        "x": 8,
+        "y": 1304,
+        "width": 1016,
+        "height": 64,
+        "top": 1304,
+        "right": 1024,
+        "bottom": 1368,
+        "left": 8
+      },
+      "cards": [
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 475,
+            "y": 316.5,
+            "width": 82,
+            "height": 108,
+            "top": 316.5,
+            "right": 557,
+            "bottom": 424.5,
+            "left": 475
+          }
+        },
+        {
+          "name": "弓箭手",
+          "rect": {
+            "x": 431.5,
+            "y": 761.5,
+            "width": 82,
+            "height": 108,
+            "top": 761.5,
+            "right": 513.5,
+            "bottom": 869.5,
+            "left": 431.5
+          }
+        },
+        {
+          "name": "鋼鐵騎士",
+          "rect": {
+            "x": 518.5,
+            "y": 761.5,
+            "width": 82,
+            "height": 108,
+            "top": 761.5,
+            "right": 600.5,
+            "bottom": 869.5,
+            "left": 518.5
+          }
+        }
+      ],
+      "stats": [
+        {
+          "x": 960.46875,
+          "y": 130,
+          "width": 49.53125,
+          "height": 28,
+          "top": 130,
+          "right": 1010,
+          "bottom": 158,
+          "left": 960.46875
+        },
+        {
+          "x": 871.96875,
+          "y": 1044,
+          "width": 71.828125,
+          "height": 28,
+          "top": 1044,
+          "right": 943.796875,
+          "bottom": 1072,
+          "left": 871.96875
+        },
+        {
+          "x": 951.796875,
+          "y": 1044,
+          "width": 58.203125,
+          "height": 28,
+          "top": 1044,
+          "right": 1010,
+          "bottom": 1072,
+          "left": 951.796875
+        }
+      ],
+      "panel": {
+        "x": 216,
+        "y": 1092,
+        "width": 600,
+        "height": 204,
+        "top": 1092,
+        "right": 816,
+        "bottom": 1296,
+        "left": 216
+      },
+      "stage": null,
+      "stageHits": [],
+      "heroHits": [],
+      "shieldCostHits": 0,
+      "buttons": [
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 15.967700958251953,
+            "y": 1311.9818115234375,
+            "width": 78.40835571289062,
+            "height": 44.036376953125,
+            "top": 1311.9818115234375,
+            "right": 94.37605667114258,
+            "bottom": 1356.0181884765625,
+            "left": 15.967700958251953
+          },
+          "hit": true
+        },
+        {
+          "id": "tidebreakBtn",
+          "rect": {
+            "x": 495.328125,
+            "y": 1312,
+            "width": 86,
+            "height": 44,
+            "top": 1312,
+            "right": 581.328125,
+            "bottom": 1356,
+            "left": 495.328125
+          },
+          "hit": true
+        },
+        {
+          "id": "handDrawerToggle",
+          "rect": {
+            "x": 587.328125,
+            "y": 1312,
+            "width": 378.671875,
+            "height": 44,
+            "top": 1312,
+            "right": 966,
+            "bottom": 1356,
+            "left": 587.328125
+          },
+          "hit": true
+        },
+        {
+          "id": "moreActionsBtn",
+          "rect": {
+            "x": 972,
+            "y": 1312,
+            "width": 48,
+            "height": 44,
+            "top": 1312,
+            "right": 1020,
+            "bottom": 1356,
+            "left": 972
+          },
+          "hit": true
+        },
+        {
+          "id": "contentHelp",
+          "rect": {
+            "x": 18,
+            "y": 58,
+            "width": 590,
+            "height": 44,
+            "top": 58,
+            "right": 608,
+            "bottom": 102,
+            "left": 18
+          },
+          "hit": true
+        },
+        {
+          "id": "contentRetry",
+          "rect": {
+            "x": 664,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 708,
+            "bottom": 102,
+            "left": 664
+          },
+          "hit": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 714,
+            "y": 58,
+            "width": 44,
+            "height": 44,
+            "top": 58,
+            "right": 758,
+            "bottom": 102,
+            "left": 714
+          },
+          "hit": true
+        },
+        {
+          "id": "forecastClose",
+          "rect": {
+            "x": 727,
+            "y": 1101,
+            "width": 74,
+            "height": 44,
+            "top": 1101,
+            "right": 801,
+            "bottom": 1145,
+            "left": 727
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 225,
+            "y": 1171,
+            "width": 190,
+            "height": 64,
+            "top": 1171,
+            "right": 415,
+            "bottom": 1235,
+            "left": 225
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 421,
+            "y": 1171,
+            "width": 190,
+            "height": 64,
+            "top": 1171,
+            "right": 611,
+            "bottom": 1235,
+            "left": 421
+          },
+          "hit": true
+        },
+        {
+          "id": "",
+          "rect": {
+            "x": 617,
+            "y": 1171,
+            "width": 190,
+            "height": 64,
+            "top": 1171,
+            "right": 807,
+            "bottom": 1235,
+            "left": 617
+          },
+          "hit": true
+        }
+      ]
+    }
+  ],
+  "shots": [
+    "phone-puzzle-fallen-playing.png",
+    "phone-puzzle-fallen-failed.png",
+    "phone-puzzle-fallen-retried.png",
+    "phone-puzzle-fallen-completed.png",
+    "phone-puzzle-shield-playing.png",
+    "phone-puzzle-shield-failed.png",
+    "phone-puzzle-shield-retried.png",
+    "phone-puzzle-shield-completed.png",
+    "phone-puzzle-shelter-playing.png",
+    "phone-puzzle-shelter-failed.png",
+    "phone-puzzle-shelter-retried.png",
+    "phone-puzzle-shelter-completed.png",
+    "phone-puzzle-taunt-playing.png",
+    "phone-puzzle-taunt-failed.png",
+    "phone-puzzle-taunt-retried.png",
+    "phone-puzzle-taunt-completed.png",
+    "phone-puzzle-spell-playing.png",
+    "phone-puzzle-spell-failed.png",
+    "phone-puzzle-spell-retried.png",
+    "phone-puzzle-spell-completed.png",
+    "phone-puzzle-cross-playing.png",
+    "phone-puzzle-cross-failed.png",
+    "phone-puzzle-cross-retried.png",
+    "phone-puzzle-cross-completed.png",
+    "phone-exchange-preview.png",
+    "phone-exchange-result.png",
+    "phone-forecast-preview.png",
+    "phone-forecast-mouse-cancelled.png",
+    "phone-forecast-cancelled.png",
+    "phone-forecast-applied.png",
+    "phone-forecast-undone.png",
+    "phone-forecast-closed.png",
+    "phone-forecast-full-health-preview.png",
+    "phone-forecast-ebb-shields.png",
+    "phone-forecast-flood-before.png",
+    "phone-forecast-flood-impact.png",
+    "phone-forecast-flood-after.png",
+    "phone-forecast-flood-completed.png",
+    "phone-moen-preparation.png",
+    "phone-moen-before.png",
+    "phone-moen-heal-impact.png",
+    "phone-moen-break-anticipation.png",
+    "phone-moen-break-impact.png",
+    "phone-moen-break-recovery.png",
+    "phone-moen-broken.png",
+    "phone-moen-hurt-before.png",
+    "phone-moen-hurt-impact.png",
+    "phone-moen-hurt-after.png",
+    "phone-moen-completed.png",
+    "phone-moen-return-wolf-spent.png",
+    "phone-moen-return-triggered-before.png",
+    "phone-moen-return-triggered.png",
+    "phone-moen-return-triggered-completed.png",
+    "phone-moen-return-prevented-before.png",
+    "phone-moen-return-prevented.png",
+    "phone-moen-return-prevented-completed.png"
+  ],
+  "errors": [],
+  "method": "Normal DOM input, read-only state, raw native viewport 390x844 PNG; paused clock only for exact impact capture."
+}

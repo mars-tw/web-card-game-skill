@@ -1,0 +1,578 @@
+[
+  {
+    "path": "docs/content/r10/layout-forecast-1032x1376-1.png",
+    "size": [
+      1032,
+      1376
+    ],
+    "sha256": "25a4e8cb801ad3d0db1c5a03da3dff026288ec0a29c8c262dc53312c106b2f16"
+  },
+  {
+    "path": "docs/content/r10/layout-forecast-1032x1376-2.png",
+    "size": [
+      2064,
+      2752
+    ],
+    "sha256": "d7b49f26ad5508959750d42504ea030905ef2267c8f49862d80b39fc56211d05"
+  },
+  {
+    "path": "docs/content/r10/layout-forecast-1366x600-1.png",
+    "size": [
+      1366,
+      600
+    ],
+    "sha256": "f1d6bcac2baef48c109e157f4d3a3f7a93a60ff64587d3c12065ea5ec07e4986"
+  },
+  {
+    "path": "docs/content/r10/layout-forecast-1376x1032-1.png",
+    "size": [
+      1376,
+      1032
+    ],
+    "sha256": "9e05f1a5f086d7b3ab611ea0be83ef57bc68c8f4bb41821e202769cc0ed7e827"
+  },
+  {
+    "path": "docs/content/r10/layout-forecast-320x568-1.png",
+    "size": [
+      320,
+      568
+    ],
+    "sha256": "9d6f3dfc9ec9e481bca241bc35220a1f22dfae0789b73767ec341a05f51faa2c"
+  },
+  {
+    "path": "docs/content/r10/layout-forecast-360x640-1.png",
+    "size": [
+      360,
+      640
+    ],
+    "sha256": "74f65f7d68be743c3b2139eb1d1f745b3f84e1c38ca09c403c42416efa1e812b"
+  },
+  {
+    "path": "docs/content/r10/layout-forecast-430x932-3.png",
+    "size": [
+      1290,
+      2796
+    ],
+    "sha256": "14a04cfd2be64bc89ded61164db003f93b4678dcebbfad62f83fadd1e4bc6b3e"
+  },
+  {
+    "path": "docs/content/r10/layout-forecast-844x390-1.png",
+    "size": [
+      844,
+      390
+    ],
+    "sha256": "ae95de187e136058e25c35bca9ecbc3bfb2f94b782e042815537a1904b7036ae"
+  },
+  {
+    "path": "docs/content/r10/layout-moen-1032x1376-1.png",
+    "size": [
+      1032,
+      1376
+    ],
+    "sha256": "ec659bebc76f443adaa4c46e2c303bea80531b97bf2dfb82a8d2086bbd47a7cd"
+  },
+  {
+    "path": "docs/content/r10/layout-moen-1032x1376-2.png",
+    "size": [
+      2064,
+      2752
+    ],
+    "sha256": "0d42dbd525bf01f3f586d9497ff72ebfab77bea797bfbb1b755cede1598993af"
+  },
+  {
+    "path": "docs/content/r10/layout-moen-1366x600-1.png",
+    "size": [
+      1366,
+      600
+    ],
+    "sha256": "dbd5dec6c2ed0cbc1bf1adf0250b7ffe016f623b37f778c55f9e4b3a54cd9543"
+  },
+  {
+    "path": "docs/content/r10/layout-moen-1376x1032-1.png",
+    "size": [
+      1376,
+      1032
+    ],
+    "sha256": "2fcc602beac2638a27dda66c6b9d9c2868dd2642d64882a0d304d0838d90cd02"
+  },
+  {
+    "path": "docs/content/r10/layout-moen-320x568-1.png",
+    "size": [
+      320,
+      568
+    ],
+    "sha256": "4291565ac31122abe360336ca0577264d651939057865ed4ebf87319bee2f8b1"
+  },
+  {
+    "path": "docs/content/r10/layout-moen-360x640-1.png",
+    "size": [
+      360,
+      640
+    ],
+    "sha256": "f15e64b4ca76a1f8daa8e3ce9ff2c407f68c6ebe62ded714c2599fc8f1f3891a"
+  },
+  {
+    "path": "docs/content/r10/layout-moen-430x932-3.png",
+    "size": [
+      1290,
+      2796
+    ],
+    "sha256": "19d51e641bd308921d5070842fb2919b2dcc7157f086d3871452c2a8ff324938"
+  },
+  {
+    "path": "docs/content/r10/layout-moen-844x390-1.png",
+    "size": [
+      844,
+      390
+    ],
+    "sha256": "47220b024fdba9019d09a7290a10d0bf45934f5f531002db63a2ea055b8f0454"
+  },
+  {
+    "path": "docs/content/r10/phone-exchange-preview.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "b76e8f4ca4cd40f8ac4ed7b976fd9a1d40d7b1df3bb700a6a9536adae7c482b8"
+  },
+  {
+    "path": "docs/content/r10/phone-exchange-result.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "ef0498c962924333b139bf43c56b1507d0966e078de505456a45e363337c766c"
+  },
+  {
+    "path": "docs/content/r10/phone-forecast-applied.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "68400786e4a195b990f52b8a90f07d5f1b63efa47a72e200ca425ef4d28dff28"
+  },
+  {
+    "path": "docs/content/r10/phone-forecast-cancelled.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "03a292e5846813cb5603d8ae0a1bb18076d598cc845aee980257309ed462220d"
+  },
+  {
+    "path": "docs/content/r10/phone-forecast-closed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "cb9208495f7972f794566cfdb101b7e7beca88d09966baa2567cb2a510f9fd58"
+  },
+  {
+    "path": "docs/content/r10/phone-forecast-ebb-shields.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "9b80d40f0a01d538ae25b7caa0dcba1c95410ceba98a70727b98097ca1899842"
+  },
+  {
+    "path": "docs/content/r10/phone-forecast-flood-after.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "4f9d8fc2495eb66a87888ec597fe06bc96d7a6a71eee556fb0306658df57f933"
+  },
+  {
+    "path": "docs/content/r10/phone-forecast-flood-before.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "c5da3350d939ebbd8ee23582e9377a1e76d601736ecc5d44882e38c282d96084"
+  },
+  {
+    "path": "docs/content/r10/phone-forecast-flood-completed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "a88d9ea50be17f54f682a6605faeaf93d4468ffc84e9aa580a7c9b5f56684a1f"
+  },
+  {
+    "path": "docs/content/r10/phone-forecast-flood-impact.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "ae198d282a4aefe65d15a969085e7db9cb308e2696db997e919363f4f5247016"
+  },
+  {
+    "path": "docs/content/r10/phone-forecast-full-health-preview.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "29193bd123cf94f8cf4095984bf5dd2000ac89691cabddfffe2cafdebf698fe4"
+  },
+  {
+    "path": "docs/content/r10/phone-forecast-mouse-cancelled.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "b08242584f8d9ad850d4ab30af166de783ab4617468631504bc608f7fe7f8a87"
+  },
+  {
+    "path": "docs/content/r10/phone-forecast-preview.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "c6e8534d3e1d37837b17547d5eacbeaccb60032fbae076ec00dc7631255752b4"
+  },
+  {
+    "path": "docs/content/r10/phone-forecast-undone.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "b53e43bd8d04467ab0aaa4a630c7b1c3f21795deb0582529d76177a869733b3c"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-before.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "7470bf8677d3a012d7a3c26f0294af241e8c1312a5b3abcf3bb401b6b9eedc27"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-break-anticipation.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "48b82a20d7f5ddd442bf70af773fc348e8dc472213713947d9bfe0a94b6a2647"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-break-impact.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "1857a09ddf9e79c71de73cf66030115c409a464eddc0c0b76c6af6687adbc1e7"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-break-recovery.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "a2aa18dc1644383d47c9d3eada59c54a9975c4639ace1963f10091bbfdcf63a0"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-broken.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "7e942b260d6f533c41dbf091b106949604d935ef2a233375854aa9fb4fc03da5"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-completed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "1d951d5f87d0fd8072096c385991c2e89e82c1887775625130a947c14f5ce62b"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-heal-impact.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "2616a492a8f78262b0c38c0b4c33354582d27941a1e5bca568d075f567fab3e8"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-hurt-after.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "1b7ac2f54e535e054631dac84be115f9d5326adff69192431a209b36ce08747b"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-hurt-before.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "7a6cb5c02b1175666b902329e12568ae21ce54949a76dea52e2e62ad2dfcd411"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-hurt-impact.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "9dbee089458b26b0b99142e43504ddb42631cc19f2da1af834f3c40086f9ad19"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-preparation.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "1947adb5c1cb05cc816e0c83927c6a8c1edcd908645a13bebf500c25f0f38e2f"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-return-prevented-before.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "bfe64689b30d65b327a2cac23ac85826f604947ade3e4e0e1978c6c918a9662d"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-return-prevented-completed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "7f1ee2474d63caa6f3546c124b8b8332f565c69ba457fc79e15e0eef1f8d13e8"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-return-prevented.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "88248bc67cd203707d3da035542e7f0ed25c602b500d92f2ac82bb2967f1fd24"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-return-triggered-before.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "b9dc6fbb5a2c927cc63dcbc5989b8d86402284b783d7d8d6a92bd8ce295c5ef6"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-return-triggered-completed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "9f9b065fa54755fa5b7d64c1a41d33cc1366bb62f2eeedf6284efd4fdce423da"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-return-triggered.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "1547008e01a22dad6fd91f22f8cdb44eb53fb51e71b90bfe0fbb4942d4c4eca7"
+  },
+  {
+    "path": "docs/content/r10/phone-moen-return-wolf-spent.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "b9dc6fbb5a2c927cc63dcbc5989b8d86402284b783d7d8d6a92bd8ce295c5ef6"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-cross-completed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "ab692b016ff313576332231bda5ae0cc7ae7b09b5a32a677c4da8b75de9e9871"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-cross-failed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "c490420d1fcf5a5eb8daf9bebb3c2446c4243a8c921015cf1682e2b33b343d31"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-cross-playing.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "adc16f2f10f4405518082fcdae6e6a4a90486cd65318e83ec6c3590b7ec28057"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-cross-retried.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "d92e77e3f490d95117fa0e1ff33c073b7ea9432a841599842e29f2d681c80c57"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-fallen-completed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "40804b75c9f1cc99633f54239be5262cd32376af806bc5baa74f425d2476f3a2"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-fallen-failed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "add687569e159b5edbd6465a965a47a29f07ab47fda531a5c071075622da76c7"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-fallen-playing.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "8d39de9946d6c4612f9be73a4012e7cc3693c5993c5e1de9172ca7a2ac718d8a"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-fallen-retried.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "a2e208baf9211d59f35e4af4aa63f399cc916fcd8c6f7d9d629566396038c73c"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-shelter-completed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "883fdd7ea3c6503faa9c970250a71c146e95c592498ef69a369833c51dd22efe"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-shelter-failed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "9eb2fc21db74fca433965c7ce19ac1dc1c054379392b0145a3da3c607d2e46cf"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-shelter-playing.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "e21b41febaae4d1a9afc7597536b5366fe0d7ab8bfe2416d24de066e72146ad4"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-shelter-retried.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "7bf5c5b30a67237f131dba614af638e6f3b3219b52155fcd0d011a30c52a6ac5"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-shield-completed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "380b6871f63397b879c164a6a7c822c607b2e44a7e6f6a9cf6ab61f381a41ad0"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-shield-failed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "a31d7f5cf626554432627d64caaa91486d61c1354cd51030bbea5d2bd18bc348"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-shield-playing.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "a25a57bb88c9711fdc99451d7fca2f397ee1f2cfa8988f02c0fe127bdaa7b740"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-shield-retried.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "5d9addc0af9dc605be295f3561574a67bdee41d6970a54c559950ff5792390a1"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-spell-completed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "273dd39925ef609da775cfa8132d89c7d68ed4b14b66c4976bdae60c0f343134"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-spell-failed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "82fa52802be96bf49bff0f85e2d67a4f86cdd8a59eeb3b2dc959203112e23131"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-spell-playing.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "20615f558bc9ea757120b5df24e2b2f80383c14aefd93f31fb6eeed76bc7f4ff"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-spell-retried.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "b4d00505e66bc3bea062820a1cb38158c2b9e1afd22408a770dbb897536bf1cc"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-taunt-completed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "9b44dccd871058aed4fcc36ebcf51ec0f5b5b9554923ec028a804ecf4d1f7226"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-taunt-failed.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "7a42d4d1d71ec6d38157df215bc47c11f823dd000dcb9175f4b1ac15dd779ed5"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-taunt-playing.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "6f480b5247d440c95db8ee5dff2f07a0cdc0b13b6016924d525b38ce20f382ab"
+  },
+  {
+    "path": "docs/content/r10/phone-puzzle-taunt-retried.png",
+    "size": [
+      390,
+      844
+    ],
+    "sha256": "fcf022d882df0f8ab2ab10b772192b75d4fa0e39eafb4a2d8138d345ae475479"
+  }
+]

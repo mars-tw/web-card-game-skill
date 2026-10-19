@@ -1,0 +1,15 @@
+PASS anticipation has unchanged HP and no shield
+PASS impact actually heals 4 to 7 and grants knight shield
+PASS healing attached to hero, no HUD/hero-text/card overlap
+PASS shield loss leaves actual four HP
+PASS debug legend removed
+AssertionError [ERR_ASSERTION]: immediate response clears knight and reduces boss to one before next turn
+    at check (C:\Users\digimkt\Desktop\遊戲\skill\scripts\capture-content-r8-effects.js:4:115)
+    at C:\Users\digimkt\Desktop\遊戲\skill\scripts\capture-content-r8-effects.js:9:393 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

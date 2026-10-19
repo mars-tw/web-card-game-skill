@@ -1,0 +1,18 @@
+{
+  "round": "CONTENT_R2",
+  "date": "2026-10-19",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "style_prefix": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism.",
+  "assets": [
+    {
+      "id": "moen-harbor",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, rich midtones, top-left moonlight, lower-right copper bounce, firm deep-purple contours, readable silhouettes, no green teal UI, no photorealism. Create one horizontal 1536x1024 collectible boss encounter illustration. The provided reference is Moen's established character identity, preserve her mature serious face, long dark side braid, navy hooded maritime cloak with silver shell clasp, bronze balance scales in her right hand and silver tide-orb in her left. Paint her seated at the far side of a moonlit ship's tactical card table, mid-close three-quarter view, face large and readable, expression calm and challenging. On the table a single shell-shielded knight playing card stands upright beside three copper tide dials. A retreating indigo wave slides off the ship deck revealing wet timber; moonlit harbor behind, warm coral lamp bounce. Much brighter and richer painterly midtones than the older reference, compelling boss portrait. Character and table at left two thirds, right third quiet atmospheric sea. No text, lettering, icons, logos, UI, numbers or watermark. This is original art for an offline tactics game, not a screenshot.",
+      "reference": "assets/cards/heroMoenTidearbiter.png",
+      "source": "docs/art/source/content-r2/moen-harbor.png",
+      "runtime": "assets/art/content-r2/moen-harbor.webp",
+      "output_hint": "Generated images are saved to C:\\Users\\digimkt\\.codex\\generated_images\\01a14fc0-a96d-7962-b2ac-a9694705e340 as C:\\Users\\digimkt\\.codex\\generated_images\\01a14fc0-a96d-7962-b2ac-a9694705e340\\exec-a46ab2e7-7947-438d-8ab6-6e664e601f02.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+      "transparent_requested": false
+    }
+  ]
+}

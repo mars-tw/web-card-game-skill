@@ -1,0 +1,2325 @@
+{
+  "status": "VERIFIED",
+  "checks": 148,
+  "screenshots": [
+    "phone-harbor-study-entry.png",
+    "phone-puzzle-fallen-playing.png",
+    "phone-puzzle-fallen-failed.png",
+    "phone-puzzle-fallen-retried.png",
+    "phone-puzzle-fallen-completed.png",
+    "phone-puzzle-shield-playing.png",
+    "phone-puzzle-shield-failed.png",
+    "phone-puzzle-shield-retried.png",
+    "phone-puzzle-shield-completed.png",
+    "phone-puzzle-shelter-playing.png",
+    "phone-puzzle-shelter-failed.png",
+    "phone-puzzle-shelter-retried.png",
+    "phone-puzzle-shelter-completed.png",
+    "phone-puzzle-taunt-playing.png",
+    "phone-puzzle-taunt-failed.png",
+    "phone-puzzle-taunt-retried.png",
+    "phone-puzzle-taunt-completed.png",
+    "phone-puzzle-spell-playing.png",
+    "phone-puzzle-spell-failed.png",
+    "phone-puzzle-spell-retried.png",
+    "phone-puzzle-spell-completed.png",
+    "phone-puzzle-cross-playing.png",
+    "phone-puzzle-cross-failed.png",
+    "phone-puzzle-cross-retried.png",
+    "phone-exchange-before.png",
+    "phone-exchange-preview.png",
+    "phone-exchange-cancelled.png",
+    "phone-exchange-confirmed.png",
+    "phone-puzzle-cross-completed.png",
+    "phone-puzzle-counts-verification.png",
+    "phone-forecast-before.png",
+    "phone-forecast-held.png",
+    "phone-forecast-drag-cancelled.png",
+    "phone-forecast-flood-to-ebb-applied.png",
+    "phone-forecast-applied.png",
+    "phone-forecast-closed-playing.png",
+    "phone-forecast-wrong-direction.png",
+    "phone-forecast-allowed-direction.png",
+    "phone-forecast-fourth.png",
+    "phone-forecast-completed.png",
+    "phone-forecast-ebb-to-flood-applied.png",
+    "phone-forecast-third-round-closed.png",
+    "phone-moen-entrance.png",
+    "phone-moen-preparing.png",
+    "phone-moen-anticipation.png",
+    "phone-moen-impact.png",
+    "phone-moen-guarding.png",
+    "phone-moen-shield-before.png",
+    "phone-moen-shield-impact.png",
+    "phone-moen-shield-after.png",
+    "phone-moen-immediate-after.png",
+    "phone-moen-completed.png",
+    "phone-moen-returning-playing.png",
+    "phone-moen-delay-before.png",
+    "phone-moen-delay-after.png",
+    "phone-moen-return-heal-before.png",
+    "phone-moen-return-heal-impact.png",
+    "phone-moen-return-completed.png",
+    "phone-moen-offline-playing.png",
+    "phone-moen-offline-completed.png",
+    "phone-moen-offline-reloaded.png"
+  ],
+  "readability": [
+    {
+      "label": "fallen",
+      "proof": [
+        {
+          "text": "交換收割",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 167,
+            "y": 341.09375,
+            "width": 56,
+            "height": 16,
+            "top": 341.09375,
+            "right": 223,
+            "bottom": 357.09375,
+            "left": 167
+          },
+          "fits": true
+        },
+        {
+          "text": "陣亡補潮 · 潮 5/6士兵換弓手後陣亡，補滿第六格。",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 146,
+            "y": 414.78125,
+            "width": 225,
+            "height": 41,
+            "top": 414.78125,
+            "right": 371,
+            "bottom": 455.78125,
+            "left": 146
+          },
+          "fits": true
+        }
+      ]
+    },
+    {
+      "label": "shield",
+      "proof": [
+        {
+          "text": "聖盾完整 · 1 血",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 147.9375,
+            "y": 340.09375,
+            "width": 94.125,
+            "height": 16,
+            "top": 340.09375,
+            "right": 242.0625,
+            "bottom": 356.09375,
+            "left": 147.9375
+          },
+          "fits": true
+        },
+        {
+          "text": "貝盾擋一次先打掉聖盾，浪潮才打得到守衛。",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 146,
+            "y": 414.78125,
+            "width": 225,
+            "height": 41,
+            "top": 414.78125,
+            "right": 371,
+            "bottom": 455.78125,
+            "left": 146
+          },
+          "fits": true
+        }
+      ]
+    },
+    {
+      "label": "shelter",
+      "proof": [
+        {
+          "text": "射線 · 互相致命",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 146.7734375,
+            "y": 341.09375,
+            "width": 96.453125,
+            "height": 16,
+            "top": 341.09375,
+            "right": 243.2265625,
+            "bottom": 357.09375,
+            "left": 146.7734375
+          },
+          "fits": true
+        },
+        {
+          "text": "長弓留場弓手先取得聖盾，交換狼後才會存活。",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 116,
+            "y": 414.78125,
+            "width": 255,
+            "height": 41,
+            "top": 414.78125,
+            "right": 371,
+            "bottom": 455.78125,
+            "left": 116
+          },
+          "fits": true
+        }
+      ]
+    },
+    {
+      "label": "taunt",
+      "proof": [
+        {
+          "text": "開局已受傷 · 1 血",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 140.9375,
+            "y": 341.09375,
+            "width": 108.125,
+            "height": 16,
+            "top": 341.09375,
+            "right": 249.0625,
+            "bottom": 357.09375,
+            "left": 140.9375
+          },
+          "fits": true
+        },
+        {
+          "text": "嘲諷封路一血士兵有嘲諷；清掉他才能打英雄。",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 116,
+            "y": 414.78125,
+            "width": 255,
+            "height": 41,
+            "top": 414.78125,
+            "right": 371,
+            "bottom": 455.78125,
+            "left": 116
+          },
+          "fits": true
+        }
+      ]
+    },
+    {
+      "label": "spell",
+      "proof": [
+        {
+          "text": "法術收割線 · 4 血",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 140.9375,
+            "y": 340.09375,
+            "width": 108.125,
+            "height": 16,
+            "top": 340.09375,
+            "right": 249.0625,
+            "bottom": 356.09375,
+            "left": 140.9375
+          },
+          "fits": true
+        },
+        {
+          "text": "火焰箭 · 3 傷火焰箭先打騎士3傷，浪潮再收掉1血。",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 112.53125,
+            "y": 414.78125,
+            "width": 258.46875,
+            "height": 41,
+            "top": 414.78125,
+            "right": 371,
+            "bottom": 455.78125,
+            "left": 112.53125
+          },
+          "fits": true
+        },
+        {
+          "text": "手牌火焰箭 · 法力 4/4",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 107,
+            "y": 402.78125,
+            "width": 176,
+            "height": 86,
+            "top": 402.78125,
+            "right": 283,
+            "bottom": 488.78125,
+            "left": 107
+          },
+          "fits": true
+        }
+      ]
+    },
+    {
+      "label": "cross",
+      "proof": [
+        {
+          "text": "敵陣剩 2 隻",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 115.4609375,
+            "y": 341.09375,
+            "width": 71.578125,
+            "height": 16,
+            "top": 341.09375,
+            "right": 187.0390625,
+            "bottom": 357.09375,
+            "left": 115.4609375
+          },
+          "fits": true
+        },
+        {
+          "text": "雙線交換 · 潮 5/6士兵打弓手、騎士打獅鷲，讓兩敵都剩1血。",
+          "font": 14,
+          "nameFont": 12,
+          "rect": {
+            "x": 76.7578125,
+            "y": 414.78125,
+            "width": 294.234375,
+            "height": 41,
+            "top": 414.78125,
+            "right": 370.9921875,
+            "bottom": 455.78125,
+            "left": 76.7578125
+          },
+          "fits": true
+        }
+      ]
+    },
+    {
+      "label": "exchange",
+      "proof": [
+        {
+          "text": "血 2 → 1",
+          "rect": {
+            "x": 127.5625,
+            "y": 334.09375,
+            "width": 47.359375,
+            "height": 14,
+            "top": 334.09375,
+            "right": 174.921875,
+            "bottom": 348.09375,
+            "left": 127.5625
+          },
+          "fits": true
+        },
+        {
+          "text": "血 4 → 4",
+          "rect": {
+            "x": 215.0625,
+            "y": 333.09375,
+            "width": 47.359375,
+            "height": 14,
+            "top": 333.09375,
+            "right": 262.421875,
+            "bottom": 347.09375,
+            "left": 215.0625
+          },
+          "fits": true
+        },
+        {
+          "text": "血 2 → 0 退場",
+          "rect": {
+            "x": 114.2750015258789,
+            "y": 674.0643310546875,
+            "width": 76.1812515258789,
+            "height": 14.280029296875,
+            "top": 674.0643310546875,
+            "right": 190.4562530517578,
+            "bottom": 688.3443603515625,
+            "left": 114.2750015258789
+          },
+          "fits": true
+        },
+        {
+          "text": "血 4 → 4",
+          "rect": {
+            "x": 215.0625,
+            "y": 674.484375,
+            "width": 47.359375,
+            "height": 14,
+            "top": 674.484375,
+            "right": 262.421875,
+            "bottom": 688.484375,
+            "left": 215.0625
+          },
+          "fits": true
+        },
+        {
+          "text": "見習士兵 ⇄ 弓箭手",
+          "rect": {
+            "x": 143.65625,
+            "y": 394.5,
+            "width": 102.671875,
+            "height": 14,
+            "top": 394.5,
+            "right": 246.328125,
+            "bottom": 408.5,
+            "left": 143.65625
+          },
+          "fits": true
+        },
+        {
+          "text": "原位交戰 · 退場留空位 · 我方潮 5 → 6/6 · 裂潮就緒",
+          "rect": {
+            "x": 60.3125,
+            "y": 411.296875,
+            "width": 269.359375,
+            "height": 14,
+            "top": 411.296875,
+            "right": 329.671875,
+            "bottom": 425.296875,
+            "left": 60.3125
+          },
+          "fits": true
+        },
+        {
+          "text": "確認交換",
+          "rect": {
+            "x": 119.328125,
+            "y": 445.59375,
+            "width": 53.328125,
+            "height": 15,
+            "top": 445.59375,
+            "right": 172.65625,
+            "bottom": 460.59375,
+            "left": 119.328125
+          },
+          "fits": true
+        },
+        {
+          "text": "取消",
+          "rect": {
+            "x": 230.65625,
+            "y": 445.59375,
+            "width": 26.671875,
+            "height": 15,
+            "top": 445.59375,
+            "right": 257.328125,
+            "bottom": 460.59375,
+            "left": 230.65625
+          },
+          "fits": true
+        }
+      ]
+    }
+  ],
+  "exchangeProofs": [
+    {
+      "before": {
+        "tide": 5,
+        "enemyTide": 0,
+        "fields": [
+          {
+            "uid": "content-player-0",
+            "side": "player",
+            "hp": 2,
+            "shield": false,
+            "index": 0,
+            "slot": 0
+          },
+          {
+            "uid": "content-player-1",
+            "side": "player",
+            "hp": 4,
+            "shield": false,
+            "index": 1,
+            "slot": 1
+          },
+          {
+            "uid": "content-enemy-0",
+            "side": "enemy",
+            "hp": 2,
+            "shield": false,
+            "index": 0,
+            "slot": 0
+          },
+          {
+            "uid": "content-enemy-1",
+            "side": "enemy",
+            "hp": 4,
+            "shield": false,
+            "index": 1,
+            "slot": 1
+          }
+        ]
+      },
+      "preview": [
+        "血 2 → 1",
+        "血 4 → 4",
+        "血 2 → 0 退場",
+        "血 4 → 4"
+      ],
+      "cancelled": {
+        "tide": 5,
+        "enemyTide": 0,
+        "fields": [
+          {
+            "uid": "content-player-0",
+            "side": "player",
+            "hp": 2,
+            "shield": false,
+            "index": 0,
+            "slot": 0
+          },
+          {
+            "uid": "content-player-1",
+            "side": "player",
+            "hp": 4,
+            "shield": false,
+            "index": 1,
+            "slot": 1
+          },
+          {
+            "uid": "content-enemy-0",
+            "side": "enemy",
+            "hp": 2,
+            "shield": false,
+            "index": 0,
+            "slot": 0
+          },
+          {
+            "uid": "content-enemy-1",
+            "side": "enemy",
+            "hp": 4,
+            "shield": false,
+            "index": 1,
+            "slot": 1
+          }
+        ]
+      },
+      "after": {
+        "tide": 6,
+        "enemyTide": 0,
+        "fields": [
+          {
+            "uid": "content-player-1",
+            "side": "player",
+            "hp": 4,
+            "shield": false,
+            "index": 0,
+            "slot": 1
+          },
+          {
+            "uid": "content-enemy-0",
+            "side": "enemy",
+            "hp": 1,
+            "shield": false,
+            "index": 0,
+            "slot": 0
+          },
+          {
+            "uid": "content-enemy-1",
+            "side": "enemy",
+            "hp": 4,
+            "shield": false,
+            "index": 1,
+            "slot": 1
+          }
+        ]
+      }
+    }
+  ],
+  "cardProofs": [
+    {
+      "phase": "wave-impact",
+      "label": "content-enemy-0",
+      "card": "knight",
+      "name": "鋼鐵騎士",
+      "stats": "\n        3\n        4\n      ",
+      "rect": {
+        "x": 269.5,
+        "y": 175.09375,
+        "width": 82.5,
+        "height": 160,
+        "top": 175.09375,
+        "right": 352,
+        "bottom": 335.09375,
+        "left": 269.5
+      },
+      "nameRect": {
+        "x": 276.5,
+        "y": 289.703125,
+        "width": 68.5,
+        "height": 18.390625,
+        "top": 289.703125,
+        "right": 345,
+        "bottom": 308.09375,
+        "left": 276.5
+      },
+      "statsRect": {
+        "x": 276.5,
+        "y": 306.09375,
+        "width": 68.5,
+        "height": 24,
+        "top": 306.09375,
+        "right": 345,
+        "bottom": 330.09375,
+        "left": 276.5
+      },
+      "visible": true,
+      "frame": "visible"
+    },
+    {
+      "phase": "guarding",
+      "label": "content-enemy-0",
+      "card": "knight",
+      "name": "鋼鐵騎士",
+      "stats": "\n        3\n        4\n      ",
+      "rect": {
+        "x": 269.5,
+        "y": 191.1875,
+        "width": 82.5,
+        "height": 160,
+        "top": 191.1875,
+        "right": 352,
+        "bottom": 351.1875,
+        "left": 269.5
+      },
+      "nameRect": {
+        "x": 276.5,
+        "y": 305.796875,
+        "width": 68.5,
+        "height": 18.390625,
+        "top": 305.796875,
+        "right": 345,
+        "bottom": 324.1875,
+        "left": 276.5
+      },
+      "statsRect": {
+        "x": 276.5,
+        "y": 322.1875,
+        "width": 68.5,
+        "height": 24,
+        "top": 322.1875,
+        "right": 345,
+        "bottom": 346.1875,
+        "left": 276.5
+      },
+      "visible": true,
+      "frame": "visible"
+    },
+    {
+      "phase": "shield-impact",
+      "label": "content-enemy-0",
+      "card": "knight",
+      "name": "鋼鐵騎士",
+      "stats": "\n        3\n        4\n      ",
+      "rect": {
+        "x": 269.5,
+        "y": 175.09375,
+        "width": 82.5,
+        "height": 160,
+        "top": 175.09375,
+        "right": 352,
+        "bottom": 335.09375,
+        "left": 269.5
+      },
+      "nameRect": {
+        "x": 276.5,
+        "y": 289.703125,
+        "width": 68.5,
+        "height": 18.390625,
+        "top": 289.703125,
+        "right": 345,
+        "bottom": 308.09375,
+        "left": 276.5
+      },
+      "statsRect": {
+        "x": 276.5,
+        "y": 306.09375,
+        "width": 68.5,
+        "height": 24,
+        "top": 306.09375,
+        "right": 345,
+        "bottom": 330.09375,
+        "left": 276.5
+      },
+      "visible": true,
+      "frame": "visible"
+    },
+    {
+      "phase": "shield-after",
+      "label": "content-enemy-0",
+      "card": "knight",
+      "name": "鋼鐵騎士",
+      "stats": "\n        3\n        4\n      ",
+      "rect": {
+        "x": 269.5,
+        "y": 175.09375,
+        "width": 82.5,
+        "height": 160,
+        "top": 175.09375,
+        "right": 352,
+        "bottom": 335.09375,
+        "left": 269.5
+      },
+      "nameRect": {
+        "x": 276.5,
+        "y": 289.703125,
+        "width": 68.5,
+        "height": 18.390625,
+        "top": 289.703125,
+        "right": 345,
+        "bottom": 308.09375,
+        "left": 276.5
+      },
+      "statsRect": {
+        "x": 276.5,
+        "y": 306.09375,
+        "width": 68.5,
+        "height": 24,
+        "top": 306.09375,
+        "right": 345,
+        "bottom": 330.09375,
+        "left": 276.5
+      },
+      "visible": true,
+      "frame": "visible"
+    }
+  ],
+  "layout": [
+    {
+      "label": "fallen",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 153.75,
+              "y": 175.09375,
+              "width": 82.5,
+              "height": 160,
+              "top": 175.09375,
+              "right": 236.25,
+              "bottom": 335.09375,
+              "left": 153.75
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 153.75,
+              "y": 516.484375,
+              "width": 82.5,
+              "height": 160,
+              "top": 516.484375,
+              "right": 236.25,
+              "bottom": 676.484375,
+              "left": 153.75
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 0,
+        "height": 862
+      }
+    },
+    {
+      "label": "shield",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 153.75,
+              "y": 175.09375,
+              "width": 82.5,
+              "height": 160,
+              "top": 175.09375,
+              "right": 236.25,
+              "bottom": 335.09375,
+              "left": 153.75
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 153.75,
+              "y": 516.484375,
+              "width": 82.5,
+              "height": 160,
+              "top": 516.484375,
+              "right": 236.25,
+              "bottom": 676.484375,
+              "left": 153.75
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 0,
+        "height": 875
+      }
+    },
+    {
+      "label": "shelter",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 153.75,
+              "y": 175.09375,
+              "width": 82.5,
+              "height": 160,
+              "top": 175.09375,
+              "right": 236.25,
+              "bottom": 335.09375,
+              "left": 153.75
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 153.75,
+              "y": 516.484375,
+              "width": 82.5,
+              "height": 160,
+              "top": 516.484375,
+              "right": 236.25,
+              "bottom": 676.484375,
+              "left": 153.75
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 0,
+        "height": 862
+      }
+    },
+    {
+      "label": "taunt",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 153.75,
+              "y": 175.09375,
+              "width": 82.5,
+              "height": 160,
+              "top": 175.09375,
+              "right": 236.25,
+              "bottom": 335.09375,
+              "left": 153.75
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 153.75,
+              "y": 516.484375,
+              "width": 82.5,
+              "height": 160,
+              "top": 516.484375,
+              "right": 236.25,
+              "bottom": 676.484375,
+              "left": 153.75
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 0,
+        "height": 875
+      }
+    },
+    {
+      "label": "spell",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 153.75,
+              "y": 175.09375,
+              "width": 82.5,
+              "height": 160,
+              "top": 175.09375,
+              "right": 236.25,
+              "bottom": 335.09375,
+              "left": 153.75
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 153.75,
+              "y": 516.484375,
+              "width": 82.5,
+              "height": 160,
+              "top": 516.484375,
+              "right": 236.25,
+              "bottom": 676.484375,
+              "left": 153.75
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 0,
+        "height": 862
+      }
+    },
+    {
+      "label": "cross",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 110,
+              "y": 175.09375,
+              "width": 82.5,
+              "height": 160,
+              "top": 175.09375,
+              "right": 192.5,
+              "bottom": 335.09375,
+              "left": 110
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-enemy-1",
+            "r": {
+              "x": 197.5,
+              "y": 175.09375,
+              "width": 82.5,
+              "height": 160,
+              "top": 175.09375,
+              "right": 280,
+              "bottom": 335.09375,
+              "left": 197.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 110,
+              "y": 516.484375,
+              "width": 82.5,
+              "height": 160,
+              "top": 516.484375,
+              "right": 192.5,
+              "bottom": 676.484375,
+              "left": 110
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-1",
+            "r": {
+              "x": 197.5,
+              "y": 516.484375,
+              "width": 82.5,
+              "height": 160,
+              "top": 516.484375,
+              "right": 280,
+              "bottom": 676.484375,
+              "left": 197.5
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 0,
+        "height": 875
+      }
+    },
+    {
+      "label": "forecast before",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 154,
+              "y": 173.703125,
+              "width": 82,
+              "height": 108,
+              "top": 173.703125,
+              "right": 236,
+              "bottom": 281.703125,
+              "left": 154
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 110.5,
+              "y": 333.90625,
+              "width": 82,
+              "height": 108,
+              "top": 333.90625,
+              "right": 192.5,
+              "bottom": 441.90625,
+              "left": 110.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-1",
+            "r": {
+              "x": 197.5,
+              "y": 333.90625,
+              "width": 82,
+              "height": 108,
+              "top": 333.90625,
+              "right": 279.5,
+              "bottom": 441.90625,
+              "left": 197.5
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 227,
+        "height": 875
+      }
+    },
+    {
+      "label": "forecast applied",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 154,
+              "y": 187.203125,
+              "width": 82,
+              "height": 108,
+              "top": 187.203125,
+              "right": 236,
+              "bottom": 295.203125,
+              "left": 154
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 110.5,
+              "y": 338.40625,
+              "width": 82,
+              "height": 108,
+              "top": 338.40625,
+              "right": 192.5,
+              "bottom": 446.40625,
+              "left": 110.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-1",
+            "r": {
+              "x": 197.5,
+              "y": 338.40625,
+              "width": 82,
+              "height": 108,
+              "top": 338.40625,
+              "right": 279.5,
+              "bottom": 446.40625,
+              "left": 197.5
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 227,
+        "height": 875
+      }
+    },
+    {
+      "label": "moen preparing",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 269.5,
+              "y": 191.1875,
+              "width": 82.5,
+              "height": 160,
+              "top": 191.1875,
+              "right": 352,
+              "bottom": 351.1875,
+              "left": 269.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 22.5,
+              "y": 520,
+              "width": 82.5,
+              "height": 160,
+              "top": 520,
+              "right": 105,
+              "bottom": 680,
+              "left": 22.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-1",
+            "r": {
+              "x": 110,
+              "y": 520,
+              "width": 82.5,
+              "height": 160,
+              "top": 520,
+              "right": 192.5,
+              "bottom": 680,
+              "left": 110
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-2",
+            "r": {
+              "x": 197.5,
+              "y": 520,
+              "width": 82.5,
+              "height": 160,
+              "top": 520,
+              "right": 280,
+              "bottom": 680,
+              "left": 197.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-3",
+            "r": {
+              "x": 285,
+              "y": 520,
+              "width": 82.5,
+              "height": 160,
+              "top": 520,
+              "right": 367.5,
+              "bottom": 680,
+              "left": 285
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 0,
+        "height": 862
+      }
+    },
+    {
+      "label": "moen impact",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 269.5,
+              "y": 175.09375,
+              "width": 82.5,
+              "height": 160,
+              "top": 175.09375,
+              "right": 352,
+              "bottom": 335.09375,
+              "left": 269.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 22.5,
+              "y": 516.484375,
+              "width": 82.5,
+              "height": 160,
+              "top": 516.484375,
+              "right": 105,
+              "bottom": 676.484375,
+              "left": 22.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-1",
+            "r": {
+              "x": 110,
+              "y": 516.484375,
+              "width": 82.5,
+              "height": 160,
+              "top": 516.484375,
+              "right": 192.5,
+              "bottom": 676.484375,
+              "left": 110
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-2",
+            "r": {
+              "x": 197.5,
+              "y": 516.484375,
+              "width": 82.5,
+              "height": 160,
+              "top": 516.484375,
+              "right": 280,
+              "bottom": 676.484375,
+              "left": 197.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-3",
+            "r": {
+              "x": 285,
+              "y": 516.484375,
+              "width": 82.5,
+              "height": 160,
+              "top": 516.484375,
+              "right": 367.5,
+              "bottom": 676.484375,
+              "left": 285
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 0,
+        "height": 870,
+        "healer": "enemyHero"
+      }
+    },
+    {
+      "label": "delay after",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 269.5,
+              "y": 191.1875,
+              "width": 82.5,
+              "height": 160,
+              "top": 191.1875,
+              "right": 352,
+              "bottom": 351.1875,
+              "left": 269.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-1",
+            "r": {
+              "x": 114.75,
+              "y": 520,
+              "width": 82.5,
+              "height": 160,
+              "top": 520,
+              "right": 197.25,
+              "bottom": 680,
+              "left": 114.75
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-2",
+            "r": {
+              "x": 202.25,
+              "y": 520,
+              "width": 82.5,
+              "height": 160,
+              "top": 520,
+              "right": 284.75,
+              "bottom": 680,
+              "left": 202.25
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-3",
+            "r": {
+              "x": 289.75,
+              "y": 520,
+              "width": 82.5,
+              "height": 160,
+              "top": 520,
+              "right": 372.25,
+              "bottom": 680,
+              "left": 289.75
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 0,
+        "height": 875
+      }
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "dpr": 1,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 733,
+            "y": 146,
+            "width": 92,
+            "height": 140,
+            "top": 146,
+            "right": 825,
+            "bottom": 286,
+            "left": 733
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 86,
+            "y": 166,
+            "width": 58,
+            "height": 100,
+            "top": 166,
+            "right": 144,
+            "bottom": 266,
+            "left": 86
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 148,
+            "y": 166,
+            "width": 58,
+            "height": 100,
+            "top": 166,
+            "right": 206,
+            "bottom": 266,
+            "left": 148
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 210,
+            "y": 166,
+            "width": 58,
+            "height": 100,
+            "top": 166,
+            "right": 268,
+            "bottom": 266,
+            "left": 210
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 272,
+            "y": 166,
+            "width": 58,
+            "height": 100,
+            "top": 166,
+            "right": 330,
+            "bottom": 266,
+            "left": 272
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 324.8999938964844,
+            "width": 82.26092529296875,
+            "height": 46.20001220703125,
+            "top": 324.8999938964844,
+            "right": 96.30233383178711,
+            "bottom": 371.1000061035156,
+            "left": 14.04140853881836
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 673,
+            "y": 14,
+            "width": 70,
+            "height": 44,
+            "top": 14,
+            "right": 743,
+            "bottom": 58,
+            "left": 673
+          },
+          "visible": true,
+          "size": true
+        }
+      ]
+    },
+    {
+      "label": "844x390 forecast",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 269.65625,
+              "y": 153.5,
+              "width": 76,
+              "height": 106,
+              "top": 153.5,
+              "right": 345.65625,
+              "bottom": 259.5,
+              "left": 269.65625
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 27.875,
+              "y": 153.5,
+              "width": 76,
+              "height": 106,
+              "top": 153.5,
+              "right": 103.875,
+              "bottom": 259.5,
+              "left": 27.875
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-1",
+            "r": {
+              "x": 107.875,
+              "y": 153.5,
+              "width": 76,
+              "height": 106,
+              "top": 153.5,
+              "right": 183.875,
+              "bottom": 259.5,
+              "left": 107.875
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 225,
+        "height": 390
+      }
+    },
+    {
+      "width": 1032,
+      "height": 1376,
+      "dpr": 1,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 712.8125,
+            "y": 270.09375,
+            "width": 105,
+            "height": 160,
+            "top": 270.09375,
+            "right": 817.8125,
+            "bottom": 430.09375,
+            "left": 712.8125
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 298.5,
+            "y": 953.484375,
+            "width": 105,
+            "height": 160,
+            "top": 953.484375,
+            "right": 403.5,
+            "bottom": 1113.484375,
+            "left": 298.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 408.5,
+            "y": 953.484375,
+            "width": 105,
+            "height": 160,
+            "top": 953.484375,
+            "right": 513.5,
+            "bottom": 1113.484375,
+            "left": 408.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 518.5,
+            "y": 953.484375,
+            "width": 105,
+            "height": 160,
+            "top": 953.484375,
+            "right": 623.5,
+            "bottom": 1113.484375,
+            "left": 518.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 628.5,
+            "y": 953.484375,
+            "width": 105,
+            "height": 160,
+            "top": 953.484375,
+            "right": 733.5,
+            "bottom": 1113.484375,
+            "left": 628.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 1310.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 1310.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 1357.0999755859375,
+            "left": 14.04140853881836
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 792,
+            "y": 57.59375,
+            "width": 44,
+            "height": 44,
+            "top": 57.59375,
+            "right": 836,
+            "bottom": 101.59375,
+            "left": 792
+          },
+          "visible": true,
+          "size": true
+        }
+      ]
+    },
+    {
+      "label": "1032x1376 forecast",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 475,
+              "y": 306.6875,
+              "width": 82,
+              "height": 108,
+              "top": 306.6875,
+              "right": 557,
+              "bottom": 414.6875,
+              "left": 475
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 431.5,
+              "y": 732.890625,
+              "width": 82,
+              "height": 108,
+              "top": 732.890625,
+              "right": 513.5,
+              "bottom": 840.890625,
+              "left": 431.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-1",
+            "r": {
+              "x": 518.5,
+              "y": 732.890625,
+              "width": 82,
+              "height": 108,
+              "top": 732.890625,
+              "right": 600.5,
+              "bottom": 840.890625,
+              "left": 518.5
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 209,
+        "height": 1376
+      }
+    },
+    {
+      "width": 1376,
+      "height": 1032,
+      "dpr": 1,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 988,
+            "y": 208.65625,
+            "width": 105,
+            "height": 160,
+            "top": 208.65625,
+            "right": 1093,
+            "bottom": 368.65625,
+            "left": 988
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 470.5,
+            "y": 670.921875,
+            "width": 105,
+            "height": 160,
+            "top": 670.921875,
+            "right": 575.5,
+            "bottom": 830.921875,
+            "left": 470.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 580.5,
+            "y": 670.921875,
+            "width": 105,
+            "height": 160,
+            "top": 670.921875,
+            "right": 685.5,
+            "bottom": 830.921875,
+            "left": 580.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 690.5,
+            "y": 670.921875,
+            "width": 105,
+            "height": 160,
+            "top": 670.921875,
+            "right": 795.5,
+            "bottom": 830.921875,
+            "left": 690.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 800.5,
+            "y": 670.921875,
+            "width": 105,
+            "height": 160,
+            "top": 670.921875,
+            "right": 905.5,
+            "bottom": 830.921875,
+            "left": 800.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 966.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 966.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 1013.0999755859375,
+            "left": 14.04140853881836
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 964,
+            "y": 57.59375,
+            "width": 44,
+            "height": 44,
+            "top": 57.59375,
+            "right": 1008,
+            "bottom": 101.59375,
+            "left": 964
+          },
+          "visible": true,
+          "size": true
+        }
+      ]
+    },
+    {
+      "label": "1376x1032 forecast",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 647,
+              "y": 220.6875,
+              "width": 82,
+              "height": 108,
+              "top": 220.6875,
+              "right": 729,
+              "bottom": 328.6875,
+              "left": 647
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 603.5,
+              "y": 474.890625,
+              "width": 82,
+              "height": 108,
+              "top": 474.890625,
+              "right": 685.5,
+              "bottom": 582.890625,
+              "left": 603.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-1",
+            "r": {
+              "x": 690.5,
+              "y": 474.890625,
+              "width": 82,
+              "height": 108,
+              "top": 474.890625,
+              "right": 772.5,
+              "bottom": 582.890625,
+              "left": 690.5
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 209,
+        "height": 1032
+      }
+    },
+    {
+      "width": 1366,
+      "height": 600,
+      "dpr": 1,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 1255,
+            "y": 277,
+            "width": 92,
+            "height": 140,
+            "top": 277,
+            "right": 1347,
+            "bottom": 417,
+            "left": 1255
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 347,
+            "y": 297,
+            "width": 58,
+            "height": 100,
+            "top": 297,
+            "right": 405,
+            "bottom": 397,
+            "left": 347
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 409,
+            "y": 297,
+            "width": 58,
+            "height": 100,
+            "top": 297,
+            "right": 467,
+            "bottom": 397,
+            "left": 409
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 471,
+            "y": 297,
+            "width": 58,
+            "height": 100,
+            "top": 297,
+            "right": 529,
+            "bottom": 397,
+            "left": 471
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 533,
+            "y": 297,
+            "width": 58,
+            "height": 100,
+            "top": 297,
+            "right": 591,
+            "bottom": 397,
+            "left": 533
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 534.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 534.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 581.0999755859375,
+            "left": 14.04140853881836
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 959,
+            "y": 57.59375,
+            "width": 44,
+            "height": 44,
+            "top": 57.59375,
+            "right": 1003,
+            "bottom": 101.59375,
+            "left": 959
+          },
+          "visible": true,
+          "size": true
+        }
+      ]
+    },
+    {
+      "label": "1366x600 forecast",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 461.5,
+              "y": 310.5,
+              "width": 76,
+              "height": 106,
+              "top": 310.5,
+              "right": 537.5,
+              "bottom": 416.5,
+              "left": 461.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 91.828125,
+              "y": 310.5,
+              "width": 76,
+              "height": 106,
+              "top": 310.5,
+              "right": 167.828125,
+              "bottom": 416.5,
+              "left": 91.828125
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-1",
+            "r": {
+              "x": 171.828125,
+              "y": 310.5,
+              "width": 76,
+              "height": 106,
+              "top": 310.5,
+              "right": 247.828125,
+              "bottom": 416.5,
+              "left": 171.828125
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 209,
+        "height": 600
+      }
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "dpr": 3,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 299.5,
+            "y": 206.890625,
+            "width": 92.5,
+            "height": 160,
+            "top": 206.890625,
+            "right": 392,
+            "bottom": 366.890625,
+            "left": 299.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 22.5,
+            "y": 592.28125,
+            "width": 92.5,
+            "height": 160,
+            "top": 592.28125,
+            "right": 115,
+            "bottom": 752.28125,
+            "left": 22.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 120,
+            "y": 592.28125,
+            "width": 92.5,
+            "height": 160,
+            "top": 592.28125,
+            "right": 212.5,
+            "bottom": 752.28125,
+            "left": 120
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 217.5,
+            "y": 592.28125,
+            "width": 92.5,
+            "height": 160,
+            "top": 592.28125,
+            "right": 310,
+            "bottom": 752.28125,
+            "left": 217.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 315,
+            "y": 592.28125,
+            "width": 92.5,
+            "height": 160,
+            "top": 592.28125,
+            "right": 407.5,
+            "bottom": 752.28125,
+            "left": 315
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 897.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 897.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 944.0999755859375,
+            "left": 14.04140853881836
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 378,
+            "y": 77.1875,
+            "width": 44,
+            "height": 44,
+            "top": 77.1875,
+            "right": 422,
+            "bottom": 121.1875,
+            "left": 378
+          },
+          "visible": true,
+          "size": true
+        }
+      ]
+    },
+    {
+      "label": "430x932 forecast",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 174,
+              "y": 195.6875,
+              "width": 82,
+              "height": 108,
+              "top": 195.6875,
+              "right": 256,
+              "bottom": 303.6875,
+              "left": 174
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 130.5,
+              "y": 399.890625,
+              "width": 82,
+              "height": 108,
+              "top": 399.890625,
+              "right": 212.5,
+              "bottom": 507.890625,
+              "left": 130.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-1",
+            "r": {
+              "x": 217.5,
+              "y": 399.890625,
+              "width": 82,
+              "height": 108,
+              "top": 399.890625,
+              "right": 299.5,
+              "bottom": 507.890625,
+              "left": 217.5
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 209,
+        "height": 967
+      }
+    },
+    {
+      "width": 1032,
+      "height": 1376,
+      "dpr": 2,
+      "rects": [
+        {
+          "id": "content-enemy-0",
+          "rect": {
+            "x": 712.8125,
+            "y": 270.09375,
+            "width": 105,
+            "height": 160,
+            "top": 270.09375,
+            "right": 817.8125,
+            "bottom": 430.09375,
+            "left": 712.8125
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-0",
+          "rect": {
+            "x": 298.5,
+            "y": 953.484375,
+            "width": 105,
+            "height": 160,
+            "top": 953.484375,
+            "right": 403.5,
+            "bottom": 1113.484375,
+            "left": 298.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-1",
+          "rect": {
+            "x": 408.5,
+            "y": 953.484375,
+            "width": 105,
+            "height": 160,
+            "top": 953.484375,
+            "right": 513.5,
+            "bottom": 1113.484375,
+            "left": 408.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-2",
+          "rect": {
+            "x": 518.5,
+            "y": 953.484375,
+            "width": 105,
+            "height": 160,
+            "top": 953.484375,
+            "right": 623.5,
+            "bottom": 1113.484375,
+            "left": 518.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "content-player-3",
+          "rect": {
+            "x": 628.5,
+            "y": 953.484375,
+            "width": 105,
+            "height": 160,
+            "top": 953.484375,
+            "right": 733.5,
+            "bottom": 1113.484375,
+            "left": 628.5
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "endTurnBtn",
+          "rect": {
+            "x": 14.04140853881836,
+            "y": 1310.9000244140625,
+            "width": 82.26092529296875,
+            "height": 46.199951171875,
+            "top": 1310.9000244140625,
+            "right": 96.30233383178711,
+            "bottom": 1357.0999755859375,
+            "left": 14.04140853881836
+          },
+          "visible": true,
+          "size": true
+        },
+        {
+          "id": "contentMenu",
+          "rect": {
+            "x": 792,
+            "y": 57.59375,
+            "width": 44,
+            "height": 44,
+            "top": 57.59375,
+            "right": 836,
+            "bottom": 101.59375,
+            "left": 792
+          },
+          "visible": true,
+          "size": true
+        }
+      ]
+    },
+    {
+      "label": "1032x1376 forecast",
+      "proof": {
+        "cards": [
+          {
+            "uid": "content-enemy-0",
+            "r": {
+              "x": 475,
+              "y": 306.6875,
+              "width": 82,
+              "height": 108,
+              "top": 306.6875,
+              "right": 557,
+              "bottom": 414.6875,
+              "left": 475
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-0",
+            "r": {
+              "x": 431.5,
+              "y": 732.890625,
+              "width": 82,
+              "height": 108,
+              "top": 732.890625,
+              "right": 513.5,
+              "bottom": 840.890625,
+              "left": 431.5
+            },
+            "inside": true,
+            "free": true
+          },
+          {
+            "uid": "content-player-1",
+            "r": {
+              "x": 518.5,
+              "y": 732.890625,
+              "width": 82,
+              "height": 108,
+              "top": 732.890625,
+              "right": 600.5,
+              "bottom": 840.890625,
+              "left": 518.5
+            },
+            "inside": true,
+            "free": true
+          }
+        ],
+        "endTurn": true,
+        "panelHeight": 209,
+        "height": 1376
+      }
+    }
+  ],
+  "errors": [],
+  "method": "Real normal DOM input, no injected game state; phone PNGs 390x844, DPR1; actual offline completion/reload/export/import."
+}

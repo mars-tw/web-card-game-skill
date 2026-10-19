@@ -1,0 +1,5 @@
+{
+  "status": "VERIFIED",
+  "checks": 4,
+  "method": "Real DOM selection, active exchange preview, explicit abandon and retry; no state injection."
+}

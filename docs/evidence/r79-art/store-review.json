@@ -1,0 +1,86 @@
+{
+  "status": "VERIFIED",
+  "files": [
+    {
+      "path": "docs/store/screenshots/battle-1290x2796.png",
+      "sha256": "c893627cb8fceeb7c4129f46debe09bf6264aff7b7cfd5bdf0df97a19372aa27",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/battle-2064x2752.png",
+      "sha256": "7337e45123eddc6c6efe2a648d75982270101d2c436594c902eb9cd2b37c70d3",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/harbor-1290x2796.png",
+      "sha256": "5a9c443a37c40d6972025efa1e92d18479451b2593d2fcd0580ea4f4f458e90d",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/harbor-2064x2752.png",
+      "sha256": "8446b31a0f07ff0fb9c19d6f74421656ad0a1a99dcb4d33312924b07ce79a6a1",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/tide-after-1290x2796.png",
+      "sha256": "c6be42b76eac73e42d9cf6e778643f4c25e12416878602202f7f40dcdd7088ce",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/tide-after-2064x2752.png",
+      "sha256": "990c906749c645a13fbf1e7afe8c5d2c1ff5aef0ff1f817a552dcbb0cf4ce996",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/tide-before-1290x2796.png",
+      "sha256": "5f13659e670c9dc5a581f1e679ad7ce1ab6b308ffcf1f600fa752be34749c6c1",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/tide-before-2064x2752.png",
+      "sha256": "dcf8e2c72e8c6803c86d796e0be8c96686b45a58b1adc86cbafbe12b8e617543",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/tide-chart-1290x2796.png",
+      "sha256": "8fa2f01ae4dced93e464b8744d99348e2c08d8fe0e124dc5cc01695ba4fe4a9f",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/tide-chart-2064x2752.png",
+      "sha256": "fc0267772044b319368b1fd64a48278c6c188ecd2272dce30bcf8606e316a88d",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/tide-next-turn-1290x2796.png",
+      "sha256": "dbeaf0a2a176b0a8a9f555b117e8832bfe6f1b59dc2c78e9192d19553bf138f7",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/tide-next-turn-2064x2752.png",
+      "sha256": "4fa2ac20920f50174efdd6348973714d8796458824f969eb16e8860d00ae6725",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/trial-1290x2796.png",
+      "sha256": "7e1cc5784cc83727b621d974d0f7f883a3d93fbdd905d38083ac0d8fe1780b3c",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/trial-2064x2752.png",
+      "sha256": "6e364da59ba65021908e8644fceb6317b075a1b6a9a52e355162a9f1bd27fdb5",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/victory-1290x2796.png",
+      "sha256": "54218dc845c38cf0644e95e97e6e63dc0e10d053421838957b184217aef1d48a",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    },
+    {
+      "path": "docs/store/screenshots/victory-2064x2752.png",
+      "sha256": "313a29e016b8b6d771ac0c83776c733dad924f1cbb2380b294e278d3e8be5950",
+      "review": "Opened final original-size file; local self-review, not independent Muse score"
+    }
+  ],
+  "notes": "See docs/art/STORE_QA_R79.md. Both sizes inspected; three-frame series is explicit nonlethal QA, natural harbor/trial-selection/victory are separate."
+}

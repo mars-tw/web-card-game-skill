@@ -2,6 +2,14 @@
   "_comment": "卡牌美術生成統一設定檔。改這裡即可調整提示詞、加卡、換風格，不需動程式碼。gen-art.ps1(Grok) 與 gen-art-openai.ps1(GPT) 都讀這份。",
   "outputDir": "assets/cards",
   "size": "1024x1024",
+  "visualRefreshR75": {
+    "promptSource": "docs/art/PROMPTS.json",
+    "manifest": "docs/art/ASSET_MANIFEST.json",
+    "tool": "image_gen.imagegen",
+    "model_slug": null,
+    "note": "Actual tool did not expose model slug; R75 supersedes the old archer/footman art and PWA icons. Other source/license records remain historical.",
+    "runtimeDir": "assets/art/r75"
+  },
   "styleSuffix": "Fantasy trading-card art, painterly digital illustration, dramatic lighting, single subject centered, dark atmospheric background, no text, no card frame, no border, square composition.",
   "themePresets": {
     "_comment": "可選風格樣板，把 styleSuffix 換成其中之一即可整套換風格。",

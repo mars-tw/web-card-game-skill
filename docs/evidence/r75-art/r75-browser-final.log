@@ -1,0 +1,94 @@
+✓ 390 harbor trialStart ≥44px, visible, hit-tested
+✓ 390 harbor voyageStart ≥44px, visible, hit-tested
+✓ 390 harbor privacyOpen ≥44px, visible, hit-tested
+✓ navigator uses real loaded art
+✓ one primary CTA color
+✓ four real starting tide segments
+✓ trial chart never covered by settings
+✓ 390 battlefield illustration occupies ≥58% (0.682)
+✓ generated frame actually mounted
+✓ real death advances tide artwork to five
+✓ battlefield waterline binds to real tide
+✓ chart segments match battlefield
+✓ flood icon loaded
+✓ two enemy units and enemy hero previewed
+✓ preview causes no damage
+✓ five energy cannot cast
+✓ 390 chart chooseFlood ≥44px, hit-tested
+✓ 390 chart chooseEbb ≥44px, hit-tested
+✓ 390 chart tideChartClose ≥44px, hit-tested
+✓ 390 chart tideTrialReplay ≥44px, hit-tested
+✓ 390 chart tideHarbor ≥44px, hit-tested
+✓ remaining ally and hero have protection previews
+✓ cancel clears every preview marker
+✓ 844 harbor trialStart ≥44px, visible, hit-tested
+✓ 844 harbor voyageStart ≥44px, visible, hit-tested
+✓ 844 harbor privacyOpen ≥44px, visible, hit-tested
+✓ navigator uses real loaded art
+✓ one primary CTA color
+✓ four real starting tide segments
+✓ trial chart never covered by settings
+✓ 844 battlefield illustration occupies ≥58% (0.616)
+✓ generated frame actually mounted
+✓ real death advances tide artwork to five
+✓ battlefield waterline binds to real tide
+✓ chart segments match battlefield
+✓ flood icon loaded
+✓ two enemy units and enemy hero previewed
+✓ preview causes no damage
+✓ five energy cannot cast
+✓ 844 chart chooseFlood ≥44px, hit-tested
+✓ 844 chart chooseEbb ≥44px, hit-tested
+✓ 844 chart tideChartClose ≥44px, hit-tested
+✓ 844 chart tideTrialReplay ≥44px, hit-tested
+✓ 844 chart tideHarbor ≥44px, hit-tested
+✓ remaining ally and hero have protection previews
+✓ cancel clears every preview marker
+✓ 1032 harbor trialStart ≥44px, visible, hit-tested
+✓ 1032 harbor voyageStart ≥44px, visible, hit-tested
+✓ 1032 harbor privacyOpen ≥44px, visible, hit-tested
+✓ navigator uses real loaded art
+✓ one primary CTA color
+✓ four real starting tide segments
+✓ trial chart never covered by settings
+✓ 1032 battlefield illustration occupies ≥58% (0.806)
+✓ generated frame actually mounted
+✓ real death advances tide artwork to five
+✓ battlefield waterline binds to real tide
+✓ chart segments match battlefield
+✓ flood icon loaded
+✓ two enemy units and enemy hero previewed
+✓ preview causes no damage
+✓ five energy cannot cast
+✓ 1032 chart chooseFlood ≥44px, hit-tested
+✓ 1032 chart chooseEbb ≥44px, hit-tested
+✓ 1032 chart tideChartClose ≥44px, hit-tested
+✓ 1032 chart tideTrialReplay ≥44px, hit-tested
+✓ 1032 chart tideHarbor ≥44px, hit-tested
+✓ remaining ally and hero have protection previews
+✓ cancel clears every preview marker
+✓ 1366 harbor trialStart ≥44px, visible, hit-tested
+✓ 1366 harbor voyageStart ≥44px, visible, hit-tested
+✓ 1366 harbor privacyOpen ≥44px, visible, hit-tested
+✓ navigator uses real loaded art
+✓ one primary CTA color
+✓ four real starting tide segments
+✓ trial chart never covered by settings
+✓ 1366 battlefield illustration occupies ≥58% (0.682)
+✓ generated frame actually mounted
+✓ real death advances tide artwork to five
+✓ battlefield waterline binds to real tide
+✓ chart segments match battlefield
+✓ flood icon loaded
+✓ two enemy units and enemy hero previewed
+✓ preview causes no damage
+✓ five energy cannot cast
+✓ 1366 chart chooseFlood ≥44px, hit-tested
+✓ 1366 chart chooseEbb ≥44px, hit-tested
+✓ 1366 chart tideChartClose ≥44px, hit-tested
+✓ 1366 chart tideTrialReplay ≥44px, hit-tested
+✓ 1366 chart tideHarbor ≥44px, hit-tested
+✓ remaining ally and hero have protection previews
+✓ cancel clears every preview marker
+✓ zero page errors
+R75 art: 93 PASS, 0 FAIL

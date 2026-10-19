@@ -1,0 +1,130 @@
+{
+  "status": "VERIFIED",
+  "originalSize": [
+    390,
+    844
+  ],
+  "perContent": 5,
+  "images": [
+    {
+      "content": "puzzles",
+      "playing": false,
+      "path": "docs/content/r5/review-set/01-puzzles-study-verification-unlocked.png",
+      "source": "docs/content/r5/phone-study-verification-unlocked.png",
+      "proof": "六道 6/6、複驗 0/1 與獨立入口",
+      "sha256": "7c4cb6463a5669e63d3ac06b444e0823e8c340c6506012e5b2f18c16529c7559"
+    },
+    {
+      "content": "puzzles",
+      "playing": true,
+      "path": "docs/content/r5/review-set/02-puzzles-puzzle-cross-playing.png",
+      "source": "docs/content/r5/phone-puzzle-cross-playing.png",
+      "proof": "兩線同退：目標與盤面，尚未操作",
+      "sha256": "300eac3c80e70027debb432b0cd46470632cee6cb4368a55be965b5be76ca765"
+    },
+    {
+      "content": "puzzles",
+      "playing": true,
+      "path": "docs/content/r5/review-set/03-puzzles-puzzle-cross-exchange-1.png",
+      "source": "docs/content/r5/phone-puzzle-cross-exchange-1.png",
+      "proof": "同一局：士兵交換後蓄滿潮",
+      "sha256": "0b049029406c95d542ae40414fe0296d0460e4de5e976cc666e365388f069efc"
+    },
+    {
+      "content": "puzzles",
+      "playing": true,
+      "path": "docs/content/r5/review-set/04-puzzles-puzzle-cross-exchange-2.png",
+      "source": "docs/content/r5/phone-puzzle-cross-exchange-2.png",
+      "proof": "同一局：騎士交換後，兩敵同剩一血",
+      "sha256": "f6ff9a152f8ddf1ab15d4188273006e0e211e6702b08708887f0bfaa7a46aea9"
+    },
+    {
+      "content": "puzzles",
+      "playing": false,
+      "path": "docs/content/r5/review-set/05-puzzles-puzzle-shield-failed.png",
+      "source": "docs/content/r5/phone-puzzle-shield-failed.png",
+      "proof": "沒有行動的失敗：銅框與缺少步驟",
+      "sha256": "d0714285b3c0272e2b7658071b0221f15fe8dca0fbd2ab92af863ce4434fe828"
+    },
+    {
+      "content": "forecast",
+      "playing": false,
+      "path": "docs/content/r5/review-set/06-forecast-study-forecast.png",
+      "source": "docs/content/r5/phone-study-forecast.png",
+      "proof": "預報入口只給目標",
+      "sha256": "3b6f2f3c2543a7b73da59aba283dac0d8425d4343236a853921c67ebcdd7b169"
+    },
+    {
+      "content": "forecast",
+      "playing": true,
+      "path": "docs/content/r5/review-set/07-forecast-forecast-fourth-choices.png",
+      "source": "docs/content/r5/phone-forecast-fourth-choices.png",
+      "proof": "第四回合敵狼、己騎士、雙潮向同屏",
+      "sha256": "7f13962594bdcc93c761610c815751886f675664e46021ab13d17ae17f5de69c"
+    },
+    {
+      "content": "forecast",
+      "playing": true,
+      "path": "docs/content/r5/review-set/08-forecast-forecast-fourth-collapsed.png",
+      "source": "docs/content/r5/phone-forecast-fourth-collapsed.png",
+      "proof": "同一局收合後仍可選退潮",
+      "sha256": "5263a094a30b3deaee9308966dc5c4714138c5a3906f1c983ed48ca3e362a814"
+    },
+    {
+      "content": "forecast",
+      "playing": true,
+      "path": "docs/content/r5/review-set/09-forecast-forecast-wrong-direction.png",
+      "source": "docs/content/r5/phone-forecast-wrong-direction.png",
+      "proof": "方向不符：真實鎖定與零消耗說明",
+      "sha256": "c670fe0b079be0a1e12dd37c619f0a65d0eba0e2e43d4f3f94417450f822d57d"
+    },
+    {
+      "content": "forecast",
+      "playing": true,
+      "path": "docs/content/r5/review-set/10-forecast-forecast-fourth-battle.png",
+      "source": "docs/content/r5/phone-forecast-fourth-battle.png",
+      "proof": "同一局第四回合戰場，無面板遮擋",
+      "sha256": "ae407ee70a40e91c787351cc3f95a817dadd7792407ad0233fdf4ddd841f7874"
+    },
+    {
+      "content": "moen",
+      "playing": true,
+      "path": "docs/content/r5/review-set/11-moen-moen-offline-entry.png",
+      "source": "docs/content/r5/phone-moen-offline-entry.png",
+      "proof": "真斷網後進場，離線狀態列可見",
+      "sha256": "3bddb572551f9bdd9ced91def21455771be49037984a9a318c43633b310b1a7c"
+    },
+    {
+      "content": "moen",
+      "playing": true,
+      "path": "docs/content/r5/review-set/12-moen-moen-wave-2-impact.png",
+      "source": "docs/content/r5/phone-moen-wave-2-impact.png",
+      "proof": "同一局浪牆命中後取得盾、英雄七血",
+      "sha256": "275a5f1fbb67fe656ce6a6756a504bfa9564d6a6be4cc22357a74d772ad49516"
+    },
+    {
+      "content": "moen",
+      "playing": true,
+      "path": "docs/content/r5/review-set/13-moen-moen-wave-3-cleared.png",
+      "source": "docs/content/r5/phone-moen-wave-3-cleared.png",
+      "proof": "同一局退浪後開始反攻",
+      "sha256": "a728afd7152eb965ff496cacbc7a8fd09ca625ade13b508433ae2d1729558ae7"
+    },
+    {
+      "content": "moen",
+      "playing": true,
+      "path": "docs/content/r5/review-set/14-moen-moen-shield-before.png",
+      "source": "docs/content/r5/phone-moen-shield-before.png",
+      "proof": "同一騎士四血，貝盾完整",
+      "sha256": "f434a13865806e70ad6ff95fa221646aa302e7a8d48b9a058900cbf8868ec45d"
+    },
+    {
+      "content": "moen",
+      "playing": true,
+      "path": "docs/content/r5/review-set/15-moen-moen-shield-after.png",
+      "source": "docs/content/r5/phone-moen-shield-after.png",
+      "proof": "同一騎士四血，破盾碎片跨卡框",
+      "sha256": "0c2756ca48f6fdd10cc68325bfe80bde2b901520be9dfe8c9c5e2e9622761eb4"
+    }
+  ]
+}

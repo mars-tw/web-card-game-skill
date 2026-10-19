@@ -1,0 +1,28 @@
+{
+  "status": "EXECUTED",
+  "qualification": "Concurrent-machine headless Chromium rAF intervals, not GPU duration or physical-device release validation.",
+  "results": [
+    {
+      "width": 1366,
+      "height": 768,
+      "runsP95Ms": [
+        16.700000000000273,
+        16.700000000000273,
+        16.799999999999955
+      ],
+      "medianP95Ms": 16.700000000000273,
+      "within18ms": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "runsP95Ms": [
+        16.700000000000273,
+        16.700000000000273,
+        16.700000000000273
+      ],
+      "medianP95Ms": 16.700000000000273,
+      "within18ms": true
+    }
+  ]
+}

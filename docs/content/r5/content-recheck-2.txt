@@ -1,0 +1,69 @@
+PASS locked verification visible in normal study
+PASS lock explains condition
+PASS fallen idle pass fails
+PASS fallen failure never invents an action
+PASS fallen identifies missing action
+PASS fallen failure marks copper error card
+PASS fallen failure grants no progress
+PASS fallen real playable solution completes
+PASS shield objective and single situation only
+PASS shield idle pass fails
+PASS shield failure never invents an action
+PASS shield identifies missing action
+PASS shield failure marks copper error card
+PASS shield failure grants no progress
+PASS shield real playable solution completes
+PASS shelter objective and single situation only
+PASS shelter idle pass fails
+PASS shelter failure never invents an action
+PASS shelter identifies missing action
+PASS shelter failure marks copper error card
+PASS shelter failure grants no progress
+PASS shelter real playable solution completes
+PASS taunt objective and single situation only
+PASS taunt idle pass fails
+PASS taunt failure never invents an action
+PASS taunt identifies missing action
+PASS taunt failure marks copper error card
+PASS taunt failure grants no progress
+PASS taunt real playable solution completes
+PASS spell objective and single situation only
+PASS spell idle pass fails
+PASS spell failure never invents an action
+PASS spell identifies missing action
+PASS spell failure marks copper error card
+PASS spell failure grants no progress
+PASS spell real playable solution completes
+PASS cross objective and single situation only
+PASS cross idle pass fails
+PASS cross failure never invents an action
+PASS cross identifies missing action
+PASS cross failure marks copper error card
+PASS cross failure grants no progress
+PASS cross real playable solution completes
+PASS harbor separates 6/6 and 0/1
+PASS harbor normal study opens direct verification
+PASS direct study verification without completion dialog
+PASS verification saved after reload
+PASS all seven puzzle objectives still capped at 6/6
+PASS 7/6 regression absent
+PASS forecast entry gives no ordered answer
+PASS pointer down previews without applying
+PASS pointer release applies actual reversal
+PASS wrong direction cannot cast
+PASS direction rejection explicit
+PASS direction explanation consumes nothing
+PASS past reversal diagnoses timing
+PASS phone expanded fourth complete cards outside chart
+PASS fourth two choices reachable
+PASS phone collapsed fourth complete cards outside chart
+AssertionError [ERR_ASSERTION]: collapsed direction buttons remain reachable 44px
+    at check (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r5-e2e.js:7:38)
+    at C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r5-e2e.js:44:89 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

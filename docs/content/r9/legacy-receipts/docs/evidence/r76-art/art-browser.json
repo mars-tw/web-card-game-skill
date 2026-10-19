@@ -1,0 +1,43 @@
+{
+  "status": "VERIFIED",
+  "passed": 103,
+  "results": [
+    {
+      "width": 390,
+      "height": 844,
+      "chartRatio": 0.32028256704980845,
+      "waterDelta": 90,
+      "unitGapRatio": 0.06896551724137931
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "chartRatio": 0.4161490683229814,
+      "waterDelta": 50,
+      "unitGapRatio": 0.031055900621118012
+    },
+    {
+      "width": 1032,
+      "height": 1376,
+      "chartRatio": 0.1648854961832061,
+      "waterDelta": 90,
+      "unitGapRatio": 0.042748091603053436
+    },
+    {
+      "width": 1366,
+      "height": 600,
+      "chartRatio": 0.250936329588015,
+      "waterDelta": 90,
+      "unitGapRatio": 0.10112359550561797
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "chartRatio": 0.30859375,
+      "waterDelta": 90,
+      "unitGapRatio": 0.1015625
+    }
+  ],
+  "errors": [],
+  "waterNote": "0/6 QA fixtures clearly identified; store screenshots use real actions."
+}

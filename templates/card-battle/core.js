@@ -17,6 +17,19 @@
   const START_HP = 30;
   const MAX_FIELD = 7;
   const HAND_LIMIT = 8;
+  // R72 招牌玩法「裂潮」：雙方潮能 0–TIDE_MAX；每回合開始 +1、己方隨從陣亡 +1。
+  // 滿潮可施放一次「裂潮爆發」（0 費）：對所有敵方隨從造成 1 點、對敵方英雄造成 2 點，潮能歸零。
+  const TIDE_MAX = 6;
+  const TIDE_PER_SPELL = 0;
+  // 三位具名對手各有潮汐親和（與 R61 牌組人格一致；數值經 test-balance-sim M1–M3 校準）。
+  const OPPONENT_TIDE_RATES = Object.freeze({
+    op_ser_halden: Object.freeze({ label: "守城潮", desc: "每回合 +1、隨從陣亡 +1", turn: 1, fallen: 1, spell: 0 }),
+    op_magister_vey: Object.freeze({ label: "詠潮", desc: "施放法術 +1、隨從陣亡 +2", turn: 1, fallen: 2, spell: 1 }),
+    op_scarra: Object.freeze({ label: "血潮", desc: "隨從陣亡 +2", turn: 1, fallen: 2, spell: 0 }),
+  });
+  const TIDEBREAK_MINION_DAMAGE = 1;
+  const TIDEBREAK_HERO_DAMAGE = 2;
+  const STARS_VERSION = 1;
   const STATS_VERSION = 3;
   const DECK_VERSION = 1;
   const DECK_SIZE = 20;
@@ -991,6 +1004,112 @@
     }
   }
 
+
+  // ===== R72 裂潮：潮能與裂潮爆發 =====
+  function tideOf(side) {
+    const value = Math.floor(Number(side && side.tide) || 0);
+    return Math.max(0, Math.min(TIDE_MAX, value));
+  }
+
+  // 具名對手可有自己的「潮汐親和」：side.tideRates = { turn, fallen, spell } 覆寫每種來源的充能量。
+  function tideRate(side, reason, fallback) {
+    const rates = side && side.tideRates;
+    const value = rates && Number(rates[reason]);
+    return Number.isFinite(value) && value >= 0 ? Math.min(TIDE_MAX, Math.floor(value)) : fallback;
+  }
+
+  function gainTide(side, amount, reason, events) {
+    if (!side || !(amount > 0)) return 0;
+    const before = tideOf(side);
+    const after = Math.min(TIDE_MAX, before + Math.floor(amount));
+    side.tide = after;
+    const gained = after - before;
+    if (gained > 0 && events) {
+      events.push({ type: "tideGain", side: side.side, amount: gained, tide: after, reason: reason || "turn" });
+      if (after >= TIDE_MAX) events.push({ type: "tideFull", side: side.side });
+    }
+    return gained;
+  }
+
+  function canTidebreak(state, sideKey) {
+    const key = sideKeyOf(state, sideKey || "player");
+    const side = getSide(state, key);
+    if (!state || !side || state.over) return false;
+    if (state.turn !== key) return false;
+    if (state.pendingBattlecry) return false;
+    return tideOf(side) >= TIDE_MAX;
+  }
+
+  function tidebreak(state, action, rng) {
+    const events = [];
+    const sideKey = sideKeyOf(state, (action && action.side) || "player");
+    const side = getSide(state, sideKey);
+    if (!side) return fail("sideNotFound", events);
+    if (state.over) return fail("gameOver", events);
+    if (state.turn !== sideKey) return fail("notYourTurn", events);
+    if (state.pendingBattlecry) return fail("pendingBattlecry", events);
+    if (tideOf(side) < TIDE_MAX) return fail("tideNotFull", events, { tide: tideOf(side) });
+    const mode = (action && action.mode) || "flood";
+    if (mode !== "flood" && mode !== "ebb") return fail("invalidTideMode", events);
+    const forecastMode = sideKey === 'player' && state.forecast?.directions?.[state.turnCount - 1];
+    if (forecastMode && mode !== forecastMode) return fail("forecastDirection", events);
+    const opponent = getOpponent(state, sideKey);
+    side.tide = 0;
+    side.tidebreaksUsed = Math.max(0, Math.floor(Number(side.tidebreaksUsed) || 0)) + 1;
+    if (mode === "ebb") {
+      const before = side.hp;
+      side.hp = Math.min(side.maxHp, side.hp + 3);
+      const targets = side.field.filter(m => !m.shield).map(m => m.uid);
+      for (const m of side.field) {
+        if (!m.shield) { m.shield = true; events.push({ type: "shieldGain", side: side.side, uid: m.uid }); }
+      }
+      events.push({ type: "heroHeal", side: side.side, amount: side.hp - before });
+      events.push({ type: "tideEbb", side: side.side, targets });
+      return ok(events, { targets, mode });
+    }
+    const targets = opponent.field.map((minion) => minion.uid);
+    events.push({ type: "tidebreak", side: side.side, targets, minionDamage: TIDEBREAK_MINION_DAMAGE, heroDamage: TIDEBREAK_HERO_DAMAGE });
+    for (const minion of [...opponent.field]) applyDamageToMinion(state, minion, TIDEBREAK_MINION_DAMAGE, null, events);
+    opponent.hp -= TIDEBREAK_HERO_DAMAGE;
+    events.push({ type: "heroDamage", attackerSide: side.side, defenderSide: opponent.side, attackerUid: null, amount: TIDEBREAK_HERO_DAMAGE, source: "tidebreak" });
+    cleanupBoth(state, rng, events);
+    return ok(events, { targets });
+  }
+
+  // ===== R72 星級挑戰：每位對手 × 難度 3 星 =====
+  function computeStars(result) {
+    const r = result || {};
+    const won = !!r.won;
+    const maxHp = Math.max(1, Number(r.maxHp) || START_HP);
+    const hpLeft = Math.max(0, Number(r.hpLeft) || 0);
+    const stars = [
+      won,
+      won && hpLeft * 2 >= maxHp,
+      won && (Number(r.tidebreaksUsed) || 0) > 0,
+    ];
+    return { stars, count: stars.filter(Boolean).length };
+  }
+
+  function migrateStarRecord(raw) {
+    const source = raw && typeof raw === "object" && raw.version === STARS_VERSION && raw.best && typeof raw.best === "object" ? raw.best : {};
+    const best = {};
+    for (const [key, value] of Object.entries(source)) {
+      if (!/^[a-z0-9_]+:(easy|normal|hard)$/.test(key)) continue;
+      best[key] = clampNumber(value, 0, 3, 0);
+    }
+    return { version: STARS_VERSION, best };
+  }
+
+  function mergeBestStars(raw, opponentId, difficulty, count) {
+    const record = migrateStarRecord(raw);
+    const key = `${opponentId}:${difficulty}`;
+    const previous = record.best[key] || 0;
+    const next = clampNumber(count, 0, 3, 0);
+    const improved = next > previous;
+    if (/^[a-z0-9_]+:(easy|normal|hard)$/.test(key)) record.best[key] = Math.max(previous, next);
+    return { record, key, previous, best: record.best[key] || 0, improved };
+  }
+
   function cleanupSide(state, side, rng, events) {
     if (!side || !Array.isArray(side.field)) return;
     const dying = side.field
@@ -998,6 +1117,7 @@
       .filter((entry) => entry.minion.health <= 0);
     if (dying.length === 0) return;
     side.field = side.field.filter((m) => m.health > 0);
+    gainTide(side, dying.length * tideRate(side, "fallen", 1), "fallen", events);
     for (const entry of dying) {
       const minion = entry.minion;
       if (events) events.push({ type: "dying", side: side.side, uid: minion.uid, name: minion.name });
@@ -1207,6 +1327,7 @@
       if (action.trackCombo !== false) registerCombo(state, card.uid, events);
       events.push({ type: "spellCast", side: side.side, uid: card.uid, effect: card.effect, targetUid: target && target.uid });
       applySpellEffect(state, sideKey, card.effect, target, rng, events, card);
+      gainTide(side, tideRate(side, "spell", TIDE_PER_SPELL), "spell", events);
       return ok(events, { card, target });
     }
 
@@ -1293,6 +1414,7 @@
     state.pendingSpell = null;
     events.push({ type: "spellCast", side: side.side, uid: card.uid, effect: card.effect, targetUid: target.uid });
     applySpellEffect(state, sideKey, card.effect, target, rng, events, card);
+    gainTide(side, tideRate(side, "spell", TIDE_PER_SPELL), "spell", events);
     return ok(events, { card, target });
   }
 
@@ -1465,6 +1587,7 @@
       enemy.mana = enemy.manaMax;
       drawCardInternal(enemy, rng, events);
       resetAttack(enemy, events);
+      gainTide(enemy, tideRate(enemy, "turn", 1), "turn", events);
     } else if (phase === "endEnemy") {
       clearTurnSpellDiscount(state.enemy, events);
       clearBloodtrailBonuses(state.enemy, events);
@@ -1475,6 +1598,7 @@
       state.player.mana = state.player.manaMax;
       drawCardInternal(state.player, rng, events);
       resetAttack(state.player, events);
+      gainTide(state.player, tideRate(state.player, "turn", 1), "turn", events);
       events.push({ type: "turnChanged", turn: "player" });
     } else {
       return fail("unknownTurnPhase", events);
@@ -1536,6 +1660,12 @@
     START_HP,
     MAX_FIELD,
     HAND_LIMIT,
+    TIDE_MAX,
+    TIDE_PER_SPELL,
+    OPPONENT_TIDE_RATES,
+    TIDEBREAK_MINION_DAMAGE,
+    TIDEBREAK_HERO_DAMAGE,
+    STARS_VERSION,
     STATS_VERSION,
     STATS_DEFAULT,
     DDA_MIN_LEVEL,
@@ -1599,5 +1729,13 @@
     addShield,
     silenceMinion,
     polymorph,
+    tideOf,
+    tideRate,
+    gainTide,
+    canTidebreak,
+    tidebreak,
+    computeStars,
+    migrateStarRecord,
+    mergeBestStars,
   };
 });

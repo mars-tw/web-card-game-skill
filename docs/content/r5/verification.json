@@ -1,0 +1,664 @@
+{
+  "status": "VERIFIED",
+  "version": "0.18.0",
+  "syntaxFiles": 73,
+  "secretScan": {
+    "files": 2764,
+    "hits": 0,
+    "excluded": [
+      ".git",
+      "node_modules"
+    ],
+    "matchingValuesPrinted": false
+  },
+  "oldRuntimeVersionHits": 0,
+  "browserChecks": 86,
+  "e2eVerificationMode": "resumed constituent suite; not a successful single npm process",
+  "e2eConstituents": 18,
+  "lastFullNpmE2EProcessExitCode": 1,
+  "screenshots": [
+    {
+      "path": "docs/content/r5/phone-forecast-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "5b3709001bb65ba0ed69b765cc56be6be4b29dbb7595d344f2ef6fc9bf0c93f2"
+    },
+    {
+      "path": "docs/content/r5/phone-forecast-fourth-battle.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "ae407ee70a40e91c787351cc3f95a817dadd7792407ad0233fdf4ddd841f7874"
+    },
+    {
+      "path": "docs/content/r5/phone-forecast-fourth-choices.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "7f13962594bdcc93c761610c815751886f675664e46021ab13d17ae17f5de69c"
+    },
+    {
+      "path": "docs/content/r5/phone-forecast-fourth-collapsed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "5263a094a30b3deaee9308966dc5c4714138c5a3906f1c983ed48ca3e362a814"
+    },
+    {
+      "path": "docs/content/r5/phone-forecast-press-1-before.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "abc96ff92113dab3c44d09210c9063dd106c324262a2d5f31693349591ae07a3"
+    },
+    {
+      "path": "docs/content/r5/phone-forecast-press-2-down.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "65121f3b134156c55c9066aadd939300e4ea9f6c7e3e14943127aa27ab00bb81"
+    },
+    {
+      "path": "docs/content/r5/phone-forecast-press-3-applied.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "e76283ebcd5759e23370504043127e6a4c415af7095e46be1193a36f1d964aa8"
+    },
+    {
+      "path": "docs/content/r5/phone-forecast-wrong-direction.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "c670fe0b079be0a1e12dd37c619f0a65d0eba0e2e43d4f3f94417450f822d57d"
+    },
+    {
+      "path": "docs/content/r5/phone-forecast-wrong-timing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "0acb526cdb4dc5513bcb07b94a2c6511afa9c00d72cf1df6d08d16a4ab43f108"
+    },
+    {
+      "path": "docs/content/r5/phone-harbor-six-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "d1095a8f228c4e54d3e059a95431eb043c1a7a548ff5ac7249f75115f4b99ffd"
+    },
+    {
+      "path": "docs/content/r5/phone-harbor-verification-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "f348e20cdb3550bc5f0258df00e279e9088285a01e4c8879dfb26ceecb4f9e0c"
+    },
+    {
+      "path": "docs/content/r5/phone-moen-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "dcedf5f7afcf4f89f63a165e632d976d373f36fc7cd5fc5630697e3949c95e12"
+    },
+    {
+      "path": "docs/content/r5/phone-moen-delay-after.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "16b998784a1e74e52233f5404b0668713058a4bb225a984113ad1bba98efe6b1"
+    },
+    {
+      "path": "docs/content/r5/phone-moen-delay-before.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "3c0ab3e589e4dfd1364e68062df6ae70e561760510e7a13eaa4b4cdf193859d0"
+    },
+    {
+      "path": "docs/content/r5/phone-moen-offline-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "46eeaa0b5a6493e5b4c1504ba56bc21e89afcacb187a87e7b1f697fb3c01fbc8"
+    },
+    {
+      "path": "docs/content/r5/phone-moen-offline-entry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "3bddb572551f9bdd9ced91def21455771be49037984a9a318c43633b310b1a7c"
+    },
+    {
+      "path": "docs/content/r5/phone-moen-preparing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "98aec2da5a76abb7eb7312f96b2ae4e3e4495163084eebf2afd20edf4865ee55"
+    },
+    {
+      "path": "docs/content/r5/phone-moen-shield-after.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "0c2756ca48f6fdd10cc68325bfe80bde2b901520be9dfe8c9c5e2e9622761eb4"
+    },
+    {
+      "path": "docs/content/r5/phone-moen-shield-before.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "f434a13865806e70ad6ff95fa221646aa302e7a8d48b9a058900cbf8868ec45d"
+    },
+    {
+      "path": "docs/content/r5/phone-moen-wave-1-anticipation.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "072900cb6908273dac6de8302af641fd6c7ed23c4858e648ead1e8e0099b58cf"
+    },
+    {
+      "path": "docs/content/r5/phone-moen-wave-2-impact.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "275a5f1fbb67fe656ce6a6756a504bfa9564d6a6be4cc22357a74d772ad49516"
+    },
+    {
+      "path": "docs/content/r5/phone-moen-wave-3-cleared.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "a728afd7152eb965ff496cacbc7a8fd09ca625ade13b508433ae2d1729558ae7"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-cross-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "ed4e54a8e0df4683963cafc6b73c238273bc43b6d578fa2efd640997f224eda8"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-cross-exchange-1.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "0b049029406c95d542ae40414fe0296d0460e4de5e976cc666e365388f069efc"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-cross-exchange-2.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "f6ff9a152f8ddf1ab15d4188273006e0e211e6702b08708887f0bfaa7a46aea9"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-cross-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "d235dd84ac1b2be10e960d22cc2ac7978b4d03c0819447707974d0f123dbe81b"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-cross-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "300eac3c80e70027debb432b0cd46470632cee6cb4368a55be965b5be76ca765"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-cross-retry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "4121edb0ec220edf29b154bc2161a4fde3661adf9fb0dfc69c0af68f689f2c06"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-fallen-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "29d811093f42159d5d25d81edb44522d185ed69356423f8529e098e79cb83a1d"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-fallen-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "f07e2e4ab50a828c683dc41fde37b2380fcd333697027b8bfa94017e7eeab78f"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-fallen-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "82bb4f999597caba4abd7af3fa954fd3a0ad4496b20aae1772e570c0330363e9"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-fallen-retry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "308f9cf4dffd53f0ba5295756d5a5e54548f6ae4e187f7449ee7e2781f40f906"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-shelter-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "7de3a9ff5e083a48f96e0ab8fff1e04bc678d9888369e1152b5aadf9ada0f1cb"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-shelter-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "375eba41adb15c34f5080837fee4eb2bfa4dc960016a195134fce29a1421d2b0"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-shelter-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "c91ca7ab9641624074bc1f25db6eeded6bc9df42c97eb7be178a594ecc020b97"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-shelter-retry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "7f0e2120db24db4fa4237c61f56b5cf8457b2de20e5ef13014b27af8efca18be"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-shield-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "02b58870e32728008d72af4103f5a7ad4dadaf7be30c0a53bee73a2a2ad8ea3a"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-shield-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "d0714285b3c0272e2b7658071b0221f15fe8dca0fbd2ab92af863ce4434fe828"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-shield-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "c27e18b0da36d168ab906f51103cc5d897bd391dc340d2538157728ed5cf594d"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-shield-retry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "7df1332e24317e56661265f36fe22fb5bc3581396e59d7a934ccadb599e26b26"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-spell-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "7cb5efafd7fbb9ea389f7750cb9a688b852ec62cc394ffab6b8abf196f3baac9"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-spell-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "5f97e4dcd5321ac8a6881070aaa0281c35ae2961acb4d4c245cb59469c1306ae"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-spell-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "4fd87222e13c9b845ca4d8ee9bff3208cfd5bb73068710d6d8ba2e9c7e2353f0"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-spell-retry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "727b772222f32d82220f806d58bf5abe032d77925fa5b43ac86109533e2caddf"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-taunt-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "c122d1b08f5fcb98b19c176ba82dbdbe55dd16e0d5b6e4c1af7b56ffed349bb7"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-taunt-failed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "daf651830c20f08a43e9c76d1abcfd1dba59ae7cec913ae007bba35f95e8fdb0"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-taunt-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "72b2e4bf1df655b534784883d22315427311b7fa850a881364868cdb0c02e78b"
+    },
+    {
+      "path": "docs/content/r5/phone-puzzle-taunt-retry.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "3161f2abcb5781da5fac270c28f05cc579f8d581f6a4f4c56c173e435c5817a2"
+    },
+    {
+      "path": "docs/content/r5/phone-study-forecast.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "3b6f2f3c2543a7b73da59aba283dac0d8425d4343236a853921c67ebcdd7b169"
+    },
+    {
+      "path": "docs/content/r5/phone-study-verification-locked.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "9ea6010e711b347ccedca5d9742ea1511abceaf4932a99675499c92479714940"
+    },
+    {
+      "path": "docs/content/r5/phone-study-verification-unlocked.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "7c4cb6463a5669e63d3ac06b444e0823e8c340c6506012e5b2f18c16529c7559"
+    },
+    {
+      "path": "docs/content/r5/phone-verification-completed.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "7d87db22336333172afc2a3231056c3a13678cdad690050030396fe564d20b7b"
+    },
+    {
+      "path": "docs/content/r5/phone-verification-playing.png",
+      "size": [
+        390,
+        844
+      ],
+      "sha256": "6a7800eb8d256771e14c5035f14264276280ff397e7ee091950a8878ed05f3a4"
+    },
+    {
+      "path": "docs/store/screenshots/content-r5-forecast-1290x2796.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "f0d1330f82482518254792e971277cbaef0882c2c209816b26e1a8c297d7c213"
+    },
+    {
+      "path": "docs/store/screenshots/content-r5-forecast-2064x2752.png",
+      "size": [
+        2064,
+        2752
+      ],
+      "sha256": "e9c061b78b54404b17ddae769bf620c862d9a54b6f5f664acc17a295b8c44eaf"
+    }
+  ],
+  "reviewSet": {
+    "status": "VERIFIED",
+    "originalSize": [
+      390,
+      844
+    ],
+    "perContent": 5,
+    "images": [
+      {
+        "content": "puzzles",
+        "playing": false,
+        "path": "docs/content/r5/review-set/01-puzzles-study-verification-unlocked.png",
+        "source": "docs/content/r5/phone-study-verification-unlocked.png",
+        "proof": "六道 6/6、複驗 0/1 與獨立入口",
+        "sha256": "7c4cb6463a5669e63d3ac06b444e0823e8c340c6506012e5b2f18c16529c7559"
+      },
+      {
+        "content": "puzzles",
+        "playing": true,
+        "path": "docs/content/r5/review-set/02-puzzles-puzzle-cross-playing.png",
+        "source": "docs/content/r5/phone-puzzle-cross-playing.png",
+        "proof": "兩線同退：目標與盤面，尚未操作",
+        "sha256": "300eac3c80e70027debb432b0cd46470632cee6cb4368a55be965b5be76ca765"
+      },
+      {
+        "content": "puzzles",
+        "playing": true,
+        "path": "docs/content/r5/review-set/03-puzzles-puzzle-cross-exchange-1.png",
+        "source": "docs/content/r5/phone-puzzle-cross-exchange-1.png",
+        "proof": "同一局：士兵交換後蓄滿潮",
+        "sha256": "0b049029406c95d542ae40414fe0296d0460e4de5e976cc666e365388f069efc"
+      },
+      {
+        "content": "puzzles",
+        "playing": true,
+        "path": "docs/content/r5/review-set/04-puzzles-puzzle-cross-exchange-2.png",
+        "source": "docs/content/r5/phone-puzzle-cross-exchange-2.png",
+        "proof": "同一局：騎士交換後，兩敵同剩一血",
+        "sha256": "f6ff9a152f8ddf1ab15d4188273006e0e211e6702b08708887f0bfaa7a46aea9"
+      },
+      {
+        "content": "puzzles",
+        "playing": false,
+        "path": "docs/content/r5/review-set/05-puzzles-puzzle-shield-failed.png",
+        "source": "docs/content/r5/phone-puzzle-shield-failed.png",
+        "proof": "沒有行動的失敗：銅框與缺少步驟",
+        "sha256": "d0714285b3c0272e2b7658071b0221f15fe8dca0fbd2ab92af863ce4434fe828"
+      },
+      {
+        "content": "forecast",
+        "playing": false,
+        "path": "docs/content/r5/review-set/06-forecast-study-forecast.png",
+        "source": "docs/content/r5/phone-study-forecast.png",
+        "proof": "預報入口只給目標",
+        "sha256": "3b6f2f3c2543a7b73da59aba283dac0d8425d4343236a853921c67ebcdd7b169"
+      },
+      {
+        "content": "forecast",
+        "playing": true,
+        "path": "docs/content/r5/review-set/07-forecast-forecast-fourth-choices.png",
+        "source": "docs/content/r5/phone-forecast-fourth-choices.png",
+        "proof": "第四回合敵狼、己騎士、雙潮向同屏",
+        "sha256": "7f13962594bdcc93c761610c815751886f675664e46021ab13d17ae17f5de69c"
+      },
+      {
+        "content": "forecast",
+        "playing": true,
+        "path": "docs/content/r5/review-set/08-forecast-forecast-fourth-collapsed.png",
+        "source": "docs/content/r5/phone-forecast-fourth-collapsed.png",
+        "proof": "同一局收合後仍可選退潮",
+        "sha256": "5263a094a30b3deaee9308966dc5c4714138c5a3906f1c983ed48ca3e362a814"
+      },
+      {
+        "content": "forecast",
+        "playing": true,
+        "path": "docs/content/r5/review-set/09-forecast-forecast-wrong-direction.png",
+        "source": "docs/content/r5/phone-forecast-wrong-direction.png",
+        "proof": "方向不符：真實鎖定與零消耗說明",
+        "sha256": "c670fe0b079be0a1e12dd37c619f0a65d0eba0e2e43d4f3f94417450f822d57d"
+      },
+      {
+        "content": "forecast",
+        "playing": true,
+        "path": "docs/content/r5/review-set/10-forecast-forecast-fourth-battle.png",
+        "source": "docs/content/r5/phone-forecast-fourth-battle.png",
+        "proof": "同一局第四回合戰場，無面板遮擋",
+        "sha256": "ae407ee70a40e91c787351cc3f95a817dadd7792407ad0233fdf4ddd841f7874"
+      },
+      {
+        "content": "moen",
+        "playing": true,
+        "path": "docs/content/r5/review-set/11-moen-moen-offline-entry.png",
+        "source": "docs/content/r5/phone-moen-offline-entry.png",
+        "proof": "真斷網後進場，離線狀態列可見",
+        "sha256": "3bddb572551f9bdd9ced91def21455771be49037984a9a318c43633b310b1a7c"
+      },
+      {
+        "content": "moen",
+        "playing": true,
+        "path": "docs/content/r5/review-set/12-moen-moen-wave-2-impact.png",
+        "source": "docs/content/r5/phone-moen-wave-2-impact.png",
+        "proof": "同一局浪牆命中後取得盾、英雄七血",
+        "sha256": "275a5f1fbb67fe656ce6a6756a504bfa9564d6a6be4cc22357a74d772ad49516"
+      },
+      {
+        "content": "moen",
+        "playing": true,
+        "path": "docs/content/r5/review-set/13-moen-moen-wave-3-cleared.png",
+        "source": "docs/content/r5/phone-moen-wave-3-cleared.png",
+        "proof": "同一局退浪後開始反攻",
+        "sha256": "a728afd7152eb965ff496cacbc7a8fd09ca625ade13b508433ae2d1729558ae7"
+      },
+      {
+        "content": "moen",
+        "playing": true,
+        "path": "docs/content/r5/review-set/14-moen-moen-shield-before.png",
+        "source": "docs/content/r5/phone-moen-shield-before.png",
+        "proof": "同一騎士四血，貝盾完整",
+        "sha256": "f434a13865806e70ad6ff95fa221646aa302e7a8d48b9a058900cbf8868ec45d"
+      },
+      {
+        "content": "moen",
+        "playing": true,
+        "path": "docs/content/r5/review-set/15-moen-moen-shield-after.png",
+        "source": "docs/content/r5/phone-moen-shield-after.png",
+        "proof": "同一騎士四血，破盾碎片跨卡框",
+        "sha256": "0c2756ca48f6fdd10cc68325bfe80bde2b901520be9dfe8c9c5e2e9622761eb4"
+      }
+    ]
+  },
+  "newArtOriginals": 0,
+  "runtimeArtCrops": 0,
+  "reusedArtManifest": "docs/art/ASSET_MANIFEST_CONTENT_R4.json",
+  "reviewSha256": "a2692bc8cd70f5bbfdb75d61e38b6fc5edc529d13403e6ca2e498cd4cab19b88",
+  "sourceHashes": {
+    "index.html": "e47c4779537ab689fa2215e5474e944414b8c41fead23cfea377ecfa5fd6005a",
+    "sw.js": "56bb70c79777046e962f313d80bac61288ff973bc0c8bf4f922059a9b2184e59",
+    "README.md": "54680dffe5fa2c8ed6cd799173ecefa937350886f22bd182ed4c44a7167d72b9",
+    "package.json": "b0fb0fed1c520c579d0e84efb5581e5d09cbe6dfb2b6441b14cda14cd3d076cb",
+    "package-lock.json": "31a704ae3e2c35bb6e4121ae432156aec0d53a19b36d4555af88eb68f761081d",
+    "templates/harbor.html": "6b807ef6c46385b1c0fdc0bbcae5908a46670ae9e9277dbec35385fb22c8013a",
+    "templates/index.html": "506106a668c8e89cc962a3df4f47aa7439618f4ae5ea96ce0a0112bd3998b9ad",
+    "templates/r75-harbor.css": "579b7ac6dea40721248830da6d4e6851c0e00a08cba9b15e9836f780e8aeeba1",
+    "templates/r75-theme.css": "0f41b18752a9630fde63b37f508d3fc507d416e5ed31dcf5cdf0c997f952ffe0",
+    "templates/r76-art.css": "9360e7ca27dd54f16e0bba4134d8fac2920beeb1daad4f4fbe20d8dacb12b1b8",
+    "templates/r77-art.css": "457d6fb6c667c33a08142d6bb33f8cc64b870e41ddc0e66b8aab99a2aa7cea43",
+    "templates/r78-art.css": "d2c4c52bad9c0f25c3bee057b1b6d4393c3ddde16fb4df9c8179017bae724a97",
+    "templates/r79-art.css": "faedd64a7a4c970d77b68407422613eac58c4b4376db3210d51c52bb136ee788",
+    "templates/r80-art.css": "c1bdbc277f78bd1459657128d31eaae86dd34937a9a6183b866fa46e3321d92e",
+    "templates/card-battle/battle.js": "9ea764a0e8428cf1c3e88d57319e9bb0c2350d30b795859c8942704c6a23d657",
+    "templates/card-battle/cards.js": "a84204e252222ce4006fad251b236ae6de0b8d7d56265512a4ac5060f6cfe0ab",
+    "templates/card-battle/content-r1.css": "b76210b705dd96e67fa3522c74bcf021fb19e7964804cede3c826eda30ce9ef6",
+    "templates/card-battle/content-r2.css": "89b3164c1b2cf49e7dc2ac7bd41b81589f49f7f75ab0ec6b33e5e91d65a6f914",
+    "templates/card-battle/content-r3.css": "cfc9557741907d9e7fb6ca29996f6bf81a70f4edb41d8fb1a7fecaabd16b5843",
+    "templates/card-battle/content-r4.css": "7281bbeeb5416f1310f634f9cc5f10bee02adc59dfb65582a213666491fd331c",
+    "templates/card-battle/content-r5.css": "fbc6e2da392be7424957e1f88adf7b21f409138a6fffee6c5d49ae9fed04a180",
+    "templates/card-battle/core.js": "84769759853357ab231b9b8c2c42ac890e954172ac78bdf6cece7236f7626f28",
+    "templates/card-battle/index.html": "bc355bec317312210bff19adb7954df5b7f8dc2de466ee03cf7c09a9bcbf26ad",
+    "templates/card-battle/pose-player.js": "acc557ffafe3a774c291d7a97a02068323572fcfc03fc8cbd98230b756c3ae59",
+    "templates/card-battle/r73-mobile.css": "e6846ddb2a4916f77b2a20cd36d70d84494006e62e9ef30d399a014a43277b82",
+    "templates/card-battle/r73-ui.js": "9f3a3af41e3475a9bed1cf64a6460ee6498e97ec4e9751ef58804b16b1aad0cf",
+    "templates/card-battle/r74-tide.css": "18b2c952431f53e148f996fad8c34570d4101c79b7a8c0663f240352e9a327a1",
+    "templates/card-battle/tide-puzzles.js": "7d9a4a1abcd8bfac548b035354fd1fb1f99426d79921905eb32542934b9169e8",
+    "templates/card-battle/tide-session.js": "e3812f1a83900c205b1f58bb2e91f30c1345a20561042c6d8db4aee5dedd7ae1",
+    "templates/card-battle/voyage.js": "01480184862b1e6ac50aa03f3f51745925d484abf5063ada0be1ca7bc3bf77f8",
+    "templates/card-pack/index.html": "181e930dc8fd815892c321e6a9afb5c7d74e14b98de480462ddfd796b440d7bc",
+    "templates/card-pack/pack.js": "7ed2389d43c8560e2220dfd46ad6da00e09438836405d27f8265a3db10179c21"
+  },
+  "sourceHashNormalization": "CRLF to LF only, matching Git text blobs; tested raw hashes retained separately",
+  "testedRawSourceHashes": {
+    "index.html": "ab0022d5efa6ac7ea56fd068a25dd09413128090d5d355bfb59ebc91e8ec188e",
+    "sw.js": "2a8c81e9443daabcc8a9fa440bb3afc91c8d2bb80fdbf9586957c1c19d586d5d",
+    "package.json": "a78e99e6c265018e40101f8b1c3cdc9cb28cede41ac756af218c6c46d29cdfb2",
+    "package-lock.json": "ac89b0ea986a8fd7fbedcdf65d82ea5e3d54c07a7f00042999f6b51feaee22cf",
+    "templates/harbor.html": "69cd7740d81cda0f9318ffdd09e71377ff28eda0044144795ddc779dea8ae552",
+    "templates/index.html": "37299da72c120de7b6089d3e5f2eecd6ca72d65ccda4399b2df697be2090da9d",
+    "templates/r75-harbor.css": "587fc63b027d7b2cc6933c1ab3a111d96a3f3a83dbc57138728ccb07fc81f0aa",
+    "templates/r75-theme.css": "e6f3ca2696995bdfda48f9b2f888f88389efb4313d9c31b0b9340350b55cce4a",
+    "templates/r76-art.css": "2fb0ba8a50a50f57a68b14f8bc3b3f1e0240f0df5026389994d1865c3023f024",
+    "templates/r77-art.css": "9540c89956246ddf98522de46cd25bb9a0bf39d9db745fca2aa6c6d675bf461c",
+    "templates/r78-art.css": "f54cc69b450fa7816c67a8f3f72ca689f549b24738e9974a4c7cc575a8cdf5d4",
+    "templates/r79-art.css": "2e9d5c6319b83d2dea0cddd3cebaa29b7c0fb18f4ed5edef19f9eeff5c800edf",
+    "templates/r80-art.css": "87b390244cd439cb4ad541d85f47566efcac5df63138998914b96e3103a9e62f",
+    "templates/card-battle/battle.js": "4998826099f07b112d63071975b9146b04756278a110de8a44aaa29e11ea8c74",
+    "templates/card-battle/cards.js": "a427ad865041a93683c08e35b6cc92c6a02627faf07dc456e7a49d1466a2defa",
+    "templates/card-battle/content-r1.css": "b76210b705dd96e67fa3522c74bcf021fb19e7964804cede3c826eda30ce9ef6",
+    "templates/card-battle/content-r2.css": "9f7b0790bda9fae60a9883238b3c37a3648d5a03f1bb6e04800cf29757678a86",
+    "templates/card-battle/content-r3.css": "cfc9557741907d9e7fb6ca29996f6bf81a70f4edb41d8fb1a7fecaabd16b5843",
+    "templates/card-battle/content-r4.css": "b808d638f50c3db9d0494032c7fbbad02d9046b664c8671cfe9aecfb0565b74f",
+    "templates/card-battle/content-r5.css": "fbc6e2da392be7424957e1f88adf7b21f409138a6fffee6c5d49ae9fed04a180",
+    "templates/card-battle/core.js": "b1c1434a4b6a62e8ec0c7aa4da6cde2f9cfa07f38760a43e9f5142745f87364f",
+    "templates/card-battle/index.html": "cf6021f030744e5f04ab9e51a29d8fbf28e4eedee6a6b1d85d9b68d43a71a340",
+    "templates/card-battle/pose-player.js": "faa13332f20dd800fbca9b2c8c96cf16758809c58503aceac3cc283eb09531f0",
+    "templates/card-battle/r73-mobile.css": "1ab315d41d5f1cebb256aa07570738b82db25d991505ebbae4e8dc6c72629178",
+    "templates/card-battle/r73-ui.js": "0a95f161de1f6101e51536707fe65c1a460dd80422d02cac0271e1557bcc5d31",
+    "templates/card-battle/r74-tide.css": "bccaf6af6627074f3e46e9a4f55004406f62eeb4f57176413074d4ee6719bbb4",
+    "templates/card-battle/tide-puzzles.js": "5a330edf6e7f91a31e660e42183fd9720ec76d82d78d7fa283e77966046f2051",
+    "templates/card-battle/tide-session.js": "82702ff03c1dd79ca5853815770f4019945014dbc6af2c8ceeeccf2f1c530bdb",
+    "templates/card-battle/voyage.js": "24b4458dda0d66706450671cd5445e7f1d4b44fb08b0f4582d1a055aebcff6f7",
+    "templates/card-pack/index.html": "c345a42fc5c8e01ec5c0b1643d6375e6bf345fe0a93914124038ca8903e95e92",
+    "templates/card-pack/pack.js": "5b1bc0573b79c477eefeb8f2a1cb26dfc1bf8cad1e3fe5092c5dcae29bda826a"
+  },
+  "qualification": "Headless local verification only; actual real-device, human playtest and independent Muse score remain BLOCKED. All 18 E2E constituents passed across the unchanged prefix and five content reruns; the earlier full npm process is retained as exit 1."
+}

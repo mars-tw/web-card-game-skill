@@ -1,0 +1,121 @@
+{
+  ".board": {
+    "rect": {
+      "x": 0,
+      "y": 80,
+      "width": 413.546875,
+      "height": 240,
+      "top": 80,
+      "right": 413.546875,
+      "bottom": 320,
+      "left": 0
+    },
+    "width": "413.547px",
+    "minWidth": "auto",
+    "margin": "0px",
+    "position": "relative",
+    "grid": "minmax(0px, 1fr) minmax(0px, 1fr)"
+  },
+  "#enemyField": {
+    "rect": {
+      "x": 210.78125,
+      "y": 136,
+      "width": 193.765625,
+      "height": 156,
+      "top": 136,
+      "right": 404.546875,
+      "bottom": 292,
+      "left": 210.78125
+    },
+    "width": "193.766px",
+    "minWidth": "0px",
+    "margin": "0px",
+    "position": "absolute",
+    "grid": "none"
+  },
+  "#playerField": {
+    "rect": {
+      "x": 9,
+      "y": 136,
+      "width": 193.765625,
+      "height": 156,
+      "top": 136,
+      "right": 202.765625,
+      "bottom": 292,
+      "left": 9
+    },
+    "width": "193.766px",
+    "minWidth": "0px",
+    "margin": "0px",
+    "position": "absolute",
+    "grid": "none"
+  },
+  "#enemyField .card": {
+    "rect": {
+      "x": 261.65625,
+      "y": 144,
+      "width": 92,
+      "height": 140,
+      "top": 144,
+      "right": 353.65625,
+      "bottom": 284,
+      "left": 261.65625
+    },
+    "width": "92px",
+    "minWidth": "auto",
+    "margin": "0px",
+    "position": "relative",
+    "grid": "none"
+  },
+  "#playerField .card": {
+    "rect": {
+      "x": 94.875,
+      "y": 144,
+      "width": 92,
+      "height": 140,
+      "top": 144,
+      "right": 186.875,
+      "bottom": 284,
+      "left": 94.875
+    },
+    "width": "92px",
+    "minWidth": "auto",
+    "margin": "0px",
+    "position": "relative",
+    "grid": "none"
+  },
+  "#tideChartPanel": {
+    "rect": {
+      "x": 430.453125,
+      "y": 80,
+      "width": 413.546875,
+      "height": 310,
+      "top": 80,
+      "right": 844,
+      "bottom": 390,
+      "left": 430.453125
+    },
+    "width": "413.547px",
+    "minWidth": "0px",
+    "margin": "0px",
+    "position": "fixed",
+    "grid": "397.547px"
+  },
+  "#tideChartPanel .tide-chart-sheet": {
+    "rect": {
+      "x": 438.453125,
+      "y": 127,
+      "width": 397.546875,
+      "height": 216,
+      "top": 127,
+      "right": 836,
+      "bottom": 343,
+      "left": 438.453125
+    },
+    "width": "397.547px",
+    "minWidth": "auto",
+    "margin": "0px",
+    "position": "relative",
+    "grid": "1fr 1fr"
+  }
+}

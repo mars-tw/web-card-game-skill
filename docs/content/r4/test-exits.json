@@ -1,0 +1,45 @@
+[
+  {
+    "name": "static",
+    "command": [
+      "npm.cmd",
+      "test"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "e2e",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:e2e"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "rwd",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:rwd"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "ci-performance",
+    "command": [
+      "npm.cmd",
+      "run",
+      "test:r67:performance"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "frames",
+    "command": [
+      "node",
+      "scripts/measure-content-r4.js"
+    ],
+    "exitCode": 0
+  }
+]

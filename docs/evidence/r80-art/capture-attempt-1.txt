@@ -1,0 +1,12 @@
+R80 captured 390x844
+R80 captured 844x390
+AssertionError [ERR_ASSERTION]: wave front moves toward enemy
+    at series (C:\Users\digimkt\Desktop\遊戲\skill\scripts\capture-r80-wave.js:35:27)
+    at async C:\Users\digimkt\Desktop\遊戲\skill\scripts\capture-r80-art.js:17:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

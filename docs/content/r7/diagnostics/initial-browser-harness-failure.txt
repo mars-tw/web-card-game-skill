@@ -1,0 +1,8 @@
+locator.click: Error: strict mode violation: locator('[data-round="2"]') resolved to 2 elements:
+    1) <button type="button" data-round="2">…</button> aka getByRole('button', { name: '第 3 回合 退潮護航 可改一次' })
+    2) <div data-round="2" data-direction="flood">…</div> aka getByText('第 2 回合 · 目前預報漲潮時：滿六格後施放，敵軍各受')
+
+Call log:
+[2m  - waiting for locator('[data-round="2"]')[22m
+
+    at C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-content-r7-e2e.js:41:65

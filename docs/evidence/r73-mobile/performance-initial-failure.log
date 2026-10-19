@@ -1,0 +1,7 @@
+R67 performance: frame p95 run
+page.waitForFunction: Timeout 60000ms exceeded.
+    at measureFrameP95 (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-r67-performance.js:140:16)
+    at async run (C:\Users\digimkt\Desktop\遊戲\skill\scripts\test-r67-performance.js:196:97) {
+  log: [],
+  name: 'TimeoutError'
+}

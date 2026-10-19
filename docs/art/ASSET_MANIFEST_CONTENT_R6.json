@@ -1,0 +1,36 @@
+{
+  "round": "CONTENT_R6",
+  "status": "VERIFIED",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "newOriginals": 1,
+  "newRuntimeCrops": 3,
+  "source": {
+    "path": "docs/art/source/content-r6/moen-poses.png",
+    "sha256": "3cb4748639f7ba01a49f24c6a3d41b429a8f6c75d899dd6c852aa4103cb4b095"
+  },
+  "files": [
+    {
+      "path": "assets/art/content-r6/moen-0.webp",
+      "sha256": "fcef8e7a28e158f51aaa61d078a3c1371659910c393247ada62617f2ac1c6b30",
+      "width": 384,
+      "height": 768,
+      "alphaMin": 0
+    },
+    {
+      "path": "assets/art/content-r6/moen-1.webp",
+      "sha256": "fc826461bc4e67b9f519b3b9f73409922234384c006d24e39c371e7dc60b0a4c",
+      "width": 384,
+      "height": 768,
+      "alphaMin": 0
+    },
+    {
+      "path": "assets/art/content-r6/moen-2.webp",
+      "sha256": "4261028b0507e84074127645f7806e5b5d06d586cec51873867ac6a39f33b0db",
+      "width": 384,
+      "height": 768,
+      "alphaMin": 0
+    }
+  ],
+  "processing": "Equal-panel crop, resize, WebP compression; alpha preserved. No repainted art."
+}

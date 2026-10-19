@@ -1,0 +1,51 @@
+{
+  "status": "VERIFIED",
+  "concurrentMachine": true,
+  "method": "3 runs per viewport; 240 rAF intervals per run including nonlethal cast; interval only, not GPU time or native device",
+  "result": [
+    {
+      "width": 1366,
+      "height": 768,
+      "runs": [
+        {
+          "p95": 16.799999999999727,
+          "samples": 240,
+          "max": 33.40000000000009
+        },
+        {
+          "p95": 16.700000000000728,
+          "samples": 240,
+          "max": 16.800000000000182
+        },
+        {
+          "p95": 16.800000000000182,
+          "samples": 240,
+          "max": 33.399999999999864
+        }
+      ],
+      "median": 16.799999999999727
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "runs": [
+        {
+          "p95": 16.799999999999272,
+          "samples": 240,
+          "max": 33.399999999999864
+        },
+        {
+          "p95": 16.700000000000728,
+          "samples": 240,
+          "max": 16.800000000000182
+        },
+        {
+          "p95": 16.700000000000728,
+          "samples": 240,
+          "max": 16.800000000000182
+        }
+      ],
+      "median": 16.700000000000728
+    }
+  ]
+}

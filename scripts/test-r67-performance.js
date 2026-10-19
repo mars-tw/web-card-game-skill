@@ -12,6 +12,7 @@ const MIME = {
   ".webmanifest": "application/manifest+json; charset=utf-8",
   ".png": "image/png",
   ".webp": "image/webp",
+  ".css": "text/css; charset=utf-8",
 };
 
 const HEAD_SOURCE_FILES = new Set([
@@ -106,14 +107,17 @@ async function measureThrottled(chromium, url) {
           ]);
         } catch { /* resource timing still records failures */ }
       }
+      // R75: the generated deck on .board is the visible surface, so decode it too.
+      const boardImage = getComputedStyle(document.querySelector('.board')).backgroundImage.match(/url\(["']?([^"')]+)["']?\)/);
+      if (boardImage) { const img = new Image(); img.src = new URL(boardImage[1],location.href).href; await img.decode(); }
       await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
       const visualMark = performance.getEntriesByName("r67-visual-ready").at(-1);
       const nav = performance.getEntriesByType("navigation")[0];
-      const imageResources = performance.getEntriesByType("resource").filter((entry) => /assets\/(?:backgrounds|battlefields)\//.test(entry.name));
+      const imageResources = performance.getEntriesByType("resource").filter((entry) => /assets\/(?:backgrounds|battlefields|art)\//.test(entry.name));
       const backgroundResponseEnd = Math.max(0, ...imageResources.map((entry) => entry.responseEnd));
       return {
         interactiveMs: Number(performance.now().toFixed(2)),
-        visualReadyMs: Number((visualMark ? visualMark.startTime : Math.max(nav?.domInteractive || 0, backgroundResponseEnd)).toFixed(2)),
+        visualReadyMs: Number(Math.max(visualMark ? visualMark.startTime : nav?.domInteractive || 0, backgroundResponseEnd).toFixed(2)),
         domInteractiveMs: Number((nav?.domInteractive || 0).toFixed(2)),
         backgroundResponseEndMs: Number(backgroundResponseEnd.toFixed(2)),
         visualMarkPresent: Boolean(visualMark),
@@ -200,7 +204,7 @@ async function run() {
     }
     const result = {
       generatedAt: new Date().toISOString(),
-      source: useHead ? "git HEAD (R66)" : "working tree (R67)",
+      source: useHead ? "git HEAD" : "working tree (R76)",
       profile: "Fast 3G (150ms RTT, 200KiB/s down) + 4x CPU throttle",
       concurrentMachine: true,
       trustNote: "Local p95 is concurrent-machine evidence; release decision requires clean-machine audit.",

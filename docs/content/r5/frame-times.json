@@ -1,0 +1,51 @@
+{
+  "status": "VERIFIED",
+  "concurrentMachine": true,
+  "method": "Three runs, 240 rAF intervals each, public Moen encounter during actual scripted ebb; not native device or GPU execution time.",
+  "result": [
+    {
+      "width": 1366,
+      "height": 768,
+      "runs": [
+        {
+          "p95": 16.800000000000182,
+          "samples": 240,
+          "max": 50.09999999999991
+        },
+        {
+          "p95": 16.799999999999727,
+          "samples": 240,
+          "max": 33.299999999999955
+        },
+        {
+          "p95": 16.800000000000182,
+          "samples": 240,
+          "max": 50
+        }
+      ],
+      "median": 16.800000000000182
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "runs": [
+        {
+          "p95": 16.799999999999955,
+          "samples": 240,
+          "max": 16.800000000000182
+        },
+        {
+          "p95": 16.799999999999272,
+          "samples": 240,
+          "max": 16.800000000000182
+        },
+        {
+          "p95": 16.799999999999955,
+          "samples": 240,
+          "max": 33.299999999999955
+        }
+      ],
+      "median": 16.799999999999955
+    }
+  ]
+}

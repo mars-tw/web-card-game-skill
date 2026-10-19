@@ -1,0 +1,67 @@
+/* R11: state geometry and painted encounter floors. Character roots stay still. */
+body[data-content-stage=puzzles]{--r11-floor:url('../../assets/art/content-r11/puzzles.webp')}
+body[data-content-stage=forecast]{--r11-floor:url('../../assets/art/content-r11/forecast.webp')}
+body[data-content-stage=moen]{--r11-floor:url('../../assets/art/content-r11/moen.webp')}
+body[data-content-active=true] .board{background-image:var(--r11-floor)!important;background-size:cover!important;background-position:center!important}
+body[data-content-active=true] .board::before{opacity:calc(var(--r75-tide,0)*.045)!important}
+#endTurnBtn.r11-locked{background:#383541!important;color:#bbb6c8!important;filter:grayscale(1);opacity:1!important;box-shadow:none!important;cursor:not-allowed}
+#endTurnBtn.r11-locked::before{content:'\1F512';font-size:12px;margin-right:3px}
+#endTurnLockReason{position:static;display:inline;font:inherit;color:inherit;background:none;padding:0;border:0}
+body[data-content-active=true] .r75-tide-channel>span:first-child{display:none!important}
+body[data-content-active=true] .r75-tide-channel>.r6-board-signal:not(.r6-hand-signal){width:calc(100% - 76px)!important;max-width:calc(100% - 76px)!important;left:4px!important;right:auto!important;transform:none!important;white-space:normal!important;text-align:left}
+body[data-content-active=true] .r75-tide-channel .r9-next{font-size:12px;white-space:normal}
+#contentAnchor{right:4px!important;left:auto!important;top:4px!important;width:64px!important;height:64px!important;opacity:1!important}
+body[data-content-id=forecast] #contentAnchor{display:block!important;width:52px!important;height:52px!important;top:0!important;right:10px!important}
+body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) #contentAnchor{display:block!important;top:-15px!important}
+body[data-content-id=moen] #contentAnchor{top:auto!important;bottom:0!important;right:6px!important;width:40px!important;height:40px!important}
+.r11-card-backdrop{position:absolute!important;inset:0!important;object-fit:cover!important;z-index:0!important;filter:blur(2px) brightness(.62);opacity:1!important}
+.r11-pose-active .art>img:not(.r11-card-backdrop):not(.faction-emblem){position:absolute;inset:0;z-index:1;object-fit:contain!important;object-position:center!important}
+.r11-pose-active .art{isolation:isolate;background:#201c3d!important;overflow:hidden}
+#forecastPanel .content-sheet{height:204px!important;max-height:204px!important;grid-template-rows:44px 20px 64px 38px!important;overflow:visible!important}
+#forecastRounds button{position:relative;overflow:visible!important;padding:2px!important}
+#forecastRounds strong,#forecastRounds span,#forecastRounds small{display:block!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;line-height:18px!important;letter-spacing:0!important}
+#forecastRule{white-space:normal!important;font-size:12px!important;line-height:18px!important}
+#forecastCompare>div,#forecastCompare strong{font-size:12px!important;line-height:18px!important;white-space:normal!important;overflow-wrap:anywhere}
+#forecastTitle{font-size:17px!important}
+#forecastCancelZone{display:none;position:fixed;left:12px;right:80px;top:var(--r11-cancel-y,calc(50dvh - 15px));bottom:auto;height:30px;box-sizing:border-box;align-items:center;justify-content:center;color:#f2f1fa;background:#512b3df5;border:2px dashed #e9bd74;font:700 14px/22px Arial;pointer-events:none}
+#forecastPanel[data-gesture=holding] #forecastCancelZone,#forecastPanel[data-gesture=cancelled] #forecastCancelZone{display:flex}
+#forecastPanel[data-gesture=cancelled] #forecastCancelZone{border-style:solid;background:#512b3d}
+@property --r11-turn{syntax:'<angle>';initial-value:0deg;inherits:false}
+.r11-hold-ring{display:none!important;position:absolute;right:3px;top:3px;width:18px;height:18px;border-radius:50%;box-sizing:border-box;background:conic-gradient(#e9bd74 var(--r11-turn),#f2f1fa55 0);mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 0);animation:r11-hold .75s linear forwards;pointer-events:none}
+#forecastRounds .forecast-press .r11-hold-ring{display:block!important}
+@keyframes r11-hold{to{--r11-turn:360deg}}
+#forecastPanel[data-gesture=applied] .forecast-current{outline:2px solid #e9bd74}
+#moenTideMeter{position:absolute;left:178px;right:8px;top:240px;z-index:9;display:grid;gap:2px;padding:5px 7px;background:#201c3df2;border:1px solid #b6a0ec;font:400 13px/18px Arial;color:#f2f1fa;pointer-events:none}
+#moenTideMeter strong{font-size:14px;color:#e9bd74}#moenTideMeter progress{width:100%;height:12px;accent-color:#b6a0ec}
+#moenTideMeter span{display:block}
+#moenBond[hidden]{display:none!important}
+body[data-content-id=moen] #moenBond{top:auto!important;bottom:192px!important;left:178px!important;right:8px!important;width:auto!important;font-size:12px!important;line-height:17px!important}
+body:has(#contentResult:not([hidden])) .app,body:has(#contentResult:not([hidden]))>.topbar{visibility:hidden}
+#contentResult{background:#10152d url('../../assets/art/content-r11/puzzles.webp') center/cover!important;backdrop-filter:none!important}
+body[data-content-id=forecast] #contentResult{background-image:url('../../assets/art/content-r11/forecast.webp')!important}
+body[data-content-id=moen] #contentResult{background-image:url('../../assets/art/content-r11/moen.webp')!important}
+#contentResult .content-sheet{background:#201c3dfa!important;max-height:calc(100dvh - 24px);overflow:auto}
+#contentResultText{font-size:14px;line-height:22px;white-space:normal!important}
+#contentAbandon{min-height:44px;padding:5px;font-size:13px}
+@media(max-width:359px){
+ #forecastTitle{font-size:14px!important}#forecastPanel header button{min-width:54px!important;font-size:12px!important;padding:2px!important}
+ #forecastRounds strong,#forecastRounds span,#forecastRounds small{font-size:12px!important;line-height:17px!important}
+ #forecastRule{font-size:11px!important}#forecastCompare>div,#forecastCompare strong{font-size:11px!important;line-height:17px!important}
+}
+@media(max-height:650px) and (max-width:599px){
+ body[data-content-active=true] .player-hero-row{gap:2px!important}
+ body[data-content-active=true] .player-hero-row .player-hero-scene{flex:0 0 44px!important;min-width:44px!important;max-width:44px!important;gap:0!important}
+ body[data-content-active=true] #playerHero{flex:none!important;width:44px!important;min-width:44px!important;padding:0!important;box-sizing:border-box!important;gap:2px!important}
+ body[data-content-active=true] #playerHero .name{flex:0 0 12px!important;min-width:12px!important;width:12px!important;overflow:visible!important;text-overflow:clip!important}
+ #forecastPanel .content-sheet{height:126px!important;max-height:126px!important;grid-template-rows:44px 44px 26px!important;gap:2px!important;padding:4px!important}
+ #forecastRounds button{height:44px!important;min-height:44px!important;line-height:13px!important}
+ #forecastRounds strong,#forecastRounds span,#forecastRounds small{font-size:11px!important;line-height:13px!important}
+ #forecastCompare>div,#forecastCompare strong{font-size:11px!important;line-height:12px!important}
+ :root body[data-content-id=forecast]:has(#forecastPanel:not([hidden])) .board{bottom:var(--r9-panel-reserve,214px)!important}
+ body[data-content-id=moen] #moenTideMeter{left:calc(50% + 2px);right:6px;top:166px;font-size:11px;line-height:14px;padding:3px}
+ body[data-content-id=moen] #moenTideMeter strong{font-size:11px}
+ body[data-content-id=moen] .r6-moen-stage{bottom:2px!important;width:90px!important;height:90px!important}
+ body[data-content-id=moen] #contentAnchor{display:none!important}
+}
+@media(max-height:650px) and (min-width:600px){#moenTideMeter{left:calc(50% - 80px);right:auto;width:160px;top:130px;font-size:11px;line-height:14px;padding:3px}#moenTideMeter strong{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.r11-hold-ring{animation:none;border-color:#e9bd74 #f2f1fa}}

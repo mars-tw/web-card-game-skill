@@ -1,0 +1,7 @@
+PASS puzzle actually completes offline
+PASS offline puzzle progress survives reload
+PASS fresh offline flood marker loads exact pre-cached version
+PASS offline flood reversal and icon survive session reload
+PASS fresh offline ebb marker loads exact pre-cached shield
+PASS forecast actually completes offline
+PASS offline forecast completion survives reload

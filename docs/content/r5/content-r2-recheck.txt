@@ -1,0 +1,115 @@
+PASS fallen real play completed
+PASS fallen own result card composition
+PASS shield real play completed
+PASS shield own result card composition
+PASS shelter real play completed
+PASS shelter own result card composition
+PASS taunt real play completed
+PASS taunt own result card composition
+PASS spell real play completed
+PASS spell own result card composition
+PASS cross real play completed
+PASS cross own result card composition
+PASS six separate completion records
+PASS wrong order actually fails
+PASS one tap retry restores original archer
+PASS player reverses future turn in real tutorial
+PASS reloaded consumed reversal cannot be used twice
+PASS wrong direction is unavailable
+PASS wrong direction preview consumes nothing
+PASS second turn follows changed future
+PASS real turns reach fourth round
+PASS fourth turn both tide choices available
+PASS future reversal lesson can finish
+PASS past locked while future still available
+PASS wave clears within 0.8s plus 10ms timer tolerance
+PASS first script turn holds shield and heals to seven
+PASS Moen wave clears before player instruction
+PASS one instruction names next card
+PASS soldier actually removes shield
+PASS archer reduces enemy knight to two
+PASS scripted Moen completed through ordered trades
+PASS delayed knight attacks on second enemy turn
+PASS all content leaves wins coins and trial telemetry unchanged
+PASS harbor normal route to real future reversal in under three minutes
+PASS formal forecast never opens lesson picker
+PASS formal voyage boss is a replayable Moen encounter
+PASS formal Moen win recorded
+PASS boss replay retains formal identity
+PASS harbor reflects boss progress
+PASS real export produces full save code
+PASS clear then import preserves six lessons, usage, boss and exact checkpoint
+PASS imported used reversal stays locked
+PASS corrupt checkpoint is rejected
+PASS corrupt checkpoint changes no storage
+PASS populated invalid deck is rejected
+PASS populated invalid deck changes no storage
+PASS legacy save import preserves current R2 progress
+PASS 390x844 voyageBoss visible reachable 44px
+PASS 390x844 voyageForecast visible reachable 44px
+PASS 390x844 voyageClose visible reachable 44px
+PASS 390x844 contentHelp visible reachable 44px
+PASS 390x844 contentRetry visible reachable 44px
+PASS 390x844 contentMenu visible reachable 44px
+PASS 390x844 instruction not clipped
+PASS 390x844 all five cards including names and stats fit their field
+PASS 390x844 player life row above command dock
+PASS 844x390 voyageBoss visible reachable 44px
+PASS 844x390 voyageForecast visible reachable 44px
+PASS 844x390 voyageClose visible reachable 44px
+PASS 844x390 contentHelp visible reachable 44px
+PASS 844x390 contentRetry visible reachable 44px
+PASS 844x390 contentMenu visible reachable 44px
+PASS 844x390 instruction not clipped
+PASS 844x390 all five cards including names and stats fit their field
+PASS 844x390 player life row above command dock
+PASS short landscape Moen completed through real input
+PASS 1032x1376 voyageBoss visible reachable 44px
+PASS 1032x1376 voyageForecast visible reachable 44px
+PASS 1032x1376 voyageClose visible reachable 44px
+PASS 1032x1376 contentHelp visible reachable 44px
+PASS 1032x1376 contentRetry visible reachable 44px
+PASS 1032x1376 contentMenu visible reachable 44px
+PASS 1032x1376 instruction not clipped
+PASS 1032x1376 all five cards including names and stats fit their field
+PASS 1032x1376 player life row above command dock
+PASS 1376x1032 voyageBoss visible reachable 44px
+PASS 1376x1032 voyageForecast visible reachable 44px
+PASS 1376x1032 voyageClose visible reachable 44px
+PASS 1376x1032 contentHelp visible reachable 44px
+PASS 1376x1032 contentRetry visible reachable 44px
+PASS 1376x1032 contentMenu visible reachable 44px
+PASS 1376x1032 instruction not clipped
+PASS 1376x1032 all five cards including names and stats fit their field
+PASS 1376x1032 player life row above command dock
+PASS 1366x600 voyageBoss visible reachable 44px
+PASS 1366x600 voyageForecast visible reachable 44px
+PASS 1366x600 voyageClose visible reachable 44px
+PASS 1366x600 contentHelp visible reachable 44px
+PASS 1366x600 contentRetry visible reachable 44px
+PASS 1366x600 contentMenu visible reachable 44px
+PASS 1366x600 instruction not clipped
+PASS 1366x600 all five cards including names and stats fit their field
+PASS 1366x600 player life row above command dock
+PASS 430x932 voyageBoss visible reachable 44px
+PASS 430x932 voyageForecast visible reachable 44px
+PASS 430x932 voyageClose visible reachable 44px
+PASS 430x932 contentHelp visible reachable 44px
+PASS 430x932 contentRetry visible reachable 44px
+PASS 430x932 contentMenu visible reachable 44px
+PASS 430x932 instruction not clipped
+PASS 430x932 all five cards including names and stats fit their field
+PASS 430x932 player life row above command dock
+PASS 1032x1376 voyageBoss visible reachable 44px
+PASS 1032x1376 voyageForecast visible reachable 44px
+PASS 1032x1376 voyageClose visible reachable 44px
+PASS 1032x1376 contentHelp visible reachable 44px
+PASS 1032x1376 contentRetry visible reachable 44px
+PASS 1032x1376 contentMenu visible reachable 44px
+PASS 1032x1376 instruction not clipped
+PASS 1032x1376 all five cards including names and stats fit their field
+PASS 1032x1376 player life row above command dock
+PASS network disabled reload retains completion
+PASS closed browser process reopens offline and resumes consumed reversal
+PASS zero JS errors and 404s
+Content R2 browser: 114 PASS
