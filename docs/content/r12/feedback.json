@@ -1,0 +1,182 @@
+{
+  "status": "VERIFIED",
+  "checks": 49,
+  "receipts": [
+    {
+      "id": "fallen",
+      "failure": "本次未達成：敵陣仍有 1 隻；敵方英雄仍有 1 血。錯在關鍵目標尚未達成：士兵仍在場，潮能 5/6；這次沒有取得陣亡潮能。",
+      "facts": [
+        {
+          "type": "heroDamage",
+          "defenderSide": "enemy",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "shield",
+      "failure": "本次未達成：敵陣仍有 1 隻。錯在關鍵目標尚未達成：聖盾已破，但守衛還活著；先剝盾才能讓浪潮收割。",
+      "facts": [
+        {
+          "type": "tidebreak",
+          "side": "player"
+        },
+        {
+          "type": "shieldBreak",
+          "uid": "content-enemy-0"
+        },
+        {
+          "type": "heroDamage",
+          "defenderSide": "enemy",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "shelter",
+      "failure": "本次未達成：弓箭手未存活。錯在關鍵目標尚未達成：弓手沒有受到聖盾保護，交換後陣亡。",
+      "facts": [
+        {
+          "type": "damage",
+          "uid": "content-enemy-0",
+          "amount": 2
+        },
+        {
+          "type": "damage",
+          "uid": "content-player-0",
+          "amount": 2
+        },
+        {
+          "type": "dying",
+          "uid": "content-player-0",
+          "side": "player"
+        },
+        {
+          "type": "tideGain",
+          "side": "enemy",
+          "amount": 1,
+          "tide": 1,
+          "reason": "fallen"
+        },
+        {
+          "type": "dying",
+          "uid": "content-enemy-0",
+          "side": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "taunt",
+      "failure": "本次未達成：敵方英雄仍有 4 血。錯在關鍵目標尚未達成：嘲諷已退場；仍須保留狼的攻擊次數，才能直取英雄。",
+      "facts": [
+        {
+          "type": "damage",
+          "uid": "content-enemy-0",
+          "amount": 2
+        },
+        {
+          "type": "damage",
+          "uid": "content-player-0",
+          "amount": 1
+        },
+        {
+          "type": "tideGain",
+          "side": "enemy",
+          "amount": 1,
+          "tide": 1,
+          "reason": "fallen"
+        },
+        {
+          "type": "dying",
+          "uid": "content-enemy-0",
+          "side": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "spell",
+      "failure": "本次未達成：敵陣仍有 1 隻。錯在關鍵目標尚未達成：火焰箭仍在手中；先掀浪只打掉騎士 1 血，沒有壓到收割線。",
+      "facts": [
+        {
+          "type": "tidebreak",
+          "side": "player"
+        },
+        {
+          "type": "damage",
+          "uid": "content-enemy-0",
+          "amount": 1
+        },
+        {
+          "type": "heroDamage",
+          "defenderSide": "enemy",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "cross",
+      "failure": "本次未達成：敵陣仍有 1 隻。錯在關鍵目標尚未達成：弓手已退場、獅鷲剩 2 血；交換要讓兩線都進入 1 傷收割線。",
+      "facts": [
+        {
+          "type": "damage",
+          "uid": "content-enemy-0",
+          "amount": 3
+        },
+        {
+          "type": "damage",
+          "uid": "content-player-1",
+          "amount": 2
+        },
+        {
+          "type": "tideGain",
+          "side": "enemy",
+          "amount": 1,
+          "tide": 1,
+          "reason": "fallen"
+        },
+        {
+          "type": "dying",
+          "uid": "content-enemy-0",
+          "side": "enemy"
+        },
+        {
+          "type": "damage",
+          "uid": "content-enemy-1",
+          "amount": 1
+        },
+        {
+          "type": "damage",
+          "uid": "content-player-0",
+          "amount": 3
+        },
+        {
+          "type": "tideGain",
+          "side": "player",
+          "amount": 1,
+          "tide": 6,
+          "reason": "fallen"
+        },
+        {
+          "type": "dying",
+          "uid": "content-player-0",
+          "side": "player"
+        },
+        {
+          "type": "tidebreak",
+          "side": "player"
+        },
+        {
+          "type": "damage",
+          "uid": "content-enemy-1",
+          "amount": 1
+        },
+        {
+          "type": "heroDamage",
+          "defenderSide": "enemy",
+          "amount": 2
+        }
+      ]
+    }
+  ],
+  "method": "Normal wrong DOM actions, explicit abandon only when stuck, immediate retry, real solution and reload for each of six puzzles."
+}

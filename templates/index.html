@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<link rel="manifest" href="../manifest.webmanifest?v=card-battle-content-r11-v1" />
+<link rel="manifest" href="../manifest.webmanifest?v=card-battle-content-r13-v1" />
 <meta name="theme-color" content="#f59e0b" />
 <title>裂潮卡牌 TIDEREND CARDS</title>
 <script>
   (() => {
-    const CACHE_VERSION = "card-battle-content-r11-v1";
+    const CACHE_VERSION = "card-battle-content-r13-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = 15000;
     const SW_AUTO_RELOAD_KEY = "card_sw_auto_reload_content_r6_v1";
     const swPageLoadedAt = Date.now();
@@ -146,8 +146,8 @@
     .swatch { width: 22px; height: 22px; }
   }
 </style>
-<link rel="stylesheet" href="r75-theme.css?v=card-battle-content-r11-v1">
-<link rel="stylesheet" href="r76-art.css?v=card-battle-content-r11-v1">
+<link rel="stylesheet" href="r75-theme.css?v=card-battle-content-r13-v1">
+<link rel="stylesheet" href="r76-art.css?v=card-battle-content-r13-v1">
 <style>body[data-full-bleed="true"] .tabbar { display:none; }</style>
 </head>
 <body>
@@ -254,7 +254,7 @@
     }));
 
     const pwaState = { skippedForWebdriver: false, registered: false, updatePrompted: false, version: "", checking: false };
-    const CACHE_VERSION = window.__CARD_CACHE_VERSION || "card-battle-content-r11-v1";
+    const CACHE_VERSION = window.__CARD_CACHE_VERSION || "card-battle-content-r13-v1";
     const SW_AUTO_RELOAD_WINDOW_MS = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_WINDOW_MS || 15000;
     const SW_AUTO_RELOAD_KEY = window.__CARD_SW_BOOT?.SW_AUTO_RELOAD_KEY || "card_sw_auto_reload_content_r6_v1";
     function swUrl() { return new URL(`../sw.js?v=${CACHE_VERSION}`, location.href).toString(); }

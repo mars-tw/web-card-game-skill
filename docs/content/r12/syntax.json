@@ -1,0 +1,462 @@
+{
+  "status": "VERIFIED",
+  "files": 114,
+  "checks": [
+    {
+      "path": "templates/card-battle/battle.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-battle/cards.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-battle/content-r10.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-battle/content-r11.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-battle/content-r12.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-battle/content-r6.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-battle/content-r9.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-battle/core.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-battle/pose-player.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-battle/r73-ui.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-battle/tide-puzzles.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-battle/tide-session.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-battle/voyage.js",
+      "exit_code": 0
+    },
+    {
+      "path": "templates/card-pack/pack.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/audit-oc-r1.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-content-r8-effects.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-content-r8-forecast.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-content-r8-landscape.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-content-r8-puzzles.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-content-r9-puzzles.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r70-evidence.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r72-evidence.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r73-mobile.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r75-art.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r76-art.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r76-wave.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r76-wet.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r77-art.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r77-wave.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r78-art.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r78-wave.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r79-art.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r79-baseline.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r79-wave.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r80-art.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r80-baseline-wave.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r80-baseline.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/capture-r80-wave.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/content-r2-helpers.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/diagnose-r76-layout.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/diagnose-r79-layout.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/inspect-content-r4.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/measure-content-r1.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/measure-content-r2.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/measure-content-r3.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/measure-content-r4.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/measure-content-r5.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/measure-content-r6.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/measure-content-r7.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/measure-content-r8.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/measure-r78-frames.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/measure-r79-frames.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/measure-r80-frames.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/r10-evidence-guard.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/r11-evidence-guard.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/r12-evidence-guard.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/r8-evidence-guard.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/r9-evidence-guard.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-balance-sim.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-battle-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-cards.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r1-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r1.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r10-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r10.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r11-cleanup.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r11-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r11.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r12-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r12-feedback.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r12-offline.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r12.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r2-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r2.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r3-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r3.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r4-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r4.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r5-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r5.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r6-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r6-effects.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r6.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r7-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r7-offline.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r7.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r8-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r8-offline.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r8-timing.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r8.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r9-acceptance.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r9-e2e.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r9-return.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-content-r9.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-controls-reachability.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-core.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-quality-gates.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r67-browser.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r67-performance.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r72-fun.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r73-mobile.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r73-voyage.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r74-ebb.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r74-review.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r74-rules.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r75-art.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r75-frames.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r76-art.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r76-frames.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r77-tide.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r78-art.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r79-art.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-r80-art.js",
+      "exit_code": 0
+    },
+    {
+      "path": "scripts/test-rwd-matrix.js",
+      "exit_code": 0
+    }
+  ]
+}

@@ -249,10 +249,10 @@ async function run() {
           shell: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(shellText) && /sessionStorage/.test(shellText) && /controllerchange/.test(shellText),
           battle: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(battleHtml) && /sessionStorage/.test(battleHtml) && /controllerchange/.test(battleHtml),
           pack: /SW_AUTO_RELOAD_WINDOW_MS\s*=\s*15000/.test(packHtml) && /sessionStorage/.test(packHtml) && /controllerchange/.test(packHtml),
-          versionedRefs: /cards\.js\?v=card-battle-content-r11-v1/.test(battleHtml)
-            && /battle\.js\?v=card-battle-content-r11-v1/.test(battleHtml)
-            && /pack\.js\?v=card-battle-content-r11-v1/.test(packHtml)
-            && /manifest\.webmanifest\?v=card-battle-content-r11-v1/.test(shellText),
+          versionedRefs: /cards\.js\?v=card-battle-content-r13-v1/.test(battleHtml)
+            && /battle\.js\?v=card-battle-content-r13-v1/.test(battleHtml)
+            && /pack\.js\?v=card-battle-content-r13-v1/.test(packHtml)
+            && /manifest\.webmanifest\?v=card-battle-content-r13-v1/.test(shellText),
         };
         return {
           manifestHref: manifestLink && manifestLink.getAttribute("href"),
@@ -266,7 +266,7 @@ async function run() {
           promptVisible: document.getElementById("pwaUpdateToast").classList.contains("show"),
         };
       });
-      assert(pwaCheck.manifestHref === "../manifest.webmanifest?v=card-battle-content-r11-v1"
+      assert(pwaCheck.manifestHref === "../manifest.webmanifest?v=card-battle-content-r13-v1"
         && pwaCheck.manifest.name === "裂潮卡牌 TIDEREND CARDS"
         && pwaCheck.manifest.icons.some((icon) => icon.sizes === "192x192")
         && pwaCheck.manifest.icons.some((icon) => icon.sizes === "512x512"),
@@ -274,7 +274,7 @@ async function run() {
       assert(/CACHE_VERSION/.test(pwaCheck.swText)
         && /networkFirst/.test(pwaCheck.swText)
         && /cacheFirst/.test(pwaCheck.swText)
-        && pwaCheck.swText.includes("card-battle-content-r11-v1")
+        && pwaCheck.swText.includes("card-battle-content-r13-v1")
         && pwaCheck.swText.includes("offline.html")
         && pwaCheck.swText.includes("versioned(\"sw.js\")")
         && pwaCheck.swText.includes("templates/card-battle")
@@ -282,9 +282,9 @@ async function run() {
         && pwaCheck.swText.includes("templates/card-battle/battle.js")
         && pwaCheck.swText.includes("templates/card-pack/pack.js")
         && pwaCheck.swText.includes("assets/cards/wolf.png")
-        && pwaCheck.version === "card-battle-content-r11-v1"
-        && pwaCheck.versionLabel.includes("card-battle-content-r11-v1")
-        && pwaCheck.checked.version === "card-battle-content-r11-v1",
+        && pwaCheck.version === "card-battle-content-r13-v1"
+        && pwaCheck.versionLabel.includes("card-battle-content-r13-v1")
+        && pwaCheck.checked.version === "card-battle-content-r13-v1",
         "Service worker 使用版本快取並涵蓋 battle/pack 子路徑");
       assert(/self\.skipWaiting\(\)/.test(pwaCheck.swText) && /self\.clients\.claim\(\)/.test(pwaCheck.swText),
         "Service worker install 會 skipWaiting，activate 會 clients.claim");
@@ -1743,7 +1743,7 @@ async function run() {
     await page.waitForFunction(() => /mission/.test(document.activeElement?.id || ""));
     const packMissionFocus = await page.evaluate(() => document.activeElement?.id || "");
     assert(packR36.textState.attr === "large" && packR36.textState.select === "large"
-      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-content-r11-v1"),
+      && packR36.large > packR36.small && packR36.pwaVersion.includes("card-battle-content-r13-v1"),
       "開包戰績區顯示版本並可調整文字大小");
     assert(packR36.missionOpen && packR36.missionAria === "false" && /mission/.test(packMissionFocus),
       "開包任務抽屜開啟後焦點進入抽屜控制");

@@ -1,0 +1,101 @@
+/* R13: target-bound feedback, source receipts and six discrete tide slots. */
+.card .taunt-crest{width:40px!important;height:38px!important}
+.card .taunt-crest::before{font:700 12px/16px Arial!important;background:#201c3d}
+#forecastTitle{white-space:nowrap!important;font-size:13px!important;letter-spacing:-.3px;min-width:0}
+.r13-direction{white-space:nowrap!important;display:inline-block}
+#forecastPanel header{flex-wrap:wrap!important;min-height:44px}
+#forecastPanel header h2{flex:1 1 100%;margin:0!important;line-height:20px!important}
+#forecastPanel header button{position:absolute;right:12px;top:26px;padding:4px 8px;font-size:12px;z-index:1}
+#forecastPanel #forecastUndo{right:100px}
+#forecastPanel header{display:grid!important;grid-template-columns:1fr auto auto!important;grid-template-rows:20px 44px!important}
+#forecastPanel header h2{grid-column:1/-1;grid-row:1;max-width:none!important}
+#forecastPanel header button{position:static!important;grid-row:2}
+#forecastPanel #forecastUndo{grid-column:2}
+#forecastPanel #forecastClose{grid-column:3}
+#forecastPanel .content-sheet{height:210px!important;max-height:210px!important;grid-template-rows:64px 18px 64px 38px!important;gap:2px!important;padding:8px 12px!important;box-sizing:border-box}
+#forecastCompare{border:0!important;margin:0!important;background:#10152d99!important;padding:0!important}
+#forecastCompare>div{padding:4px 12px!important;border:0!important;box-sizing:border-box}
+#forecastCompare span{font-size:12px;line-height:15px}
+#forecastRoute,#forecastLink{display:none!important}
+#forecastRounds{margin:0!important}
+#forecastRounds button span{white-space:nowrap}
+#forecastHoldCue{left:8px!important;right:8px!important;top:auto!important;bottom:77px!important;width:auto!important;font-size:15px!important;line-height:22px!important;padding:4px!important;z-index:302}
+#forecastCancelZone{background:#512b3df5!important;border:2px dashed #e9bd74!important;color:#fff2e9!important}
+.forecast-press::after{content:attr(data-hold-percent) '%';position:absolute;right:4px;top:3px;color:#e9bd74;background:#201c3d;font:700 14px/20px Arial}
+.r13-projection{position:absolute;left:0;bottom:-24px;background:#512b3d;color:#fff2e9;border:1px dashed #e9bd74;padding:2px 4px;white-space:nowrap;font:700 12px/18px Arial;z-index:230;pointer-events:none}
+#enemyHp{position:relative;overflow:visible!important}
+#enemyHero .hp-badge{overflow:visible!important}
+#enemyHp .r13-projection{left:auto;right:0}
+body:has(#forecastPanel[hidden]) .r13-projection{display:none}
+.r9-receipt[data-hero=true]::after{content:'↗';color:#e9bd74;position:absolute;right:-12px;top:-12px}
+.r13-tide-slots{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;height:26px}
+.r13-tide-slots i{font:700 11px/24px Arial;text-align:center;font-style:normal;border:1px solid #9c766f;background:#10152d;color:#e0dced}
+.r13-tide-slots i[data-filled=true]{background:#69cfe9;color:#10152d}
+.r13-tide-slots i[data-threshold=true]{border:2px solid #e9bd74;font-size:10px;line-height:11px;overflow:visible}
+#moenTideMeter[data-reached=true] i[data-threshold=true]{background:#e9bd74;box-shadow:0 0 9px #e9bd74;color:#10152d}
+#moenTideMeter progress{display:none}
+#moenTideMeter[data-gain]::after{content:attr(data-gain);color:#e9bd74;font:700 13px/18px Arial}
+#moenTideMeter .r11-moen-counter{border-top:1px solid #9c766f;padding-top:3px;font-weight:700}
+.r13-steps{display:flex;gap:4px;list-style:none;counter-reset:step;margin:0 0 8px;padding:0}
+.r13-steps li{flex:1;counter-increment:step;padding:4px;border-bottom:2px solid #69cfe9;font:700 12px/17px Arial;background:#10152d}
+.r13-steps li::before{content:counter(step) ' → ';color:#e9bd74}
+#contentRecap{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+#contentRecap figure{width:100%;min-width:0;margin:0!important}
+#contentRecap img{width:100%!important;height:92px!important;object-fit:cover}
+#contentRecap strong{display:block;font-size:12px;color:inherit!important}
+#contentRecap figcaption,#contentRecap figcaption *{color:#f2f1fa!important}
+#contentRecap figure[data-side=enemy] figcaption{border-top:3px solid #da8a6d;background:#512b3d}
+#contentRecap figure[data-side=player] figcaption{border-top:3px solid #69cfe9;background:#203448}
+#contentResult[data-puzzle=fallen] .content-sheet{border-top:4px solid #da8a6d}
+#contentResult[data-puzzle=shield] .content-sheet{border-top:4px solid #e9bd74}
+#contentResult[data-puzzle=shelter] .content-sheet{border-top:4px solid #69cfe9}
+#contentResult[data-puzzle=taunt] .content-sheet{border-top:4px solid #b6a0ec}
+#contentResult[data-puzzle=spell] .content-sheet{border-top:4px solid #e67462}
+#contentResult[data-puzzle=cross] .content-sheet{border-top:4px solid #b7cbbd}
+#contentResult footer{display:flex;flex-wrap:wrap;gap:4px!important}
+#contentResult footer button{font-size:12px!important;padding:4px 7px!important;flex:1;white-space:nowrap}
+#r13BackResult{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);min-height:44px;background:#da8a6d;color:#10152d;z-index:280;padding:8px 16px}
+body:has(#r13BackResult:not([hidden])) #commandDock{visibility:hidden}
+body:has(#contentPanel:not([hidden])) #r13BackResult,body:has(#contentResult:not([hidden])) #r13BackResult{display:none}
+.r13-knight-cost{color:#e9bd74!important;font-weight:700!important}
+body[data-content-id=moen] #contentResult .content-result-art[src*='content-r13']{height:auto!important;max-height:200px!important;object-fit:contain;aspect-ratio:3/2}
+@media(min-height:651px){
+ body:not([data-content-id=moen]) #contentResult{align-items:end;background:linear-gradient(transparent 0 21%,#10152df0 35%)!important;padding:8px}
+ body:not([data-content-id=moen]):has(#contentResult[data-outcome=completed]:not([hidden])) .app{visibility:visible}
+ body:not([data-content-id=moen]):has(#contentResult[data-outcome=completed]:not([hidden])) #playerField{position:fixed!important;top:80px!important;left:12px!important;right:12px!important;width:auto!important;height:150px!important;z-index:248}
+ body:not([data-content-id=moen]) #contentResult[data-outcome=failed]{background:#10152d url('../../assets/art/content-r11/puzzles.webp') center/cover!important}
+ body[data-content-id=forecast] #contentResult[data-outcome=failed]{background:#10152d url('../../assets/art/content-r11/forecast.webp') center/cover!important}
+ body:not([data-content-id=moen]):has(#contentResult:not([hidden])) .settings-hud{visibility:hidden}
+ body:not([data-content-id=moen]) #contentResult .content-sheet{width:min(760px,100%);max-height:70dvh!important;padding:8px!important;gap:5px!important;overflow:auto!important}
+ body:not([data-content-id=moen]) #contentResultName{margin:0!important}
+ body:not([data-content-id=moen]) #contentResultText{display:block;font-size:12px!important;line-height:18px!important;margin:0!important}
+ #r12ResultReceipt{padding-top:4px}#r12ResultReceipt h3{font-size:16px;line-height:20px;margin-bottom:4px}
+ #r12ResultReceipt p{font-size:12px;line-height:18px;margin:2px 0}
+ #contentResult #contentRecap:has(figure:nth-child(3)){grid-template-columns:repeat(4,minmax(0,1fr))!important}
+ #contentResult #contentRecap:has(figure:nth-child(3)) img{height:76px!important}
+}
+@media(max-width:350px){#forecastTitle{font-size:11px!important;letter-spacing:-.5px}#forecastCompare span{font-size:11px;line-height:15px}}
+@media(max-height:650px){
+ .r13-tide-slots{height:20px}.r13-tide-slots i{line-height:18px;font-size:9px}.r13-tide-slots i[data-threshold=true]{font-size:8px;line-height:8px}
+ #moenTideMeter[data-gain]::after{font-size:10px;line-height:12px}
+ #forecastPanel .content-sheet{height:126px!important;max-height:126px!important;grid-template-rows:44px 44px 28px!important;padding:4px 12px!important;gap:0!important}
+ #forecastRule{display:none!important}
+ #forecastPanel header h2{flex:auto;max-width:calc(100% - 80px)}
+ #forecastPanel header button{top:4px;right:12px}
+ #forecastPanel #forecastUndo{position:static;min-height:44px!important}
+ #forecastTitle{font-size:10px!important;line-height:14px!important;white-space:normal!important}
+ #forecastPanel header{grid-template-columns:minmax(0,1fr) 66px 66px!important;grid-template-rows:44px!important;gap:2px!important}
+ #forecastPanel header h2{grid-column:1;grid-row:1;max-width:none!important}
+ #forecastPanel header button{grid-row:1;padding:2px!important;min-width:44px!important;width:66px!important}
+ #forecastPanel header:not(:has(#forecastUndo)){grid-template-columns:minmax(0,1fr) 66px!important}
+ #forecastPanel header:not(:has(#forecastUndo)) #forecastClose{grid-column:2}
+ #forecastCompare>div{padding:2px 12px!important}#forecastCompare span{font-size:10px;line-height:14px}
+ .r13-steps{margin:0 0 3px;gap:2px}.r13-steps li{font-size:10px;line-height:12px;padding:2px}
+ #contentResult footer{flex-wrap:nowrap!important}
+ #contentResult footer button{font-size:11px!important;padding:3px!important}
+ body:not([data-content-id=moen]) #contentResultText{display:block;font-size:12px!important;line-height:18px!important;margin:0!important}
+ body:not([data-content-id=moen]) #contentResult #contentRecap:has(figure:nth-child(3)) img{height:48px!important;max-height:48px!important}
+ body:not([data-content-id=moen]) #contentRecap strong{font-size:10px!important;line-height:12px!important}
+ #contentRecap img{height:64px!important}
+ .r13-knight-cost{font-size:11px!important;line-height:15px!important}
+}

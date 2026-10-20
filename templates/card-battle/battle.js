@@ -2618,6 +2618,7 @@
 
   function handleCoreResult(result) {
     if (!result || !Array.isArray(result.events)) return;
+    CardContentR12.record(game,result);
     const tidalImpact = result.events.some(e=>e.type==='tidebreak'||e.type==='tideEbb');
     for(const key of ['player','enemy']) {
       const gains=result.events.filter(e=>e.type==='tideGain'&&e.side===key&&e.reason==='fallen');
@@ -3743,7 +3744,7 @@
   const OPPONENT_PORTRAITS = Object.freeze({
     op_rune: { url: "../../assets/cards/heroRuneFrostfang.png", pos: "50% 20%", zoom: "240%" },
     op_isold: { url: "../../assets/cards/heroIsoldLongdusk.png", pos: "50% 20%", zoom: "240%" },
-    op_moen: { url: "../../assets/cards/heroMoenTidearbiter.png", zoom: "cover", pos: "center" },
+    op_moen: { url: "../../assets/art/content-r12/moen-portrait.webp", zoom: "cover", pos: "center" },
     op_ser_halden: { url: "../../assets/cards/heroSerHalden.png", pos: "46% 14%", zoom: "260%" },
     op_magister_vey: { url: "../../assets/cards/heroMagisterVey.png", pos: "40% 17%", zoom: "260%" },
     op_scarra: { url: "../../assets/cards/heroScarra.png", pos: "55% 37%", zoom: "230%" },
@@ -4294,7 +4295,7 @@
     const done=contentProgress().completed;
     const count=CardTideContent.counts(contentProgress());
     document.getElementById('contentProgress').textContent=`六道已解 ${count.puzzles}/6 · 複驗 ${count.verification}/1${done.includes(d.id)?' · 本題已完成':''}。試用卡不計戰績。`;
-    document.getElementById('contentArt').src=d.id==='moen'?'../../assets/cards/heroMoenTidearbiter.png':'../../assets/art/content-r1/tide-study.webp';
+    document.getElementById('contentArt').src=d.id==='moen'?'../../assets/art/content-r10/moen-ready.webp':'../../assets/art/content-r1/tide-study.webp';
     document.getElementById('contentArt').alt=d.id==='moen'?'潮間仲裁者茉恩':'銅製三潮儀與六張海藏牌';
     const list=document.getElementById('contentPuzzles');list.replaceChildren();
     if(puzzle)CardTideContent.PUZZLES.forEach((item,i)=>{
@@ -4388,12 +4389,13 @@
     document.getElementById('contentResultName').textContent=d.name;
     document.getElementById('contentResult').dataset.outcome=win?'completed':'failed';
     if(game.content.id==='moen'&&win){art.hidden=false;}
-    document.getElementById('contentResultText').textContent=(win?(game.content.id==='moen'?CardContentR11.closingLine(game)+' '+CardContentR11.recap(game)+' ':'')+(summary?.line||d.lesson):CardTideContent.failure(game))+(saved?'':' 進度未能儲存，請檢查裝置空間。');
+    document.getElementById('contentResultText').textContent=(win?(game.content.id==='moen'?CardContentR11.closingLine(game)+' '+CardContentR11.recap(game):summary?.line||d.lesson):CardTideContent.failure(game))+(saved?'':' 進度未能儲存，請檢查裝置空間。');
+    CardContentR12.result(game,win);
     if(!win)for(const caption of recap.querySelectorAll('figcaption'))caption.prepend(document.createTextNode('重試目標 · '));
     const i=CardTideContent.PUZZLES.indexOf(d),verify=win&&i===5&&CardTideContent.unlocked(progress);
     let next=document.getElementById('contentNext');
     if(!next){next=document.createElement('button');next.id='contentNext';next.type='button';next.className='content-primary';document.querySelector('#contentResult footer').appendChild(next);}
-    next.textContent=i>=0&&i<5?'下一道':verify?'換目標複驗':'返回選題';
+    next.textContent=i>=0&&i<5?'下一道':verify?'下一道：保4血':'返回選題';
     if(next.textContent==='返回選題')next.remove();
     document.body.dataset.contentStage='';document.body.dataset.contentActive='false';document.getElementById('moenTideMeter')?.remove();document.getElementById('endTurnLockReason')?.remove();
     CardContentR6.renderSignals(game);CardContentR6.renderExchange(Core,game,{busy:true});renderMoenStage();CardContentR10.render(game);CardContentR11.render(game);
@@ -4407,7 +4409,7 @@
     const suggested=Math.max(1,Math.min(2,game.turnCount-1));
     document.getElementById('forecastRule').textContent=f.reversed?(CardContentR10.canUndo(game)?'已套用（已改向）・繼續對戰前可撤回。':'已鎖定（不能改）・依新潮向對戰。'):game.turnCount>3?'第 4 回合起，自由選潮向。':'反轉（改潮向）一次・按住看・移出取消。';
     const compare=document.getElementById('forecastCompare');
-    const comparison=(i,held=false)=>{const mode=held?(f.directions[i]==='flood'?'ebb':'flood'):f.directions[i];compare.replaceChildren();const box=document.createElement('div'),title=document.createElement('strong');title.textContent=`第 ${i+1} 回合 · ${held?'預覽：'+(f.directions[i]==='flood'?'漲潮 → 退潮':'退潮 → 漲潮'):f.reversed?'已套用潮向':'目前預報'}`;box.append(title,document.createTextNode(mode==='ebb'?'退潮時（依目前盤面）：'+CardContentR10.healLabel(game.player)+'；友軍聖盾。':'漲潮時：敵軍−1、英雄−2。'));box.dataset.forecastRound=String(i+1);box.dataset.direction=mode;compare.appendChild(box);};
+    const comparison=(i,held=false)=>CardContentR12.forecastView(game,i,held);
     const rounds=document.getElementById('forecastRounds');rounds.replaceChildren();
     game.forecast.directions.forEach((mode,i)=>{
       const wrap=document.createElement('div');wrap.className='forecast-round';
@@ -4416,12 +4418,14 @@
       const past=i<game.turnCount-1,guide=!f.reversed&&!past&&i===suggested;
       tip.textContent=f.reversed&&mode!==f.original[i]?'已套用・'+(mode==='ebb'?'退潮':'漲潮'):past?'已過':f.reversed?'未改向':guide?'按住改向':'可改一次';b.append(title,value,tip);const ring=document.createElement('i');ring.className='r11-hold-ring';ring.setAttribute('aria-hidden','true');b.appendChild(ring);b.classList.toggle('forecast-current',i===game.turnCount-1);b.classList.toggle('forecast-guide',guide);
       b.disabled=f.reversed||past;
-      let cancelled=false;
-      b.onpointerdown=()=>{if(!b.disabled){cancelled=false;panel.dataset.gesture='holding';document.getElementById('forecastCancelZone').textContent='移出到這裡取消';b.classList.add('forecast-press');tip.textContent='放開改'+(mode==='flood'?'退潮':'漲潮');comparison(i,true);}};
-      const cancel=()=>{cancelled=true;panel.dataset.gesture='cancelled';document.getElementById('forecastCancelZone').textContent='已取消・原潮向保留';b.classList.remove('forecast-press');tip.textContent='已取消';comparison(i);document.getElementById('forecastRule').textContent='已取消：潮向未改・剩餘 1 次。';};
+      let cancelled=false,holdFrame=0,holdStart=0;
+      const stopRing=()=>{cancelAnimationFrame(holdFrame);b.style.removeProperty('--r12-hold');delete b.dataset.holdPercent;};
+      const tick=()=>{if(!b.classList.contains('forecast-press'))return;const pct=Math.min(100,Math.round((performance.now()-holdStart)/10));b.style.setProperty('--r12-hold',pct*3.6+'deg');b.dataset.holdPercent=String(pct);const cue=document.getElementById('forecastHoldCue');if(cue)cue.textContent='按住中 '+pct+'%・放開套用／移出取消';holdFrame=requestAnimationFrame(tick);};
+      b.onpointerdown=()=>{if(!b.disabled){cancelled=false;panel.dataset.gesture='holding';document.getElementById('forecastCancelZone').textContent='拖到此處取消';b.classList.add('forecast-press');holdStart=performance.now();tick();tip.textContent='放開改'+(mode==='flood'?'退潮':'漲潮');comparison(i,true);}};
+      const cancel=()=>{stopRing();document.getElementById('forecastHoldCue').textContent='';cancelled=true;panel.dataset.gesture='cancelled';document.getElementById('forecastCancelZone').textContent='已取消・原潮向保留';b.classList.remove('forecast-press');tip.textContent='已取消';comparison(i);document.getElementById('forecastRule').textContent='已取消：潮向未改・剩餘 1 次。';};
       b.onpointercancel=cancel;b.onpointerleave=()=>{if(b.classList.contains('forecast-press'))cancel();};
       b.onpointermove=event=>{if(!b.classList.contains('forecast-press'))return;const r=b.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)cancel();};
-      b.onclick=event=>{if(combatInFlight||(cancelled&&event.detail!==0))return;if(CardTideContent.reverse(game,i)){CardContentR10.remember(game,i);const p=contentProgress();p.forecastUses++;writeStorage(CardTideContent.KEY,JSON.stringify(p),'預報反轉紀錄');render();openForecast();saveSession();}};
+      b.onclick=event=>{stopRing();if(combatInFlight||(cancelled&&event.detail!==0))return;if(CardTideContent.reverse(game,i)){CardContentR10.remember(game,i);const p=contentProgress();p.forecastUses++;writeStorage(CardTideContent.KEY,JSON.stringify(p),'預報反轉紀錄');render();openForecast();saveSession();}};
       wrap.appendChild(b);
       if(past){wrap.classList.add('forecast-locked');wrap.tabIndex=0;wrap.setAttribute('role','button');wrap.setAttribute('aria-label',`第 ${i+1} 回合已鎖定，查看原因`);const reason=()=>{document.getElementById('forecastRule').textContent=`第 ${i+1} 回合已過，不能改寫（時機不符）。`;wrap.dataset.explained='true';};wrap.onclick=reason;wrap.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();reason();}};}
       rounds.appendChild(wrap);
@@ -4460,6 +4464,7 @@
     if(knight){
       const target=game.player.field.find(c=>(c.keywords||[]).includes('taunt'))||game.player.field[0];
       const counterBefore=target?.health??game.player.hp;
+      if(game.content.id==='moen')game.content.counterOccurred=true;
       if(target)await resolveAttack(game.enemy,knight,target);else await resolveHeroAttackUi(game.enemy,knight,game.player);
       if(game.content.id==='moen')game.content.counterDamage=(game.content.counterDamage||0)+Math.max(0,counterBefore-(target?Math.max(0,target.health):game.player.hp));
       if(target?.id==='footman'&&!game.player.field.some(c=>c.uid===target.uid))game.content.delayedCasualty='footman';

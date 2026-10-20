@@ -1,0 +1,17 @@
+{
+  "tool": "image_gen.imagegen",
+  "style_prefix": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism.",
+  "model_slug": null,
+  "calls": [
+    {
+      "branch": "triggered",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Use case: precise-object-edit. Image 1 is the edit target, the Moen healing-triggered ending. Image 2 is the exact steel knight identity reference. Preserve the entire painting, Moen's chestnut braid, blue embroidered cloak, face, scales, moonlit pearl ship deck and water magic. Replace ONLY the blond silver-blue knight on the right with the reference steel knight: fully closed dark gunmetal helmet with prominent flowing crimson red feather plume, blackened articulated plate with subtle gold engraving, dark red cloak, sword and red wolf-emblem shield. No visible hair, no unhelmeted face. Same standing placement, sword lowered, visibly dented armor after an earlier exchange but still standing. Maintain matching painterly light, proportions and landscape 3:2 composition. No text, UI or border.",
+      "source": "C:/Users/digimkt/.codex/generated_images/01a15411-0919-7fe1-a127-744fb7ba194f/exec-3b7ad34e-e8d7-4cdf-8dcc-097a8cf9cb25.png"
+    },
+    {
+      "branch": "prevented",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Use case: precise-object-edit. Image 1 is the edit target, the Moen healing-prevented ending. Image 2 is the exact steel knight identity reference. Preserve the painting, crouching Moen on the RIGHT with chestnut braided hair, blue embroidered cloak, face, scales, pearl-column moonlit ship deck and broken pearl shield fragments. Replace ONLY the blond silver-blue kneeling knight on the LEFT with reference steel knight: fully closed black gunmetal helmet with flowing crimson red feather plume, blackened articulated engraved plate, dark red cloak, sword and dented red wolf-emblem shield. No visible hair or unhelmeted face. Preserve one-knee exhausted wounded pose after a counterattack, no gore. Keep both faces and full silhouettes readable in landscape 3:2 painting. No healing halo, no text, UI or border.",
+      "source": "C:/Users/digimkt/.codex/generated_images/01a15411-0919-7fe1-a127-744fb7ba194f/exec-2015c523-c54d-4c98-a688-84ebbfc936c2.png"
+    }
+  ]
+}

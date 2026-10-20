@@ -1,0 +1,127 @@
+{
+  "status": "VERIFIED",
+  "capture_root": "C:\\Users\\digimkt\\Desktop\\遊戲\\skill\\.audit-tmp\\r13\\clean-1792420123082149800",
+  "method": "Native viewport PNG, original bytes copied, no compositing or resizing; five images per content.",
+  "images": [
+    {
+      "path": "docs/content/r13/review-set/01-puzzle-taunt-playing.png",
+      "source": "docs/content/r13/phone-puzzle-taunt-playing.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "12eee6dfbe5ee2565cfe2bc249fe8eeabf15df38f1e72435657ff4df5ead6721",
+      "proof": "殘局遊玩中：12px嘲諷標記、完整卡名與攻血"
+    },
+    {
+      "path": "docs/content/r13/review-set/02-puzzle-fallen-completed.png",
+      "source": "docs/content/r13/phone-puzzle-fallen-completed.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "dac6630042e0b91bf5e23f78671260bd7926fa2fa9f9be6e67d123d870d21c28",
+      "proof": "士兵陣亡補潮，來源數字、敵我與實際步驟"
+    },
+    {
+      "path": "docs/content/r13/review-set/03-puzzle-shield-completed.png",
+      "source": "docs/content/r13/phone-puzzle-shield-completed.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "e34dee25f29522af26c0e75984c051617de40ce71a4ded8d1a74ea06b77036ef",
+      "proof": "聖盾攔下一次，漲潮收尾"
+    },
+    {
+      "path": "docs/content/r13/review-set/04-puzzle-spell-completed.png",
+      "source": "docs/content/r13/phone-puzzle-spell-completed.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "fe133e4f781af97d7a8bcd156bb13a9bb9e3d66fa136ed7703601351ee3b13ab",
+      "proof": "火焰箭3＋漲潮1，來源分列"
+    },
+    {
+      "path": "docs/content/r13/review-set/05-puzzle-cross-completed.png",
+      "source": "docs/content/r13/phone-puzzle-cross-completed.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "93ed6caef56f6195637f1bb059d05ceed2bd84b10cbba0c68edae9f7964ad201",
+      "proof": "兩線退場與我方騎士最終存活一致"
+    },
+    {
+      "path": "docs/content/r13/review-set/06-forecast-flood-preview.png",
+      "source": "docs/content/r13/phone-forecast-flood-preview.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "d1cfe943c368baf4922b12585e6e4598feb83ac04982f3c8958af1e4e0cebd3f",
+      "proof": "第3回合預改：兩目標預測、半程百分比及明確取消區"
+    },
+    {
+      "path": "docs/content/r13/review-set/07-forecast-flood-cancelled.png",
+      "source": "docs/content/r13/phone-forecast-flood-cancelled.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "8940391c7fd816db5df929b4341fe1e43b4a404012dc5cacf4b870c0598a9666",
+      "proof": "同局移出取消：原潮向及唯一額度保留"
+    },
+    {
+      "path": "docs/content/r13/review-set/08-forecast-flood-before.png",
+      "source": "docs/content/r13/phone-forecast-flood-before.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "104290612e369751d48028baa7f4deb7024ac5ff16c36f2ee8f778954732d4f2",
+      "proof": "同局第3回合蓄勢，命中前仍5／4血"
+    },
+    {
+      "path": "docs/content/r13/review-set/09-forecast-flood-impact.png",
+      "source": "docs/content/r13/phone-forecast-flood-impact.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "8337a02caf588cc4f1facc0c3952b867005b9ba45601e7526b18b1e6375c5b06",
+      "proof": "360ms命中英雄5→3／騎士4→3，收據貼近目標"
+    },
+    {
+      "path": "docs/content/r13/review-set/10-forecast-flood-after.png",
+      "source": "docs/content/r13/phone-forecast-flood-after.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "380d18bf8acb9eb1724c68cc0857cc0ded3e60399d835ba4e0635cdde396ce21",
+      "proof": "同次命中退浪，兩份收據與完整牌面"
+    },
+    {
+      "path": "docs/content/r13/review-set/11-moen-tide-0.png",
+      "source": "docs/content/r13/phone-moen-tide-0.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "34c62a853228f89da7768831d2985ebed5293a14f494b8a861cff6ec372a2422",
+      "proof": "同一局二式：敵潮能0/6、六格與治療線"
+    },
+    {
+      "path": "docs/content/r13/review-set/12-moen-tide-1.png",
+      "source": "docs/content/r13/phone-moen-tide-1.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "0f14d9a1d5e6a946d1969a91682a8880ee506685d5cadd61538c194f5333e6c6",
+      "proof": "同一局擊倒騎士與出擊後：敵潮能1/6、茉恩3血"
+    },
+    {
+      "path": "docs/content/r13/review-set/13-moen-tide-2.png",
+      "source": "docs/content/r13/phone-moen-tide-2.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "a79af73ef137cbce7f9ef5aa0de739e68e37d8086416a12b439b4b0f5e552a7d",
+      "proof": "同一局下輪+1達2/6，治療線高亮，茉恩3→5血"
+    },
+    {
+      "path": "docs/content/r13/review-set/14-moen-return-triggered-completed.png",
+      "source": "docs/content/r13/phone-moen-return-triggered-completed.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "7eb42319f279b32afcd9441deefe065ef0866aa28547330b5c1d7cd6646045d4",
+      "proof": "黑甲紅羽站姿，交換3／反攻0，4→1"
+    },
+    {
+      "path": "docs/content/r13/review-set/15-moen-return-prevented-completed.png",
+      "source": "docs/content/r13/phone-moen-return-prevented-completed.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "2b55fa53b1ab9bc906d2b618c0c8b04bbfaab59b807ec5fd541d31f135ab7077",
+      "proof": "黑甲紅羽傷姿，交換0／反攻3，4→1"
+    }
+  ]
+}

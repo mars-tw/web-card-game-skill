@@ -1,10 +1,10 @@
 {
   "name": "web-card-game-skill",
-  "version": "0.23.1",
+  "version": "0.25.0",
   "description": "裂潮卡牌：陣亡蓄潮、漲退潮決策與五站歸航的單人戰術卡牌。",
   "type": "commonjs",
   "scripts": {
-    "test": "node scripts/test-cards.js && node scripts/test-core.js && node scripts/test-quality-gates.js && node scripts/test-balance-sim.js && python scripts/test-r67-visual-gates.py && node scripts/test-r73-voyage.js && node scripts/test-r74-rules.js && python scripts/verify-r75-assets.py && python scripts/verify-r76-assets.py && python scripts/verify-r77-assets.py && python scripts/verify-r78-assets.py && python scripts/verify-r79-assets.py && python scripts/verify-r80-assets.py && node scripts/test-content-r1.js && node scripts/test-content-r2.js && node scripts/test-content-r3.js && node scripts/test-content-r4.js && node scripts/test-content-r5.js && node scripts/test-content-r6.js && python scripts/verify-content-r6-art.py && node scripts/test-content-r7.js && node scripts/test-content-r8.js && node scripts/test-content-r9.js && node scripts/test-content-r10.js && node scripts/test-content-r11.js",
+    "test": "node scripts/test-cards.js && node scripts/test-core.js && node scripts/test-quality-gates.js && node scripts/test-balance-sim.js && node scripts/test-r73-voyage.js && node scripts/test-r74-rules.js && node scripts/test-content-r1.js --logic && node scripts/test-content-r2.js --logic && node scripts/test-content-r3.js --logic && node scripts/test-content-r4.js --logic && node scripts/test-content-r5.js --logic && node scripts/test-content-r6.js --logic && node scripts/test-content-r7.js --logic && node scripts/test-content-r8.js --logic && node scripts/test-content-r9.js --logic && node scripts/test-content-r10.js --logic && node scripts/test-content-r11.js --logic && node scripts/test-content-r12.js --logic && node scripts/test-content-r13.js",
     "test:e2e": "node scripts/test-battle-e2e.js && node scripts/test-controls-reachability.js && node scripts/test-r67-browser.js && node scripts/test-r72-fun.js && node scripts/test-r73-mobile.js && node scripts/test-r74-review.js && node scripts/test-r74-ebb.js && node scripts/test-r75-art.js && node scripts/test-r76-art.js && node scripts/test-r77-tide.js && node scripts/test-r78-art.js && node scripts/test-r79-art.js && node scripts/test-r80-art.js && node scripts/test-content-r1-e2e.js && node scripts/test-content-r2-e2e.js && node scripts/test-content-r3-e2e.js && node scripts/test-content-r4-e2e.js && node scripts/test-content-r5-e2e.js",
     "test:r72": "node scripts/test-r72-fun.js",
     "test:controls": "node scripts/test-controls-reachability.js",
@@ -32,7 +32,13 @@
     "test:content:r8": "node scripts/test-content-r8.js && node scripts/test-content-r8-e2e.js && node scripts/capture-content-r8-effects.js && node scripts/capture-content-r8-landscape.js && node scripts/capture-content-r8-puzzles.js && node scripts/capture-content-r8-forecast.js && node scripts/test-content-r8-timing.js && node scripts/test-content-r8-offline.js",
     "test:content:r9": "node scripts/test-content-r9.js && node scripts/test-content-r9-e2e.js && node scripts/test-content-r9-acceptance.js && node scripts/test-content-r9-return.js",
     "test:content:r10": "node scripts/test-content-r10.js && node scripts/test-content-r10-e2e.js",
-    "test:content:r11": "node scripts/test-content-r11.js && node scripts/test-content-r11-e2e.js"
+    "test:content:r11": "node scripts/test-content-r11.js && node scripts/test-content-r11-e2e.js",
+    "test:content:r12": "node scripts/test-content-r12.js && node scripts/test-content-r12-e2e.js && node scripts/test-content-r12-offline.js && node scripts/test-content-r12-feedback.js",
+    "verify:local:rules": "node scripts/test-cards.js && node scripts/test-core.js && node scripts/test-quality-gates.js && node scripts/test-balance-sim.js && python scripts/test-r67-visual-gates.py && node scripts/test-r73-voyage.js && node scripts/test-r74-rules.js && python scripts/verify-r75-assets.py && python scripts/verify-r76-assets.py && python scripts/verify-r77-assets.py && python scripts/verify-r78-assets.py && python scripts/verify-r79-assets.py && python scripts/verify-r80-assets.py && node scripts/test-content-r1.js && node scripts/test-content-r2.js && node scripts/test-content-r3.js && node scripts/test-content-r4.js && node scripts/test-content-r5.js && node scripts/test-content-r6.js && python scripts/verify-content-r6-art.py && node scripts/test-content-r7.js && node scripts/test-content-r8.js && node scripts/test-content-r9.js && node scripts/test-content-r10.js && node scripts/test-content-r11.js && node scripts/test-content-r12.js",
+    "test:content:r13": "node scripts/test-content-r13.js && node scripts/test-content-r13-e2e.js && node scripts/test-content-r12-offline.js",
+    "test:ci:e2e": "node scripts/test-battle-e2e.js && node scripts/test-controls-reachability.js && node scripts/test-content-r13-e2e.js && node scripts/test-content-r12-offline.js",
+    "verify:local": "python scripts/run-content-r13-checks.py",
+    "verify:ci:clean": "python scripts/verify-content-r13-clean-ci.py"
   },
   "keywords": [
     "card-game",

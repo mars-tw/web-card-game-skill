@@ -1,0 +1,137 @@
+[
+  {
+    "order": 1,
+    "path": "docs/content/r12/review-set/01-puzzle-fallen-completed.png",
+    "source": "docs/content/r12/phone-puzzle-fallen-completed.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "6dc9606d36f9f6ee43a29e1c0226d38f664833ac8edfe82c3e20a7d486403928",
+    "purpose": "士兵陣亡補潮、浪潮斬殺的完整解題收據"
+  },
+  {
+    "order": 2,
+    "path": "docs/content/r12/review-set/02-puzzle-shield-completed.png",
+    "source": "docs/content/r12/phone-puzzle-shield-completed.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "9f105c3ef26b31ba4147c8c3cd7f3b4488c7eed07d22d76f52ad0a8b787575b0",
+    "purpose": "破盾一次與真正潮傷收割的解題收據"
+  },
+  {
+    "order": 3,
+    "path": "docs/content/r12/review-set/03-puzzle-shelter-completed.png",
+    "source": "docs/content/r12/phone-puzzle-shelter-completed.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "46abcdb560902318eb2fe68c11367aa58505a3c2676631ab8901a602c2c12460",
+    "purpose": "退潮聖盾保住弓手、狼退場"
+  },
+  {
+    "order": 4,
+    "path": "docs/content/r12/review-set/04-puzzle-taunt-completed.png",
+    "source": "docs/content/r12/phone-puzzle-taunt-completed.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "199ea80b593d3074aa9cd80a057e0c8a2eef1d919a4ca5dc5b267077245be8b3",
+    "purpose": "嘲諷被清除後狼直取英雄的收據"
+  },
+  {
+    "order": 5,
+    "path": "docs/content/r12/review-set/05-puzzle-spell-completed.png",
+    "source": "docs/content/r12/phone-puzzle-spell-completed.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "784d59a59abeedb919bbbd8558f42db44e6d19ee45b65ed7e67427477f3ad2f5",
+    "purpose": "火焰箭3＋浪潮1的實際傷害拆解"
+  },
+  {
+    "order": 6,
+    "path": "docs/content/r12/review-set/06-puzzle-cross-completed.png",
+    "source": "docs/content/r12/phone-puzzle-cross-completed.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "18662029009934857eedf2c43ee9e65515c0a34a4719a6a3625d4d8e9e2eae5b",
+    "purpose": "雙線交換後的傷害、存活及潮能收據"
+  },
+  {
+    "order": 7,
+    "path": "docs/content/r12/review-set/07-puzzle-taunt-marked.png",
+    "source": "docs/content/r12/phone-puzzle-taunt-marked.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "896b785ea8dcfb7a156d346a0db2624e973f753f8fac10f3914b970e20f06d61",
+    "purpose": "正常遊玩進行中的嘲諷題；左側石牆標記、完整卡名／攻血，與聖盾區分"
+  },
+  {
+    "order": 8,
+    "path": "docs/content/r12/review-set/08-forecast-flood-preview.png",
+    "source": "docs/content/r12/phone-forecast-flood-preview.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "7cc0d5409ef5485a9510ae3407cc89af52cd35d374f69f781b4e639038be2d0e",
+    "purpose": "同局第1回合按住半秒，預改第3回合、半環及敵方目標預算"
+  },
+  {
+    "order": 9,
+    "path": "docs/content/r12/review-set/09-forecast-flood-applied.png",
+    "source": "docs/content/r12/phone-forecast-flood-applied.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "b98fa0c3efa534a709623eda2827b4df2fa0215c38be8ef0753bd00f57e190c0",
+    "purpose": "同局第3回合改為漲潮，仍能撤回"
+  },
+  {
+    "order": 10,
+    "path": "docs/content/r12/review-set/10-forecast-flood-impact.png",
+    "source": "docs/content/r12/phone-forecast-flood-impact.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "a194931eaa3693d0867d48154233e8c520dbffa13ad54acd998c1cadb0e9d209",
+    "purpose": "同局到第3回合施放：英雄5→3、騎士4→3；收據不遮詳情"
+  },
+  {
+    "order": 11,
+    "path": "docs/content/r12/review-set/11-moen-heal-impact.png",
+    "source": "docs/content/r12/phone-moen-heal-impact.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "624bd6eeafee1074b22b1fbd67337a5e26d0c0287582581e789cc5376cc50f39",
+    "purpose": "藍袍同源頭像、茉恩聖盾留守姿勢、360ms自己4→7與嘲諷／聖盾"
+  },
+  {
+    "order": 12,
+    "path": "docs/content/r12/review-set/12-moen-broken.png",
+    "source": "docs/content/r12/phone-moen-broken.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "6ba36ddcd10a308ddd6937f7fc3d12b9ce01c8598a0bf92ad1ece104c9a31f8e",
+    "purpose": "同局聖盾碎裂、騎士仍4血，茉恩持續不同受挫姿勢"
+  },
+  {
+    "order": 13,
+    "path": "docs/content/r12/review-set/13-moen-opening.png",
+    "source": "docs/content/r12/phone-moen-opening.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "560a9d6e3026be13e70eec9ea66018d379fb4fed94229acf9f53b736a542aa5e",
+    "purpose": "同局敵騎士2血，茉恩低姿反攻空檔；三行資訊與完整卡框"
+  },
+  {
+    "order": 14,
+    "path": "docs/content/r12/review-set/14-moen-return-triggered-completed.png",
+    "source": "docs/content/r12/phone-moen-return-triggered-completed.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "5af55c45bae7d7918105ddc1529b8f640c01c06114c61730612362c17194a2b8",
+    "purpose": "治療觸發：不同插圖、實際回血、沒有反攻的結尾"
+  },
+  {
+    "order": 15,
+    "path": "docs/content/r12/review-set/15-moen-return-prevented-completed.png",
+    "source": "docs/content/r12/phone-moen-return-prevented-completed.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "fb6a02f64c8c9da84cab0df9f3e604c5d05eaaccb5462b440573e07bd189eda8",
+    "purpose": "治療阻止：不同插圖、3傷代價、騎士存活1血的結尾"
+  }
+]

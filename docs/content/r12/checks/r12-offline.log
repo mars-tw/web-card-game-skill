@@ -1,0 +1,16 @@
+PASS puzzle actually completes offline
+PASS offline puzzle progress survives reload
+PASS fresh offline flood marker loads exact pre-cached version
+PASS offline flood reversal and icon survive session reload
+PASS fresh offline ebb marker loads exact pre-cached shield
+PASS forecast actually completes offline
+PASS offline forecast completion survives reload
+PASS Moen first win truly offline
+PASS same-source portrait cached offline
+PASS Moen triggered branch offline complete
+PASS new branch illustration really available offline triggered
+PASS Moen offline reload retains completion triggered
+PASS same-source portrait cached offline
+PASS Moen prevented branch offline complete
+PASS new branch illustration really available offline prevented
+PASS Moen offline reload retains completion prevented

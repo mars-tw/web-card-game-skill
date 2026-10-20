@@ -1,0 +1,37 @@
+PASS actual wrong choice cannot complete fallen
+PASS failure refers to present goals and actual move fallen
+PASS retry retains locked turn fallen
+PASS real retry solution completes fallen
+PASS completion explains real tide fallen
+PASS successful retry saved across reload fallen
+PASS actual wrong choice cannot complete shield
+PASS failure refers to present goals and actual move shield
+PASS retry retains locked turn shield
+PASS real retry solution completes shield
+PASS completion explains real tide shield
+PASS successful retry saved across reload shield
+PASS actual wrong choice cannot complete shelter
+PASS failure refers to present goals and actual move shelter
+PASS retry retains locked turn shelter
+PASS real retry solution completes shelter
+PASS completion explains real tide shelter
+PASS successful retry saved across reload shelter
+PASS taunt detail explains the same visible status
+PASS actual wrong choice cannot complete taunt
+PASS failure refers to present goals and actual move taunt
+PASS retry retains locked turn taunt
+PASS real retry solution completes taunt
+PASS completion explains real tide taunt
+PASS successful retry saved across reload taunt
+PASS actual wrong choice cannot complete spell
+PASS failure refers to present goals and actual move spell
+PASS retry retains locked turn spell
+PASS real retry solution completes spell
+PASS completion explains real tide spell
+PASS successful retry saved across reload spell
+PASS actual wrong choice cannot complete cross
+PASS failure refers to present goals and actual move cross
+PASS retry retains locked turn cross
+PASS real retry solution completes cross
+PASS completion explains real tide cross
+PASS successful retry saved across reload cross

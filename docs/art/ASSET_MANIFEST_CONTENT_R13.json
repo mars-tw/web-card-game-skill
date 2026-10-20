@@ -1,0 +1,41 @@
+{
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "generation_calls": 2,
+  "new_illustrations": 2,
+  "license": "MIT project assets",
+  "assets": [
+    {
+      "path": "docs/art/source/content-r13/ending-prevented-source.png",
+      "sha256": "3c633cc7b969314db0639acd40e8d975cd568bbc376346bbabbb7a342484b595",
+      "width": 1536,
+      "height": 1024,
+      "kind": "generated_source",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "path": "assets/art/content-r13/ending-prevented.webp",
+      "sha256": "bb54d10128181674bda2ddd0d8445016994ffdbe8340b10033bfcf1611d137e5",
+      "width": 1536,
+      "height": 1024,
+      "kind": "runtime",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "path": "docs/art/source/content-r13/ending-triggered-source.png",
+      "sha256": "cdd9c0c5258cc617b7e6d0dd0450ac22b1a8897b5d646d1390ec2aacf6c14212",
+      "width": 1536,
+      "height": 1024,
+      "kind": "generated_source",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "path": "assets/art/content-r13/ending-triggered.webp",
+      "sha256": "14adeb45e2d5558660866bafe071b4ead9cf8c1a212512e8b69f70995fd5346d",
+      "width": 1536,
+      "height": 1024,
+      "kind": "runtime",
+      "tool": "image_gen.imagegen"
+    }
+  ]
+}

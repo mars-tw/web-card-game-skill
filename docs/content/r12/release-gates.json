@@ -1,0 +1,195 @@
+{
+  "status": "VERIFIED",
+  "version": "0.24.0",
+  "cache": "card-battle-content-r12-v1",
+  "missing_gate_groups": [],
+  "failed_latest_groups": [],
+  "latest_results": {
+    "r12-e2e": {
+      "name": "r12-e2e",
+      "command": [
+        "node",
+        "scripts/test-content-r12-e2e.js"
+      ],
+      "exit_code": 0,
+      "seconds": 158.89,
+      "status": "VERIFIED"
+    },
+    "r12-offline": {
+      "name": "r12-offline",
+      "command": [
+        "node",
+        "scripts/test-content-r12-offline.js"
+      ],
+      "exit_code": 0,
+      "seconds": 68.66,
+      "status": "VERIFIED"
+    },
+    "npm-test": {
+      "name": "npm-test",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm test"
+      ],
+      "exit_code": 0,
+      "seconds": 9.08,
+      "status": "VERIFIED"
+    },
+    "npm-e2e": {
+      "name": "npm-e2e",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:e2e"
+      ],
+      "exit_code": 0,
+      "seconds": 1148.98,
+      "status": "VERIFIED"
+    },
+    "r12-feedback": {
+      "name": "r12-feedback",
+      "command": [
+        "node",
+        "scripts/test-content-r12-feedback.js"
+      ],
+      "exit_code": 0,
+      "seconds": 46.28,
+      "status": "VERIFIED"
+    },
+    "rwd": {
+      "name": "rwd",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:rwd"
+      ],
+      "exit_code": 0,
+      "seconds": 87.18,
+      "status": "VERIFIED"
+    },
+    "r10": {
+      "name": "r10",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:content:r10"
+      ],
+      "exit_code": 0,
+      "seconds": 155.24,
+      "status": "VERIFIED"
+    },
+    "r11": {
+      "name": "r11",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:content:r11"
+      ],
+      "exit_code": 0,
+      "seconds": 157.96,
+      "status": "VERIFIED"
+    },
+    "r11-cleanup": {
+      "name": "r11-cleanup",
+      "command": [
+        "node",
+        "scripts/test-content-r11-cleanup.js"
+      ],
+      "exit_code": 0,
+      "seconds": 3.09,
+      "status": "VERIFIED"
+    },
+    "r6": {
+      "name": "r6",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:content:r6"
+      ],
+      "exit_code": 0,
+      "seconds": 124.38,
+      "status": "VERIFIED"
+    },
+    "r7": {
+      "name": "r7",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:content:r7"
+      ],
+      "exit_code": 0,
+      "seconds": 157.09,
+      "status": "VERIFIED"
+    },
+    "r8": {
+      "name": "r8",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:content:r8"
+      ],
+      "exit_code": 0,
+      "seconds": 252.91,
+      "status": "VERIFIED"
+    },
+    "r9": {
+      "name": "r9",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:content:r9"
+      ],
+      "exit_code": 0,
+      "seconds": 317.02,
+      "status": "VERIFIED"
+    },
+    "frames": {
+      "name": "frames",
+      "command": [
+        "node",
+        "scripts/measure-content-r8.js"
+      ],
+      "exit_code": 0,
+      "seconds": 30.9,
+      "status": "VERIFIED"
+    },
+    "ci-performance": {
+      "name": "ci-performance",
+      "command": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm run test:r67:performance"
+      ],
+      "exit_code": 0,
+      "seconds": 32.61,
+      "status": "VERIFIED"
+    }
+  },
+  "preservation": {
+    "status": "VERIFIED",
+    "protected_files": 272,
+    "changed": [],
+    "scope": "All initially dirty and untracked files outside pre-existing .audit-tmp; no original audit scratch files were selected for writes."
+  },
+  "syntax_files": 114,
+  "secret_hits": 0,
+  "review_screenshots": 15,
+  "new_generated_art": 2,
+  "derived_portraits": 1,
+  "limitations": [
+    "Physical device and human playtests require devices and participants",
+    "Shared-machine performance only",
+    "Muse score above eight requires actual re-review"
+  ]
+}

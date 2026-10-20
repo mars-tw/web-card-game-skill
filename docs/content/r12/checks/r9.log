@@ -1,0 +1,305 @@
+
+> web-card-game-skill@0.24.0 test:content:r9
+> node scripts/test-content-r9.js && node scripts/test-content-r9-e2e.js && node scripts/test-content-r9-acceptance.js && node scripts/test-content-r9-return.js
+
+PASS goal and on-demand solution fallen
+PASS goal does not disclose order fallen
+PASS initial playable board saves fallen
+PASS goal and on-demand solution shield
+PASS goal does not disclose order shield
+PASS initial playable board saves shield
+PASS goal and on-demand solution shelter
+PASS goal does not disclose order shelter
+PASS initial playable board saves shelter
+PASS goal and on-demand solution taunt
+PASS goal does not disclose order taunt
+PASS initial playable board saves taunt
+PASS goal and on-demand solution spell
+PASS goal does not disclose order spell
+PASS initial playable board saves spell
+PASS goal and on-demand solution cross
+PASS goal does not disclose order cross
+PASS initial playable board saves cross
+PASS exchange result reports actual different HP
+PASS public return threshold 0
+PASS public return threshold 1
+PASS public return threshold 2
+PASS public return threshold 6
+PASS conditional result persists true
+PASS reject invalid conditional state
+PASS conditional result persists false
+PASS reject invalid conditional state
+PASS three distinct attack poses footman
+PASS impact is the only damaging phase footman
+PASS hurt then death poses footman
+PASS three distinct attack poses knight
+PASS impact is the only damaging phase knight
+PASS hurt then death poses knight
+PASS legacy R8 heal flag already completes return phase
+PASS prevented return also completes phase
+PASS unresolved old checkpoint can still reach return phase
+PASS ready wolf instruction matches available action
+PASS spent wolf instruction refers to next turn
+PASS lost wolf never promises a next-turn attack
+PASS reject corrupted public tide checkpoint
+PASS verified alpha and provenance assets/animations/content-r9/combat-atlas-source.png
+PASS verified alpha and provenance assets/animations/content-r9/footman-anticipation.webp
+PASS verified alpha and provenance assets/animations/content-r9/footman-death.webp
+PASS verified alpha and provenance assets/animations/content-r9/footman-hurt.webp
+PASS verified alpha and provenance assets/animations/content-r9/footman-impact.webp
+PASS verified alpha and provenance assets/animations/content-r9/footman-recovery.webp
+PASS verified alpha and provenance assets/animations/content-r9/knight-anticipation.webp
+PASS verified alpha and provenance assets/animations/content-r9/knight-death.webp
+PASS verified alpha and provenance assets/animations/content-r9/knight-hurt.webp
+PASS verified alpha and provenance assets/animations/content-r9/knight-impact.webp
+PASS verified alpha and provenance assets/animations/content-r9/knight-recovery.webp
+Content R9 rules: 51 PASS
+PASS contentEntry normal harbor entry
+PASS forecastEntry normal harbor entry
+PASS moenEntry normal harbor entry
+PASS fallen every card complete, no hero or panel intersections
+PASS fallen entire end-turn control inside viewport
+PASS fallen mechanisms readable at card-name size or larger, text inside original viewport
+PASS fallen title hidden in actual normal play
+PASS fallen actual opposing units present
+PASS fallen distinctive mechanism signals
+PASS fallen can fail and retry
+PASS fallen real solution completes
+PASS shield every card complete, no hero or panel intersections
+PASS shield entire end-turn control inside viewport
+PASS shield mechanisms readable at card-name size or larger, text inside original viewport
+PASS shield title hidden in actual normal play
+PASS shield actual opposing units present
+PASS shield distinctive mechanism signals
+PASS shield can fail and retry
+PASS shield real solution completes
+PASS shelter every card complete, no hero or panel intersections
+PASS shelter entire end-turn control inside viewport
+PASS shelter mechanisms readable at card-name size or larger, text inside original viewport
+PASS third puzzle explicitly excludes hero health
+PASS shelter title hidden in actual normal play
+PASS shelter actual opposing units present
+PASS shelter distinctive mechanism signals
+PASS shelter can fail and retry
+PASS shelter real solution completes
+PASS taunt every card complete, no hero or panel intersections
+PASS taunt entire end-turn control inside viewport
+PASS taunt mechanisms readable at card-name size or larger, text inside original viewport
+PASS fourth puzzle explains preset wound
+PASS taunt title hidden in actual normal play
+PASS taunt actual opposing units present
+PASS taunt distinctive mechanism signals
+PASS taunt can fail and retry
+PASS taunt real solution completes
+PASS spell every card complete, no hero or panel intersections
+PASS spell entire end-turn control inside viewport
+PASS spell mechanisms readable at card-name size or larger, text inside original viewport
+PASS spell title hidden in actual normal play
+PASS spell actual opposing units present
+PASS spell distinctive mechanism signals
+PASS spell can fail and retry
+PASS spell real solution completes
+PASS cross every card complete, no hero or panel intersections
+PASS cross entire end-turn control inside viewport
+PASS cross mechanisms readable at card-name size or larger, text inside original viewport
+PASS cross title hidden in actual normal play
+PASS cross actual opposing units present
+PASS cross distinctive mechanism signals
+PASS both allied current/projected HP visible before any exchange
+PASS all four HP previews and complete confirmation/cancel text fit with eight-pixel viewport margin
+PASS read-only preview leaves every actual HP, position and tide unchanged
+PASS cancel exact per-unit equality with initial board
+PASS confirmation exactly matches preview: soldier leaves, archer 1 HP, tide 6
+PASS cross real solution completes
+PASS all six completions survive real reload
+PASS separate verification puzzle completes
+PASS six-puzzle progress remains separate from verification
+PASS forecast before every card complete, no hero or panel intersections
+PASS forecast before entire end-turn control inside viewport
+PASS forecast drawer stays within thirty-five percent
+PASS hold does not spend reversal
+PASS held round has direct consequence preview
+PASS drag outside cancels reversal
+PASS release commits one reversal
+PASS applied second-round ebb effect matches direction and round
+PASS forecast applied every card complete, no hero or panel intersections
+PASS forecast applied entire end-turn control inside viewport
+PASS forecast drawer stays within thirty-five percent
+PASS applied round button states its direction
+PASS closed battlefield identifies reversed second round
+PASS reversed-round marker survives real session reload
+PASS wrong direction cast disabled with words
+PASS wrong direction is visibly gray
+PASS wrong operation spends neither tide nor reversal
+PASS allowed direction restores enabled cast
+PASS fourth round free directions
+PASS forecast actual short encounter completes
+PASS forecast progress survives reload
+PASS applied third-round flood effect matches direction and round
+PASS moen preparing every card complete, no hero or panel intersections
+PASS moen preparing entire end-turn control inside viewport
+PASS anticipation does not grant shield
+PASS moen impact every card complete, no hero or panel intersections
+PASS moen impact entire end-turn control inside viewport
+PASS healing feedback belongs to healed enemy hero
+PASS wave-impact full same knight identity 3 ATK / 4 HP
+PASS Moen actually raises her hand at impact
+PASS real impact labels three-point enemy healing
+PASS recovery restores ready pose
+PASS guarding full same knight identity 3 ATK / 4 HP
+PASS single guarding image identifies enemy Moen, knight target, and one block
+PASS separate painted wall and shield icons replace debug legend
+PASS shield impact does not pretend HP damage
+PASS impact immediately removes spent shield counter and intact icon
+PASS shield-impact full same knight identity 3 ATK / 4 HP
+PASS shield-after full same knight identity 3 ATK / 4 HP
+PASS small post-break marker
+PASS shield broken persists on reload
+PASS Moen actual battle completes
+PASS second completed challenge uses return variation
+PASS delaying really loses the named soldier
+PASS delayed casualty is named visibly
+PASS delay explains real shield cause
+PASS delay after every card complete, no hero or panel intersections
+PASS delay after entire end-turn control inside viewport
+PASS all three content progress export/import intact
+PASS return variation damaged to three HP before second heal
+PASS second-round extra two HP changes actual surviving HP
+PASS second variation needs the reserved wolf after knight hits
+PASS second variation also playable and completable
+PASS repeat win does not duplicate first completion
+PASS 844x390 content units and controls inside viewport >=44px
+PASS 844x390 new exchange confirm/cancel reachable
+PASS 844x390 forecast every card complete, no hero or panel intersections
+PASS 844x390 forecast entire end-turn control inside viewport
+PASS 844x390 single-decision forecast controls reachable
+PASS 1032x1376 content units and controls inside viewport >=44px
+PASS 1032x1376 new exchange confirm/cancel reachable
+PASS 1032x1376 forecast every card complete, no hero or panel intersections
+PASS 1032x1376 forecast entire end-turn control inside viewport
+PASS 1032x1376 single-decision forecast controls reachable
+PASS 1376x1032 content units and controls inside viewport >=44px
+PASS 1376x1032 new exchange confirm/cancel reachable
+PASS 1376x1032 forecast every card complete, no hero or panel intersections
+PASS 1376x1032 forecast entire end-turn control inside viewport
+PASS 1376x1032 single-decision forecast controls reachable
+PASS 1366x600 content units and controls inside viewport >=44px
+PASS 1366x600 new exchange confirm/cancel reachable
+PASS 1366x600 forecast every card complete, no hero or panel intersections
+PASS 1366x600 forecast entire end-turn control inside viewport
+PASS 1366x600 single-decision forecast controls reachable
+PASS 430x932 content units and controls inside viewport >=44px
+PASS 430x932 new exchange confirm/cancel reachable
+PASS 430x932 forecast every card complete, no hero or panel intersections
+PASS 430x932 forecast entire end-turn control inside viewport
+PASS 430x932 single-decision forecast controls reachable
+PASS 1032x1376 content units and controls inside viewport >=44px
+PASS 1032x1376 new exchange confirm/cancel reachable
+PASS 1032x1376 forecast every card complete, no hero or panel intersections
+PASS 1032x1376 forecast entire end-turn control inside viewport
+PASS 1032x1376 single-decision forecast controls reachable
+PASS generated Moen poses available truly offline
+PASS true offline win and reload retain progress
+PASS offline reloaded completion is visibly labeled
+PASS zero page/resource errors
+Content R9 browser: 148 PASS
+PASS solution hidden until requested
+PASS first hint gives observation
+PASS second hint explicitly provides solution
+PASS result sentence matches both actual enemy HP
+PASS forecast held complete card slots
+PASS forecast held panel plus dock <=35%
+PASS forecast held battlefield-panel gap <=16px
+PASS forecast held controls >=44px within viewport
+PASS pointer leave cancels without spending
+PASS forecast applied complete card slots
+PASS forecast applied panel plus dock <=35%
+PASS forecast applied battlefield-panel gap <=16px
+PASS forecast applied controls >=44px within viewport
+PASS future reversal retained after reload
+PASS actually arrived at modified second round
+PASS second round casts selected ebb only
+PASS each protected ally has full-size shield x1
+PASS actually arrived at reversed third-round flood
+PASS forecast-reversed-flood 359ms no early damage
+PASS actual reversed round: hero 5 to3, knight4 to3
+PASS damage receipt independently identifies amounts and both HP endpoints
+PASS real impact persisted after reload
+PASS reversed flood branch completes
+PASS forecast-reversed-ebb 359ms no early damage
+PASS reversed ebb gives two countable shields
+PASS reversed ebb branch completes
+PASS disabled cast title gives real reason
+PASS cast status single line, no fold collision, all heroes and cards visible
+PASS moen preparation complete card slots
+PASS moen preparation Moen and all slots intersection zero
+PASS moen preparation boss name and tide each single line
+PASS moen preparation Moen at least 1.5x
+PASS moen preparation controls >=44px within viewport
+PASS moen healing impact complete card slots
+PASS moen healing impact Moen and all slots intersection zero
+PASS moen healing impact boss name and tide each single line
+PASS moen healing impact Moen at least 1.5x
+PASS moen healing impact controls >=44px within viewport
+PASS heal receipt adjacent below hero with CSS pointer
+PASS pose anticipation keeps shield intact
+PASS pose impact breaks shield without HP damage
+PASS moen after shield break complete card slots
+PASS moen after shield break Moen and all slots intersection zero
+PASS moen after shield break boss name and tide each single line
+PASS moen after shield break Moen at least 1.5x
+PASS moen after shield break controls >=44px within viewport
+PASS broken shield counter removed
+PASS first Moen encounter completes
+PASS spent wolf hint explicitly refers to next turn
+PASS cleared knight supplies tide and triggers second heal 3 to5
+PASS returning triggered branch completes
+PASS reload does not double count Moen completion
+PASS leaving knight denies second tide point and prevents additional heal
+PASS preventing heal has visible price: knight counterattack
+PASS prevented result survives actual reload
+PASS prevented-heal branch also completes
+PASS 320x568 Moen complete card slots
+PASS 320x568 Moen Moen and all slots intersection zero
+PASS 320x568 Moen boss name and tide each single line
+PASS 320x568 Moen controls >=44px within viewport
+PASS 320x568 compact forecast complete card slots
+PASS 320x568 compact forecast panel plus dock <=35%
+PASS 320x568 compact forecast controls >=44px within viewport
+PASS 360x640 Moen complete card slots
+PASS 360x640 Moen Moen and all slots intersection zero
+PASS 360x640 Moen boss name and tide each single line
+PASS 360x640 Moen controls >=44px within viewport
+PASS 360x640 compact forecast complete card slots
+PASS 360x640 compact forecast panel plus dock <=35%
+PASS 360x640 compact forecast controls >=44px within viewport
+PASS 844x390 Moen complete card slots
+PASS 844x390 Moen Moen and all slots intersection zero
+PASS 844x390 Moen boss name and tide each single line
+PASS 844x390 Moen controls >=44px within viewport
+PASS 1032x1376 Moen complete card slots
+PASS 1032x1376 Moen Moen and all slots intersection zero
+PASS 1032x1376 Moen boss name and tide each single line
+PASS 1032x1376 Moen Moen at least 1.5x
+PASS 1032x1376 Moen controls >=44px within viewport
+PASS 1376x1032 Moen complete card slots
+PASS 1376x1032 Moen Moen and all slots intersection zero
+PASS 1376x1032 Moen boss name and tide each single line
+PASS 1376x1032 Moen Moen at least 1.5x
+PASS 1376x1032 Moen controls >=44px within viewport
+PASS 430x932 Moen complete card slots
+PASS 430x932 Moen Moen and all slots intersection zero
+PASS 430x932 Moen boss name and tide each single line
+PASS 430x932 Moen Moen at least 1.5x
+PASS 430x932 Moen controls >=44px within viewport
+PASS 430x932 compact forecast complete card slots
+PASS 430x932 compact forecast panel plus dock <=35%
+PASS 430x932 compact forecast battlefield-panel gap <=16px
+PASS 430x932 compact forecast controls >=44px within viewport
+PASS 1032x1376 Moen complete card slots
+PASS 1032x1376 Moen Moen and all slots intersection zero
+PASS 1032x1376 Moen boss name and tide each single line
+PASS 1032x1376 Moen Moen at least 1.5x
+PASS 1032x1376 Moen controls >=44px within viewport
+PASS zero page errors
+VERIFIED 13 checks: correct historical tide explanation, checkpoint, price, actual victory and current receipts

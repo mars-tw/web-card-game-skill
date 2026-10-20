@@ -1,0 +1,5 @@
+{
+  "status": "VERIFIED",
+  "checks": 16,
+  "method": "Fresh persistent profile, service-worker pre-cache, then browser offline; all three content types complete and reload; both Moen ending illustrations decoded offline. No injected progress or board."
+}

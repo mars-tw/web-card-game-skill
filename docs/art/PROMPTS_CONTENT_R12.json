@@ -1,0 +1,23 @@
+{
+  "style_prefix": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism.",
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "calls": [
+    {
+      "name": "ending-triggered",
+      "source": "C:/Users/digimkt/.codex/generated_images/01a15383-2a22-7ac1-bb96-bfc5ae5dd34b/exec-92f2754d-9956-4d2d-b39d-01db0e30b1e9.png",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Use case: illustration-story. Asset: wide horizontal ending illustration for the existing Moen healing-triggered branch. Reference image: preserve the exact identity of the blue-robed woman Moen shown in the conversation: adult woman with chestnut brown long braided hair, silver white gown and deep periwinkle blue embroidered cloak, copper balance scales. A calm decisive ending on a moonlit pearl-column ship deck. Moen standing upright on left with both hands lowering the copper scales into a visibly luminous returning water stream; healed moonlight ripples surrounding her at the waist. Right foreground an allied silver knight stands unharmed with sword lowered; the opposing knight has already departed, represented by a fallen empty shield on the wet boards, no person on that side. Strong clear difference from a defeated kneeling woman: she is upright and accepting the returning tide. Large readable figures, full width painted background, three quarter view, no UI, no text, no numbers, no border, no logo. Landscape 3:2. Character costume and facial identity closely match the supplied blue-robed Moen reference."
+    },
+    {
+      "name": "ending-prevented",
+      "source": "C:/Users/digimkt/.codex/generated_images/01a15383-2a22-7ac1-bb96-bfc5ae5dd34b/exec-7e101c24-d335-436c-894a-b696fb656e31.png",
+      "prompt": "TIDEREND — MOONREND MARITIME, premium collectible card game, hand-painted gouache-oil fantasy, elegant dramatic readable silhouettes, twilight indigo-purple #201C3D, moon-foam white #F2F1FA, coral-copper #DA8A6D, luminous tidal blue #69CFE9, small warm lighthouse accents, rich midtones, no green teal UI, no photorealism. Use case illustration-story. Asset: a different horizontal ending illustration for Moen's healing-prevented branch. Input1 identity reference: exact same Moen, adult woman with chestnut brown braided hair, silver white gown, deep blue embroidered cloak, copper balance scales. Input2 style and location reference ONLY: keep pearl-column moonlit deck and identity, but change entire composition and action. Moen is crouching low on the RIGHT, scales lowered and empty, no healing halo or returning magic. Foreground LEFT, the allied silver knight braces on one knee, wounded and exhausted after withstanding a counterattack, visible dented shield and lowered sword, no gore. Show both figures with readable full-body silhouettes, facing each other across dry indigo ship boards; copper fragments of a broken pearl shield on deck. Clear visual distinction from the upright healing picture: diagonal composition, crouching Moen and kneeling injured allied knight, no swirling magic. Full width painted environment. No UI, no text, no numbers, no border, no watermark. Landscape 3:2."
+    }
+  ],
+  "reused_poses": [
+    "moen-cast.webp",
+    "moen-hurt.webp",
+    "moen-recover.webp"
+  ],
+  "portrait_source": "assets/art/content-r10/moen-ready.webp"
+}

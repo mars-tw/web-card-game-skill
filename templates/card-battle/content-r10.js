@@ -18,7 +18,7 @@
       setTimeout(()=>{if(activeGame===g&&reactions.get(g)===r){r.until=0;const stage=document.getElementById('moenStage');if(stage)stage.querySelector('img').src=moenArt(g,Number(stage.dataset.pose)||0);}},760);
     }
   }
-  function moenArt(g,pose){const r=reactions.get(g);return art+'moen-'+(r&&performance.now()<r.until?r.pose:pose===0?'ready':'cast')+'.webp';}
+  function moenArt(g,pose){const r=reactions.get(g);return art+'moen-'+(r&&performance.now()<r.until?r.pose:pose!==0?'cast':!g.content.enemyEbbUsed?'ready':g.enemy.field.some(c=>c.id==='knight'&&c.shield)?'cast':g.enemy.field.some(c=>c.id==='knight'&&c.health===c.maxHealth)?'hurt':'recover')+'.webp';}
   function render(g){
     activeGame=g;
     const channel=document.querySelector('.r75-tide-channel');document.getElementById('contentAnchor')?.remove();

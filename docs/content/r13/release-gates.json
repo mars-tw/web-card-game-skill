@@ -1,0 +1,220 @@
+{
+  "status": "VERIFIED",
+  "version": "0.25.0",
+  "local_groups": {
+    "unit": {
+      "name": "unit",
+      "command": "npm test",
+      "exit_code": 0,
+      "seconds": 5.42,
+      "status": "VERIFIED"
+    },
+    "local-rules": {
+      "name": "local-rules",
+      "command": "npm run verify:local:rules",
+      "exit_code": 0,
+      "seconds": 9.19,
+      "status": "VERIFIED"
+    },
+    "e2e": {
+      "name": "e2e",
+      "command": "npm run test:e2e",
+      "exit_code": 0,
+      "seconds": 1142.75,
+      "status": "VERIFIED"
+    },
+    "rwd": {
+      "name": "rwd",
+      "command": "npm run test:rwd",
+      "exit_code": 0,
+      "seconds": 90.21,
+      "status": "VERIFIED"
+    },
+    "r6": {
+      "name": "r6",
+      "command": "npm run test:content:r6",
+      "exit_code": 0,
+      "seconds": 124.94,
+      "status": "VERIFIED"
+    },
+    "r7": {
+      "name": "r7",
+      "command": "npm run test:content:r7",
+      "exit_code": 0,
+      "seconds": 154.94,
+      "status": "VERIFIED"
+    },
+    "r8": {
+      "name": "r8",
+      "command": "npm run test:content:r8",
+      "exit_code": 0,
+      "seconds": 259.06,
+      "status": "VERIFIED"
+    },
+    "r9": {
+      "name": "r9",
+      "command": "npm run test:content:r9",
+      "exit_code": 0,
+      "seconds": 323.42,
+      "status": "VERIFIED"
+    },
+    "r10": {
+      "name": "r10",
+      "command": "npm run test:content:r10",
+      "exit_code": 0,
+      "seconds": 157.19,
+      "status": "VERIFIED"
+    },
+    "r11": {
+      "name": "r11",
+      "command": "npm run test:content:r11",
+      "exit_code": 0,
+      "seconds": 158.74,
+      "status": "VERIFIED"
+    },
+    "r11-cleanup": {
+      "name": "r11-cleanup",
+      "command": "node scripts/test-content-r11-cleanup.js",
+      "exit_code": 0,
+      "seconds": 2.99,
+      "status": "VERIFIED"
+    },
+    "r12": {
+      "name": "r12",
+      "command": "npm run test:content:r12",
+      "exit_code": 0,
+      "seconds": 275.5,
+      "status": "VERIFIED"
+    },
+    "r13": {
+      "name": "r13",
+      "command": "node scripts/test-content-r13-e2e.js",
+      "exit_code": 0,
+      "seconds": 160.11,
+      "status": "VERIFIED"
+    },
+    "frames": {
+      "name": "frames",
+      "command": "node scripts/measure-content-r8.js",
+      "exit_code": 0,
+      "seconds": 31.87,
+      "status": "VERIFIED"
+    },
+    "performance": {
+      "name": "performance",
+      "command": "npm run test:r67:performance",
+      "exit_code": 0,
+      "seconds": 32.48,
+      "status": "VERIFIED"
+    },
+    "integrity": {
+      "name": "integrity",
+      "command": "python scripts/verify-content-r13.py",
+      "exit_code": 0,
+      "seconds": 11.2,
+      "status": "VERIFIED"
+    }
+  },
+  "clean_ci": [
+    {
+      "command": "npm ci",
+      "exit_code": 0,
+      "seconds": 1.95
+    },
+    {
+      "command": "npm test",
+      "exit_code": 0,
+      "seconds": 6.4
+    },
+    {
+      "command": "npm run test:ci:e2e",
+      "exit_code": 0,
+      "seconds": 309.16
+    },
+    {
+      "command": "npm run test:rwd",
+      "exit_code": 0,
+      "seconds": 86.19
+    },
+    {
+      "command": "CI node -c for templates/card-battle/*.js templates/card-pack/*.js scripts/*.js",
+      "exit_code": 0,
+      "files": 118,
+      "seconds": 8.4
+    }
+  ],
+  "r13_browser_checks": 749,
+  "r13_rule_checks": 60,
+  "review_images": 15,
+  "new_illustrations": 2,
+  "integrity": {
+    "status": "VERIFIED",
+    "protected_count": 276,
+    "protected_changed": [],
+    "preserved_store_count": 48,
+    "syntax_count": 119,
+    "secret_hits": 0,
+    "art_count": 2,
+    "cleanup_count": 218,
+    "cleanup_bytes": 161557369
+  },
+  "performance": {
+    "status": "VERIFIED",
+    "concurrentMachine": true,
+    "method": "Three runs, 240 rAF intervals each, public Moen encounter during actual scripted ebb; not native device or GPU execution time.",
+    "result": [
+      {
+        "width": 1366,
+        "height": 768,
+        "runs": [
+          {
+            "p95": 16.799999999999272,
+            "samples": 240,
+            "max": 50.100000000000364
+          },
+          {
+            "p95": 16.700000000000728,
+            "samples": 240,
+            "max": 33.40000000000009
+          },
+          {
+            "p95": 16.700000000000728,
+            "samples": 240,
+            "max": 16.800000000000182
+          }
+        ],
+        "median": 16.700000000000728
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "runs": [
+          {
+            "p95": 16.700000000000728,
+            "samples": 240,
+            "max": 16.800000000000182
+          },
+          {
+            "p95": 16.799999999999955,
+            "samples": 240,
+            "max": 16.800000000000182
+          },
+          {
+            "p95": 16.700000000000728,
+            "samples": 240,
+            "max": 16.800000000000182
+          }
+        ],
+        "median": 16.700000000000728
+      }
+    ]
+  },
+  "cleanup_count": 218,
+  "cleanup_bytes": 161557369,
+  "prior_failed_attempts": 4,
+  "limits": [
+    "Native device / human observers / playtest / exclusive performance / actual Muse rescore not performed.",
+    "Review set is five images per content; all six puzzle results are separately linked.",
+    "Fallen solution has no surviving minion; true empty board preserved."
+  ]
+}

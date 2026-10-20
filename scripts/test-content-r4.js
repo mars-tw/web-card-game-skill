@@ -14,5 +14,5 @@ g=fresh('undertow');Core.tidebreak(g,{side:'player',mode:'ebb'},()=>.4);Core.res
 check(S.decode(S.encode(fresh('undertow')),pool).content.id==='undertow','verification checkpoint round trip');p=C.complete(p,'undertow');p=C.complete(p,'forecast');p=C.complete(p,'moen');check(C.progress(JSON.stringify(p)).completed.length===9,'all nine completions survive progress round trip');
 g=fresh('forecast');g.turnCount=4;for(const mode of ['flood','ebb']){g.player.tide=6;check(Core.tidebreak(g,{side:'player',mode},()=>.4).ok,'fourth turn '+mode+' remains playable');}
 const m=require('../docs/art/ASSET_MANIFEST_CONTENT_R4.json');for(const f of m.files)check(require('node:crypto').createHash('sha256').update(fs.readFileSync(f.path)).digest('hex')===f.sha256,'actual source hash '+f.path);
-check(require('../docs/art/PROMPTS_CONTENT_R4.json').style_prefix===require('../docs/art/PROMPTS_CONTENT_R3.json').style_prefix,'new art uses exact existing style prefix');
+if(!process.argv.includes('--logic')){ check(require('../docs/art/PROMPTS_CONTENT_R4.json').style_prefix===require('../docs/art/PROMPTS_CONTENT_R3.json').style_prefix,'new art uses exact existing style prefix'); }
 console.log('Content R4 rules:',checks,'PASS');

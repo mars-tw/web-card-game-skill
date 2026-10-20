@@ -107,3 +107,8 @@ AI 生成素材可能仍受生成服務條款、商標、肖像及各地法律�
 - 接入 19 張無損 WebP：茉恩整備／施法／兩階段受擊／敗退 5 張、騎士蓄勢／命中／恢復／受擊／跪地／破盾 6 張、士兵完整武器的蓄勢／命中／恢復／受傷／跪地 5 張，以及六道解潮結／三潮羅盤／守約貝印 3 張。
 - 以既有茉恩與騎士作身份參考，沿用月裂海藏風格前綴；原圖與比較圖保留。只切圖集與加透明安全邊距，完整手指、天秤與劍尖納入裁切；不以單圖變形冒充姿勢。
 - `docs/art/PROMPTS_CONTENT_R10.json` 與 `ASSET_MANIFEST_CONTENT_R10.json` 記錄來源、實際工具、alpha、裁切與 SHA-256。依適用服務條款生成，隨本 MIT 專案提供；沒有第三方 SDK、付費功能或授權背書。
+
+## 新內容 R13（2026-10-19）
+
+- `image_gen.imagegen` 編輯兩張既有茉恩分支插圖，以 `assets/cards/knight.png` 統一黑甲紅羽、暗紅披風及狼紋盾；保留兩路不同姿勢。模型 slug 未公開。
+- 原圖位於 `docs/art/source/content-r13/`，WebP 位於 `assets/art/content-r13/`；完整提示詞及 SHA-256 見 `docs/art/PROMPTS_CONTENT_R13.json`、`ASSET_MANIFEST_CONTENT_R13.json`。WebP 僅作編碼，隨本 MIT 專案提供，沒有新增第三方素材或 SDK。

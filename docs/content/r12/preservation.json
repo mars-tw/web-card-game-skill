@@ -1,0 +1,6 @@
+{
+  "status": "VERIFIED",
+  "protected_files": 272,
+  "changed": [],
+  "scope": "All initially dirty and untracked files outside pre-existing .audit-tmp; no original audit scratch files were selected for writes."
+}

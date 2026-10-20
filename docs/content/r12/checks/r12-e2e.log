@@ -1,0 +1,681 @@
+PASS puzzle fallen all panel text ranges stay unclipped: []
+PASS puzzle fallen tide denominator stays six independently of mana
+PASS puzzle fallen dock at viewport bottom <=16px
+PASS puzzle fallen complete player hero above dock
+PASS puzzle fallen all hero numeric badges uncut
+PASS puzzle fallen cards complete and clear of hero/dock
+PASS puzzle fallen Moen never intersects cards
+PASS puzzle fallen gesture cancel area never covers hero
+PASS puzzle fallen gesture cancel area never covers cards
+PASS puzzle fallen Moen meter never covers cards
+PASS puzzle fallen shield counts never cover costs
+PASS puzzle fallen all visible controls 44px and actual hit
+PASS no zero gap fallen
+PASS initial observation no solution fallen
+PASS rules disable end turn fallen
+PASS lock reason always visible fallen
+PASS disabled input never changes board fallen
+PASS puzzle-fallen-playing all panel text ranges stay unclipped: []
+PASS puzzle-fallen-step-result all panel text ranges stay unclipped: []
+PASS puzzle-fallen-failed all panel text ranges stay unclipped: []
+PASS puzzle-fallen-retried all panel text ranges stay unclipped: []
+PASS specific actual event receipt fallen
+PASS playable and completable fallen
+PASS puzzle-fallen-completed all panel text ranges stay unclipped: []
+PASS completion actually persists fallen
+PASS puzzle shield all panel text ranges stay unclipped: []
+PASS puzzle shield tide denominator stays six independently of mana
+PASS puzzle shield dock at viewport bottom <=16px
+PASS puzzle shield complete player hero above dock
+PASS puzzle shield all hero numeric badges uncut
+PASS puzzle shield cards complete and clear of hero/dock
+PASS puzzle shield Moen never intersects cards
+PASS puzzle shield gesture cancel area never covers hero
+PASS puzzle shield gesture cancel area never covers cards
+PASS puzzle shield Moen meter never covers cards
+PASS puzzle shield shield counts never cover costs
+PASS puzzle shield all visible controls 44px and actual hit
+PASS no zero gap shield
+PASS initial observation no solution shield
+PASS rules disable end turn shield
+PASS lock reason always visible shield
+PASS disabled input never changes board shield
+PASS puzzle-shield-playing all panel text ranges stay unclipped: []
+PASS puzzle-shield-failed all panel text ranges stay unclipped: []
+PASS puzzle-shield-retried all panel text ranges stay unclipped: []
+PASS specific actual event receipt shield
+PASS playable and completable shield
+PASS puzzle-shield-completed all panel text ranges stay unclipped: []
+PASS completion actually persists shield
+PASS puzzle shelter all panel text ranges stay unclipped: []
+PASS puzzle shelter tide denominator stays six independently of mana
+PASS puzzle shelter dock at viewport bottom <=16px
+PASS puzzle shelter complete player hero above dock
+PASS puzzle shelter all hero numeric badges uncut
+PASS puzzle shelter cards complete and clear of hero/dock
+PASS puzzle shelter Moen never intersects cards
+PASS puzzle shelter gesture cancel area never covers hero
+PASS puzzle shelter gesture cancel area never covers cards
+PASS puzzle shelter Moen meter never covers cards
+PASS puzzle shelter shield counts never cover costs
+PASS puzzle shelter all visible controls 44px and actual hit
+PASS no zero gap shelter
+PASS initial observation no solution shelter
+PASS rules disable end turn shelter
+PASS lock reason always visible shelter
+PASS disabled input never changes board shelter
+PASS puzzle-shelter-playing all panel text ranges stay unclipped: []
+PASS puzzle-shelter-failed all panel text ranges stay unclipped: []
+PASS puzzle-shelter-retried all panel text ranges stay unclipped: []
+PASS specific actual event receipt shelter
+PASS playable and completable shelter
+PASS puzzle-shelter-completed all panel text ranges stay unclipped: []
+PASS completion actually persists shelter
+PASS puzzle taunt all panel text ranges stay unclipped: []
+PASS puzzle taunt tide denominator stays six independently of mana
+PASS puzzle taunt dock at viewport bottom <=16px
+PASS puzzle taunt complete player hero above dock
+PASS puzzle taunt all hero numeric badges uncut
+PASS puzzle taunt cards complete and clear of hero/dock
+PASS puzzle taunt Moen never intersects cards
+PASS puzzle taunt gesture cancel area never covers hero
+PASS puzzle taunt gesture cancel area never covers cards
+PASS puzzle taunt Moen meter never covers cards
+PASS puzzle taunt shield counts never cover costs
+PASS puzzle taunt all visible controls 44px and actual hit
+PASS no zero gap taunt
+PASS initial observation no solution taunt
+PASS rules disable end turn taunt
+PASS lock reason always visible taunt
+PASS disabled input never changes board taunt
+PASS puzzle-taunt-playing all panel text ranges stay unclipped: []
+PASS puzzle-taunt-failed all panel text ranges stay unclipped: []
+PASS puzzle-taunt-retried all panel text ranges stay unclipped: []
+PASS specific actual event receipt taunt
+PASS playable and completable taunt
+PASS puzzle-taunt-completed all panel text ranges stay unclipped: []
+PASS completion actually persists taunt
+PASS puzzle spell all panel text ranges stay unclipped: []
+PASS puzzle spell tide denominator stays six independently of mana
+PASS puzzle spell dock at viewport bottom <=16px
+PASS puzzle spell complete player hero above dock
+PASS puzzle spell all hero numeric badges uncut
+PASS puzzle spell cards complete and clear of hero/dock
+PASS puzzle spell Moen never intersects cards
+PASS puzzle spell gesture cancel area never covers hero
+PASS puzzle spell gesture cancel area never covers cards
+PASS puzzle spell Moen meter never covers cards
+PASS puzzle spell shield counts never cover costs
+PASS puzzle spell all visible controls 44px and actual hit
+PASS no zero gap spell
+PASS initial observation no solution spell
+PASS rules disable end turn spell
+PASS lock reason always visible spell
+PASS disabled input never changes board spell
+PASS puzzle-spell-playing all panel text ranges stay unclipped: []
+PASS firebolt below hero in labeled hand area
+PASS no clipped spell effect residue
+PASS puzzle-spell-failed all panel text ranges stay unclipped: []
+PASS puzzle-spell-retried all panel text ranges stay unclipped: []
+PASS specific actual event receipt spell
+PASS playable and completable spell
+PASS puzzle-spell-completed all panel text ranges stay unclipped: []
+PASS completion actually persists spell
+PASS puzzle cross all panel text ranges stay unclipped: []
+PASS puzzle cross tide denominator stays six independently of mana
+PASS puzzle cross dock at viewport bottom <=16px
+PASS puzzle cross complete player hero above dock
+PASS puzzle cross all hero numeric badges uncut
+PASS puzzle cross cards complete and clear of hero/dock
+PASS puzzle cross Moen never intersects cards
+PASS puzzle cross gesture cancel area never covers hero
+PASS puzzle cross gesture cancel area never covers cards
+PASS puzzle cross Moen meter never covers cards
+PASS puzzle cross shield counts never cover costs
+PASS puzzle cross all visible controls 44px and actual hit
+PASS no zero gap cross
+PASS initial observation no solution cross
+PASS rules disable end turn cross
+PASS lock reason always visible cross
+PASS disabled input never changes board cross
+PASS puzzle-cross-playing all panel text ranges stay unclipped: []
+PASS puzzle-cross-failed all panel text ranges stay unclipped: []
+PASS puzzle-cross-retried all panel text ranges stay unclipped: []
+PASS specific actual event receipt cross
+PASS playable and completable cross
+PASS puzzle-cross-completed all panel text ranges stay unclipped: []
+PASS completion actually persists cross
+PASS exchange-preview all panel text ranges stay unclipped: []
+PASS R8 exchange cancellation no sacrifice
+PASS R8 exchange real result
+PASS exchange-result all panel text ranges stay unclipped: []
+PASS forecast preview all panel text ranges stay unclipped: []
+PASS forecast preview tide denominator stays six independently of mana
+PASS forecast preview dock at viewport bottom <=16px
+PASS forecast preview complete player hero above dock
+PASS forecast preview all hero numeric badges uncut
+PASS forecast preview cards complete and clear of hero/dock
+PASS forecast preview Moen never intersects cards
+PASS forecast preview gesture cancel area never covers hero
+PASS forecast preview gesture cancel area never covers cards
+PASS forecast preview Moen meter never covers cards
+PASS forecast preview shield counts never cover costs
+PASS forecast preview all visible controls 44px and actual hit
+PASS forecast preview forecast plus dock <=35%
+PASS hold ring and cancel boundary visible
+PASS forecast-preview all panel text ranges stay unclipped: []
+PASS move out cancels and states why
+PASS forecast cancelled all panel text ranges stay unclipped: []
+PASS forecast cancelled tide denominator stays six independently of mana
+PASS forecast cancelled dock at viewport bottom <=16px
+PASS forecast cancelled complete player hero above dock
+PASS forecast cancelled all hero numeric badges uncut
+PASS forecast cancelled cards complete and clear of hero/dock
+PASS forecast cancelled Moen never intersects cards
+PASS forecast cancelled gesture cancel area never covers hero
+PASS forecast cancelled gesture cancel area never covers cards
+PASS forecast cancelled Moen meter never covers cards
+PASS forecast cancelled shield counts never cover costs
+PASS forecast cancelled all visible controls 44px and actual hit
+PASS forecast cancelled forecast plus dock <=35%
+PASS forecast-mouse-cancelled all panel text ranges stay unclipped: []
+PASS actual touch starts preview
+PASS actual captured touch moving out cancels without spending
+PASS forecast-cancelled all panel text ranges stay unclipped: []
+PASS applied selected second round
+PASS forecast applied all panel text ranges stay unclipped: []
+PASS forecast applied tide denominator stays six independently of mana
+PASS forecast applied dock at viewport bottom <=16px
+PASS forecast applied complete player hero above dock
+PASS forecast applied all hero numeric badges uncut
+PASS forecast applied cards complete and clear of hero/dock
+PASS forecast applied Moen never intersects cards
+PASS forecast applied gesture cancel area never covers hero
+PASS forecast applied gesture cancel area never covers cards
+PASS forecast applied Moen meter never covers cards
+PASS forecast applied shield counts never cover costs
+PASS forecast applied all visible controls 44px and actual hit
+PASS forecast applied forecast plus dock <=35%
+PASS preview cancellation apply same panel height
+PASS review panel clearly explains full HP too
+PASS unmodified future rounds remain colored after reversal
+PASS forecast-applied all panel text ranges stay unclipped: []
+PASS undo restores tide and allowance
+PASS forecast-undone all panel text ranges stay unclipped: []
+PASS forecast closed all panel text ranges stay unclipped: []
+PASS forecast closed tide denominator stays six independently of mana
+PASS forecast closed dock at viewport bottom <=16px
+PASS forecast closed complete player hero above dock
+PASS forecast closed all hero numeric badges uncut
+PASS forecast closed cards complete and clear of hero/dock
+PASS forecast closed Moen never intersects cards
+PASS forecast closed gesture cancel area never covers hero
+PASS forecast closed gesture cancel area never covers cards
+PASS forecast closed Moen meter never covers cards
+PASS forecast closed shield counts never cover costs
+PASS forecast closed all visible controls 44px and actual hit
+PASS forecast-closed all panel text ranges stay unclipped: []
+PASS reversal persists through actual reload
+PASS R8 selected future turn actually reached
+PASS only past locked rounds use visible grayscale
+PASS forecast-past-locked all panel text ranges stay unclipped: []
+PASS full HP explains no healing
+PASS full HP option agrees with preview
+PASS full HP cast panel reserves complete hero row
+PASS forecast-full-health-preview all panel text ranges stay unclipped: []
+PASS forecast ally shields all panel text ranges stay unclipped: []
+PASS forecast ally shields tide denominator stays six independently of mana
+PASS forecast ally shields dock at viewport bottom <=16px
+PASS forecast ally shields complete player hero above dock
+PASS forecast ally shields all hero numeric badges uncut
+PASS forecast ally shields cards complete and clear of hero/dock
+PASS forecast ally shields Moen never intersects cards
+PASS forecast ally shields gesture cancel area never covers hero
+PASS forecast ally shields gesture cancel area never covers cards
+PASS forecast ally shields Moen meter never covers cards
+PASS forecast ally shields shield counts never cover costs
+PASS forecast ally shields all visible controls 44px and actual hit
+PASS forecast-ebb-shields all panel text ranges stay unclipped: []
+PASS R8 each ally shield count clear
+PASS forecast third-round preview all panel text ranges stay unclipped: []
+PASS forecast third-round preview tide denominator stays six independently of mana
+PASS forecast third-round preview dock at viewport bottom <=16px
+PASS forecast third-round preview complete player hero above dock
+PASS forecast third-round preview all hero numeric badges uncut
+PASS forecast third-round preview cards complete and clear of hero/dock
+PASS forecast third-round preview Moen never intersects cards
+PASS forecast third-round preview gesture cancel area never covers hero
+PASS forecast third-round preview gesture cancel area never covers cards
+PASS forecast third-round preview Moen meter never covers cards
+PASS forecast third-round preview shield counts never cover costs
+PASS forecast third-round preview all visible controls 44px and actual hit
+PASS forecast third-round preview forecast plus dock <=35%
+PASS half-held static capture uses actual half-filled time progress
+PASS forecast-flood-preview all panel text ranges stay unclipped: []
+PASS review sequence cancellation keeps third-round original
+PASS forecast-flood-cancelled all panel text ranges stay unclipped: []
+PASS forecast-flood-applied all panel text ranges stay unclipped: []
+PASS forecast-flood anticipation all panel text ranges stay unclipped: []
+PASS forecast-flood anticipation tide denominator stays six independently of mana
+PASS forecast-flood anticipation dock at viewport bottom <=16px
+PASS forecast-flood anticipation complete player hero above dock
+PASS forecast-flood anticipation all hero numeric badges uncut
+PASS forecast-flood anticipation cards complete and clear of hero/dock
+PASS forecast-flood anticipation Moen never intersects cards
+PASS forecast-flood anticipation gesture cancel area never covers hero
+PASS forecast-flood anticipation gesture cancel area never covers cards
+PASS forecast-flood anticipation Moen meter never covers cards
+PASS forecast-flood anticipation shield counts never cover costs
+PASS forecast-flood anticipation all visible controls 44px and actual hit
+PASS forecast-flood-before all panel text ranges stay unclipped: []
+PASS forecast-flood 359ms no damage
+PASS forecast-flood impact all panel text ranges stay unclipped: []
+PASS forecast-flood impact tide denominator stays six independently of mana
+PASS forecast-flood impact dock at viewport bottom <=16px
+PASS forecast-flood impact complete player hero above dock
+PASS forecast-flood impact all hero numeric badges uncut
+PASS forecast-flood impact cards complete and clear of hero/dock
+PASS forecast-flood impact Moen never intersects cards
+PASS forecast-flood impact gesture cancel area never covers hero
+PASS forecast-flood impact gesture cancel area never covers cards
+PASS forecast-flood impact Moen meter never covers cards
+PASS forecast-flood impact shield counts never cover costs
+PASS forecast-flood impact all visible controls 44px and actual hit
+PASS forecast-flood-impact all panel text ranges stay unclipped: []
+PASS forecast-flood-after all panel text ranges stay unclipped: []
+PASS R8 actual reversed round hero5to3 knight4to3
+PASS two target-specific damage receipts
+PASS receipts clear every card corner and detail button
+PASS forecast flood route completes
+PASS forecast-flood-completed all panel text ranges stay unclipped: []
+PASS forecast ebb route completes
+PASS forecast completed save persists
+PASS moen preparation all panel text ranges stay unclipped: []
+PASS moen preparation tide denominator stays six independently of mana
+PASS moen preparation dock at viewport bottom <=16px
+PASS moen preparation complete player hero above dock
+PASS moen preparation all hero numeric badges uncut
+PASS moen preparation cards complete and clear of hero/dock
+PASS moen preparation Moen never intersects cards
+PASS moen preparation retains the established full Moen portrait size
+PASS moen preparation gesture cancel area never covers hero
+PASS moen preparation gesture cancel area never covers cards
+PASS moen preparation Moen meter never covers cards
+PASS moen preparation shield counts never cover costs
+PASS moen preparation all visible controls 44px and actual hit
+PASS complete Moen preparation sentence
+PASS Moen avatar uses the exact same blue-robed identity source
+PASS moen-preparation all panel text ranges stay unclipped: []
+PASS moen casting before all panel text ranges stay unclipped: []
+PASS moen casting before tide denominator stays six independently of mana
+PASS moen casting before dock at viewport bottom <=16px
+PASS moen casting before complete player hero above dock
+PASS moen casting before all hero numeric badges uncut
+PASS moen casting before cards complete and clear of hero/dock
+PASS moen casting before Moen never intersects cards
+PASS moen casting before retains the established full Moen portrait size
+PASS moen casting before gesture cancel area never covers hero
+PASS moen casting before gesture cancel area never covers cards
+PASS moen casting before Moen meter never covers cards
+PASS moen casting before shield counts never cover costs
+PASS moen casting before all visible controls 44px and actual hit
+PASS moen-before all panel text ranges stay unclipped: []
+PASS Moen 359ms healing not early
+PASS Moen heal and shield on impact
+PASS moen heal impact all panel text ranges stay unclipped: []
+PASS moen heal impact tide denominator stays six independently of mana
+PASS moen heal impact dock at viewport bottom <=16px
+PASS moen heal impact complete player hero above dock
+PASS moen heal impact all hero numeric badges uncut
+PASS moen heal impact cards complete and clear of hero/dock
+PASS moen heal impact Moen never intersects cards
+PASS moen heal impact retains the established full Moen portrait size
+PASS moen heal impact gesture cancel area never covers hero
+PASS moen heal impact gesture cancel area never covers cards
+PASS moen heal impact Moen meter never covers cards
+PASS moen heal impact shield counts never cover costs
+PASS moen heal impact all visible controls 44px and actual hit
+PASS Moen independent casting pose at heal impact
+PASS moen-heal-impact all panel text ranges stay unclipped: []
+PASS enemy knight visibly carries taunt
+PASS moen-break-anticipation all panel text ranges stay unclipped: []
+PASS actual attack anticipation still shielded
+PASS actual break impact still four HP
+PASS soldier complete weapon pose at real impact
+PASS knight independent break pose on actual impact
+PASS full card painting retained behind actual pose
+PASS combat threshold always visible
+PASS moen-break-impact all panel text ranges stay unclipped: []
+PASS moen-break-recovery all panel text ranges stay unclipped: []
+PASS persistent shield-broken pose differs from guarding cast
+PASS moen-broken all panel text ranges stay unclipped: []
+PASS counter opening uses distinct recovery pose
+PASS moen-opening all panel text ranges stay unclipped: []
+PASS moen-hurt anticipation all panel text ranges stay unclipped: []
+PASS moen-hurt anticipation tide denominator stays six independently of mana
+PASS moen-hurt anticipation dock at viewport bottom <=16px
+PASS moen-hurt anticipation complete player hero above dock
+PASS moen-hurt anticipation all hero numeric badges uncut
+PASS moen-hurt anticipation cards complete and clear of hero/dock
+PASS moen-hurt anticipation Moen never intersects cards
+PASS moen-hurt anticipation retains the established full Moen portrait size
+PASS moen-hurt anticipation gesture cancel area never covers hero
+PASS moen-hurt anticipation gesture cancel area never covers cards
+PASS moen-hurt anticipation Moen meter never covers cards
+PASS moen-hurt anticipation shield counts never cover costs
+PASS moen-hurt anticipation all visible controls 44px and actual hit
+PASS moen-hurt-before all panel text ranges stay unclipped: []
+PASS moen-hurt 359ms no damage
+PASS moen-hurt impact all panel text ranges stay unclipped: []
+PASS moen-hurt impact tide denominator stays six independently of mana
+PASS moen-hurt impact dock at viewport bottom <=16px
+PASS moen-hurt impact complete player hero above dock
+PASS moen-hurt impact all hero numeric badges uncut
+PASS moen-hurt impact cards complete and clear of hero/dock
+PASS moen-hurt impact Moen never intersects cards
+PASS moen-hurt impact retains the established full Moen portrait size
+PASS moen-hurt impact gesture cancel area never covers hero
+PASS moen-hurt impact gesture cancel area never covers cards
+PASS moen-hurt impact Moen meter never covers cards
+PASS moen-hurt impact shield counts never cover costs
+PASS moen-hurt impact all visible controls 44px and actual hit
+PASS moen-hurt-impact all panel text ranges stay unclipped: []
+PASS moen-hurt-after all panel text ranges stay unclipped: []
+PASS new turn no stale shield banner
+PASS Moen first route complete
+PASS moen-completed all panel text ranges stay unclipped: []
+PASS Moen has character closing line
+PASS Moen save deduplication
+PASS moen-return-wolf-spent all panel text ranges stay unclipped: []
+PASS moen-return-triggered-before all panel text ranges stay unclipped: []
+PASS return tide threshold triggered
+PASS public preattack threshold triggered
+PASS moen-return-triggered all panel text ranges stay unclipped: []
+PASS return route completes triggered
+PASS actual branch-specific recap triggered
+PASS single return control triggered
+PASS branch never claims zero healing
+PASS branch-specific generated illustration
+PASS moen-return-triggered-completed all panel text ranges stay unclipped: []
+PASS landscape Moen result controls reachable triggered
+PASS short portrait Moen result controls reachable triggered
+PASS moen-return-prevented-break-anticipation all panel text ranges stay unclipped: []
+PASS returning branch shield remains before 180ms
+PASS returning branch real impact breaks shield without HP loss
+PASS moen-return-prevented-break-impact all panel text ranges stay unclipped: []
+PASS moen-return-prevented-before all panel text ranges stay unclipped: []
+PASS return tide threshold prevented
+PASS public preattack threshold prevented
+PASS moen-return-prevented all panel text ranges stay unclipped: []
+PASS prevent heal has real counterattack price
+PASS return route completes prevented
+PASS actual branch-specific recap prevented
+PASS single return control prevented
+PASS branch never claims zero healing
+PASS branch-specific generated illustration
+PASS moen-return-prevented-completed all panel text ranges stay unclipped: []
+PASS landscape Moen result controls reachable prevented
+PASS short portrait Moen result controls reachable prevented
+PASS 320x568 Moen all panel text ranges stay unclipped: []
+PASS 320x568 Moen tide denominator stays six independently of mana
+PASS 320x568 Moen dock at viewport bottom <=16px
+PASS 320x568 Moen complete player hero above dock
+PASS 320x568 Moen all hero numeric badges uncut
+PASS 320x568 Moen cards complete and clear of hero/dock
+PASS 320x568 Moen Moen never intersects cards
+PASS 320x568 Moen gesture cancel area never covers hero
+PASS 320x568 Moen gesture cancel area never covers cards
+PASS 320x568 Moen Moen meter never covers cards
+PASS 320x568 Moen shield counts never cover costs
+PASS 320x568 Moen all visible controls 44px and actual hit
+PASS 320x568 forecast all panel text ranges stay unclipped: []
+PASS 320x568 forecast tide denominator stays six independently of mana
+PASS 320x568 forecast dock at viewport bottom <=16px
+PASS 320x568 forecast complete player hero above dock
+PASS 320x568 forecast all hero numeric badges uncut
+PASS 320x568 forecast cards complete and clear of hero/dock
+PASS 320x568 forecast Moen never intersects cards
+PASS 320x568 forecast gesture cancel area never covers hero
+PASS 320x568 forecast gesture cancel area never covers cards
+PASS 320x568 forecast Moen meter never covers cards
+PASS 320x568 forecast shield counts never cover costs
+PASS 320x568 forecast all visible controls 44px and actual hit
+PASS 320x568 forecast forecast plus dock <=35%
+PASS 320 forecast holding all panel text ranges stay unclipped: []
+PASS 320 forecast holding tide denominator stays six independently of mana
+PASS 320 forecast holding dock at viewport bottom <=16px
+PASS 320 forecast holding complete player hero above dock
+PASS 320 forecast holding all hero numeric badges uncut
+PASS 320 forecast holding cards complete and clear of hero/dock
+PASS 320 forecast holding Moen never intersects cards
+PASS 320 forecast holding gesture cancel area never covers hero
+PASS 320 forecast holding gesture cancel area never covers cards
+PASS 320 forecast holding Moen meter never covers cards
+PASS 320 forecast holding shield counts never cover costs
+PASS 320 forecast holding all visible controls 44px and actual hit
+PASS 320 forecast holding forecast plus dock <=35%
+PASS forecast320-preview all panel text ranges stay unclipped: []
+PASS forecast320-cancelled all panel text ranges stay unclipped: []
+PASS 320 forecast applied all panel text ranges stay unclipped: []
+PASS 320 forecast applied tide denominator stays six independently of mana
+PASS 320 forecast applied dock at viewport bottom <=16px
+PASS 320 forecast applied complete player hero above dock
+PASS 320 forecast applied all hero numeric badges uncut
+PASS 320 forecast applied cards complete and clear of hero/dock
+PASS 320 forecast applied Moen never intersects cards
+PASS 320 forecast applied gesture cancel area never covers hero
+PASS 320 forecast applied gesture cancel area never covers cards
+PASS 320 forecast applied Moen meter never covers cards
+PASS 320 forecast applied shield counts never cover costs
+PASS 320 forecast applied all visible controls 44px and actual hit
+PASS 320 forecast applied forecast plus dock <=35%
+PASS forecast320-applied all panel text ranges stay unclipped: []
+PASS 320 puzzle fallen all panel text ranges stay unclipped: []
+PASS 320 puzzle fallen tide denominator stays six independently of mana
+PASS 320 puzzle fallen dock at viewport bottom <=16px
+PASS 320 puzzle fallen complete player hero above dock
+PASS 320 puzzle fallen all hero numeric badges uncut
+PASS 320 puzzle fallen cards complete and clear of hero/dock
+PASS 320 puzzle fallen Moen never intersects cards
+PASS 320 puzzle fallen gesture cancel area never covers hero
+PASS 320 puzzle fallen gesture cancel area never covers cards
+PASS 320 puzzle fallen Moen meter never covers cards
+PASS 320 puzzle fallen shield counts never cover costs
+PASS 320 puzzle fallen all visible controls 44px and actual hit
+PASS puzzle320-fallen-playing all panel text ranges stay unclipped: []
+PASS 320 puzzle shield all panel text ranges stay unclipped: []
+PASS 320 puzzle shield tide denominator stays six independently of mana
+PASS 320 puzzle shield dock at viewport bottom <=16px
+PASS 320 puzzle shield complete player hero above dock
+PASS 320 puzzle shield all hero numeric badges uncut
+PASS 320 puzzle shield cards complete and clear of hero/dock
+PASS 320 puzzle shield Moen never intersects cards
+PASS 320 puzzle shield gesture cancel area never covers hero
+PASS 320 puzzle shield gesture cancel area never covers cards
+PASS 320 puzzle shield Moen meter never covers cards
+PASS 320 puzzle shield shield counts never cover costs
+PASS 320 puzzle shield all visible controls 44px and actual hit
+PASS puzzle320-shield-playing all panel text ranges stay unclipped: []
+PASS 320 puzzle shelter all panel text ranges stay unclipped: []
+PASS 320 puzzle shelter tide denominator stays six independently of mana
+PASS 320 puzzle shelter dock at viewport bottom <=16px
+PASS 320 puzzle shelter complete player hero above dock
+PASS 320 puzzle shelter all hero numeric badges uncut
+PASS 320 puzzle shelter cards complete and clear of hero/dock
+PASS 320 puzzle shelter Moen never intersects cards
+PASS 320 puzzle shelter gesture cancel area never covers hero
+PASS 320 puzzle shelter gesture cancel area never covers cards
+PASS 320 puzzle shelter Moen meter never covers cards
+PASS 320 puzzle shelter shield counts never cover costs
+PASS 320 puzzle shelter all visible controls 44px and actual hit
+PASS puzzle320-shelter-playing all panel text ranges stay unclipped: []
+PASS 320 puzzle taunt all panel text ranges stay unclipped: []
+PASS 320 puzzle taunt tide denominator stays six independently of mana
+PASS 320 puzzle taunt dock at viewport bottom <=16px
+PASS 320 puzzle taunt complete player hero above dock
+PASS 320 puzzle taunt all hero numeric badges uncut
+PASS 320 puzzle taunt cards complete and clear of hero/dock
+PASS 320 puzzle taunt Moen never intersects cards
+PASS 320 puzzle taunt gesture cancel area never covers hero
+PASS 320 puzzle taunt gesture cancel area never covers cards
+PASS 320 puzzle taunt Moen meter never covers cards
+PASS 320 puzzle taunt shield counts never cover costs
+PASS 320 puzzle taunt all visible controls 44px and actual hit
+PASS puzzle320-taunt-playing all panel text ranges stay unclipped: []
+PASS 320 puzzle spell all panel text ranges stay unclipped: []
+PASS 320 puzzle spell tide denominator stays six independently of mana
+PASS 320 puzzle spell dock at viewport bottom <=16px
+PASS 320 puzzle spell complete player hero above dock
+PASS 320 puzzle spell all hero numeric badges uncut
+PASS 320 puzzle spell cards complete and clear of hero/dock
+PASS 320 puzzle spell Moen never intersects cards
+PASS 320 puzzle spell gesture cancel area never covers hero
+PASS 320 puzzle spell gesture cancel area never covers cards
+PASS 320 puzzle spell Moen meter never covers cards
+PASS 320 puzzle spell shield counts never cover costs
+PASS 320 puzzle spell all visible controls 44px and actual hit
+PASS puzzle320-spell-playing all panel text ranges stay unclipped: []
+PASS 320 puzzle cross all panel text ranges stay unclipped: []
+PASS 320 puzzle cross tide denominator stays six independently of mana
+PASS 320 puzzle cross dock at viewport bottom <=16px
+PASS 320 puzzle cross complete player hero above dock
+PASS 320 puzzle cross all hero numeric badges uncut
+PASS 320 puzzle cross cards complete and clear of hero/dock
+PASS 320 puzzle cross Moen never intersects cards
+PASS 320 puzzle cross gesture cancel area never covers hero
+PASS 320 puzzle cross gesture cancel area never covers cards
+PASS 320 puzzle cross Moen meter never covers cards
+PASS 320 puzzle cross shield counts never cover costs
+PASS 320 puzzle cross all visible controls 44px and actual hit
+PASS puzzle320-cross-playing all panel text ranges stay unclipped: []
+PASS 360x640 Moen all panel text ranges stay unclipped: []
+PASS 360x640 Moen tide denominator stays six independently of mana
+PASS 360x640 Moen dock at viewport bottom <=16px
+PASS 360x640 Moen complete player hero above dock
+PASS 360x640 Moen all hero numeric badges uncut
+PASS 360x640 Moen cards complete and clear of hero/dock
+PASS 360x640 Moen Moen never intersects cards
+PASS 360x640 Moen gesture cancel area never covers hero
+PASS 360x640 Moen gesture cancel area never covers cards
+PASS 360x640 Moen Moen meter never covers cards
+PASS 360x640 Moen shield counts never cover costs
+PASS 360x640 Moen all visible controls 44px and actual hit
+PASS 360x640 forecast all panel text ranges stay unclipped: []
+PASS 360x640 forecast tide denominator stays six independently of mana
+PASS 360x640 forecast dock at viewport bottom <=16px
+PASS 360x640 forecast complete player hero above dock
+PASS 360x640 forecast all hero numeric badges uncut
+PASS 360x640 forecast cards complete and clear of hero/dock
+PASS 360x640 forecast Moen never intersects cards
+PASS 360x640 forecast gesture cancel area never covers hero
+PASS 360x640 forecast gesture cancel area never covers cards
+PASS 360x640 forecast Moen meter never covers cards
+PASS 360x640 forecast shield counts never cover costs
+PASS 360x640 forecast all visible controls 44px and actual hit
+PASS 360x640 forecast forecast plus dock <=35%
+PASS 1032x1376 Moen all panel text ranges stay unclipped: []
+PASS 1032x1376 Moen tide denominator stays six independently of mana
+PASS 1032x1376 Moen dock at viewport bottom <=16px
+PASS 1032x1376 Moen complete player hero above dock
+PASS 1032x1376 Moen all hero numeric badges uncut
+PASS 1032x1376 Moen cards complete and clear of hero/dock
+PASS 1032x1376 Moen Moen never intersects cards
+PASS 1032x1376 Moen retains the established full Moen portrait size
+PASS 1032x1376 Moen gesture cancel area never covers hero
+PASS 1032x1376 Moen gesture cancel area never covers cards
+PASS 1032x1376 Moen Moen meter never covers cards
+PASS 1032x1376 Moen shield counts never cover costs
+PASS 1032x1376 Moen all visible controls 44px and actual hit
+PASS 1032x1376 forecast all panel text ranges stay unclipped: []
+PASS 1032x1376 forecast tide denominator stays six independently of mana
+PASS 1032x1376 forecast dock at viewport bottom <=16px
+PASS 1032x1376 forecast complete player hero above dock
+PASS 1032x1376 forecast all hero numeric badges uncut
+PASS 1032x1376 forecast cards complete and clear of hero/dock
+PASS 1032x1376 forecast Moen never intersects cards
+PASS 1032x1376 forecast gesture cancel area never covers hero
+PASS 1032x1376 forecast gesture cancel area never covers cards
+PASS 1032x1376 forecast Moen meter never covers cards
+PASS 1032x1376 forecast shield counts never cover costs
+PASS 1032x1376 forecast all visible controls 44px and actual hit
+PASS 1032x1376 forecast forecast plus dock <=35%
+PASS 1376x1032 Moen all panel text ranges stay unclipped: []
+PASS 1376x1032 Moen tide denominator stays six independently of mana
+PASS 1376x1032 Moen dock at viewport bottom <=16px
+PASS 1376x1032 Moen complete player hero above dock
+PASS 1376x1032 Moen all hero numeric badges uncut
+PASS 1376x1032 Moen cards complete and clear of hero/dock
+PASS 1376x1032 Moen Moen never intersects cards
+PASS 1376x1032 Moen retains the established full Moen portrait size
+PASS 1376x1032 Moen gesture cancel area never covers hero
+PASS 1376x1032 Moen gesture cancel area never covers cards
+PASS 1376x1032 Moen Moen meter never covers cards
+PASS 1376x1032 Moen shield counts never cover costs
+PASS 1376x1032 Moen all visible controls 44px and actual hit
+PASS 1376x1032 forecast all panel text ranges stay unclipped: []
+PASS 1376x1032 forecast tide denominator stays six independently of mana
+PASS 1376x1032 forecast dock at viewport bottom <=16px
+PASS 1376x1032 forecast complete player hero above dock
+PASS 1376x1032 forecast all hero numeric badges uncut
+PASS 1376x1032 forecast cards complete and clear of hero/dock
+PASS 1376x1032 forecast Moen never intersects cards
+PASS 1376x1032 forecast gesture cancel area never covers hero
+PASS 1376x1032 forecast gesture cancel area never covers cards
+PASS 1376x1032 forecast Moen meter never covers cards
+PASS 1376x1032 forecast shield counts never cover costs
+PASS 1376x1032 forecast all visible controls 44px and actual hit
+PASS 1376x1032 forecast forecast plus dock <=35%
+PASS 430x932 Moen all panel text ranges stay unclipped: []
+PASS 430x932 Moen tide denominator stays six independently of mana
+PASS 430x932 Moen dock at viewport bottom <=16px
+PASS 430x932 Moen complete player hero above dock
+PASS 430x932 Moen all hero numeric badges uncut
+PASS 430x932 Moen cards complete and clear of hero/dock
+PASS 430x932 Moen Moen never intersects cards
+PASS 430x932 Moen retains the established full Moen portrait size
+PASS 430x932 Moen gesture cancel area never covers hero
+PASS 430x932 Moen gesture cancel area never covers cards
+PASS 430x932 Moen Moen meter never covers cards
+PASS 430x932 Moen shield counts never cover costs
+PASS 430x932 Moen all visible controls 44px and actual hit
+PASS 430x932 forecast all panel text ranges stay unclipped: []
+PASS 430x932 forecast tide denominator stays six independently of mana
+PASS 430x932 forecast dock at viewport bottom <=16px
+PASS 430x932 forecast complete player hero above dock
+PASS 430x932 forecast all hero numeric badges uncut
+PASS 430x932 forecast cards complete and clear of hero/dock
+PASS 430x932 forecast Moen never intersects cards
+PASS 430x932 forecast gesture cancel area never covers hero
+PASS 430x932 forecast gesture cancel area never covers cards
+PASS 430x932 forecast Moen meter never covers cards
+PASS 430x932 forecast shield counts never cover costs
+PASS 430x932 forecast all visible controls 44px and actual hit
+PASS 430x932 forecast forecast plus dock <=35%
+PASS 1032x1376 Moen all panel text ranges stay unclipped: []
+PASS 1032x1376 Moen tide denominator stays six independently of mana
+PASS 1032x1376 Moen dock at viewport bottom <=16px
+PASS 1032x1376 Moen complete player hero above dock
+PASS 1032x1376 Moen all hero numeric badges uncut
+PASS 1032x1376 Moen cards complete and clear of hero/dock
+PASS 1032x1376 Moen Moen never intersects cards
+PASS 1032x1376 Moen retains the established full Moen portrait size
+PASS 1032x1376 Moen gesture cancel area never covers hero
+PASS 1032x1376 Moen gesture cancel area never covers cards
+PASS 1032x1376 Moen Moen meter never covers cards
+PASS 1032x1376 Moen shield counts never cover costs
+PASS 1032x1376 Moen all visible controls 44px and actual hit
+PASS 1032x1376 forecast all panel text ranges stay unclipped: []
+PASS 1032x1376 forecast tide denominator stays six independently of mana
+PASS 1032x1376 forecast dock at viewport bottom <=16px
+PASS 1032x1376 forecast complete player hero above dock
+PASS 1032x1376 forecast all hero numeric badges uncut
+PASS 1032x1376 forecast cards complete and clear of hero/dock
+PASS 1032x1376 forecast Moen never intersects cards
+PASS 1032x1376 forecast gesture cancel area never covers hero
+PASS 1032x1376 forecast gesture cancel area never covers cards
+PASS 1032x1376 forecast Moen meter never covers cards
+PASS 1032x1376 forecast shield counts never cover costs
+PASS 1032x1376 forecast all visible controls 44px and actual hit
+PASS 1032x1376 forecast forecast plus dock <=35%
+PASS no browser page errors
+VERIFIED R12 680 checks

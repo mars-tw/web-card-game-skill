@@ -37,13 +37,13 @@
     const buttons=node('div');for(const label of ['確認交換','取消']){const b=node('button','',label);b.type='button';b.onclick=e=>{e.stopPropagation();label==='取消'?callbacks.cancel():callbacks.confirm(a,target);};buttons.appendChild(b);}box.appendChild(buttons);board.appendChild(box);
     for(const c of legal){const el=document.querySelector(`#enemyField [data-uid="${c.uid}"]`);el.onpointerenter=()=>{if(previewTarget!==c.uid){previewTarget=c.uid;renderExchange(Core,g,callbacks);}};}
   }
-  const plain={fallen:'士兵換弓手後陣亡，補滿第六格。',shield:'先打掉聖盾，浪潮才打得到守衛。',shelter:'弓手先取得聖盾，交換狼後才會存活。',taunt:'一血士兵有嘲諷；清掉他才能打英雄。',spell:'火焰箭先打騎士3傷，浪潮再收掉1血。',cross:'士兵打弓手、騎士打獅鷲，讓兩敵都剩1血。'};
+  const plain={fallen:'士兵換弓箭手後陣亡，補滿第六格。',shield:'先打掉聖盾，浪潮才打得到守衛。',shelter:'弓箭手先取得聖盾，交換狼後才會存活。',taunt:'一血士兵有嘲諷；清掉他才能打英雄。',spell:'火焰箭先打騎士3傷，浪潮再收掉1血。',cross:'士兵打弓箭手、騎士打獅鷲，讓兩敵都剩1血。'};
   const signals={fallen:['陣亡 +1 → 滿潮','交換收割'],shield:['聖盾擋一次','聖盾 · 1 血'],shelter:['長弓留場','射線 · 互相致命'],taunt:['嘲諷封路','嘲諷 · 1 血'],spell:['火焰箭 · 3 傷','法術收割線 · 4 血'],cross:['雙線交換 · 潮 5/6','兩線血量 2／4']};
   function renderSignals(g){
     document.querySelectorAll('.r6-board-signal,.r6-board-route').forEach(e=>e.remove());
     document.getElementById('puzzleHeroNote')?.remove();
     const original=signals[g.content?.id];if(!original||g.over)return;const s=original.slice(),enemy=g.enemy.field[0];
-    if(g.content.id==='fallen'){s[0]=`陣亡補潮 · 潮 ${g.player.tide}/6`;s[1]=`敵弓手 ${enemy?.health??0} 血`;}
+    if(g.content.id==='fallen'){s[0]=`陣亡補潮 · 潮 ${g.player.tide}/6`;s[1]=`敵弓箭手 ${enemy?.health??0} 血`;}
     if(g.content.id==='shield'&&enemy)s[1]=`${enemy.shield?'聖盾完整':'聖盾已破'} · ${enemy.health} 血`;
     if(g.content.id==='taunt')s[0]=g.enemy.field.some(c=>(c.keywords||[]).includes('taunt'))?'嘲諷封路':'嘲諷已清';
     if(g.content.id==='spell')s[0]=g.player.hand.some(c=>c.id==='firebolt')?'火焰箭 · 3 傷':'火焰箭已施放';
@@ -57,7 +57,7 @@
     const channel=document.querySelector('.r75-tide-channel'),label=node('span','r6-board-signal',s[0]);label.appendChild(node('small','r8-plain',CardContentR9.puzzleStatus(g)));if(g.player.tide===6)label.appendChild(node('b','r9-next','按「裂潮」查看兩種潮向。'));channel?.appendChild(label);
     if(g.content.id==='spell'&&g.player.hand.length){const e=node('div','r6-board-signal r6-hand-signal');e.append(node('img'));e.firstChild.src='../../assets/art/r76/firebolt.webp';e.firstChild.alt='手中火焰箭';e.append(node('span','','手牌火焰箭 · 法力 4/4'));document.querySelector('.r75-tide-channel').appendChild(e);}
     if(g.content.id==='shelter'&&!g.selected&&g.player.field.length&&g.enemy.field.length){
-      const b=document.querySelector('.board').getBoundingClientRect(),a=document.querySelector('#playerField .card').getBoundingClientRect(),t=document.querySelector('#enemyField .card').getBoundingClientRect(),ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.classList.add('r6-board-route');svg.setAttribute('viewBox',`0 0 ${b.width} ${b.height}`);svg.setAttribute('aria-label','弓手與狼的交換射線，雙方各造成兩點');
+      const b=document.querySelector('.board').getBoundingClientRect(),a=document.querySelector('#playerField .card').getBoundingClientRect(),t=document.querySelector('#enemyField .card').getBoundingClientRect(),ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.classList.add('r6-board-route');svg.setAttribute('viewBox',`0 0 ${b.width} ${b.height}`);svg.setAttribute('aria-label','弓箭手與狼的交換射線，雙方各造成兩點');
       const line=document.createElementNS(ns,'path');line.setAttribute('d',`M${a.x+a.width/2-b.x} ${a.top-b.top-5} L${t.x+t.width/2-b.x} ${t.bottom-b.top+8} m-6 8 l6 -8 l6 8`);svg.appendChild(line);document.querySelector('.board').appendChild(svg);
     }
   }
@@ -73,7 +73,7 @@
     // Ownership is conveyed on each card by distinct wall and shield art.
     document.querySelector('.r7-moen-heal')?.remove();
     if(healing?.game===g&&performance.now()<healing.until)document.getElementById('enemyHero').appendChild(node('b','r7-moen-heal',`+${healing.amount} 治療 · ${healing.before} → ${healing.after}`));
-    document.getElementById('moenPressure').textContent=!g.content.enemyEbbUsed?'茉恩 · 整備':knight?.shield?'茉恩 · 聖盾留守':knight?'茉恩 · 反攻空檔':'茉恩 · 防線已開';
+    document.getElementById('moenPressure').textContent=!g.content.enemyEbbUsed?'茉恩 · 整備':knight?.shield?'茉恩 · 聖盾留守':knight&&knight.health===knight.maxHealth?'茉恩 · 護盾碎裂':knight?'茉恩 · 反攻空檔':'茉恩 · 防線已開';
     for(const el of document.querySelectorAll('#enemyField .card')){
       const c=g.enemy.field.find(c=>c.uid===el.dataset.uid);if(c?.id!=='knight')continue;
       const state=c.shield?'intact':c._r3ShieldBroken?(performance.now()<(breaking.get(c.uid)||0)?'breaking':'broken'):null;if(!state)continue;el.dataset.shellState=state;

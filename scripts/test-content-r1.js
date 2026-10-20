@@ -28,6 +28,7 @@ g=fresh('forecast');g.turnCount=2;check(!C.reverse(g,0),'past forecast cannot ch
 g=fresh('moen');g.turn='enemy';Core.advanceTurn(g,{phase:'startEnemy'},rng);const r=Core.tidebreak(g,{side:'enemy',mode:'ebb'},rng);g.content.enemyEbbUsed=true;check(r.ok&&g.enemy.hp===7&&g.enemy.tide===0&&g.enemy.field[0].shield,'Moen real ebb heals shields and consumes tide');
 g=fresh('forecast');g.forecast.directions=['bad'];check(!C.valid(g)&&Session.decode(Session.encode(g),pool)===null,'corrupt forecast checkpoint rejected');
 check(C.progress('{bad').completed.length===0,'corrupt progress recovers');check(C.progress({completed:['alien','fallen','fallen']}).completed.join()==='fallen','only known completions retained');
-const manifest=require('../docs/art/ASSET_MANIFEST_CONTENT_R1.json');check(manifest.tool==='image_gen.imagegen'&&manifest.new_originals===1,'actual image tool provenance');
-for(const file of manifest.files)check(crypto.createHash('sha256').update(fs.readFileSync(path.resolve(__dirname,'..',file.path))).digest('hex')===file.sha256,'art hash '+file.path);
+if(!process.argv.includes('--logic')){ const manifest=require('../docs/art/ASSET_MANIFEST_CONTENT_R1.json');check(manifest.tool==='image_gen.imagegen'&&manifest.new_originals===1,'actual image tool provenance');
+for(const file of manifest.files)check(crypto.createHash('sha256').update(fs.readFileSync(path.resolve(__dirname,'..',file.path))).digest('hex')===file.sha256,'art hash '+file.path); }
+
 console.log(`Content R1: ${checks} PASS; all six Core solutions and persistence verified`);

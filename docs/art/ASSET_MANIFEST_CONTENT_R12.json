@@ -1,0 +1,92 @@
+{
+  "tool": "image_gen.imagegen",
+  "model_slug": null,
+  "license": "MIT project assets",
+  "generation_calls": 2,
+  "new_illustrations": 2,
+  "derived_portraits": 1,
+  "assets": [
+    {
+      "path": "assets/art/content-r12/ending-triggered-source.png",
+      "sha256": "698f73d0e36396f77de44802927f02b58fbd64d742eba36855718f3a8df4c789",
+      "width": 1536,
+      "height": 1024,
+      "kind": "generated_source",
+      "tool": "image_gen.imagegen",
+      "original_source": "C:/Users/digimkt/.codex/generated_images/01a15383-2a22-7ac1-bb96-bfc5ae5dd34b/exec-92f2754d-9956-4d2d-b39d-01db0e30b1e9.png"
+    },
+    {
+      "path": "assets/art/content-r12/ending-triggered.webp",
+      "sha256": "8ecec8f21e065dae61240b8fc2de4f1bf63a9050b7349c19e4f530520f232f00",
+      "width": 1536,
+      "height": 1024,
+      "kind": "runtime",
+      "tool": "image_gen.imagegen",
+      "source": "assets/art/content-r12/ending-triggered-source.png",
+      "processing": "WebP encoding only"
+    },
+    {
+      "path": "assets/art/content-r12/ending-prevented-source.png",
+      "sha256": "a4e3d4980784d057f0cd9b827b796a9a50b7fddce626cb4ebcc664b666369256",
+      "width": 1536,
+      "height": 1024,
+      "kind": "generated_source",
+      "tool": "image_gen.imagegen",
+      "original_source": "C:/Users/digimkt/.codex/generated_images/01a15383-2a22-7ac1-bb96-bfc5ae5dd34b/exec-7e101c24-d335-436c-894a-b696fb656e31.png"
+    },
+    {
+      "path": "assets/art/content-r12/ending-prevented.webp",
+      "sha256": "7d3b172f760d0246bacded100e6f3eca882a1248d88d255eda1be71f9299f2b8",
+      "width": 1536,
+      "height": 1024,
+      "kind": "runtime",
+      "tool": "image_gen.imagegen",
+      "source": "assets/art/content-r12/ending-prevented-source.png",
+      "processing": "WebP encoding only"
+    },
+    {
+      "path": "assets/art/content-r12/moen-portrait.webp",
+      "sha256": "a8fbb780733e98bfdfddf3305e88f355873336571fb04ef619468986642bb738",
+      "width": 256,
+      "height": 256,
+      "kind": "derived_portrait",
+      "tool": "Pillow",
+      "source": "assets/art/content-r10/moen-ready.webp",
+      "source_sha256": "c922d4ec20f73122f237c988a62c5b5ace5f2fd8a24c6b4a40ffddac7f238495",
+      "crop": [
+        148,
+        8,
+        267,
+        127
+      ],
+      "processing": "same character head crop and resize, no repaint"
+    },
+    {
+      "path": "assets/art/content-r10/moen-cast.webp",
+      "sha256": "bdfbc1000223cb88c79d8313ab2c5c03cbd16747126ddaa3ee78cf8b7d182ecc",
+      "width": 487,
+      "height": 428,
+      "kind": "reused_state_pose",
+      "tool": "image_gen.imagegen",
+      "state": "聖盾留守"
+    },
+    {
+      "path": "assets/art/content-r10/moen-hurt.webp",
+      "sha256": "5f45c08a25713efb0bca5ec6edf3e648d39baa30e64e8d43825c834f26c2c325",
+      "width": 382,
+      "height": 428,
+      "kind": "reused_state_pose",
+      "tool": "image_gen.imagegen",
+      "state": "護盾碎裂"
+    },
+    {
+      "path": "assets/art/content-r10/moen-recover.webp",
+      "sha256": "425456a1052e43339fd463829f1710d3df4a61c5cedb1c76db67cb11c3790794",
+      "width": 434,
+      "height": 428,
+      "kind": "reused_state_pose",
+      "tool": "image_gen.imagegen",
+      "state": "反攻空檔"
+    }
+  ]
+}

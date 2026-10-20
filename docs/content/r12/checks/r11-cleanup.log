@@ -1,0 +1,5 @@
+PASS abandon from active preview removes every stale encounter annotation
+PASS failed result has exactly one return control
+PASS abandon from selected state grants no progress
+PASS retry rebuilds the two-unit board and actual turn lock
+VERIFIED cleanup 4
